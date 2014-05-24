@@ -1,0 +1,165 @@
+﻿<UserControl x:Class="Task_Logger_Pro.Pages.Views.SettingsViews.ScreenshotsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:Task_Logger_Pro.Controls"
+             xmlns:local="clr-namespace:Task_Logger_Pro"
+             mc:Ignorable="d"
+             d:DesignHeight="300"
+             d:DesignWidth="300">
+    <UserControl.Resources>
+        <local:ConvertInterval x:Key="convertInterval" />
+    </UserControl.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label Style="{StaticResource LabelStyle}"
+                   FontSize="18"
+                   Grid.Row="0"
+                   Grid.ColumnSpan="3"
+                   Content="Screenshots"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   FontFamily="Tahoma" />
+
+            <CheckBox Name="cbScreenShots"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      IsChecked="{Binding Path=UserSettings.TakeScreenshots, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Grid.Row="1"
+                      Grid.Column="1"
+                      Margin="20,20,0,10" />
+            <Label Style="{StaticResource LabelStyle}"
+                   Content="Take screenshots:"
+                   HorizontalAlignment="Left"
+                   FontSize="14"
+                   Grid.Row="1"
+                   Margin="0,20,0,10" />
+            <Label Style="{StaticResource LabelStyle}"
+                   Content="Screenshot interval:"
+                   FontSize="14"
+                   HorizontalAlignment="Left"
+                   Grid.Row="2"
+                   Margin="0,0,0,0" />
+            <Button Content="{Binding Path=UserSettings.ScreenshotInterval, Converter={StaticResource convertInterval}, Mode=TwoWay}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Name="tbInterval"
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Margin="20,0,0,0">
+                <Button.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding ShowPopupCommand}" />
+                </Button.InputBindings>
+            </Button>
+            <Popup PopupAnimation="Slide"
+                   StaysOpen="True"
+                   PlacementTarget="{Binding ElementName=tbInterval}"
+                   IsOpen="{Binding PopupIntervalIsOpen}"
+                   Placement="Right"
+                   Name="popupInterval">
+                <Border Style="{DynamicResource ThemeBorderStyle}">
+                    <StackPanel Orientation="Vertical">
+                        <Label Style="{StaticResource SelectableLabelStyle}"
+                               Content="10 sec"
+                               Name="lblTenSec">
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding ChangeScreenShotIntervalCommand }"
+                                              CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Label}}}" />
+                            </Label.InputBindings>
+                        </Label>
+                        <Label Style="{StaticResource SelectableLabelStyle}"
+                               Content="30 sec">
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding ChangeScreenShotIntervalCommand }"
+                                              CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Label}}}" />
+                            </Label.InputBindings>
+                        </Label>
+                        <Label Style="{StaticResource SelectableLabelStyle}"
+                               Content="1 min">
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding ChangeScreenShotIntervalCommand }"
+                                              CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Label}}}" />
+                            </Label.InputBindings>
+                        </Label>
+                        <Label Style="{StaticResource SelectableLabelStyle}"
+                               Content="2 min">
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding ChangeScreenShotIntervalCommand }"
+                                              CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Label}}}" />
+                            </Label.InputBindings>
+                        </Label>
+                        <Label Style="{StaticResource SelectableLabelStyle}"
+                               Content="5 min">
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding ChangeScreenShotIntervalCommand }"
+                                              CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Label}}}" />
+                            </Label.InputBindings>
+                        </Label>
+                        <Label Style="{StaticResource SelectableLabelStyle}"
+                               Content="10 min">
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding ChangeScreenShotIntervalCommand }"
+                                              CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Label}}}" />
+                            </Label.InputBindings>
+                        </Label>
+                        <Label Style="{StaticResource SelectableLabelStyle}"
+                               Content="30 min">
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding ChangeScreenShotIntervalCommand }"
+                                              CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Label}}}" />
+                            </Label.InputBindings>
+                        </Label>
+                        <Label Style="{StaticResource SelectableLabelStyle}"
+                               Content="1 hr">
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding ChangeScreenShotIntervalCommand }"
+                                              CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Label}}}" />
+                            </Label.InputBindings>
+                        </Label>
+                    </StackPanel>
+                </Border>
+            </Popup>
+
+            <!--<Label Style="{StaticResource LabelStyle}"
+                   Content="Screenshot quality:"
+                   FontSize="14"
+                   HorizontalAlignment="Left"
+                   Grid.Row="3"
+                   Margin="0,10,0,0" />
+            <Slider Style="{StaticResource SliderStyle}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left"
+                    Minimum="1"
+                    Maximum="100"
+                    MinWidth="125"
+                    SmallChange="1"
+                    Value="{Binding UserSettings.ScreenshotQuality}"
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    Margin="20,10,0,0" />-->
+
+        </Grid>
+    </ScrollViewer>
+</UserControl>

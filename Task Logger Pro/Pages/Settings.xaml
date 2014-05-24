@@ -1,0 +1,67 @@
+﻿<Page x:Class="Task_Logger_Pro.Pages.Settings"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:controls="clr-namespace:Task_Logger_Pro.Controls"
+      xmlns:viewModels="clr-namespace:Task_Logger_Pro.ViewModels"
+      xmlns:local="clr-namespace:Task_Logger_Pro"
+      mc:Ignorable="d"
+      d:DesignHeight="300"
+      d:DesignWidth="300"
+      Title="Settings">
+    <!--<Page.DataContext>
+        <viewModels:SettingsViewModel />
+    </Page.DataContext> 
+    <Page.Resources>
+        <local:ConvertBoolToVisibilityReverse x:Key="convertVisibility" />
+        <local:ConvertPageNameToStyle x:Key="convertPageNameToSyle"
+                                      SelectedLabelStyle="{StaticResource SelectedLabelStyle}"
+                                      SelectableLabelStyle="{StaticResource SelectableLabelStyle}" />
+        <viewModels:Settings_generalViewModel x:Key="generalViewModel" />
+        <viewModels:Settings_licenseViewModel x:Key="licenseViewModel" />
+    </Page.Resources>-->
+
+    <Grid Name="rootLayout">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal"
+                    Margin="20,0,0,0"
+                    Grid.ColumnSpan="5"
+                    Grid.Row="0">
+            <controls:FadingUC StringContent="APP SETTINGS"
+                               Style="{Binding CurrentPageName, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=Settings_general}"
+                               FontSize="12">
+                <controls:FadingUC.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding ChangePageCommand}"
+                                  CommandParameter="{StaticResource generalViewModel}" />
+                </controls:FadingUC.InputBindings>
+            </controls:FadingUC>
+            <controls:FadingUC StringContent="LICENSE"
+                               Style="{Binding CurrentPageName, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=Settings_license}"
+                               FontSize="12"
+                               Visibility="{Binding UserSettings.Licence, Converter={StaticResource convertVisibility }}">
+                <controls:FadingUC.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding ChangePageCommand}"
+                                  CommandParameter="{StaticResource licenseViewModel}" />
+                </controls:FadingUC.InputBindings>
+            </controls:FadingUC>
+
+        </StackPanel>
+        <controls:FaderFrame x:Name="mainContentHolder"
+                             Grid.Column="0"
+                             Grid.Row="1"
+                             Grid.RowSpan="7"
+                             Grid.ColumnSpan="5"
+                             Source="{Binding CurrentPageSource}"
+                             Margin="15" />
+    </Grid>
+</Page>

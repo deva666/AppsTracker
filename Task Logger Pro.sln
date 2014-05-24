@@ -1,0 +1,96 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTrackerCore", "Task Logger Pro\AppsTrackerCore.csproj", "{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTrackerService", "AppsTrackerService\AppsTrackerService.csproj", "{91B29B04-4438-4994-AD64-69814666DA40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTrackerInstaller", "AppsTrackerInstaller\AppsTrackerInstaller.csproj", "{409D6952-D127-4CDB-B600-EFA8E4BFDC6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTrackerLicensing", "AppLoggerLicenseKeys\AppsTrackerLicensing.csproj", "{3018122A-AAC6-4304-9EC1-D415FA060505}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AT.ErrorLog", "AT.ErrorLog\AT.ErrorLog.csproj", "{CA29C6D8-5D7C-4811-9936-76F7A4458599}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D24EB643-F203-4500-9CBE-4B50EB3361B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTracker.DAL", "AppsTracker.DAL\AppsTracker.DAL.csproj", "{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTracker.Models", "AppsTracker.Models\AppsTracker.Models.csproj", "{CC8B5831-53C4-46DA-97DB-18C75ED7D929}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{88040661-573B-463C-88BD-755BBFA0B0F3}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 9
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://made.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Task\u0020Logger\u0020Pro\\AppsTrackerCore.csproj
+		SccProjectName1 = Task\u0020Logger\u0020Pro
+		SccLocalPath1 = Task\u0020Logger\u0020Pro
+		SccProjectUniqueName2 = AppsTrackerService\\AppsTrackerService.csproj
+		SccProjectName2 = AppsTrackerService
+		SccLocalPath2 = AppsTrackerService
+		SccProjectUniqueName3 = AppsTrackerInstaller\\AppsTrackerInstaller.csproj
+		SccProjectName3 = AppsTrackerInstaller
+		SccLocalPath3 = AppsTrackerInstaller
+		SccProjectUniqueName4 = AppLoggerLicenseKeys\\AppsTrackerLicensing.csproj
+		SccProjectName4 = AppLoggerLicenseKeys
+		SccLocalPath4 = AppLoggerLicenseKeys
+		SccProjectUniqueName5 = AT.ErrorLog\\AT.ErrorLog.csproj
+		SccProjectName5 = AT.ErrorLog
+		SccLocalPath5 = AT.ErrorLog
+		SccProjectUniqueName6 = AppsTracker.DAL\\AppsTracker.DAL.csproj
+		SccProjectName6 = AppsTracker.DAL
+		SccLocalPath6 = AppsTracker.DAL
+		SccProjectUniqueName7 = AppsTracker.Models\\AppsTracker.Models.csproj
+		SccProjectName7 = AppsTracker.Models
+		SccLocalPath7 = AppsTracker.Models
+		SccProjectUniqueName8 = Test\\Test.csproj
+		SccProjectName8 = Test
+		SccLocalPath8 = Test
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91B29B04-4438-4994-AD64-69814666DA40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91B29B04-4438-4994-AD64-69814666DA40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91B29B04-4438-4994-AD64-69814666DA40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91B29B04-4438-4994-AD64-69814666DA40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{409D6952-D127-4CDB-B600-EFA8E4BFDC6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{409D6952-D127-4CDB-B600-EFA8E4BFDC6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{409D6952-D127-4CDB-B600-EFA8E4BFDC6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{409D6952-D127-4CDB-B600-EFA8E4BFDC6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3018122A-AAC6-4304-9EC1-D415FA060505}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3018122A-AAC6-4304-9EC1-D415FA060505}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3018122A-AAC6-4304-9EC1-D415FA060505}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3018122A-AAC6-4304-9EC1-D415FA060505}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA29C6D8-5D7C-4811-9936-76F7A4458599}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA29C6D8-5D7C-4811-9936-76F7A4458599}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA29C6D8-5D7C-4811-9936-76F7A4458599}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA29C6D8-5D7C-4811-9936-76F7A4458599}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC8B5831-53C4-46DA-97DB-18C75ED7D929}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC8B5831-53C4-46DA-97DB-18C75ED7D929}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC8B5831-53C4-46DA-97DB-18C75ED7D929}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC8B5831-53C4-46DA-97DB-18C75ED7D929}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88040661-573B-463C-88BD-755BBFA0B0F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88040661-573B-463C-88BD-755BBFA0B0F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88040661-573B-463C-88BD-755BBFA0B0F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88040661-573B-463C-88BD-755BBFA0B0F3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

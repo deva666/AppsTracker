@@ -1,0 +1,851 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Task_Logger_Pro</RootNamespace>
+    <AssemblyName>Apps tracker</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Task_Logger_Pro.EntryPoint</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\AppsTrackerIcon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="De.TorstenMandelkow.MetroChart, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d5b8d1bbc99c4a2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\De.TorstenMandelkow.MetroChart.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServerCompact">
+      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.0.1\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Controls\Adorners.cs" />
+    <Compile Include="Controls\ArrowLeft.xaml.cs">
+      <DependentUpon>ArrowLeft.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ArrowRight.xaml.cs">
+      <DependentUpon>ArrowRight.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FadingItemsListView.cs" />
+    <Compile Include="Controls\Forward.xaml.cs">
+      <DependentUpon>Forward.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ImageView.xaml.cs">
+      <DependentUpon>ImageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ISelectable.cs" />
+    <Compile Include="Controls\KeystrokeViewer.xaml.cs">
+      <DependentUpon>KeystrokeViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ModernButton.cs" />
+    <Compile Include="Controls\Next.xaml.cs">
+      <DependentUpon>Next.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PageController.xaml.cs">
+      <DependentUpon>PageController.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Pause.xaml.cs">
+      <DependentUpon>Pause.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Play.xaml.cs">
+      <DependentUpon>Play.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Previous.xaml.cs">
+      <DependentUpon>Previous.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\progressBar.xaml.cs">
+      <DependentUpon>progressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PullDown.xaml.cs">
+      <DependentUpon>PullDown.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PullUp.xaml.cs">
+      <DependentUpon>PullUp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Rewind.xaml.cs">
+      <DependentUpon>Rewind.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ScreenshotViewer.xaml.cs">
+      <DependentUpon>ScreenshotViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ScreenshotViewerOptions.xaml.cs">
+      <DependentUpon>ScreenshotViewerOptions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ScreenshotViewerWindow.xaml.cs">
+      <DependentUpon>ScreenshotViewerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ScrollingContentControl.cs" />
+    <Compile Include="Controls\SelectableListView.cs" />
+    <Compile Include="Logging\IdleMonitor.cs" />
+    <Compile Include="Logging\IdleTimeWatcher.cs" />
+    <Compile Include="Logging\NewDataLogger.cs" />
+    <Compile Include="Models\Aplication.cs">
+      <DependentUpon>AppsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AppsModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppsModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AppsModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AppsModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppsModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AppsPartial.cs" />
+    <Compile Include="Models\AppsProxy.cs" />
+    <Compile Include="Models\AppsToBlock.cs">
+      <DependentUpon>AppsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AppsToBlockPartial.cs" />
+    <Compile Include="Models\BlockedApp.cs">
+      <DependentUpon>AppsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FileLog.cs">
+      <DependentUpon>AppsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Log.cs">
+      <DependentUpon>AppsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Screenshot.cs">
+      <DependentUpon>AppsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ScreenshotApp.cs" />
+    <Compile Include="Models\ScreenshotViewerOptions.cs" />
+    <Compile Include="Models\Setting.cs">
+      <DependentUpon>AppsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Usage.cs">
+      <DependentUpon>AppsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UsageModels.cs" />
+    <Compile Include="Models\UsagePartial.cs" />
+    <Compile Include="Models\UsageType.cs">
+      <DependentUpon>AppsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UsageTypePartial.cs" />
+    <Compile Include="Models\Uzer.cs">
+      <DependentUpon>AppsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Window.cs">
+      <DependentUpon>AppsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\HostViewModel.cs" />
+    <Compile Include="MVVM\ICommunicator.cs" />
+    <Compile Include="MVVM\IPage.cs" />
+    <Compile Include="MVVM\IWorker.cs" />
+    <Compile Include="MVVM\IChildVM.cs" />
+    <Compile Include="Utils\CustomEventArgs.cs" />
+    <Compile Include="Utils\ListViewBehavior.cs" />
+    <Compile Include="Utils\ListViewItemScroller.cs" />
+    <Compile Include="Utils\SettingsQueue.cs" />
+    <Compile Include="Utils\WorkQueue.cs" />
+    <Compile Include="ViewModels\DataHostViewModel.cs" />
+    <Compile Include="ViewModels\Data_dayViewModel.cs" />
+    <Compile Include="ViewModels\Data_overallSummaryViewModel.cs" />
+    <Compile Include="ViewModels\Data_singleSummaryViewModel.cs" />
+    <Compile Include="ViewModels\ScreenshotViewerViewModel.cs" />
+    <Compile Include="ViewModels\StatisticsHostViewModel.cs" />
+    <Compile Include="ViewModels\Statistics_appUsageViewModel.cs" />
+    <Compile Include="ViewModels\Statistics_dailyAppUsageViewModel.cs" />
+    <Compile Include="ViewModels\Statistics_keystrokesViewModel.cs" />
+    <Compile Include="ViewModels\Statistics_screenshotsViewModel.cs" />
+    <Compile Include="ViewModels\Statistics_usersViewModel.cs" />
+    <Compile Include="Views\AppDetailedView.xaml.cs">
+      <DependentUpon>AppDetailedView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DataHostView.xaml.cs">
+      <DependentUpon>DataHostView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Data_dayView.xaml.cs">
+      <DependentUpon>Data_dayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Data_overallSummaryView.xaml.cs">
+      <DependentUpon>Data_overallSummaryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Data_singleSummaryView.xaml.cs">
+      <DependentUpon>Data_singleSummaryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DayView.xaml.cs">
+      <DependentUpon>DayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsHostView.xaml.cs">
+      <DependentUpon>SettingsHostView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StatisticsHostView.xaml.cs">
+      <DependentUpon>StatisticsHostView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\Constants.cs" />
+    <Compile Include="Controls\AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BackButton.xaml.cs">
+      <DependentUpon>BackButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Calendar.xaml.cs">
+      <DependentUpon>Calendar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\DispatcherService.cs" />
+    <Compile Include="Controls\EULAWindow.xaml.cs">
+      <DependentUpon>EULAWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FaderContentControl.cs" />
+    <Compile Include="Controls\FaderFrame.cs" />
+    <Compile Include="Controls\FaderLabel.cs" />
+    <Compile Include="Controls\FadingUC.xaml.cs">
+      <DependentUpon>FadingUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FilterableListView.cs" />
+    <Compile Include="Controls\MessageWindow.xaml.cs">
+      <DependentUpon>MessageWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PBAssistant.cs" />
+    <Compile Include="Controls\PersonIcon.xaml.cs">
+      <DependentUpon>PersonIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SortableGridViewColumn.cs" />
+    <Compile Include="Controls\SortableListView.cs" />
+    <Compile Include="Controls\TrayIcon.cs" />
+    <Compile Include="Utils\HelperClasses.cs" />
+    <Compile Include="Utils\WaitCursor.cs" />
+    <Compile Include="Controls\WPFHelper.cs" />
+    <Compile Include="EntryPoint.cs" />
+    <Compile Include="Utils\Validation.cs" />
+    <Compile Include="Logging\ProcessEvents.cs" />
+    <Compile Include="Models\ApplicationPartial.cs" />
+    <Compile Include="Models\BlockedAppPartial.cs" />
+    <Compile Include="Utils\ExtensionMethods.cs" />
+    <Compile Include="Models\FileLogPartial.cs" />
+    <Compile Include="Models\LoginPartial.cs" />
+    <Compile Include="Models\LogPartial.cs" />
+    <Compile Include="Models\ScreenshotPartial.cs" />
+    <Compile Include="Models\SettingPartial.cs" />
+    <Compile Include="Models\UzerSetting.cs" />
+    <Compile Include="Models\WindowPartial.cs" />
+    <Compile Include="MVVM\AboutWindowViewModel.cs" />
+    <Compile Include="Models\ChartModels.cs" />
+    <Compile Include="Logging\EmailReport.cs" />
+    <Compile Include="Logging\FileWatcher.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Logging\WebWatcher.cs" />
+    <Compile Include="MVVM\DelegateCommand.cs" />
+    <Compile Include="MVVM\IPageViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="MVVM\Mediator.cs" />
+    <Compile Include="MVVM\MediatorMessages.cs" />
+    <Compile Include="MVVM\MediatorMessageSinkAttribute.cs" />
+    <Compile Include="MVVM\MessageToActionsMap.cs" />
+    <Compile Include="MVVM\ObservableObject.cs" />
+    <Compile Include="MVVM\ViewModelBase.cs" />
+    <Compile Include="Exceptions\ErrorLog.cs" />
+    <Compile Include="Hooks\MouseHook.cs" />
+    <Compile Include="Logging\ProcessKiller.cs" />
+    <Compile Include="MVVM\WeakAction.cs" />
+    <Compile Include="ViewModels\Data_computerUsageViewModel.cs" />
+    <Compile Include="ViewModels\Data_filelogsViewModel.cs" />
+    <Compile Include="ViewModels\Data_logsViewModel.cs" />
+    <Compile Include="ViewModels\Data_weblogsViewModel.cs" />
+    <Compile Include="ViewModels\Data_keystrokesViewModel.cs" />
+    <Compile Include="ViewModels\Data_screenshotsViewModel.cs" />
+    <Compile Include="ViewModels\SettingsHostViewModel.cs" />
+    <Compile Include="ViewModels\Settings_generalViewModel.cs" />
+    <Compile Include="ViewModels\Settings_licenseViewModel.cs" />
+    <Compile Include="Views\ChartViews\AppByDayView.xaml.cs">
+      <DependentUpon>AppByDayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChartViews\BlockedAppByDayView.xaml.cs">
+      <DependentUpon>BlockedAppByDayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChartViews\BlockedAppsView.xaml.cs">
+      <DependentUpon>BlockedAppsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChartViews\DailyAppsUsageView.xaml.cs">
+      <DependentUpon>DailyAppsUsageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChartViews\FilewatcherView.xaml.cs">
+      <DependentUpon>FilewatcherView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChartViews\KeystrokesByDayView.xaml.cs">
+      <DependentUpon>KeystrokesByDayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChartViews\KeystrokesView.xaml.cs">
+      <DependentUpon>KeystrokesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChartViews\MostUsedAppsView.xaml.cs">
+      <DependentUpon>MostUsedAppsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChartViews\ScreenshotsByDayView.xaml.cs">
+      <DependentUpon>ScreenshotsByDayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChartViews\ScreenshotsView.xaml.cs">
+      <DependentUpon>ScreenshotsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChartViews\UsageView.xaml.cs">
+      <DependentUpon>UsageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChartViews\UsersView.xaml.cs">
+      <DependentUpon>UsersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Data_computerUsageView.xaml.cs">
+      <DependentUpon>Data_computerUsageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Data_filelogsView.xaml.cs">
+      <DependentUpon>Data_filelogsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Data_logsView.xaml.cs">
+      <DependentUpon>Data_logsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Data_weblogsView.xaml.cs">
+      <DependentUpon>Data_weblogsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\KeylogsView.xaml.cs">
+      <DependentUpon>KeylogsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScreenShotsView.xaml.cs">
+      <DependentUpon>ScreenShotsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsViews\BlockedAppsView.xaml.cs">
+      <DependentUpon>BlockedAppsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsViews\EmailReportsView.xaml.cs">
+      <DependentUpon>EmailReportsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsViews\GeneralView.xaml.cs">
+      <DependentUpon>GeneralView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsViews\LoggingView.xaml.cs">
+      <DependentUpon>LoggingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsViews\MasterPasswordView.xaml.cs">
+      <DependentUpon>MasterPasswordView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsViews\ScreenshotsView.xaml.cs">
+      <DependentUpon>ScreenshotsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings_generalView.xaml.cs">
+      <DependentUpon>Settings_generalView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings_licenseView.xaml.cs">
+      <DependentUpon>Settings_licenseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StatisticsView.xaml.cs">
+      <DependentUpon>StatisticsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PasswordWindow.xaml.cs">
+      <DependentUpon>PasswordWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Screenshots\Screenshots.cs" />
+    <Compile Include="Encryption\Encrypt.cs" />
+    <Compile Include="Utils\Globals.cs" />
+    <Compile Include="Utils\ValueConverters.cs" />
+    <Compile Include="WinAPI.cs" />
+    <Compile Include="Hooks\WinEvent.cs" />
+    <Page Include="Controls\AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ArrowLeft.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ArrowRight.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BackButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Calendar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\closeBtn.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\EULAWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\FadingUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Forward.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ImageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\KeystrokeViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Next.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PageController.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Pause.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PersonIcon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Play.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Previous.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\progressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PullDown.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PullUp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Rewind.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ScreenshotViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ScreenshotViewerOptions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ScreenshotViewerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\closeBtn.xaml.cs">
+      <DependentUpon>closeBtn.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Hooks\KeyboardHook.cs" />
+    <Compile Include="Logging\DataLogger.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Themes\BaseTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AppDetailedView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChartViews\AppByDayView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChartViews\BlockedAppByDayView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChartViews\BlockedAppsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChartViews\DailyAppsUsageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChartViews\FilewatcherView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChartViews\KeystrokesByDayView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChartViews\KeystrokesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChartViews\MostUsedAppsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChartViews\ScreenshotsByDayView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChartViews\ScreenshotsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChartViews\UsageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChartViews\UsersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DataHostView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Data_computerUsageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Data_dayView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Data_filelogsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Data_logsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Data_overallSummaryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Data_singleSummaryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Data_weblogsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DayView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\KeylogsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScreenShotsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsHostView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsViews\BlockedAppsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsViews\EmailReportsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsViews\GeneralView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsViews\LoggingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsViews\MasterPasswordView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsViews\ScreenshotsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings_generalView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings_licenseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StatisticsHostView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StatisticsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PasswordWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Running.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\RunningLight.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Stopped.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\StoppedLight.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="Models\AppsModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AppsModel.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Task_Logger_Pro.Models</CustomToolNamespace>
+    </EntityDeploy>
+    <None Include="Models\AppsModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AppsModel.edmx</DependentUpon>
+      <LastGenOutput>AppsModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Models\AppsModel.edmx.diagram">
+      <DependentUpon>AppsModel.edmx</DependentUpon>
+    </None>
+    <None Include="Models\AppsModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AppsModel.edmx</DependentUpon>
+      <LastGenOutput>AppsModel.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.4.0">
+      <Visible>False</Visible>
+      <ProductName>SQL Server Compact 4.0 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EULA.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\AppsTrackerIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\AppsTrackerSplashResized.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Apps.sdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="De.TorstenMandelkow.MetroChart.dll" />
+    <Resource Include="Resources\down.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
+    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

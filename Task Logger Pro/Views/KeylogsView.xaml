@@ -1,0 +1,348 @@
+﻿<UserControl x:Class="Task_Logger_Pro.Pages.Views.KeylogsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Task_Logger_Pro"
+             xmlns:controls="clr-namespace:Task_Logger_Pro.Controls"
+             xmlns:logging="clr-namespace:Task_Logger_Pro.Models"
+             mc:Ignorable="d"
+             d:DesignHeight="300"
+             d:DesignWidth="300">
+    <UserControl.Resources>
+        <logging:Log x:Key="logData" />
+        <local:ConvertDuration x:Key="convertDuration" />
+        <local:ConvertHasKeyLogs x:Key="convertHasKeyLogs" />
+        <local:ConvertBoolToVisibility x:Key="convertVisibility" />
+        <local:ConvertIntToVisibilityBackwards x:Key="convertIntToVisibility" />
+        <local:ConvertBoolToStyle x:Key="convertStyle"
+                                  SelectableLabelStyle="{StaticResource SelectableLabelStyle}"
+                                  SelectedLabelStyle="{StaticResource SelectedLabelStyle}" />
+        <!--<ContextMenu x:Key="cMenu">
+            <MenuItem Command="ApplicationCommands.SelectAll" />
+            <MenuItem Header="Delete selcted logs"
+                      Command="{Binding DeleteSelectedLogsCommand}"
+                      CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}" />
+        </ContextMenu>-->
+
+        <DataTemplate x:Key="appTemplate">
+            <Label Style="{StaticResource GVLabelStyle}"
+                   Content="{Binding Window.Application.Name}">
+                <Label.RenderTransform>
+                    <TranslateTransform />
+                </Label.RenderTransform>
+                <Label.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard Storyboard="{StaticResource ElementFadeIn}" />
+                    </EventTrigger>
+                </Label.Triggers>
+                <Label.ToolTip>
+                    <ToolTip Style="{StaticResource ToolTipStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <Label Style="{StaticResource LabelStyle}"
+                                   Grid.Row="0"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Left"
+                                   Content="Company:" />
+                            <Label Style="{StaticResource LabelStyle}"
+                                   Grid.Row="0"
+                                   Grid.Column="1"
+                                   Content="{Binding Path=Window.Application.Company, Mode=OneWay}" />
+
+                            <Label Style="{StaticResource LabelStyle}"
+                                   Grid.Row="1"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Left"
+                                   Content="Version:" />
+                            <Label Style="{StaticResource LabelStyle}"
+                                   Grid.Row="1"
+                                   Grid.Column="1"
+                                   Content="{Binding Path=Window.Application.Version, Mode=OneWay}" />
+
+                            <Label Style="{StaticResource LabelStyle}"
+                                   Grid.Row="2"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Left"
+                                   Content="Description:" />
+                            <Label Style="{StaticResource LabelStyle}"
+                                   Grid.Row="2"
+                                   Grid.Column="1"
+                                   Content="{Binding Path=Window.Application.Description, Mode=OneWay}" />
+
+                            <Label Style="{StaticResource LabelStyle}"
+                                   Grid.Row="3"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Left"
+                                   Content="File name:" />
+                            <Label Style="{StaticResource LabelStyle}"
+                                   Grid.Row="3"
+                                   Grid.Column="1"
+                                   Content="{Binding Path=Window.Application.FileName, Mode=OneWay}" />
+                            <Label Style="{StaticResource LabelStyle}"
+                                   Grid.Row="4"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Left"
+                                   Content="Total time logged:" />
+                            <Label Style="{StaticResource LabelStyle}"
+                                   Grid.Row="4"
+                                   Grid.Column="1"
+                                   Content="{Binding Path=Duration, Mode=OneWay, Converter={StaticResource convertDuration}}" />
+                        </Grid>
+                    </ToolTip>
+                </Label.ToolTip>
+            </Label>
+        </DataTemplate>
+        <DataTemplate x:Key="wndTemplate">
+            <Label Style="{StaticResource GVLabelStyle}"
+                   Content="{Binding Window.Title}">
+                <Label.RenderTransform>
+                    <TranslateTransform />
+                </Label.RenderTransform>
+                <Label.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard Storyboard="{StaticResource ElementFadeIn}" />
+                    </EventTrigger>
+                </Label.Triggers>
+            </Label>
+        </DataTemplate>
+        <DataTemplate x:Key="dateTemplate">
+            <Label Style="{StaticResource GVLabelStyle}"
+                   Content="{Binding DateCreated}">
+                <Label.RenderTransform>
+                    <TranslateTransform />
+                </Label.RenderTransform>
+                <Label.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard Storyboard="{StaticResource ElementFadeIn}" />
+                    </EventTrigger>
+                </Label.Triggers>
+            </Label>
+        </DataTemplate>
+        <DataTemplate x:Key="keyLogTemplate">
+            <TextBlock Text="{Binding Keystrokes}"
+                       Style="{StaticResource TextblockStyle}"
+                       MaxHeight="30"
+                       MaxWidth="350">
+                <TextBlock.ToolTip>
+                    <ToolTip Style="{StaticResource ToolTipStyle}">
+                        <TextBox Text="{Binding Path=Keystrokes, Mode=OneWay}"
+                                 Background="Transparent"
+                                 Foreground="WhiteSmoke"
+                                 BorderBrush="Transparent" />
+                    </ToolTip>
+                </TextBlock.ToolTip>
+            </TextBlock>
+        </DataTemplate>
+    </UserControl.Resources>
+    
+        
+        <Grid Name="rootLayout">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <controls:progressBar Visibility="{Binding Working, Converter={StaticResource convertVisibility}}"
+                                  Grid.RowSpan="2"
+                                  Grid.ColumnSpan="3" />
+            <controls:FilterableListView Background="Transparent"
+                                         x:Name="mainContentHolder"
+                                         Grid.Column="1"
+                                         Grid.ColumnSpan="2"
+                                         Grid.Row="0"
+                                         ItemsSource="{Binding LogList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                         ItemContainerStyle="{DynamicResource ListViewItemStyle}"
+                                         BorderBrush="{x:Null}"
+                                         BorderThickness="0"
+                                         Margin="10,0,10,0"
+                                         FilterType="{StaticResource logData}"
+                                         VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                         VirtualizingStackPanel.IsVirtualizing="True"
+                                         VirtualizingStackPanel.IsVirtualizingWhenGrouping="True"
+                                         VirtualizingStackPanel.ScrollUnit="Item"
+                                         VirtualizingStackPanel.CacheLengthUnit="Page"
+                                        >
+                <controls:FilterableListView.View>
+                    <GridView ColumnHeaderContainerStyle="{StaticResource HeaderStyle}">
+
+                        <controls:SortableGridViewColumn Header="App"
+                                                         CellTemplate="{StaticResource appTemplate}"
+                                                         SortPropertyName="AppName" />
+                        <controls:SortableGridViewColumn Header="Window"
+                                                         CellTemplate="{StaticResource wndTemplate}"
+                                                         SortPropertyName="WindowTitle" />
+                        <controls:SortableGridViewColumn Header="Date"
+                                                         CellTemplate="{StaticResource dateTemplate}"
+                                                         SortPropertyName="DateCreated" />
+
+                    </GridView>
+                </controls:FilterableListView.View>
+            </controls:FilterableListView >
+            <Label Style="{DynamicResource LabelStyle}"
+                   Content="{Binding ElementName=mainContentHolder, Path=Items.Count}"
+                   ContentStringFormat=" {0} items"
+                   Grid.Row="1"
+                   Grid.Column="2"
+                   HorizontalAlignment="Right"
+                   Margin="0,0,20,0" />
+
+            <Thumb Grid.Row="2"
+                   Grid.ColumnSpan="3"
+                   Background="Transparent"
+                   DragDelta="Thumb_DragDelta"
+                   Margin="10,0,10,0">
+                <Thumb.Template>
+                    <ControlTemplate>
+                        <Grid Cursor="SizeNS"
+                              Background="{DynamicResource WindowBorderBrush}"
+                              Height="20">
+                            <Grid.Effect>
+                                <DropShadowEffect />
+                            </Grid.Effect>
+                            <Label Style="{StaticResource LabelStyle}"
+                                   Content="Keystrokes"
+                                   Foreground="White"
+                                   Grid.Row="1"
+                                   Grid.ColumnSpan="3"
+                                   Margin="-10"
+                                   FontSize="16"
+                                   IsHitTestVisible="False" />
+                        </Grid>
+                    </ControlTemplate>
+                </Thumb.Template>
+            </Thumb>
+            <controls:FaderContentControl FadeVertically="True"
+                                          Visibility="{Binding ElementName=mainContentHolder, Path=SelectedIndex,Converter={StaticResource convertIntToVisibility}}"
+                                          Grid.Row="3"
+                                          Grid.Column="1"
+                                          Grid.ColumnSpan="1"
+                                          ClipToBounds="True">
+                <ScrollViewer Name="keyLogContentHolder"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ScrollViewer.VerticalScrollBarVisibility="auto"
+                              Margin="10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Orientation="Vertical"
+                                    Grid.Column="0"
+                                    Visibility="{Binding Path=SelectedIndex, ElementName=mainContentHolder, Converter={StaticResource convertIntToVisibility}}">
+                            <RadioButton Name="tbFormatted"
+                                         Margin="0"
+                                         IsChecked="True"
+                                         HorizontalAlignment="Left"
+                                         GroupName="menu">
+                                <RadioButton.Template>
+                                    <ControlTemplate>
+                                        <Label Style="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Converter={StaticResource convertStyle}}"
+                                               Content="Formatted"
+                                               FontSize="10">
+                                            <Label.LayoutTransform>
+                                                <RotateTransform Angle="90" />
+                                            </Label.LayoutTransform>
+                                        </Label>
+                                    </ControlTemplate>
+                                </RadioButton.Template>
+                            </RadioButton>
+                            <RadioButton Name="tbRaw"
+                                         Margin="0"
+                                         IsChecked="False"
+                                         HorizontalAlignment="Left"
+                                         GroupName="menu">
+                                <RadioButton.Template>
+                                    <ControlTemplate>
+                                        <Label Style="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Converter={StaticResource convertStyle}}"
+                                               Content="Actual"
+                                               FontSize="10">
+                                            <Label.LayoutTransform>
+                                                <RotateTransform Angle="90" />
+                                            </Label.LayoutTransform>
+                                        </Label>
+                                    </ControlTemplate>
+                                </RadioButton.Template>
+                            </RadioButton>
+                        </StackPanel>
+
+                        <TextBox Style="{StaticResource TextboxStyle}"
+                                 Foreground="{DynamicResource HighlightBrush}"
+                                 Text="{Binding SelectedItem.KeystrokesRaw, ElementName=mainContentHolder, Mode=OneWay}"
+                                 CaretBrush="{DynamicResource LabelBrush}"
+                                 IsReadOnly="True"
+                                 IsReadOnlyCaretVisible="True"
+                                 IsUndoEnabled="False"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 TextWrapping="Wrap"
+                                 Margin="10,0,0,10"
+                                 BorderThickness="0"
+                                 Grid.Column="1"
+                                 Visibility="{Binding Path=IsChecked, ElementName=tbRaw, Converter={StaticResource convertVisibility}}" />
+
+                        <TextBox Style="{StaticResource TextboxStyle}"
+                                 Foreground="{DynamicResource HighlightBrush}"
+                                 Text="{Binding SelectedItem.Keystrokes, ElementName=mainContentHolder, Mode=OneWay}"
+                                 CaretBrush="{DynamicResource LabelBrush}"
+                                 IsReadOnly="True"
+                                 IsReadOnlyCaretVisible="True"
+                                 IsUndoEnabled="False"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"
+                                 Margin="10,0,0,10"
+                                 BorderThickness="0"
+                                 Grid.Column="1"
+                                 Visibility="{Binding Path=IsChecked, ElementName=tbFormatted, Converter={StaticResource convertVisibility}}" />
+
+                    </Grid>
+                </ScrollViewer>
+            </controls:FaderContentControl>
+
+            <controls:FaderContentControl FadeVertically="True"
+                                          Grid.Row="3"
+                                          Grid.Column="2"
+                                          Visibility="{Binding ElementName=mainContentHolder, Path=SelectedIndex,Converter={StaticResource convertIntToVisibility}}">
+
+                <ListBox Name="lbScreenShots"
+                         Background="Transparent"
+                         ItemsSource="{Binding Path=SelectedItem.Screenshots, ElementName=mainContentHolder, Mode=OneWay}"
+                         ItemContainerStyle="{DynamicResource ListBoxImageStyle}"
+                         Margin="10"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         Visibility="Visible"
+                         BorderBrush="{x:Null}"
+                         VirtualizingStackPanel.VirtualizationMode="Recycling">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel HorizontalAlignment="Left"
+                                       Margin="10"
+                                       Orientation="Horizontal"
+                                       VerticalAlignment="Top" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            </controls:FaderContentControl>
+
+        </Grid>
+ 
+</UserControl>
