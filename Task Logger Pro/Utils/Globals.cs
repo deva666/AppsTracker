@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Task_Logger_Pro.Models;
+//using Task_Logger_Pro.Models;
+using AppsTracker.Models.EntityModels;
+using AppsTracker.DAL;
 
 namespace Task_Logger_Pro
 {
@@ -50,7 +52,7 @@ namespace Task_Logger_Pro
             }
         }
 
-        public static void Initialize(Uzer uzer, int usageID, AppsEntities1 context)
+        public static void Initialize(Uzer uzer, int usageID, AppsEntities context)
         {
             UserID = uzer.UserID;
             UserName = uzer.Name;
@@ -62,14 +64,14 @@ namespace Task_Logger_Pro
 
         public static void ClearDateFilter()
         {
-            using (var context = new AppsEntities1())
+            using (var context = new AppsEntities())
             {
                 _date1 = GetFirstDate(context);
             }
             _isLastDateFiltered = false;
         }
 
-        private static DateTime GetFirstDate(AppsEntities1 context)
+        private static DateTime GetFirstDate(AppsEntities context)
         {
             return context.Usages.Count() == 0 ? DateTime.Now.Date : (from u in context.Users.AsNoTracking()
                                                                       join l in context.Usages.AsNoTracking() on u.UserID equals l.UserID
@@ -91,7 +93,7 @@ namespace Task_Logger_Pro
         {
             try
             {
-                FileInfo file = new FileInfo("apps.sdf");
+                FileInfo file = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "apps.sdf"));
                 return Math.Round((decimal)file.Length / 1048576, 2);
             }
             catch (Exception ex)

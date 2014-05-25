@@ -6,11 +6,12 @@ using System.Windows.Input;
 using Task_Logger_Pro.Logging;
 using Task_Logger_Pro.Pages.ViewModels;
 using Task_Logger_Pro.Controls;
-using Task_Logger_Pro.Models;
 using Task_Logger_Pro.MVVM;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using AppsTracker.DAL;
+using AppsTracker.Models.EntityModels;
 
 namespace Task_Logger_Pro.ViewModels
 {
@@ -263,7 +264,7 @@ namespace Task_Logger_Pro.ViewModels
 
         private void GetUsers()
         {
-            using (var context = new AppsEntities1())
+            using (var context = new AppsEntities())
             {
                 _uzerCollection = (from u in context.Users
                                    select u).ToList();

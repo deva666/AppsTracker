@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Task_Logger_Pro.MVVM;
+using AppsTracker.Models.EntityModels;
 
-namespace Task_Logger_Pro.Models
+namespace Task_Logger_Pro
 {
     public sealed class UzerSetting : ObservableObject
     {

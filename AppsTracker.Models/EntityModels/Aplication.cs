@@ -24,6 +24,17 @@ namespace AppsTracker.Models.EntityModels
             this.WinName = "";
         }
 
+        public Aplication(string name, string fileName, string version, string description, string company, string realName)
+        {
+            this.Name = name;
+            this.FileName = fileName;
+            this.Version = version;
+            this.Description = description;
+            this.Company = company;
+            this.WinName = realName;
+        }
+
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ApplicationID { get; set; }

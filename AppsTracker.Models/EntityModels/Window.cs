@@ -12,7 +12,7 @@ namespace AppsTracker.Models.EntityModels
     {
         public Window()
         {
-            //this.Logs = new HashSet<Log>();
+            this.Logs = new HashSet<Log>();
         }
 
         [Key]

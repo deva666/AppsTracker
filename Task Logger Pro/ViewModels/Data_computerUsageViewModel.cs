@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Task_Logger_Pro.Logging;
-using Task_Logger_Pro.Models;
 using Task_Logger_Pro.MVVM;
+using AppsTracker.DAL;
+using AppsTracker.Models.EntityModels;
 
 namespace Task_Logger_Pro.Pages.ViewModels
 {
@@ -95,7 +96,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
         {
             return Task<List<Usage>>.Run( ( ) =>
             {
-                using ( var context = new AppsEntities1( ) )
+                using ( var context = new AppsEntities( ) )
                 {
                     string loginType = UsageTypes.Login.ToString();
 
@@ -120,7 +121,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             if (parameterCollection != null)
             {
                 var logins = parameterCollection.Select( l => l as Usage ).ToList( );
-                using ( var context = new AppsEntities1( ) )
+                using ( var context = new AppsEntities( ) )
                 {
                     foreach ( var login in logins )
                     {

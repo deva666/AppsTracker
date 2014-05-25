@@ -10,11 +10,12 @@ using System.Windows.Input;
 using System.Data.Entity;
 using Task_Logger_Pro.Controls;
 using Task_Logger_Pro.Logging;
-using Task_Logger_Pro.Models;
 using Task_Logger_Pro.MVVM;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Data;
+using AppsTracker.DAL;
+using AppsTracker.Models.EntityModels;
 
 namespace Task_Logger_Pro.Pages.ViewModels
 {
@@ -30,7 +31,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         //WeakReference _weakCollection = new WeakReference(null);
         List<Log> _logList;
-        List<ScreenshotApp> _screenshotAppList;
+      //  List<ScreenshotApp> _screenshotAppList;
 
         ICommand _deleteSelectedLogsCommand;
         ICommand _openScreenshotViewerCommand;
@@ -84,8 +85,8 @@ namespace Task_Logger_Pro.Pages.ViewModels
             set
             {
                 _selectedDate = value;
-                ScreenshotAppList = GetAppsOnSelectedDate();
-                SelectLogs();
+               // ScreenshotAppList = GetAppsOnSelectedDate();
+                //SelectLogs();
                 PropertyChanging("SelectedDate");
             }
         }
@@ -117,18 +118,18 @@ namespace Task_Logger_Pro.Pages.ViewModels
         //    }
         //}
 
-        public List<ScreenshotApp> ScreenshotAppList
-        {
-            get
-            {
-                return _screenshotAppList;
-            }
-            set
-            {
-                _screenshotAppList = value;
-                PropertyChanging("ScreenshotAppList");
-            }
-        }
+        //public List<ScreenshotApp> ScreenshotAppList
+        //{
+        //    get
+        //    {
+        //        return _screenshotAppList;
+        //    }
+        //    set
+        //    {
+        //        _screenshotAppList = value;
+        //        PropertyChanging("ScreenshotAppList");
+        //    }
+        //}
         public ICommand DeleteSelectedLogsCommand
         {
             get
@@ -185,7 +186,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
         {
             return Task<List<Log>>.Factory.StartNew(() =>
             {
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     return (from u in context.Users.AsNoTracking()
                             join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
@@ -227,51 +228,51 @@ namespace Task_Logger_Pro.Pages.ViewModels
         //    PropertyChanging("WeakCollection");
         //}
 
-        private List<ScreenshotApp> GetAppsOnSelectedDate()
-        {
-            using (var context = new AppsEntities1())
-            {
-                DateTime dateEnd = SelectedDate.AddDays(1);
-                return (from u in context.Users.AsNoTracking()
-                        join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
-                        join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-                        join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                        where u.UserID == Globals.SelectedUserID
-                        && l.Screenshots.Count > 0
-                        && l.DateCreated >= SelectedDate
-                        && l.DateCreated <= dateEnd
-                        select a).Distinct()
-                                .ToList()
-                                .Select(a => new ScreenshotApp() { Name = a.Name, IsSelected = true })
-                                .ToList();
-            }
+        //private List<ScreenshotApp> GetAppsOnSelectedDate()
+        //{
+        //    using (var context = new AppsEntities())
+        //    {
+        //        DateTime dateEnd = SelectedDate.AddDays(1);
+        //        return (from u in context.Users.AsNoTracking()
+        //                join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
+        //                join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
+        //                join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
+        //                where u.UserID == Globals.SelectedUserID
+        //                && l.Screenshots.Count > 0
+        //                && l.DateCreated >= SelectedDate
+        //                && l.DateCreated <= dateEnd
+        //                select a).Distinct()
+        //                        .ToList()
+        //                        .Select(a => new ScreenshotApp() { Name = a.Name, IsSelected = true })
+        //                        .ToList();
+        //    }
 
-        }
+        //}
 
-        private void SelectLogs()
-        {
-            if (ScreenshotAppList == null)
-                return;
-            ClearSelection();
-            if (LogList == null)
-                return;
-            foreach (var app in ScreenshotAppList)
-            {
-                if (!app.IsSelected)
-                    continue;
-                var logs = from l in LogList
-                           where l.Window.Application.Name == app.Name
-                           && l.DateCreated >= SelectedDate
-                           && l.DateCreated <= SelectedDate.AddDays(1)
-                           select l;
-                foreach (var log in logs)
-                {
-                    log.IsSelected = true;
-                }
+        //private void SelectLogs()
+        //{
+        //    if (ScreenshotAppList == null)
+        //        return;
+        //    ClearSelection();
+        //    if (LogList == null)
+        //        return;
+        //    foreach (var app in ScreenshotAppList)
+        //    {
+        //        if (!app.IsSelected)
+        //            continue;
+        //        var logs = from l in LogList
+        //                   where l.Window.Application.Name == app.Name
+        //                   && l.DateCreated >= SelectedDate
+        //                   && l.DateCreated <= SelectedDate.AddDays(1)
+        //                   select l;
+        //        foreach (var log in logs)
+        //        {
+        //            log.IsSelected = true;
+        //        }
 
-            }
-            PropertyChanging("WeakCollection");
-        }
+        //    }
+        //    PropertyChanging("WeakCollection");
+        //}
 
         private void SortViewProcesses(object parameter)
         {
@@ -332,7 +333,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             if (parameterCollection != null)
             {
                 var logsList = parameterCollection.Select(l => l as Log).ToList();
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     foreach (var log in logsList)
                     {

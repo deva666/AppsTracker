@@ -10,7 +10,6 @@ using System.ComponentModel;
 using System.Windows.Data;
 using System.Management;
 using System.Windows.Controls;
-using Task_Logger_Pro.Models;
 using Task_Logger_Pro;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -18,6 +17,9 @@ using Task_Logger_Pro.Controls;
 using System.Data.Entity;
 using Task_Logger_Pro.Utils;
 using Task_Logger_Pro.ViewModels;
+using AppsTracker.DAL;
+using AppsTracker.Models.EntityModels;
+using AppsTracker.Models.ChartModels;
 
 namespace Task_Logger_Pro.Pages.ViewModels
 {
@@ -404,7 +406,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
         {
             return Task<List<Aplication>>.Run(() =>
             {
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     return (from u in context.Users.AsNoTracking()
                             join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
@@ -430,7 +432,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                     return null;
 
                 IEnumerable<Log> logs;
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
 
                     logs = (from u in context.Users.AsNoTracking()
@@ -490,7 +492,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 var days = TopAppsList.Where(t => t.IsSelected).Select(t => t.DateTime);
                 IEnumerable<Log> logs;
 
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     logs = (from u in context.Users.AsNoTracking()
                             join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
@@ -535,7 +537,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
                 IEnumerable<Log> logs;
 
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     logs = (from u in context.Users.AsNoTracking()
                             join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
@@ -584,7 +586,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 return;
             List<Aplication> copy = AplicationList.ToList();
             copy.Add(app);
-            AplicationList = copy;
+            AplicationList = copy.ToList();
         }
 
         #endregion
@@ -629,7 +631,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             if (aplicationList == null)
                 return;
 
-            using (var context = new AppsEntities1())
+            using (var context = new AppsEntities())
             {
                 foreach (var aplication in aplicationList)
                 {
@@ -651,7 +653,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 List<Window> windowList = parameters.Select(o => o as Window).ToList();
                 if (windowList == null)
                     return;
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     DeleteWindows(windowList, context);
                     await context.SaveChangesAsync();
@@ -660,7 +662,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }
         }
 
-        private void DeleteWindows(List<Window> windowList, AppsEntities1 context)
+        private void DeleteWindows(List<Window> windowList, AppsEntities context)
         {
             foreach (var window in windowList)
             {
@@ -679,7 +681,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             DeleteLogsAndScreenshots(parameter);
         }
 
-        private void DeleteLogsAndScreenshots(ICollection<Log> logParam, AppsEntities1 context)
+        private void DeleteLogsAndScreenshots(ICollection<Log> logParam, AppsEntities context)
         {
             List<Log> logs = logParam.ToList();
             foreach (var log in logs)
@@ -707,7 +709,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             if (parameters != null)
             {
                 List<Log> logs = parameters.Select(o => o as Log).ToList();
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     foreach (var log in logs)
                     {
@@ -735,7 +737,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         }
 
-        private void DeleteEmptyLogs(AppsEntities1 context)
+        private void DeleteEmptyLogs(AppsEntities context)
         {
             foreach (var window in context.Windows)
             {
@@ -770,7 +772,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                     List<Aplication> appList = objectCollection.Select(o => o as Aplication).ToList();
                     if (appList != null)
                     {
-                        using (var context = new AppsEntities1())
+                        using (var context = new AppsEntities())
                         {
                             if (username == "All users")
                             {
@@ -884,7 +886,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             MenuItem menuItem = new MenuItem();
             menuItem.Header = "All users";
             _allUsersList.Add(menuItem);
-            using (var context = new AppsEntities1())
+            using (var context = new AppsEntities())
             {
                 foreach (var user in context.Users)
                 {

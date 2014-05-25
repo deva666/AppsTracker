@@ -10,10 +10,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Task_Logger_Pro.Controls;
-using Task_Logger_Pro.Models;
 using Task_Logger_Pro.MVVM;
 using Task_Logger_Pro.Encryption;
 using System.Collections.ObjectModel;
+using AppsTracker.Models.EntityModels;
+using AppsTracker.DAL;
 
 namespace Task_Logger_Pro.ViewModels
 {
@@ -80,7 +81,7 @@ namespace Task_Logger_Pro.ViewModels
             get
             {
                 if (_allUsersCollection == null)
-                    using (var context = new AppsEntities1())
+                    using (var context = new AppsEntities())
                     {
                         _allUsersCollection = context.Users.Include(u => u.AppsToBlocks.Select(ab => ab.Application)).ToList();
                     }
@@ -519,7 +520,7 @@ namespace Task_Logger_Pro.ViewModels
 
         private void SetPassword(object parameter)
         {
-            using (var context = new AppsEntities1())
+            using (var context = new AppsEntities())
             {
                 var passwords = parameter as PasswordBox[];
 
@@ -578,7 +579,7 @@ namespace Task_Logger_Pro.ViewModels
                     List<AppsToBlock> appsList = paramArray[1].Cast<AppsToBlock>().ToList();
                     if (userName != null && appsList != null)
                     {
-                        using (AppsEntities1 context = new AppsEntities1())
+                        using (var context = new AppsEntities())
                         {
                             Uzer uzer = context.Users.FirstOrDefault(u => u.Name == userName);
                             if (uzer == null)
@@ -648,19 +649,19 @@ namespace Task_Logger_Pro.ViewModels
                 switch (label.Content as string)
                 {
                     case "5 min":
-                        UserSettings.EmailIntervalEnum = Task_Logger_Pro.EmailInterval.FiveMinute;
+                        UserSettings.EmailIntervalEnum = AppsTracker.Models.EntityModels. EmailInterval.FiveMinute;
                         break;
                     case "10 min":
-                        UserSettings.EmailIntervalEnum = Task_Logger_Pro.EmailInterval.TenMinute;
+                        UserSettings.EmailIntervalEnum = AppsTracker.Models.EntityModels.EmailInterval.TenMinute;
                         break;
                     case "30 min":
-                        UserSettings.EmailIntervalEnum = Task_Logger_Pro.EmailInterval.ThirtyMinute;
+                        UserSettings.EmailIntervalEnum = AppsTracker.Models.EntityModels.EmailInterval.ThirtyMinute;
                         break;
                     case "1 hr":
-                        UserSettings.EmailIntervalEnum = Task_Logger_Pro.EmailInterval.OneHour;
+                        UserSettings.EmailIntervalEnum = AppsTracker.Models.EntityModels.EmailInterval.OneHour;
                         break;
                     case "2 hr":
-                        UserSettings.EmailIntervalEnum = Task_Logger_Pro.EmailInterval.TwoHour;
+                        UserSettings.EmailIntervalEnum = AppsTracker.Models.EntityModels.EmailInterval.TwoHour;
                         break;
                     default:
                         break;

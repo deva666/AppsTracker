@@ -9,8 +9,9 @@ using System.Windows.Input;
 using System.Data.Entity;
 using Task_Logger_Pro.Controls;
 using Task_Logger_Pro.Logging;
-using Task_Logger_Pro.Models;
 using Task_Logger_Pro.MVVM;
+using AppsTracker.DAL;
+using AppsTracker.Models.EntityModels;
 
 namespace Task_Logger_Pro.Pages.ViewModels
 {
@@ -110,7 +111,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
         {
             return Task.Factory.StartNew(() =>
             {
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     return (from u in context.Users.AsNoTracking()
                             join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
@@ -134,7 +135,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             if (parameterCollection != null)
             {
                 var logsList = parameterCollection.Select(l => l as Log).ToList();
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     foreach (var log in logsList)
                     {

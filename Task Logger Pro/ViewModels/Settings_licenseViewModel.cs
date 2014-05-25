@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO.IsolatedStorage;
 using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Task_Logger_Pro.Controls;
-using Task_Logger_Pro.Models;
 using Task_Logger_Pro.MVVM;
+
 
 namespace Task_Logger_Pro.ViewModels
 {
@@ -107,10 +102,8 @@ namespace Task_Logger_Pro.ViewModels
         private void CreateLicence(string username, string license)
         {
             string serialized = username + Environment.NewLine + license;
-            //Serialization.Serialize.SerializeAndEncryptToFolder(Constants.MASKED_SAVE_PATH, Constants.LICENCE_FILE_NAME, serialized);
             UserSettings.Username = username;
             Licence = true;
-            //UserSettings.Username = username.Split( new string[] { " " }, StringSplitOptions.None )[0];
             ShowHidePopup();
         }
 

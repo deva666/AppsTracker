@@ -139,10 +139,10 @@ namespace AppsTracker.Models.EntityModels
         [Required]
         public bool DeleteOldLogs { get; set; }
 
-        [Required]
+        
         public bool EnableEmailReports { get; set; }
 
-        [Required]
+        
         public bool EmailSSL { get; set; }
 
         
@@ -155,27 +155,31 @@ namespace AppsTracker.Models.EntityModels
         [Required]
         public bool LoggingEnabled { get; set; }
 
-        [Required]
+        
         public int EmailSmtpPort { get; set; }
 
-        [Required]
+        
         [StringLength(60)]
+        [DefaultValue("")]
         public string EmailTo { get; set; }
 
-        [Required]
+      
         [StringLength(60)]
+        [DefaultValue("")]
         public string EmailFrom { get; set; }
 
-        [Required]
+       
         [StringLength(30)]
         public string EmailSmtpHost { get; set; }
 
-        [Required]
+       
         [StringLength(60)]
+        [DefaultValue("")]
         public string EmailSmtpUsername { get; set; }
 
-        [Required]
+      
         [StringLength(60)]
+        [DefaultValue("")]
         public string EmailSmtpPassword { get; set; }
 
         [Required]
@@ -203,7 +207,7 @@ namespace AppsTracker.Models.EntityModels
         [Required]
         public double MainWindowHeight { get; set; }
 
-        [Required]
+       
         [StringLength(20)]
         public string WindowOpen { get; set; }
 
@@ -230,7 +234,7 @@ namespace AppsTracker.Models.EntityModels
         
         public Nullable<System.DateTime> LastExecutedDate { get; set; }
 
-        [Required]
+        
         [StringLength(30)]
         public string Username { get; set; }
     }

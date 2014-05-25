@@ -4,11 +4,11 @@ using System.Data.Entity;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Task_Logger_Pro.Hooks;
-using Task_Logger_Pro.Models;
 using Task_Logger_Pro.MVVM;
+using AppsTracker.DAL;
+using AppsTracker.Models.EntityModels;
 
 namespace Task_Logger_Pro.Logging
 {
@@ -62,7 +62,6 @@ namespace Task_Logger_Pro.Logging
             }
             set
             {
-                Console.WriteLine("IS LOGGING STOPPED = " + value);
                 _loggingStoped = value;
                 if (_idleMonitor != null)
                     _idleMonitor.Enabled = !value;
@@ -450,8 +449,8 @@ namespace Task_Logger_Pro.Logging
             if (IsLogggingStopped)
                 return;
 
-            Models.FileLog fileLog = new Models.FileLog(e.OldFullPath, e.ChangeType.ToString(), e.FullPath, Globals.UserID);
-            using (var context = new AppsEntities1())
+            FileLog fileLog = new FileLog(e.OldFullPath, e.ChangeType.ToString(), e.FullPath, Globals.UserID);
+            using (var context = new AppsEntities())
             {
                 context.FileLogs.Add(fileLog);
                 context.SaveChanges();
@@ -465,8 +464,8 @@ namespace Task_Logger_Pro.Logging
             if (IsLogggingStopped)
                 return;
 
-            Models.FileLog fileLog = new Models.FileLog(e.FullPath, e.ChangeType.ToString(), Globals.UserID);
-            using (var context = new AppsEntities1())
+            FileLog fileLog = new FileLog(e.FullPath, e.ChangeType.ToString(), Globals.UserID);
+            using (var context = new AppsEntities())
             {
                 context.FileLogs.Add(fileLog);
                 context.SaveChanges();
@@ -476,7 +475,7 @@ namespace Task_Logger_Pro.Logging
 
         private void _processKiller_ProcessKilledEvent(object sender, ProcessKilledEventArgs e)
         {
-            using (var context = new AppsEntities1())
+            using (var context = new AppsEntities())
             {
                 BlockedApp blockedApp = new BlockedApp() { Date = DateTime.Now, ApplicationID = e.Aplication.ApplicationID, UserID = Globals.UserID };
                 context.BlockedApps.Add(blockedApp);
@@ -519,12 +518,12 @@ namespace Task_Logger_Pro.Logging
         {
             if (_idleMonitor == null)
                 return;
-            _idleMonitor.Enabled = enabled; 
+            _idleMonitor.Enabled = enabled;
         }
 
         private async Task SaveUsage(string usageType, Usage usage)
         {
-            using (var context = new AppsEntities1())
+            using (var context = new AppsEntities())
             {
                 var usageLockedID = context.UsageTypes.Where(t => t.UType == usageType).FirstOrDefault().UsageTypeID;
                 usage.UsageTypeID = usageLockedID;
@@ -548,7 +547,7 @@ namespace Task_Logger_Pro.Logging
             if (_currentUsageIdle != null)
             {
                 _currentUsageIdle.UsageEnd = DateTime.Now;
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     string usageType = UsageTypes.Idle.ToString();
                     var usageLockedID = context.UsageTypes.Where(t => t.UType == usageType).FirstOrDefault().UsageTypeID;
@@ -599,7 +598,7 @@ namespace Task_Logger_Pro.Logging
             {
                 _currentUsageStopped.UsageEnd = DateTime.Now;
 
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     string usageType = UsageTypes.Stopped.ToString();
                     var usageStoppedID = context.UsageTypes.Where(u => u.UType == usageType).FirstOrDefault().UsageTypeID;
@@ -633,9 +632,9 @@ namespace Task_Logger_Pro.Logging
         private void CreateLoadUser()
         {
             Uzer user;
-            using (var context = new AppsEntities1())
+            using (var context = new AppsEntities())
             {
-                if (!context.Users.CheckIfUserExists(Environment.UserName))
+                if (!context.Users.Any(u => u.Name == Environment.UserName))
                 {
                     user = new Uzer() { Name = Environment.UserName };
                     context.Users.Add(user);
@@ -715,7 +714,7 @@ namespace Task_Logger_Pro.Logging
 
         private void CheckBlockedApps()
         {
-            using (var context = new AppsEntities1())
+            using (var context = new AppsEntities())
             {
                 var appsToBlock = context.AppsToBlocks.Where(a => a.UserID == Globals.UserID).Count();
 
@@ -751,7 +750,7 @@ namespace Task_Logger_Pro.Logging
             if (e.ProcessInfo == null || string.IsNullOrEmpty(e.ProcessInfo.ProcessName))
                 return null;
 
-            using (var context = new AppsEntities1())
+            using (var context = new AppsEntities())
             {
                 bool newApp = false;
 
@@ -807,7 +806,7 @@ namespace Task_Logger_Pro.Logging
             if (!log.Finished)
                 log.Finish();
 
-            using (var context = new AppsEntities1())
+            using (var context = new AppsEntities())
             {
                 context.Logs.Add(log);
                 try
@@ -844,7 +843,7 @@ namespace Task_Logger_Pro.Logging
         {
             Task stopTask = StopLogging(CurrentLog);
 
-            using (var context = new AppsEntities1())
+            using (var context = new AppsEntities())
             {
                 _currentUsageLogin.UsageEnd = DateTime.Now;
                 _currentUsageLogin.IsCurrent = false;
@@ -911,833 +910,3 @@ namespace Task_Logger_Pro.Logging
     }
 }
 
-
-
-
-//using System;
-//using System.Data.Entity;
-//using System.Collections.Generic;
-//using System.IO;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using Task_Logger_Pro.Hooks;
-//using Task_Logger_Pro.Models;
-//using Task_Logger_Pro.MVVM;
-//using System.Diagnostics;
-
-//namespace Task_Logger_Pro.Logging
-//{
-//    public sealed class DataLogger : ObservableObject, IDisposable, ICommunicator
-//    {
-//        #region Fields
-
-//        string _currentWindowTitle;
-
-//        bool _takeScreenShots;
-//        bool _notifyKeystrokes;
-//        bool _disposed;
-//        bool _enableIdle;
-//        bool IsLogggingStopped;
-
-//        LoggingStatus _loggingStatus;
-
-//        Locker _logLocker = new Locker();
-
-//        System.Timers.Timer _screenshotTimer;
-
-//        System.Threading.Timer _windowCheckTimer;
-
-//        //System.Threading.Timer _idleTimer;
-
-//        IdleMonitor _idleMonitor;
-
-//        FileWatcher _fileSystemWatcher;
-
-//        KeyBoardHook _keyBoardHook;
-
-//        WinEvent _winEvent;
-
-//        ProcessKiller _processKiller;
-
-//        Log _log;
-
-//        Aplication _application;
-
-//        Window _window;
-
-//        Usage _usage;
-
-//        Uzer _user;
-
-//        #endregion
-
-//        #region Properties
-
-//        private Log Log
-//        {
-//            get
-//            {
-//                return _log;
-//            }
-//            set
-//            {
-//                if (_log != null && !_log.Finished)
-//                    EndLog(_log);
-//                if (_log != value)
-//                    _log = value;
-//            }
-
-//        }
-
-//        public double ScreenShotInterval
-//        {
-//            get { return _screenshotTimer.Interval; }
-//            set { _screenshotTimer.Interval = value; }
-
-//        }
-//        public bool TakeScreenShots
-//        {
-//            get { return _takeScreenShots; }
-//            set
-//            {
-//                _takeScreenShots = _screenshotTimer.Enabled = value;
-//            }
-//        }
-//        public bool EnableIdle
-//        {
-//            get
-//            {
-//                return _enableIdle;
-//            }
-//            set
-//            {
-//                _enableIdle = value;
-//                if (value)
-//                    InitIdleMonitor();
-//                else
-//                    DisposeIdleMonitor();
-//            }
-//        }
-
-//        public FileSystemWatcher FileSystemWatcher
-//        {
-//            get
-//            {
-//                if (_fileSystemWatcher == null) _fileSystemWatcher = new FileWatcher();
-//                return _fileSystemWatcher;
-//            }
-//        }
-
-//        public bool EnableFileWatcher
-//        {
-//            get { return _fileSystemWatcher == null ? false : _fileSystemWatcher.EnableRaisingEvents; }
-//            set
-//            {
-//                _fileSystemWatcher.EnableRaisingEvents = value;
-//                if (value) AttachFileWatcherEventHandlers();
-//                else DetachFileWatcherEventHandlers();
-//            }
-//        }
-
-//        public KeyBoardHook KeyBoardHook
-//        {
-//            get { return _keyBoardHook; }
-//        }
-
-//        public LoggingStatus LoggingStatus
-//        {
-//            get { return _loggingStatus; }
-//            set
-//            {
-//                _loggingStatus = value;
-//                PropertyChanging("LoggingStatus");
-//                if (value == Task_Logger_Pro.LoggingStatus.Running)
-//                {
-//                    AttachEventHandlers();
-//                    (App.Current as App).ChangeTheme();
-//                }
-//                else
-//                {
-//                    StopLogging(_log);
-//                    Log = null;
-//                    (App.Current as App).ChangeTheme();
-//                }
-//            }
-//        }
-
-//        public Mediator Mediator
-//        {
-//            get { return Mediator.Instance; }
-//        }
-
-//        #endregion
-
-//        #region Constructor
-
-//        public DataLogger()
-//        {
-//            CreateLoadUser();
-//            _keyBoardHook = new KeyBoardHook();
-//            _winEvent = new WinEvent();
-//            _screenshotTimer = new System.Timers.Timer();
-//            _screenshotTimer.AutoReset = true;
-//            LoggingStatus = App.UzerSetting.LoggingEnabled.ConvertToLoggingStatus();
-//            Microsoft.Win32.SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
-//            Mediator.Register(MediatorMessages.AppsToBlockChanged, new Action<List<AppsToBlock>>(AppsToBlockChanging));
-//            Globals.GetDBSize();
-//        }
-
-//        #endregion
-
-//        #region Event Handlers
-
-//        private void KeyDownEventHandler(object snder, KeyboardHookEventArgs e)
-//        {
-//            if (_log == null || _currentWindowTitle != _winEvent.GetActiveWindowName())
-//                NewWindowEvent(_winEvent.GetWinEventArgs(), _log);
-
-//            if (_log != null)
-//            {
-//                if (e.KeyCode == 8)
-//                    _log.RemoveLastKeyLogItem();
-//                else if (e.KeyCode == 0x0D)
-//                    _log.AppendNewKeyLogLine();
-//                else
-//                    _log.AppendKeyLog(e.String);
-//            }
-//        }
-
-//        private void KeyPressEventHandler(object sender, KeyboardHookEventArgs e)
-//        {
-//            if (_log == null || _currentWindowTitle != _winEvent.GetActiveWindowName())
-//                NewWindowEvent(_winEvent.GetWinEventArgs(), _log);
-//            if (_log != null)
-//            {
-//                if (e.KeyCode == 8) _log.AppendKeyLogRaw("Backspace"); //  backspace
-//                else if (e.KeyCode == 9) _log.AppendKeyLogRaw("Tab"); //  tab
-//                else if (e.KeyCode == 13) _log.AppendKeyLogRaw("Enter"); //  enter
-//                else if (e.KeyCode == 16) _log.AppendKeyLogRaw("Shift"); //  shift
-//                else if (e.KeyCode == 17) _log.AppendKeyLogRaw("Ctrl"); //  ctrl
-//                else if (e.KeyCode == 18) _log.AppendKeyLogRaw("Alt"); //  alt
-//                else if (e.KeyCode == 19) _log.AppendKeyLogRaw("Pause"); //  pause/break
-//                else if (e.KeyCode == 20) _log.AppendKeyLogRaw("Caps lock"); //  caps lock
-//                else if (e.KeyCode == 27) _log.AppendKeyLogRaw("Escape"); //  escape
-//                else if (e.KeyCode == 33) _log.AppendKeyLogRaw("Page up"); // page up, to avoid displaying alternate character and confusing people
-//                else if (e.KeyCode == 34) _log.AppendKeyLogRaw("Page down"); // page down
-//                else if (e.KeyCode == 35) _log.AppendKeyLogRaw("End"); // end
-//                else if (e.KeyCode == 36) _log.AppendKeyLogRaw("Home"); // home
-//                else if (e.KeyCode == 37) _log.AppendKeyLogRaw("Left arrow"); // left arrow
-//                else if (e.KeyCode == 38) _log.AppendKeyLogRaw("Up arrow"); // up arrow
-//                else if (e.KeyCode == 39) _log.AppendKeyLogRaw("Right arrow"); // right arrow
-//                else if (e.KeyCode == 40) _log.AppendKeyLogRaw("Down arrow"); // down arrow
-//                else if (e.KeyCode == 45) _log.AppendKeyLogRaw("Insert"); // insert
-//                else if (e.KeyCode == 46) _log.AppendKeyLogRaw("Delete"); // delete
-//                else if (e.KeyCode == 91) _log.AppendKeyLogRaw("Left window"); // left window
-//                else if (e.KeyCode == 92) _log.AppendKeyLogRaw("Right window"); // right window
-//                else if (e.KeyCode == 93) _log.AppendKeyLogRaw("Select key"); // select key
-//                else if (e.KeyCode == 96) _log.AppendKeyLogRaw("Numpad 0"); // numpad 0
-//                else if (e.KeyCode == 97) _log.AppendKeyLogRaw("Numpad 1"); // numpad 1
-//                else if (e.KeyCode == 98) _log.AppendKeyLogRaw("Numpad 2"); // numpad 2
-//                else if (e.KeyCode == 99) _log.AppendKeyLogRaw("Numpad 3"); // numpad 3
-//                else if (e.KeyCode == 100) _log.AppendKeyLogRaw("Numpad 4"); // numpad 4
-//                else if (e.KeyCode == 101) _log.AppendKeyLogRaw("Numpad 5"); // numpad 5
-//                else if (e.KeyCode == 102) _log.AppendKeyLogRaw("Numpad 6"); // numpad 6
-//                else if (e.KeyCode == 103) _log.AppendKeyLogRaw("Numpad 7"); // numpad 7
-//                else if (e.KeyCode == 104) _log.AppendKeyLogRaw("Numpad 8"); // numpad 8
-//                else if (e.KeyCode == 105) _log.AppendKeyLogRaw("Numpad 9"); // numpad 9
-//                else if (e.KeyCode == 106) _log.AppendKeyLogRaw("Multiply"); // multiply
-//                else if (e.KeyCode == 107) _log.AppendKeyLogRaw("Add"); // add
-//                else if (e.KeyCode == 109) _log.AppendKeyLogRaw("Subtract"); // subtract
-//                else if (e.KeyCode == 110) _log.AppendKeyLogRaw("Decimal point"); // decimal point
-//                else if (e.KeyCode == 111) _log.AppendKeyLogRaw("Divide"); // divide
-//                else if (e.KeyCode == 112) _log.AppendKeyLogRaw("F1"); // F1
-//                else if (e.KeyCode == 113) _log.AppendKeyLogRaw("F2"); // F2
-//                else if (e.KeyCode == 114) _log.AppendKeyLogRaw("F3"); // F3
-//                else if (e.KeyCode == 115) _log.AppendKeyLogRaw("F4"); // F4
-//                else if (e.KeyCode == 116) _log.AppendKeyLogRaw("F5"); // F5
-//                else if (e.KeyCode == 117) _log.AppendKeyLogRaw("F6"); // F6
-//                else if (e.KeyCode == 118) _log.AppendKeyLogRaw("F7"); // F7
-//                else if (e.KeyCode == 119) _log.AppendKeyLogRaw("F8"); // F8
-//                else if (e.KeyCode == 120) _log.AppendKeyLogRaw("F9"); // F9
-//                else if (e.KeyCode == 121) _log.AppendKeyLogRaw("F10"); // F10
-//                else if (e.KeyCode == 122) _log.AppendKeyLogRaw("F11"); // F11
-//                else if (e.KeyCode == 123) _log.AppendKeyLogRaw("F12"); // F12
-//                else if (e.KeyCode == 144) _log.AppendKeyLogRaw("Num lock"); // num lock
-//                else if (e.KeyCode == 145) _log.AppendKeyLogRaw("Scroll lock"); // scroll lock
-//                else _log.AppendKeyLogRaw(e.KeyName);
-
-//                _notifyKeystrokes = true;
-//            }
-//        }
-
-//        private void TimerElapsedEventHandler(object sender, EventArgs e)
-//        {
-//            AddScreenShot();
-//        }
-
-//        private void ActiveWindowChangedEventHandler(object sender, WinEventArgs e)
-//        {
-//            NewWindowEvent(e, _log);
-//        }
-
-//        private void CheckWindowTitle()
-//        {
-//            if (_currentWindowTitle != _winEvent.GetActiveWindowName())
-//                NewWindowEvent(_winEvent.GetWinEventArgs(), _log);
-//        }
-
-//        private void watcher_Renamed(object sender, RenamedEventArgs e)
-//        {
-//            if (_fileSystemWatcher != null)
-//            {
-//                Models.FileLog fileLog = new Models.FileLog(e.OldFullPath, e.ChangeType.ToString(), e.FullPath, _user.UserID);
-//                using (var context = new AppsEntities1())
-//                {
-//                    context.FileLogs.Add(fileLog);
-//                    context.SaveChanges();
-//                }
-//            }
-//        }
-
-//        private void watcher_Changed(object sender, FileSystemEventArgs e)
-//        {
-//            if (_fileSystemWatcher != null)
-//            {
-//                Models.FileLog fileLog = new Models.FileLog(e.FullPath, e.ChangeType.ToString(), _user.UserID);
-//                using (var context = new AppsEntities1())
-//                {
-//                    context.FileLogs.Add(fileLog);
-//                    context.SaveChanges();
-//                }
-//            }
-//        }
-
-
-//        private void _processKiller_ProcessKilledEvent(object sender, ProcessKilledEventArgs e)
-//        {
-//            using (var context = new AppsEntities1())
-//            {
-//                BlockedApp blockedApp = new BlockedApp() { Date = DateTime.Now, ApplicationID = e.Aplication.ApplicationID, UserID = Globals.UserID };
-//                context.BlockedApps.Add(blockedApp);
-//                context.SaveChanges();
-//            }
-//        }
-
-//        private void SystemEvents_SessionSwitch(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
-//        {
-//            if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionLock)
-//            {
-//                using (var context = new AppsEntities1())
-//                {
-//                    string usageType = UsageTypes.Locked.ToString();
-//                    Usage usage = new Usage(Globals.UserID, context.UsageTypes.First(u => u.UType == usageType).UsageTypeID);
-//                    context.Usages.Add(usage);
-//                    context.SaveChanges();
-//                }
-//                StopLogging(_log);
-//                Log = null;
-//                DisposeIdleMonitor();
-//            }
-//            else if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionUnlock)
-//            {
-//                using (var context = new AppsEntities1())
-//                {
-//                    string usageType = UsageTypes.Locked.ToString();
-
-//                    var usage = (from u in context.Users.AsNoTracking()
-//                                 join l in context.Usages.AsNoTracking() on u.UserID equals l.UserID
-//                                 where l.UsageEnd == null
-//                                 && l.UsageType.UType == usageType
-//                                 orderby l.UsageStart descending
-//                                 select l).FirstOrDefault();
-
-//                    if (usage != null)
-//                    {
-//                        usage.UsageEnd = DateTime.Now;
-//                        context.Entry(usage).State = EntityState.Modified;
-//                        context.SaveChanges();
-//                    }
-//                }
-//                AttachEventHandlers();
-//                if (EnableIdle)
-//                    InitIdleMonitor();
-//            }
-//        }
-
-
-//        #endregion
-
-//        #region Class Methods
-
-
-//        private void InitIdleMonitor()
-//        {
-//            if (_idleMonitor == null)
-//                _idleMonitor = new IdleMonitor();
-//            _idleMonitor.IdleEntered += IdleEntered;
-//            _idleMonitor.IdleStoped += IdleStoped;
-//        }
-
-//        private void DisposeIdleMonitor()
-//        {
-//            _idleMonitor.IdleEntered -= IdleEntered;
-//            _idleMonitor.IdleStoped -= IdleStoped;
-//            _idleMonitor.Dispose();
-//            _idleMonitor = null;
-//        }
-//        //private void InitIdleTimer()
-//        //{
-//        //    if (_idleTimer == null)
-//        //        _idleTimer = new System.Threading.Timer(CheckIdleState, null, 120000, 1000);
-//        //    else
-//        //        _idleTimer.Change(120000, 1000);
-//        //    Console.WriteLine("Idle timer init, " +_idleTimer.ToString());
-//        //}
-
-
-//        //private void StopIdleTimer()
-//        //{
-//        //    if (_idleTimer == null)
-//        //        return;
-//        //    _idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-//        //}
-
-//        private void IdleEntered(object sender, EventArgs e)
-//        {
-//            StopLogging(Log);
-//            Log = null;
-//            string usageType = UsageTypes.Idle.ToString();
-//            using (var context = new AppsEntities1())
-//            {
-//                Usage usage = new Usage(Globals.UserID, context.UsageTypes.First(u => u.UType == usageType).UsageTypeID);
-//                context.Usages.Add(usage);
-//                context.SaveChanges();
-//            }
-//        }
-
-//        //private Task AddNewUsageAsync(string usageType)
-//        //{
-//        //    return Task.Run(() =>
-//        //    {
-//        //        using (var context = new AppsEntities1())
-//        //        {
-//        //            Usage usage = new Usage(Globals.UserID, context.UsageTypes.First(u => u.UType == usageType).UsageTypeID);
-//        //            context.Usages.Add(usage);
-//        //            context.SaveChanges();
-//        //        }
-//        //    });
-//        //}
-
-//        private void IdleStoped(object sender, EventArgs e)
-//        {
-//            AttachEventHandlers();
-
-//            using (var context = new AppsEntities1())
-//            {
-//                string usageType = UsageTypes.Idle.ToString();
-
-//                var usage = (from u in context.Users.AsNoTracking()
-//                             join l in context.Usages.AsNoTracking() on u.UserID equals l.UserID
-//                             where l.UsageEnd == null
-//                             && l.UsageType.UType == usageType
-//                             orderby l.UsageStart descending
-//                             select l).FirstOrDefault();
-
-//                if (usage != null)
-//                {
-//                    usage.UsageEnd = DateTime.Now;
-//                    context.Entry(usage).State = EntityState.Modified;
-//                    context.SaveChanges();
-//                }
-//            }
-//        }
-
-//        private void AppsToBlockChanging(List<AppsToBlock> appsToBlockList)
-//        {
-//            if (appsToBlockList.Count == 0 && _processKiller != null)
-//            {
-//                _processKiller.ProcessKilledEvent -= _processKiller_ProcessKilledEvent;
-//                _processKiller.Dispose();
-//                _processKiller = null;
-//                return;
-//            }
-//            else if (_processKiller == null)
-//            {
-//                _processKiller = new ProcessKiller();
-//                _processKiller.ProcessKilledEvent += _processKiller_ProcessKilledEvent;
-//            }
-//            _processKiller.AppsToBlockList = appsToBlockList;
-//        }
-
-//        private void CreateLoadUser()
-//        {
-//            using (var context = new AppsEntities1())
-//            {
-//                if (!context.Users.CheckIfUserExists(Environment.UserName))
-//                {
-//                    _user = new Uzer() { Name = Environment.UserName };
-//                    context.Users.Add(_user);
-//                }
-//                else
-//                    _user = context.Users.FirstOrDefault(u => u.Name == Environment.UserName);
-//                string uType = UsageTypes.Login.ToString();
-//                _usage = new Usage() { UsageStart = DateTime.Now, UserID = _user.UserID, UsageTypeID = context.UsageTypes.First(u => u.UType == uType).UsageTypeID };
-
-//                context.Usages.Add(_usage);
-//                context.SaveChanges();
-
-//                Globals.Initialize(_user, context);
-//            }
-//        }
-
-//        private void StopLogging(Log log)
-//        {
-//            Log logTemp = log;
-//            if (logTemp != null)
-//            {
-//                using (var context = new AppsEntities1())
-//                {
-//                    EndLog(logTemp, context);
-//                }
-//            }
-//            if (_screenshotTimer.Enabled)
-//                _screenshotTimer.Enabled = false;
-//            DetachEventHandlers();
-//            _currentWindowTitle = string.Empty;
-//            _windowCheckTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-//        }
-
-//        internal void DetachEventHandlers()
-//        {
-//            if (_keyBoardHook != null)
-//            {
-//                _keyBoardHook.KeyPress -= KeyPressEventHandler;
-//                _keyBoardHook.KeyDown -= KeyDownEventHandler;
-//            }
-
-//            if (_winEvent != null)
-//                _winEvent.ActiveWindowChanged -= ActiveWindowChangedEventHandler;
-
-//            if (_screenshotTimer != null)
-//                _screenshotTimer.Elapsed -= TimerElapsedEventHandler;
-//            DetachFileWatcherEventHandlers();
-
-//            if (_processKiller != null)
-//                _processKiller.ProcessKilledEvent -= _processKiller_ProcessKilledEvent;
-
-//            //if (_idleMonitor != null)
-//            //{
-//            //    _idleMonitor.IdleEntered -= IdleEntered;
-//            //    _idleMonitor.IdleStoped -= IdleStoped;
-//            //}
-
-//        }
-
-//        private void DetachFileWatcherEventHandlers()
-//        {
-//            if (_fileSystemWatcher != null)
-//            {
-//                _fileSystemWatcher.Created -= watcher_Changed;
-//                _fileSystemWatcher.Deleted -= watcher_Changed;
-//                _fileSystemWatcher.Renamed -= watcher_Renamed;
-
-//                _fileSystemWatcher.Created -= watcher_Changed;
-//                _fileSystemWatcher.Deleted -= watcher_Changed;
-//                _fileSystemWatcher.Renamed -= watcher_Renamed;
-//            }
-//        }
-
-//        private void AttachEventHandlers()
-//        {
-
-//            if (_windowCheckTimer == null)
-//                _windowCheckTimer = new System.Threading.Timer((o) => App.Current.Dispatcher.Invoke(() => CheckWindowTitle()), null, 2 * 1000, 2 * 1000);
-//            else
-//                _windowCheckTimer.Change(2 * 1000, 2 * 1000);
-//            _keyBoardHook.KeyPress += KeyPressEventHandler;
-//            _keyBoardHook.KeyDown += KeyDownEventHandler;
-//            _winEvent.ActiveWindowChanged += ActiveWindowChangedEventHandler;
-//            if (_takeScreenShots)
-//                _screenshotTimer.Enabled = true;
-//            _screenshotTimer.Elapsed += TimerElapsedEventHandler;
-//            AttachFileWatcherEventHandlers();
-//            CheckWindowTitle();
-//            CheckBlockedApps();
-//        }
-
-//        private void CheckBlockedApps()
-//        {
-//            using (var context = new AppsEntities1())
-//            {
-//                var appsToBlock = context.AppsToBlocks.Where(a => a.UserID == Globals.UserID).Count();
-
-//                if (appsToBlock > 0)
-//                {
-//                    if (_processKiller == null)
-//                        _processKiller = new ProcessKiller();
-//                    _processKiller.AppsToBlockList = context.AppsToBlocks.Where(a => a.UserID == Globals.UserID).Include(a => a.Application).ToList();
-//                    _processKiller.ProcessKilledEvent -= _processKiller_ProcessKilledEvent;
-//                    _processKiller.ProcessKilledEvent += _processKiller_ProcessKilledEvent;
-//                }
-//            }
-//        }
-
-//        private void AttachFileWatcherEventHandlers()
-//        {
-//            if (_fileSystemWatcher != null)
-//            {
-//                _fileSystemWatcher.Created += watcher_Changed;
-//                _fileSystemWatcher.Deleted += watcher_Changed;
-//                _fileSystemWatcher.Renamed += watcher_Renamed;
-//            }
-//        }
-
-//        private void AddScreenShot()
-//        {
-//            if (_currentWindowTitle != _winEvent.GetActiveWindowName())
-//                NewWindowEvent(_winEvent.GetWinEventArgs(), Log);
-//            Log log = Log;
-//            Screenshot screenshot;
-
-//            if (log == null)
-//                return;
-//            screenshot = Screenshots.GetScreenshot();
-//            if (screenshot == null)
-//                return;
-//            screenshot.LogID = log.LogID;
-
-//            using (var context = new AppsEntities1())
-//            {
-//                context.Screenshots.Add(screenshot);
-//                context.SaveChanges();
-//            }
-
-//            Mediator.NotifyColleagues(MediatorMessages.ScreenshotAdded, new object());
-//        }
-
-//        #endregion
-
-//        #region Logging Methods
-
-//        private void NewWindowEvent(WinEventArgs e, Log log)
-//        {
-//            if (IsLogggingStopped)
-//                return;
-
-//            Log logTemp = log;
-
-//            Debug.Assert(!string.IsNullOrEmpty(e.ProcessInfo.ProcessName), string.Format("Process name is empty, window = {0}", e.WindowTitle));
-
-//            using (var context = new AppsEntities1())
-//            {
-//                if (string.IsNullOrEmpty(e.ProcessInfo.ProcessName))
-//                {
-//                    if (logTemp != null)
-//                        EndLog(logTemp, context);
-//                    Log = null;
-//                    return;
-//                }
-
-//                bool newApp = false;
-
-//                if (logTemp != null)
-//                    EndLog(logTemp, context);
-
-
-//                _application = (from a in context.Applications
-//                                where a.UserID == Globals.UserID
-//                                && a.Name == e.ProcessInfo.ProcessName
-//                                select a).FirstOrDefault();
-
-//                if (_application == null)
-//                {
-//                    _application = new Aplication(e.ProcessInfo.ProcessName,
-//                                                 e.ProcessInfo.ProcessFileName,
-//                                                 e.ProcessInfo.ProcessVersion,
-//                                                 e.ProcessInfo.ProcessDescription,
-//                                                 e.ProcessInfo.ProcessComments,
-//                                                 e.ProcessInfo.ProcessCompany,
-//                                                 e.ProcessInfo.ProcessRealName) { UserID = Globals.UserID };
-//                    newApp = true;
-//                    context.Applications.Add(_application);
-//                }
-
-//                _window = (from w in context.Windows
-//                           where w.Title == e.WindowTitle
-//                           && w.ApplicationID == _application.ApplicationID
-//                           select w).FirstOrDefault();
-
-//                if (_window == null)
-//                {
-//                    _window = new Window() { Title = e.WindowTitle, ApplicationID = _application.ApplicationID };
-//                    context.Windows.Add(_window);
-//                }
-
-
-
-//                _currentWindowTitle = e.WindowTitle;
-
-//                Log = new Log(_window.WindowID);
-
-//                lock (_logLocker)
-//                {
-//                    context.Logs.Add(Log);
-//                    context.SaveChanges();
-//                    context.Entry(Log).State = EntityState.Detached;
-//                }
-
-//                if (newApp)
-//                {
-//                    context.Entry(_application).Collection(a => a.Windows).Load();
-//                    Mediator.NotifyColleagues(MediatorMessages.ApplicationAdded, _application);
-//                }
-//                if (_notifyKeystrokes)
-//                {
-//                    Mediator.NotifyColleagues(MediatorMessages.KeystrokeAdded, new object());
-//                    _notifyKeystrokes = false;
-//                }
-//            }
-//        }
-
-//        private void EndLog(Log log, AppsEntities1 context)
-//        {
-//            Log logTemp = log;
-//            if (log.LogID == 0)
-//                Debug.Fail("LogID = 0!");
-//            logTemp.Finish();
-//            lock (_logLocker)
-//            {
-//                if (!context.Logs.Local.Any(l => l.LogID == logTemp.LogID))
-//                {
-//                    context.Logs.Attach(logTemp);
-//                }
-//                if (context.Logs.FirstOrDefault(l => l.LogID == logTemp.LogID) == null)
-//                    context.Logs.Add(logTemp);
-//                else
-//                    context.Entry(logTemp).State = System.Data.Entity.EntityState.Modified;
-//                try
-//                {
-//                    context.SaveChanges();
-//                }
-//                catch (System.Data.Entity.Core.OptimisticConcurrencyException)
-//                {
-//                    context.Entry<Log>(logTemp).Reload();
-//                    context.SaveChanges();
-//                }
-//                finally
-//                {
-//                    context.Entry(logTemp).State = EntityState.Detached;
-//                }
-//            }
-//        }
-
-//        private void EndLog(Models.Log log)
-//        {
-//            using (var context = new AppsEntities1())
-//            {
-//                Log logTemp = log;
-//                if (log.LogID == 0)
-//                    Debug.Fail("LogID = 0!");
-//                logTemp.Finish();
-//                lock (_logLocker)
-//                {
-//                    if (!context.Logs.Local.Any(l => l.LogID == logTemp.LogID))
-//                    {
-//                        context.Logs.Attach(logTemp);
-//                    }
-//                    if (context.Logs.FirstOrDefault(l => l.LogID == logTemp.LogID) == null)
-//                        context.Logs.Add(logTemp);
-//                    else
-//                        context.Entry(logTemp).State = System.Data.Entity.EntityState.Modified;
-//                    try
-//                    {
-//                        context.SaveChanges();
-//                    }
-//                    catch (System.Data.Entity.Core.OptimisticConcurrencyException)
-//                    {
-//                        context.Entry<Log>(logTemp).Reload();
-//                        context.SaveChanges();
-//                    }
-//                    finally
-//                    {
-//                        context.Entry(logTemp).State = EntityState.Detached;
-//                    }
-//                }
-//            }
-//        }
-
-//        internal void FinishLogging()
-//        {
-//            IsLogggingStopped = true;
-//            using (var context = new AppsEntities1())
-//            {
-//                if (_log != null && !_log.Finished)
-//                {
-//                    _log.Finish();
-//                    context.Entry(_log).State = System.Data.Entity.EntityState.Modified;
-//                }
-//                if (_usage != null)
-//                {
-//                    _usage.UsageEnd = DateTime.Now;
-//                    context.Entry(_usage).State = System.Data.Entity.EntityState.Modified;
-//                }
-
-//                string ignore = UsageTypes.Login.ToString();
-
-//                var unfinished = (from u in context.Users
-//                                  join l in context.Usages on u.UserID equals l.UserID
-//                                  where l.UserID == Globals.UserID
-//                                  && l.UsageEnd == null
-//                                  && l.UsageType.UType != ignore
-//                                  select l).ToList();
-
-//                foreach (var usage in unfinished)
-//                {
-//                    usage.UsageEnd = usage.UsageStart;
-//                    context.Entry(usage).State = EntityState.Modified;
-//                }
-
-//                var logNotEnded = context.Logs.Where(l => l.DateEnded == null).Include(l => l.Window).ToList();
-//                foreach (var log in logNotEnded)
-//                {
-//                    log.DateEnded = log.DateCreated;
-//                    context.Entry(log).State = EntityState.Modified;
-//                }
-
-//                context.SaveChanges();
-//            }
-//        }
-
-//        #endregion
-
-//        #region IDisposable Members
-
-//        private void Dispose(bool disposing)
-//        {
-//            System.Diagnostics.Debug.WriteLine("Disposing " + this.GetType().Name + " " + this.GetType().FullName);
-
-//            if (!_disposed)
-//            {
-//                DetachEventHandlers();
-//                if (_keyBoardHook != null) { _keyBoardHook.Dispose(); _keyBoardHook = null; }
-//                if (_winEvent != null) { _winEvent.Dispose(); _winEvent = null; }
-//                if (_screenshotTimer != null) { _screenshotTimer.Dispose(); _screenshotTimer = null; }
-//                if (_processKiller != null) { _processKiller.Dispose(); _processKiller = null; }
-//                if (_fileSystemWatcher != null) { _fileSystemWatcher.Dispose(); _fileSystemWatcher = null; }
-//                if (_windowCheckTimer != null) { _windowCheckTimer.Dispose(); _windowCheckTimer = null; }
-//                // if (_idleTimer != null) { _idleTimer.Dispose(); _idleTimer = null; }
-//                if (_idleMonitor != null) { _idleMonitor.Dispose(); _idleMonitor = null; }
-//                _disposed = true;
-//            }
-//        }
-
-//        public void Dispose()
-//        {
-//            Dispose(true);
-//            GC.SuppressFinalize(this);
-//        }
-
-//        #endregion
-
-//    }
-//}

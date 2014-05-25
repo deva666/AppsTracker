@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
-using Task_Logger_Pro.Models;
 
 namespace Task_Logger_Pro.Utils
 {

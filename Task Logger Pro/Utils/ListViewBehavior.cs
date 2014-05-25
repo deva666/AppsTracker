@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
+using AppsTracker.Models.EntityModels;
 using Task_Logger_Pro.Controls;
-using Task_Logger_Pro.Models;
 
 namespace Task_Logger_Pro.Utils
 {

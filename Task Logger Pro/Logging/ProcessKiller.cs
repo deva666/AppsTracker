@@ -8,9 +8,11 @@ using System.Text;
 using System.Threading;
 using System.Management;
 using System.Data.Entity;
-using Task_Logger_Pro.Models;
+//using Task_Logger_Pro.Models;
 using System.Threading.Tasks;
 using System.IO;
+using AppsTracker.Models.EntityModels;
+using AppsTracker.DAL;
 
 namespace Task_Logger_Pro.Logging
 {
@@ -64,7 +66,7 @@ namespace Task_Logger_Pro.Logging
 
         public void RefreshAppsToBlock()
         {
-            using (var context = new AppsEntities1())
+            using (var context = new AppsEntities())
             {
                 _appsToBlockList = context.AppsToBlocks
                                           .Where(b => b.UserID == Globals.UserID)

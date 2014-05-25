@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
-using Task_Logger_Pro.Models;
 using Task_Logger_Pro.MVVM;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using Task_Logger_Pro.Utils;
 using System.Diagnostics;
+using AppsTracker.DAL;
+using AppsTracker.Models.EntityModels;
+using AppsTracker.Models.ChartModels;
 
 namespace Task_Logger_Pro.ViewModels
 {
@@ -359,7 +361,7 @@ namespace Task_Logger_Pro.ViewModels
             {
                 string ignore = UsageTypes.Login.ToString();
                 DateTime date2 = _selectedDate.AddDays(1);
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     var logs = (from u in context.Users.AsNoTracking()
                                 join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
@@ -410,7 +412,7 @@ namespace Task_Logger_Pro.ViewModels
             {
                 DateTime date2 = _selectedDate.AddDays(1);
                 IEnumerable<Log> logs;
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     logs = (from u in context.Users.AsNoTracking()
                             join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
@@ -449,7 +451,7 @@ namespace Task_Logger_Pro.ViewModels
                     return null;
                 string appName = TopAppsSingle.AppName;
                 var nextDay = SelectedDate.AddDays(1);
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     var total = (from u in context.Users.AsNoTracking()
                                  join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
@@ -482,7 +484,7 @@ namespace Task_Logger_Pro.ViewModels
                 DateTime today = SelectedDate.Date;
                 DateTime nextDay = today.AddDays(1d);
                 
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     string loginType = UsageTypes.Login.ToString();
 
@@ -526,7 +528,7 @@ namespace Task_Logger_Pro.ViewModels
                 List<Usage> lockeds;
                 List<Usage> stoppeds;
 
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     logins = (from u in context.Users.AsNoTracking()
                               join l in context.Usages.AsNoTracking() on u.UserID equals l.UserID

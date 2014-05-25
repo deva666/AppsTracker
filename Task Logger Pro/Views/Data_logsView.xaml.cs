@@ -14,7 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Task_Logger_Pro.Logging;
 using Task_Logger_Pro.Pages.ViewModels;
-using Task_Logger_Pro.Models;
 
 namespace Task_Logger_Pro.Pages.Views
 {

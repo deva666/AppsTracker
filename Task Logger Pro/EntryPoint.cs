@@ -15,6 +15,8 @@ namespace Task_Logger_Pro
         {
             try
             {
+                ConnectionConfig.CheckConnection();
+                System.Data.Entity.Database.SetInitializer<AppsTracker.DAL.AppsEntities>(new AppsTracker.DAL.AppsDataBaseInitializer());
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
                 SingleInstanceManager singleInstanceApp = new SingleInstanceManager();
                 singleInstanceApp.Run(args);
@@ -62,8 +64,6 @@ namespace Task_Logger_Pro
         {
             try
             {
-                //if (App.DataLogger != null) 
-                //    App.DataLogger.FinishLogging(); //no screenshots or keylogging
                 Exception ex = e.ExceptionObject as Exception;
                 Task_Logger_Pro.Exceptions.Logger.DumpExceptionInfo(ex);
                 if (App.UzerSetting != null)

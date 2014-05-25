@@ -11,7 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Task_Logger_Pro.Logging;
-using Task_Logger_Pro.Models;
+using AppsTracker.Models.EntityModels;
 using Task_Logger_Pro.MVVM;
 
 namespace Task_Logger_Pro
@@ -1018,7 +1018,7 @@ namespace Task_Logger_Pro
             else
             {
                 Console.WriteLine("Converter called");
-                var selectedItems = collection.Cast<TopWindowsModel>();
+                var selectedItems = collection.Cast<AppsTracker.Models.ChartModels.TopWindowsModel>();
                 long totalDuration = 0;
                 foreach (var window in selectedItems)
                 {

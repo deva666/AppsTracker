@@ -182,67 +182,12 @@
     <Compile Include="Logging\IdleMonitor.cs" />
     <Compile Include="Logging\IdleTimeWatcher.cs" />
     <Compile Include="Logging\NewDataLogger.cs" />
-    <Compile Include="Models\Aplication.cs">
-      <DependentUpon>AppsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\AppsModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AppsModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\AppsModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AppsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\AppsModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AppsModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\AppsPartial.cs" />
-    <Compile Include="Models\AppsProxy.cs" />
-    <Compile Include="Models\AppsToBlock.cs">
-      <DependentUpon>AppsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\AppsToBlockPartial.cs" />
-    <Compile Include="Models\BlockedApp.cs">
-      <DependentUpon>AppsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\FileLog.cs">
-      <DependentUpon>AppsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Log.cs">
-      <DependentUpon>AppsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Screenshot.cs">
-      <DependentUpon>AppsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ScreenshotApp.cs" />
-    <Compile Include="Models\ScreenshotViewerOptions.cs" />
-    <Compile Include="Models\Setting.cs">
-      <DependentUpon>AppsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Usage.cs">
-      <DependentUpon>AppsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UsageModels.cs" />
-    <Compile Include="Models\UsagePartial.cs" />
-    <Compile Include="Models\UsageType.cs">
-      <DependentUpon>AppsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UsageTypePartial.cs" />
-    <Compile Include="Models\Uzer.cs">
-      <DependentUpon>AppsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Window.cs">
-      <DependentUpon>AppsModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="MVVM\HostViewModel.cs" />
     <Compile Include="MVVM\ICommunicator.cs" />
     <Compile Include="MVVM\IPage.cs" />
     <Compile Include="MVVM\IWorker.cs" />
     <Compile Include="MVVM\IChildVM.cs" />
+    <Compile Include="Utils\ConnectionConfig.cs" />
     <Compile Include="Utils\CustomEventArgs.cs" />
     <Compile Include="Utils\ListViewBehavior.cs" />
     <Compile Include="Utils\ListViewItemScroller.cs" />
@@ -251,7 +196,6 @@
     <Compile Include="ViewModels\DataHostViewModel.cs" />
     <Compile Include="ViewModels\Data_dayViewModel.cs" />
     <Compile Include="ViewModels\Data_overallSummaryViewModel.cs" />
-    <Compile Include="ViewModels\Data_singleSummaryViewModel.cs" />
     <Compile Include="ViewModels\ScreenshotViewerViewModel.cs" />
     <Compile Include="ViewModels\StatisticsHostViewModel.cs" />
     <Compile Include="ViewModels\Statistics_appUsageViewModel.cs" />
@@ -320,18 +264,9 @@
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Utils\Validation.cs" />
     <Compile Include="Logging\ProcessEvents.cs" />
-    <Compile Include="Models\ApplicationPartial.cs" />
-    <Compile Include="Models\BlockedAppPartial.cs" />
     <Compile Include="Utils\ExtensionMethods.cs" />
-    <Compile Include="Models\FileLogPartial.cs" />
-    <Compile Include="Models\LoginPartial.cs" />
-    <Compile Include="Models\LogPartial.cs" />
-    <Compile Include="Models\ScreenshotPartial.cs" />
-    <Compile Include="Models\SettingPartial.cs" />
     <Compile Include="Models\UzerSetting.cs" />
-    <Compile Include="Models\WindowPartial.cs" />
     <Compile Include="MVVM\AboutWindowViewModel.cs" />
-    <Compile Include="Models\ChartModels.cs" />
     <Compile Include="Logging\EmailReport.cs" />
     <Compile Include="Logging\FileWatcher.cs">
       <SubType>Component</SubType>
@@ -353,7 +288,6 @@
     <Compile Include="ViewModels\Data_computerUsageViewModel.cs" />
     <Compile Include="ViewModels\Data_filelogsViewModel.cs" />
     <Compile Include="ViewModels\Data_logsViewModel.cs" />
-    <Compile Include="ViewModels\Data_weblogsViewModel.cs" />
     <Compile Include="ViewModels\Data_keystrokesViewModel.cs" />
     <Compile Include="ViewModels\Data_screenshotsViewModel.cs" />
     <Compile Include="ViewModels\SettingsHostViewModel.cs" />
@@ -752,24 +686,6 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <EntityDeploy Include="Models\AppsModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AppsModel.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Task_Logger_Pro.Models</CustomToolNamespace>
-    </EntityDeploy>
-    <None Include="Models\AppsModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AppsModel.edmx</DependentUpon>
-      <LastGenOutput>AppsModel.Context.cs</LastGenOutput>
-    </None>
-    <None Include="Models\AppsModel.edmx.diagram">
-      <DependentUpon>AppsModel.edmx</DependentUpon>
-    </None>
-    <None Include="Models\AppsModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AppsModel.edmx</DependentUpon>
-      <LastGenOutput>AppsModel.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -832,7 +748,16 @@
     <Content Include="De.TorstenMandelkow.MetroChart.dll" />
     <Resource Include="Resources\down.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\AppsTracker.DAL\AppsTracker.DAL.csproj">
+      <Project>{dfff3918-1c83-4acd-9fa3-87cba98db030}</Project>
+      <Name>AppsTracker.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppsTracker.Models\AppsTracker.Models.csproj">
+      <Project>{cc8b5831-53c4-46da-97db-18c75ed7d929}</Project>
+      <Name>AppsTracker.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

@@ -16,11 +16,15 @@ namespace AppsTracker.DAL
     {
         static string connection = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).ConnectionStrings.ConnectionStrings["AppsEntities"].ConnectionString;
 
+        //static AppsEntities()
+        //{
+            
+        //}
+
         public AppsEntities()
             : base(connection)
         {
-            Console.WriteLine(Database.Connection.ConnectionString);
-            Database.SetInitializer<AppsEntities>(new CreateDatabaseIfNotExists<AppsEntities>());
+            //Database.SetInitializer<AppsEntities>(new CreateDatabaseIfNotExists<AppsEntities>());   
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

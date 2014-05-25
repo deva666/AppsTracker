@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Task_Logger_Pro.Logging;
-using Task_Logger_Pro.Models;
 using Task_Logger_Pro.MVVM;
+using AppsTracker.DAL;
+using AppsTracker.Models.EntityModels;
 
 namespace Task_Logger_Pro.Pages.ViewModels
 {
@@ -92,7 +93,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
         {
             return Task<List<FileLog>>.Run(() =>
             {
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     return (from u in context.Users.AsNoTracking()
                             join f in context.FileLogs.AsNoTracking() on u.UserID equals f.UserID
@@ -112,7 +113,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 return;
             ObservableCollection<object> parameters = parameter as ObservableCollection<object>;
             List<FileLog> fileLogsList = parameters.Select(p => (FileLog)p).ToList();
-            using (var context = new AppsEntities1())
+            using (var context = new AppsEntities())
             {
                 foreach (var fileLog in fileLogsList)
                 {

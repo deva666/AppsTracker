@@ -12,11 +12,12 @@ using System.Windows;
 using System.Linq;
 using Task_Logger_Pro.Controls;
 using Task_Logger_Pro.Logging;
-using Task_Logger_Pro.Models;
 using Task_Logger_Pro.Encryption;
 using System.Threading.Tasks;
 using System.Windows.Media.Animation;
 using Task_Logger_Pro.Utils;
+using AppsTracker.Models.EntityModels;
+using AppsTracker.DAL;
 
 
 namespace Task_Logger_Pro
@@ -31,39 +32,39 @@ namespace Task_Logger_Pro
         Stopped
     }
 
-    public enum ScreenShotInterval : uint
-    {
-        [Description("10 sec")]
-        TenSeconds = 10000,
-        [Description("30 sec")]
-        ThirtySeconds = 30000,
-        [Description("1 min")]
-        OneMinute = 60000,
-        [Description("2 min")]
-        TwoMinute = 120000,
-        [Description("5 min")]
-        FiveMinute = 300000,
-        [Description("10 min")]
-        TenMinute = 600000,
-        [Description("30 min")]
-        ThirtyMinute = 1800000,
-        [Description("1 hr")]
-        OneHour = 3600000
-    }
+    //public enum ScreenShotInterval : uint
+    //{
+    //    [Description("10 sec")]
+    //    TenSeconds = 10000,
+    //    [Description("30 sec")]
+    //    ThirtySeconds = 30000,
+    //    [Description("1 min")]
+    //    OneMinute = 60000,
+    //    [Description("2 min")]
+    //    TwoMinute = 120000,
+    //    [Description("5 min")]
+    //    FiveMinute = 300000,
+    //    [Description("10 min")]
+    //    TenMinute = 600000,
+    //    [Description("30 min")]
+    //    ThirtyMinute = 1800000,
+    //    [Description("1 hr")]
+    //    OneHour = 3600000
+    //}
 
-    public enum EmailInterval : uint
-    {
-        [Description("5 min")]
-        FiveMinute = 300000,
-        [Description("10 min")]
-        TenMinute = 600000,
-        [Description("30 min")]
-        ThirtyMinute = 1800000,
-        [Description("1 hr")]
-        OneHour = 3600000,
-        [Description("2 hr")]
-        TwoHour = 7200000
-    }
+    //public enum EmailInterval : uint
+    //{
+    //    [Description("5 min")]
+    //    FiveMinute = 300000,
+    //    [Description("10 min")]
+    //    TenMinute = 600000,
+    //    [Description("30 min")]
+    //    ThirtyMinute = 1800000,
+    //    [Description("1 hr")]
+    //    OneHour = 3600000,
+    //    [Description("2 hr")]
+    //    TwoHour = 7200000
+    //}
 
     public enum UsageTypes : byte
     {
@@ -239,33 +240,46 @@ namespace Task_Logger_Pro
 
         private void CreateSettingsAndUsageTypes()
         {
-            using (var context = new AppsEntities1())
+            try
             {
-                if (context.Settings.Count() == 0)
+                using (var context = new AppsEntities())
                 {
-                    _settings = new Setting(true);
-                    context.Settings.Add(_settings);
-                }
-                else
-                {
-                    _settings = context.Settings.FirstOrDefault();
-                    _settings.LastExecutedDate = DateTime.Now;
-                    context.Entry(_settings).State = System.Data.Entity.EntityState.Modified;
-                }
-
-                if (context.UsageTypes.Count() != Enum.GetValues(typeof(UsageTypes)).Length)
-                {
-                    foreach (var type in Enum.GetNames(typeof(UsageTypes)))
+                    if (context.Settings.Count() == 0)
                     {
-                        if (context.Usages.Include(u => u.UsageType).Any(u => u.UsageType.UType == type))
-                            continue;
-                        UsageType usageType = new UsageType() { UType = type };
-                        usageType = context.UsageTypes.Add(usageType);
+                        _settings = new Setting(true);
+                        context.Settings.Add(_settings);
+                    }
+                    else
+                    {
+                        _settings = context.Settings.FirstOrDefault();
+                        _settings.LastExecutedDate = DateTime.Now;
+                        context.Entry(_settings).State = System.Data.Entity.EntityState.Modified;
+                    }
 
+                    if (context.UsageTypes.Count() != Enum.GetValues(typeof(UsageTypes)).Length)
+                    {
+                        foreach (var type in Enum.GetNames(typeof(UsageTypes)))
+                        {
+                            if (context.Usages.Include(u => u.UsageType).Any(u => u.UsageType.UType == type))
+                                continue;
+                            UsageType usageType = new UsageType() { UType = type };
+                            usageType = context.UsageTypes.Add(usageType);
+
+                        }
+                    }
+
+                    context.SaveChanges();
+                }
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+            {
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        Console.WriteLine("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
                     }
                 }
-
-                context.SaveChanges();
             }
         }
 
@@ -277,7 +291,7 @@ namespace Task_Logger_Pro
 
         private async void SaveSettings()
         {
-            using (var context = new AppsEntities1())
+            using (var context = new AppsEntities())
             {
                 context.Entry(_settings).State = System.Data.Entity.EntityState.Modified;
                 await context.SaveChangesAsync();
@@ -358,7 +372,7 @@ namespace Task_Logger_Pro
         {
             if (enable)
             {
-                if (_emailReport == null) _emailReport = new Models.EmailReport();
+                if (_emailReport == null) _emailReport = new EmailReport();
                 _emailReport.EmailTo = _uzerSetting.EmailTo;
                 _emailReport.EmailFrom = _uzerSetting.EmailFrom;
                 _emailReport.Interval = _uzerSetting.EmailInterval;
@@ -462,7 +476,7 @@ namespace Task_Logger_Pro
         private void DeleteOldLogs()
         {
             DateTime dateTreshold = DateTime.Now.Date.AddDays(-1d * UzerSetting.OldLogDeleteDays);
-            using (var context = new AppsEntities1())
+            using (var context = new AppsEntities())
             {
                 var logs = (from l in context.Logs
                             where l.DateCreated < dateTreshold
@@ -494,7 +508,7 @@ namespace Task_Logger_Pro
             }
         }
 
-        private void DeleteBlockedApps(AppsEntities1 context, System.Collections.Generic.List<BlockedApp> blockedApps)
+        private void DeleteBlockedApps(AppsEntities context, System.Collections.Generic.List<BlockedApp> blockedApps)
         {
             foreach (var blockedApp in blockedApps)
             {
@@ -504,7 +518,7 @@ namespace Task_Logger_Pro
             }
         }
 
-        private void DeleteFilelogs(AppsEntities1 context, System.Collections.Generic.List<FileLog> fileLogs)
+        private void DeleteFilelogs(AppsEntities context, System.Collections.Generic.List<FileLog> fileLogs)
         {
             foreach (var fileLog in fileLogs)
             {
@@ -514,7 +528,7 @@ namespace Task_Logger_Pro
             }
         }
 
-        private void DeleteUsages(AppsEntities1 context, System.Collections.Generic.List<Usage> usages)
+        private void DeleteUsages(AppsEntities context, System.Collections.Generic.List<Usage> usages)
         {
             foreach (var usage in usages)
             {
@@ -524,7 +538,7 @@ namespace Task_Logger_Pro
             }
         }
 
-        private void DeleteLogsAndScreenshots(AppsEntities1 context, System.Collections.Generic.List<Log> logs)
+        private void DeleteLogsAndScreenshots(AppsEntities context, System.Collections.Generic.List<Log> logs)
         {
             foreach (var log in logs)
             {
@@ -546,7 +560,7 @@ namespace Task_Logger_Pro
             }
         }
 
-        private void DeleteEmptyLogs(AppsEntities1 context)
+        private void DeleteEmptyLogs(AppsEntities context)
         {
             foreach (var window in context.Windows)
             {

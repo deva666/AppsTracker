@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using AppsTracker.DAL;
+using AppsTracker.Models.ChartModels;
 using Task_Logger_Pro.Controls;
-using Task_Logger_Pro.Models;
 using Task_Logger_Pro.MVVM;
 
 namespace Task_Logger_Pro.Pages.ViewModels
@@ -131,7 +132,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
         {
             return Task<List<KeystrokeModel>>.Run(() =>
             {
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     return (from u in context.Users.AsNoTracking()
                             join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
@@ -166,7 +167,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
         {
             return Task<List<DailyKeystrokeModel>>.Run(() =>
             {
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     return (from u in context.Users
                             join a in context.Applications on u.UserID equals a.UserID

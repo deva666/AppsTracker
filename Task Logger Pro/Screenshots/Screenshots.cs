@@ -6,9 +6,9 @@ using System.IO;
 using Task_Logger_Pro.Logging;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Task_Logger_Pro.Models;
 using System.Threading.Tasks;
 using Task_Logger_Pro.Controls;
+using AppsTracker.Models.EntityModels;
 
 namespace Task_Logger_Pro
 {

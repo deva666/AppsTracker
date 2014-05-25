@@ -29,7 +29,7 @@ namespace Task_Logger_Pro.Controls
             this.Closing += (s, e) => { viewModel.Dispose(); viewModel = null; };
         }     
 
-        public ScreenshotViewerWindow(IEnumerable<Task_Logger_Pro.Models.Screenshot> screenshotCollection)
+        public ScreenshotViewerWindow(IEnumerable<AppsTracker.Models.EntityModels.Screenshot> screenshotCollection)
             : this()
         {
             viewModel = new ScreenshotViewerViewModel(screenshotCollection);

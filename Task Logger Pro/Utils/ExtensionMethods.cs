@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
-using Task_Logger_Pro.Models;
+using AppsTracker.Models.EntityModels;
 
 namespace Task_Logger_Pro
 {

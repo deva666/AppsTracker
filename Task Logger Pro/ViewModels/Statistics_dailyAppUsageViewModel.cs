@@ -6,8 +6,9 @@ using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppsTracker.DAL;
+using AppsTracker.Models.ChartModels;
 using Task_Logger_Pro.Controls;
-using Task_Logger_Pro.Models;
 using Task_Logger_Pro.MVVM;
 
 namespace Task_Logger_Pro.Pages.ViewModels
@@ -96,7 +97,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             return Task<List<DailyUsedAppsSeries>>.Factory.StartNew(() =>
              {
                  List<DailyUsedAppsSeries> dailyUsedAppsSeriesTemp = new List<DailyUsedAppsSeries>();
-                 using (var context = new AppsEntities1())
+                 using (var context = new AppsEntities())
                  {
 
                      var dailyApps = (from u in context.Users
@@ -119,8 +120,8 @@ namespace Task_Logger_Pro.Pages.ViewModels
                              if (!dailyUsedAppsSeriesTemp.Exists(d => d.Date == app.Date.ToShortDateString()))
                              {
                                  dailyUsedAppsCollection = new List<MostUsedAppModel>();
-                                 dailyUsedAppsCollection.Add(new Models.MostUsedAppModel() { AppName = app.AppName, Duration = Math.Round(new TimeSpan(app.Duration).TotalHours, 1) });
-                                 dailyUsedAppsSeriesTemp.Add(new Models.DailyUsedAppsSeries() { Date = app.Date.ToShortDateString(), DailyUsedAppsCollection = dailyUsedAppsCollection });
+                                 dailyUsedAppsCollection.Add(new MostUsedAppModel() { AppName = app.AppName, Duration = Math.Round(new TimeSpan(app.Duration).TotalHours, 1) });
+                                 dailyUsedAppsSeriesTemp.Add(new DailyUsedAppsSeries() { Date = app.Date.ToShortDateString(), DailyUsedAppsCollection = dailyUsedAppsCollection });
                              }
                              else
                              {

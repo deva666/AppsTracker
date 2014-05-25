@@ -5,9 +5,11 @@ using System.Text;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Task_Logger_Pro.Models;
 using Task_Logger_Pro.MVVM;
 using Task_Logger_Pro.Utils;
+using AppsTracker.DAL;
+using AppsTracker.Models.EntityModels;
+using AppsTracker.Models.ChartModels;
 
 namespace Task_Logger_Pro.ViewModels
 {
@@ -212,7 +214,7 @@ namespace Task_Logger_Pro.ViewModels
         {
             return Task<List<TopAppsModel>>.Run(() =>
             {
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     var totalDuration = (from u in context.Users.AsNoTracking()
                                          join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
@@ -290,7 +292,7 @@ namespace Task_Logger_Pro.ViewModels
              
                 var days = topAppsList.Where(t => t.IsSelected).Select(t => t.DateTime);
 
-                using (var context = new AppsEntities1())
+                using (var context = new AppsEntities())
                 {
                     var total = (from u in context.Users.AsNoTracking()
                                  join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID

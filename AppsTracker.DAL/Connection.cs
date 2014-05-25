@@ -30,11 +30,9 @@ namespace AppsTracker.DAL
 
                 config.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings("AppsTracker.DAL.AppsEntities", sqlBuilder.ConnectionString));
 
-                //config.ConnectionStrings.ConnectionStrings["AppsEntities"].ConnectionString =
-                //       sqlBuilder.ConnectionString;
             }
             
-            config.Save(ConfigurationSaveMode.Modified);
+            config.Save();
 
             var connections1 = config.ConnectionStrings.ConnectionStrings["AppsTracker.DAL.AppsEntities"];
 

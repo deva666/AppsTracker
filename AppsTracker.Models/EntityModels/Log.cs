@@ -82,7 +82,7 @@ namespace AppsTracker.Models.EntityModels
 
         public Log()
         {
-            //   this.Screenshots = new HashSet<Screenshot>();
+               this.Screenshots = new HashSet<Screenshot>();
         }
 
         public Log(int windowID)

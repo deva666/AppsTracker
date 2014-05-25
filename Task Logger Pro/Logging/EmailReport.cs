@@ -13,8 +13,10 @@ using System.Threading;
 using Task_Logger_Pro.Logging;
 using System.Data.Entity;
 using System.Threading.Tasks;
+using AppsTracker.DAL;
+using AppsTracker.Models.EntityModels;
 
-namespace Task_Logger_Pro.Models
+namespace Task_Logger_Pro.Logging
 {
     public sealed class EmailReport : IDisposable
     {
@@ -157,7 +159,7 @@ namespace Task_Logger_Pro.Models
         {
             List<Aplication> aplications;
             Usage usage;
-            using ( var context = new AppsEntities1( ) )
+            using ( var context = new AppsEntities( ) )
             {
                 aplications = GetLogsByDate( context );
                 usage = GetCurrentLogin( context );
@@ -240,7 +242,7 @@ namespace Task_Logger_Pro.Models
                     {
                         htmlTextWriter.RenderBeginTag( HtmlTextWriterTag.Li );
                         htmlTextWriter.RenderBeginTag( HtmlTextWriterTag.H4 );
-                        htmlTextWriter.WriteEncodedText( string.Format( "{0}, total logged time: {1}.", app.Name, app.Duration.ToString( "hh\\:mm\\:ss" ) ) );
+                        //htmlTextWriter.WriteEncodedText( string.Format( "{0}, total logged time: {1}.", app.Name, app.Duration.ToString( "hh\\:mm\\:ss" ) ) );
                         htmlTextWriter.RenderBeginTag( HtmlTextWriterTag.H4 );
                         htmlTextWriter.WriteEncodedText( "Windows opened:" );
                         htmlTextWriter.RenderEndTag( ); //endtag H3 Windows used
@@ -249,11 +251,11 @@ namespace Task_Logger_Pro.Models
                         {
                             htmlTextWriter.RenderBeginTag( HtmlTextWriterTag.Li );
                             htmlTextWriter.RenderBeginTag( HtmlTextWriterTag.P );
-                            htmlTextWriter.Write( string.Format( "{0}, total logged time: {1}.", window.Title, window.Duration.ToString( "hh\\:mm\\:ss" ) ) );
+                           // htmlTextWriter.Write( string.Format( "{0}, total logged time: {1}.", window.Title, window.Duration.ToString( "hh\\:mm\\:ss" ) ) );
 
                             foreach ( var log in window.Logs )
                             {
-                                if ( log.HasKeystrokes )
+                                if ( log.KeystrokesRaw != null )
                                 {
                                     htmlTextWriter.RenderBeginTag( HtmlTextWriterTag.H4 );
                                     htmlTextWriter.Write( string.Format( "Keystrokes logged on: {0}.", log.DateCreated.ToShortTimeString( ) ) );
@@ -281,7 +283,7 @@ namespace Task_Logger_Pro.Models
 
         }
 
-        private Usage GetCurrentLogin( AppsEntities1 context )
+        private Usage GetCurrentLogin( AppsEntities context )
         {
             return ( from u in context.Usages
                      where u.UsageType.UType == UsageTypes.Login.ToString()
@@ -289,7 +291,7 @@ namespace Task_Logger_Pro.Models
                      select u ).First( );
         }
 
-        private List<Aplication> GetLogsByDate(AppsEntities1 context)
+        private List<Aplication> GetLogsByDate(AppsEntities context)
         {
             _dateNow = DateTime.Now;
             _dateLast = DateTime.Now.AddMilliseconds(-(Interval));
