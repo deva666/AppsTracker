@@ -16,47 +16,57 @@ namespace Task_Logger_Pro.Utils
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
             var connections = config.ConnectionStrings.ConnectionStrings["AppsEntities"];
+
+            ConnectionStringsSection section =
+                config.GetSection("connectionStrings")
+                as ConnectionStringsSection;
+
             if (connections == null)
             {
 
-                 SqlCeConnectionStringBuilder sqlBuilder = new SqlCeConnectionStringBuilder
-                {
-                    DataSource = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "apps.sdf"),
-                    Password = DateTime.Now.Ticks.GetHashCode().ToString(),
-                    MaxDatabaseSize = 4000
-                };
+                SqlCeConnectionStringBuilder sqlBuilder = new SqlCeConnectionStringBuilder
+               {
+                   DataSource = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "apps.sdf"),
+                   Password = DateTime.Now.Ticks.GetHashCode().ToString(),
+                   MaxDatabaseSize = 4000
+                   
+               };
 
                 ConnectionStringsSection connectionStringsSection = config.ConnectionStrings;
 
                 ConnectionStringSettings connectionStringSettings = new ConnectionStringSettings("AppsEntities", sqlBuilder.ConnectionString);
-                // Add the new element to the section.
                 connectionStringsSection.ConnectionStrings.Add(connectionStringSettings);
 
-                // Save the configuration file.
                 config.Save(ConfigurationSaveMode.Full, true);
                 ConfigurationManager.RefreshSection("connectionStrings");
-                // This is this needed. Otherwise the connection string does not show up in
-                // ConfigurationManager
-                //ConfigurationManager.RefreshSection("connectionStrings");
 
-
-                //SqlCeConnectionStringBuilder sqlBuilder = new SqlCeConnectionStringBuilder
-                //{
-                //    DataSource = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "apps.sdf"),
-                //    Password = DateTime.Now.Ticks.GetHashCode().ToString(),
-                //    MaxDatabaseSize = 4000
-                //};
-
-                //config.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings("AppsEntities", sqlBuilder.ConnectionString));
-
-                //config.Save(ConfigurationSaveMode.Full, true);
-                ToggleConfigEncryption();
+            }
+            else if (connections != null && !section.SectionInformation.IsProtected)
+            {
+                throw new InvalidOperationException("Can't create database!");
             }
         }
 
-        static void ToggleConfigEncryption()
+        public static void ToggleConfigEncryption()
         {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
+            ConnectionStringsSection section =
+                config.GetSection("connectionStrings")
+                as ConnectionStringsSection;
+
+            if (!section.SectionInformation.IsProtected)
+            {
+                section.SectionInformation.ProtectSection(
+                      "DataProtectionConfigurationProvider");
+
+                config.Save(ConfigurationSaveMode.Full, true);
+                ConfigurationManager.RefreshSection("connectionStrings");
+            }
+        }
+
+        public static void SaveConfig()
+        {
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
             ConnectionStringsSection section =
@@ -70,7 +80,6 @@ namespace Task_Logger_Pro.Utils
 
                 config.Save();
             }
-
         }
     }
 }

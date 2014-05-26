@@ -13,18 +13,45 @@ namespace Task_Logger_Pro
         [STAThread]
         public static void Main(string[] args)
         {
+
             try
             {
                 ConnectionConfig.CheckConnection();
-                System.Data.Entity.Database.SetInitializer<AppsTracker.DAL.AppsEntities>(new AppsTracker.DAL.AppsDataBaseInitializer());
-                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-                SingleInstanceManager singleInstanceApp = new SingleInstanceManager();
-                singleInstanceApp.Run(args);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException)
             {
-                Exceptions.Logger.DumpExceptionInfo(ex);
-                throw;
+                System.Windows.Forms.MessageBox.Show("Database creation forbidden.", Constants.APP_NAME);
+                return;
+            }
+           
+            System.Data.Entity.Database.SetInitializer<AppsTracker.DAL.AppsEntities>(new AppsTracker.DAL.AppsDataBaseInitializer());
+
+            ConnectionConfig.ToggleConfigEncryption();
+
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            SingleInstanceManager singleInstanceApp = new SingleInstanceManager();
+
+            //if (!TestCreateDatabase())
+            //{
+            //    System.Windows.Forms.MessageBox.Show("Database creation forbidden.", Constants.APP_NAME);
+            //    return;
+            //}
+            singleInstanceApp.Run(args);
+        }
+
+        private static bool TestCreateDatabase()
+        {
+            try
+            {
+                using (var context = new AppsTracker.DAL.AppsEntities())
+                {
+                    context.Database.Initialize(false);
+                }
+                return true;
+            }
+            catch (InvalidOperationException)
+            {
+                return false;
             }
         }
 

@@ -11,6 +11,29 @@ namespace AppsTracker.Models.EntityModels
 {
     public class Aplication
     {
+        [NotMapped]
+        public TimeSpan Duration
+        {
+            get
+            {
+                return GetAppDuration();     
+            }
+        }
+
+        private TimeSpan GetAppDuration()
+        {
+            long ticks = 0;
+            foreach (var window in this.Windows)
+            {
+                foreach (var log in window.Logs)
+                {
+                    ticks += log.Duration;
+                }
+            }
+
+            return new TimeSpan(ticks);
+        }
+
         public Aplication()
         {
             this.AppsToBlocks = new HashSet<AppsToBlock>();

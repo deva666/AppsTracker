@@ -10,6 +10,25 @@ namespace AppsTracker.Models.EntityModels
 {
     public class Window
     {
+        [NotMapped]
+        public TimeSpan Duration
+        {
+            get
+            {
+                return GetWindowDuration();
+            }
+        }
+
+        private TimeSpan GetWindowDuration()
+        {
+            long ticks = 0;
+            foreach (var log in this.Logs)
+            {
+                ticks += log.Duration;
+            }
+            return new TimeSpan(ticks);
+        }
+
         public Window()
         {
             this.Logs = new HashSet<Log>();
@@ -18,7 +37,7 @@ namespace AppsTracker.Models.EntityModels
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int WindowID { get; set; }
-        
+
         [Required]
         public int ApplicationID { get; set; }
 

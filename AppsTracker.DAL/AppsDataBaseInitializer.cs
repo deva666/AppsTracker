@@ -14,18 +14,18 @@ namespace AppsTracker.DAL
 
         public AppsDataBaseInitializer()
         {
-            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            ConnectionStringsSection section = config.GetSection("connectionStrings") as ConnectionStringsSection;
-            _canCreate = section.SectionInformation.IsProtected;
+
         }
 
         public void InitializeDatabase(AppsEntities context)
         {
+
             if (context.Database.Exists())
                 return;
             else
-                if (_canCreate)
-                    context.Database.Create();
+            {
+                context.Database.Create();
+            }
         }
     }
 }

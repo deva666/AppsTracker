@@ -434,8 +434,6 @@ namespace Task_Logger_Pro
                 _uzerSetting.RunAtStartup = false;
             else if (exists.HasValue && exists.Value && !_uzerSetting.RunAtStartup)
                 _uzerSetting.RunAtStartup = true;
-
-            //Exceptions.Logger.DumpDebug(string.Format("Registry entry value = {0}, Setting value = {1}", exists, ));
         }
 
         private bool? RegistryEntryExists()

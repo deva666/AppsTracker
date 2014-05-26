@@ -242,7 +242,7 @@ namespace Task_Logger_Pro.Logging
                     {
                         htmlTextWriter.RenderBeginTag( HtmlTextWriterTag.Li );
                         htmlTextWriter.RenderBeginTag( HtmlTextWriterTag.H4 );
-                        //htmlTextWriter.WriteEncodedText( string.Format( "{0}, total logged time: {1}.", app.Name, app.Duration.ToString( "hh\\:mm\\:ss" ) ) );
+                        htmlTextWriter.WriteEncodedText( string.Format( "{0}, total logged time: {1}.", app.Name, app.Duration.ToString( "hh\\:mm\\:ss" ) ) );
                         htmlTextWriter.RenderBeginTag( HtmlTextWriterTag.H4 );
                         htmlTextWriter.WriteEncodedText( "Windows opened:" );
                         htmlTextWriter.RenderEndTag( ); //endtag H3 Windows used
@@ -251,7 +251,7 @@ namespace Task_Logger_Pro.Logging
                         {
                             htmlTextWriter.RenderBeginTag( HtmlTextWriterTag.Li );
                             htmlTextWriter.RenderBeginTag( HtmlTextWriterTag.P );
-                           // htmlTextWriter.Write( string.Format( "{0}, total logged time: {1}.", window.Title, window.Duration.ToString( "hh\\:mm\\:ss" ) ) );
+                            htmlTextWriter.Write( string.Format( "{0}, total logged time: {1}.", window.Title, window.Duration.ToString( "hh\\:mm\\:ss" ) ) );
 
                             foreach ( var log in window.Logs )
                             {
@@ -285,10 +285,12 @@ namespace Task_Logger_Pro.Logging
 
         private Usage GetCurrentLogin( AppsEntities context )
         {
+            string usageType = UsageTypes.Login.ToString();
             return ( from u in context.Usages
-                     where u.UsageType.UType == UsageTypes.Login.ToString()
+                     where u.UsageType.UType == usageType
+                     && u.IsCurrent
                      orderby u.UsageStart descending
-                     select u ).First( );
+                     select u ).FirstOrDefault( );
         }
 
         private List<Aplication> GetLogsByDate(AppsEntities context)

@@ -73,7 +73,6 @@ namespace AppsTracker.Models.EntityModels
 
         private void SetInitialSettings()
         {
-            this.DeleteOldLogs = false;
             this.EmailFrom = "";
             this.EmailInterval = 1800000;
             this.EmailSmtpHost = "";
@@ -95,6 +94,7 @@ namespace AppsTracker.Models.EntityModels
             this.MainWindowLeft = 250;
             this.MainWindowTop = 250;
             this.MainWindowWidth = 1000;
+            this.DeleteOldLogs = true;
             this.OldLogDeleteDays = 30;
             this.RunAtStartup = false;
             this.Stealth = false;

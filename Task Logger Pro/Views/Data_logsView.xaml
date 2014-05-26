@@ -98,7 +98,7 @@
                      BorderThickness="0"
                      Background="Transparent"
                      Foreground="{DynamicResource WindowForegroundBrush}"
-                     ItemsSource="{Binding AplicationList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                     ItemsSource="{Binding AplicationList, UpdateSourceTrigger=PropertyChanged}"
                      SelectedItem="{Binding SelectedApplication, Mode=TwoWay}"
                      ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
                      ContextMenu="{StaticResource cmProc}">

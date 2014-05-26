@@ -41,11 +41,6 @@ namespace Task_Logger_Pro.Pages.ViewModels
         List<TopWindowsModel> _topWindowsList;
         List<DailyWindowSeries> _chartList;
 
-        //WeakReference _weakCollection = new WeakReference(null);
-        //WeakReference _weakAppOverall = new WeakReference(null);
-        //WeakReference _weakWindowOverall = new WeakReference(null);
-        //WeakReference _weakChart = new WeakReference(null);
-
         Aplication _selectedApplication;
 
         TopAppsModel _topAppsOverall;
@@ -210,36 +205,6 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }
         }
 
-        //public WeakReference WeakCollection
-        //{
-        //    get
-        //    {
-        //        if (_weakCollection.Target == null && !Working)
-        //            LoadContent();
-        //        return _weakCollection;
-        //    }
-        //}
-        //public WeakReference WeakAppOverall
-        //{
-        //    get
-        //    {
-        //        return _weakAppOverall;
-        //    }
-        //}
-        //public WeakReference WeakWindowOverall
-        //{
-        //    get
-        //    {
-        //        return _weakWindowOverall;
-        //    }
-        //}
-        //public WeakReference WeakChart
-        //{
-        //    get
-        //    {
-        //        return _weakChart;
-        //    }
-        //}
         public TopAppsModel TopAppsOverall
         {
             get
@@ -582,11 +547,12 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         private void ApplicationAdded(Aplication app)
         {
-            if (TopAppsList == null)
-                return;
-            List<Aplication> copy = AplicationList.ToList();
+            List<Aplication> copy = new List<Aplication>();
             copy.Add(app);
-            AplicationList = copy.ToList();
+            copy = AplicationList.Union(copy).ToList();
+            AplicationList = null;
+            AplicationList = copy;
+            PropertyChanging("AplicationList");
         }
 
         #endregion
@@ -803,8 +769,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                                     }
                                 }
                             }
-                            Mediator.NotifyColleagues(MediatorMessages.AppsToBlockChanged
-                                , context.AppsToBlocks.Where(a => a.UserID == Globals.UserID).Include(b => b.Application).ToList());
+                            Mediator.NotifyColleagues<object>(MediatorMessages.AppsToBlockChanged, new object());
                             context.SaveChangesAsync();
                         }
                     }

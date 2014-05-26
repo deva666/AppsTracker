@@ -13,10 +13,11 @@ using System.Threading.Tasks;
 using System.IO;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.DAL;
+using Task_Logger_Pro.MVVM;
 
 namespace Task_Logger_Pro.Logging
 {
-    public sealed class ProcessKiller : IDisposable
+    public sealed class ProcessKiller : IDisposable, ICommunicator
     {
         #region Fields
 
@@ -48,6 +49,7 @@ namespace Task_Logger_Pro.Logging
 
         public ProcessKiller()
         {
+            Mediator.Register(MediatorMessages.AppsToBlockChanged, new Action(RefreshAppsToBlock));
             WqlEventQuery query = new WqlEventQuery("__InstanceCreationEvent", new TimeSpan(0, 0, 1), "TargetInstance isa \"Win32_Process\"");
             _managementEventWatcher = new ManagementEventWatcher();
             _managementEventWatcher.Query = query;
@@ -193,10 +195,14 @@ namespace Task_Logger_Pro.Logging
         public void Dispose()
         {
             Dispose(true);
-           // GC.SuppressFinalize(this);
         }
 
         #endregion
+
+        public Mediator Mediator
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 
     public class ProcessKilledEventArgs : EventArgs

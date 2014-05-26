@@ -29,11 +29,14 @@ namespace Task_Logger_Pro.Logging
         public event EventHandler IdleEntered;
         public event EventHandler IdleStoped;
 
-        public bool Enabled { get 
+        public bool Enabled
         {
-            return _enabled;
-        }
-            set {
+            get
+            {
+                return _enabled;
+            }
+            set
+            {
                 _enabled = value;
             }
         }
@@ -80,7 +83,7 @@ namespace Task_Logger_Pro.Logging
 
         private void ResetBase()
         {
-            if (!_idleEntered || ! _enabled)
+            if (!_idleEntered)
                 return;
             _idleEntered = false;
             RemoveHooks();
@@ -92,7 +95,7 @@ namespace Task_Logger_Pro.Logging
 
         private void CheckIdleState(object sender)
         {
-            if (_idleEntered || ! _enabled)
+            if (_idleEntered || !_enabled)
                 return;
             IdleTimeInfo idleInfo = IdleTimeWatcher.GetIdleTimeInfo();
             if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(App.UzerSetting.IdleInterval))

@@ -563,26 +563,6 @@ namespace Task_Logger_Pro.Logging
 
         #region Class Methods
 
-        //private void AddIdleEventHandlers()
-        //{
-        //    if (_idleMonitor == null)
-        //        return;
-        //    _idleMonitor.IdleEntered += IdleEntered;
-        //    _idleMonitor.IdleStoped += IdleStoped;
-        //}
-
-        //private void RemoveIdleEventHandlers()
-        //{
-        //    if (_idleMonitor == null)
-        //        return;
-        //    _idleMonitor.IdleEntered -= IdleEntered;
-        //    _idleMonitor.IdleStoped -= IdleStoped;
-        //    _idleMonitor.IdleEntered -= IdleEntered;
-        //    _idleMonitor.IdleStoped -= IdleStoped;
-        //    _idleMonitor.IdleEntered -= IdleEntered;
-        //    _idleMonitor.IdleStoped -= IdleStoped;
-        //}
-
         private void LoggingStopped()
         {
             if (_currentUsageStopped == null)
@@ -771,9 +751,7 @@ namespace Task_Logger_Pro.Logging
                     context.Applications.Add(app);
                     context.SaveChanges();
                 }
-                if (app.ApplicationID == 0)
-                    throw new InvalidOperationException("Application ID is 0, " + app.Name);
-
+             
                 Window window = (from w in context.Windows
                                  where w.Title == e.WindowTitle
                                  && w.ApplicationID == app.ApplicationID
@@ -785,9 +763,6 @@ namespace Task_Logger_Pro.Logging
                     context.Windows.Add(window);
                     context.SaveChanges();
                 }
-
-                if (window.WindowID == 0)
-                    throw new InvalidOperationException("Window ID is 0, " + window.Title);
 
                 _currentWindowTitle = e.WindowTitle;
 
@@ -817,6 +792,34 @@ namespace Task_Logger_Pro.Logging
                 {
                     context.Entry<Log>(log).Reload();
                     context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    if(ex is System.Data.Entity.Validation.DbEntityValidationException)
+                        foreach (var eve in (ex as System.Data.Entity.Validation.DbEntityValidationException).EntityValidationErrors)
+                        {
+                            Exceptions.Logger.DumpDebug(string.Format( "Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                eve.Entry.Entity.GetType().Name, eve.Entry.State));
+                            foreach (var ve in eve.ValidationErrors)
+                            {
+                                Exceptions.Logger.DumpDebug(string.Format( "- Property: \"{0}\", Error: \"{1}\"",
+                                    ve.PropertyName, ve.ErrorMessage));
+                            }
+                        }
+                    else if (ex.InnerException != null && ex.InnerException is System.Data.Entity.Validation.DbEntityValidationException)
+                    {
+                        System.Data.Entity.Validation.DbEntityValidationException evex = ex.InnerException as System.Data.Entity.Validation.DbEntityValidationException;
+                        foreach (var eve in evex.EntityValidationErrors)
+                        {
+                            Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                eve.Entry.Entity.GetType().Name, eve.Entry.State));
+                            foreach (var ve in eve.ValidationErrors)
+                            {
+                                Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
+                                    ve.PropertyName, ve.ErrorMessage));
+                            }
+                        }
+                    }
                 }
             }
         }
