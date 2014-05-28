@@ -742,9 +742,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Apps.sdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="De.TorstenMandelkow.MetroChart.dll" />
     <Resource Include="Resources\down.png" />
   </ItemGroup>

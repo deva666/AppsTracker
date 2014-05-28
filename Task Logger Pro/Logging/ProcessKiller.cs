@@ -40,6 +40,7 @@ namespace Task_Logger_Pro.Logging
             set
             {
                 _appsToBlockList = value;
+                BlockAsync();
             }
         }
 
@@ -49,13 +50,19 @@ namespace Task_Logger_Pro.Logging
 
         public ProcessKiller()
         {
-            Mediator.Register(MediatorMessages.AppsToBlockChanged, new Action(RefreshAppsToBlock));
+            Mediator.Register(MediatorMessages.AppsToBlockChanged, new Action<List<AppsToBlock>>(RefreshAppsToBlock));
             WqlEventQuery query = new WqlEventQuery("__InstanceCreationEvent", new TimeSpan(0, 0, 1), "TargetInstance isa \"Win32_Process\"");
             _managementEventWatcher = new ManagementEventWatcher();
             _managementEventWatcher.Query = query;
             _managementEventWatcher.Options.Timeout = new TimeSpan(0, 0, 5);
             _managementEventWatcher.Start();
             _managementEventWatcher.EventArrived += processStartEvent_EventArrived;
+        }
+
+        public ProcessKiller(IEnumerable<AppsToBlock> collection)
+            : this()
+        {
+            _appsToBlockList = collection;
         }
 
         #endregion
@@ -66,15 +73,10 @@ namespace Task_Logger_Pro.Logging
             _managementEventWatcher.EventArrived -= processStartEvent_EventArrived;
         }
 
-        public void RefreshAppsToBlock()
+        public void RefreshAppsToBlock(List<AppsToBlock> appsToBlockList)
         {
-            using (var context = new AppsEntities())
-            {
-                _appsToBlockList = context.AppsToBlocks
-                                          .Where(b => b.UserID == Globals.UserID)
-                                          .Include(b => b.Application)
-                                          .ToList();
-            }
+            _appsToBlockList = appsToBlockList;
+            BlockAsync();
         }
 
         #region Event Handlers
@@ -201,7 +203,7 @@ namespace Task_Logger_Pro.Logging
 
         public Mediator Mediator
         {
-            get { throw new NotImplementedException(); }
+            get { return Mediator.Instance; }
         }
     }
 

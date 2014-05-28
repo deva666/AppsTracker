@@ -135,35 +135,6 @@ namespace Task_Logger_Pro
 
         }
 
-        private static bool SaveScreenShot(Bitmap img, string path)
-        {
-            try
-            {
-                //using (Bitmap newImg = new Bitmap(img))
-                //{
-                //    ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Jpeg);
-                //    System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
-                //    EncoderParameters myEncoderParameters = new EncoderParameters(1);
-                //    EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, Convert.ToInt64(App.UzerSetting.ScreenshotQuality));
-                //    myEncoderParameters.Param[0] = myEncoderParameter;
-                //    MemoryStream memoryStream = new MemoryStream();
-                //    FileStream fileStream = File.Open(path, FileMode.OpenOrCreate);
-                //    newImg.Save(memoryStream, jgpEncoder, myEncoderParameters);
-                //    byte[] imgArray = memoryStream.ToArray();
-                //    fileStream.Write(imgArray, 0, imgArray.Length);
-                //    memoryStream.Close();
-                //    fileStream.Close();
-                //    // newImg.Save(path, jgpEncoder, myEncoderParameters);
-                //}
-                //img.Dispose();
-                return true;
-            }
-            catch (ExternalException)
-            {
-                return false;
-                //GDI+ error, do nothing
-            }
-        }
 
         //private static ImageFormat GetImageFormat( string path )
         //{

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using AppsTracker.Models.Utils;
 
 namespace AppsTracker.Models.EntityModels
 {
@@ -34,6 +35,12 @@ namespace AppsTracker.Models.EntityModels
             this.Logs = new HashSet<Log>();
         }
 
+        public Window(string title)
+            : this()
+        {
+            this.Title = title.Truncate(1000);
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int WindowID { get; set; }
@@ -42,6 +49,7 @@ namespace AppsTracker.Models.EntityModels
         public int ApplicationID { get; set; }
 
         [Required]
+        [StringLength(1000)]
         public string Title { get; set; }
 
         [ForeignKey("ApplicationID")]

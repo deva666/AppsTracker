@@ -294,7 +294,39 @@ namespace Task_Logger_Pro
             using (var context = new AppsEntities())
             {
                 context.Entry(_settings).State = System.Data.Entity.EntityState.Modified;
-                await context.SaveChangesAsync();
+                try
+                {
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    if (ex is System.Data.Entity.Validation.DbEntityValidationException)
+                        foreach (var eve in (ex as System.Data.Entity.Validation.DbEntityValidationException).EntityValidationErrors)
+                        {
+                            Console.WriteLine(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                eve.Entry.Entity.GetType().Name, eve.Entry.State));
+                            foreach (var ve in eve.ValidationErrors)
+                            {
+                                Console.WriteLine(string.Format("- Property: \"{0}\", Error: \"{1}\"",
+                                    ve.PropertyName, ve.ErrorMessage));
+                            }
+                        }
+                    else if (ex.InnerException != null && ex.InnerException is System.Data.Entity.Validation.DbEntityValidationException)
+                    {
+                        System.Data.Entity.Validation.DbEntityValidationException evex = ex.InnerException as System.Data.Entity.Validation.DbEntityValidationException;
+                        foreach (var eve in evex.EntityValidationErrors)
+                        {
+                            Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                eve.Entry.Entity.GetType().Name, eve.Entry.State));
+                            foreach (var ve in eve.ValidationErrors)
+                            {
+                                Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
+                                    ve.PropertyName, ve.ErrorMessage));
+                            }
+                        }
+                    }
+                    throw;
+                }
             }
         }
 
@@ -372,7 +404,8 @@ namespace Task_Logger_Pro
         {
             if (enable)
             {
-                if (_emailReport == null) _emailReport = new EmailReport();
+                if (_emailReport == null) 
+                    _emailReport = new EmailReport();
                 _emailReport.EmailTo = _uzerSetting.EmailTo;
                 _emailReport.EmailFrom = _uzerSetting.EmailFrom;
                 _emailReport.Interval = _uzerSetting.EmailInterval;

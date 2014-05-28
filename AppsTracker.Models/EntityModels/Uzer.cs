@@ -12,11 +12,11 @@ namespace AppsTracker.Models.EntityModels
     {
         public Uzer()
         {
-            //this.Applications = new HashSet<Aplication>();
-            //this.AppsToBlocks = new HashSet<AppsToBlock>();
-            //this.BlockedApps = new HashSet<BlockedApp>();
-            //this.FileLogs = new HashSet<FileLog>();
-            //this.Usages = new HashSet<Usage>();
+            this.Applications = new HashSet<Aplication>();
+            this.AppsToBlocks = new HashSet<AppsToBlock>();
+            this.BlockedApps = new HashSet<BlockedApp>();
+            this.FileLogs = new HashSet<FileLog>();
+            this.Usages = new HashSet<Usage>();
         }
 
         [Key]
@@ -24,7 +24,7 @@ namespace AppsTracker.Models.EntityModels
         public int UserID { get; set; }
 
         [Required]
-        [StringLength(60)]
+        [StringLength(100)]
         public string Name { get; set; }
 
         public virtual ICollection<Aplication> Applications { get; set; }

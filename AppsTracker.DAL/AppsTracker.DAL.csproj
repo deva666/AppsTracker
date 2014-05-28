@@ -57,8 +57,6 @@
   <ItemGroup>
     <Compile Include="AppsDataBaseInitializer.cs" />
     <Compile Include="AppsEntitites.cs" />
-    <Compile Include="Connection.cs" />
-    <Compile Include="ConnectionConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

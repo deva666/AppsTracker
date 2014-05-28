@@ -547,12 +547,14 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         private void ApplicationAdded(Aplication app)
         {
+            TopAppsList = null;
+            TopWindowsList = null;
+            ChartList = null;
             List<Aplication> copy = new List<Aplication>();
             copy.Add(app);
             copy = AplicationList.Union(copy).ToList();
             AplicationList = null;
             AplicationList = copy;
-            PropertyChanging("AplicationList");
         }
 
         #endregion
@@ -746,10 +748,13 @@ namespace Task_Logger_Pro.Pages.ViewModels
                                 {
                                     foreach (var app in appList)
                                     {
-                                        if (!context.AppsToBlocks.ItemExists(user, app))
+                                        if (app.Description.ToLower() != "apps tracker")
                                         {
-                                            AppsToBlock appToBlock = new AppsToBlock(user, app);
-                                            context.AppsToBlocks.Add(appToBlock);
+                                            if (!context.AppsToBlocks.ItemExists(user, app))
+                                            {
+                                                AppsToBlock appToBlock = new AppsToBlock(user, app);
+                                                context.AppsToBlocks.Add(appToBlock);
+                                            }
                                         }
                                     }
                                 }
@@ -769,8 +774,9 @@ namespace Task_Logger_Pro.Pages.ViewModels
                                     }
                                 }
                             }
-                            Mediator.NotifyColleagues<object>(MediatorMessages.AppsToBlockChanged, new object());
                             context.SaveChangesAsync();
+                            var notifyList =  context.AppsToBlocks.Where(a => a.UserID == Globals.UserID).Include(a => a.Application).ToList();
+                            Mediator.NotifyColleagues<List<AppsToBlock>>(MediatorMessages.AppsToBlockChanged, notifyList);
                         }
                     }
                 }

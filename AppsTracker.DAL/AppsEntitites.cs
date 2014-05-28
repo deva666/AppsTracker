@@ -19,7 +19,7 @@ namespace AppsTracker.DAL
         public AppsEntities()
             : base(connection)
         {
-
+            Console.WriteLine(Database.Connection.ConnectionString);
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

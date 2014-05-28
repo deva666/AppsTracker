@@ -77,7 +77,6 @@ namespace Task_Logger_Pro
 
         private void CheckPassword()
         {
-            //if (Serialization.Encryption.GetHashSHA2String(pbPassword.Password) == Serialization.Deserialize.DeserializeAndDecryptFromFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.APP_SERVICE), Constants.PSWD_FILE_NAME) as string)
             if(Encryption.Encrypt.GetHashSHA2String(pbPassword.Password) == App.UzerSetting.WindowOpen)
             {
                 this.DialogResult = true;

@@ -30,7 +30,7 @@ namespace Task_Logger_Pro.ViewModels
         bool _popupFilewatcherFilterIsOpen = false;
         bool _popupEmailIntervalIsOpen = false;
         bool _popupOldLogsIsOpen = false;
-        bool _popupidleTimerIsOpen = false;  
+        bool _popupidleTimerIsOpen = false;
 
         string _selectedUserName = Environment.UserName;
 
@@ -565,7 +565,6 @@ namespace Task_Logger_Pro.ViewModels
 
         }
 
-        //PROVJERI OVO NIJE TESTIRANO
         private void RemoveFromBlockedCollection(object parameter)
         {
             if (parameter != null)
@@ -581,14 +580,15 @@ namespace Task_Logger_Pro.ViewModels
                     {
                         using (var context = new AppsEntities())
                         {
-                            Uzer uzer = context.Users.FirstOrDefault(u => u.Name == userName);
-                            if (uzer == null)
-                                return;
                             foreach (var app in appsList)
                             {
-                                uzer.AppsToBlocks.Remove(app);
+                                var appDB = context.AppsToBlocks.SingleOrDefault(a => a.AppsToBlockID == app.AppsToBlockID);
+                                if (appDB != null)
+                                    context.AppsToBlocks.Remove(appDB);
                             }
                             context.SaveChanges();
+                            _allUsersCollection = null;
+                            PropertyChanging("AllUsersCollection");
                         }
                     }
                 }
@@ -649,7 +649,7 @@ namespace Task_Logger_Pro.ViewModels
                 switch (label.Content as string)
                 {
                     case "5 min":
-                        UserSettings.EmailIntervalEnum = AppsTracker.Models.EntityModels. EmailInterval.FiveMinute;
+                        UserSettings.EmailIntervalEnum = AppsTracker.Models.EntityModels.EmailInterval.FiveMinute;
                         break;
                     case "10 min":
                         UserSettings.EmailIntervalEnum = AppsTracker.Models.EntityModels.EmailInterval.TenMinute;
@@ -752,7 +752,7 @@ namespace Task_Logger_Pro.ViewModels
                 }
                 ShowMessageWindow("Email sent successfully.");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageWindow messageWindow = new MessageWindow(ex);
                 messageWindow.ShowDialog();
@@ -808,7 +808,7 @@ namespace Task_Logger_Pro.ViewModels
         {
             string interval = (string)parameter;
             int intOut;
-            if(int.TryParse(interval, out intOut))
+            if (int.TryParse(interval, out intOut))
             {
                 UserSettings.IdleInterval = intOut * 60 * 1000;
             }

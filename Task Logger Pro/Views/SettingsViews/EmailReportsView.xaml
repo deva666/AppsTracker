@@ -183,7 +183,8 @@
                              Grid.Row="2"
                              Grid.Column="1"
                              MinWidth="150"
-                             Name="tbFrom">
+                             Name="tbFrom"
+                             MaxLength="60">
                         <TextBox.Text>
                             <Binding Path="UserSettings.EmailFrom"
                                      UpdateSourceTrigger="PropertyChanged">
@@ -203,7 +204,8 @@
                            HorizontalAlignment="Left" />
                     <TextBox Margin="5"
                              Grid.Row="3"
-                             Grid.Column="1">
+                             Grid.Column="1"
+                             MaxLength="60">
                         <TextBox.Text>
                             <Binding Path="UserSettings.EmailTo"
                                      UpdateSourceTrigger="PropertyChanged">
@@ -220,10 +222,12 @@
                            Content="Smtp host:"
                            Grid.Row="4"
                            Grid.Column="0"
-                           HorizontalAlignment="Left" />
+                           HorizontalAlignment="Left" 
+                           />
                     <TextBox Margin="5"
                              Grid.Row="4"
-                             Grid.Column="1">
+                             Grid.Column="1"
+                             MaxLength="30">
                         <TextBox.Text>
                             <Binding Path="UserSettings.EmailSmtpHost"
                                      UpdateSourceTrigger="PropertyChanged">
@@ -240,10 +244,12 @@
                            Content="Smtp port:"
                            Grid.Row="5"
                            Grid.Column="0"
-                           HorizontalAlignment="Left" />
+                           HorizontalAlignment="Left" 
+                           />
                     <TextBox Margin="5"
                              Grid.Row="5"
-                             Grid.Column="1">
+                             Grid.Column="1"
+                             MaxLength="8">
                         <TextBox.Text>
                             <Binding Path="UserSettings.EmailSmtpPort"
                                      UpdateSourceTrigger="PropertyChanged">
@@ -262,7 +268,8 @@
                            HorizontalAlignment="Left" />
                     <TextBox Margin="5"
                              Grid.Row="6"
-                             Grid.Column="1">
+                             Grid.Column="1"
+                             MaxLength="60">
                         <TextBox.Text>
                             <Binding Path="UserSettings.EmailSmtpUsername"
                                      UpdateSourceTrigger="PropertyChanged">
@@ -283,7 +290,8 @@
                                  Grid.Row="7"
                                  Grid.Column="1"
                                  controls:PBAssistant.BindPassword="True"
-                                 Name="passBox">
+                                 Name="passBox"
+                                 MaxLength="60">
                         <controls:PBAssistant.BoundPassword>
                             <Binding Path="UserSettings.EmailSmtpPassword"
                                      Mode="TwoWay"

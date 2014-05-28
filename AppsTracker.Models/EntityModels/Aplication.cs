@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using AppsTracker.Models.Utils;
 
 namespace AppsTracker.Models.EntityModels
 {
@@ -16,7 +17,7 @@ namespace AppsTracker.Models.EntityModels
         {
             get
             {
-                return GetAppDuration();     
+                return GetAppDuration();
             }
         }
 
@@ -35,11 +36,8 @@ namespace AppsTracker.Models.EntityModels
         }
 
         public Aplication()
+            : this("", "", "", "", "", "")
         {
-            this.AppsToBlocks = new HashSet<AppsToBlock>();
-            this.BlockedApps = new HashSet<BlockedApp>();
-            this.Windows = new HashSet<Window>();
-
             this.FileName = "";
             this.Description = "";
             this.Company = "";
@@ -49,12 +47,16 @@ namespace AppsTracker.Models.EntityModels
 
         public Aplication(string name, string fileName, string version, string description, string company, string realName)
         {
-            this.Name = name;
-            this.FileName = fileName;
-            this.Version = version;
-            this.Description = description;
-            this.Company = company;
-            this.WinName = realName;
+            this.AppsToBlocks = new HashSet<AppsToBlock>();
+            this.BlockedApps = new HashSet<BlockedApp>();
+            this.Windows = new HashSet<Window>();
+
+            this.Name = name.Truncate(250);
+            this.FileName = fileName.Truncate(360);
+            this.Version = version.Truncate(50);
+            this.Description = description.Truncate(150);
+            this.Company = company.Truncate(150);
+            this.WinName = realName.Truncate(100);
         }
 
 
@@ -63,7 +65,7 @@ namespace AppsTracker.Models.EntityModels
         public int ApplicationID { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(250)]
         public string Name { get; set; }
 
         [Required]
@@ -71,7 +73,7 @@ namespace AppsTracker.Models.EntityModels
         public string FileName { get; set; }
 
         [Required]
-        [StringLength(30)]
+        [StringLength(50)]
         public string Version { get; set; }
 
         [Required]
@@ -79,14 +81,14 @@ namespace AppsTracker.Models.EntityModels
         public string Description { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [StringLength(150)]
         public string Company { get; set; }
-        
+
         [Required]
         public int UserID { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(100)]
         public string WinName { get; set; }
 
         [ForeignKey("UserID")]

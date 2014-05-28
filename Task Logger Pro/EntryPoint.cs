@@ -5,7 +5,6 @@ using Task_Logger_Pro.Controls;
 using System.Configuration;
 using Task_Logger_Pro.Utils;
 
-
 namespace Task_Logger_Pro
 {
     public static class EntryPoint
@@ -18,7 +17,13 @@ namespace Task_Logger_Pro
             {
                 ConnectionConfig.CheckConnection();
             }
-            catch (InvalidOperationException)
+            catch (System.IO.IOException ex)
+            {
+                Exceptions.Logger.DumpExceptionInfo(ex);
+                System.Windows.Forms.MessageBox.Show("Database folder creation failed, check error log for more information.", Constants.APP_NAME);
+                return;
+            }
+            catch (System.Security.SecurityException)
             {
                 System.Windows.Forms.MessageBox.Show("Database creation forbidden.", Constants.APP_NAME);
                 return;
@@ -31,11 +36,6 @@ namespace Task_Logger_Pro
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             SingleInstanceManager singleInstanceApp = new SingleInstanceManager();
 
-            //if (!TestCreateDatabase())
-            //{
-            //    System.Windows.Forms.MessageBox.Show("Database creation forbidden.", Constants.APP_NAME);
-            //    return;
-            //}
             singleInstanceApp.Run(args);
         }
 

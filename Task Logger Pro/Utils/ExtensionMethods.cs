@@ -12,6 +12,12 @@ namespace Task_Logger_Pro
 {
     public static class ExtensionMethods
     {
+        public static string Truncate(this string value, int maxLength)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+            return value.Length <= maxLength ? value : value.Substring(0, maxLength);
+        }
+
         public static string ToExtendedString(this UsageTypes type)
         {
             switch (type)

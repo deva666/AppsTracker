@@ -569,7 +569,6 @@ namespace Task_Logger_Pro.Logging
                 _currentUsageStopped = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
 
             StartStopIdleMonitor(false);
-
         }
 
         private void LoggingResumed()
@@ -601,12 +600,13 @@ namespace Task_Logger_Pro.Logging
                 _processKiller = null;
                 return;
             }
-            else if (_processKiller == null)
+            else if (_processKiller == null && appsToBlockList.Count > 0)
             {
-                _processKiller = new ProcessKiller();
+                _processKiller = new ProcessKiller(appsToBlockList);
                 _processKiller.ProcessKilledEvent += _processKiller_ProcessKilledEvent;
             }
-            _processKiller.AppsToBlockList = appsToBlockList;
+            else if (_processKiller != null && appsToBlockList.Count > 0)
+                _processKiller.AppsToBlockList = appsToBlockList;
         }
 
         private void CreateLoadUser()
@@ -749,9 +749,41 @@ namespace Task_Logger_Pro.Logging
                                                     e.ProcessInfo.ProcessRealName) { UserID = Globals.UserID };
                     newApp = true;
                     context.Applications.Add(app);
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex is System.Data.Entity.Validation.DbEntityValidationException)
+                            foreach (var eve in (ex as System.Data.Entity.Validation.DbEntityValidationException).EntityValidationErrors)
+                            {
+                                Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                    eve.Entry.Entity.GetType().Name, eve.Entry.State));
+                                foreach (var ve in eve.ValidationErrors)
+                                {
+                                    Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
+                                        ve.PropertyName, ve.ErrorMessage));
+                                }
+                            }
+                        else if (ex.InnerException != null && ex.InnerException is System.Data.Entity.Validation.DbEntityValidationException)
+                        {
+                            System.Data.Entity.Validation.DbEntityValidationException evex = ex.InnerException as System.Data.Entity.Validation.DbEntityValidationException;
+                            foreach (var eve in evex.EntityValidationErrors)
+                            {
+                                Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                    eve.Entry.Entity.GetType().Name, eve.Entry.State));
+                                foreach (var ve in eve.ValidationErrors)
+                                {
+                                    Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
+                                        ve.PropertyName, ve.ErrorMessage));
+                                }
+                            }
+                        }
+                        throw;
+                    }
                 }
-             
+
                 Window window = (from w in context.Windows
                                  where w.Title == e.WindowTitle
                                  && w.ApplicationID == app.ApplicationID
@@ -761,7 +793,39 @@ namespace Task_Logger_Pro.Logging
                 {
                     window = new Window() { Title = e.WindowTitle, ApplicationID = app.ApplicationID };
                     context.Windows.Add(window);
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex is System.Data.Entity.Validation.DbEntityValidationException)
+                            foreach (var eve in (ex as System.Data.Entity.Validation.DbEntityValidationException).EntityValidationErrors)
+                            {
+                                Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                    eve.Entry.Entity.GetType().Name, eve.Entry.State));
+                                foreach (var ve in eve.ValidationErrors)
+                                {
+                                    Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
+                                        ve.PropertyName, ve.ErrorMessage));
+                                }
+                            }
+                        else if (ex.InnerException != null && ex.InnerException is System.Data.Entity.Validation.DbEntityValidationException)
+                        {
+                            System.Data.Entity.Validation.DbEntityValidationException evex = ex.InnerException as System.Data.Entity.Validation.DbEntityValidationException;
+                            foreach (var eve in evex.EntityValidationErrors)
+                            {
+                                Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                    eve.Entry.Entity.GetType().Name, eve.Entry.State));
+                                foreach (var ve in eve.ValidationErrors)
+                                {
+                                    Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
+                                        ve.PropertyName, ve.ErrorMessage));
+                                }
+                            }
+                        }
+                        throw;
+                    }
                 }
 
                 _currentWindowTitle = e.WindowTitle;
@@ -795,14 +859,14 @@ namespace Task_Logger_Pro.Logging
                 }
                 catch (Exception ex)
                 {
-                    if(ex is System.Data.Entity.Validation.DbEntityValidationException)
+                    if (ex is System.Data.Entity.Validation.DbEntityValidationException)
                         foreach (var eve in (ex as System.Data.Entity.Validation.DbEntityValidationException).EntityValidationErrors)
                         {
-                            Exceptions.Logger.DumpDebug(string.Format( "Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                            Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
                                 eve.Entry.Entity.GetType().Name, eve.Entry.State));
                             foreach (var ve in eve.ValidationErrors)
                             {
-                                Exceptions.Logger.DumpDebug(string.Format( "- Property: \"{0}\", Error: \"{1}\"",
+                                Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
                                     ve.PropertyName, ve.ErrorMessage));
                             }
                         }
@@ -820,6 +884,7 @@ namespace Task_Logger_Pro.Logging
                             }
                         }
                     }
+                    throw;
                 }
             }
         }

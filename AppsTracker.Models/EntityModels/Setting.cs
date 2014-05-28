@@ -207,8 +207,7 @@ namespace AppsTracker.Models.EntityModels
         [Required]
         public double MainWindowHeight { get; set; }
 
-       
-        [StringLength(20)]
+        [StringLength(64)]
         public string WindowOpen { get; set; }
 
         [Required]
@@ -235,7 +234,7 @@ namespace AppsTracker.Models.EntityModels
         public Nullable<System.DateTime> LastExecutedDate { get; set; }
 
         
-        [StringLength(30)]
+        [StringLength(60)]
         public string Username { get; set; }
     }
 }

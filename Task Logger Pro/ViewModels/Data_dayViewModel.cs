@@ -37,11 +37,6 @@ namespace Task_Logger_Pro.ViewModels
         List<TopWindowsModel> _topWindowsList;
         List<DailyUsageTypeSeries> _chartList;
 
-        //WeakReference _weakAppSingle = new WeakReference(null);
-        //WeakReference _weakWindowSingle = new WeakReference(null);
-        //WeakReference _weakChart = new WeakReference(null);
-        //WeakReference _weakCollection = new WeakReference(null);
-
         ICommand _singleAppSelectionChangedCommand;
         ICommand _singleWindowSelectionChangedCommand;
         ICommand _addDaysCommand;
@@ -132,7 +127,6 @@ namespace Task_Logger_Pro.ViewModels
         }
         public bool IsContentLoaded
         {
-            //get { return WeakCollection.Target != null; }
             get;
             private set;
         }
@@ -202,36 +196,6 @@ namespace Task_Logger_Pro.ViewModels
             }
         }
 
-        //public WeakReference WeakAppSingle
-        //{
-        //    get
-        //    {
-        //        return _weakAppSingle;
-        //    }
-        //}
-        //public WeakReference WeakWindowSingle
-        //{
-        //    get
-        //    {
-        //        return _weakWindowSingle;
-        //    }
-        //}
-        //public WeakReference WeakChart
-        //{
-        //    get
-        //    {
-        //        return _weakChart;
-        //    }
-        //}
-        //public WeakReference WeakCollection
-        //{
-        //    get
-        //    {
-        //        if (_weakCollection.Target == null && !Working)
-        //            LoadContent();
-        //        return _weakCollection;
-        //    }
-        //}
         public ICommand SingleAppSelectionChangedCommand
         {
             get
@@ -279,24 +243,12 @@ namespace Task_Logger_Pro.ViewModels
 
             SingleAppDuration = string.Empty;
             SingleWindowDuration = string.Empty;
-            //Task[] tasks = new Task[] {LoadDayLogs(), LoadAppsSingle(), LoadChart(), LoadDayInfo()};
-            //Task.WaitAll(tasks);
 
             await LoadDayLogs();
             await LoadAppsSingle();
             await LoadChart();
             await LoadDayInfo();
-            //_workQueue.Add(true);
-            //List<DayViewModel> contentList = await LoadContentAsync();
-            //WeakCollection.Target = contentList;
-            //WeakCollection.Target = contentList.ToList();
-            //_workQueue.Remove();
-            //SingleAppDuration = string.Empty;
-            //SingleWindowDuration = string.Empty;
-            //LoadAppsSingle();
-            //LoadChart();
-            //LoadDayInfo();
-            //PropertyChanging("");
+
             IsContentLoaded = true;
         }
 
@@ -314,16 +266,6 @@ namespace Task_Logger_Pro.ViewModels
             if (TopAppsList.Count == 0)
                 TopWindowsList = null;
             _workQueue.Remove();
-            //
-            //List<TopAppsModel> result = await GetTopAppsSingleAsync();
-            //WeakAppSingle.Target = result;
-            //if (result.Count == 0)
-            //{
-            //    WeakWindowSingle.Target = null;
-            //    PropertyChanging("WeakWindowSingle");
-            //}
-            //_workQueue.Remove();
-            //PropertyChanging("WeakAppSingle");
         }
 
         private async Task LoadWindowsSingle()
@@ -331,10 +273,6 @@ namespace Task_Logger_Pro.ViewModels
             _workQueue.Add(true);
             TopWindowsList = await GetTopWindowsSingleAsync();
             _workQueue.Remove();
-            //    _workQueue.Add(true);
-            //    WeakWindowSingle.Target = await GetTopWindowsSingleAsync();
-            //    _workQueue.Remove();
-            //    PropertyChanging("WeakWindowSingle");
         }
         private async Task LoadDayInfo()
         {
@@ -347,12 +285,6 @@ namespace Task_Logger_Pro.ViewModels
             _workQueue.Add(true);
             ChartList = await GetChartContentAsync();
             _workQueue.Remove();
-            //_workQueue.Add(true);
-            //List<DailyUsageTypeSeries> chartList = await GetChartContentAsync();
-            //WeakChart.Target = chartList;
-            //WeakChart.Target = chartList.ToList();
-            //_workQueue.Remove();
-            //PropertyChanging("WeakChart");
         }
 
         private Task<List<DayViewModel>> LoadContentAsync()
@@ -387,7 +319,7 @@ namespace Task_Logger_Pro.ViewModels
                                   where u.UserID == Globals.SelectedUserID
                                   && l.UsageStart >= _selectedDate
                                   && l.UsageEnd <= date2
-                                  //&& l.UsageType.UType != ignore
+                                  && l.UsageType.UType != ignore
                                   select l).Include(u => u.UsageType)
                                   .ToList()
                                   .Select(u => new DayViewModel()
