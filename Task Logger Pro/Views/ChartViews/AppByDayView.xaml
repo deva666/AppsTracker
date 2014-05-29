@@ -25,7 +25,6 @@
                                  HorizontalAlignment="Left"
                                  Margin="20,0,0,0"
                                  Grid.Row="0">
-                                 <!--Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=Visibility}">-->
                 <controls:BackButton.InputBindings>
                     <MouseBinding Gesture="LeftClick"
                                   Command="{Binding ReturnFromDetailedViewCommand}" />

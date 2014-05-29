@@ -13,7 +13,7 @@
     <UserControl.Resources>
         <local:ConvertDuration x:Key="convertDuration" />
         <local:ConvertBoolToStyle x:Key="convertBoolToStyle"
-                                  SelectableLabelStyle="{StaticResource GVLabelStyle}"
+                                  SelectableLabelStyle="{DynamicResource GVLabelStyle}"
                                   SelectedLabelStyle="{StaticResource GVBoldLabelStyle}" />
         <local:ConvertTopWindowDuration x:Key="convertWindowDuration" />
         <local:ConvertDateRangeToString x:Key="convertDateRange" />
@@ -91,7 +91,7 @@
         </Grid.RowDefinitions>
 
 
-        <Label Style="{StaticResource LabelStyle}"
+        <Label Style="{DynamicResource LabelStyle}"
                FontSize="16"
                HorizontalAlignment="Left"
                Margin="20,0,0,0">
@@ -170,14 +170,14 @@
             </ListView.View>
         </ListView >
 
-        <Label Style="{StaticResource LabelStyle}"
+        <Label Style="{DynamicResource LabelStyle}"
                Content="{Binding OverallAppDuration}"
                Grid.Row="2"
                Grid.Column="0"
                Margin="10,5,20,0"
                HorizontalAlignment="Right" />
 
-        <Label Style="{StaticResource LabelStyle}"
+        <Label Style="{DynamicResource LabelStyle}"
                Content="{Binding OverallWindowDuration}"
                Grid.Row="2"
                Grid.Column="1"

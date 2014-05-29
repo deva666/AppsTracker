@@ -159,14 +159,14 @@
             </controls:SortableListView.View>
         </controls:SortableListView >
 
-        <Label Style="{StaticResource LabelStyle}"
+        <Label Style="{DynamicResource LabelStyle}"
                Content="{Binding OverallAppDuration}"
                Grid.Row="2"
                Grid.Column="0"
                Margin="10,5,20,0"
                HorizontalAlignment="Right" />
 
-        <Label Style="{StaticResource LabelStyle}"
+        <Label Style="{DynamicResource LabelStyle}"
                Content="{Binding OverallWindowDuration}"
                Grid.Row="2"
                Grid.Column="1"

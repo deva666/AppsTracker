@@ -791,7 +791,8 @@ namespace Task_Logger_Pro.Logging
 
                 if (window == null)
                 {
-                    window = new Window() { Title = e.WindowTitle, ApplicationID = app.ApplicationID };
+                    window = Window.CreateByTitleAndAppID(e.WindowTitle, app.ApplicationID);
+
                     context.Windows.Add(window);
                     try
                     {

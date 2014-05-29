@@ -35,7 +35,7 @@
         </ContextMenu>
         
         <DataTemplate x:Key="appTemplate">
-            <Label Style="{StaticResource GVLabelStyle}"
+            <Label Style="{DynamicResource GVLabelStyle}"
                    Content="{Binding Window.Application.Name}">
                 <Label.RenderTransform>
                     <TranslateTransform />
@@ -46,7 +46,7 @@
                     </EventTrigger>
                 </Label.Triggers>
                 <Label.ToolTip>
-                    <ToolTip Style="{StaticResource ToolTipStyle}">
+                    <ToolTip Style="{DynamicResource ToolTipStyle}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
@@ -60,51 +60,51 @@
                                 <RowDefinition />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <Label Style="{StaticResource LabelStyle}"
+                            <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="0"
                                    Grid.Column="0"
                                    HorizontalAlignment="Left"
                                    Content="Company:" />
-                            <Label Style="{StaticResource LabelStyle}"
+                            <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="0"
                                    Grid.Column="1"
                                    Content="{Binding Path=Window.Application.Company, Mode=OneWay}" />
 
-                            <Label Style="{StaticResource LabelStyle}"
+                            <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="1"
                                    Grid.Column="0"
                                    HorizontalAlignment="Left"
                                    Content="Version:" />
-                            <Label Style="{StaticResource LabelStyle}"
+                            <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="1"
                                    Grid.Column="1"
                                    Content="{Binding Path=Window.Application.Version, Mode=OneWay}" />
 
-                            <Label Style="{StaticResource LabelStyle}"
+                            <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="2"
                                    Grid.Column="0"
                                    HorizontalAlignment="Left"
                                    Content="Description:" />
-                            <Label Style="{StaticResource LabelStyle}"
+                            <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="2"
                                    Grid.Column="1"
                                    Content="{Binding Path=Window.Application.Description, Mode=OneWay}" />
 
-                            <Label Style="{StaticResource LabelStyle}"
+                            <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="3"
                                    Grid.Column="0"
                                    HorizontalAlignment="Left"
                                    Content="File name:" />
-                            <Label Style="{StaticResource LabelStyle}"
+                            <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="3"
                                    Grid.Column="1"
                                    Content="{Binding Path=Window.Application.FileName, Mode=OneWay}" />
-                            <Label Style="{StaticResource LabelStyle}"
+                            <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="4"
                                    Grid.Column="0"
                                    HorizontalAlignment="Left"
                                    Content="Total time logged:" />
-                            <Label Style="{StaticResource LabelStyle}"
+                            <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="4"
                                    Grid.Column="1"
                                    Content="{Binding Path=Duration, Mode=OneWay, Converter={StaticResource convertDuration}}" />
@@ -114,7 +114,7 @@
             </Label>
         </DataTemplate>
         <DataTemplate x:Key="wndTemplate">
-            <Label Style="{StaticResource GVLabelStyle}"
+            <Label Style="{DynamicResource GVLabelStyle}"
                    Content="{Binding Window.Title}">
                 <Label.RenderTransform>
                     <TranslateTransform />
@@ -127,7 +127,7 @@
             </Label>
         </DataTemplate>
         <DataTemplate x:Key="dateTemplate">
-            <Label Style="{StaticResource GVLabelStyle}"
+            <Label Style="{DynamicResource GVLabelStyle}"
                    Content="{Binding DateCreated}">
                 <Label.RenderTransform>
                     <TranslateTransform />
@@ -186,7 +186,7 @@
                                              >
 
                     <controls:FilterableListView.View>
-                        <GridView ColumnHeaderContainerStyle="{StaticResource HeaderStyle}">
+                <GridView ColumnHeaderContainerStyle="{DynamicResource HeaderStyle}">
                             <controls:SortableGridViewColumn Header="App"
                                                              CellTemplate="{StaticResource appTemplate}"
                                                              SortPropertyName="AppName"
@@ -307,7 +307,7 @@
                     </Thumb.Template>
 
                 </Thumb>
-                <Label Style="{StaticResource LabelStyle}"
+                <Label Style="{DynamicResource LabelStyle}"
                        Content="Screenshots"
                        Foreground="White"
                        Grid.Row="2"

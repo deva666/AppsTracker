@@ -46,7 +46,7 @@
     </Style>
 
     <Style x:Key="SelectableLabelStyle"
-           BasedOn="{StaticResource LabelStyle}"
+           BasedOn="{DynamicResource LabelStyle}"
            x:Name="selLblStyle">
         <Setter Property="Control.Foreground"
                 Value="{DynamicResource WindowForegroundBrush}" />
@@ -60,7 +60,7 @@
     </Style>
 
     <Style x:Key="SelectedLabelStyle"
-           BasedOn="{StaticResource LabelStyle}"
+           BasedOn="{DynamicResource LabelStyle}"
            x:Name="selectedlLblStyle">
         <Setter Property="Control.Foreground"
                 Value="{DynamicResource HighlightBrush}" />
@@ -139,7 +139,7 @@
 
     <Style x:Key="LBLabelStyleNoSel"
            x:Name="lbLblStylenSl"
-           BasedOn="{StaticResource LabelStyle}">
+           BasedOn="{DynamicResource LabelStyle}">
         <Setter Property="Control.Foreground"
                 Value="{DynamicResource HighlightBrush}" />
     </Style>
@@ -327,7 +327,7 @@
     </Style>
 
     <Style x:Key="GVLabelStyle"
-           BasedOn="{StaticResource LabelStyle}"
+           BasedOn="{DynamicResource LabelStyle}"
            TargetType="Label">
         <Style.Triggers>
 
@@ -356,7 +356,7 @@
     </Style>
 
     <Style x:Key="GVBoldLabelStyle"
-           BasedOn="{StaticResource LabelStyle}"
+           BasedOn="{DynamicResource LabelStyle}"
            TargetType="Label">
         <Setter Property="FontWeight"
                 Value="Bold" />
@@ -999,7 +999,7 @@
                     <StackPanel Orientation="Horizontal">
                         <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}"
                                   VerticalAlignment="Center" />
-                        <Label Style="{StaticResource LabelStyle}"
+                        <Label Style="{DynamicResource LabelStyle}"
                                Content="{Binding Name}"
                                VerticalAlignment="Center" />
                     </StackPanel>
@@ -3530,7 +3530,7 @@
                                             HorizontalAlignment="Left">
                                     </Border>
                                 </Grid>
-                                <Label Style="{StaticResource LabelStyle}"
+                                <Label Style="{DynamicResource LabelStyle}"
                                        Content="{Binding Usage}"
                                        ContentStringFormat="P" />
                             </Grid>

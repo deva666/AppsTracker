@@ -93,7 +93,7 @@ namespace Task_Logger_Pro
         {
             try
             {
-                FileInfo file = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "apps.sdf"));
+                FileInfo file = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "appsRELEASE.sdf"));
                 return Math.Round((decimal)file.Length / 1048576, 2);
             }
             catch (Exception ex)

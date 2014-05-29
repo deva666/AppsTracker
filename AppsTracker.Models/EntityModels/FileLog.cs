@@ -39,7 +39,6 @@ namespace AppsTracker.Models.EntityModels
         [StringLength(360)]
         public string Path { get; set; }
 
-        [Required]
         [StringLength(360)]
         public string NewPath { get; set; }
 

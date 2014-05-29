@@ -23,9 +23,10 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="0.3*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    FontSize="18"
                    Grid.Row="0"
                    Grid.ColumnSpan="3"
@@ -41,13 +42,13 @@
                       Grid.Row="1"
                       Grid.Column="1"
                       Margin="20,20,0,10" />
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    Content="Take screenshots:"
                    HorizontalAlignment="Left"
                    FontSize="14"
                    Grid.Row="1"
                    Margin="0,20,0,10" />
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    Content="Screenshot interval:"
                    FontSize="14"
                    HorizontalAlignment="Left"
@@ -63,6 +64,25 @@
                 <Button.InputBindings>
                     <MouseBinding Gesture="LeftClick"
                                   Command="{Binding ShowPopupCommand}" />
+                </Button.InputBindings>
+            </Button>
+            
+            <Label Style="{DynamicResource LabelStyle}"
+                   Content="Path to save screenshots from database:"
+                   FontSize="14"
+                   HorizontalAlignment="Left"
+                   Grid.Row="3"
+                   Margin="0,20,0,0" />
+            <Button Content="{Binding Path=UserSettings.DefaultScreenshotSavePath}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    Margin="20,20,0,0">
+                <Button.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding ShowFolderBrowserDialogCommand}"
+                                  CommandParameter="SCREENSHOTS"/>
                 </Button.InputBindings>
             </Button>
             <Popup PopupAnimation="Slide"
@@ -141,24 +161,6 @@
                     </StackPanel>
                 </Border>
             </Popup>
-
-            <!--<Label Style="{StaticResource LabelStyle}"
-                   Content="Screenshot quality:"
-                   FontSize="14"
-                   HorizontalAlignment="Left"
-                   Grid.Row="3"
-                   Margin="0,10,0,0" />
-            <Slider Style="{StaticResource SliderStyle}"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Left"
-                    Minimum="1"
-                    Maximum="100"
-                    MinWidth="125"
-                    SmallChange="1"
-                    Value="{Binding UserSettings.ScreenshotQuality}"
-                    Grid.Column="1"
-                    Grid.Row="3"
-                    Margin="20,10,0,0" />-->
 
         </Grid>
     </ScrollViewer>

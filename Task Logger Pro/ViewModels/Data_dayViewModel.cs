@@ -30,11 +30,16 @@ namespace Task_Logger_Pro.ViewModels
 
         WorkQueue<bool> _workQueue;
 
+        [CleanUp(true)]
         TopAppsModel _topAppsSingle;
 
+        [CleanUp(true)]
         List<TopAppsModel> _topAppsList;
+        [CleanUp(true)]
         List<DayViewModel> _dayViewModelList;
+        [CleanUp(true)]
         List<TopWindowsModel> _topWindowsList;
+        [CleanUp(true)]
         List<DailyUsageTypeSeries> _chartList;
 
         ICommand _singleAppSelectionChangedCommand;
@@ -307,8 +312,8 @@ namespace Task_Logger_Pro.ViewModels
                                 .ToList()
                                 .Select(l => new DayViewModel()
                                 {
-                                    DateCreated = l.DateCreated,
-                                    DateEnded = l.DateEnded,
+                                    DateCreated = l.DateCreated.ToString("HH:mm:ss"),
+                                    DateEnded = l.DateEnded.ToString("HH:mm:ss"),
                                     Duration = l.Duration,
                                     Name = l.Window.Application.Name,
                                     Title = l.Window.Title
@@ -324,8 +329,8 @@ namespace Task_Logger_Pro.ViewModels
                                   .ToList()
                                   .Select(u => new DayViewModel()
                                   {
-                                      DateCreated = u.UsageStart,
-                                      DateEnded = u.UsageEnd,
+                                      DateCreated = u.UsageStart.ToString("HH:mm:ss"),
+                                      DateEnded = u.UsageEnd.ToString("HH:mm:ss"),
                                       Duration = u.Duration.Ticks,
                                       Name = ((UsageTypes)Enum.Parse(typeof(UsageTypes), u.UsageType.UType)).ToExtendedString(),
                                       Title = "*********",
@@ -484,7 +489,7 @@ namespace Task_Logger_Pro.ViewModels
 
                 foreach (var login in logins)
                 {
-                    DailyUsageTypeSeries series = new DailyUsageTypeSeries() { Time = login.UsageStart.ToShortTimeString() };
+                    DailyUsageTypeSeries series = new DailyUsageTypeSeries() { Time = login.UsageStart.ToString("HH:mm:ss") };
                     ObservableCollection<UsageTypeModel> observableCollection = new ObservableCollection<UsageTypeModel>();
 
                     long idleTime = 0;
@@ -620,6 +625,21 @@ namespace Task_Logger_Pro.ViewModels
         }
 
         #endregion
+
+        private void CleanUp()
+        {
+            Type type = this.GetType();
+            var fields = type.GetFields();
+            foreach (var field in fields)
+            {
+                foreach (var attr in field.GetCustomAttributes(true))
+                {
+                    if (attr is CleanUpAttribute)
+                        field.SetValue(this, null);
+                }
+            }
+
+        }
 
         protected override void Disposing()
         {

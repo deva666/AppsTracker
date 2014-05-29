@@ -187,6 +187,7 @@
     <Compile Include="MVVM\IPage.cs" />
     <Compile Include="MVVM\IWorker.cs" />
     <Compile Include="MVVM\IChildVM.cs" />
+    <Compile Include="Utils\Attributes.cs" />
     <Compile Include="Utils\ConnectionConfig.cs" />
     <Compile Include="Utils\CustomEventArgs.cs" />
     <Compile Include="Utils\ListViewBehavior.cs" />

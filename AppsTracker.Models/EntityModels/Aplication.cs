@@ -68,26 +68,21 @@ namespace AppsTracker.Models.EntityModels
         [StringLength(250)]
         public string Name { get; set; }
 
-        [Required]
         [StringLength(360)]
         public string FileName { get; set; }
 
-        [Required]
         [StringLength(50)]
         public string Version { get; set; }
 
-        [Required]
         [StringLength(150)]
         public string Description { get; set; }
 
-        [Required]
         [StringLength(150)]
         public string Company { get; set; }
 
         [Required]
         public int UserID { get; set; }
 
-        [Required]
         [StringLength(100)]
         public string WinName { get; set; }
 

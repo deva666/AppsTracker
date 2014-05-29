@@ -491,13 +491,25 @@ namespace Task_Logger_Pro.ViewModels
             messageWindow.ShowDialog();
         }
 
-        private void ShowFolderBrowserDialog()
+        private void ShowFolderBrowserDialog(object parameter)
         {
+            string toUpdate = parameter as string;
+            string path; 
+            
+            if (toUpdate == null)
+                return;
+
             System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                UserSettings.FileWatcherPath = dialog.SelectedPath;
-            }
+                path = dialog.SelectedPath;
+            else
+                return;
+
+            if (toUpdate.ToUpper() == "FILEWATCHER")
+                UserSettings.FileWatcherPath = path;
+            else if (toUpdate.ToUpper() == "SCREENSHOTS")
+                UserSettings.DefaultScreenshotSavePath = path;
+            
         }
 
         private void SetGmailConf()

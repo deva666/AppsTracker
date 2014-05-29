@@ -19,7 +19,8 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto"  />
+                <ColumnDefinition Width="0.3*" />
+                <ColumnDefinition Width="*"  />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -38,7 +39,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    Grid.Row="0"
                    Grid.ColumnSpan="2"
                    HorizontalAlignment="Left"
@@ -46,7 +47,7 @@
                    FontSize="18"
                    FontFamily="Tahoma"
                    Margin="0,0,250,20" />
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    Grid.Row="1"
                    Content="Delete old logs automatically:"
                    HorizontalAlignment="Left"
@@ -60,7 +61,7 @@
                       Name="cbOldLogs" />
             <controls:FaderContentControl Grid.Row="2"
                                           FaderVisibility="{Binding UserSettings.DeleteOldLogs}">
-                <Label Style="{StaticResource LabelStyle}"
+                <Label Style="{DynamicResource LabelStyle}"
                        HorizontalAlignment="Left"
                        Grid.Row="2"
                        Content="Delete logs older than:" />
@@ -72,6 +73,7 @@
                         Content="{Binding UserSettings.OldLogDeleteDays}"
                         Grid.Row="2"
                         Grid.Column="1"
+                        HorizontalAlignment="Center"
                         Name="lblOldLogs">
                     <Button.InputBindings>
                         <MouseBinding Gesture="LeftClick"
@@ -80,7 +82,7 @@
                     </Button.InputBindings>
                 </Button>
             </controls:FaderContentControl>
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    FontFamily="Tahoma"
                    FontSize="16"
                    Grid.Row="4"
@@ -88,7 +90,7 @@
                    HorizontalAlignment="Left"
                    Margin="0,25,0,10" />
 
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    Content="Enable keylogger"
                    HorizontalAlignment="Left"
                    Grid.Row="5"
@@ -100,14 +102,14 @@
                       Grid.Row="5"
                       Grid.Column="1" />
 
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    FontSize="16"
                    Grid.Row="6"
                    Content="Idle"
                    HorizontalAlignment="Left"
                    Margin="0,25,0,5"
                    FontFamily="Tahoma" />
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    Grid.Row="7"
                    Grid.ColumnSpan="2"
                    Content="Log user inactivity"
@@ -117,7 +119,7 @@
                    Margin="0,0,0,20"
                    HorizontalAlignment="Left" />
 
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    Content="Enable idle logging:"
                    HorizontalAlignment="Left"
                    Grid.Row="8"
@@ -131,7 +133,7 @@
             <controls:FaderContentControl Grid.Row="9"
                                           Grid.Column="0"
                                           FaderVisibility="{Binding UserSettings.EnableIdle}">
-                <Label Style="{StaticResource LabelStyle}"
+                <Label Style="{DynamicResource LabelStyle}"
                        Content="Start idle after being inactive for:"
                        HorizontalAlignment="Left"
                        Grid.Row="9"
@@ -155,16 +157,16 @@
                     </Button.InputBindings>
                 </Button>
             </controls:FaderContentControl>
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    FontSize="16"
                    Grid.Row="10"
                    Content="Filewatcher"
                    HorizontalAlignment="Left"
                    Margin="0,25,0,5"
                    FontFamily="Tahoma" />
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    Grid.Row="11"
-                   Grid.ColumnSpan="2"
+                   Grid.ColumnSpan="1"
                    Content="Filewatcher logs creation, deletion and renaming of files"
                    Foreground="{DynamicResource WindowForegroundBrush}"
                    FontFamily="Tahoma"
@@ -172,7 +174,7 @@
                    Margin="0,0,0,20"
                    HorizontalAlignment="Left" />
 
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    Content="Enable filewatcher:"
                    HorizontalAlignment="Left"
                    Grid.Row="12"
@@ -185,7 +187,7 @@
 
             <controls:FaderContentControl Grid.Row="13"
                                           FaderVisibility="{Binding UserSettings.EnableFileWatcher}" >
-                <Label Style="{StaticResource LabelStyle}"
+                <Label Style="{DynamicResource LabelStyle}"
                        Content="Filewatcher path:"
                        HorizontalAlignment="Left"
                        Grid.Row="13"
@@ -202,7 +204,8 @@
                         Margin="0,10,0,10">
                     <Button.InputBindings>
                         <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding ShowFolderBrowserDialogCommand}" />
+                                      Command="{Binding ShowFolderBrowserDialogCommand}"
+                                      CommandParameter="FILEWATCHER"/>
                     </Button.InputBindings>
                 </Button>
             </controls:FaderContentControl>
@@ -222,7 +225,7 @@
             <controls:FaderContentControl Grid.Row="14"
                                           Grid.Column="0"
                                           FaderVisibility="{Binding UserSettings.EnableFileWatcher}">
-                <Label Style="{StaticResource LabelStyle}"
+                <Label Style="{DynamicResource LabelStyle}"
                    Content="Watch subdirectories of selected path:"
                    HorizontalAlignment="Left"
                    Grid.Row="14"
@@ -236,6 +239,14 @@
                    >
                 <Border Style="{DynamicResource ThemeBorderStyle}">
                     <StackPanel>
+                        <Label Style="{StaticResource SelectableLabelStyle}"
+                               Content="15 days">
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding ChangeOldLogsDaysCommand}"
+                                              CommandParameter="15" />
+                            </Label.InputBindings>
+                        </Label>
                         <Label Style="{StaticResource SelectableLabelStyle}"
                                Content="30 days">
                             <Label.InputBindings>
@@ -258,14 +269,6 @@
                                 <MouseBinding Gesture="LeftClick"
                                               Command="{Binding ChangeOldLogsDaysCommand}"
                                               CommandParameter="90" />
-                            </Label.InputBindings>
-                        </Label>
-                        <Label Style="{StaticResource SelectableLabelStyle}"
-                               Content="180 days">
-                            <Label.InputBindings>
-                                <MouseBinding Gesture="LeftClick"
-                                              Command="{Binding ChangeOldLogsDaysCommand}"
-                                              CommandParameter="180" />
                             </Label.InputBindings>
                         </Label>
                     </StackPanel>

@@ -50,5 +50,6 @@ namespace Task_Logger_Pro
         public double ScreenshotWindowHeight { get { return App.Settings.ScreenshotWindowHeight; } set { App.Settings.ScreenshotWindowHeight = value; PropertyChanging("ScreenshotWindowHeight"); } }
         public DateTime? LastExecutedDate { get { return App.Settings.LastExecutedDate; } set { App.Settings.LastExecutedDate = value; PropertyChanging("LastExecutedDate"); } }
         public string Username { get { return App.Settings.Username; } set { App.Settings.Username = value; PropertyChanging("Username"); } }
+        public string DefaultScreenshotSavePath { get { return App.Settings.DefaultScreenshotSavePath; } set { App.Settings.DefaultScreenshotSavePath = value; PropertyChanging("DefaultScreenshotSavePath"); } }
     }
 }

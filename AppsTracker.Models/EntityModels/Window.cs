@@ -55,5 +55,13 @@ namespace AppsTracker.Models.EntityModels
         [ForeignKey("ApplicationID")]
         public virtual Aplication Application { get; set; }
         public virtual ICollection<Log> Logs { get; set; }
+
+        public static Window CreateByTitleAndAppID(string title, int appID)
+        {
+            Window window = new Window();
+            window.Title = title.Truncate(1000);
+            window.ApplicationID = appID;
+            return window;
+        }
     }
 }

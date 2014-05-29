@@ -96,13 +96,13 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <Label Style="{StaticResource LabelStyle}"
+                            <Label Style="{DynamicResource LabelStyle}"
                                    Content="Enter license key"
                                    Grid.Row="0"
                                    Grid.Column="0"
                                    Grid.ColumnSpan="2"
                                    HorizontalAlignment="Center" />
-                            <Label Style="{StaticResource LabelStyle}"
+                            <Label Style="{DynamicResource LabelStyle}"
                                    Content="Username:"
                                    Grid.Row="1"
                                    Grid.Column="0"
@@ -112,7 +112,7 @@
                                      Width="150"
                                      Margin="5"
                                      Name="tbUsername" />
-                            <Label Style="{StaticResource LabelStyle}"
+                            <Label Style="{DynamicResource LabelStyle}"
                                    Content="License key:"
                                    Grid.Row="2"
                                    Grid.Column="0"

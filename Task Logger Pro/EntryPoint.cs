@@ -25,7 +25,7 @@ namespace Task_Logger_Pro
             }
             catch (System.Security.SecurityException)
             {
-                System.Windows.Forms.MessageBox.Show("Database creation forbidden.", Constants.APP_NAME);
+                System.Windows.Forms.MessageBox.Show("Database creation forbidden./nConnection string is not encrypted.", Constants.APP_NAME);
                 return;
             }
            

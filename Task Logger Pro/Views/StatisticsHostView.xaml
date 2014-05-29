@@ -71,19 +71,11 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
             
-                <!--<ListBox Grid.Row="1"
-                         Grid.RowSpan="2"
-                         ItemTemplate="{StaticResource lbItemTemplate}"
-                         ItemsSource="{Binding Children}"
-                         SelectedItem="{Binding SelectedChild ,Mode=TwoWay}"
-                         ItemContainerStyle="{StaticResource FlatListBoxItem}"
-                         Name="lbCharts"
-                         Margin="40,100,30,0" />-->
 
             <StackPanel Orientation="Vertical"
                         Grid.Row="1"
                         Grid.RowSpan="2"
-                        Margin="40,100,30,0"
+                        Margin="40,100,20,0"
                         >
                 <Label Content="USERS"
                        HorizontalAlignment="Left"

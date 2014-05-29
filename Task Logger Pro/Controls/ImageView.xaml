@@ -35,21 +35,21 @@
                         <ColumnDefinition />
 
                     </Grid.ColumnDefinitions>
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Grid.Column="0"
                            Grid.Row="0"
                            Content="App:" />
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Grid.Column="1"
                            Grid.Row="0"
                            FontWeight="Bold"
                            Content="{Binding RelativeSource={RelativeSource FindAncestor,
                     AncestorType=UserControl}, Path=SynchronizationElement.SelectedItem.Log.Window.Application.Name}" />
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Grid.Column="0"
                            Grid.Row="1"
                            Content="Window:" />
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Grid.Column="1"
                            Grid.Row="1">
                         <Label.Content>
@@ -60,11 +60,11 @@
                         </Label.Content>
                     </Label>
                         
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Grid.Column="0"
                            Grid.Row="2"
                            Content="Date:" />
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Grid.Column="1"
                            Grid.Row="2"
                            FontWeight="Bold"
@@ -72,11 +72,11 @@
                     AncestorType=UserControl}, Path=SynchronizationElement.SelectedItem.Date}" />
                    
 
-                    <!--<Label Style="{StaticResource LabelStyle}"
+                    <!--<Label Style="{DynamicResource LabelStyle}"
                            Grid.Column="0"
                            Grid.Row="3"
                            Content="Size:" />
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Grid.Column="1"
                            Grid.Row="3"
                            FontWeight="Bold"

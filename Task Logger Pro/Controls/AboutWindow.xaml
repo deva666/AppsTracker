@@ -25,7 +25,7 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Label Style="{StaticResource LabelStyle}"
+        <Label Style="{DynamicResource LabelStyle}"
                Grid.Row="0"
                HorizontalAlignment="Left"
                Content="about apps tracker"

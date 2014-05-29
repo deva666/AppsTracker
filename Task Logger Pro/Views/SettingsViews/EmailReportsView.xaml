@@ -25,13 +25,13 @@
     <ScrollViewer HorizontalScrollBarVisibility="Auto"
                   VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical">
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    FontSize="18"
                    Content="Email reports"
                    HorizontalAlignment="Left"
                    FontFamily="Tahoma"
                    Margin="0,0,0,0" />
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    FontSize="14"
                    Content="Reports with logging activity and screenshots can be sent to specified email address."
                    Foreground="{DynamicResource WindowForegroundBrush}"
@@ -41,9 +41,10 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="240" />
+                    <ColumnDefinition Width="0.2*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Label Style="{StaticResource LabelStyle}"
+                <Label Style="{DynamicResource LabelStyle}"
                        Content="Send Email reports:"
                        HorizontalAlignment="Left" />
                 <CheckBox Grid.Column="1"
@@ -51,10 +52,10 @@
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center"
                           Name="cbSend"
-                          Margin="20,0,0,0" />
+                          Margin="50,0,0,0" />
             </Grid>
             <controls:FaderContentControl ClipToBounds="True"
-                                          Visibility="{Binding ElementName=cbSend, Path=IsChecked, Converter={StaticResource convertVisibility} }"
+                                          FaderVisibility="{Binding UserSettings.EnableEmailReports}"
                                           Margin="0,20,0,0">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -71,10 +72,11 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="0.2*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Content="Use preconfigured settings:"
                            Grid.Row="0"
                            Grid.Column="0"
@@ -83,7 +85,8 @@
                     <ComboBox Grid.Row="0"
                               Grid.Column="1"
                               Margin="5"
-                              Foreground="{DynamicResource HighlightBrush}">
+                              Foreground="{DynamicResource HighlightBrush}"
+                              HorizontalAlignment="Center">
                         <ComboBoxItem Foreground="{DynamicResource HighlightBrush}">Gmail
                             <ComboBoxItem.InputBindings>
                                 <MouseBinding Gesture="LeftClick"
@@ -100,17 +103,19 @@
                         </ComboBoxItem>
                     </ComboBox>
 
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Content="Email interval:"
                            HorizontalAlignment="Left"
-                           Grid.Row="1" />
+                           Grid.Row="1" 
+                           
+                           Margin="0,20,0,0"/>
 
                     <Button Width="{Binding ElementName=tbFrom, Path=ActualWidth}"
                             Grid.Row="1"
                             Grid.Column="1"
                             Name="tbEmailInterval"
-                            HorizontalAlignment="Center"
-                            Margin="0,3,0,3"
+                            
+                            Margin="0,20,0,0"
                             Content="{Binding Path=UserSettings.EmailIntervalEnum, Converter={StaticResource convertEmailInterval}}">
                         <Button.InputBindings>
                             <MouseBinding Gesture="LeftClick"
@@ -174,7 +179,7 @@
                         </Border>
                     </Popup>
 
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Content="From:"
                            Grid.Row="2"
                            Grid.Column="0"
@@ -197,7 +202,7 @@
                         </TextBox.Text>
                     </TextBox>
 
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Content="To:"
                            Grid.Row="3"
                            Grid.Column="0"
@@ -205,7 +210,8 @@
                     <TextBox Margin="5"
                              Grid.Row="3"
                              Grid.Column="1"
-                             MaxLength="60">
+                             MaxLength="60"
+                             >
                         <TextBox.Text>
                             <Binding Path="UserSettings.EmailTo"
                                      UpdateSourceTrigger="PropertyChanged">
@@ -218,7 +224,7 @@
                         </TextBox.Text>
                     </TextBox>
 
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Content="Smtp host:"
                            Grid.Row="4"
                            Grid.Column="0"
@@ -227,7 +233,8 @@
                     <TextBox Margin="5"
                              Grid.Row="4"
                              Grid.Column="1"
-                             MaxLength="30">
+                             MaxLength="30"
+                             >
                         <TextBox.Text>
                             <Binding Path="UserSettings.EmailSmtpHost"
                                      UpdateSourceTrigger="PropertyChanged">
@@ -240,7 +247,7 @@
 
                     </TextBox>
 
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Content="Smtp port:"
                            Grid.Row="5"
                            Grid.Column="0"
@@ -249,7 +256,8 @@
                     <TextBox Margin="5"
                              Grid.Row="5"
                              Grid.Column="1"
-                             MaxLength="8">
+                             MaxLength="8"
+                             >
                         <TextBox.Text>
                             <Binding Path="UserSettings.EmailSmtpPort"
                                      UpdateSourceTrigger="PropertyChanged">
@@ -261,7 +269,7 @@
                         </TextBox.Text>
                     </TextBox>
 
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Content="Smtp username:"
                            Grid.Row="6"
                            Grid.Column="0"
@@ -269,7 +277,8 @@
                     <TextBox Margin="5"
                              Grid.Row="6"
                              Grid.Column="1"
-                             MaxLength="60">
+                             MaxLength="60"
+                             >
                         <TextBox.Text>
                             <Binding Path="UserSettings.EmailSmtpUsername"
                                      UpdateSourceTrigger="PropertyChanged">
@@ -281,7 +290,7 @@
                         </TextBox.Text>
                     </TextBox>
 
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Content="Smtp password:"
                            Grid.Row="7"
                            Grid.Column="0"
@@ -291,7 +300,8 @@
                                  Grid.Column="1"
                                  controls:PBAssistant.BindPassword="True"
                                  Name="passBox"
-                                 MaxLength="60">
+                                 MaxLength="60"
+                                 >
                         <controls:PBAssistant.BoundPassword>
                             <Binding Path="UserSettings.EmailSmtpPassword"
                                      Mode="TwoWay"
@@ -304,7 +314,7 @@
                         </controls:PBAssistant.BoundPassword>
                     </PasswordBox>
 
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Content="Enable SSL:"
                            Grid.Row="8"
                            Grid.Column="0"

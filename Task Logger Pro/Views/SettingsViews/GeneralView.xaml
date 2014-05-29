@@ -30,7 +30,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    Content="Information"
                    FontFamily="Tahoma"
                    FontSize="18"
@@ -45,7 +45,7 @@
                 </Button.InputBindings>
             </Button>
 
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    Content="Run apps tracker on Windows startup:"
                    Grid.Row="2"
                    Grid.Column="0"
@@ -64,7 +64,7 @@
                 </CheckBox.InputBindings>
             </CheckBox>
 
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    Content="Stealth mode:"
                    Grid.Row="3"
                    HorizontalAlignment="Left"
@@ -75,7 +75,7 @@
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"
                       Margin="30,0,0,0" />
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    Grid.Row="4"
                    Grid.ColumnSpan="3"
                    Content="Stealth mode hides the tray icon and the main app window.  Main window can be opened again by running the app executable or shortcut."
@@ -85,7 +85,7 @@
                    FontSize="11"
                    Margin="0,0,0,5" />
 
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    Content="Theme:"
                    Grid.Row="5"
                    HorizontalAlignment="Left"

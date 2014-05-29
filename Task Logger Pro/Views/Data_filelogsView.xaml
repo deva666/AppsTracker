@@ -20,7 +20,7 @@
         <logging:FileLog x:Key="fileLog" />
 
         <DataTemplate x:Key="dateTemplate">
-            <Label Style="{StaticResource GVLabelStyle}"
+            <Label Style="{DynamicResource GVLabelStyle}"
                    Content="{Binding Date}">
                 <Label.RenderTransform>
                     <TranslateTransform />
@@ -33,7 +33,7 @@
             </Label>
         </DataTemplate>
         <DataTemplate x:Key="eventTemplate">
-            <Label Style="{StaticResource GVLabelStyle}"
+            <Label Style="{DynamicResource GVLabelStyle}"
                    Content="{Binding Event}">
                 <Label.RenderTransform>
                     <TranslateTransform />
@@ -46,7 +46,7 @@
             </Label>
         </DataTemplate>
         <DataTemplate x:Key="pathTemplate">
-            <Label Style="{StaticResource GVLabelStyle}"
+            <Label Style="{DynamicResource GVLabelStyle}"
                    Content="{Binding Path=Path}">
                 <Label.RenderTransform>
                     <TranslateTransform />
@@ -59,7 +59,7 @@
             </Label>
         </DataTemplate>
         <DataTemplate x:Key="newPathTemplate">
-            <Label Style="{StaticResource GVLabelStyle}"
+            <Label Style="{DynamicResource GVLabelStyle}"
                    Content="{Binding NewPath}">
                 <Label.RenderTransform>
                     <TranslateTransform />

@@ -79,7 +79,7 @@
                         Grid.Row="0"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
-                <Label Style="{StaticResource headerStyle}"
+                <Label Style="{DynamicResource headerStyle}"
                        FontSize="16"
                        Content="Apps">
                     <Label.InputBindings>
@@ -116,7 +116,7 @@
                                 </EventTrigger>
                             </Label.Triggers>
                             <Label.ToolTip>
-                                <ToolTip Style="{StaticResource ToolTipStyle}">
+                                <ToolTip Style="{DynamicResource ToolTipStyle}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition />
@@ -130,27 +130,27 @@
                                             <RowDefinition />
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
-                                        <Label Style="{StaticResource LabelStyle}"
+                                        <Label Style="{DynamicResource LabelStyle}"
                                                Grid.Row="0"
                                                Grid.Column="0"
                                                HorizontalAlignment="Left"
                                                Content="Company:" />
-                                        <Label Style="{StaticResource LabelStyle}"
+                                        <Label Style="{DynamicResource LabelStyle}"
                                                Grid.Row="0"
                                                Grid.Column="1"
                                                Content="{Binding Path=Company, Mode=OneWay}" />
 
-                                        <Label Style="{StaticResource LabelStyle}"
+                                        <Label Style="{DynamicResource LabelStyle}"
                                                Grid.Row="1"
                                                Grid.Column="0"
                                                HorizontalAlignment="Left"
                                                Content="Version:" />
-                                        <Label Style="{StaticResource LabelStyle}"
+                                        <Label Style="{DynamicResource LabelStyle}"
                                                Grid.Row="1"
                                                Grid.Column="1"
                                                Content="{Binding Path=Version, Mode=OneWay}" />
 
-                                        <Label Style="{StaticResource LabelStyle}"
+                                        <Label Style="{DynamicResource LabelStyle}"
                                                Grid.Row="2"
                                                Grid.Column="0"
                                                HorizontalAlignment="Left"
@@ -160,12 +160,12 @@
                                                Grid.Column="1"
                                                Content="{Binding Path=Description, Mode=OneWay}" />
 
-                                        <Label Style="{StaticResource LabelStyle}"
+                                        <Label Style="{DynamicResource LabelStyle}"
                                                Grid.Row="3"
                                                Grid.Column="0"
                                                HorizontalAlignment="Left"
                                                Content="File name:" />
-                                        <Label Style="{StaticResource LabelStyle}"
+                                        <Label Style="{DynamicResource LabelStyle}"
                                                Grid.Row="3"
                                                Grid.Column="1"
                                                Content="{Binding Path=FileName, Mode=OneWay}" />
@@ -201,7 +201,7 @@
                                           Grid.Row="0"
                                           Visibility="{Binding ElementName=lbProcesses,Path=SelectedIndex,Converter={StaticResource convertIntToVisBack}}">
 
-                <Label Style="{StaticResource headerStyle}"
+                <Label Style="{DynamicResource headerStyle}"
                        Grid.Column="1"
                        Grid.ColumnSpan="3"
                        Grid.Row="0"

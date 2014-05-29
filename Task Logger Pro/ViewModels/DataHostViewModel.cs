@@ -31,29 +31,11 @@ namespace Task_Logger_Pro.ViewModels
         {
             this.SelectedChild = new Data_logsViewModel();
             IsContentLoaded = true;
-            //Data_logsViewModel logsViewModel = new Data_logsViewModel();
-            //Data_keystrokesViewModel keystrokesViewModel = new Data_keystrokesViewModel();
-            //Data_screenshotsViewModel screenshotsViewModel = new Data_screenshotsViewModel();
-            //Data_filelogsViewModel filelogsViewModel = new Data_filelogsViewModel();
-            ////Data_computerUsageViewModel computerUsageViewModel = new Data_computerUsageViewModel();
-            //Data_dayViewModel dayViewModel = new Data_dayViewModel();
-
-            //var tempChildren = new List<IChildVM>() {
-            //     logsViewModel,  keystrokesViewModel, screenshotsViewModel, dayViewModel, filelogsViewModel
-            //};
-
-            //this.Children = new ReadOnlyCollection<IChildVM>(tempChildren);
         }
 
         protected override void Disposing()
         {
-            //foreach (var child in this.Children)
-            //{
-            //    ((ViewModelBase)child).Dispose();
-            //}
-
             this._selectedChild = null;
-            //this.Children = null;
             base.Disposing();
         }
 
@@ -79,10 +61,6 @@ namespace Task_Logger_Pro.ViewModels
                 default:
                     break;
             }
-            //if (viewName == "APPS")
-            //    SelectedChild = new Data_logsViewModel();
-            //else if (viewName == "DAY VIEW")
-            //    SelectedChild = new Data_dayViewModel();
         }
     }
 }

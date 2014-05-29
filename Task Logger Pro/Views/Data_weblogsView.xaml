@@ -50,7 +50,7 @@
             </Style.Triggers>
         </Style-->
         <!--Style x:Key="GVLabelStyle"
-               BasedOn="{StaticResource LabelStyle}"
+               BasedOn="{DynamicResource LabelStyle}"
                TargetType="Label">
             <Style.Triggers>
                 <MultiDataTrigger>
@@ -70,11 +70,11 @@
         </Style-->
 
         <DataTemplate x:Key="dateTemplate">
-            <Label Style="{StaticResource GVLabelStyle}"
+            <Label Style="{DynamicResource GVLabelStyle}"
                    Content="{Binding Date}" />
         </DataTemplate>
         <DataTemplate x:Key="eventTemplate">
-            <Label Style="{StaticResource GVLabelStyle}"
+            <Label Style="{DynamicResource GVLabelStyle}"
                    Content="{Binding Url}" />
         </DataTemplate>
         

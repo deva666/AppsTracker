@@ -56,8 +56,8 @@ namespace AppsTracker.Models.ChartModels
     {
         public string Name { get; set; }
         public string Title { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateEnded { get; set; }
+        public string DateCreated { get; set; }
+        public string DateEnded { get; set; }
         public long Duration { get; set; }
         public bool IsRequested { get; set; }
         public bool IsSelected { get; set; }

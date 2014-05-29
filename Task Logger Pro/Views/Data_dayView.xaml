@@ -112,7 +112,7 @@
 
         <DataTemplate x:Key="startTemplate">
             <Label Style="{Binding IsRequested, Converter={StaticResource convertBoolToStyle}}"
-                   Content="{Binding DateCreated, Converter={StaticResource convertDateToTime}}">
+                   Content="{Binding DateCreated}">
                 <Label.RenderTransform>
                     <TranslateTransform />
                 </Label.RenderTransform>
@@ -126,7 +126,7 @@
 
         <DataTemplate x:Key="endTemplate">
             <Label Style="{Binding IsRequested, Converter={StaticResource convertBoolToStyle}}"
-                   Content="{Binding DateEnded, Converter={StaticResource convertDateToTime}}">
+                   Content="{Binding DateEnded}">
                 <Label.RenderTransform>
                     <TranslateTransform />
                 </Label.RenderTransform>
@@ -215,7 +215,7 @@
                     </Label.InputBindings>
                 </Label>
 
-                <Label Style="{StaticResource LabelStyle}"
+                <Label Style="{DynamicResource LabelStyle}"
                        FontSize="15"
                        Margin="35,0,0,0"
                        Content="{Binding Duration}" />
@@ -284,14 +284,14 @@
                 </controls:SortableListView.View>
             </controls:SortableListView >
 
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    Content="{Binding SingleAppDuration}"
                    Grid.Row="2"
                    Grid.Column="0"
                    Margin="10,5,20,0"
                    HorizontalAlignment="Right" />
 
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    Content="{Binding SingleWindowDuration}"
                    Grid.Row="2"
                    Grid.Column="1"

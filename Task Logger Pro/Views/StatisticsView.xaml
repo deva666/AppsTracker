@@ -35,7 +35,7 @@
                     <ColumnDefinition Width="*" />
 
                 </Grid.ColumnDefinitions>
-                <Label Style="{StaticResource LabelStyle}"
+                <Label Style="{DynamicResource LabelStyle}"
                        FontSize="20"
                        FontWeight="SemiBold"
                        Grid.Row="0"
@@ -52,7 +52,7 @@
                     </Label.Content>
                 </Label>
 
-                <Label Style="{StaticResource LabelStyle}"
+                <Label Style="{DynamicResource LabelStyle}"
                        FontSize="18"
                        Content="{Binding User.Name, UpdateSourceTrigger=PropertyChanged}"
                        HorizontalAlignment="Center"

@@ -21,7 +21,7 @@
         <logging:Usage x:Key="login" />
 
         <DataTemplate x:Key="loginTemplate">
-            <Label Style="{StaticResource GVLabelStyle}"
+            <Label Style="{DynamicResource GVLabelStyle}"
                    Content="{Binding Path=UsageStart}">
                 <Label.RenderTransform>
                     <TranslateTransform />
@@ -34,7 +34,7 @@
             </Label>
         </DataTemplate>
         <DataTemplate x:Key="durationTemplate">
-            <Label Style="{StaticResource GVLabelStyle}"
+            <Label Style="{DynamicResource GVLabelStyle}"
                    Content="{Binding Duration, Converter={StaticResource convertDuration}}">
                 <Label.RenderTransform>
                     <TranslateTransform />
@@ -47,7 +47,7 @@
             </Label>
         </DataTemplate>
         <DataTemplate x:Key="logoffTemplate">
-            <Label Style="{StaticResource GVLabelStyle}"
+            <Label Style="{DynamicResource GVLabelStyle}"
                    Content="{Binding Path=UsageEnd, Converter={StaticResource convertLogoff}}">
                 <Label.RenderTransform>
                     <TranslateTransform />

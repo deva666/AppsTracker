@@ -32,40 +32,6 @@ namespace Task_Logger_Pro
         Stopped
     }
 
-    //public enum ScreenShotInterval : uint
-    //{
-    //    [Description("10 sec")]
-    //    TenSeconds = 10000,
-    //    [Description("30 sec")]
-    //    ThirtySeconds = 30000,
-    //    [Description("1 min")]
-    //    OneMinute = 60000,
-    //    [Description("2 min")]
-    //    TwoMinute = 120000,
-    //    [Description("5 min")]
-    //    FiveMinute = 300000,
-    //    [Description("10 min")]
-    //    TenMinute = 600000,
-    //    [Description("30 min")]
-    //    ThirtyMinute = 1800000,
-    //    [Description("1 hr")]
-    //    OneHour = 3600000
-    //}
-
-    //public enum EmailInterval : uint
-    //{
-    //    [Description("5 min")]
-    //    FiveMinute = 300000,
-    //    [Description("10 min")]
-    //    TenMinute = 600000,
-    //    [Description("30 min")]
-    //    ThirtyMinute = 1800000,
-    //    [Description("1 hr")]
-    //    OneHour = 3600000,
-    //    [Description("2 hr")]
-    //    TwoHour = 7200000
-    //}
-
     public enum UsageTypes : byte
     {
         Login,
@@ -99,124 +65,117 @@ namespace Task_Logger_Pro
 
         public App(ReadOnlyCollection<string> args)
         {
+            InitializeComponent();
 
-            //AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
-
-            try
+            bool autostart = false;
+            foreach (var arg in args)
             {
-                bool autostart = false;
-                foreach (var arg in args)
+                if (arg.ToUpper().Contains(Constants.CMD_ARGS_AUTOSTART)) autostart = true;
+            }
+
+            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement)
+                                                                , new FrameworkPropertyMetadata(System.Windows.Markup.XmlLanguage.GetLanguage(System.Globalization.CultureInfo.CurrentCulture.IetfLanguageTag)));
+
+            Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new PropertyMetadata() { DefaultValue = 40 });
+
+            this.ShutdownMode = System.Windows.ShutdownMode.OnExplicitShutdown;
+
+            CreateSettingsAndUsageTypes();
+
+            _uzerSetting = new UzerSetting();
+            _settingsQueue = new SettingsQueue();
+            _settingsQueue.SaveSettings += _settingsQueue_SaveSettings;
+            UzerSetting.LastExecutedDate = DateTime.Now;
+            
+            ChangeTheme();
+            
+            _uzerSetting.PropertyChanged += (s, e) =>
+            {
+                UpdateLogData(e.PropertyName);
+                _settingsQueue.Add(_uzerSetting);
+                //SaveSettings(e.PropertyName);
+            };
+
+            Task deleteOldLogsTask = null;
+
+            if (_uzerSetting.DeleteOldLogs)
+                deleteOldLogsTask = DeleteOldLogsAsync();
+
+            if (CheckTrialExpiration())
+            {
+                MessageWindow messageWindow = new MessageWindow("The trial period has expired." + Environment.NewLine + " Please upgrade to licensed version to continue using this app.", false);
+                messageWindow.ShowDialog();
+                (App.Current as App).Shutdown();
+                Environment.Exit(0);
+                return;
+            }
+
+            if (UzerSetting.FirstRun)
+            {
+                //Nisam siguran da mi ovo treba
+                //if (!IsUserAnAdmin())
+                //{
+                //    MessageWindow msgWindow = new MessageWindow("It looks like this account is not in the Administrators group. Administrator privileges are required to install this app."
+                //        + Environment.NewLine
+                //        + "The app is going to exit.");
+                //    msgWindow.ShowDialog();
+                //    (App.Current as App).Shutdown();
+                //    Environment.Exit(0);
+                //    return;
+                //}
+
+                EULAWindow eulaWindow = new EULAWindow();
+                var dialogResult = eulaWindow.ShowDialog();
+                if (!dialogResult.HasValue && !dialogResult.Value)
                 {
-                    if (arg.ToUpper().Contains(Constants.CMD_ARGS_AUTOSTART)) autostart = true;
-                }
-                FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement)
-                                                                    , new FrameworkPropertyMetadata(System.Windows.Markup.XmlLanguage.GetLanguage(System.Globalization.CultureInfo.CurrentCulture.IetfLanguageTag)));
-
-                Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new PropertyMetadata() { DefaultValue = 40 });
-
-                this.ShutdownMode = System.Windows.ShutdownMode.OnExplicitShutdown;
-
-                CreateSettingsAndUsageTypes();
-
-                _uzerSetting = new UzerSetting();
-                _settingsQueue = new SettingsQueue();
-                _settingsQueue.SaveSettings += _settingsQueue_SaveSettings;
-                UzerSetting.LastExecutedDate = DateTime.Now;
-
-                _uzerSetting.PropertyChanged += (s, e) =>
-                {
-                    UpdateLogData(e.PropertyName);
-                    _settingsQueue.Add(_uzerSetting);
-                    //SaveSettings(e.PropertyName);
-                };
-
-                Task deleteOldLogsTask = null;
-
-                if (_uzerSetting.DeleteOldLogs)
-                    deleteOldLogsTask = DeleteOldLogsAsync();
-
-                ChangeTheme();
-
-                if (CheckTrialExpiration())
-                {
-                    MessageWindow messageWindow = new MessageWindow("The trial period has expired." + Environment.NewLine + " Please upgrade to licensed version to continue using this app.", false);
-                    messageWindow.ShowDialog();
                     (App.Current as App).Shutdown();
                     Environment.Exit(0);
                     return;
                 }
-
-                _dataLogger = new DataLogger(_uzerSetting);
-
-                if (UzerSetting.FirstRun)
-                {
-                    //Nisam siguran da mi ovo treba
-                    //if (!IsUserAnAdmin())
-                    //{
-                    //    MessageWindow msgWindow = new MessageWindow("It looks like this account is not in the Administrators group. Administrator privileges are required to install this app."
-                    //        + Environment.NewLine
-                    //        + "The app is going to exit.");
-                    //    msgWindow.ShowDialog();
-                    //    (App.Current as App).Shutdown();
-                    //    Environment.Exit(0);
-                    //    return;
-                    //}
-
-                    EULAWindow eulaWindow = new EULAWindow();
-                    var dialogResult = eulaWindow.ShowDialog();
-                    if (!dialogResult.HasValue && !dialogResult.Value)
-                    {
-                        (App.Current as App).Shutdown();
-                        Environment.Exit(0);
-                        return;
-                    }
-                }
-
-                if (deleteOldLogsTask != null)
-                    deleteOldLogsTask.Wait();
-
-                if (!_uzerSetting.Stealth & !autostart)
-                {
-                    CreateOrShowMainWindow();
-                    if (_uzerSetting.FirstRun)
-                    {
-                        SetWindowDimensions();
-                        _uzerSetting.FirstRun = false;
-                    }
-                }
-
-                MatchSettingsAndRegistry();
-
-                #region Event Handlers
-
-                this.Startup += (s, e) =>
-                   {
-                       SetProcessKillAuth();
-                   };
-
-                this.SessionEnding += (s, e) =>
-                {
-                    FinishAndExit(true);
-                };
-
-                EntryPoint.SingleInstanceManager.SecondInstanceActivating += (s, e) =>
-                {
-                    CreateOrShowMainWindow();
-                };
-
-                this.DispatcherUnhandledException += App_DispatcherUnhandledException;
-
-                this.Exit += App_Exit;
-
-                #endregion
-
-                ShowHideTrayIcon();
             }
-            catch (Exception ex)
+
+            _dataLogger = new DataLogger(_uzerSetting);
+
+            if (deleteOldLogsTask != null)
+                deleteOldLogsTask.Wait();
+
+            if (!_uzerSetting.Stealth & !autostart)
             {
-                Exceptions.Logger.DumpExceptionInfo(ex);
-                throw;
+                CreateOrShowMainWindow();
+                if (_uzerSetting.FirstRun)
+                {
+                    SetWindowDimensions();
+                    _uzerSetting.FirstRun = false;
+                }
             }
+
+            MatchSettingsAndRegistry();
+
+            #region Event Handlers
+
+            this.Startup += (s, e) =>
+               {
+                   SetProcessKillAuth();
+               };
+
+            this.SessionEnding += (s, e) =>
+            {
+                FinishAndExit(true);
+            };
+
+            EntryPoint.SingleInstanceManager.SecondInstanceActivating += (s, e) =>
+            {
+                CreateOrShowMainWindow();
+            };
+
+            this.DispatcherUnhandledException += App_DispatcherUnhandledException;
+
+            this.Exit += App_Exit;
+
+            #endregion
+
+            ShowHideTrayIcon();
+
         }
 
         void _settingsQueue_SaveSettings(object sender, UzerSetting e)
@@ -240,46 +199,33 @@ namespace Task_Logger_Pro
 
         private void CreateSettingsAndUsageTypes()
         {
-            try
+            using (var context = new AppsEntities())
             {
-                using (var context = new AppsEntities())
+                if (context.Settings.Count() == 0)
                 {
-                    if (context.Settings.Count() == 0)
-                    {
-                        _settings = new Setting(true);
-                        context.Settings.Add(_settings);
-                    }
-                    else
-                    {
-                        _settings = context.Settings.FirstOrDefault();
-                        _settings.LastExecutedDate = DateTime.Now;
-                        context.Entry(_settings).State = System.Data.Entity.EntityState.Modified;
-                    }
-
-                    if (context.UsageTypes.Count() != Enum.GetValues(typeof(UsageTypes)).Length)
-                    {
-                        foreach (var type in Enum.GetNames(typeof(UsageTypes)))
-                        {
-                            if (context.Usages.Include(u => u.UsageType).Any(u => u.UsageType.UType == type))
-                                continue;
-                            UsageType usageType = new UsageType() { UType = type };
-                            usageType = context.UsageTypes.Add(usageType);
-
-                        }
-                    }
-
-                    context.SaveChanges();
+                    _settings = new Setting(true);
+                    context.Settings.Add(_settings);
                 }
-            }
-            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
-            {
-                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                else
                 {
-                    foreach (var validationError in validationErrors.ValidationErrors)
+                    _settings = context.Settings.FirstOrDefault();
+                    _settings.LastExecutedDate = DateTime.Now;
+                    context.Entry(_settings).State = System.Data.Entity.EntityState.Modified;
+                }
+
+                if (context.UsageTypes.Count() != Enum.GetValues(typeof(UsageTypes)).Length)
+                {
+                    foreach (var type in Enum.GetNames(typeof(UsageTypes)))
                     {
-                        Console.WriteLine("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                        if (context.Usages.Include(u => u.UsageType).Any(u => u.UsageType.UType == type))
+                            continue;
+                        UsageType usageType = new UsageType() { UType = type };
+                        usageType = context.UsageTypes.Add(usageType);
+
                     }
                 }
+
+                context.SaveChanges();
             }
         }
 
@@ -294,39 +240,7 @@ namespace Task_Logger_Pro
             using (var context = new AppsEntities())
             {
                 context.Entry(_settings).State = System.Data.Entity.EntityState.Modified;
-                try
-                {
-                    await context.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-                    if (ex is System.Data.Entity.Validation.DbEntityValidationException)
-                        foreach (var eve in (ex as System.Data.Entity.Validation.DbEntityValidationException).EntityValidationErrors)
-                        {
-                            Console.WriteLine(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                                eve.Entry.Entity.GetType().Name, eve.Entry.State));
-                            foreach (var ve in eve.ValidationErrors)
-                            {
-                                Console.WriteLine(string.Format("- Property: \"{0}\", Error: \"{1}\"",
-                                    ve.PropertyName, ve.ErrorMessage));
-                            }
-                        }
-                    else if (ex.InnerException != null && ex.InnerException is System.Data.Entity.Validation.DbEntityValidationException)
-                    {
-                        System.Data.Entity.Validation.DbEntityValidationException evex = ex.InnerException as System.Data.Entity.Validation.DbEntityValidationException;
-                        foreach (var eve in evex.EntityValidationErrors)
-                        {
-                            Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                                eve.Entry.Entity.GetType().Name, eve.Entry.State));
-                            foreach (var ve in eve.ValidationErrors)
-                            {
-                                Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
-                                    ve.PropertyName, ve.ErrorMessage));
-                            }
-                        }
-                    }
-                    throw;
-                }
+                await context.SaveChangesAsync();
             }
         }
 
@@ -404,7 +318,7 @@ namespace Task_Logger_Pro
         {
             if (enable)
             {
-                if (_emailReport == null) 
+                if (_emailReport == null)
                     _emailReport = new EmailReport();
                 _emailReport.EmailTo = _uzerSetting.EmailTo;
                 _emailReport.EmailFrom = _uzerSetting.EmailFrom;
@@ -488,7 +402,7 @@ namespace Task_Logger_Pro
         {
             if (!_uzerSetting.Licence)
             {
-                if (_uzerSetting.TrialStartDate < DateTime.Now.AddDays(-30d) || (_uzerSetting.LastExecutedDate.HasValue && _uzerSetting.LastExecutedDate.Value > DateTime.Now))
+                if (_uzerSetting.TrialStartDate.AddDays(15) < DateTime.Now || (_uzerSetting.LastExecutedDate.HasValue && _uzerSetting.LastExecutedDate.Value > DateTime.Now))
                     return true;
                 else
                     return false;
@@ -685,17 +599,26 @@ namespace Task_Logger_Pro
 
         public void ChangeTheme()
         {
+            //Application.Current.Resources.Clear();
+            Application.Current.Resources.MergedDictionaries.Clear();
 
-            Application.Current.Resources.Clear();
             if (_uzerSetting.LightTheme)
             {
-                if (_uzerSetting.LoggingEnabled) Application.Current.Resources.Source = new Uri("/Themes/RunningLight.xaml", UriKind.Relative);
-                else Application.Current.Resources.Source = new Uri("/Themes/StoppedLight.xaml", UriKind.Relative);
+                if (_uzerSetting.LoggingEnabled)
+                    Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("/Themes/RunningLight.xaml", UriKind.Relative) });
+                //Application.Current.Resources.Source = new Uri("/Themes/RunningLight.xaml", UriKind.Relative);
+                else
+                    Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("/Themes/StoppedLight.xaml", UriKind.Relative) });
+                //Application.Current.Resources.Source = new Uri("/Themes/StoppedLight.xaml", UriKind.Relative);
             }
             else
             {
-                if (_uzerSetting.LoggingEnabled) Application.Current.Resources.Source = new Uri("/Themes/Running.xaml", UriKind.Relative);
-                else Application.Current.Resources.Source = new Uri("/Themes/Stopped.xaml", UriKind.Relative);
+                if (_uzerSetting.LoggingEnabled)
+                    Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("/Themes/Running.xaml", UriKind.Relative) });
+                //Application.Current.Resources.Source = new Uri("/Themes/Running.xaml", UriKind.Relative);
+                else
+                    Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("/Themes/Stopped.xaml", UriKind.Relative) });
+                //Application.Current.Resources.Source = new Uri("/Themes/Stopped.xaml", UriKind.Relative);
             }
 
         }

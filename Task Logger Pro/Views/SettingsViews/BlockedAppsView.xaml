@@ -34,7 +34,7 @@
 
             </Grid.ColumnDefinitions>
 
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    FontSize="18"
                    Content="Manage blocked apps for each user"
                    FontFamily="Tahoma"
@@ -43,7 +43,7 @@
                    HorizontalAlignment="Left"
                    Margin="0,0,0,10" />
 
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    FontSize="14"
                    Content="Apps can be added on the blocked list by right clicking the app name in the Data page."
                    Foreground="{DynamicResource WindowForegroundBrush}"
@@ -53,7 +53,7 @@
                    HorizontalAlignment="Left"
                    Margin="0,0,0,20" />
 
-            <Label Style="{StaticResource LabelStyle}"
+            <Label Style="{DynamicResource LabelStyle}"
                    Content="Users"
                    Grid.Row="2"
                    Grid.Column="0"
@@ -64,7 +64,7 @@
             <controls:FaderContentControl   Grid.Column="1"
                                             Grid.Row="2"
                                             Visibility="{Binding ElementName=lbUsers, Path=SelectedIndex, Converter={StaticResource convertIntToVisBack}}">
-                <Label Style="{StaticResource LabelStyle}"
+                <Label Style="{DynamicResource LabelStyle}"
                        Content="Blocked apps"
                        FontSize="14"
                        FontWeight="SemiBold"
@@ -187,7 +187,7 @@
             <controls:FaderContentControl Grid.Row="5"
                                           Grid.ColumnSpan="4"
                                           Visibility="{Binding ElementName=lbProcesses, Path=SelectedIndex, Converter={StaticResource convertIntToVisBack}}">
-                <Label Style="{StaticResource LabelStyle}"
+                <Label Style="{DynamicResource LabelStyle}"
                        Content="Manage blocking on specific days and time"
                        FontSize="16"
                        FontFamily="Tahoma"
@@ -204,7 +204,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Content="Allowed on days"
                            Grid.Row="0"
                            HorizontalAlignment="Center"
@@ -218,28 +218,28 @@
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Vertical">
                                 <Label Content="Monday"
-                                       Style="{StaticResource LabelStyle}" />
+                                       Style="{DynamicResource LabelStyle}" />
                                 <CheckBox Name="mon"
                                           HorizontalAlignment="Center"
                                           IsChecked="{Binding ElementName=lbProcesses, Path=SelectedItem.MondayWrapper}" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical">
                                 <Label Content="Tuesday"
-                                       Style="{StaticResource LabelStyle}" />
+                                       Style="{DynamicResource LabelStyle}" />
                                 <CheckBox Name="tue"
                                           HorizontalAlignment="Center"
                                           IsChecked="{Binding ElementName=lbProcesses, Path=SelectedItem.TuesdayWrapper}" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical">
                                 <Label Content="Wednesday"
-                                       Style="{StaticResource LabelStyle}" />
+                                       Style="{DynamicResource LabelStyle}" />
                                 <CheckBox Name="wed"
                                           HorizontalAlignment="Center"
                                           IsChecked="{Binding ElementName=lbProcesses, Path=SelectedItem.WednesdayWrapper}" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical">
                                 <Label Content="Thursday"
-                                       Style="{StaticResource LabelStyle}" />
+                                       Style="{DynamicResource LabelStyle}" />
                                 <CheckBox Name="thur"
                                           HorizontalAlignment="Center"
                                           IsChecked="{Binding ElementName=lbProcesses, Path=SelectedItem.ThursdayWrapper}" />
@@ -248,21 +248,21 @@
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Vertical">
                                 <Label Content="Friday"
-                                       Style="{StaticResource LabelStyle}" />
+                                       Style="{DynamicResource LabelStyle}" />
                                 <CheckBox Name="fri"
                                           HorizontalAlignment="Center"
                                           IsChecked="{Binding ElementName=lbProcesses, Path=SelectedItem.FridayWrapper}" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical">
                                 <Label Content="Saturday"
-                                       Style="{StaticResource LabelStyle}" />
+                                       Style="{DynamicResource LabelStyle}" />
                                 <CheckBox Name="sat"
                                           HorizontalAlignment="Center"
                                           IsChecked="{Binding ElementName=lbProcesses, Path=SelectedItem.SaturdayWrapper}" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical">
                                 <Label Content="Sunday"
-                                       Style="{StaticResource LabelStyle}" />
+                                       Style="{DynamicResource LabelStyle}" />
                                 <CheckBox Name="sun"
                                           HorizontalAlignment="Center"
                                           IsChecked="{Binding ElementName=lbProcesses, Path=SelectedItem.SundayWrapper}" />
@@ -282,7 +282,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label Style="{DynamicResource LabelStyle}"
                            Content="Time allowed"
                            FontSize="14"
                            FontWeight="SemiBold"
@@ -293,14 +293,14 @@
                                 Grid.Row="1"
                                 VerticalAlignment="Center">
 
-                        <Label Style="{StaticResource LabelStyle}"
+                        <Label Style="{DynamicResource LabelStyle}"
                                Content="From:"
                                HorizontalAlignment="Center" />
                         <TextBox Text="{Binding ElementName=lbProcesses, Path=SelectedItem.TimeMinWrapper, StringFormat=hh\\:mm, Converter={StaticResource convertTicksToTimespan}}"
                                  HorizontalContentAlignment="Center"
                                  MaxLength="5"
                                  MaxWidth="50" />
-                        <Label Style="{StaticResource LabelStyle}"
+                        <Label Style="{DynamicResource LabelStyle}"
                                Content="To:"
                                HorizontalAlignment="Center" />
                         <TextBox Text="{Binding ElementName=lbProcesses, Path=SelectedItem.TimeMaxWrapper, StringFormat=hh\\:mm, Converter={StaticResource convertTicksToTimespan}}"

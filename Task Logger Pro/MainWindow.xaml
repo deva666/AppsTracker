@@ -111,7 +111,7 @@
 
         <Label Name="lblTitle"
                Content="apps tracker"
-               Style="{StaticResource LabelStyle}"
+               Style="{DynamicResource LabelStyle}"
                FontSize="15"
                VerticalAlignment="Top"
                HorizontalAlignment="Left"
@@ -380,7 +380,7 @@
                                             Grid.Column="0"
                                             Grid.ColumnSpan="6"
                                             Grid.RowSpan="2"
-                                            Padding="10" />
+                                            Padding="10,10,30,10" />
 
         <Grid Name="statusContentHolder"
               Grid.Row="4"
@@ -398,7 +398,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Label Name="lblStatus"
-                   Style="{StaticResource LabelStyle}"
+                   Style="{DynamicResource LabelStyle}"
                    Content="{Binding UserSettings.LoggingEnabled, Converter={StaticResource convertLoggingStatus}, Mode=OneWay}"
                    FontSize="11"
                    Foreground="White"
@@ -439,7 +439,7 @@
                 </Rectangle.InputBindings>
             </Rectangle>
             <Label Margin="50,0,0,0"
-                   Style="{StaticResource LabelStyle}"
+                   Style="{DynamicResource LabelStyle}"
                    ContentStringFormat="Displaying logs for user: {0}"
                    Content="{Binding UserName,Mode=OneWay}"
                    FontSize="11"
@@ -448,7 +448,7 @@
             <customControls:FaderContentControl Grid.Column="3"
                                                 FaderVisibility="{Binding IsFilterApplied}">
             <Label Margin="20,0,0,0"
-                   Style="{StaticResource LabelStyle}"
+                   Style="{DynamicResource LabelStyle}"
                    Foreground="White"
                    FontSize="11"
                    >
@@ -474,7 +474,7 @@
                 </Label>
             </customControls:FaderContentControl>
             <Label ContentStringFormat="Trial version. {0} days left"
-                   Style="{StaticResource LabelStyle}"
+                   Style="{DynamicResource LabelStyle}"
                    Foreground="White"
                    FontSize="11"
                    Margin="20,0,20,0"
@@ -487,7 +487,7 @@
                 </Label.Content>
             </Label>
             <Label ContentStringFormat="DB Size: {0} MB"
-                   Style="{StaticResource LabelStyle}"
+                   Style="{DynamicResource LabelStyle}"
                    Foreground="White"
                    FontSize="11"
                    Margin="10,0,20,0"

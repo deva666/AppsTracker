@@ -14,7 +14,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Label Style="{StaticResource LabelStyle}"
+        <Label Style="{DynamicResource LabelStyle}"
                Grid.Row="0"
                HorizontalAlignment="Left"
                Content="apps tracker EULA"

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
+using System.Reflection;
 
 namespace AppsTracker.Models.EntityModels
 {
@@ -95,7 +96,7 @@ namespace AppsTracker.Models.EntityModels
             this.MainWindowTop = 250;
             this.MainWindowWidth = 1000;
             this.DeleteOldLogs = true;
-            this.OldLogDeleteDays = 30;
+            this.OldLogDeleteDays = 15;
             this.RunAtStartup = false;
             this.Stealth = false;
             this.TakeScreenshots = true;
@@ -105,19 +106,20 @@ namespace AppsTracker.Models.EntityModels
             this.EnableIdle = true;
             this.IdleTimer = 2 * 60 * 1000;
             this.FirstRun = true;
+            this.DefaultScreenshotSavePath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Screenshots");
         }
 
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SettingsID { get; set; }
-        
+
         [Required]
         public bool Licence { get; set; }
-        
+
         [Required]
         public bool RunAtStartup { get; set; }
-        
+
         [Required]
         public bool EnableKeylogger { get; set; }
 
@@ -139,13 +141,13 @@ namespace AppsTracker.Models.EntityModels
         [Required]
         public bool DeleteOldLogs { get; set; }
 
-        
+
         public bool EnableEmailReports { get; set; }
 
-        
+
         public bool EmailSSL { get; set; }
 
-        
+
         [Required]
         public bool LightTheme { get; set; }
 
@@ -155,29 +157,29 @@ namespace AppsTracker.Models.EntityModels
         [Required]
         public bool LoggingEnabled { get; set; }
 
-        
+
         public int EmailSmtpPort { get; set; }
 
-        
+
         [StringLength(60)]
         [DefaultValue("")]
         public string EmailTo { get; set; }
 
-      
+
         [StringLength(60)]
         [DefaultValue("")]
         public string EmailFrom { get; set; }
 
-       
+
         [StringLength(30)]
         public string EmailSmtpHost { get; set; }
 
-       
+
         [StringLength(60)]
         [DefaultValue("")]
         public string EmailSmtpUsername { get; set; }
 
-      
+
         [StringLength(60)]
         [DefaultValue("")]
         public string EmailSmtpPassword { get; set; }
@@ -230,10 +232,14 @@ namespace AppsTracker.Models.EntityModels
 
         [Required]
         public double ScreenshotWindowLeft { get; set; }
-        
+
         public Nullable<System.DateTime> LastExecutedDate { get; set; }
 
-        
+        [Required]
+        [StringLength(360)]
+        public string DefaultScreenshotSavePath { get; set; }
+
+
         [StringLength(60)]
         public string Username { get; set; }
     }
