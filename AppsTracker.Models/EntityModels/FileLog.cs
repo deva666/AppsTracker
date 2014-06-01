@@ -31,6 +31,9 @@ namespace AppsTracker.Models.EntityModels
             this.NewPath = newPath;
         }
 
+        [NotMapped]
+        public bool IsSelected { get; set; }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int FileLogID { get; set; }

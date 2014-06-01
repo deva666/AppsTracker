@@ -15,8 +15,7 @@ namespace Task_Logger_Pro.Controls
         Storyboard slideOut;
         Storyboard slideIn;
         DispatcherTimer timer;
-        // DispatcherTimer notifyTimer;
-
+        
         static ICommand _previousCommand = new RoutedCommand();
         static ICommand _pauseCommand = new RoutedCommand();
         static ICommand _playCommand = new RoutedCommand();
@@ -200,7 +199,8 @@ namespace Task_Logger_Pro.Controls
 
         private void PropertyChanging(string propertyName)
         {
-            if (PropertyChanged != null) PropertyChanged(new object(), new PropertyChangedEventArgs(propertyName));
+            if (PropertyChanged != null) 
+                PropertyChanged(new object(), new PropertyChangedEventArgs(propertyName));
         }
 
     }

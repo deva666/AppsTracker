@@ -96,7 +96,6 @@ namespace Task_Logger_Pro.Pages.ViewModels
         public Data_keystrokesViewModel()
         {
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(LoadContent));
-            //Mediator.Register(MediatorMessages.KeystrokeAdded, new Action<object>((p) => { if (this.WeakCollection.Target != null) LoadContent(); }));
         }
 
         public async void LoadContent()

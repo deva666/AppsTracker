@@ -8,7 +8,7 @@ using AppsTracker.Models.EntityModels;
 
 namespace Task_Logger_Pro
 {
-    public sealed class UzerSetting : ObservableObject
+    public sealed class SettingsProxy : ObservableObject
     {
         public bool Licence { get { return App.Settings.Licence; } set { App.Settings.Licence = value; PropertyChanging("Licence"); } }
         public bool RunAtStartup { get { return App.Settings.RunAtStartup; } set { App.Settings.RunAtStartup = value; PropertyChanging("RunAtStartup"); } }

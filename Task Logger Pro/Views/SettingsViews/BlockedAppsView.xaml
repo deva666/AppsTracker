@@ -80,6 +80,7 @@
                      Background="Transparent"
                      Foreground="{StaticResource WindowForegroundBrush}"
                      ItemsSource="{Binding AllUsersCollection}"
+                     SelectedItem="{Binding SelectedUser}"
                      ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
                      SelectionMode="Single">
                 <ListBox.ItemTemplate>
@@ -113,7 +114,8 @@
                          MinWidth="75"
                          Background="Transparent"
                          Foreground="{StaticResource WindowForegroundBrush}"
-                         ItemsSource="{Binding ElementName=lbUsers,Path=SelectedItem.AppsToBlocks}"
+                         SelectedItem="{Binding SelectedAppToBlock}"
+                         ItemsSource="{Binding AppsToBlockCollection}"
                          ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
                          SelectionMode="Single">
                     <ListBox.ItemTemplate>
@@ -135,42 +137,42 @@
                                                 <RowDefinition />
                                                 <RowDefinition />
                                             </Grid.RowDefinitions>
-                                            <Label Style="{StaticResource LBLabelStyle}"
+                                            <Label Style="{DynamicResource LabelStyle}"
                                                    Grid.Row="0"
                                                    Grid.Column="0"
                                                    HorizontalAlignment="Left"
                                                    Content="Company:" />
-                                            <Label Style="{StaticResource LBLabelStyle}"
+                                            <Label Style="{DynamicResource LabelStyle}"
                                                    Grid.Row="0"
                                                    Grid.Column="1"
                                                    Content="{Binding Path=Application.Company, Mode=OneWay}" />
 
-                                            <Label Style="{StaticResource LBLabelStyle}"
+                                            <Label Style="{DynamicResource LabelStyle}"
                                                    Grid.Row="1"
                                                    Grid.Column="0"
                                                    HorizontalAlignment="Left"
                                                    Content="Version:" />
-                                            <Label Style="{StaticResource LBLabelStyle}"
+                                            <Label Style="{DynamicResource LabelStyle}"
                                                    Grid.Row="1"
                                                    Grid.Column="1"
                                                    Content="{Binding Path=Application.Version, Mode=OneWay}" />
 
-                                            <Label Style="{StaticResource LBLabelStyle}"
+                                            <Label Style="{DynamicResource LabelStyle}"
                                                    Grid.Row="2"
                                                    Grid.Column="0"
                                                    HorizontalAlignment="Left"
                                                    Content="Description:" />
-                                            <Label Style="{DynamicResource LBLabelStyle}"
+                                            <Label Style="{DynamicResource LabelStyle}"
                                                    Grid.Row="2"
                                                    Grid.Column="1"
                                                    Content="{Binding Path=Application.Description, Mode=OneWay}" />
 
-                                            <Label Style="{StaticResource LBLabelStyle}"
+                                            <Label Style="{DynamicResource LabelStyle}"
                                                    Grid.Row="3"
                                                    Grid.Column="0"
                                                    HorizontalAlignment="Left"
                                                    Content="File name:" />
-                                            <Label Style="{StaticResource LBLabelStyle}"
+                                            <Label Style="{DynamicResource LabelStyle}"
                                                    Grid.Row="3"
                                                    Grid.Column="1"
                                                    Content="{Binding Path=Application.FileName, Mode=OneWay}" />
@@ -221,28 +223,28 @@
                                        Style="{DynamicResource LabelStyle}" />
                                 <CheckBox Name="mon"
                                           HorizontalAlignment="Center"
-                                          IsChecked="{Binding ElementName=lbProcesses, Path=SelectedItem.MondayWrapper}" />
+                                          IsChecked="{Binding SelectedAppToBlock.Monday}" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical">
                                 <Label Content="Tuesday"
                                        Style="{DynamicResource LabelStyle}" />
                                 <CheckBox Name="tue"
                                           HorizontalAlignment="Center"
-                                          IsChecked="{Binding ElementName=lbProcesses, Path=SelectedItem.TuesdayWrapper}" />
+                                          IsChecked="{Binding SelectedAppToBlock.Tuesday}" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical">
                                 <Label Content="Wednesday"
                                        Style="{DynamicResource LabelStyle}" />
                                 <CheckBox Name="wed"
                                           HorizontalAlignment="Center"
-                                          IsChecked="{Binding ElementName=lbProcesses, Path=SelectedItem.WednesdayWrapper}" />
+                                          IsChecked="{Binding SelectedAppToBlock.Wednesday}" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical">
                                 <Label Content="Thursday"
                                        Style="{DynamicResource LabelStyle}" />
                                 <CheckBox Name="thur"
                                           HorizontalAlignment="Center"
-                                          IsChecked="{Binding ElementName=lbProcesses, Path=SelectedItem.ThursdayWrapper}" />
+                                          IsChecked="{Binding SelectedAppToBlock.Thursday}" />
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Orientation="Vertical">
@@ -251,21 +253,21 @@
                                        Style="{DynamicResource LabelStyle}" />
                                 <CheckBox Name="fri"
                                           HorizontalAlignment="Center"
-                                          IsChecked="{Binding ElementName=lbProcesses, Path=SelectedItem.FridayWrapper}" />
+                                          IsChecked="{Binding SelectedAppToBlock.Friday}" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical">
                                 <Label Content="Saturday"
                                        Style="{DynamicResource LabelStyle}" />
                                 <CheckBox Name="sat"
                                           HorizontalAlignment="Center"
-                                          IsChecked="{Binding ElementName=lbProcesses, Path=SelectedItem.SaturdayWrapper}" />
+                                          IsChecked="{Binding SelectedAppToBlock.Saturday}" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical">
                                 <Label Content="Sunday"
                                        Style="{DynamicResource LabelStyle}" />
                                 <CheckBox Name="sun"
                                           HorizontalAlignment="Center"
-                                          IsChecked="{Binding ElementName=lbProcesses, Path=SelectedItem.SundayWrapper}" />
+                                          IsChecked="{Binding SelectedAppToBlock.Sunday}" />
                             </StackPanel>
                         </StackPanel>
 
@@ -296,14 +298,14 @@
                         <Label Style="{DynamicResource LabelStyle}"
                                Content="From:"
                                HorizontalAlignment="Center" />
-                        <TextBox Text="{Binding ElementName=lbProcesses, Path=SelectedItem.TimeMinWrapper, StringFormat=hh\\:mm, Converter={StaticResource convertTicksToTimespan}}"
+                        <TextBox Text="{Binding SelectedAppToBlock.TimeMin, StringFormat=hh\\:mm, Converter={StaticResource convertTicksToTimespan}}"
                                  HorizontalContentAlignment="Center"
                                  MaxLength="5"
                                  MaxWidth="50" />
                         <Label Style="{DynamicResource LabelStyle}"
                                Content="To:"
                                HorizontalAlignment="Center" />
-                        <TextBox Text="{Binding ElementName=lbProcesses, Path=SelectedItem.TimeMaxWrapper, StringFormat=hh\\:mm, Converter={StaticResource convertTicksToTimespan}}"
+                        <TextBox Text="{Binding SelectedAppToBlock.TimeMax, StringFormat=hh\\:mm, Converter={StaticResource convertTicksToTimespan}}"
                                  HorizontalContentAlignment="Center"
                                  MaxLength="5"
                                  MaxWidth="50" />

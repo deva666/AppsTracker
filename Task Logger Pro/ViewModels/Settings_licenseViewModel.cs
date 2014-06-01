@@ -15,7 +15,7 @@ namespace Task_Logger_Pro.ViewModels
         #region Fields
 
         bool _isPopupLicenseOpen = false;
-        
+
         ICommand _applyLicenseCommand;
         ICommand _showHidePopupLicenceCommand;
         ICommand _getLicenseCommand;
@@ -39,7 +39,7 @@ namespace Task_Logger_Pro.ViewModels
             set { App.UzerSetting.Licence = value; PropertyChanging("Licence"); }
         }
 
-        public UzerSetting UserSettings { get { return App.UzerSetting; } }
+        public SettingsProxy UserSettings { get { return App.UzerSetting; } }
 
         public ICommand ApplyLicenseCommand
         {
@@ -69,8 +69,8 @@ namespace Task_Logger_Pro.ViewModels
             {
                 string username = textboxes[0].Text;
                 string license = textboxes[1].Text;
-                username = string.Format("{0} {1} {2}", username.Trim(), Constants.APP_NAME, Assembly.GetExecutingAssembly().GetName().Version.Major.ToString());
-                if (license == Encryption.Encrypt.GetHashSHA2String(username))
+                string verify = string.Format("{0} {1} {2}", username.Trim(), Constants.APP_NAME, Assembly.GetExecutingAssembly().GetName().Version.Major.ToString());
+                if (license == Encryption.Encrypt.GetHashSHA2String(verify))
                 {
                     CreateLicence(username, license);
                 }

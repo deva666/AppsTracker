@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using AppsTracker.Models.Proxy;
 
 namespace AppsTracker.Models.EntityModels
 {
@@ -16,6 +17,19 @@ namespace AppsTracker.Models.EntityModels
         {
             this.UserID = uzer.UserID;
             this.ApplicationID = aplication.ApplicationID;
+        }
+
+        public void MapProxyValues(AppsToBlockProxy proxy)
+        {
+            this.Monday = proxy.Monday;
+            this.Tuesday = proxy.Tuesday;
+            this.Wednesday = proxy.Wednesday;
+            this.Thursday = proxy.Thursday;
+            this.Friday = proxy.Friday;
+            this.Saturday = proxy.Saturday;
+            this.Sunday = proxy.Sunday;
+            this.TimeMax = proxy.TimeMax;
+            this.TimeMin = proxy.TimeMin;
         }
 
         [Key]

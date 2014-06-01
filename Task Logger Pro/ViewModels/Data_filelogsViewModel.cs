@@ -16,7 +16,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
     {
         bool _working;
 
-        WeakReference _weakCollection = new WeakReference(null);
+        List<FileLog> _fileLogCollection;
 
         ICommand _deleteFileLogsCommand;
 
@@ -32,10 +32,8 @@ namespace Task_Logger_Pro.Pages.ViewModels
         }
         public bool IsContentLoaded
         {
-            get
-            {
-                return _weakCollection.Target != null;
-            }
+            get;
+            private set;
         }
         public bool Working
         {
@@ -49,13 +47,16 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }
         }
 
-        public WeakReference WeakCollection
+        public List<FileLog> FileLogCollection
         {
             get
             {
-                if (_weakCollection.Target == null && !Working)
-                    LoadContent();
-                return _weakCollection;
+                return _fileLogCollection;
+            }
+            set
+            {
+                _fileLogCollection = value;
+                PropertyChanging("FileLogCollection");
             }
         }
 
@@ -78,15 +79,14 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         public Data_filelogsViewModel()
         {
-            Mediator.Register(MediatorMessages.RefreshLogs, new Action(() => { if (this.WeakCollection.Target != null) LoadContent(); }));
+            Mediator.Register(MediatorMessages.RefreshLogs, new Action(LoadContent));
         }
 
         public async void LoadContent()
         {
             Working = true;
-            WeakCollection.Target = await LoadContentAsync();
+            FileLogCollection = await LoadContentAsync();
             Working = false;
-            PropertyChanging("WeakCollection");
         }
 
         private Task<List<FileLog>> LoadContentAsync()

@@ -82,7 +82,7 @@
                 </Grid.RowDefinitions>
                 <controls:FilterableListView Background="Transparent"
                                              x:Name="mainContentHolder"
-                                             ItemsSource="{Binding WeakCollection.Target, UpdateSourceTrigger=PropertyChanged}"
+                                             ItemsSource="{Binding FileLogCollection, UpdateSourceTrigger=PropertyChanged}"
                                              BorderBrush="{x:Null}"
                                              BorderThickness="0"
                                              ItemContainerStyle="{DynamicResource ListViewItemStyle}"

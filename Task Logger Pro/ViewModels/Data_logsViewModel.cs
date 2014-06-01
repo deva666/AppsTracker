@@ -288,6 +288,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 return _addProcessToBlockedListCommand;
             }
         }
+
         public ICommand OverallAppSelectionChangedCommand
         {
             get
@@ -728,6 +729,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }
         }
 
+
         private void AddAplicationToBlockedList(object parameter)
         {
             Dictionary<string, ObservableCollection<object>> processesDict = parameter as Dictionary<string, ObservableCollection<object>>;
@@ -748,7 +750,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                                 {
                                     foreach (var app in appList)
                                     {
-                                        if (app.Description.ToLower() != "apps tracker")
+                                        if (app.Description.ToLower() != "apps tracker" || !string.IsNullOrEmpty(app.WinName))
                                         {
                                             if (!context.AppsToBlocks.ItemExists(user, app))
                                             {
@@ -763,7 +765,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                             {
                                 foreach (var app in appList)
                                 {
-                                    if (app.Description.ToLower() != "apps tracker")
+                                    if (app.Description.ToLower() != "apps tracker" || !string.IsNullOrEmpty(app.WinName))
                                     {
                                         var uzer = context.Users.FirstOrDefault(u => u.Name == username);
                                         if (!context.AppsToBlocks.ItemExists(uzer, app))

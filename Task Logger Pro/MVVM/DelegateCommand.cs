@@ -28,6 +28,12 @@ namespace Task_Logger_Pro.MVVM
             _canExecute = canExecute;
         }
 
+        public DelegateCommand(Action<object> parameterizedAction, Predicate<object> canExecute)
+            : this(parameterizedAction)
+        {
+            _canExecute = canExecute;
+        }
+
         #region ICommand Members
 
         public bool CanExecute(object parameter)

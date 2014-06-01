@@ -113,7 +113,7 @@ namespace Task_Logger_Pro.ViewModels
                 Globals.Date1 = value;
                 PropertyChanging("Date1");
                 Mediator.NotifyColleagues<object>(MediatorMessages.RefreshLogs);
-                Mediator.NotifyColleagues<object>(MediatorMessages.FilterDatesChanged);
+              //  Mediator.NotifyColleagues<object>(MediatorMessages.FilterDatesChanged);
             }
         }
 
@@ -131,7 +131,7 @@ namespace Task_Logger_Pro.ViewModels
                 Globals.Date2 = value;
                 PropertyChanging("Date2");
                 Mediator.NotifyColleagues<object>(MediatorMessages.RefreshLogs);
-                Mediator.NotifyColleagues<object>(MediatorMessages.FilterDatesChanged);
+                //Mediator.NotifyColleagues<object>(MediatorMessages.FilterDatesChanged);
             }
         }
 
@@ -148,7 +148,7 @@ namespace Task_Logger_Pro.ViewModels
             }
         }
 
-        public UzerSetting UserSettings
+        public SettingsProxy UserSettings
         {
             get
             {

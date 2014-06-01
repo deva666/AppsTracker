@@ -29,9 +29,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         DateTime _selectedDate;
 
-        //WeakReference _weakCollection = new WeakReference(null);
         List<Log> _logList;
-      //  List<ScreenshotApp> _screenshotAppList;
 
         ICommand _deleteSelectedLogsCommand;
         ICommand _openScreenshotViewerCommand;
@@ -85,8 +83,6 @@ namespace Task_Logger_Pro.Pages.ViewModels
             set
             {
                 _selectedDate = value;
-               // ScreenshotAppList = GetAppsOnSelectedDate();
-                //SelectLogs();
                 PropertyChanging("SelectedDate");
             }
         }
@@ -108,28 +104,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 PropertyChanging("LogList");
             }
         }
-        //public WeakReference WeakCollection
-        //{
-        //    get
-        //    {
-        //        if (_weakCollection.Target == null && !Working)
-        //            LoadContent();
-        //        return _weakCollection;
-        //    }
-        //}
 
-        //public List<ScreenshotApp> ScreenshotAppList
-        //{
-        //    get
-        //    {
-        //        return _screenshotAppList;
-        //    }
-        //    set
-        //    {
-        //        _screenshotAppList = value;
-        //        PropertyChanging("ScreenshotAppList");
-        //    }
-        //}
         public ICommand DeleteSelectedLogsCommand
         {
             get
@@ -371,6 +346,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
         {
             StringBuilder path = new StringBuilder();
             await SaveToFile(path, screenshot.Log, screenshot);
+            InfoContent = "Screenshot saved";
         }
 
         private async void SaveAllScreenshots(ObservableCollection<object> collection)
@@ -378,19 +354,11 @@ namespace Task_Logger_Pro.Pages.ViewModels
             var logsList = collection.Cast<Log>().ToList();
             StringBuilder path = new StringBuilder();
             Working = true;
-            List<Exception> exceptions = new List<Exception>();
             foreach (var log in logsList)
             {
                 foreach (var screenshot in log.Screenshots)
                 {
-                    try
-                    {
-                        await SaveToFile(path, log, screenshot);
-                    }
-                    catch (Exception ex)
-                    {
-                        exceptions.Add(ex);
-                    }
+                    await SaveToFile(path, log, screenshot);
                     path.Clear();
                 }
             }
@@ -408,7 +376,12 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 path.Append("_");
                 path.Append(screenshot.GetHashCode());
                 path.Append(".jpg");
-                Screenshots.SaveScreenshotToFileAsync(screenshot, Screenshots.CorrectPath((path.ToString())));
+                string folderPath;
+                if (Directory.Exists(App.UzerSetting.DefaultScreenshotSavePath))
+                    folderPath = Path.Combine(App.UzerSetting.DefaultScreenshotSavePath, Screenshots.CorrectPath(path.ToString()));
+                else
+                    folderPath = Screenshots.CorrectPath(path.ToString());
+                Screenshots.SaveScreenshotToFileAsync(screenshot, folderPath);
             });
         }
     }

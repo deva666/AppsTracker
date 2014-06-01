@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading;
 using System.Management;
 using System.Data.Entity;
-//using Task_Logger_Pro.Models;
 using System.Threading.Tasks;
 using System.IO;
 using AppsTracker.Models.EntityModels;

@@ -135,32 +135,6 @@ namespace Task_Logger_Pro
 
         }
 
-
-        //private static ImageFormat GetImageFormat( string path )
-        //{
-        //    ImageFormat format;
-        //    string[] ext = path.Split( new char[] { '.' } );
-        //    switch ( ext[1].ToLower() )
-        //    {
-        //        case "jpg":
-        //            format = ImageFormat.Jpeg;
-        //            break;
-        //        case "jpeg":
-        //            format = ImageFormat.Jpeg;
-        //            break;
-        //        case "bmp":
-        //            format = ImageFormat.Bmp;
-        //            break;
-        //        case "png":
-        //            format = ImageFormat.Png;
-        //            break;
-        //        default:
-        //            format = ImageFormat.Jpeg;
-        //            break;
-        //    }
-        //    return format;
-        //}
-
         private static ImageCodecInfo GetEncoder(ImageFormat format)
         {
 

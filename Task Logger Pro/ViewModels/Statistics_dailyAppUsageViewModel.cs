@@ -66,7 +66,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 } return _weakCollection;
             }
         }
-        public UzerSetting UserSettings
+        public SettingsProxy UserSettings
         {
             get
             {

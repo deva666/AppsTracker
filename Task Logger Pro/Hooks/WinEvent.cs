@@ -136,12 +136,12 @@ namespace Task_Logger_Pro
         #region Properties
 
         public string ProcessName { get; private set; }
-       // public string ProcessExe { get; private set; }
+        // public string ProcessExe { get; private set; }
         public string ProcessVersion { get; private set; }
         public string ProcessCompany { get; private set; }
         public string ProcessDescription { get; private set; }
         public string ProcessFileName { get; private set; }
-      //  public string ProcessComments { get; private set; }
+        //  public string ProcessComments { get; private set; }
         public string ProcessRealName { get; private set; }
 
         #endregion
@@ -162,11 +162,11 @@ namespace Task_Logger_Pro
             {
                 if (process.MainModule.FileVersionInfo.CompanyName != null && process.MainModule.FileVersionInfo.CompanyName.ToLower().Contains("microsoft"))
                 {
-                   // processInfo.ProcessExe = process.MainModule.FileName ?? "";
+                    // processInfo.ProcessExe = process.MainModule.FileName ?? "";
                     processInfo.ProcessVersion = process.MainModule.FileVersionInfo.ProductVersion ?? "";
                     processInfo.ProcessCompany = process.MainModule.FileVersionInfo.CompanyName ?? "";
                     processInfo.ProcessFileName = process.MainModule.FileVersionInfo.FileName ?? "";
-                   // processInfo.ProcessComments = process.MainModule.FileVersionInfo.Comments ?? "";
+                    // processInfo.ProcessComments = process.MainModule.FileVersionInfo.Comments ?? "";
                     if (string.IsNullOrEmpty(process.MainModule.FileVersionInfo.FileDescription))
                     {
                         processInfo.ProcessName = process.MainModule.FileVersionInfo.ProductName ?? "";
@@ -192,13 +192,15 @@ namespace Task_Logger_Pro
                     processInfo.ProcessRealName = process.ProcessName ?? "";
                 }
             }
+            catch (InvalidOperationException)
+            {
+                return null;
+            }
             catch (Exception)
             {
-               // processInfo.ProcessExe = "";
                 processInfo.ProcessVersion = "";
                 processInfo.ProcessCompany = "";
                 processInfo.ProcessFileName = "";
-               // processInfo.ProcessComments = "System process";
                 processInfo.ProcessName = process.ProcessName;
                 processInfo.ProcessDescription = "";
                 processInfo.ProcessRealName = "";
@@ -207,70 +209,6 @@ namespace Task_Logger_Pro
             return processInfo;
 
         }
-
-        //    public ProcessInfo(Process process)
-        //    {
-        //        try
-        //        {
-        //            if (process != null)
-        //            {
-        //                if (process.MainModule.FileVersionInfo.CompanyName != null && process.MainModule.FileVersionInfo.CompanyName.ToLower().Contains("microsoft"))
-        //                {
-        //                    _processExe = process.MainModule.FileName ?? "";
-        //                    _processVersion = process.MainModule.FileVersionInfo.ProductVersion ?? "";
-        //                    _processCompany = process.MainModule.FileVersionInfo.CompanyName ?? "";
-        //                    _processFileName = process.MainModule.FileVersionInfo.FileName ?? "";
-        //                    _processComments = process.MainModule.FileVersionInfo.Comments ?? "";
-        //                    if (string.IsNullOrEmpty(process.MainModule.FileVersionInfo.FileDescription))
-        //                    {
-        //                        _processName = process.MainModule.FileVersionInfo.ProductName ?? "";
-        //                        _processDescription = process.MainModule.FileVersionInfo.FileDescription ?? "";
-        //                    }
-        //                    else
-        //                    {
-        //                        _processName = process.MainModule.FileVersionInfo.FileDescription ?? "";
-        //                        _processDescription = process.MainModule.FileVersionInfo.ProductName ?? "";
-        //                    }
-
-        //                    _processRealName = process.ProcessName ?? "";
-        //                }
-        //                else
-        //                {
-        //                    _processExe = process.MainModule.FileName ?? "";
-        //                    _processVersion = process.MainModule.FileVersionInfo.ProductVersion ?? "";
-        //                    _processCompany = process.MainModule.FileVersionInfo.CompanyName ?? "";
-        //                    _processFileName = process.MainModule.FileVersionInfo.FileName ?? "";
-        //                    _processComments = process.MainModule.FileVersionInfo.Comments ?? "";
-        //                    _processName = process.MainModule.FileVersionInfo.ProductName ?? "";
-        //                    _processDescription = process.MainModule.FileVersionInfo.FileDescription ?? "";
-        //                    _processRealName = process.ProcessName ?? "";
-        //                }
-        //            }
-        //            else
-        //            {
-        //                _processExe = null;
-        //                _processVersion = null;
-        //                _processCompany = null;
-        //                _processDescription = null;
-        //                _processFileName = null;
-        //                _processComments = null;
-        //                _processName = null;
-        //            }
-        //        }
-
-        //        catch (Exception ex)
-        //        {
-        //            Exceptions.Logger.DumpExceptionInfo(ex);
-        //            Exceptions.Logger.DumpDebug(string.Format("Exception trying to read process, {0}{1}", process.ToString(), Environment.NewLine));
-        //            _processExe = "";
-        //            _processVersion = "";
-        //            _processCompany = "";
-        //            _processDescription = "";
-        //            _processFileName = "";
-        //            _processComments = "";
-        //            _processName = process.ToString();
-        //        }
-        //    }
 
         #endregion
 

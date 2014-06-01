@@ -15,10 +15,11 @@ using Task_Logger_Pro.Encryption;
 using System.Collections.ObjectModel;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.DAL;
+using AppsTracker.Models.Proxy;
 
 namespace Task_Logger_Pro.ViewModels
 {
-    public class Settings_generalViewModel : ViewModelBase, IChildVM
+    public class Settings_generalViewModel : ViewModelBase, IChildVM, ICommunicator
     {
         #region Fields
 
@@ -34,6 +35,10 @@ namespace Task_Logger_Pro.ViewModels
 
         string _selectedUserName = Environment.UserName;
 
+        Uzer _selectedUser;
+        AppsToBlockProxy _selectedAppToBlock;
+
+        IEnumerable<AppsToBlockProxy> _appsToBlockCollection;
         IEnumerable<Uzer> _allUsersCollection;
 
         ICommand _changeStealthModeCommand;
@@ -68,7 +73,7 @@ namespace Task_Logger_Pro.ViewModels
             private set;
         }
 
-        public UzerSetting UserSettings
+        public SettingsProxy UserSettings
         {
             get
             {
@@ -76,6 +81,56 @@ namespace Task_Logger_Pro.ViewModels
             }
         }
 
+        public Uzer SelectedUser
+        {
+            get
+            {
+                return _selectedUser;
+            }
+            set
+            {
+                _selectedUser = value;
+                LoadAppsToBlock();
+                PropertyChanging("");
+            }
+        }
+
+        public AppsToBlockProxy SelectedAppToBlock
+        {
+            get
+            {
+                return _selectedAppToBlock;
+            }
+            set
+            {
+
+                if (_selectedAppToBlock != value)
+                {
+                    if (_selectedAppToBlock != null)
+                        _selectedAppToBlock.PropertyChanged -= _selectedAppToBlock_PropertyChanged;
+
+                    _selectedAppToBlock = value;
+
+                    if (_selectedAppToBlock != null)
+                        _selectedAppToBlock.PropertyChanged += _selectedAppToBlock_PropertyChanged;
+
+                    PropertyChanging("SelectedAppToBlock");
+                }
+            }
+        }
+
+        public IEnumerable<AppsToBlockProxy> AppsToBlockCollection
+        {
+            get
+            {
+                return _appsToBlockCollection;
+            }
+            set
+            {
+                _appsToBlockCollection = value;
+                PropertyChanging("AppsToBlockCollection");
+            }
+        }
         public IEnumerable<Uzer> AllUsersCollection
         {
             get
@@ -478,10 +533,7 @@ namespace Task_Logger_Pro.ViewModels
 
         #endregion
 
-        public void LoadContent()
-        {
-
-        }
+        public void LoadContent() { }
 
         #region Class Methods
 
@@ -494,8 +546,8 @@ namespace Task_Logger_Pro.ViewModels
         private void ShowFolderBrowserDialog(object parameter)
         {
             string toUpdate = parameter as string;
-            string path; 
-            
+            string path;
+
             if (toUpdate == null)
                 return;
 
@@ -509,7 +561,7 @@ namespace Task_Logger_Pro.ViewModels
                 UserSettings.FileWatcherPath = path;
             else if (toUpdate.ToUpper() == "SCREENSHOTS")
                 UserSettings.DefaultScreenshotSavePath = path;
-            
+
         }
 
         private void SetGmailConf()
@@ -524,6 +576,24 @@ namespace Task_Logger_Pro.ViewModels
             EmailSmtpHost = "smtp.mail.yahoo.com";
             EmailSmtpPort = 587;
             EmailSSL = false;
+        }
+
+        private void LoadAppsToBlock()
+        {
+            if (_selectedUser == null)
+                return;
+            List<AppsToBlockProxy> proxyCollection;
+            using (var context = new AppsEntities())
+            {
+                var appsToBlock = context.AppsToBlocks.Where(a => a.UserID == _selectedUser.UserID).ToList();
+                proxyCollection = new List<AppsToBlockProxy>(appsToBlock.Count);
+                foreach (var item in appsToBlock)
+                {
+                    AppsToBlockProxy proxy = item;
+                    proxyCollection.Add(proxy);
+                }
+            }
+            AppsToBlockCollection = proxyCollection;
         }
 
         #endregion
@@ -587,7 +657,7 @@ namespace Task_Logger_Pro.ViewModels
                 if (usersList != null)
                 {
                     string userName = usersList.ElementAtOrDefault(0).Name;
-                    List<AppsToBlock> appsList = paramArray[1].Cast<AppsToBlock>().ToList();
+                    List<AppsToBlockProxy> appsList = paramArray[1].Cast<AppsToBlockProxy>().ToList();
                     if (userName != null && appsList != null)
                     {
                         using (var context = new AppsEntities())
@@ -856,5 +926,31 @@ namespace Task_Logger_Pro.ViewModels
 
         #endregion
 
+        void _selectedAppToBlock_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            AppsToBlockProxy proxy = _selectedAppToBlock;
+            if (proxy == null)
+                return;
+            using (var context = new AppsEntities())
+            {
+                var appToBlock = context.AppsToBlocks.SingleOrDefault(a => a.AppsToBlockID == proxy.AppsToBlockID);
+                if (appToBlock == null)
+                    return;
+                appToBlock.MapProxyValues(proxy);
+                context.Entry(appToBlock).State = EntityState.Modified;
+                context.SaveChanges();
+                if (proxy.UserID == Globals.UserID)
+                {
+                    var refreshedAppsToBlock = context.AppsToBlocks.Where(a => a.UserID == Globals.UserID).Include(a=>a.Application).ToList();
+                    Mediator.NotifyColleagues<List<AppsToBlock>>(MediatorMessages.AppsToBlockChanged, refreshedAppsToBlock);
+                }
+            }
+        }
+
+
+        public Mediator Mediator
+        {
+            get { return Mediator.Instance; }
+        }
     }
 }

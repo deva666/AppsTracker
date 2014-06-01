@@ -846,7 +846,7 @@ namespace Task_Logger_Pro
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             DateTime trialDate = (DateTime)value;
-            return (30 - (DateTime.Now - trialDate).Days);
+            return (15 - (DateTime.Now - trialDate).Days);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -1055,26 +1055,6 @@ namespace Task_Logger_Pro
         }
     }
 
-    //class ConvertDayInfo : IMultiValueConverter
-    //{
-    //    public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-    //    {
-    //        if (values[0] is string && values[1] is string)
-    //        {
-    //            string dayStart = (string)values[0];
-    //            string dayEnd = (string)values[1];
-    //            return string.Format("Day start: {0} - Day end: {1}  Total duration: {2}", dayStart, dayEnd);
-    //        }
-    //        else
-    //            return null;
-    //    }
-
-    //    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
-
     class ConvertIdleTimer : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -1100,7 +1080,7 @@ namespace Task_Logger_Pro
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             DateTime trialStart = (DateTime)value;
-            return string.Format("You are running trial version of this app. {0}Trial started on {1}{2}{3} days left.{4}To remove this limitation please upgrade to licensed version.", Environment.NewLine, trialStart.ToShortDateString(), Environment.NewLine, 30 - (DateTime.Now.Date - trialStart.Date).Days, Environment.NewLine);
+            return string.Format("You are running trial version of this app. {0}Trial started on {1}{2}{3} days left.{4}To remove this limitation please upgrade to licensed version.", Environment.NewLine, trialStart.ToShortDateString(), Environment.NewLine, 15- (DateTime.Now - trialStart).Days, Environment.NewLine);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -1135,6 +1115,25 @@ namespace Task_Logger_Pro
         {
             throw new NotImplementedException();
         }
+    }
+
+    public class ListBoxItemsConverter : IMultiValueConverter
+    {
+        #region IMultiValueConverter Members
+
+        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            int current = (int)values[0];
+            int count = (int)values[1];
+            return string.Format("{0} / {1}", current, count);
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 
 

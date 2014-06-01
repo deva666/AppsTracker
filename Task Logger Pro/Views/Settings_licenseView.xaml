@@ -53,7 +53,7 @@
                            Margin="20,20,0,20"
                            Visibility="{Binding Licence, Converter={StaticResource convertVisibility}}" />
 
-                <Button Content="Get license"
+                <Button Content="Get licence"
                         Grid.Row="1"
                         HorizontalAlignment="Center"
                         Margin="20"
@@ -63,7 +63,7 @@
                                       Command="{Binding GetLicenseCommand}" />
                     </Button.InputBindings>
                 </Button>
-                <Button Content="Enter license key"
+                <Button Content="Enter licence key"
                         Grid.Row="1"
                         Grid.Column="0"
                         HorizontalAlignment="Right"
@@ -97,7 +97,7 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Label Style="{DynamicResource LabelStyle}"
-                                   Content="Enter license key"
+                                   Content="Enter licence key"
                                    Grid.Row="0"
                                    Grid.Column="0"
                                    Grid.ColumnSpan="2"

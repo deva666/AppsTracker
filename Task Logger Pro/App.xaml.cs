@@ -1,23 +1,21 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.DirectoryServices.AccountManagement;
-using System.IO;
-using System.Security.AccessControl;
-using System.Threading;
-using System.Windows;
 using System.Linq;
+using System.Security.AccessControl;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media.Animation;
+using AppsTracker.DAL;
+using AppsTracker.Models.EntityModels;
+using Microsoft.Win32;
 using Task_Logger_Pro.Controls;
 using Task_Logger_Pro.Logging;
-using Task_Logger_Pro.Encryption;
-using System.Threading.Tasks;
-using System.Windows.Media.Animation;
 using Task_Logger_Pro.Utils;
-using AppsTracker.Models.EntityModels;
-using AppsTracker.DAL;
 
 
 namespace Task_Logger_Pro
@@ -49,7 +47,7 @@ namespace Task_Logger_Pro
         bool _disposed;
         bool _userTriggerExit = false;
         static DataLogger _dataLogger;
-        static UzerSetting _uzerSetting;
+        static SettingsProxy _uzerSetting;
         static Setting _settings;
         TrayIcon _trayIcon;
         EmailReport _emailReport;
@@ -58,7 +56,7 @@ namespace Task_Logger_Pro
         #endregion
 
         internal static DataLogger DataLogger { get { return _dataLogger; } }
-        internal static UzerSetting UzerSetting { get { return _uzerSetting; } }
+        internal static SettingsProxy UzerSetting { get { return _uzerSetting; } }
         internal static Setting Settings { get { return _settings; } }
 
         #region Constructor
@@ -82,13 +80,12 @@ namespace Task_Logger_Pro
 
             CreateSettingsAndUsageTypes();
 
-            _uzerSetting = new UzerSetting();
+            _uzerSetting = new SettingsProxy();
             _settingsQueue = new SettingsQueue();
             _settingsQueue.SaveSettings += _settingsQueue_SaveSettings;
-            UzerSetting.LastExecutedDate = DateTime.Now;
-            
+
             ChangeTheme();
-            
+
             _uzerSetting.PropertyChanged += (s, e) =>
             {
                 UpdateLogData(e.PropertyName);
@@ -169,16 +166,18 @@ namespace Task_Logger_Pro
             };
 
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
-
+#if DEBUG
             this.Exit += App_Exit;
-
+#endif
             #endregion
 
             ShowHideTrayIcon();
 
+            UzerSetting.LastExecutedDate = DateTime.Now;
+
         }
 
-        void _settingsQueue_SaveSettings(object sender, UzerSetting e)
+        void _settingsQueue_SaveSettings(object sender, SettingsProxy e)
         {
             SaveSettings();
         }
@@ -205,12 +204,11 @@ namespace Task_Logger_Pro
                 {
                     _settings = new Setting(true);
                     context.Settings.Add(_settings);
+                    context.SaveChanges();
                 }
                 else
                 {
                     _settings = context.Settings.FirstOrDefault();
-                    _settings.LastExecutedDate = DateTime.Now;
-                    context.Entry(_settings).State = System.Data.Entity.EntityState.Modified;
                 }
 
                 if (context.UsageTypes.Count() != Enum.GetValues(typeof(UsageTypes)).Length)
@@ -223,9 +221,9 @@ namespace Task_Logger_Pro
                         usageType = context.UsageTypes.Add(usageType);
 
                     }
+                    context.Entry(_settings).State = System.Data.Entity.EntityState.Modified;
+                    context.SaveChanges();
                 }
-
-                context.SaveChanges();
             }
         }
 
@@ -402,10 +400,12 @@ namespace Task_Logger_Pro
         {
             if (!_uzerSetting.Licence)
             {
-                if (_uzerSetting.TrialStartDate.AddDays(15) < DateTime.Now || (_uzerSetting.LastExecutedDate.HasValue && _uzerSetting.LastExecutedDate.Value > DateTime.Now))
-                    return true;
-                else
-                    return false;
+                bool expired = false;
+                if (_uzerSetting.TrialStartDate.AddDays(15) < DateTime.Now)
+                    expired = true;
+                if (_uzerSetting.LastExecutedDate.HasValue && _uzerSetting.LastExecutedDate.Value > DateTime.Now)
+                    expired = true;
+                return expired;
             }
             else
                 return false;
@@ -453,7 +453,7 @@ namespace Task_Logger_Pro
             }
         }
 
-        private void DeleteBlockedApps(AppsEntities context, System.Collections.Generic.List<BlockedApp> blockedApps)
+        private void DeleteBlockedApps(AppsEntities context, List<BlockedApp> blockedApps)
         {
             foreach (var blockedApp in blockedApps)
             {
@@ -463,7 +463,7 @@ namespace Task_Logger_Pro
             }
         }
 
-        private void DeleteFilelogs(AppsEntities context, System.Collections.Generic.List<FileLog> fileLogs)
+        private void DeleteFilelogs(AppsEntities context, List<FileLog> fileLogs)
         {
             foreach (var fileLog in fileLogs)
             {
@@ -473,7 +473,7 @@ namespace Task_Logger_Pro
             }
         }
 
-        private void DeleteUsages(AppsEntities context, System.Collections.Generic.List<Usage> usages)
+        private void DeleteUsages(AppsEntities context, List<Usage> usages)
         {
             foreach (var usage in usages)
             {
@@ -483,7 +483,7 @@ namespace Task_Logger_Pro
             }
         }
 
-        private void DeleteLogsAndScreenshots(AppsEntities context, System.Collections.Generic.List<Log> logs)
+        private void DeleteLogsAndScreenshots(AppsEntities context, List<Log> logs)
         {
             foreach (var log in logs)
             {
@@ -599,26 +599,21 @@ namespace Task_Logger_Pro
 
         public void ChangeTheme()
         {
-            //Application.Current.Resources.Clear();
             Application.Current.Resources.MergedDictionaries.Clear();
 
             if (_uzerSetting.LightTheme)
             {
                 if (_uzerSetting.LoggingEnabled)
                     Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("/Themes/RunningLight.xaml", UriKind.Relative) });
-                //Application.Current.Resources.Source = new Uri("/Themes/RunningLight.xaml", UriKind.Relative);
                 else
                     Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("/Themes/StoppedLight.xaml", UriKind.Relative) });
-                //Application.Current.Resources.Source = new Uri("/Themes/StoppedLight.xaml", UriKind.Relative);
             }
             else
             {
                 if (_uzerSetting.LoggingEnabled)
                     Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("/Themes/Running.xaml", UriKind.Relative) });
-                //Application.Current.Resources.Source = new Uri("/Themes/Running.xaml", UriKind.Relative);
                 else
                     Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("/Themes/Stopped.xaml", UriKind.Relative) });
-                //Application.Current.Resources.Source = new Uri("/Themes/Stopped.xaml", UriKind.Relative);
             }
 
         }

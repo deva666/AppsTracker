@@ -9,10 +9,8 @@ namespace Task_Logger_Pro.MVVM
     {
         public const string FilterClearedMessage = "Clear Filter";
         public const string ApplicationAdded = "New Application added";
-        public const string KeystrokeAdded = "New log with keystrokes added";
-        public const string ScreenshotAdded = "New Screenshot added";
         public const string RefreshLogs = "Refresh logs";
         public const string AppsToBlockChanged = "Changing AppsToBlock";
-        public const string FilterDatesChanged = "Filter dates";
+        //public const string FilterDatesChanged = "Filter dates";
     }
 }

@@ -92,7 +92,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 return _dailyLogins;
             }
         }
-        public UzerSetting UserSettings
+        public SettingsProxy UserSettings
         {
             get
             {

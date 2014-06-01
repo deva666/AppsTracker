@@ -18,6 +18,7 @@
         <local:ConvertVisibilityToVisibility x:Key="convertVisibility" />
         <local:ConvertVisibilityToVisibilityBack x:Key="convertVisibilityBack" />
         <local:ConvertBoolToReverseBool x:Key="convertBoolToReverse" />
+        <local:ListBoxItemsConverter x:Key="lbConverter" />
         <ItemsPanelTemplate x:Key="viewerTemplate">
             <VirtualizingStackPanel Orientation="Horizontal"
                                     IsItemsHost="True" />
@@ -89,10 +90,10 @@
 
         <controls:PullUp Grid.Row="1"
                          Style="{DynamicResource BackBtnStyle}"
-                         Background="{DynamicResource ChildWindowBackgroungBrush}"
-                         Width="10"
-                         Height="10"
-                         HorizontalAlignment="Right"
+                         Background="{DynamicResource WindowBackgroundBrush}"
+                         Width="15"
+                         Height="15"
+                         HorizontalAlignment="Center"
                          VerticalAlignment="Top"
                          Margin="0,5,0,0"
                          Visibility="{Binding ElementName=pullDown,Path=Visibility, Converter={StaticResource convertVisibility}}">
@@ -109,7 +110,7 @@
                                       Grid.Row="1">
             <Label Style="{StaticResource SelectableLabelStyle}"
                    Content="SHOW INFO"
-                   FontSize="10"
+                   FontSize="13"
                    HorizontalAlignment="Left">
                 <Label.InputBindings>
                     <MouseBinding Gesture="LeftClick"
@@ -118,17 +119,34 @@
             </Label>
         </controls:FaderContentControl>
 
-
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="1"
+                    VerticalAlignment="Bottom"
+                    Margin="0,0,30,0"
+                    HorizontalAlignment="Right"></StackPanel>
+        
         <ToggleButton Grid.Row="1"
                       VerticalAlignment="Bottom"
                       Margin="0,0,30,0"
                       x:Name="rbInterval"
                       HorizontalAlignment="Right">
+            <Label Style="{DynamicResource LabelStyle}"
+                   Content="{Binding ElementName=lbImages, Path=Items.Count}">
+                <!--<Label.Content>
+                    <MultiBinding Converter="{StaticResource lbConverter}">
+                        <Binding ElementName="lbImages"
+                                 Path="SelectedIndex" />
+                        <Binding ElementName="lbImages"
+                                 Path="Items.Count" />
+                    </MultiBinding>
+                </Label.Content>-->
+            </Label>
+            
             <ToggleButton.Template>
                 <ControlTemplate>
                     <Label Style="{StaticResource SelectableLabelStyle}"
                            Content="INTERVAL"
-                           FontSize="10" />
+                           FontSize="12" />
                 </ControlTemplate>
             </ToggleButton.Template>
         </ToggleButton>
@@ -181,7 +199,6 @@
                                       x:Name="controlsPanel"
                                       FadeVertically="True">
 
-            <!--dodaj Resourc Umjesto brsh dole"-->
             <Border BorderThickness="1"
                     BorderBrush="Purple"
                     Background="{StaticResource 2ndBackgroundBrush}"
@@ -195,7 +212,6 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                         <ColumnDefinition />
-                        <!--<ColumnDefinition Width="Auto" />-->
                     </Grid.ColumnDefinitions>
                     <controls:FaderContentControl FadeVertically="True"
                                                   FaderVisibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}
@@ -235,11 +251,11 @@
                     <controls:PullDown Style="{DynamicResource BackBtnStyle}"
                                        Background="{DynamicResource 2ndBackgroundBrush}"
                                        Grid.Column="4"
-                                       Width="10"
-                                       Height="10"
+                                       Width="13"
+                                       Height="13"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Top"
-                                       Margin="0,2,5,0"
+                                       Margin="0,5,7,0"
                                        Visibility="{Binding ElementName=controlsPanel,Path=Visibility}"
                                        x:Name="pullDown">
                         <controls:PullDown.InputBindings>
@@ -268,6 +284,7 @@
                                  BorderBrush="{x:Null}"
                                  BorderThickness="0"
                                  Margin="5"
+                                 
                                  />
                         <controls:Next Grid.Column="3"
                                           Style="{DynamicResource BackBtnStyle}"

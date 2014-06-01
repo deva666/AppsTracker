@@ -100,7 +100,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }
         }
 
-        public UzerSetting UserSettings
+        public SettingsProxy UserSettings
         {
             get
             {

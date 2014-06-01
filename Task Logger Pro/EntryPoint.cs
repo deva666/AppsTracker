@@ -39,54 +39,6 @@ namespace Task_Logger_Pro
             singleInstanceApp.Run(args);
         }
 
-        private static bool TestCreateDatabase()
-        {
-            try
-            {
-                using (var context = new AppsTracker.DAL.AppsEntities())
-                {
-                    context.Database.Initialize(false);
-                }
-                return true;
-            }
-            catch (InvalidOperationException)
-            {
-                return false;
-            }
-        }
-
-        static bool ToggleConfigEncryption(string exeConfigName)
-        {
-            // Takes the executable file name without the
-            // .config extension.
-            try
-            {
-                Configuration config = ConfigurationManager.
-                    OpenExeConfiguration(exeConfigName);
-
-                ConnectionStringsSection section =
-                    config.GetSection("connectionStrings")
-                    as ConnectionStringsSection;
-
-                if (section.SectionInformation.IsProtected)
-                {
-                    return true;
-                }
-                else
-                {
-                    section.SectionInformation.ProtectSection(
-                        "DataProtectionConfigurationProvider");
-                }
-                config.Save();
-
-                return false;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
         static void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
         {
             try

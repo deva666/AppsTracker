@@ -216,7 +216,7 @@ namespace Task_Logger_Pro.Logging
 
         #region Constructor
 
-        public DataLogger(UzerSetting settings)
+        public DataLogger(SettingsProxy settings)
         {
             CreateLoadUser();
 
@@ -291,7 +291,7 @@ namespace Task_Logger_Pro.Logging
             if (_fileSystemWatcher != null)
                 return;
             _fileSystemWatcher = new FileWatcher();
-            _fileSystemWatcher.EnableRaisingEvents = false;
+            //_fileSystemWatcher.EnableRaisingEvents = false;
             _fileSystemWatcher.Created += watcher_Changed;
             _fileSystemWatcher.Deleted += watcher_Changed;
             _fileSystemWatcher.Renamed += watcher_Renamed;
@@ -604,6 +604,7 @@ namespace Task_Logger_Pro.Logging
             {
                 _processKiller = new ProcessKiller(appsToBlockList);
                 _processKiller.ProcessKilledEvent += _processKiller_ProcessKilledEvent;
+                _processKiller.AppsToBlockList = appsToBlockList;
             }
             else if (_processKiller != null && appsToBlockList.Count > 0)
                 _processKiller.AppsToBlockList = appsToBlockList;

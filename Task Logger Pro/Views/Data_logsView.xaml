@@ -26,8 +26,6 @@
                       ItemsSource="{Binding AllUsersList}">
                 <MenuItem.ItemContainerStyle>
                     <Style TargetType="{x:Type MenuItem}">
-                        <Setter Property="Command"
-                                Value="{Binding AddProcessToBlockedListCommand}" />
                         <Setter Property="CommandParameter">
                             <Setter.Value>
                                 <MultiBinding Converter="{StaticResource convertBlockedProcesses}">
@@ -38,6 +36,8 @@
                                 </MultiBinding>
                             </Setter.Value>
                         </Setter>
+                        <Setter Property="Command"
+                                Value="{Binding AddProcessToBlockedListCommand}" />
 
                     </Style>
                 </MenuItem.ItemContainerStyle>
@@ -101,6 +101,7 @@
                      ItemsSource="{Binding AplicationList, UpdateSourceTrigger=PropertyChanged}"
                      SelectedItem="{Binding SelectedApplication, Mode=TwoWay}"
                      ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
+                     SelectionMode="Single"
                      ContextMenu="{StaticResource cmProc}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>

@@ -174,7 +174,7 @@ namespace Task_Logger_Pro.ViewModels
 
         public Data_overallSummaryViewModel()
         {
-            Mediator.Register(MediatorMessages.FilterDatesChanged, new Action(RefreshDates));
+            //Mediator.Register(MediatorMessages.FilterDatesChanged, new Action(RefreshDates));
         }
 
         private void RefreshDates()
