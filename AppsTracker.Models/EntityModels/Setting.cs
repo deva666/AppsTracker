@@ -68,7 +68,6 @@ namespace AppsTracker.Models.EntityModels
             if (first)
             {
                 SetInitialSettings();
-
             }
         }
 
@@ -106,7 +105,24 @@ namespace AppsTracker.Models.EntityModels
             this.EnableIdle = true;
             this.IdleTimer = 2 * 60 * 1000;
             this.FirstRun = true;
-            this.DefaultScreenshotSavePath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Screenshots");
+            if(CreateScreenshotFolder())
+                this.DefaultScreenshotSavePath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Screenshots");
+            else
+                this.DefaultScreenshotSavePath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        }
+
+        private bool CreateScreenshotFolder()
+        {
+            try
+            {
+                if (!System.IO.Directory.Exists(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Screenshots")))
+                    System.IO.Directory.CreateDirectory(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Screenshots"));
+                return true;
+            }
+            catch 
+            {
+                return false;
+            }
         }
 
 

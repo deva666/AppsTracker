@@ -610,7 +610,7 @@ namespace Task_Logger_Pro.ViewModels
                 {
                     if (IsMasterPasswordSet)
                     {
-                        string currentPassword = Encrypt.GetHashSHA2String(passwords[2].Password);
+                        string currentPassword = Encrypt.GetEncryptedString(passwords[2].Password);
                         string storedPassword = App.UzerSetting.WindowOpen;
                         if (storedPassword == null) { IsMasterPasswordSet = false; return; }
                         if (currentPassword != storedPassword)
@@ -633,7 +633,7 @@ namespace Task_Logger_Pro.ViewModels
                     if (!string.IsNullOrEmpty(password.Trim()))
                     {
                         IsMasterPasswordSet = true;
-                        App.UzerSetting.WindowOpen = Encrypt.GetHashSHA2String(password);
+                        App.UzerSetting.WindowOpen = Encrypt.GetEncryptedString(password);
                         MessageWindow messageWindow = new MessageWindow("Password set.");
                         messageWindow.ShowDialog();
                     }

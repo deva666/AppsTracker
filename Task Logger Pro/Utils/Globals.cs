@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-//using Task_Logger_Pro.Models;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.DAL;
 
@@ -15,10 +14,10 @@ namespace Task_Logger_Pro
         public static int UsageTypeLockedID;
 
         private static bool _isLastDateFiltered;
-        
+
         private static DateTime _date1;
         private static DateTime _date2;
-        
+
         public static int UserID { get; private set; }
         public static string UserName { get; private set; }
         public static int UsageID { get; private set; }
@@ -43,7 +42,8 @@ namespace Task_Logger_Pro
             {
                 if (_isLastDateFiltered)
                     return _date2;
-                else return DateTime.Now;
+                else
+                    return DateTime.Now;
             }
             set
             {
@@ -76,7 +76,7 @@ namespace Task_Logger_Pro
             return context.Usages.Count() == 0 ? DateTime.Now.Date : (from u in context.Users.AsNoTracking()
                                                                       join l in context.Usages.AsNoTracking() on u.UserID equals l.UserID
                                                                       where u.UserID == SelectedUserID
-                                                                      select l.UsageStart).Min().Date;
+                                                                      select l.UsageStart).Min();
         }
 
         public static void ChangeUser(Uzer uzer)
@@ -93,7 +93,7 @@ namespace Task_Logger_Pro
         {
             try
             {
-                FileInfo file = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "appsRELEASE.sdf"));
+                FileInfo file = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "apps.sdf"));
                 return Math.Round((decimal)file.Length / 1048576, 2);
             }
             catch (Exception ex)

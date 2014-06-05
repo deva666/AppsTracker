@@ -227,7 +227,7 @@ namespace Task_Logger_Pro.Logging
             this.EnableKeyboardHook = settings.EnableKeylogger;
             this.TakeScreenShots = settings.TakeScreenshots;
             this.ScreenShotInterval = settings.TimerInterval;
-            this.EnableFileWatcher = settings.EnableFileWatcher;
+            //this.EnableFileWatcher = settings.EnableFileWatcher;
 
             _winEvent = new WinEvent();
             _winEvent.ActiveWindowChanged += ActiveWindowChangedEventHandler;

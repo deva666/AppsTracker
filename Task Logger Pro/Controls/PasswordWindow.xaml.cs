@@ -77,7 +77,7 @@ namespace Task_Logger_Pro
 
         private void CheckPassword()
         {
-            if(Encryption.Encrypt.GetHashSHA2String(pbPassword.Password) == App.UzerSetting.WindowOpen)
+            if(Encryption.Encrypt.GetEncryptedString(pbPassword.Password) == App.UzerSetting.WindowOpen)
             {
                 this.DialogResult = true;
                 FadeUnloaded();

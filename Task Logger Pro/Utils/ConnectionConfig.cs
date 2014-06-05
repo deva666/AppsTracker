@@ -72,7 +72,7 @@ namespace Task_Logger_Pro.Utils
 
             SqlCeConnectionStringBuilder sqlBuilder = new SqlCeConnectionStringBuilder
             {
-                DataSource = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "appsDEBUG.sdf"),
+                DataSource = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "apps.sdf"),
                 Password = pass,
                 MaxDatabaseSize = 4000
 

@@ -70,7 +70,7 @@ namespace Task_Logger_Pro.ViewModels
                 string username = textboxes[0].Text;
                 string license = textboxes[1].Text;
                 string verify = string.Format("{0} {1} {2}", username.Trim(), Constants.APP_NAME, Assembly.GetExecutingAssembly().GetName().Version.Major.ToString());
-                if (license == Encryption.Encrypt.GetHashSHA2String(verify))
+                if (license == Encryption.Encrypt.GetEncryptedString(verify))
                 {
                     CreateLicence(username, license);
                 }
@@ -86,8 +86,10 @@ namespace Task_Logger_Pro.ViewModels
 
         private void ShowHidePopup()
         {
-            if (IsPopupLicenseOpen) IsPopupLicenseOpen = false;
-            else IsPopupLicenseOpen = true;
+            if (IsPopupLicenseOpen) 
+                IsPopupLicenseOpen = false;
+            else 
+                IsPopupLicenseOpen = true;
         }
 
         private void GetLicense()

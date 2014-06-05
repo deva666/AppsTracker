@@ -16,7 +16,7 @@
     <ScrollViewer HorizontalScrollBarVisibility="Auto"
                   VerticalScrollBarVisibility="Auto">
         <Grid>
-            <chart:StackedColumnChart ChartTitle="Daily apps usage"
+            <chart:StackedColumnChart ChartTitle="Daily app usage"
                                       ChartSubTitle="Hours per day"
                                       Style="{StaticResource MinimalChartStyle}"
                                       SelectedItem="{Binding SelectedItem, Mode=TwoWay}"

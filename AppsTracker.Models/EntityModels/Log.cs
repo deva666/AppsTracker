@@ -155,8 +155,10 @@ namespace AppsTracker.Models.EntityModels
         [Required]
         public System.DateTime DateCreated { get; set; }
         [Column(TypeName = "ntext")]
+        [MaxLength]
         public string Keystrokes { get; set; }
         [Column(TypeName = "ntext")]
+        [MaxLength]
         public string KeystrokesRaw { get; set; }
         [Required]
         public System.DateTime DateEnded { get; set; }

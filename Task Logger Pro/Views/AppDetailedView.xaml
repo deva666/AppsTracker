@@ -106,7 +106,7 @@
                                    BorderBrush="{x:Null}"
                                    BorderThickness="0"
                                    Margin="10,20,10,10"
-                                   SelectionMode="Single">
+                                   SelectionMode="Multiple">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
                     <i:InvokeCommandAction Command="{Binding OverallAppSelectionChangedCommand}" />

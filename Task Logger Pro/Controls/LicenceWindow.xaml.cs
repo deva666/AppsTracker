@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,15 +16,13 @@ using System.Windows.Shapes;
 
 namespace Task_Logger_Pro.Controls
 {
-
-    public partial class AboutWindow : Window
+    public partial class LicenceWindow : Window
     {
-        public AboutWindow()
+        public LicenceWindow()
         {
             InitializeComponent();
             this.Loaded += (s, e) => ScaleLoaded();
         }
-
 
         #region Animations
 
@@ -67,21 +66,58 @@ namespace Task_Logger_Pro.Controls
             story.Completed += (s, e) => { this.Close(); };
             story.Begin(this);
         }
+
         #endregion
 
-        private void lblOK_Click( object sender, RoutedEventArgs e )
+        private void ApplyLicense()
+        {
+            string username = tbUsername.Text;
+            string license = tbLicense.Text;
+            string verify = string.Format("{0} {1} {2}", username.Trim(), Constants.APP_NAME, Assembly.GetExecutingAssembly().GetName().Version.Major.ToString());
+            if (license == Encryption.Encrypt.GetEncryptedString(verify))
+            {
+                CreateLicence(username, license);
+            }
+            else
+            {
+                MessageWindow messageWindow = new MessageWindow("Invalid license key.");
+                messageWindow.Owner = this;
+                messageWindow.ShowDialog();
+            }
+        }
+
+        private void CreateLicence(string username, string license)
+        {
+            string serialized = username + Environment.NewLine + license;
+            App.UzerSetting.Username = username;
+            App.UzerSetting.Licence = true;
+            this.DialogResult = true;
+            ScaleUnloaded();
+        }
+
+        private void lblOK_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ApplyLicense();
+        }
+
+        private void lblCancel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             ScaleUnloaded();
         }
 
-        private void TextBlock_MouseLeftButtonUp( object sender, MouseButtonEventArgs e )
+        private void Window_PreviewKeyUp(object sender, KeyEventArgs e)
         {
-            System.Diagnostics.Process.Start( "mailto:appstracker@xnet.hr" );
-        }
+            if (e.Key == Key.Enter)
+            {
+                ApplyLicense();
+                e.Handled = true;
+            }
 
-        private void TextBlock_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            System.Diagnostics.Process.Start("http://www.theappstracker.com");
+            if (e.Key == Key.Escape)
+            {
+                ScaleUnloaded();
+                e.Handled = true;
+            }
         }
     }
 }

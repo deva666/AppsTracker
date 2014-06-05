@@ -100,11 +100,18 @@ namespace Task_Logger_Pro
 
             if (CheckTrialExpiration())
             {
-                MessageWindow messageWindow = new MessageWindow("The trial period has expired." + Environment.NewLine + " Please upgrade to licensed version to continue using this app.", false);
-                messageWindow.ShowDialog();
-                (App.Current as App).Shutdown();
-                Environment.Exit(0);
-                return;
+                LicenceWindow licenceWindow = new LicenceWindow();
+                var result = licenceWindow.ShowDialog();
+                if (result.HasValue && result.Value)
+                {
+                    //OK, licence valid
+                }
+                else
+                {
+                    (App.Current as App).Shutdown();
+                    Environment.Exit(0);
+                    return;
+                }
             }
 
             if (UzerSetting.FirstRun)
@@ -175,6 +182,7 @@ namespace Task_Logger_Pro
 
             UzerSetting.LastExecutedDate = DateTime.Now;
 
+            Console.WriteLine(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Screenshots"));
         }
 
         void _settingsQueue_SaveSettings(object sender, SettingsProxy e)

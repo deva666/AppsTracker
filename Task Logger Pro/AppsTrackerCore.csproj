@@ -140,6 +140,9 @@
     <Compile Include="Controls\KeystrokeViewer.xaml.cs">
       <DependentUpon>KeystrokeViewer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\LicenceWindow.xaml.cs">
+      <DependentUpon>LicenceWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ModernButton.cs" />
     <Compile Include="Controls\Next.xaml.cs">
       <DependentUpon>Next.xaml</DependentUpon>
@@ -430,6 +433,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\KeystrokeViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\LicenceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

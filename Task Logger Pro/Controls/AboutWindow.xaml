@@ -44,7 +44,7 @@
             
                 <TextBlock FontSize="12"
                        Margin="20,20,20,10"
-                       Text="{Binding AppName, StringFormat={}{0} © 2013 by Marko Devcic.}"
+                       Text="{Binding AppName, StringFormat={}{0} © 2014 by Marko Devcic.}"
                        Foreground="{DynamicResource HighlightBrush}" />
 
             <TextBlock Margin="20,0,20,10"

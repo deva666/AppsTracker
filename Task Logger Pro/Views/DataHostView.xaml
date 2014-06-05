@@ -92,7 +92,7 @@
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>
-                <Label Content="FILELOGS"
+                <!--<Label Content="FILELOGS"
                        Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=FILELOGS}">
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
@@ -100,7 +100,7 @@
                                       CommandParameter="FILELOGS">
                         </MouseBinding>
                     </Label.InputBindings>
-                </Label>
+                </Label>-->
                 <Label Content="DAY VIEW"
                        Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=DAY VIEW}">
                     <Label.InputBindings>
