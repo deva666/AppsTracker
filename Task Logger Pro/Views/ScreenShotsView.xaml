@@ -19,13 +19,13 @@
         <local:ConvertBoolToVisibility x:Key="convertVisibility" />
         <local:ConvertSelectedIndexToBool x:Key="convertSelectedIndexToBool" />
         <ContextMenu x:Key="cMenu">
-            <MenuItem Command="ApplicationCommands.SelectAll" />
+            <!--<MenuItem Command="ApplicationCommands.SelectAll" />-->
             <MenuItem Header="Save selected screenshots to file"
                       Command="{Binding SaveScreenshotCommand}"
                       CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}" />
-            <!--<MenuItem Header="Delete selected logs"
-                      Command="{Binding DeleteSelectedLogsCommand}"
-                      CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}" />-->
+            <MenuItem Header="Delete selected screenshots"
+                      Command="{Binding DeleteSelectedScreenshotsCommand}"
+                      CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}" />
         </ContextMenu>
         
         <ContextMenu x:Key="sMenu">

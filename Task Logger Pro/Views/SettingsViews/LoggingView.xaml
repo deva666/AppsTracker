@@ -157,6 +157,19 @@
                     </Button.InputBindings>
                 </Button>
             </controls:FaderContentControl>
+
+            <Button Content="Start database cleaner"
+                    HorizontalAlignment="Left"
+                    Grid.Row="10"
+                    Grid.Column="0"
+                    Margin="0,20,0,10"
+                    >
+                <Button.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding RunDBCleanerCommand}"
+                                  />
+                </Button.InputBindings>
+            </Button>
             <!--<Label Style="{DynamicResource LabelStyle}"
                    FontSize="16"
                    Grid.Row="10"

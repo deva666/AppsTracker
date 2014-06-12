@@ -33,28 +33,29 @@
                                   Command="{Binding ReturnFromDetailedViewCommand}" />
                 </controls:BackButton.InputBindings>
             </controls:BackButton>
-            <chart:ClusteredColumnChart ChartTitle="Computer usage"
-                                        ChartSubTitle="Total logged time per day (hours)"
-                                        Style="{StaticResource MinimalChartStyle}"
-                                        SelectedItem="{Binding UsageModel, Mode=TwoWay}"
-                                        MinHeight="{Binding UserSettings.MainWindowHeight, Converter={StaticResource convertWidth}}"
-                                        BorderBrush="{DynamicResource WindowBorderBrush}"
-                                        BorderThickness="1"
-                                        Margin="10,10,10,20"
-                                        Width="Auto"
-                                        Height="Auto"
-                                        Grid.Row="1">
+            <chart:StackedColumnChart ChartTitle="Computer usage"
+                                      ChartSubTitle="Total logged time per day (hours)"
+                                      Style="{StaticResource MinimalChartStyle}"
+                                      MinHeight="{Binding UserSettings.MainWindowHeight, Converter={StaticResource convertWidth}}"
+                                      BorderBrush="{DynamicResource WindowBorderBrush}"
+                                      SeriesSource="{Binding DailyLogins}"
+                                      BorderThickness="1"
+                                      Margin="10,10,10,20"
+                                      Width="Auto"
+                                      Height="Auto"
+                                      Grid.Row="1">
 
-                <chart:ClusteredColumnChart.Series>
-                    <chart:ChartSeries SeriesTitle="Hours"
-                                       DisplayMember="Date"
-                                       ValueMember="Count"
-                                       ItemsSource="{Binding DailyLogins}"
-                                       />
-                </chart:ClusteredColumnChart.Series>
+                <chart:StackedColumnChart.SeriesTemplate>
+                    <DataTemplate>
+                        <chart:ChartSeries SeriesTitle="{Binding Date}"
+                                           DisplayMember="UsageType"
+                                           ValueMember="Time"
+                                           ItemsSource="{Binding DailyUsageTypeCollection}" />
+                    </DataTemplate>
+                </chart:StackedColumnChart.SeriesTemplate>
 
-            </chart:ClusteredColumnChart>
-            
+            </chart:StackedColumnChart>
+
         </Grid>
     </ScrollViewer>
 </UserControl>

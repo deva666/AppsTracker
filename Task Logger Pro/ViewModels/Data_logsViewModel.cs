@@ -794,6 +794,12 @@ namespace Task_Logger_Pro.Pages.ViewModels
             long ticks = 0;
             var filteredApps = TopAppsList.Where(t => t.IsSelected);
 
+            if(filteredApps.Count() == 0)
+            {
+                TopWindowsList = null;
+                return;
+            }
+
             foreach (var app in filteredApps)
             {
                 ticks += app.Duration;
@@ -805,23 +811,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
             TimeSpan timeSpan = new TimeSpan(ticks);
             OverallAppDuration = string.Format("Selected: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
-
-            //List<TopWindowsModel> windows = WeakWindowOverall.Target as List<TopWindowsModel>;
-            //if (windows != null)
-            //{
-            //    foreach (var window in windows.Where(w => w.IsSelected))
-            //    {
-            //        window.IsSelected = false;
-            //    }
-            //}
-
-            //WeakWindowOverall.Target = null;
-            //WeakChart.Target = null;
-            //PropertyChanging("WeakChart");
-            // PropertyChanging("WeakWindowOverall");
-
             LoadWindowsOverall();
-            // LoadChart();
         }
         private void OverallWindowSelectionChanged()
         {

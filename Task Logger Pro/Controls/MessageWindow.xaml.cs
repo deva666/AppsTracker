@@ -79,13 +79,27 @@ namespace Task_Logger_Pro.Controls
 
         private void lblOK_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
+            try
+            {
+                this.DialogResult = true;
+            }
+            catch (InvalidOperationException)
+            {
+                //do nothing, window not modal
+            }
             FadeUnloaded();
         }
 
         private void lblCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = false;
+            try
+            {
+                this.DialogResult = false;
+            }
+            catch (InvalidOperationException)
+            {
+                //do nothing, window not modal
+            }
             FadeUnloaded();
         }
     }

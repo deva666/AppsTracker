@@ -217,7 +217,7 @@ namespace Task_Logger_Pro.ViewModels
             get
             {
                 if (_changeLoggingStatusCommand == null)
-                    _changeLoggingStatusCommand = new DelegateCommand(ChangeLoggingStatus);
+                    _changeLoggingStatusCommand = new DelegateCommand(ChangeLoggingStatus, o => Globals.DBSizeOperational);
                 return _changeLoggingStatusCommand;
             }
         }

@@ -285,12 +285,12 @@
                 </controls:SortableListView.View>
             </controls:SortableListView >
 
-            <Label Style="{DynamicResource LabelStyle}"
+            <!--<Label Style="{DynamicResource LabelStyle}"
                    Content="{Binding SingleAppDuration}"
                    Grid.Row="2"
                    Grid.Column="0"
                    Margin="10,5,20,0"
-                   HorizontalAlignment="Right" />
+                   HorizontalAlignment="Right" />-->
 
             <Label Style="{DynamicResource LabelStyle}"
                    Content="{Binding SingleWindowDuration}"
@@ -401,12 +401,12 @@
                         <GridView ColumnHeaderContainerStyle="{StaticResource HeaderStyleWOFilter}">
                             <controls:SortableGridViewColumn Header="App / Event"
                                                              CellTemplate="{StaticResource app1Template}"
-                                                             SortPropertyName="AppName">
+                                                             SortPropertyName="Name">
 
                             </controls:SortableGridViewColumn>
                             <controls:SortableGridViewColumn Header="Window"
                                                              CellTemplate="{StaticResource wndTemplate}"
-                                                             SortPropertyName="WindowTitle" />
+                                                             SortPropertyName="Title" />
                             <controls:SortableGridViewColumn Header="Begin"
                                                              CellTemplate="{StaticResource startTemplate}"
                                                              SortPropertyName="DateCreated" />

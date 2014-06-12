@@ -23,22 +23,26 @@ namespace Task_Logger_Pro.Views
 
         private void popupMasterPassword_Opened(object sender, EventArgs e)
         {
-            if ( App.UzerSetting.EnableKeylogger) App.DataLogger.KeyBoardHook.KeyLoggerEnabled = false;
+            if ( App.DataLogger.KeyBoardHook != null)
+                App.DataLogger.KeyBoardHook.KeyLoggerEnabled = false;
         }
 
         private void popupMasterPassword_Closed(object sender, EventArgs e)
         {
-            if ( App.UzerSetting.EnableKeylogger) App.DataLogger.KeyBoardHook.KeyLoggerEnabled = true;
+            if ( App.UzerSetting.EnableKeylogger && App.DataLogger.KeyBoardHook != null) 
+                App.DataLogger.KeyBoardHook.KeyLoggerEnabled = true;
         }
 
         private void popupEmailInterval_Opened( object sender, EventArgs e )
         {
-            if ( App.UzerSetting.EnableKeylogger)  App.DataLogger.KeyBoardHook.KeyLoggerEnabled = false;
+            if (App.DataLogger.KeyBoardHook != null)
+                App.DataLogger.KeyBoardHook.KeyLoggerEnabled = false;
         }
 
         private void popupEmailInterval_Closed( object sender, EventArgs e )
         {
-            if ( App.UzerSetting.EnableKeylogger) App.DataLogger.KeyBoardHook.KeyLoggerEnabled = true;
+            if (App.UzerSetting.EnableKeylogger && App.DataLogger.KeyBoardHook != null)
+                App.DataLogger.KeyBoardHook.KeyLoggerEnabled = true;
         }
 
     }

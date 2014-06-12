@@ -13,6 +13,7 @@ using System.Windows.Media.Animation;
 using AppsTracker.DAL;
 using AppsTracker.Models.EntityModels;
 using Microsoft.Win32;
+using Task_Logger_Pro.Cleaner;
 using Task_Logger_Pro.Controls;
 using Task_Logger_Pro.Logging;
 using Task_Logger_Pro.Utils;
@@ -90,13 +91,12 @@ namespace Task_Logger_Pro
             {
                 UpdateLogData(e.PropertyName);
                 _settingsQueue.Add(_uzerSetting);
-                //SaveSettings(e.PropertyName);
             };
 
             Task deleteOldLogsTask = null;
 
             if (_uzerSetting.DeleteOldLogs)
-                deleteOldLogsTask = DeleteOldLogsAsync();
+                deleteOldLogsTask = DBCleaner.DeleteOldLogsAsync(UzerSetting.OldLogDeleteDays, false);
 
             if (CheckTrialExpiration())
             {
@@ -137,6 +137,9 @@ namespace Task_Logger_Pro
                     return;
                 }
             }
+
+            Globals.DBCleaningRequired += Globals_DBCleaningRequired;
+            Globals.GetDBSize();
 
             _dataLogger = new DataLogger(_uzerSetting);
 
@@ -182,7 +185,18 @@ namespace Task_Logger_Pro
 
             UzerSetting.LastExecutedDate = DateTime.Now;
 
-            Console.WriteLine(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Screenshots"));
+        }
+
+        void Globals_DBCleaningRequired(object sender, EventArgs e)
+        {
+            UzerSetting.LoggingEnabled = false;
+            ChangeTheme();
+            if (!UzerSetting.Stealth)
+            {
+                MessageWindow msgWindow = new MessageWindow("Database size has reached the maximum allowed value" + Environment.NewLine + "Please run the database cleaner from the settings menu to continue logging.", false);
+                msgWindow.ShowDialog();
+            }
+            Globals.DBCleaningRequired -= Globals_DBCleaningRequired;
         }
 
         void _settingsQueue_SaveSettings(object sender, SettingsProxy e)
@@ -238,7 +252,6 @@ namespace Task_Logger_Pro
         public void SaveSettings(string propertyname = "")
         {
             _settingsQueue.Add(_uzerSetting);
-            // Task.Factory.StartNew(SaveSettings);
         }
 
         private async void SaveSettings()
@@ -264,7 +277,7 @@ namespace Task_Logger_Pro
 
             if (_dataLogger.ScreenShotInterval != _uzerSetting.TimerInterval) _dataLogger.ScreenShotInterval = _uzerSetting.TimerInterval;
 
-            if (_dataLogger.KeyBoardHook.KeyLoggerEnabled != _uzerSetting.EnableKeylogger) _dataLogger.KeyBoardHook.KeyLoggerEnabled = _uzerSetting.EnableKeylogger;
+            if (_dataLogger.EnableKeyboardHook != _uzerSetting.EnableKeylogger) _dataLogger.EnableKeyboardHook = _uzerSetting.EnableKeylogger;
 
             if (_dataLogger.LoggingStatus.Running() != _uzerSetting.LoggingEnabled)
                 _dataLogger.LoggingStatus = _uzerSetting.LoggingEnabled ? LoggingStatus.Running : LoggingStatus.Stopped;
@@ -274,13 +287,9 @@ namespace Task_Logger_Pro
             else
                 UpdateEmailSettings(false);
 
-            //Console.WriteLine("Data logger enabled " + dataLogger.EnableFileWatcher);
-            //Console.WriteLine("Settings enabled " + uzerSetting.EnableFileWatcher);
-
             if (_dataLogger.EnableFileWatcher != _uzerSetting.EnableFileWatcher)
             {
                 _dataLogger.EnableFileWatcher = _uzerSetting.EnableFileWatcher;
-                // Console.WriteLine("Filewatcher is null = " + dataLogger.FileSystemWatcher == null);
                 if (_dataLogger.FileSystemWatcher == null)
                     return;
                 if (_dataLogger.FileSystemWatcher.Path != _uzerSetting.FileWatcherPath)
@@ -421,120 +430,6 @@ namespace Task_Logger_Pro
 
         #region Class Methods
 
-        private Task DeleteOldLogsAsync()
-        {
-            return Task.Run(new Action(DeleteOldLogs));
-        }
-
-        private void DeleteOldLogs()
-        {
-            DateTime dateTreshold = DateTime.Now.Date.AddDays(-1d * UzerSetting.OldLogDeleteDays);
-            using (var context = new AppsEntities())
-            {
-                var logs = (from l in context.Logs
-                            where l.DateCreated < dateTreshold
-                            select l).Include(l => l.Screenshots).ToList();
-
-                var usages = (from u in context.Usages
-                              where u.UsageStart < dateTreshold
-                              select u).ToList();
-
-                var fileLogs = (from f in context.FileLogs
-                                where f.Date < dateTreshold
-                                select f).ToList();
-
-                var blockedApps = (from b in context.BlockedApps
-                                   where b.Date < dateTreshold
-                                   select b).ToList();
-
-                DeleteBlockedApps(context, blockedApps);
-
-                DeleteFilelogs(context, fileLogs);
-
-                DeleteUsages(context, usages);
-
-                DeleteLogsAndScreenshots(context, logs);
-
-                DeleteEmptyLogs(context);
-
-                context.SaveChanges();
-            }
-        }
-
-        private void DeleteBlockedApps(AppsEntities context, List<BlockedApp> blockedApps)
-        {
-            foreach (var blockedApp in blockedApps)
-            {
-                if (!context.BlockedApps.Local.Any(b => b.BlockedAppID == blockedApp.BlockedAppID))
-                    context.BlockedApps.Attach(blockedApp);
-                context.BlockedApps.Remove(blockedApp);
-            }
-        }
-
-        private void DeleteFilelogs(AppsEntities context, List<FileLog> fileLogs)
-        {
-            foreach (var fileLog in fileLogs)
-            {
-                if (!context.FileLogs.Local.Any(f => f.FileLogID == fileLog.FileLogID))
-                    context.FileLogs.Attach(fileLog);
-                context.FileLogs.Remove(fileLog);
-            }
-        }
-
-        private void DeleteUsages(AppsEntities context, List<Usage> usages)
-        {
-            foreach (var usage in usages)
-            {
-                if (!context.Usages.Local.Any(u => u.UsageID == usage.UsageID))
-                    context.Usages.Attach(usage);
-                context.Usages.Remove(usage);
-            }
-        }
-
-        private void DeleteLogsAndScreenshots(AppsEntities context, List<Log> logs)
-        {
-            foreach (var log in logs)
-            {
-
-                foreach (var screenshot in log.Screenshots.ToList())
-                {
-                    if (!context.Screenshots.Local.Any(s => s.ScreenshotID == screenshot.ScreenshotID))
-                    {
-                        context.Screenshots.Attach(screenshot);
-                    }
-                    context.Screenshots.Remove(screenshot);
-                }
-
-                if (!context.Logs.Local.Any(l => l.LogID == log.LogID))
-                {
-                    context.Logs.Attach(log);
-                }
-                context.Entry(log).State = System.Data.Entity.EntityState.Deleted;
-            }
-        }
-
-        private void DeleteEmptyLogs(AppsEntities context)
-        {
-            foreach (var window in context.Windows)
-            {
-                if (window.Logs.Count == 0)
-                {
-                    if (!context.Windows.Local.Any(w => w.WindowID == window.WindowID))
-                        context.Windows.Attach(window);
-                    context.Windows.Remove(window);
-                }
-            }
-
-            foreach (var app in context.Applications)
-            {
-                if (app.Windows.Count == 0)
-                {
-                    if (!context.Applications.Local.Any(a => a.ApplicationID == app.ApplicationID))
-                        context.Applications.Attach(app);
-                    context.Applications.Remove(app);
-                }
-            }
-        }
 
         [Conditional("RELEASE")]
         private void SetProcessKillAuth()

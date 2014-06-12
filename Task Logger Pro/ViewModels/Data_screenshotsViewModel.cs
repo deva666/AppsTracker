@@ -31,7 +31,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         List<Log> _logList;
 
-        ICommand _deleteSelectedLogsCommand;
+        ICommand _deleteSelectedScreenshotsCommand;
         ICommand _openScreenshotViewerCommand;
         ICommand _saveScreenshotCommand;
 
@@ -105,13 +105,13 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }
         }
 
-        public ICommand DeleteSelectedLogsCommand
+        public ICommand DeleteSelectedScreenshotsCommand
         {
             get
             {
-                if (_deleteSelectedLogsCommand == null)
-                    _deleteSelectedLogsCommand = new DelegateCommand(DeleteSelectedLogs);
-                return _deleteSelectedLogsCommand;
+                if (_deleteSelectedScreenshotsCommand == null)
+                    _deleteSelectedScreenshotsCommand = new DelegateCommand(DeleteSelectedScreenshots);
+                return _deleteSelectedScreenshotsCommand;
             }
         }
         public ICommand OpenScreenshotViewerCommand
@@ -179,117 +179,6 @@ namespace Task_Logger_Pro.Pages.ViewModels
             });
         }
 
-        //private void ScreenshotAdded(Log log)
-        //{
-        //    if (_weakCollection.Target == null)
-        //        return;
-        //    List<Log> logList = (_weakCollection.Target as List<Log>).ToList();
-        //    if (logList == null)
-        //        return;
-        //    if (logList.Any(l => l.LogID == log.LogID))
-        //    {
-        //        var selectedLog = logList.Find(l => l.LogID == log.LogID);
-        //        foreach (var screenshot in log.Screenshots)
-        //        {
-        //            if (!selectedLog.Screenshots.Contains(screenshot))
-        //            {
-        //                selectedLog.Screenshots.Add(screenshot);
-        //            }
-        //        }
-        //    }
-        //    else
-        //        logList.Add(log);
-        //    _weakCollection.Target = logList;
-        //    PropertyChanging("WeakCollection");
-        //}
-
-        //private List<ScreenshotApp> GetAppsOnSelectedDate()
-        //{
-        //    using (var context = new AppsEntities())
-        //    {
-        //        DateTime dateEnd = SelectedDate.AddDays(1);
-        //        return (from u in context.Users.AsNoTracking()
-        //                join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
-        //                join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-        //                join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-        //                where u.UserID == Globals.SelectedUserID
-        //                && l.Screenshots.Count > 0
-        //                && l.DateCreated >= SelectedDate
-        //                && l.DateCreated <= dateEnd
-        //                select a).Distinct()
-        //                        .ToList()
-        //                        .Select(a => new ScreenshotApp() { Name = a.Name, IsSelected = true })
-        //                        .ToList();
-        //    }
-
-        //}
-
-        //private void SelectLogs()
-        //{
-        //    if (ScreenshotAppList == null)
-        //        return;
-        //    ClearSelection();
-        //    if (LogList == null)
-        //        return;
-        //    foreach (var app in ScreenshotAppList)
-        //    {
-        //        if (!app.IsSelected)
-        //            continue;
-        //        var logs = from l in LogList
-        //                   where l.Window.Application.Name == app.Name
-        //                   && l.DateCreated >= SelectedDate
-        //                   && l.DateCreated <= SelectedDate.AddDays(1)
-        //                   select l;
-        //        foreach (var log in logs)
-        //        {
-        //            log.IsSelected = true;
-        //        }
-
-        //    }
-        //    PropertyChanging("WeakCollection");
-        //}
-
-        private void SortViewProcesses(object parameter)
-        {
-            if (LogList == null)
-                return;
-            string propertyName = parameter as string;
-            ICollectionView view;
-            switch (propertyName)
-            {
-                case "DateCreated":
-                    view = CollectionViewSource.GetDefaultView(LogList);
-                    break;
-                default:
-                    view = null;
-                    break;
-            }
-
-            if (view != null)
-            {
-                if (view.SortDescriptions.Count > 0 && view.SortDescriptions[0].PropertyName == propertyName && view.SortDescriptions[0].Direction == ListSortDirection.Ascending)
-                {
-                    view.SortDescriptions.Clear();
-                    view.SortDescriptions.Add(new SortDescription(propertyName, ListSortDirection.Descending));
-                }
-                else
-                {
-                    view.SortDescriptions.Clear();
-                    view.SortDescriptions.Add(new SortDescription(propertyName, ListSortDirection.Ascending));
-                }
-            }
-        }
-
-        private void ClearSelection()
-        {
-            if (LogList == null)
-                return;
-            foreach (var log in LogList.Where(l => l.IsSelected))
-            {
-                log.IsSelected = false;
-            }
-        }
-
         private void OpenScreenshotViewer(object parameter)
         {
             if (parameter == null)
@@ -302,12 +191,13 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         }
 
-        private void DeleteSelectedLogs(object parameter)
+        private void DeleteSelectedScreenshots(object parameter)
         {
             ObservableCollection<object> parameterCollection = parameter as ObservableCollection<object>;
             if (parameterCollection != null)
             {
-                var logsList = parameterCollection.Select(l => l as Log).ToList();
+                var logsList = parameterCollection.Cast<Log>().Where(l => l.Screenshots.Count > 0).ToList();
+                var count = logsList.Select(l => l.Screenshots).Count();
                 using (var context = new AppsEntities())
                 {
                     foreach (var log in logsList)
@@ -320,17 +210,12 @@ namespace Task_Logger_Pro.Pages.ViewModels
                             }
                             context.Screenshots.Remove(screenshot);
                         }
-                        if (!context.Logs.Local.Any(l => l.LogID == log.LogID))
-                        {
-                            context.Logs.Attach(log);
-                        }
-                        context.Entry(log).State = System.Data.Entity.EntityState.Deleted;
                     }
                     context.SaveChanges();
                 }
-                if (logsList.Count > 0)
-                    LoadContent();
-                InfoContent = "Logs deleted";
+                if (count > 0)
+                    InfoContent = "Screenshots deleted";
+                LoadContent();
             }
         }
 

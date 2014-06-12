@@ -25,8 +25,13 @@ namespace Task_Logger_Pro
         public PasswordWindow()
         {
             InitializeComponent();
-            if (App.UzerSetting.EnableKeylogger) App.DataLogger.KeyBoardHook.KeyLoggerEnabled = false;
-            this.Closing += (s, e) => { if (App.UzerSetting.EnableKeylogger) App.DataLogger.KeyBoardHook.KeyLoggerEnabled = true; };
+            if (App.DataLogger.KeyBoardHook != null)
+                App.DataLogger.KeyBoardHook.KeyLoggerEnabled = false;
+            this.Closing += (s, e) =>
+            {
+                if (App.UzerSetting.EnableKeylogger && App.DataLogger.KeyBoardHook != null) 
+                    App.DataLogger.KeyBoardHook.KeyLoggerEnabled = true;
+            };
         }
 
         private void FadeUnloaded()
@@ -46,12 +51,12 @@ namespace Task_Logger_Pro
 
         #region Event Handlers
 
-        private void lblOK_Click( object sender, RoutedEventArgs e )
+        private void lblOK_Click(object sender, RoutedEventArgs e)
         {
             CheckPassword();
         }
 
-        private void lblCancel_Click( object sender, RoutedEventArgs e )
+        private void lblCancel_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = false;
             FadeUnloaded();
@@ -73,11 +78,11 @@ namespace Task_Logger_Pro
         }
         #endregion
 
-        #region Class Methods      
+        #region Class Methods
 
         private void CheckPassword()
         {
-            if(Encryption.Encrypt.GetEncryptedString(pbPassword.Password) == App.UzerSetting.WindowOpen)
+            if (Encryption.Encrypt.GetEncryptedString(pbPassword.Password) == App.UzerSetting.WindowOpen)
             {
                 this.DialogResult = true;
                 FadeUnloaded();
@@ -91,6 +96,6 @@ namespace Task_Logger_Pro
         }
         #endregion
 
-    
+
     }
 }

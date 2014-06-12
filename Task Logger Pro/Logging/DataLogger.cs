@@ -166,6 +166,7 @@ namespace Task_Logger_Pro.Logging
                 return _keyBoardHook;
             }
         }
+
         private Log CurrentLog
         {
             get

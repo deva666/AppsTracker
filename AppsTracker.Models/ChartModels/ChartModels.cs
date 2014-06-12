@@ -73,6 +73,12 @@ namespace AppsTracker.Models.ChartModels
         public double Time { get; set; }
     }
 
+    public class UsageTypeSeries
+    {
+        public string Date { get; set; }
+        public ObservableCollection<UsageTypeModel> DailyUsageTypeCollection { get; set; }
+    }
+
     public class DailyUsageTypeSeries
     {
         public string Time { get; set; }

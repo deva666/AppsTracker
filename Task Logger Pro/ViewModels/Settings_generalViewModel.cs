@@ -55,6 +55,7 @@ namespace Task_Logger_Pro.ViewModels
         ICommand _changeThemeCommand;
         ICommand _setStartupCommand;
         ICommand _changeIdleTimerCommand;
+        ICommand _runDBCleanerCommand;
 
         #endregion
 
@@ -520,6 +521,14 @@ namespace Task_Logger_Pro.ViewModels
             }
         }
 
+        public ICommand RunDBCleanerCommand
+        {
+            get
+            {
+                return _runDBCleanerCommand == null ? _runDBCleanerCommand = new DelegateCommand(RunDBCleaner) : _runDBCleanerCommand;
+            }
+        }
+
         #endregion
 
         #endregion
@@ -923,6 +932,13 @@ namespace Task_Logger_Pro.ViewModels
             }
 
         }
+
+        private void RunDBCleaner()
+        {
+            DBCleanerWindow dbCleanerWindow = new DBCleanerWindow();
+            dbCleanerWindow.ShowDialog();
+        }
+
 
         #endregion
 

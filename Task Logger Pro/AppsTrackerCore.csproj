@@ -122,12 +122,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Cleaner\DBCleaner.cs" />
     <Compile Include="Controls\Adorners.cs" />
     <Compile Include="Controls\ArrowLeft.xaml.cs">
       <DependentUpon>ArrowLeft.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ArrowRight.xaml.cs">
       <DependentUpon>ArrowRight.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DBCleanerWindow.xaml.cs">
+      <DependentUpon>DBCleanerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\FadingItemsListView.cs" />
     <Compile Include="Controls\Forward.xaml.cs">
@@ -413,6 +417,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\closeBtn.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DBCleanerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
