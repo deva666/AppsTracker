@@ -81,7 +81,7 @@ namespace Task_Logger_Pro.Controls
                 return;
 
             decimal beforeSize = Globals.GetDBSize();
-            await DBCleaner.DeleteOldLogsAsync(days, cbScreenshots.IsChecked.HasValue ?  cbScreenshots.IsChecked.Value : false, App.DataLogger.IsLogggingStopped);
+            await DBCleaner.DeleteOldScreenshots(days);
             decimal afterSize = Globals.GetDBSize();
             MessageWindow msgWindow = new MessageWindow(string.Format("Freed {0} MB", beforeSize - afterSize));
             msgWindow.ShowDialog();

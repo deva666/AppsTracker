@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.DAL;
+using System.Threading.Tasks;
 
 namespace Task_Logger_Pro
 {
@@ -111,6 +112,11 @@ namespace Task_Logger_Pro
                 Exceptions.Logger.DumpExceptionInfo(ex);
                 return -1;
             }
+        }
+
+        public static Task<decimal> GetDBSizeAsync()
+        {
+            return Task<decimal>.Run(() => GetDBSize());
         }
 
     }

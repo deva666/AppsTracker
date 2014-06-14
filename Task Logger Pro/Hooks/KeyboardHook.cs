@@ -27,8 +27,7 @@ namespace Task_Logger_Pro.Hooks
         HookHandlerCallBack hookCallBack;
         IntPtr hookID = IntPtr.Zero;
 
-        bool passKeyToNextHook = true;
-        bool keyLoggerEnabled;
+        bool keyLoggerEnabled = true;
         bool isDisposed;
 
         internal delegate IntPtr HookHandlerCallBack(int code, IntPtr wParam, IntPtr lParam);
@@ -57,17 +56,12 @@ namespace Task_Logger_Pro.Hooks
 
         public KeyBoardHook()
         {
-            if (System.Threading.Thread.CurrentThread != App.Current.Dispatcher.Thread)
+            if (System.Threading.Thread.CurrentThread.ManagedThreadId != App.Current.Dispatcher.Thread.ManagedThreadId)
                 SetHookSameThread();
             else
                 SetHook();
         }
 
-        public KeyBoardHook(bool enabled)
-            : this()
-        {
-            KeyLoggerEnabled = enabled;
-        }
 
         private void SetHookSameThread()
         {
@@ -92,6 +86,7 @@ namespace Task_Logger_Pro.Hooks
 
         private IntPtr HookProc(int code, IntPtr wParam, IntPtr lParam)
         {
+            Console.WriteLine("hook proc");
             if (!KeyLoggerEnabled || code < 0) 
                 return WinAPI.CallNextHookEx(hookID, code, wParam, lParam);
             
@@ -133,8 +128,6 @@ namespace Task_Logger_Pro.Hooks
                     handler(this, new KeyboardHookEventArgs(keybStruct.vkCode));
             }
 
-            if (!passKeyToNextHook)
-                return IntPtr.Zero;
             return WinAPI.CallNextHookEx(hookID, code, wParam, lParam);
         }
 

@@ -96,7 +96,7 @@ namespace Task_Logger_Pro
             Task deleteOldLogsTask = null;
 
             if (_uzerSetting.DeleteOldLogs)
-                deleteOldLogsTask = DBCleaner.DeleteOldLogsAsync(UzerSetting.OldLogDeleteDays, false);
+                deleteOldLogsTask = DBCleaner.DeleteOldScreenshots(UzerSetting.OldLogDeleteDays);
 
             if (CheckTrialExpiration())
             {
@@ -138,10 +138,10 @@ namespace Task_Logger_Pro
                 }
             }
 
+            _dataLogger = new DataLogger(_uzerSetting);
+
             Globals.DBCleaningRequired += Globals_DBCleaningRequired;
             Globals.GetDBSize();
-
-            _dataLogger = new DataLogger(_uzerSetting);
 
             if (deleteOldLogsTask != null)
                 deleteOldLogsTask.Wait();
@@ -189,11 +189,11 @@ namespace Task_Logger_Pro
 
         void Globals_DBCleaningRequired(object sender, EventArgs e)
         {
-            UzerSetting.LoggingEnabled = false;
-            ChangeTheme();
+            UzerSetting.TakeScreenshots = false;
+            DataLogger.TakeScreenShots = false;
             if (!UzerSetting.Stealth)
             {
-                MessageWindow msgWindow = new MessageWindow("Database size has reached the maximum allowed value" + Environment.NewLine + "Please run the database cleaner from the settings menu to continue logging.", false);
+                MessageWindow msgWindow = new MessageWindow("Database size has reached the maximum allowed value" + Environment.NewLine + "Please run the screenshot cleaner from the settings menu to continue capturing screenshots.", false);
                 msgWindow.ShowDialog();
             }
             Globals.DBCleaningRequired -= Globals_DBCleaningRequired;
@@ -396,6 +396,8 @@ namespace Task_Logger_Pro
                 _uzerSetting.RunAtStartup = false;
             else if (exists.HasValue && exists.Value && !_uzerSetting.RunAtStartup)
                 _uzerSetting.RunAtStartup = true;
+            else if(exists.HasValue && !exists.Value && _uzerSetting.RunAtStartup)
+                _uzerSetting.RunAtStartup = false;
         }
 
         private bool? RegistryEntryExists()

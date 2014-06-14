@@ -20,6 +20,8 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -38,10 +40,11 @@
             <CheckBox Name="cbScreenShots"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"
-                      IsChecked="{Binding Path=UserSettings.TakeScreenshots, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      IsChecked="{Binding Path=UserSettings.TakeScreenshots, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                       Grid.Row="1"
                       Grid.Column="1"
-                      Margin="20,20,0,10" />
+                      Margin="20,20,0,10" 
+                      Command="{Binding ChangeScreenshotsCommand}"/>
             <Label Style="{DynamicResource LabelStyle}"
                    Content="Take screenshots:"
                    HorizontalAlignment="Left"
@@ -83,6 +86,56 @@
                     <MouseBinding Gesture="LeftClick"
                                   Command="{Binding ShowFolderBrowserDialogCommand}"
                                   CommandParameter="SCREENSHOTS"/>
+                </Button.InputBindings>
+            </Button>
+            <Label Style="{DynamicResource LabelStyle}"
+                   Grid.Row="4"
+                   Content="Delete old screenshots automatically:"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Margin="0,10,0,10" />
+            <CheckBox Grid.Row="4"
+                      Grid.Column="1"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding UserSettings.DeleteOldLogs, UpdateSourceTrigger=PropertyChanged}"
+                      Name="cbOldLogs"
+                      Margin="20,0,0,0"
+                      />
+            
+
+            <controls:FaderContentControl Grid.Row="5"
+                                          FaderVisibility="{Binding UserSettings.DeleteOldLogs}">
+                <Label Style="{DynamicResource LabelStyle}"
+                       HorizontalAlignment="Left"
+                       Grid.Row="2"
+                       Content="Delete screenshots older than:" />
+            </controls:FaderContentControl>
+            <controls:FaderContentControl Grid.Row="5"
+                                          Grid.Column="1"
+                                          FaderVisibility="{Binding UserSettings.DeleteOldLogs}">
+                <Button ContentStringFormat="{}{0} days"
+                        Content="{Binding UserSettings.OldLogDeleteDays}"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        Name="lblOldLogs"
+                        Margin="20,0,0,0">
+                    <Button.InputBindings>
+                        <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding ShowPopupCommand}"
+                                      CommandParameter="OldLogs" />
+                    </Button.InputBindings>
+                </Button>
+            </controls:FaderContentControl>
+            <Button Content="Start screenshot cleaner"
+                    HorizontalAlignment="Left"
+                    Grid.Row="6"
+                    Grid.Column="0"
+                    Margin="10,30,0,10">
+                <Button.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding RunDBCleanerCommand}" />
                 </Button.InputBindings>
             </Button>
             <Popup PopupAnimation="Slide"
@@ -156,6 +209,49 @@
                                 <MouseBinding Gesture="LeftClick"
                                               Command="{Binding ChangeScreenShotIntervalCommand }"
                                               CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Label}}}" />
+                            </Label.InputBindings>
+                        </Label>
+                    </StackPanel>
+                </Border>
+            </Popup>
+
+            <Popup PopupAnimation="Slide"
+                   StaysOpen="True"
+                   IsOpen="{Binding PopupOldLogsIsOpen}"
+                   PlacementTarget="{Binding ElementName=lblOldLogs}"
+                   Placement="Right">
+                <Border Style="{DynamicResource ThemeBorderStyle}">
+                    <StackPanel>
+                        <Label Style="{StaticResource SelectableLabelStyle}"
+                               Content="5 days">
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding ChangeOldLogsDaysCommand}"
+                                              CommandParameter="5" />
+                            </Label.InputBindings>
+                        </Label>
+                        <Label Style="{StaticResource SelectableLabelStyle}"
+                               Content="10 days">
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding ChangeOldLogsDaysCommand}"
+                                              CommandParameter="15" />
+                            </Label.InputBindings>
+                        </Label>
+                        <Label Style="{StaticResource SelectableLabelStyle}"
+                               Content="15 days">
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding ChangeOldLogsDaysCommand}"
+                                              CommandParameter="15" />
+                            </Label.InputBindings>
+                        </Label>
+                        <Label Style="{StaticResource SelectableLabelStyle}"
+                               Content="30 days">
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding ChangeOldLogsDaysCommand}"
+                                              CommandParameter="30" />
                             </Label.InputBindings>
                         </Label>
                     </StackPanel>

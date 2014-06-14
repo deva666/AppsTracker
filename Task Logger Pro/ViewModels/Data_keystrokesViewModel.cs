@@ -22,9 +22,8 @@ namespace Task_Logger_Pro.Pages.ViewModels
         bool _working;
 
         List<Log> _logList;
-        //WeakReference _weakCollection = new WeakReference(null);
 
-        ICommand _deleteSelectedLogsCommand;
+        // ICommand _deleteSelectedLogsCommand;
 
         #endregion
 
@@ -54,15 +53,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 PropertyChanging("LogList");
             }
         }
-        //public WeakReference WeakCollection
-        //{
-        //    get
-        //    {
-        //        if (_weakCollection.Target == null && !Working)
-        //            LoadContent();
-        //        return _weakCollection;
-        //    }
-        //}
+
         public bool Working
         {
             get
@@ -76,15 +67,15 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }
         }
 
-        public ICommand DeleteSelectedLogsCommand
-        {
-            get
-            {
-                if (_deleteSelectedLogsCommand == null)
-                    _deleteSelectedLogsCommand = new DelegateCommand(DeleteSelectedLogs);
-                return _deleteSelectedLogsCommand;
-            }
-        }
+        //public ICommand DeleteSelectedLogsCommand
+        //{
+        //    get
+        //    {
+        //        if (_deleteSelectedLogsCommand == null)
+        //            _deleteSelectedLogsCommand = new DelegateCommand(DeleteSelectedLogs);
+        //        return _deleteSelectedLogsCommand;
+        //    }
+        //}
 
         public Mediator Mediator
         {
@@ -128,35 +119,35 @@ namespace Task_Logger_Pro.Pages.ViewModels
             });
         }
 
-        private void DeleteSelectedLogs(object parameter)
-        {
-            ObservableCollection<object> parameterCollection = parameter as ObservableCollection<object>;
-            if (parameterCollection != null)
-            {
-                var logsList = parameterCollection.Select(l => l as Log).ToList();
-                using (var context = new AppsEntities())
-                {
-                    foreach (var log in logsList)
-                    {
-                        foreach (var screenshot in log.Screenshots.ToList())
-                        {
-                            if (!context.Screenshots.Local.Any(s => s.ScreenshotID == screenshot.ScreenshotID))
-                            {
-                                context.Screenshots.Attach(screenshot);
-                            }
-                            context.Screenshots.Remove(screenshot);
-                        }
-                        if (!context.Logs.Local.Any(l => l.LogID == log.LogID))
-                        {
-                            context.Logs.Attach(log);
-                        }
-                        context.Entry(log).State = System.Data.Entity.EntityState.Deleted;
-                    }
-                    context.SaveChanges();
-                }
-                if (logsList.Count > 0)
-                    LoadContent();
-            }
-        }
+        //private void DeleteSelectedLogs(object parameter)
+        //{
+        //    ObservableCollection<object> parameterCollection = parameter as ObservableCollection<object>;
+        //    if (parameterCollection != null)
+        //    {
+        //        var logsList = parameterCollection.Select(l => l as Log).ToList();
+        //        using (var context = new AppsEntities())
+        //        {
+        //            foreach (var log in logsList)
+        //            {
+        //                foreach (var screenshot in log.Screenshots.ToList())
+        //                {
+        //                    if (!context.Screenshots.Local.Any(s => s.ScreenshotID == screenshot.ScreenshotID))
+        //                    {
+        //                        context.Screenshots.Attach(screenshot);
+        //                    }
+        //                    context.Screenshots.Remove(screenshot);
+        //                }
+        //                if (!context.Logs.Local.Any(l => l.LogID == log.LogID))
+        //                {
+        //                    context.Logs.Attach(log);
+        //                }
+        //                context.Entry(log).State = System.Data.Entity.EntityState.Deleted;
+        //            }
+        //            context.SaveChanges();
+        //        }
+        //        if (logsList.Count > 0)
+        //            LoadContent();
+        //    }
+        //}
     }
 }

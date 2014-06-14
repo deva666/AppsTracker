@@ -56,6 +56,7 @@ namespace Task_Logger_Pro.ViewModels
         ICommand _setStartupCommand;
         ICommand _changeIdleTimerCommand;
         ICommand _runDBCleanerCommand;
+        ICommand _changeScreenshotsCommand;
 
         #endregion
 
@@ -529,6 +530,14 @@ namespace Task_Logger_Pro.ViewModels
             }
         }
 
+        public ICommand ChangeScreenshotsCommand
+        {
+            get
+            {
+                return _changeScreenshotsCommand == null ? _changeScreenshotsCommand = new DelegateCommand(ChangeScreenshots, o => Globals.DBSizeOperational) : _changeScreenshotsCommand;
+            }
+        }
+
         #endregion
 
         #endregion
@@ -925,12 +934,29 @@ namespace Task_Logger_Pro.ViewModels
             }
             catch (System.Security.SecurityException)
             {
+                try
+                {
+                    RegistryKey rk = Registry.CurrentUser.OpenSubKey
+                   ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                    if (!UserSettings.RunAtStartup)
+                    {
+                        rk.SetValue("app service", System.Reflection.Assembly.GetExecutingAssembly().Location + " -autostart");
+                        UserSettings.RunAtStartup = true;
+                    }
+                    else
+                    {
+                        rk.DeleteValue("app service", false);
+                        UserSettings.RunAtStartup = false;
+                    }
+                }
+                catch (System.Security.SecurityException)
+                {
+                    MessageWindow messageWindow = new MessageWindow("You don't have administrative privilages to change this option." + Environment.NewLine + "Please try running the app as Administrator." + Environment.NewLine
+                            + "Right click on the app or shortcut and select 'Run as Adminstrator'.");
+                    messageWindow.ShowDialog();
 
-                MessageWindow messageWindow = new MessageWindow("You don't have administrative privilages to change this option." + Environment.NewLine + "Please try running the app as Administrator." + Environment.NewLine
-                               + "Right click on the app or shortcut and select 'Run as Adminstrator'.");
-                messageWindow.ShowDialog();
+                }
             }
-
         }
 
         private void RunDBCleaner()
@@ -939,6 +965,14 @@ namespace Task_Logger_Pro.ViewModels
             dbCleanerWindow.ShowDialog();
         }
 
+
+        private void ChangeScreenshots()
+        {
+            if (UserSettings.TakeScreenshots)
+                UserSettings.TakeScreenshots = false;
+            else
+                UserSettings.TakeScreenshots = true;
+        }
 
         #endregion
 
@@ -957,7 +991,7 @@ namespace Task_Logger_Pro.ViewModels
                 context.SaveChanges();
                 if (proxy.UserID == Globals.UserID)
                 {
-                    var refreshedAppsToBlock = context.AppsToBlocks.Where(a => a.UserID == Globals.UserID).Include(a=>a.Application).ToList();
+                    var refreshedAppsToBlock = context.AppsToBlocks.Where(a => a.UserID == Globals.UserID).Include(a => a.Application).ToList();
                     Mediator.NotifyColleagues<List<AppsToBlock>>(MediatorMessages.AppsToBlockChanged, refreshedAppsToBlock);
                 }
             }

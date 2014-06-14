@@ -14,17 +14,17 @@ namespace Task_Logger_Pro.Pages.ViewModels
     class Statistics_screenshotsViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
     {
         #region Fields
-        
+
         bool _working;
 
         ICommand _returnFromDetailedViewCommand;
 
         ScreenshotModel _screenshotModel;
 
-        WeakReference _weakCollection = new WeakReference(null);
+        List<ScreenshotModel> _screenshotList;
 
-        List<DailyScreenshotModel> _dailyScreenshotsCollection;
-        
+        List<DailyScreenshotModel> _dailyScreenshotsList;
+
         #endregion
 
         #region Properties
@@ -39,10 +39,8 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         public bool IsContentLoaded
         {
-            get
-            {
-                return _weakCollection.Target != null;
-            }
+            get;
+            private set;
         }
 
         public bool Working
@@ -57,11 +55,13 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 PropertyChanging("Working");
             }
         }
+
         public object SelectedItem
         {
             get;
             set;
         }
+
         public ICommand ReturnFromDetailedViewCommand
         {
             get
@@ -82,33 +82,34 @@ namespace Task_Logger_Pro.Pages.ViewModels
             {
                 _screenshotModel = value;
                 PropertyChanging("ScreenshotModel");
-                LoadSubContent();
+                if (_screenshotModel != null)
+                    DailyScreenshotsList = LoadSubContentAsync().Result;
             }
         }
 
-        public WeakReference WeakCollection
+        public List<ScreenshotModel> ScreenshotList
         {
             get
             {
-                if (_weakCollection.Target == null && !Working)
-                    LoadContent();
-                return _weakCollection;
+                return _screenshotList;
+            }
+            set
+            {
+                _screenshotList = value;
+                PropertyChanging("ScreenshotList");
             }
         }
 
-        public IEnumerable<DailyScreenshotModel> DailyScreenshotsCollection
+        public List<DailyScreenshotModel> DailyScreenshotsList
         {
             get
             {
-                return _dailyScreenshotsCollection;
+                return _dailyScreenshotsList;
             }
-        }
-
-        public SettingsProxy UserSettings
-        {
-            get
+            set
             {
-                return App.UzerSetting;
+                _dailyScreenshotsList = value;
+                PropertyChanging("DailyScreenshotsList");
             }
         }
 
@@ -127,9 +128,11 @@ namespace Task_Logger_Pro.Pages.ViewModels
         public async void LoadContent()
         {
             Working = true;
-            WeakCollection.Target = await LoadContentAsync();
+            ScreenshotList = await LoadContentAsync();
+            if (ScreenshotModel != null)
+                DailyScreenshotsList = await LoadSubContentAsync();
             Working = false;
-            PropertyChanging("WeakCollection");
+            IsContentLoaded = true;
         }
 
         private Task<List<ScreenshotModel>> LoadContentAsync()
@@ -159,10 +162,10 @@ namespace Task_Logger_Pro.Pages.ViewModels
         {
             if (ScreenshotModel != null)
             {
-                _dailyScreenshotsCollection = null;
+                _dailyScreenshotsList = null;
                 PropertyChanging("DailyScreenshotsCollection");
                 Working = true;
-                _dailyScreenshotsCollection = await LoadSubContentAsync();
+                _dailyScreenshotsList = await LoadSubContentAsync();
                 Working = false;
                 PropertyChanging("DailyScreenshotsCollection");
             }

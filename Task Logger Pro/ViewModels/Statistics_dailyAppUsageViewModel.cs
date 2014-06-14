@@ -19,7 +19,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         bool _working;
 
-        WeakReference _weakCollection = new WeakReference(null); 
+        List<DailyUsedAppsSeries> _dailyUsedAppsList;
         
         #endregion
 
@@ -32,13 +32,13 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 return "DAILY APP USAGE";
             }
         }
+
         public bool IsContentLoaded
         {
-            get
-            {
-                return _weakCollection.Target != null;
-            }
+            get;
+            private set;
         }
+
         public bool Working
         {
             get
@@ -51,32 +51,32 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 PropertyChanging("Working");
             }
         }
+
         public object SelectedItem
         {
             get;
             set;
         }
-        public WeakReference WeakCollection
+
+        public List<DailyUsedAppsSeries> DailyUsedAppsList
         {
             get
             {
-                if (_weakCollection.Target == null && !Working)
-                {
-                    LoadContent();
-                } return _weakCollection;
+                return _dailyUsedAppsList;
             }
-        }
-        public SettingsProxy UserSettings
-        {
-            get
+            set
             {
-                return App.UzerSetting;
+                _dailyUsedAppsList = value;
+                PropertyChanging("DailyUsedAppsList");
             }
         }
+
+ 
         public Mediator Mediator
         {
             get { return Mediator.Instance; }
         } 
+
         #endregion
 
         public Statistics_dailyAppUsageViewModel()
@@ -87,9 +87,9 @@ namespace Task_Logger_Pro.Pages.ViewModels
         public async void LoadContent()
         {
             Working = true;
-            WeakCollection.Target = await LoadContentAsync();
+            DailyUsedAppsList = await LoadContentAsync();
             Working = false;
-            PropertyChanging("WeakCollection");
+            IsContentLoaded = true;
         }
 
         private Task<List<DailyUsedAppsSeries>> LoadContentAsync()

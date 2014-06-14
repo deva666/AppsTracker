@@ -26,7 +26,6 @@
                 <chart:PieChart ChartTitle="Most used apps"
                                 ChartSubTitle="Usage time in hours (select item to view details)"
                                 Style="{StaticResource MinimalChartStyle}"
-                                MinHeight="{Binding UserSettings.MainWindowHeight, Converter={StaticResource convertWidth}}"
                                 SelectedItem="{Binding MostUsedAppModel, Mode=TwoWay}"
                                 BorderBrush="{DynamicResource WindowBorderBrush}"
                                 BorderThickness="1"
@@ -38,7 +37,7 @@
                         <chart:ChartSeries SeriesTitle="Applications"
                                            DisplayMember="AppName"
                                            ValueMember="Duration"
-                                           ItemsSource="{Binding WeakCollection.Target}" />
+                                           ItemsSource="{Binding MostUsedAppsList}" />
 
                     </chart:PieChart.Series>
                 </chart:PieChart>

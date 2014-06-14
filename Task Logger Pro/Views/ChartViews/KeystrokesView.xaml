@@ -25,7 +25,6 @@
                                             ChartSubTitle="Total keystrokes logged per app (select item to view details)"
                                             Style="{StaticResource MinimalChartStyle}"
                                             SelectedItem="{Binding KeystrokeModel, Mode=TwoWay}"
-                                            MinHeight="{Binding UserSettings.MainWindowHeight, Converter={StaticResource convertWidth}}"
                                             BorderBrush="{DynamicResource WindowBorderBrush}"
                                             BorderThickness="1"
                                             Margin="10,10,10,20"
@@ -36,7 +35,7 @@
                         <chart:ChartSeries SeriesTitle="Keystrokes"
                                            DisplayMember="AppName"
                                            ValueMember="Count"
-                                           ItemsSource="{Binding WeakCollection.Target}" />
+                                           ItemsSource="{Binding KeystrokeList}" />
                     </chart:ClusteredColumnChart.Series>
 
                 </chart:ClusteredColumnChart>

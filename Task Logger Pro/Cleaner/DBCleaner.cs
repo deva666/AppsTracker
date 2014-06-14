@@ -11,66 +11,78 @@ namespace Task_Logger_Pro.Cleaner
 {
     static class DBCleaner
     {
-        public static void DeleteOldLogs(int days, bool screenshotsOnly = false, bool? isLoggginStopped = null)
+        //public static void DeleteOldLogs(int days, bool screenshotsOnly = false, bool? isLoggginStopped = null)
+        //{
+        //    if (App.DataLogger != null)
+        //        App.DataLogger.IsLogggingStopped = true;
+
+        //    DateTime dateTreshold = DateTime.Now.AddDays(-1d * days);
+        //    if (screenshotsOnly)
+        //    {
+        //        using (var context = new AppsEntities())
+        //        {
+        //            var screenshots = (from s in context.Screenshots
+        //                               where s.Date < dateTreshold
+        //                               select s).ToList();
+        //            DeleteScreenshots(context, screenshots);
+        //            context.SaveChanges();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        using (var context = new AppsEntities())
+        //        {
+        //            var logs = (from l in context.Logs
+        //                        join u in context.Usages on l.UsageID equals u.UsageID
+        //                        where l.DateCreated < dateTreshold
+        //                        && !u.IsCurrent
+        //                        select l).Include(l => l.Screenshots).Include(l => l.Window.Application).ToList();
+
+        //            var usages = (from u in context.Usages
+        //                          where u.UsageStart < dateTreshold
+        //                          && !u.IsCurrent
+        //                          select u).ToList();
+
+        //            var fileLogs = (from f in context.FileLogs
+        //                            where f.Date < dateTreshold
+        //                            select f).ToList();
+
+        //            var blockedApps = (from b in context.BlockedApps
+        //                               where b.Date < dateTreshold
+        //                               select b).ToList();
+
+        //            DeleteBlockedApps(context, blockedApps);
+
+        //            DeleteFilelogs(context, fileLogs);
+
+        //            DeleteUsages(context, usages);
+
+        //            DeleteLogsAndScreenshots(context, logs);
+
+        //            DeleteEmptyLogs(context);
+
+        //            context.SaveChanges();
+        //        }
+        //    }
+        //    if (App.DataLogger != null && isLoggginStopped.HasValue)
+        //        App.DataLogger.IsLogggingStopped = isLoggginStopped.Value;
+        //}
+
+        //public static Task DeleteOldLogsAsync(int days, bool screenshotsOnly = false, bool? isLoggingStopped = null)
+        //{
+        //    return Task.Run(() => DeleteOldLogs(days, screenshotsOnly, isLoggingStopped));
+        //}
+
+
+        public static async Task DeleteOldScreenshots(int days)
         {
-            if (App.DataLogger != null)
-                App.DataLogger.IsLogggingStopped = true;
-
-            DateTime dateTreshold = DateTime.Now.AddDays(-1d * days);
-            if (screenshotsOnly)
+            using (var context = new AppsEntities())
             {
-                using (var context = new AppsEntities())
-                {
-                    var screenshots = (from s in context.Screenshots
-                                       where s.Date < dateTreshold
-                                       select s).ToList();
-                    DeleteScreenshots(context, screenshots);
-                    context.SaveChanges();
-                }
+                DateTime dateTreshold = DateTime.Now.AddDays(-1d * days);
+                var oldScreenshots = context.Screenshots.Where(s => s.Date < dateTreshold).ToList();
+                context.Screenshots.RemoveRange(oldScreenshots);
+                await context.SaveChangesAsync();
             }
-            else
-            {
-                using (var context = new AppsEntities())
-                {
-                    var logs = (from l in context.Logs
-                                join u in context.Usages on l.UsageID equals u.UsageID
-                                where l.DateCreated < dateTreshold
-                                && !u.IsCurrent
-                                select l).Include(l => l.Screenshots).Include(l => l.Window.Application).ToList();
-
-                    var usages = (from u in context.Usages
-                                  where u.UsageStart < dateTreshold
-                                  && !u.IsCurrent
-                                  select u).ToList();
-
-                    var fileLogs = (from f in context.FileLogs
-                                    where f.Date < dateTreshold
-                                    select f).ToList();
-
-                    var blockedApps = (from b in context.BlockedApps
-                                       where b.Date < dateTreshold
-                                       select b).ToList();
-
-                    DeleteBlockedApps(context, blockedApps);
-
-                    DeleteFilelogs(context, fileLogs);
-
-                    DeleteUsages(context, usages);
-
-                    DeleteLogsAndScreenshots(context, logs);
-
-                    DeleteEmptyLogs(context);
-
-                    context.SaveChanges();
-                }
-            }
-            if (App.DataLogger != null && isLoggginStopped.HasValue)
-                App.DataLogger.IsLogggingStopped = isLoggginStopped.Value;
-        }
-
-        public static Task DeleteOldLogsAsync(int days, bool screenshotsOnly = false, bool? isLoggingStopped = null)
-        {
-            return Task.Run(() => DeleteOldLogs(days, screenshotsOnly, isLoggingStopped));
         }
 
         private static void DeleteBlockedApps(AppsEntities context, List<BlockedApp> blockedApps)

@@ -32,7 +32,6 @@
             <chart:ClusteredColumnChart ChartTitle="{Binding KeystrokeModel.AppName}"
                                         ChartSubTitle="Keystrokes logged per day"
                                         Style="{StaticResource MinimalChartStyle}"
-                                        MinHeight="{Binding UserSettings.MainWindowHeight, Converter={StaticResource convertWidth}}"
                                         BorderBrush="{DynamicResource WindowBorderBrush}"
                                         BorderThickness="1"
                                         Margin="10,10,10,20"
@@ -44,7 +43,7 @@
                     <chart:ChartSeries SeriesTitle="Keystrokes Count"
                                        DisplayMember="Date"
                                        ValueMember="Count"
-                                       ItemsSource="{Binding DailyKeystrokesCollection}" />
+                                       ItemsSource="{Binding DailyKeystrokesList}" />
 
                 </chart:ClusteredColumnChart.Series>
             </chart:ClusteredColumnChart>

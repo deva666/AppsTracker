@@ -18,14 +18,16 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         MostUsedAppModel _mostUsedAppModel;
 
-        WeakReference _weakCollection = new WeakReference(null);
+        List<MostUsedAppModel> _mostUsedAppsList;
 
-        List<DailyAppModel> _dailyAppCollection;
+        List<DailyAppModel> _dailyAppList;
 
         ICommand _returnFromDetailedViewCommand;
+
         #endregion
 
         #region Properties
+
         public string Title
         {
             get
@@ -36,10 +38,8 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         public bool IsContentLoaded
         {
-            get
-            {
-                return _weakCollection.Target != null;
-            }
+            get;
+            private set;
         }
 
         public bool Working
@@ -54,6 +54,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 PropertyChanging("Working");
             }
         }
+
         public MostUsedAppModel MostUsedAppModel
         {
             get
@@ -64,24 +65,40 @@ namespace Task_Logger_Pro.Pages.ViewModels
             {
                 _mostUsedAppModel = value;
                 PropertyChanging("MostUsedAppModel");
-                LoadSubContent();
+                if (_mostUsedAppModel != null)
+                    DailyAppList = LoadSubContentAsync().Result;
             }
         }
-        public object SelectedItem { get; set; }
-        public WeakReference WeakCollection
+
+        public object SelectedItem
+        {
+            get;
+            set;
+        }
+
+
+        public List<MostUsedAppModel> MostUsedAppsList
         {
             get
             {
-                if (_weakCollection.Target == null && !Working)
-                    LoadContent();
-                return _weakCollection;
+                return _mostUsedAppsList;
+            }
+            set
+            {
+                _mostUsedAppsList = value;
+                PropertyChanging("MostUsedAppsList");
             }
         }
-        public IEnumerable<DailyAppModel> DailyAppCollection
+        public List<DailyAppModel> DailyAppList
         {
             get
             {
-                return _dailyAppCollection;
+                return _dailyAppList;
+            }
+            set
+            {
+                _dailyAppList = value;
+                PropertyChanging("DailyAppList");
             }
         }
         public ICommand ReturnFromDetailedViewCommand
@@ -93,17 +110,12 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 return _returnFromDetailedViewCommand;
             }
         }
-        public SettingsProxy UserSettings
-        {
-            get
-            {
-                return App.UzerSetting;
-            }
-        }
+
         public Mediator Mediator
         {
             get { return Mediator.Instance; }
         }
+
         #endregion
         private void ReturnFromDetailedView()
         {
@@ -118,9 +130,11 @@ namespace Task_Logger_Pro.Pages.ViewModels
         public async void LoadContent()
         {
             Working = true;
-            _weakCollection.Target = await LoadContentAsync();
+            MostUsedAppsList = await LoadContentAsync();
+            if (MostUsedAppModel != null)
+                DailyAppList = await LoadSubContentAsync();
             Working = false;
-            PropertyChanging("WeakCollection");
+            IsContentLoaded = true;
         }
 
         private Task<List<MostUsedAppModel>> LoadContentAsync()
@@ -148,10 +162,10 @@ namespace Task_Logger_Pro.Pages.ViewModels
         {
             if (MostUsedAppModel != null)
             {
-                _dailyAppCollection = null;
+                _dailyAppList = null;
                 PropertyChanging("DailyAppCollection");
                 Working = true;
-                _dailyAppCollection = await LoadSubContentAsync();
+                _dailyAppList = await LoadSubContentAsync();
                 Working = false;
                 PropertyChanging("DailyAppCollection");
             }
@@ -161,18 +175,25 @@ namespace Task_Logger_Pro.Pages.ViewModels
         {
             return Task<List<DailyAppModel>>.Run(() =>
             {
+                if (MostUsedAppModel == null)
+                    return null;
+                var appName = MostUsedAppModel.AppName;
+
                 using (var context = new AppsEntities())
                 {
                     return (from a in context.Applications.AsNoTracking()
                             join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
                             join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                            where a.Name == MostUsedAppModel.AppName
+                            where a.Name == appName
                             group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day } into g
                             orderby g.Key.year, g.Key.month, g.Key.day
                             select g)
                             .ToList()
-                            .Select(g => new DailyAppModel { Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
-                                Duration = Math.Round(new TimeSpan(g.Sum(l => l.Duration)).TotalHours, 1) })
+                            .Select(g => new DailyAppModel
+                            {
+                                Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
+                                Duration = Math.Round(new TimeSpan(g.Sum(l => l.Duration)).TotalHours, 1)
+                            })
                             .ToList();
                 }
             });

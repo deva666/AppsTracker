@@ -14,19 +14,19 @@ namespace Task_Logger_Pro.Pages.ViewModels
     class Statistics_keystrokesViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
     {
         #region Fields
-        
+
         bool _working;
 
         ICommand _returnFromDetailedViewCommand;
 
         KeystrokeModel _keystrokeModel;
 
-        WeakReference _weakCollection = new WeakReference(null);
+        List<KeystrokeModel> _keystrokeList;
 
-        List<DailyKeystrokeModel> _dailyKeystrokesCollection; 
-        
+        List<DailyKeystrokeModel> _dailyKeystrokesList;
+
         #endregion
-        
+
         #region Properties
 
         public string Title
@@ -39,16 +39,16 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         public bool IsContentLoaded
         {
-            get
-            {
-                return _weakCollection.Target != null;
-            }
+            get;
+            private set;
         }
+
         public object SelectedItem
         {
             get;
             set;
         }
+
         public bool Working
         {
             get
@@ -74,37 +74,41 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         public KeystrokeModel KeystrokeModel
         {
-            get { return _keystrokeModel; }
+            get
+            {
+                return _keystrokeModel;
+            }
             set
             {
                 _keystrokeModel = value;
                 PropertyChanging("KeystrokeModel");
-                LoadSubContent();
+                if (_keystrokeModel != null)
+                    DailyKeystrokesList = LoadSubContentAsync().Result;
             }
         }
 
-        public WeakReference WeakCollection
+        public List<KeystrokeModel> KeystrokeList
         {
             get
             {
-                if (_weakCollection.Target == null && !Working)
-                    LoadContent();
-                return _weakCollection;
+                return _keystrokeList;
+            }
+            set
+            {
+                _keystrokeList = value;
+                PropertyChanging("KeystrokeList");
             }
         }
-        public IEnumerable<DailyKeystrokeModel> DailyKeystrokesCollection
+        public List<DailyKeystrokeModel> DailyKeystrokesList
         {
             get
             {
-                return _dailyKeystrokesCollection;
+                return _dailyKeystrokesList;
             }
-        }
-
-        public SettingsProxy UserSettings
-        {
-            get
+            set
             {
-                return App.UzerSetting;
+                _dailyKeystrokesList = value;
+                PropertyChanging("DailyKeystrokesList");
             }
         }
 
@@ -112,7 +116,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
         {
             get { return Mediator.Instance; }
         }
-        
+
         #endregion
 
         public Statistics_keystrokesViewModel()
@@ -123,9 +127,11 @@ namespace Task_Logger_Pro.Pages.ViewModels
         public async void LoadContent()
         {
             Working = true;
-            WeakCollection.Target = await LoadContentAsync();
+            KeystrokeList = await LoadContentAsync();
+            if (KeystrokeModel != null)
+                DailyKeystrokesList = await LoadSubContentAsync();
             Working = false;
-            PropertyChanging("WeakCollection");
+            IsContentLoaded = true;
         }
 
         private Task<List<KeystrokeModel>> LoadContentAsync()
@@ -155,10 +161,10 @@ namespace Task_Logger_Pro.Pages.ViewModels
         {
             if (KeystrokeModel == null)
                 return;
-            _dailyKeystrokesCollection = null;
+            _dailyKeystrokesList = null;
             PropertyChanging("DailyKeystrokesCollection");
             Working = true;
-            _dailyKeystrokesCollection = await LoadSubContentAsync();
+            _dailyKeystrokesList = await LoadSubContentAsync();
             Working = false;
             PropertyChanging("DailyKeystrokesCollection");
         }

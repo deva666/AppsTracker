@@ -34,7 +34,6 @@
             <chart:ClusteredColumnChart ChartTitle="{Binding MostUsedAppModel.AppName}"
                                         ChartSubTitle="Usage time in hours per day"
                                         Style="{StaticResource MinimalChartStyle}"
-                                        MinHeight="{Binding UserSettings.MainWindowHeight, Converter={StaticResource convertWidth}}"
                                         BorderBrush="{DynamicResource WindowBorderBrush}"
                                         BorderThickness="1"
                                         Margin="10,10,10,20"
@@ -45,8 +44,8 @@
                     <chart:ChartSeries SeriesTitle="Hours"
                                        DisplayMember="Date"
                                        ValueMember="Duration"
-                                       ItemsSource="{Binding DailyAppCollection}"
-                                       Height="Auto"/>
+                                       ItemsSource="{Binding DailyAppList}"
+                                       Height="Auto" />
 
                 </chart:ClusteredColumnChart.Series>
             </chart:ClusteredColumnChart>

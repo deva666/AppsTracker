@@ -22,7 +22,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         AllUsersModel _allUsersModel;
 
-        WeakReference _weakCollection = new WeakReference(null);
+        List<AllUsersModel> _allUsersList;
 
         List<UsageTypeSeries> _dailyLogins;
 
@@ -46,10 +46,8 @@ namespace Task_Logger_Pro.Pages.ViewModels
         }
         public bool IsContentLoaded
         {
-            get
-            {
-                return _weakCollection.Target != null;
-            }
+            get;
+            private set;
         }
         public bool Working
         {
@@ -59,7 +57,8 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }
             set
             {
-                _working = value; PropertyChanging("Working");
+                _working = value;
+                PropertyChanging("Working");
             }
         }
         public AllUsersModel AllUsersModel
@@ -70,8 +69,10 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }
             set
             {
-                _allUsersModel = value; PropertyChanging("AllUsersModel");
-                LoadSubContent();
+                _allUsersModel = value;
+                PropertyChanging("AllUsersModel");
+                if (_allUsersModel != null)
+                    DailyLogins = LoadSubContentAsync().Result;
             }
         }
         public UsageModel UsageModel
@@ -79,13 +80,16 @@ namespace Task_Logger_Pro.Pages.ViewModels
             get;
             set;
         }
-        public WeakReference WeakCollection
+        public List<AllUsersModel> AllUsersList
         {
             get
             {
-                if (_weakCollection.Target == null && !Working)
-                    LoadContent();
-                return _weakCollection;
+                return _allUsersList;
+            }
+            set
+            {
+                _allUsersList = value;
+                PropertyChanging("AllUsersList");
             }
         }
         public List<UsageTypeSeries> DailyLogins
@@ -93,6 +97,11 @@ namespace Task_Logger_Pro.Pages.ViewModels
             get
             {
                 return _dailyLogins;
+            }
+            set
+            {
+                _dailyLogins = value;
+                PropertyChanging("DailyLogins");
             }
         }
         public SettingsProxy UserSettings
@@ -129,9 +138,11 @@ namespace Task_Logger_Pro.Pages.ViewModels
         public async void LoadContent()
         {
             Working = true;
-            WeakCollection.Target = await LoadContentAsync();
+            AllUsersList = await LoadContentAsync();
+            if (AllUsersModel != null)
+                DailyLogins = await LoadSubContentAsync();
             Working = false;
-            PropertyChanging("WeakCollection");
+            IsContentLoaded = true;
         }
 
         private Task<List<AllUsersModel>> LoadContentAsync()

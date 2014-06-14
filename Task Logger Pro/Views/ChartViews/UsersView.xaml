@@ -36,7 +36,7 @@
                         <chart:ChartSeries SeriesTitle="Users"
                                            DisplayMember="Username"
                                            ValueMember="LoggedInTime"
-                                           ItemsSource="{Binding WeakCollection.Target}" />
+                                           ItemsSource="{Binding AllUsersList}" />
                     </chart:ClusteredColumnChart.Series>
 
                 </chart:ClusteredColumnChart>

@@ -217,7 +217,7 @@ namespace Task_Logger_Pro.ViewModels
             get
             {
                 if (_changeLoggingStatusCommand == null)
-                    _changeLoggingStatusCommand = new DelegateCommand(ChangeLoggingStatus, o => Globals.DBSizeOperational);
+                    _changeLoggingStatusCommand = new DelegateCommand(ChangeLoggingStatus);
                 return _changeLoggingStatusCommand;
             }
         }
@@ -316,7 +316,7 @@ namespace Task_Logger_Pro.ViewModels
             string viewName = parameter as string;
             if (viewName == null)
                 return;
-            if (viewName.ToLower() == "settings")
+            if (viewName.ToLower() == "settings" && this.SelectedChild.Title != "settings")
                 ToSettings = this.SelectedChild.Title;
 
             switch (viewName)
@@ -359,13 +359,7 @@ namespace Task_Logger_Pro.ViewModels
 
         protected override void Disposing()
         {
-            //foreach (var child in this.Children)
-            //{
-            //    ((ViewModelBase)child).Dispose();
-            //}
-
             this._selectedChild = null;
-            //this.Children = null;
             base.Disposing();
         }
 

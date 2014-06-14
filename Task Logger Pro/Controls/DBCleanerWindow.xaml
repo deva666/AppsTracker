@@ -14,7 +14,7 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition />
+            
 
         </Grid.RowDefinitions>
 
@@ -34,15 +34,16 @@
                    Grid.ColumnSpan="3" />
 
         <Label Style="{DynamicResource LabelStyle}"
-               Content="Database cleaner."
+               Content="Screenshot cleaner."
                Grid.Row="1"
                Grid.Column="0"
                Grid.ColumnSpan="2"
+               FontSize="16"
                HorizontalAlignment="Center"
                Margin="0,10,0,10" />
 
         <Label Style="{DynamicResource LabelStyle}"
-               Content="Delete logs older than (days)"
+               Content="Delete screenshots older than (days)"
                Grid.Row="2"
                Grid.Column="0"
                HorizontalAlignment="Left"
@@ -55,21 +56,10 @@
                  MinWidth="40"
                  PreviewTextInput="tbDays_PreviewTextInput"/>
 
-        <Label Style="{DynamicResource LabelStyle}"
-               Content="Delete screenshots only"
-               Grid.Row="3"
-               Grid.Column="0"
-               HorizontalAlignment="Left"
-               Margin="15,0,0,0" />
-        <CheckBox Grid.Row="3"
-                  Grid.Column="1"
-                  Name="cbScreenshots"
-                  Margin="10"
-                  HorizontalAlignment="Left"
-                  MinWidth="40" />
+
 
         <StackPanel Orientation="Horizontal"
-                    Grid.Row="4"
+                    Grid.Row="3"
                     Grid.Column="1">
             <Label Style="{DynamicResource SelectableLabelStyle}"
                    Content="CLEAN"

@@ -340,6 +340,7 @@ namespace Task_Logger_Pro.Logging
 
         private void KeyDownEventHandler(object sender, KeyboardHookEventArgs e)
         {
+            Console.WriteLine("event key down");
             if (IsLogggingStopped)
                 return;
 
@@ -353,11 +354,13 @@ namespace Task_Logger_Pro.Logging
                     _currentLog.AppendNewKeyLogLine();
                 else
                     _currentLog.AppendKeyLog(e.String);
+                Console.WriteLine(e.String);
             }
         }
 
         private void KeyPressEventHandler(object sender, KeyboardHookEventArgs e)
         {
+            Console.WriteLine("event key press");
             if (IsLogggingStopped)
                 return;
 
@@ -461,7 +464,6 @@ namespace Task_Logger_Pro.Logging
 
         private void watcher_Changed(object sender, FileSystemEventArgs e)
         {
-            Console.WriteLine("FILE CHANGED");
             if (IsLogggingStopped)
                 return;
 
@@ -543,7 +545,6 @@ namespace Task_Logger_Pro.Logging
 
         private void IdleStoped(object sender, EventArgs e)
         {
-            Console.WriteLine("IDLE STOPPED");
             ResumeLogging();
             if (_currentUsageIdle != null)
             {
@@ -710,8 +711,9 @@ namespace Task_Logger_Pro.Logging
             }
         }
 
-        private void AddScreenShot()
+        private async void AddScreenShot()
         {
+            var dbSizeAsync = Globals.GetDBSizeAsync();
             CheckWindowTitle();
 
             Log log = CurrentLog;
@@ -721,6 +723,7 @@ namespace Task_Logger_Pro.Logging
             if (screenshot == null || log == null)
                 return;
             log.Screenshots.Add(screenshot);
+            var size = await dbSizeAsync.ConfigureAwait(true);
         }
 
         #endregion

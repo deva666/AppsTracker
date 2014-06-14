@@ -35,7 +35,7 @@
                         <chart:ChartSeries SeriesTitle="Screenshots"
                                            DisplayMember="AppName"
                                            ValueMember="Count"
-                                           ItemsSource="{Binding WeakCollection.Target}" />
+                                           ItemsSource="{Binding ScreenshotList}" />
                     </chart:ClusteredColumnChart.Series>
 
                 </chart:ClusteredColumnChart>

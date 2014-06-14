@@ -20,10 +20,9 @@
                                       ChartSubTitle="Hours per day"
                                       Style="{StaticResource MinimalChartStyle}"
                                       SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-                                      MinHeight="{Binding UserSettings.MainWindowHeight, Converter={StaticResource convertWidth}}"
                                       BorderBrush="{DynamicResource WindowBorderBrush}"
                                       BorderThickness="1"
-                                      SeriesSource="{Binding WeakCollection.Target}"
+                                      SeriesSource="{Binding DailyUsedAppsList}"
                                       Margin="10,10,10,20"
                                       Width="Auto"
                                       Height="Auto">
