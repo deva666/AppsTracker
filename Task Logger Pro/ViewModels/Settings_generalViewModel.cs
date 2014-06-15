@@ -934,28 +934,9 @@ namespace Task_Logger_Pro.ViewModels
             }
             catch (System.Security.SecurityException)
             {
-                try
-                {
-                    RegistryKey rk = Registry.CurrentUser.OpenSubKey
-                   ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-                    if (!UserSettings.RunAtStartup)
-                    {
-                        rk.SetValue("app service", System.Reflection.Assembly.GetExecutingAssembly().Location + " -autostart");
-                        UserSettings.RunAtStartup = true;
-                    }
-                    else
-                    {
-                        rk.DeleteValue("app service", false);
-                        UserSettings.RunAtStartup = false;
-                    }
-                }
-                catch (System.Security.SecurityException)
-                {
-                    MessageWindow messageWindow = new MessageWindow("You don't have administrative privilages to change this option." + Environment.NewLine + "Please try running the app as Administrator." + Environment.NewLine
-                            + "Right click on the app or shortcut and select 'Run as Adminstrator'.");
-                    messageWindow.ShowDialog();
-
-                }
+                MessageWindow messageWindow = new MessageWindow("You don't have administrative privilages to change this option." + Environment.NewLine + "Please try running the app as Administrator." + Environment.NewLine
+                                        + "Right click on the app or shortcut and select 'Run as Adminstrator'.");
+                messageWindow.ShowDialog();
             }
         }
 

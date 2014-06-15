@@ -114,29 +114,17 @@ namespace Task_Logger_Pro
                 }
             }
 
-            if (UzerSetting.FirstRun)
-            {
-                //Nisam siguran da mi ovo treba
-                //if (!IsUserAnAdmin())
-                //{
-                //    MessageWindow msgWindow = new MessageWindow("It looks like this account is not in the Administrators group. Administrator privileges are required to install this app."
-                //        + Environment.NewLine
-                //        + "The app is going to exit.");
-                //    msgWindow.ShowDialog();
-                //    (App.Current as App).Shutdown();
-                //    Environment.Exit(0);
-                //    return;
-                //}
-
-                EULAWindow eulaWindow = new EULAWindow();
-                var dialogResult = eulaWindow.ShowDialog();
-                if (!dialogResult.HasValue && !dialogResult.Value)
-                {
-                    (App.Current as App).Shutdown();
-                    Environment.Exit(0);
-                    return;
-                }
-            }
+            //if (UzerSetting.FirstRun)
+            //{
+            //    EULAWindow eulaWindow = new EULAWindow();
+            //    var dialogResult = eulaWindow.ShowDialog();
+            //    if (!dialogResult.HasValue && !dialogResult.Value)
+            //    {
+            //        (App.Current as App).Shutdown();
+            //        Environment.Exit(0);
+            //        return;
+            //    }
+            //}
 
             _dataLogger = new DataLogger(_uzerSetting);
 
@@ -176,9 +164,7 @@ namespace Task_Logger_Pro
             };
 
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
-#if DEBUG
-            this.Exit += App_Exit;
-#endif
+
             #endregion
 
             ShowHideTrayIcon();
@@ -189,8 +175,8 @@ namespace Task_Logger_Pro
 
         void Globals_DBCleaningRequired(object sender, EventArgs e)
         {
-            UzerSetting.TakeScreenshots = false;
-            DataLogger.TakeScreenShots = false;
+            UzerSetting.TakeScreenshots = DataLogger.TakeScreenShots = false;
+
             if (!UzerSetting.Stealth)
             {
                 MessageWindow msgWindow = new MessageWindow("Database size has reached the maximum allowed value" + Environment.NewLine + "Please run the screenshot cleaner from the settings menu to continue capturing screenshots.", false);
@@ -396,7 +382,7 @@ namespace Task_Logger_Pro
                 _uzerSetting.RunAtStartup = false;
             else if (exists.HasValue && exists.Value && !_uzerSetting.RunAtStartup)
                 _uzerSetting.RunAtStartup = true;
-            else if(exists.HasValue && !exists.Value && _uzerSetting.RunAtStartup)
+            else if (exists.HasValue && !exists.Value && _uzerSetting.RunAtStartup)
                 _uzerSetting.RunAtStartup = false;
         }
 
@@ -458,16 +444,6 @@ namespace Task_Logger_Pro
                 }
                 return false;
             }
-        }
-
-        private bool IsDbCleaningRequired()
-        {
-            decimal size = Globals.GetDBSize();
-            if (size > 3900m)
-                return true;
-            else
-                return false;
-
         }
 
         public void CreateOrShowMainWindow()
@@ -580,7 +556,6 @@ namespace Task_Logger_Pro
             CloseMainWindow();
             Dispose();
             Application.Current.Shutdown();
-            //  Environment.Exit(0);
         }
 
 

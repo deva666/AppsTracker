@@ -50,7 +50,7 @@
             <TextBlock Margin="20,0,20,10"
                        FontSize="12"
                        PreviewMouseLeftButtonUp="TextBlock_MouseLeftButtonUp">
-                <Hyperlink>madevcic@gmail.com</Hyperlink>
+                <Hyperlink>info@theappstracker.com</Hyperlink>
             </TextBlock>
             <TextBlock  Margin="20,0,20,10"
                         FontSize="12"

@@ -76,12 +76,27 @@ namespace Task_Logger_Pro.Controls
 
         private void TextBlock_MouseLeftButtonUp( object sender, MouseButtonEventArgs e )
         {
-            System.Diagnostics.Process.Start( "mailto:appstracker@xnet.hr" );
+            try
+            {
+                System.Diagnostics.Process.Start("mailto:info@theappstracker.com");
+            }
+            catch (Exception ex)
+            {
+                Exceptions.Logger.DumpExceptionInfo(ex);
+            }
         }
 
         private void TextBlock_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.theappstracker.com");
+            try
+            {
+                System.Diagnostics.Process.Start("http://www.theappstracker.com");
+            }
+            catch (Exception ex)
+            {
+
+                Exceptions.Logger.DumpExceptionInfo(ex);
+            }
         }
     }
 }

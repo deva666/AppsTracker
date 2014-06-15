@@ -162,11 +162,9 @@ namespace Task_Logger_Pro
             {
                 if (process.MainModule.FileVersionInfo.CompanyName != null && process.MainModule.FileVersionInfo.CompanyName.ToLower().Contains("microsoft"))
                 {
-                    // processInfo.ProcessExe = process.MainModule.FileName ?? "";
                     processInfo.ProcessVersion = process.MainModule.FileVersionInfo.ProductVersion ?? "";
                     processInfo.ProcessCompany = process.MainModule.FileVersionInfo.CompanyName ?? "";
                     processInfo.ProcessFileName = process.MainModule.FileVersionInfo.FileName ?? "";
-                    // processInfo.ProcessComments = process.MainModule.FileVersionInfo.Comments ?? "";
                     if (string.IsNullOrEmpty(process.MainModule.FileVersionInfo.FileDescription))
                     {
                         processInfo.ProcessName = process.MainModule.FileVersionInfo.ProductName ?? "";
@@ -182,11 +180,9 @@ namespace Task_Logger_Pro
                 }
                 else
                 {
-                    //processInfo.ProcessExe = process.MainModule.FileName ?? "";
                     processInfo.ProcessVersion = process.MainModule.FileVersionInfo.ProductVersion ?? "";
                     processInfo.ProcessCompany = process.MainModule.FileVersionInfo.CompanyName ?? "";
                     processInfo.ProcessFileName = process.MainModule.FileVersionInfo.FileName ?? "";
-                    //processInfo.ProcessComments = process.MainModule.FileVersionInfo.Comments ?? "";
                     processInfo.ProcessName = process.MainModule.FileVersionInfo.ProductName ?? "";
                     processInfo.ProcessDescription = process.MainModule.FileVersionInfo.FileDescription ?? "";
                     processInfo.ProcessRealName = process.ProcessName ?? "";
@@ -198,12 +194,20 @@ namespace Task_Logger_Pro
             }
             catch (Exception)
             {
-                processInfo.ProcessVersion = "";
-                processInfo.ProcessCompany = "";
-                processInfo.ProcessFileName = "";
-                processInfo.ProcessName = process.ProcessName;
-                processInfo.ProcessDescription = "";
-                processInfo.ProcessRealName = "";
+                try
+                {
+                    processInfo.ProcessVersion = "";
+                    processInfo.ProcessCompany = "";
+                    processInfo.ProcessFileName = "";
+                    processInfo.ProcessName = process.ProcessName;
+                    processInfo.ProcessDescription = "";
+                    processInfo.ProcessRealName = "";
+                }
+                catch (Exception)
+                {
+
+                    return null;
+                }
             }
 
             return processInfo;

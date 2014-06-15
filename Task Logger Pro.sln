@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTrackerCore", "Task Logger Pro\AppsTrackerCore.csproj", "{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}"
 EndProject
@@ -9,17 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTrackerService", "AppsT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTrackerLicensing", "AppLoggerLicenseKeys\AppsTrackerLicensing.csproj", "{3018122A-AAC6-4304-9EC1-D415FA060505}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AT.ErrorLog", "AT.ErrorLog\AT.ErrorLog.csproj", "{CA29C6D8-5D7C-4811-9936-76F7A4458599}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D24EB643-F203-4500-9CBE-4B50EB3361B4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTracker.DAL", "AppsTracker.DAL\AppsTracker.DAL.csproj", "{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTracker.Models", "AppsTracker.Models\AppsTracker.Models.csproj", "{CC8B5831-53C4-46DA-97DB-18C75ED7D929}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{88040661-573B-463C-88BD-755BBFA0B0F3}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "AppsTrackerInstallation", "AppsTrackerInstallation\AppsTrackerInstallation.vdproj", "{3413EA98-3742-4340-A44D-689B854B67D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +33,6 @@ Global
 		{3018122A-AAC6-4304-9EC1-D415FA060505}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3018122A-AAC6-4304-9EC1-D415FA060505}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3018122A-AAC6-4304-9EC1-D415FA060505}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CA29C6D8-5D7C-4811-9936-76F7A4458599}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CA29C6D8-5D7C-4811-9936-76F7A4458599}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CA29C6D8-5D7C-4811-9936-76F7A4458599}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CA29C6D8-5D7C-4811-9936-76F7A4458599}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,12 +41,6 @@ Global
 		{CC8B5831-53C4-46DA-97DB-18C75ED7D929}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC8B5831-53C4-46DA-97DB-18C75ED7D929}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC8B5831-53C4-46DA-97DB-18C75ED7D929}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88040661-573B-463C-88BD-755BBFA0B0F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88040661-573B-463C-88BD-755BBFA0B0F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88040661-573B-463C-88BD-755BBFA0B0F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88040661-573B-463C-88BD-755BBFA0B0F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3413EA98-3742-4340-A44D-689B854B67D5}.Debug|Any CPU.ActiveCfg = Debug
-		{3413EA98-3742-4340-A44D-689B854B67D5}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

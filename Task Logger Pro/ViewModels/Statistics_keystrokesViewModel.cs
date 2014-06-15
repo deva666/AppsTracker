@@ -147,11 +147,11 @@ namespace Task_Logger_Pro.Pages.ViewModels
                             where u.UserID == Globals.SelectedUserID
                             && l.DateCreated >= Globals.Date1
                             && l.DateCreated <= Globals.Date2
-                            && l.KeystrokesRaw != null
+                            && l.Keystrokes != null
                             group l by a.Name into g
                             select g)
                             .ToList()
-                            .Select(g => new KeystrokeModel { AppName = g.Key, Count = g.Sum(l => l.KeystrokesRaw.Length) })
+                            .Select(g => new KeystrokeModel { AppName = g.Key, Count = g.Sum(l => l.Keystrokes.Length) })
                             .ToList();
                 }
             });
@@ -182,7 +182,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                             where u.UserID == Globals.SelectedUserID
                             && l.DateCreated >= Globals.Date1
                             && l.DateCreated <= Globals.Date2
-                            && l.KeystrokesRaw != null
+                            && l.Keystrokes != null
                             && a.Name == KeystrokeModel.AppName
                             group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day } into g
                             orderby g.Key.year, g.Key.month, g.Key.day
@@ -191,7 +191,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                                     {
                                         Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString()
                                         ,
-                                        Count = g.Sum(l => l.KeystrokesRaw.Length)
+                                        Count = g.Sum(l => l.Keystrokes.Length)
                                     })
                                     .ToList();
                 }

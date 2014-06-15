@@ -14,10 +14,6 @@ namespace AppsTracker.DAL
 {
     public class AppsEntities : DbContext
     {
-        //static ConnectionStringSettings connections = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).ConnectionStrings.ConnectionStrings["AppsEntities"];
-
-        //static string connection = connections == null ? "" : connections.ConnectionString;
-
         static string GetConnectionString()
         {
             var connections = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).ConnectionStrings.ConnectionStrings["AppsEntities"];
@@ -30,7 +26,7 @@ namespace AppsTracker.DAL
         public AppsEntities()
             : base(GetConnectionString())
         {
-            Console.WriteLine(Database.Connection.ConnectionString);
+            
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
