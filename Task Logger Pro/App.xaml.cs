@@ -93,11 +93,6 @@ namespace Task_Logger_Pro
                 _settingsQueue.Add(_uzerSetting);
             };
 
-            Task deleteOldLogsTask = null;
-
-            if (_uzerSetting.DeleteOldLogs)
-                deleteOldLogsTask = DBCleaner.DeleteOldScreenshots(UzerSetting.OldLogDeleteDays);
-
             if (CheckTrialExpiration())
             {
                 LicenceWindow licenceWindow = new LicenceWindow();
@@ -114,17 +109,26 @@ namespace Task_Logger_Pro
                 }
             }
 
-            //if (UzerSetting.FirstRun)
-            //{
-            //    EULAWindow eulaWindow = new EULAWindow();
-            //    var dialogResult = eulaWindow.ShowDialog();
-            //    if (!dialogResult.HasValue && !dialogResult.Value)
-            //    {
-            //        (App.Current as App).Shutdown();
-            //        Environment.Exit(0);
-            //        return;
-            //    }
-            //}
+            Task deleteOldLogsTask = null;
+
+            if (_uzerSetting.DeleteOldLogs)
+                deleteOldLogsTask = Task.Run(() => DBCleaner.DeleteOldScreenshots(UzerSetting.OldLogDeleteDays));
+
+#if PORTABLE_SYMBOL
+
+            if (UzerSetting.FirstRun)
+            {
+                EULAWindow eulaWindow = new EULAWindow();
+                var dialogResult = eulaWindow.ShowDialog();
+                if (!dialogResult.HasValue && !dialogResult.Value)
+                {
+                    (App.Current as App).Shutdown();
+                    Environment.Exit(0);
+                    return;
+                }
+            }
+
+#endif
 
             _dataLogger = new DataLogger(_uzerSetting);
 

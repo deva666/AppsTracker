@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany( "Marko Devcic" )]
 [assembly: AssemblyProduct( "Apps tracker" )]
-[assembly: AssemblyCopyright( "Copyright © Marko Devcic 2013" )]
+[assembly: AssemblyCopyright("Copyright © Marko Devcic 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -51,6 +51,6 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.0.0.0")]
+[assembly: AssemblyVersion("2.0.1.0")]
+[assembly: AssemblyFileVersion("2.0.1.0")]
 [assembly: GuidAttribute("2589C23C-F317-45F7-B1EB-5C27C97B29F7")]

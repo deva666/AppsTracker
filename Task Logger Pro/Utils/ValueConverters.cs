@@ -1017,7 +1017,6 @@ namespace Task_Logger_Pro
             }
             else
             {
-                Console.WriteLine("Converter called");
                 var selectedItems = collection.Cast<AppsTracker.Models.ChartModels.TopWindowsModel>();
                 long totalDuration = 0;
                 foreach (var window in selectedItems)

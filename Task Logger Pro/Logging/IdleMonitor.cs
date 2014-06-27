@@ -43,7 +43,7 @@ namespace Task_Logger_Pro.Logging
 
         public IdleMonitor()
         {
-            _idleTimer = new Timer(CheckIdleState, null, 2 * 60 * 1000, 1000);
+            _idleTimer = new Timer(CheckIdleState, null, 1 * 60 * 1000, 1000);
         }
 
         private void SetHooks()
@@ -87,7 +87,7 @@ namespace Task_Logger_Pro.Logging
                 return;
             _idleEntered = false;
             RemoveHooks();
-            _idleTimer.Change(2 * 60 * 1000, 1000);
+            _idleTimer.Change(1 * 60 * 1000, 1000);
             var handler = IdleStoped;
             if (handler != null)
                 handler(this, EventArgs.Empty);

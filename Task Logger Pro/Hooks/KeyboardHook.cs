@@ -86,10 +86,9 @@ namespace Task_Logger_Pro.Hooks
 
         private IntPtr HookProc(int code, IntPtr wParam, IntPtr lParam)
         {
-            Console.WriteLine("hook proc");
-            if (!KeyLoggerEnabled || code < 0) 
+            if (!KeyLoggerEnabled || code < 0)
                 return WinAPI.CallNextHookEx(hookID, code, wParam, lParam);
-            
+
             WinAPI.KBDLLHOOKSTRUCT keybStruct = (WinAPI.KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(WinAPI.KBDLLHOOKSTRUCT));
 
             if ((int)wParam == WM_KEYDOWN || (int)wParam == WM_SYSKEYDOWN)

@@ -34,10 +34,6 @@ namespace Task_Logger_Pro.Pages.Views
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             mainContentHolder.ScrollIntoView(mainContentHolder.SelectedItem);
-            Console.WriteLine(mainContentHolder.SelectedItems.Count);
-            Console.WriteLine("------------------------------");
-            Console.WriteLine(mainContentHolder.SelectedItem);
-            Console.WriteLine(mainContentHolder.SelectedIndex);
         }
     }
 }

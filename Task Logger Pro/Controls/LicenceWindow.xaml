@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:Task_Logger_Pro"
         Title="LicenceWindow" 
         MinHeight="130"
-        MinWidth="450"
+        MinWidth="550"
         Style="{StaticResource WindowStyleWithFade}"
         SizeToContent="WidthAndHeight"
         ShowInTaskbar="False"

@@ -298,7 +298,6 @@ namespace Task_Logger_Pro.Logging
             _fileSystemWatcher.Renamed += watcher_Renamed;
             _fileSystemWatcher.Path = App.UzerSetting.FileWatcherPath;
             _fileSystemWatcher.EnableRaisingEvents = true;
-            Console.WriteLine("INITIALIZED");
         }
 
         private void DisposeFileWatcher()
@@ -311,7 +310,6 @@ namespace Task_Logger_Pro.Logging
             _fileSystemWatcher.Renamed -= watcher_Renamed;
             _fileSystemWatcher.Dispose();
             _fileSystemWatcher = null;
-            Console.WriteLine("DISPOSED");
         }
 
         private void InitIdleMonitor()
@@ -340,7 +338,6 @@ namespace Task_Logger_Pro.Logging
 
         private void KeyDownEventHandler(object sender, KeyboardHookEventArgs e)
         {
-            Console.WriteLine("event key down");
             if (IsLogggingStopped)
                 return;
 
@@ -354,13 +351,11 @@ namespace Task_Logger_Pro.Logging
                     _currentLog.AppendNewKeyLogLine();
                 else
                     _currentLog.AppendKeyLog(e.String);
-                Console.WriteLine(e.String);
             }
         }
 
         private void KeyPressEventHandler(object sender, KeyboardHookEventArgs e)
         {
-            Console.WriteLine("event key press");
             if (IsLogggingStopped)
                 return;
 

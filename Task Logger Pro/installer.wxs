@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <?define RTMProductVersion="2.0.0.0" ?>
-<?define ProductVersion = "2.0.0.0"?>
+<?define ProductVersion = "2.0.1.0"?>
 <?define ProductUpgradeCode = "022fe8de-4d33-499c-b8ec-99d3aca821d5"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
 		xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
-<Product Id="42c0d57b-6554-4d87-9d66-9611be17a0f6" UpgradeCode="$(var.ProductUpgradeCode)" 
+<Product Id="*" UpgradeCode="$(var.ProductUpgradeCode)" 
             Name="Apps tracker" Version="$(var.ProductVersion)" Manufacturer="Marko Devcic" Language="1033">
 			
     <Package InstallerVersion="200" Compressed="yes" Comments="Windows Installer Package"/>
