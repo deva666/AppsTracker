@@ -14,7 +14,7 @@ namespace AppsTracker.DAL
 {
     public class AppsEntities : DbContext
     {
-        static string GetConnectionString()
+        public static string GetConnectionString()
         {
             var connections = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).ConnectionStrings.ConnectionStrings["AppsEntities"];
             if (connections != null)

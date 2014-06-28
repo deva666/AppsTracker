@@ -18,9 +18,7 @@ namespace Task_Logger_Pro.Utils
 
             var connections = config.ConnectionStrings.ConnectionStrings["AppsEntities"];
 
-            ConnectionStringsSection section =
-                config.GetSection("connectionStrings")
-                as ConnectionStringsSection;
+            ConnectionStringsSection section = config.GetSection("connectionStrings") as ConnectionStringsSection;
 
             if (connections == null)
             {
