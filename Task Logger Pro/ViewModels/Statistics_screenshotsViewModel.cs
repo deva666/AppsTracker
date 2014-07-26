@@ -66,9 +66,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
         {
             get
             {
-                if (_returnFromDetailedViewCommand == null)
-                    _returnFromDetailedViewCommand = new DelegateCommand(ReturnFromDetailedView);
-                return _returnFromDetailedViewCommand;
+                return _returnFromDetailedViewCommand == null ? _returnFromDetailedViewCommand = new DelegateCommand(ReturnFromDetailedView) : _returnFromDetailedViewCommand;
             }
         }
 
@@ -83,7 +81,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 _screenshotModel = value;
                 PropertyChanging("ScreenshotModel");
                 if (_screenshotModel != null)
-                    DailyScreenshotsList = LoadSubContentAsync().Result;
+                    LoadSubContent();
             }
         }
 
@@ -128,11 +126,36 @@ namespace Task_Logger_Pro.Pages.ViewModels
         public async void LoadContent()
         {
             Working = true;
-            ScreenshotList = await LoadContentAsync();
+            ScreenshotList = await GetContentAsync();
             if (ScreenshotModel != null)
                 DailyScreenshotsList = await LoadSubContentAsync();
             Working = false;
             IsContentLoaded = true;
+        }
+
+        private List<ScreenshotModel> GetContent()
+        {
+            using (var context = new AppsEntities())
+            {
+                return (from u in context.Users
+                        join a in context.Applications on u.UserID equals a.UserID
+                        join w in context.Windows on a.ApplicationID equals w.ApplicationID
+                        join l in context.Logs on w.WindowID equals l.WindowID
+                        join s in context.Screenshots on l.LogID equals s.LogID
+                        where u.UserID == Globals.SelectedUserID
+                        && s.Date >= Globals.Date1
+                        && s.Date <= Globals.Date2
+                        group s by a.Name into g
+                        select g)
+                            .ToList()
+                            .Select(g => new ScreenshotModel() { AppName = g.Key, Count = g.Count() })
+                            .ToList();
+            }
+        }
+
+        private Task<List<ScreenshotModel>> GetContentAsync()
+        {
+            return Task<List<ScreenshotModel>>.Run(new Func<List<ScreenshotModel>>(GetContent));
         }
 
         private Task<List<ScreenshotModel>> LoadContentAsync()
@@ -158,16 +181,16 @@ namespace Task_Logger_Pro.Pages.ViewModels
             });
         }
 
-        private async Task LoadSubContent()
+        private async void LoadSubContent()
         {
             if (ScreenshotModel != null)
             {
                 _dailyScreenshotsList = null;
-                PropertyChanging("DailyScreenshotsCollection");
+                PropertyChanging("DailyScreenshotsList");
                 Working = true;
                 _dailyScreenshotsList = await LoadSubContentAsync();
                 Working = false;
-                PropertyChanging("DailyScreenshotsCollection");
+                PropertyChanging("DailyScreenshotsList");
             }
         }
 

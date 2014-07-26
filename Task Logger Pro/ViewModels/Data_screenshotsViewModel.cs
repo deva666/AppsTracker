@@ -19,7 +19,7 @@ using AppsTracker.Models.EntityModels;
 
 namespace Task_Logger_Pro.Pages.ViewModels
 {
-    public class Data_screenshotsViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
+    class Data_screenshotsViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
     {
         #region Fields
 
@@ -142,8 +142,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         public Data_screenshotsViewModel()
         {
-            Mediator.Register(MediatorMessages.RefreshLogs, new Action(LoadContent));
-            //Mediator.Register(MediatorMessages.ScreenshotAdded, new Action<object>((p) => { if (this.WeakCollection.Target != null) LoadContent(); }));
+            Mediator.Register(MediatorMessages.RefreshLogs, new Action(LoadContent));            
             SelectedDate = DateTime.Today;
         }
 
@@ -152,9 +151,33 @@ namespace Task_Logger_Pro.Pages.ViewModels
         public async void LoadContent()
         {
             Working = true;
-            LogList = await LoadContentAsync();
+            LogList = await GetContentAsync();
             Working = false;
             IsContentLoaded = true;
+        }
+
+        private Task<List<Log>> GetContentAsync()
+        {
+            return Task<List<Log>>.Run(new Func<List<Log>>(GetContent));
+        }
+
+        private List<Log> GetContent()
+        {
+            using (var context = new AppsEntities())
+            {
+                return (from u in context.Users.AsNoTracking()
+                        join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
+                        join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
+                        join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
+                        where u.UserID == Globals.SelectedUserID
+                        && l.Screenshots.Count > 0
+                        && l.DateCreated >= Globals.Date1
+                        && l.DateCreated <= Globals.Date2
+                        orderby l.DateCreated
+                        select l).Include(w => w.Window.Application)
+                                .Include(l => l.Screenshots)
+                                .ToList();
+            }
         }
 
         private Task<List<Log>> LoadContentAsync()
@@ -230,7 +253,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
         private async void SaveSingleScreenshot(Screenshot screenshot)
         {
             StringBuilder path = new StringBuilder();
-            await SaveToFile(path, screenshot.Log, screenshot);
+            await SaveToFileAsync(path, screenshot.Log, screenshot);
             InfoContent = "Screenshot saved";
         }
 
@@ -243,7 +266,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             {
                 foreach (var screenshot in log.Screenshots)
                 {
-                    await SaveToFile(path, log, screenshot);
+                    await SaveToFileAsync(path, log, screenshot);
                     path.Clear();
                 }
             }
@@ -251,7 +274,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             InfoContent = "Screenshots saved";
         }
 
-        private Task SaveToFile(StringBuilder path, Log log, Screenshot screenshot)
+        private Task SaveToFileAsync(StringBuilder path, Log log, Screenshot screenshot)
         {
             return Task.Run(() =>
             {

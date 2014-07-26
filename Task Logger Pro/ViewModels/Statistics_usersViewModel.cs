@@ -72,7 +72,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 _allUsersModel = value;
                 PropertyChanging("AllUsersModel");
                 if (_allUsersModel != null)
-                    DailyLogins = LoadSubContentAsync().Result;
+                    LoadSubContent();
             }
         }
         public UsageModel UsageModel
@@ -115,9 +115,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
         {
             get
             {
-                if (_returnFromDetailedViewCommand == null)
-                    _returnFromDetailedViewCommand = new DelegateCommand(ReturnFromDetailedView);
-                return _returnFromDetailedViewCommand;
+                return _returnFromDetailedViewCommand == null ? _returnFromDetailedViewCommand = new DelegateCommand(ReturnFromDetailedView) : _returnFromDetailedViewCommand;
             }
         }
 
@@ -169,7 +167,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }, System.Threading.CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
 
-        private async Task LoadSubContent()
+        private async void LoadSubContent()
         {
             if (AllUsersModel == null)
                 return;
@@ -185,28 +183,6 @@ namespace Task_Logger_Pro.Pages.ViewModels
         {
             return Task<List<UsageTypeSeries>>.Run(() =>
             {
-                //using ( var context = new AppsEntities( ) )
-                //{
-                //    string loginType = UsageTypes.Login.ToString();
-
-                //    var selectedUser = context.Users.FirstOrDefault( u => u.Name == AllUsersModel.Username );
-
-                //    if ( selectedUser == null )
-                //        throw new NullReferenceException( "selectedUser" );
-                //    return ( from l in context.Usages.AsNoTracking( )
-                //             where l.UserID == selectedUser.UserID
-                //             && l.UsageStart >= Globals.Date1
-                //             && l.UsageStart <= Globals.Date2
-                //             && l.UsageType.UType == loginType
-                //             group l by new { year = l.UsageStart.Year, month = l.UsageStart.Month, day = l.UsageStart.Day } into g
-                //             orderby g.Key.year, g.Key.month, g.Key.day
-                //             select g ).ToList( )
-                //            .Select( g => new UsageModel
-                //            {
-                //                Date = new DateTime( g.Key.year, g.Key.month, g.Key.day ).ToShortDateString( ),
-                //                Count = Math.Round( g.Sum( l => l.Duration.TotalHours ), 1 )
-                //            } ).ToList( );
-                //}
 
                 string usageLogin = UsageTypes.Login.ToString();
                 string usageIdle = UsageTypes.Idle.ToString();

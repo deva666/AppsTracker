@@ -176,7 +176,7 @@ namespace Task_Logger_Pro.Logging
             set
             {
                 if (_currentLog != null && !_currentLog.Finished)
-                    EndSaveLog(_currentLog).Wait();
+                    EndSaveLog(_currentLog);
                 if (_currentLog != value)
                     _currentLog = value;
             }
@@ -203,7 +203,7 @@ namespace Task_Logger_Pro.Logging
                     else
                     {
                         if (!IsLogggingStopped)
-                            StopLogging(_currentLog).Wait();
+                            StopLogging(_currentLog);
                         LoggingStopped();
 
                     }
@@ -485,7 +485,7 @@ namespace Task_Logger_Pro.Logging
         {
             if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionLock)
             {
-                var taskStopLogging = StopLogging(CurrentLog);
+                StopLogging(CurrentLog);
                 Debug.Assert(_currentUsageLocked == null, "CURRENT USAGE LOCKED NOT NULL (FAILED TO CATCH UNLOCK EVENT)");
                 _currentUsageLocked = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
                 if (_currentUsageIdle != null)
@@ -496,7 +496,6 @@ namespace Task_Logger_Pro.Logging
                     _currentUsageIdle = null;
                 }
                 StartStopIdleMonitor(false);
-                taskStopLogging.Wait();
             }
             else if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionUnlock)
             {
@@ -529,13 +528,13 @@ namespace Task_Logger_Pro.Logging
                 await context.SaveChangesAsync();
             }
         }
-        private async void IdleEntered(object sender, EventArgs e)
+        private void IdleEntered(object sender, EventArgs e)
         {
             if (IsLogggingStopped)
                 return;
             Debug.Assert(_currentUsageIdle == null, "CURRENT USAGE IDLE NOT NULL");
             _currentUsageIdle = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
-            await StopLogging(CurrentLog);
+            StopLogging(CurrentLog);
         }
 
         private void IdleStoped(object sender, EventArgs e)
@@ -841,7 +840,7 @@ namespace Task_Logger_Pro.Logging
             }
         }
 
-        private async Task EndSaveLog(Log log)
+        private void EndSaveLog(Log log)
         {
             if (!log.Finished)
                 log.Finish();
@@ -851,7 +850,7 @@ namespace Task_Logger_Pro.Logging
                 context.Logs.Add(log);
                 try
                 {
-                    await context.SaveChangesAsync();
+                    context.SaveChanges();
                 }
                 catch (System.Data.Entity.Core.OptimisticConcurrencyException)
                 {
@@ -890,11 +889,11 @@ namespace Task_Logger_Pro.Logging
             }
         }
 
-        private async Task StopLogging(Log log)
+        private void StopLogging(Log log)
         {
             IsLogggingStopped = true;
             if (log != null)
-                await EndSaveLog(log);
+                EndSaveLog(log);
 
             _currentWindowTitle = string.Empty;
             _windowCheckTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
@@ -910,7 +909,7 @@ namespace Task_Logger_Pro.Logging
 
         internal void FinishLogging()
         {
-            Task stopTask = StopLogging(CurrentLog);
+            StopLogging(CurrentLog);
 
             using (var context = new AppsEntities())
             {
@@ -943,7 +942,6 @@ namespace Task_Logger_Pro.Logging
                 context.Entry(_currentUsageLogin).State = System.Data.Entity.EntityState.Modified;
                 context.SaveChanges();
             }
-            stopTask.Wait();
         }
 
         #endregion

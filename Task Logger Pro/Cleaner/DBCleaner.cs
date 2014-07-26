@@ -16,22 +16,25 @@ namespace Task_Logger_Pro.Cleaner
         {
             using (var context = new AppsEntities())
             {
-                DateTime dateTreshold = DateTime.Now.AddDays(-1d * days);
-                var oldScreenshots = context.Screenshots.Where(s => s.Date < dateTreshold).ToList();
-                context.Screenshots.RemoveRange(oldScreenshots);
+                DeleteScreenshotsFromDB(days, context);
                 context.SaveChanges();
             }
         }
 
-        public static async Task DeleteOldScreenshotsAsync(int days)
+        public static async Task DeleteOldScreenshotsAsync(int days, bool continueOnCapturedContext = true)
         {
             using (var context = new AppsEntities())
             {
-                DateTime dateTreshold = DateTime.Now.AddDays(-1d * days);
-                var oldScreenshots = context.Screenshots.Where(s => s.Date < dateTreshold).ToList();
-                context.Screenshots.RemoveRange(oldScreenshots);
-                await context.SaveChangesAsync().ConfigureAwait(false);
+                DeleteScreenshotsFromDB(days, context);
+                await context.SaveChangesAsync().ConfigureAwait(continueOnCapturedContext);
             }
+        }
+
+        private static void DeleteScreenshotsFromDB(int days, AppsEntities context)
+        {
+            DateTime dateTreshold = DateTime.Now.AddDays(-1d * days);
+            var oldScreenshots = context.Screenshots.Where(s => s.Date < dateTreshold).ToList();
+            context.Screenshots.RemoveRange(oldScreenshots);
         }
 
         private static void DeleteBlockedApps(AppsEntities context, List<BlockedApp> blockedApps)

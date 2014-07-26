@@ -18,10 +18,7 @@ namespace Task_Logger_Pro.MVVM
         {
             get
             {
-                //if (_selectedChild == null && this.Children != null)
-                //    this.SelectedChild = Children[0];
                 return _selectedChild;
-
             }
             set
             {
@@ -42,11 +39,6 @@ namespace Task_Logger_Pro.MVVM
                 return _changePageCommand == null ? _changePageCommand = new DelegateCommand(ChangePage) : _changePageCommand;
             }
         }
-        //public ReadOnlyCollection<IChildVM> Children
-        //{
-        //    get;
-        //    protected set;
-        //}
 
         protected abstract void ChangePage(object parameter);
 

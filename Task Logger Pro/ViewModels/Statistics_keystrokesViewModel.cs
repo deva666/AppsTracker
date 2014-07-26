@@ -65,10 +65,8 @@ namespace Task_Logger_Pro.Pages.ViewModels
         public ICommand ReturnFromDetailedViewCommand
         {
             get
-            {
-                if (_returnFromDetailedViewCommand == null)
-                    _returnFromDetailedViewCommand = new DelegateCommand(ReturnFromDetailedView);
-                return _returnFromDetailedViewCommand;
+            {                                    
+                return _returnFromDetailedViewCommand == null ? _returnFromDetailedViewCommand = new DelegateCommand(ReturnFromDetailedView) : _returnFromDetailedViewCommand;
             }
         }
 
@@ -83,7 +81,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 _keystrokeModel = value;
                 PropertyChanging("KeystrokeModel");
                 if (_keystrokeModel != null)
-                    DailyKeystrokesList = LoadSubContentAsync().Result;
+                    LoadSubContent();
             }
         }
 
@@ -127,11 +125,36 @@ namespace Task_Logger_Pro.Pages.ViewModels
         public async void LoadContent()
         {
             Working = true;
-            KeystrokeList = await LoadContentAsync();
+            KeystrokeList = await GetContentAsync();
             if (KeystrokeModel != null)
                 DailyKeystrokesList = await LoadSubContentAsync();
             Working = false;
             IsContentLoaded = true;
+        }
+
+        private List<KeystrokeModel> GetContent()
+        {
+            using (var context = new AppsEntities())
+            {
+                return (from u in context.Users.AsNoTracking()
+                        join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
+                        join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
+                        join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
+                        where u.UserID == Globals.SelectedUserID
+                        && l.DateCreated >= Globals.Date1
+                        && l.DateCreated <= Globals.Date2
+                        && l.Keystrokes != null
+                        group l by a.Name into g
+                        select g)
+                        .ToList()
+                        .Select(g => new KeystrokeModel { AppName = g.Key, Count = g.Sum(l => l.Keystrokes.Length) })
+                        .ToList();
+            }
+        }
+
+        private Task<List<KeystrokeModel>> GetContentAsync()
+        {
+            return Task<List<KeystrokeModel>>.Run(new Func<List<KeystrokeModel>>(GetContent));
         }
 
         private Task<List<KeystrokeModel>> LoadContentAsync()
@@ -157,16 +180,16 @@ namespace Task_Logger_Pro.Pages.ViewModels
             });
         }
 
-        private async Task LoadSubContent()
+        private async void LoadSubContent()
         {
             if (KeystrokeModel == null)
                 return;
             _dailyKeystrokesList = null;
-            PropertyChanging("DailyKeystrokesCollection");
+            PropertyChanging("DailyKeystrokesList");
             Working = true;
             _dailyKeystrokesList = await LoadSubContentAsync();
             Working = false;
-            PropertyChanging("DailyKeystrokesCollection");
+            PropertyChanging("DailyKeystrokesList");
         }
 
         private Task<List<DailyKeystrokeModel>> LoadSubContentAsync()

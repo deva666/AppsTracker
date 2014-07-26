@@ -15,7 +15,7 @@ using AppsTracker.Models.EntityModels;
 
 namespace Task_Logger_Pro.Pages.ViewModels
 {
-    public class Data_keystrokesViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
+    class Data_keystrokesViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
     {
         #region Fields
 
@@ -23,7 +23,6 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         List<Log> _logList;
 
-        // ICommand _deleteSelectedLogsCommand;
 
         #endregion
 
@@ -67,16 +66,6 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }
         }
 
-        //public ICommand DeleteSelectedLogsCommand
-        //{
-        //    get
-        //    {
-        //        if (_deleteSelectedLogsCommand == null)
-        //            _deleteSelectedLogsCommand = new DelegateCommand(DeleteSelectedLogs);
-        //        return _deleteSelectedLogsCommand;
-        //    }
-        //}
-
         public Mediator Mediator
         {
             get { return Mediator.Instance; }
@@ -92,9 +81,33 @@ namespace Task_Logger_Pro.Pages.ViewModels
         public async void LoadContent()
         {
             Working = true;
-            LogList = await LoadContentAsync();
+            LogList = await GetContentAsync();
             Working = false;
             IsContentLoaded = true;
+        }
+
+        private Task<List<Log>> GetContentAsync()
+        {
+            return Task<List<Log>>.Run(new Func<List<Log>>(GetContent));
+        }
+
+        private List<Log> GetContent()
+        {
+            using (var context = new AppsEntities())
+            {
+                return (from u in context.Users.AsNoTracking()
+                        join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
+                        join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
+                        join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
+                        where u.UserID == Globals.SelectedUserID
+                        && l.KeystrokesRaw != null
+                        && l.DateCreated >= Globals.Date1
+                        && l.DateCreated <= Globals.Date2
+                        select l).Include(l => l.Window.Application)
+                                                  .Include(l => l.Screenshots)
+                                                  .ToList();
+
+            }
         }
 
         private Task<List<Log>> LoadContentAsync()
@@ -118,36 +131,5 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 }
             });
         }
-
-        //private void DeleteSelectedLogs(object parameter)
-        //{
-        //    ObservableCollection<object> parameterCollection = parameter as ObservableCollection<object>;
-        //    if (parameterCollection != null)
-        //    {
-        //        var logsList = parameterCollection.Select(l => l as Log).ToList();
-        //        using (var context = new AppsEntities())
-        //        {
-        //            foreach (var log in logsList)
-        //            {
-        //                foreach (var screenshot in log.Screenshots.ToList())
-        //                {
-        //                    if (!context.Screenshots.Local.Any(s => s.ScreenshotID == screenshot.ScreenshotID))
-        //                    {
-        //                        context.Screenshots.Attach(screenshot);
-        //                    }
-        //                    context.Screenshots.Remove(screenshot);
-        //                }
-        //                if (!context.Logs.Local.Any(l => l.LogID == log.LogID))
-        //                {
-        //                    context.Logs.Attach(log);
-        //                }
-        //                context.Entry(log).State = System.Data.Entity.EntityState.Deleted;
-        //            }
-        //            context.SaveChanges();
-        //        }
-        //        if (logsList.Count > 0)
-        //            LoadContent();
-        //    }
-        //}
     }
 }

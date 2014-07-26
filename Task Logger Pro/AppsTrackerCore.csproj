@@ -231,7 +231,6 @@
     <Compile Include="Controls\SelectableListView.cs" />
     <Compile Include="Logging\IdleMonitor.cs" />
     <Compile Include="Logging\IdleTimeWatcher.cs" />
-    <Compile Include="Logging\NewDataLogger.cs" />
     <Compile Include="MVVM\HostViewModel.cs" />
     <Compile Include="MVVM\ICommunicator.cs" />
     <Compile Include="MVVM\IPage.cs" />
@@ -246,7 +245,6 @@
     <Compile Include="Utils\WorkQueue.cs" />
     <Compile Include="ViewModels\DataHostViewModel.cs" />
     <Compile Include="ViewModels\Data_dayViewModel.cs" />
-    <Compile Include="ViewModels\Data_overallSummaryViewModel.cs" />
     <Compile Include="ViewModels\ScreenshotViewerViewModel.cs" />
     <Compile Include="ViewModels\StatisticsHostViewModel.cs" />
     <Compile Include="ViewModels\Statistics_appUsageViewModel.cs" />
@@ -314,7 +312,6 @@
     <Compile Include="Controls\WPFHelper.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Utils\Validation.cs" />
-    <Compile Include="Logging\ProcessEvents.cs" />
     <Compile Include="Utils\ExtensionMethods.cs" />
     <Compile Include="Models\UzerSetting.cs" />
     <Compile Include="MVVM\AboutWindowViewModel.cs" />
@@ -336,7 +333,6 @@
     <Compile Include="Hooks\MouseHook.cs" />
     <Compile Include="Logging\ProcessKiller.cs" />
     <Compile Include="MVVM\WeakAction.cs" />
-    <Compile Include="ViewModels\Data_computerUsageViewModel.cs" />
     <Compile Include="ViewModels\Data_filelogsViewModel.cs" />
     <Compile Include="ViewModels\Data_logsViewModel.cs" />
     <Compile Include="ViewModels\Data_keystrokesViewModel.cs" />

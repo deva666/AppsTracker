@@ -110,8 +110,55 @@ namespace Task_Logger_Pro.Utils
 
         private static void CreateDBFolder()
         {
-            if (!Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService")))
-                Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService"));
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService");
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+        }
+
+        public static async void FlushExp()
+        {
+            try
+            {
+                if (ExpExists())
+                    return;
+                string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "sys.dll");
+                byte[] bytesToWrite = Encoding.Unicode.GetBytes(DateTime.Now.Ticks.ToString());
+                using (FileStream createdFile = File.Create(path, 4096, FileOptions.Asynchronous))
+                {
+                    await createdFile.WriteAsync(bytesToWrite, 0, bytesToWrite.Length);
+                }
+            }
+            catch 
+            {                               
+            }
+        }
+
+        public static bool ExpExists()
+        {
+            try
+            {
+                string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "sys.dll");
+                return File.Exists(path);
+            }
+            catch 
+            {
+                return false;
+            }
+        }
+
+        public static void DeleteExp()
+        {
+            try
+            {
+                if (!ExpExists())
+                    return;
+                string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "sys.dll");
+                File.Delete(path);
+            }
+            catch 
+            {
+                              
+            }
         }
 
         public static void SaveConfig()

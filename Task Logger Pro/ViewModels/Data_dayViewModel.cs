@@ -15,7 +15,7 @@ using AppsTracker.Models.ChartModels;
 
 namespace Task_Logger_Pro.ViewModels
 {
-    public class Data_dayViewModel : ViewModelBase, IWorker, IChildVM, ICommunicator
+    class Data_dayViewModel : ViewModelBase, IWorker, IChildVM, ICommunicator
     {
         #region Fields
 
@@ -30,16 +30,11 @@ namespace Task_Logger_Pro.ViewModels
 
         WorkQueue<bool> _workQueue;
 
-        [CleanUp(true)]
         TopAppsModel _topAppsSingle;
 
-        [CleanUp(true)]
         List<TopAppsModel> _topAppsList;
-        [CleanUp(true)]
         List<DayViewModel> _dayViewModelList;
-        [CleanUp(true)]
         List<TopWindowsModel> _topWindowsList;
-        [CleanUp(true)]
         List<DailyUsageTypeSeries> _chartList;
 
         ICommand _singleAppSelectionChangedCommand;
@@ -260,7 +255,7 @@ namespace Task_Logger_Pro.ViewModels
         private async Task LoadDayLogs()
         {
             _workQueue.Add(true);
-            DayViewModelList = await LoadContentAsync();
+            DayViewModelList = await GetContentAsync();
             _workQueue.Remove();
         }
 
@@ -290,6 +285,58 @@ namespace Task_Logger_Pro.ViewModels
             _workQueue.Add(true);
             ChartList = await GetChartContentAsync();
             _workQueue.Remove();
+        }
+
+        private List<DayViewModel> GetContent()
+        {
+            string ignore = UsageTypes.Login.ToString();
+            DateTime date2 = _selectedDate.AddDays(1);
+            using (var context = new AppsEntities())
+            {
+                var logs = (from u in context.Users.AsNoTracking()
+                            join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
+                            join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
+                            join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
+                            where u.UserID == Globals.SelectedUserID
+                            && l.DateCreated >= _selectedDate
+                            && l.DateCreated <= date2
+                            orderby l.DateCreated
+                            select l).Include(l => l.Window.Application)
+                            .ToList()
+                            .Select(l => new DayViewModel()
+                            {
+                                DateCreated = l.DateCreated.ToString("HH:mm:ss"),
+                                DateEnded = l.DateEnded.ToString("HH:mm:ss"),
+                                Duration = l.Duration,
+                                Name = l.Window.Application.Name,
+                                Title = l.Window.Title
+                            });
+
+                var usages = (from u in context.Users.AsNoTracking()
+                              join l in context.Usages.AsNoTracking() on u.UserID equals l.UserID
+                              where u.UserID == Globals.SelectedUserID
+                              && l.UsageStart >= _selectedDate
+                              && l.UsageEnd <= date2
+                              && l.UsageType.UType != ignore
+                              select l).Include(u => u.UsageType)
+                              .ToList()
+                              .Select(u => new DayViewModel()
+                              {
+                                  DateCreated = u.UsageStart.ToString("HH:mm:ss"),
+                                  DateEnded = u.UsageEnd.ToString("HH:mm:ss"),
+                                  Duration = u.Duration.Ticks,
+                                  Name = ((UsageTypes)Enum.Parse(typeof(UsageTypes), u.UsageType.UType)).ToExtendedString(),
+                                  Title = "*********",
+                                  IsRequested = true
+                              });
+
+                return logs.Union(usages).OrderBy(d => d.DateCreated).ToList();
+            }
+        }
+
+        private Task<List<DayViewModel>> GetContentAsync()
+        {
+            return Task<List<DayViewModel>>.Run(new Func<List<DayViewModel>>(GetContent));
         }
 
         private Task<List<DayViewModel>> LoadContentAsync()
@@ -420,7 +467,7 @@ namespace Task_Logger_Pro.ViewModels
             {
                 DateTime today = SelectedDate.Date;
                 DateTime nextDay = today.AddDays(1d);
-                
+
                 using (var context = new AppsEntities())
                 {
                     string loginType = UsageTypes.Login.ToString();
@@ -625,21 +672,6 @@ namespace Task_Logger_Pro.ViewModels
         }
 
         #endregion
-
-        private void CleanUp()
-        {
-            Type type = this.GetType();
-            var fields = type.GetFields();
-            foreach (var field in fields)
-            {
-                foreach (var attr in field.GetCustomAttributes(true))
-                {
-                    if (attr is CleanUpAttribute)
-                        field.SetValue(this, null);
-                }
-            }
-
-        }
 
         protected override void Disposing()
         {

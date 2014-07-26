@@ -409,9 +409,14 @@ namespace Task_Logger_Pro
         {
             if (!_uzerSetting.Licence)
             {
+                //if (ConnectionConfig.ExpExists())
+                //    return true;
                 bool expired = false;
                 if (_uzerSetting.TrialStartDate.AddDays(15) < DateTime.Now)
+                {
                     expired = true;
+                   //ConnectionConfig.FlushExp();
+                }
                 if (_uzerSetting.LastExecutedDate.HasValue && _uzerSetting.LastExecutedDate.Value > DateTime.Now)
                     expired = true;
                 return expired;

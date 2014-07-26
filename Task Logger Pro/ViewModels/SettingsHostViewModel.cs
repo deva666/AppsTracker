@@ -22,13 +22,6 @@ namespace Task_Logger_Pro.ViewModels
         public void LoadContent()
         {
             this.SelectedChild = new Settings_generalViewModel();
-            //Settings_generalViewModel generalViewModel = new Settings_generalViewModel();
-            //Settings_licenseViewModel licenseViewModel = new Settings_licenseViewModel();
-
-            //var tempChildren = new List<IChildVM>(){ generalViewModel, licenseViewModel };
-
-            //this.Children = new ReadOnlyCollection<IChildVM>(tempChildren);
-
             this.IsContentLoaded = true;
         }
 

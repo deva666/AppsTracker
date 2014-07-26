@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.DAL;
 using AppsTracker.Models.Proxy;
+using System.Security;
 
 namespace Task_Logger_Pro.ViewModels
 {
@@ -628,7 +629,7 @@ namespace Task_Logger_Pro.ViewModels
                 {
                     if (IsMasterPasswordSet)
                     {
-                        string currentPassword = Encrypt.GetEncryptedString(passwords[2].Password);
+                        string currentPassword =  Encrypt.GetEncryptedString(passwords[2].Password);
                         string storedPassword = App.UzerSetting.WindowOpen;
                         if (storedPassword == null) { IsMasterPasswordSet = false; return; }
                         if (currentPassword != storedPassword)

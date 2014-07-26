@@ -47,9 +47,6 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         List<MenuItem> _allUsersList;
 
-        ICommand _deleteSelectedProcessCommand;
-        ICommand _deleteWindowLogCommand;
-        ICommand _deleteLogDataCommand;
         ICommand _sortViewCommand;
         ICommand _addProcessToBlockedListCommand;
         ICommand _overallAppSelectionChangedCommand;
@@ -243,49 +240,18 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }
         }
 
-        public ICommand DeleteSelectedProcessCommand
-        {
-            get
-            {
-                if (_deleteSelectedProcessCommand == null)
-                    _deleteSelectedProcessCommand = new DelegateCommand(DeleteSelectedAplication);
-                return _deleteSelectedProcessCommand;
-            }
-        }
-        public ICommand DeleteWindowLogCommand
-        {
-            get
-            {
-                if (_deleteWindowLogCommand == null)
-                    _deleteWindowLogCommand = new DelegateCommand(DeleteSelectedWindow);
-                return _deleteWindowLogCommand;
-            }
-        }
-        public ICommand DeleteLogDataCommand
-        {
-            get
-            {
-                if (_deleteLogDataCommand == null)
-                    _deleteLogDataCommand = new DelegateCommand(DeleteSelectedLog);
-                return _deleteLogDataCommand;
-            }
-        }
         public ICommand SortViewCommand
         {
             get
             {
-                if (_sortViewCommand == null)
-                    _sortViewCommand = new DelegateCommand(SortViewProcesses);
-                return _sortViewCommand;
+                return _sortViewCommand == null ? _sortViewCommand = new DelegateCommand(SortViewProcesses) : _sortViewCommand;
             }
         }
         public ICommand AddProcessToBlockedListCommand
         {
             get
             {
-                if (_addProcessToBlockedListCommand == null)
-                    _addProcessToBlockedListCommand = new DelegateCommand(AddAplicationToBlockedList);
-                return _addProcessToBlockedListCommand;
+                return _addProcessToBlockedListCommand == null ? _addProcessToBlockedListCommand = new DelegateCommand(AddAplicationToBlockedList) : _addProcessToBlockedListCommand;
             }
         }
 
@@ -305,15 +271,24 @@ namespace Task_Logger_Pro.Pages.ViewModels
         }
         public ICommand AddDaysCommand1
         {
-            get { return _addDaysCommand1 == null ? _addDaysCommand1 = new DelegateCommand(AddDays1) : _addDaysCommand1; }
+            get
+            {
+                return _addDaysCommand1 == null ? _addDaysCommand1 = new DelegateCommand(AddDays1) : _addDaysCommand1;
+            }
         }
         public ICommand AddDaysCommand2
         {
-            get { return _addDaysCommand2 == null ? _addDaysCommand2 = new DelegateCommand(AddDays2) : _addDaysCommand2; }
+            get
+            {
+                return _addDaysCommand2 == null ? _addDaysCommand2 = new DelegateCommand(AddDays2) : _addDaysCommand2;
+            }
         }
         public ICommand ChangeDaysCommand
         {
-            get { return _changeDaysCommand == null ? _changeDaysCommand = new DelegateCommand(ChangeDays) : _changeDaysCommand; }
+            get
+            {
+                return _changeDaysCommand == null ? _changeDaysCommand = new DelegateCommand(ChangeDays) : _changeDaysCommand;
+            }
         }
 
         public Mediator Mediator
@@ -342,7 +317,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             OverallWindowDuration = string.Empty;
             Date1 = Globals.Date1;
             Date2 = Globals.Date2;
-            AplicationList = await LoadContentAsync();
+            AplicationList = await GetContentAsync();
             Working = false;
             IsContentLoaded = true;
         }
@@ -366,6 +341,27 @@ namespace Task_Logger_Pro.Pages.ViewModels
             Working = true;
             ChartList = await GetChartContentAsync();
             Working = false;
+        }
+
+        private Task<List<Aplication>> GetContentAsync()
+        {
+            return Task<List<Aplication>>.Run(new Func<List<Aplication>>(GetContent));
+        }
+
+        private List<Aplication> GetContent()
+        {
+            using (var context = new AppsEntities())
+            {
+                return (from u in context.Users.AsNoTracking()
+                        join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
+                        join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
+                        join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
+                        where u.UserID == Globals.SelectedUserID
+                        && l.DateCreated >= Globals.Date1
+                        && l.DateCreated <= Globals.Date2
+                        select a).Distinct()
+                                .ToList();
+            }
         }
 
         private Task<List<Aplication>> LoadContentAsync()
@@ -590,144 +586,144 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }
         }
 
-        private async void DeleteSelectedAplication(object parameter)
-        {
-            ObservableCollection<object> parameters = parameter as ObservableCollection<object>;
-            if (parameters == null)
-                return;
+        //private async void DeleteSelectedAplication(object parameter)
+        //{
+        //    ObservableCollection<object> parameters = parameter as ObservableCollection<object>;
+        //    if (parameters == null)
+        //        return;
 
-            List<Aplication> aplicationList = parameters.Select(p => p as Aplication).ToList();
-            if (aplicationList == null)
-                return;
+        //    List<Aplication> aplicationList = parameters.Select(p => p as Aplication).ToList();
+        //    if (aplicationList == null)
+        //        return;
 
-            using (var context = new AppsEntities())
-            {
-                foreach (var aplication in aplicationList)
-                {
-                    DeleteWindows(aplication.Windows.ToList(), context);
-                    if (!context.Applications.Local.Any(a => a.ApplicationID == aplication.ApplicationID))
-                        context.Applications.Attach(aplication);
-                    context.Applications.Remove(aplication);
-                }
-                await context.SaveChangesAsync();
-                PropertyChanging("ApplicationCollection");
-            }
-        }
+        //    using (var context = new AppsEntities())
+        //    {
+        //        foreach (var aplication in aplicationList)
+        //        {
+        //            DeleteWindows(aplication.Windows.ToList(), context);
+        //            if (!context.Applications.Local.Any(a => a.ApplicationID == aplication.ApplicationID))
+        //                context.Applications.Attach(aplication);
+        //            context.Applications.Remove(aplication);
+        //        }
+        //        await context.SaveChangesAsync();
+        //        PropertyChanging("ApplicationCollection");
+        //    }
+        //}
 
-        private async void DeleteSelectedWindow(object parameter)
-        {
-            ObservableCollection<object> parameters = parameter as ObservableCollection<object>;
-            if (parameters != null)
-            {
-                List<Window> windowList = parameters.Select(o => o as Window).ToList();
-                if (windowList == null)
-                    return;
-                using (var context = new AppsEntities())
-                {
-                    DeleteWindows(windowList, context);
-                    await context.SaveChangesAsync();
-                }
-                PropertyChanging("ApplicationCollection");
-            }
-        }
+        //private async void DeleteSelectedWindow(object parameter)
+        //{
+        //    ObservableCollection<object> parameters = parameter as ObservableCollection<object>;
+        //    if (parameters != null)
+        //    {
+        //        List<Window> windowList = parameters.Select(o => o as Window).ToList();
+        //        if (windowList == null)
+        //            return;
+        //        using (var context = new AppsEntities())
+        //        {
+        //            DeleteWindows(windowList, context);
+        //            await context.SaveChangesAsync();
+        //        }
+        //        PropertyChanging("ApplicationCollection");
+        //    }
+        //}
 
-        private void DeleteWindows(List<Window> windowList, AppsEntities context)
-        {
-            foreach (var window in windowList)
-            {
-                DeleteLogsAndScreenshots(window.Logs, context);
-                if (!context.Windows.Local.Any(w => w.WindowID == window.WindowID))
-                    context.Windows.Attach(window);
-                context.Windows.Remove(window);
-                var app = context.Applications.Find(window.ApplicationID);
+        //private void DeleteWindows(List<Window> windowList, AppsEntities context)
+        //{
+        //    foreach (var window in windowList)
+        //    {
+        //        DeleteLogsAndScreenshots(window.Logs, context);
+        //        if (!context.Windows.Local.Any(w => w.WindowID == window.WindowID))
+        //            context.Windows.Attach(window);
+        //        context.Windows.Remove(window);
+        //        var app = context.Applications.Find(window.ApplicationID);
 
-                if (app != null && app.Windows.Count == 0) context.Applications.Remove(app);
-            }
-        }
+        //        if (app != null && app.Windows.Count == 0) context.Applications.Remove(app);
+        //    }
+        //}
 
-        private void DeleteSelectedLog(object parameter)
-        {
-            DeleteLogsAndScreenshots(parameter);
-        }
+        //private void DeleteSelectedLog(object parameter)
+        //{
+        //    DeleteLogsAndScreenshots(parameter);
+        //}
 
-        private void DeleteLogsAndScreenshots(ICollection<Log> logParam, AppsEntities context)
-        {
-            List<Log> logs = logParam.ToList();
-            foreach (var log in logs)
-            {
-                foreach (var screenshot in log.Screenshots.ToList())
-                {
-                    if (!context.Screenshots.Local.Any(s => s.ScreenshotID == screenshot.ScreenshotID))
-                    {
-                        context.Screenshots.Attach(screenshot);
-                    }
-                    context.Screenshots.Remove(screenshot);
-                }
+        //private void DeleteLogsAndScreenshots(ICollection<Log> logParam, AppsEntities context)
+        //{
+        //    List<Log> logs = logParam.ToList();
+        //    foreach (var log in logs)
+        //    {
+        //        foreach (var screenshot in log.Screenshots.ToList())
+        //        {
+        //            if (!context.Screenshots.Local.Any(s => s.ScreenshotID == screenshot.ScreenshotID))
+        //            {
+        //                context.Screenshots.Attach(screenshot);
+        //            }
+        //            context.Screenshots.Remove(screenshot);
+        //        }
 
-                if (!context.Logs.Local.Any(l => l.LogID == log.LogID))
-                {
-                    context.Logs.Attach(log);
-                }
-                context.Logs.Remove(log);
-            }
-        }
+        //        if (!context.Logs.Local.Any(l => l.LogID == log.LogID))
+        //        {
+        //            context.Logs.Attach(log);
+        //        }
+        //        context.Logs.Remove(log);
+        //    }
+        //}
 
-        private void DeleteLogsAndScreenshots(object parameter)
-        {
-            ObservableCollection<object> parameters = parameter as ObservableCollection<object>;
-            if (parameters != null)
-            {
-                List<Log> logs = parameters.Select(o => o as Log).ToList();
-                using (var context = new AppsEntities())
-                {
-                    foreach (var log in logs)
-                    {
+        //private void DeleteLogsAndScreenshots(object parameter)
+        //{
+        //    ObservableCollection<object> parameters = parameter as ObservableCollection<object>;
+        //    if (parameters != null)
+        //    {
+        //        List<Log> logs = parameters.Select(o => o as Log).ToList();
+        //        using (var context = new AppsEntities())
+        //        {
+        //            foreach (var log in logs)
+        //            {
 
-                        foreach (var screenshot in log.Screenshots.ToList())
-                        {
-                            if (!context.Screenshots.Local.Any(s => s.ScreenshotID == screenshot.ScreenshotID))
-                            {
-                                context.Screenshots.Attach(screenshot);
-                            }
-                            context.Screenshots.Remove(screenshot);
-                        }
+        //                foreach (var screenshot in log.Screenshots.ToList())
+        //                {
+        //                    if (!context.Screenshots.Local.Any(s => s.ScreenshotID == screenshot.ScreenshotID))
+        //                    {
+        //                        context.Screenshots.Attach(screenshot);
+        //                    }
+        //                    context.Screenshots.Remove(screenshot);
+        //                }
 
-                        if (!context.Logs.Local.Any(l => l.LogID == log.LogID))
-                        {
-                            context.Logs.Attach(log);
-                        }
-                        context.Entry(log).State = System.Data.Entity.EntityState.Deleted;
-                    }
+        //                if (!context.Logs.Local.Any(l => l.LogID == log.LogID))
+        //                {
+        //                    context.Logs.Attach(log);
+        //                }
+        //                context.Entry(log).State = System.Data.Entity.EntityState.Deleted;
+        //            }
 
-                    DeleteEmptyLogs(context);
-                    context.SaveChanges();
-                }
-            }
+        //            DeleteEmptyLogs(context);
+        //            context.SaveChanges();
+        //        }
+        //    }
 
-        }
+        //}
 
-        private void DeleteEmptyLogs(AppsEntities context)
-        {
-            foreach (var window in context.Windows)
-            {
-                if (window.Logs.Count == 0)
-                {
-                    if (!context.Windows.Local.Any(w => w.WindowID == window.WindowID))
-                        context.Windows.Attach(window);
-                    context.Windows.Remove(window);
-                }
-            }
+        //private void DeleteEmptyLogs(AppsEntities context)
+        //{
+        //    foreach (var window in context.Windows)
+        //    {
+        //        if (window.Logs.Count == 0)
+        //        {
+        //            if (!context.Windows.Local.Any(w => w.WindowID == window.WindowID))
+        //                context.Windows.Attach(window);
+        //            context.Windows.Remove(window);
+        //        }
+        //    }
 
-            foreach (var app in context.Applications)
-            {
-                if (app.Windows.Count == 0)
-                {
-                    if (!context.Applications.Local.Any(a => a.ApplicationID == app.ApplicationID))
-                        context.Applications.Attach(app);
-                    context.Applications.Remove(app);
-                }
-            }
-        }
+        //    foreach (var app in context.Applications)
+        //    {
+        //        if (app.Windows.Count == 0)
+        //        {
+        //            if (!context.Applications.Local.Any(a => a.ApplicationID == app.ApplicationID))
+        //                context.Applications.Attach(app);
+        //            context.Applications.Remove(app);
+        //        }
+        //    }
+        //}
 
 
         private void AddAplicationToBlockedList(object parameter)
@@ -777,7 +773,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                                 }
                             }
                             context.SaveChangesAsync();
-                            var notifyList =  context.AppsToBlocks.Where(a => a.UserID == Globals.UserID).Include(a => a.Application).ToList();
+                            var notifyList = context.AppsToBlocks.Where(a => a.UserID == Globals.UserID).Include(a => a.Application).ToList();
                             Mediator.NotifyColleagues<List<AppsToBlock>>(MediatorMessages.AppsToBlockChanged, notifyList);
                         }
                     }
@@ -794,7 +790,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             long ticks = 0;
             var filteredApps = TopAppsList.Where(t => t.IsSelected);
 
-            if(filteredApps.Count() == 0)
+            if (filteredApps.Count() == 0)
             {
                 TopWindowsList = null;
                 return;
@@ -839,7 +835,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
             TimeSpan timeSpan = new TimeSpan(ticks);
             OverallWindowDuration = string.Format("Selected: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
-            
+
             LoadChart();
         }
 
