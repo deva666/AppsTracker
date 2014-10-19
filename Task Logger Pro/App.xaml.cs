@@ -82,15 +82,16 @@ namespace Task_Logger_Pro
             CreateSettingsAndUsageTypes();
 
             _uzerSetting = new SettingsProxy();
-            _settingsQueue = new SettingsQueue();
-            _settingsQueue.SaveSettings += _settingsQueue_SaveSettings;
+            //_settingsQueue = new SettingsQueue();
+            //_settingsQueue.SaveSettings += _settingsQueue_SaveSettings;
 
             ChangeTheme();
 
             _uzerSetting.PropertyChanged += (s, e) =>
             {
                 UpdateLogData(e.PropertyName);
-                _settingsQueue.Add(_uzerSetting);
+                SaveSettings();
+                //_settingsQueue.Add(_uzerSetting);          
             };
 
             if (CheckTrialExpiration())
@@ -192,11 +193,7 @@ namespace Task_Logger_Pro
         void _settingsQueue_SaveSettings(object sender, SettingsProxy e)
         {
             SaveSettings();
-        }
-
-        void App_Exit(object sender, ExitEventArgs e)
-        {
-            Exceptions.Logger.DumpDebug(string.Format("App shutting down on {0}, user triggerd = {1}, sender {2}, exit code {3}", DateTime.Now, _userTriggerExit, sender, e.ApplicationExitCode));
+            Console.WriteLine("setting saved");
         }
 
         public App()
@@ -245,7 +242,7 @@ namespace Task_Logger_Pro
         }
 
         private async void SaveSettings()
-        {
+        {            
             using (var context = new AppsEntities())
             {
                 context.Entry(_settings).State = System.Data.Entity.EntityState.Modified;
@@ -277,27 +274,27 @@ namespace Task_Logger_Pro
             else
                 UpdateEmailSettings(false);
 
-            if (_dataLogger.EnableFileWatcher != _uzerSetting.EnableFileWatcher)
-            {
-                _dataLogger.EnableFileWatcher = _uzerSetting.EnableFileWatcher;
-                if (_dataLogger.FileSystemWatcher == null)
-                    return;
-                if (_dataLogger.FileSystemWatcher.Path != _uzerSetting.FileWatcherPath)
-                {
-                    try
-                    {
-                        _dataLogger.FileSystemWatcher.Path = _uzerSetting.FileWatcherPath;
-                    }
-                    catch (Exception ex)
-                    {
-                        _dataLogger.FileSystemWatcher.Path = _uzerSetting.FileWatcherPath = @"C:\";
-                        MessageWindow window = new MessageWindow(ex);
-                        window.Show();
-                    }
-                }
+            //if (_dataLogger.EnableFileWatcher != _uzerSetting.EnableFileWatcher)
+            //{
+            //    _dataLogger.EnableFileWatcher = _uzerSetting.EnableFileWatcher;
+            //    if (_dataLogger.FileSystemWatcher == null)
+            //        return;
+            //    if (_dataLogger.FileSystemWatcher.Path != _uzerSetting.FileWatcherPath)
+            //    {
+            //        try
+            //        {
+            //            _dataLogger.FileSystemWatcher.Path = _uzerSetting.FileWatcherPath;
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            _dataLogger.FileSystemWatcher.Path = _uzerSetting.FileWatcherPath = @"C:\";
+            //            MessageWindow window = new MessageWindow(ex);
+            //            window.Show();
+            //        }
+            //    }
 
-                if (_dataLogger.FileSystemWatcher.IncludeSubdirectories != _uzerSetting.FileWatcherSubdirectories) _dataLogger.FileSystemWatcher.IncludeSubdirectories = _uzerSetting.FileWatcherSubdirectories;
-            }
+            //    if (_dataLogger.FileSystemWatcher.IncludeSubdirectories != _uzerSetting.FileWatcherSubdirectories) _dataLogger.FileSystemWatcher.IncludeSubdirectories = _uzerSetting.FileWatcherSubdirectories;
+            //}
         }
 
         private void ShowHideTrayIcon()
@@ -462,6 +459,8 @@ namespace Task_Logger_Pro
                 if (this.MainWindow == null)
                 {
                     this.MainWindow = new Task_Logger_Pro.MainWindow();
+                    this.MainWindow.Left = UzerSetting.MainWindowLeft;
+                    this.MainWindow.Top = UzerSetting.MainWindowTop;
                     this.MainWindow.Show();
                 }
                 else

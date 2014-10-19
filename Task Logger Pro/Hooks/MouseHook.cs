@@ -16,7 +16,8 @@ namespace Task_Logger_Pro.Hooks
         RightUp,
         None
     }
-    class MouseHook : IDisposable
+
+    sealed class MouseHook : HookBase, IDisposable
     {
         #region Fields
 
@@ -47,14 +48,7 @@ namespace Task_Logger_Pro.Hooks
         public MouseHook()
         {
             point = new Point();
-            hookCallBack = new HookHandlerCallBack(HookProc);
-            using (Process process = Process.GetCurrentProcess())
-            {
-                using (ProcessModule module = process.MainModule)
-                {
-                    hookID = Win32.SetWindowsHookEx(WH_MOUSE_LL, hookCallBack, WinAPI.GetModuleHandle(module.ModuleName), 0);
-                }
-            }
+            SetHook();
         }
 
         #endregion
@@ -92,12 +86,6 @@ namespace Task_Logger_Pro.Hooks
 
         #endregion
 
-        internal class Win32
-        {
-            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-            public static extern IntPtr SetWindowsHookEx(int idHook, HookHandlerCallBack lpfn, IntPtr hMod, uint dwThreadId);
-        }
-
         #region IDisposable Members
 
         ~MouseHook()
@@ -107,7 +95,7 @@ namespace Task_Logger_Pro.Hooks
 
         private void Dispose(bool disposing)
         {
-            System.Diagnostics.Debug.WriteLine("Disposing " + this.GetType().Name + " " + this.GetType().FullName); 
+            System.Diagnostics.Debug.WriteLine("Disposing " + this.GetType().Name + " " + this.GetType().FullName);
             if (isDisposed) return;
             WinAPI.UnhookWindowsHookEx(hookID);
             isDisposed = true;
@@ -120,44 +108,17 @@ namespace Task_Logger_Pro.Hooks
         }
 
         #endregion
-    }
 
-    public class MouseHookArgs : EventArgs
-    {
-        Point _point;
-        int _mouseButton;
-
-        public Point Point { get { return _point; } }
-        public MouseButton MouseButton
+        protected override void SetHook()
         {
-            get
+            hookCallBack = new HookHandlerCallBack(HookProc);
+            using (Process process = Process.GetCurrentProcess())
             {
-                if (_mouseButton == MouseHook.WM_LBUTTONDOWN)
+                using (ProcessModule module = process.MainModule)
                 {
-                    return MouseButton.LeftDown;
+                    hookID = WinAPI.SetWindowsHookEx(WH_MOUSE_LL, hookCallBack, WinAPI.GetModuleHandle(module.ModuleName), 0);
                 }
-                else if (_mouseButton == MouseHook.WM_RBUTTONDOWN)
-                {
-                    return MouseButton.RightDown;
-                }
-                else if (_mouseButton == MouseHook.WM_LBUTTONUP)
-                {
-                    return MouseButton.LeftUp;
-                }
-                else if (_mouseButton == MouseHook.WM_RBUTTONUP)
-                {
-                    return MouseButton.RightUp;
-                }
-                else
-                    return MouseButton.None;
             }
         }
-
-        public MouseHookArgs(Point point, int mouseButton)
-        {
-            _point = point;
-            _mouseButton = mouseButton;
-        }
-
     }
 }

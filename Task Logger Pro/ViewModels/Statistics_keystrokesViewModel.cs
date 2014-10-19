@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.DAL;
+using AppsTracker.DAL.Repos;
 using AppsTracker.Models.ChartModels;
+using AppsTracker.Models.EntityModels;
 using Task_Logger_Pro.Controls;
 using Task_Logger_Pro.MVVM;
 
@@ -21,9 +23,9 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         KeystrokeModel _keystrokeModel;
 
-        List<KeystrokeModel> _keystrokeList;
+        IEnumerable<KeystrokeModel> _keystrokeList;
 
-        List<DailyKeystrokeModel> _dailyKeystrokesList;
+        IEnumerable<DailyKeystrokeModel> _dailyKeystrokesList;
 
         #endregion
 
@@ -65,7 +67,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
         public ICommand ReturnFromDetailedViewCommand
         {
             get
-            {                                    
+            {
                 return _returnFromDetailedViewCommand == null ? _returnFromDetailedViewCommand = new DelegateCommand(ReturnFromDetailedView) : _returnFromDetailedViewCommand;
             }
         }
@@ -85,7 +87,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }
         }
 
-        public List<KeystrokeModel> KeystrokeList
+        public IEnumerable<KeystrokeModel> KeystrokeList
         {
             get
             {
@@ -97,7 +99,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 PropertyChanging("KeystrokeList");
             }
         }
-        public List<DailyKeystrokeModel> DailyKeystrokesList
+        public IEnumerable<DailyKeystrokeModel> DailyKeystrokesList
         {
             get
             {
@@ -125,100 +127,55 @@ namespace Task_Logger_Pro.Pages.ViewModels
         public async void LoadContent()
         {
             Working = true;
-            KeystrokeList = await GetContentAsync();
+            KeystrokeList = await GetContentFromRepo();
             if (KeystrokeModel != null)
-                DailyKeystrokesList = await LoadSubContentAsync();
+                DailyKeystrokesList = await GetSubContentFromRepo();
             Working = false;
             IsContentLoaded = true;
         }
 
-        private List<KeystrokeModel> GetContent()
+        private async Task<IEnumerable<KeystrokeModel>> GetContentFromRepo()
         {
-            using (var context = new AppsEntities())
-            {
-                return (from u in context.Users.AsNoTracking()
-                        join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
-                        join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-                        join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                        where u.UserID == Globals.SelectedUserID
-                        && l.DateCreated >= Globals.Date1
-                        && l.DateCreated <= Globals.Date2
-                        && l.Keystrokes != null
-                        group l by a.Name into g
-                        select g)
-                        .ToList()
-                        .Select(g => new KeystrokeModel { AppName = g.Key, Count = g.Sum(l => l.Keystrokes.Length) })
-                        .ToList();
-            }
-        }
+            var logs = await LogRepo.Instance.GetAsync(l => l.Window.Application, l => l.Window.Application.User).ConfigureAwait(false);
 
-        private Task<List<KeystrokeModel>> GetContentAsync()
-        {
-            return Task<List<KeystrokeModel>>.Run(new Func<List<KeystrokeModel>>(GetContent));
-        }
+            var filtered = logs.Where(l => l.Window.Application.User.UserID == Globals.SelectedUserID
+                                                                && l.DateCreated >= Globals.Date1
+                                                                && l.DateCreated <= Globals.Date2
+                                                                && l.Keystrokes != null);
+            return filtered
+                    .GroupBy(l => l.Window.Application.Name)
+                    .Select(g => new KeystrokeModel() { AppName = g.Key, Count = g.Sum(l => l.Keystrokes.Length) })
+                    .OrderByDescending(k => k.Count)
+                    .ToList();
 
-        private Task<List<KeystrokeModel>> LoadContentAsync()
-        {
-            return Task<List<KeystrokeModel>>.Run(() =>
-            {
-                using (var context = new AppsEntities())
-                {
-                    return (from u in context.Users.AsNoTracking()
-                            join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
-                            join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-                            join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                            where u.UserID == Globals.SelectedUserID
-                            && l.DateCreated >= Globals.Date1
-                            && l.DateCreated <= Globals.Date2
-                            && l.Keystrokes != null
-                            group l by a.Name into g
-                            select g)
-                            .ToList()
-                            .Select(g => new KeystrokeModel { AppName = g.Key, Count = g.Sum(l => l.Keystrokes.Length) })
-                            .ToList();
-                }
-            });
         }
 
         private async void LoadSubContent()
         {
             if (KeystrokeModel == null)
                 return;
-            _dailyKeystrokesList = null;
-            PropertyChanging("DailyKeystrokesList");
+            DailyKeystrokesList = null;
             Working = true;
-            _dailyKeystrokesList = await LoadSubContentAsync();
+            DailyKeystrokesList = await GetSubContentFromRepo();
             Working = false;
-            PropertyChanging("DailyKeystrokesList");
         }
 
-        private Task<List<DailyKeystrokeModel>> LoadSubContentAsync()
+        private async Task<IEnumerable<DailyKeystrokeModel>> GetSubContentFromRepo()
         {
-            return Task<List<DailyKeystrokeModel>>.Run(() =>
-            {
-                using (var context = new AppsEntities())
-                {
-                    return (from u in context.Users
-                            join a in context.Applications on u.UserID equals a.UserID
-                            join w in context.Windows on a.ApplicationID equals w.ApplicationID
-                            join l in context.Logs on w.WindowID equals l.WindowID
-                            where u.UserID == Globals.SelectedUserID
-                            && l.DateCreated >= Globals.Date1
-                            && l.DateCreated <= Globals.Date2
-                            && l.Keystrokes != null
-                            && a.Name == KeystrokeModel.AppName
-                            group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day } into g
-                            orderby g.Key.year, g.Key.month, g.Key.day
-                            select g).ToList()
-                                    .Select(g => new DailyKeystrokeModel()
-                                    {
-                                        Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString()
-                                        ,
-                                        Count = g.Sum(l => l.Keystrokes.Length)
-                                    })
-                                    .ToList();
-                }
-            });
+            var logs = await LogRepo.Instance.GetAsync(l => l.Window.Application, l => l.Window.Application.User).ConfigureAwait(false);
+
+            var filtered = logs.Where(l=>l.Window.Application.User.UserID == Globals.SelectedUserID
+                                         && l.DateCreated >= Globals.Date1
+                                         && l.DateCreated <= Globals.Date2
+                                         && l.Keystrokes != null
+                                         && l.Window.Application.Name == KeystrokeModel.AppName);
+
+            return filtered.GroupBy(l => new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day })
+                        .Select(g => new DailyKeystrokeModel()
+                        {
+                            Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
+                            Count = g.Sum(l => l.Keystrokes.Length)
+                        });
         }
 
         private void ReturnFromDetailedView()

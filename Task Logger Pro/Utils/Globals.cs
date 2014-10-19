@@ -99,7 +99,7 @@ namespace Task_Logger_Pro
                 if (size >= 3900m)
                 {
                     DBSizeOperational = false;
-                    var handler = DBCleaningRequired;
+                    var handler = System.Threading.Volatile.Read(ref DBCleaningRequired);
                     if (handler != null)
                         handler(typeof(Globals), EventArgs.Empty);
                 }

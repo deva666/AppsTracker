@@ -88,38 +88,37 @@ namespace Task_Logger_Pro.Logging
         #endregion
 
         #region Class Methods
+        private void Block()
+        {
+            try
+            {
+                foreach (var blockedApp in _appsToBlockList)
+                {
+                    if (!IsProcessKilled(blockedApp))
+                        continue;
+                    Process[] processCollection = Process.GetProcessesByName(blockedApp.Application.WinName);
+                    if (processCollection.Length > 0)
+                    {
+                        foreach (var process in processCollection)
+                            process.Kill();
+
+                        var handler = Volatile.Read(ref ProcessKilledEvent);
+                        if (handler != null)
+                            handler(this, new ProcessKilledEventArgs(blockedApp.Application));
+                    }
+                }
+            }
+            catch
+            {
+            }
+        }
 
         private Task BlockAsync()
         {
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    foreach (var blockedApp in _appsToBlockList)
-                    {
-                        if (!IsProcessKilled(blockedApp))
-                            continue;
-                        Process[] processCollection = Process.GetProcessesByName(blockedApp.Application.WinName);
-                        if (processCollection.Length > 0)
-                        {
-                            foreach (var process in processCollection)
-                            {
-                                process.Kill();
-                            }
-                            var handler = ProcessKilledEvent;
-                            if (handler != null)
-                                handler(this, new ProcessKilledEventArgs(blockedApp.Application));
-                        }
-                    }
-                }
-                catch
-                {
-                    
-                }
-            });
+            return Task.Run(new Action(Block));
         }
 
-        private bool IsProcessKilled(AppsToBlock  appsToBlock)
+        private bool IsProcessKilled(AppsToBlock appsToBlock)
         {
             DayOfWeek today = DateTime.Now.DayOfWeek;
             switch (today)
@@ -149,7 +148,7 @@ namespace Task_Logger_Pro.Logging
                         return false;
                     break;
                 case "Tuesday":
-                    if (appsToBlock.Tuesday && (DateTime.Now.TimeOfDay >=  new TimeSpan( appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
+                    if (appsToBlock.Tuesday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
                         return false;
                     break;
                 case "Wednesday":
@@ -184,7 +183,7 @@ namespace Task_Logger_Pro.Logging
 
         private void Dispose(bool disposing)
         {
-            Debug.WriteLine("Disposing " + this.GetType()); 
+            Debug.WriteLine("Disposing " + this.GetType());
             if (_managementEventWatcher != null)
             {
                 this.Stop();

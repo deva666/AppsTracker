@@ -3,25 +3,26 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using Task_Logger_Pro.ViewModels;
+using AppsTracker.DAL;
 
 namespace Task_Logger_Pro
 {
     public partial class MainWindow : Window, IDisposable
     {
         private bool _disposed;
-        private MainViewModel mainViewModel;
+        private MainViewModel _mainViewModel;
 
         public MainWindow()
         {
             InitializeComponent();
-            mainViewModel = new MainViewModel();
-            this.DataContext = mainViewModel;
+            _mainViewModel = new MainViewModel();
+            this.DataContext = _mainViewModel;
             this.Loaded += (s, e) =>
             {
                 ScaleLoaded();
                 this.MaxHeight = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height + 7;
             };
-            this.Closing += (s, e) => { mainViewModel.Dispose(); mainViewModel = null; };
+            this.Closing += (s, e) => { _mainViewModel.Dispose(); _mainViewModel = null; };
         }
 
         #region Animations
@@ -79,7 +80,7 @@ namespace Task_Logger_Pro
 
         private void Window_MouseLeftButtonDown_1(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left)
+            if (e.ChangedButton == MouseButton.Left && e.ButtonState == MouseButtonState.Pressed)
                 this.DragMove();
         }
 
@@ -124,7 +125,7 @@ namespace Task_Logger_Pro
             if (!_disposed)
             {
                 _disposed = true;
-                mainViewModel.Dispose();
+                _mainViewModel.Dispose();
             }
         }
     }

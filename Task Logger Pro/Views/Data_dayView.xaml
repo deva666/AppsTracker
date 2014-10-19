@@ -263,7 +263,8 @@
                                        ItemContainerStyle="{DynamicResource ListViewItemStyle}"
                                        BorderBrush="{x:Null}"
                                        BorderThickness="0"
-                                       Margin="10,20,10,10">
+                                       Margin="10,20,10,10"
+                                       SelectionMode="Multiple">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding SingleWindowSelectionChangedCommand}" />
@@ -284,13 +285,6 @@
                     </GridView>
                 </controls:SortableListView.View>
             </controls:SortableListView >
-
-            <!--<Label Style="{DynamicResource LabelStyle}"
-                   Content="{Binding SingleAppDuration}"
-                   Grid.Row="2"
-                   Grid.Column="0"
-                   Margin="10,5,20,0"
-                   HorizontalAlignment="Right" />-->
 
             <Label Style="{DynamicResource LabelStyle}"
                    Content="{Binding SingleWindowDuration}"

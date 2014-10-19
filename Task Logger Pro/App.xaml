@@ -10,8 +10,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Themes/RunningLight.xaml" />
-            
+                <ResourceDictionary Source="/Themes/RunningLight.xaml" />            
             </ResourceDictionary.MergedDictionaries>
             
             <Style x:Key="MinimalChartStyle"

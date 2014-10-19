@@ -130,7 +130,7 @@
                               CommandParameter="settings" />
             </Label.InputBindings>
         </Label>
-
+        
         <Separator Grid.Row="1"
                    Grid.ColumnSpan="3"
                    Margin="30,10,30,0"

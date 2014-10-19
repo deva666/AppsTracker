@@ -25,8 +25,10 @@ namespace Task_Logger_Pro.Utils
 
                 SqlCeConnectionStringBuilder sqlBuilder;
 
-#if DEBUG
+#if (DEBUG && !TEST_SYMBOL)
                 sqlBuilder = GetConnectionDebug();
+#elif TEST_SYMBOL
+                sqlBuilder = GetConnectionTest();
 #else
                 sqlBuilder = GetConnectionRelease();
 #endif
@@ -84,6 +86,18 @@ namespace Task_Logger_Pro.Utils
             {
                 DataSource = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "appsRELEASE.sdf"),
                 MaxDatabaseSize = 4000
+
+            };
+            return sqlBuilder;
+        }
+
+        private static SqlCeConnectionStringBuilder GetConnectionTest()
+        {
+            SqlCeConnectionStringBuilder sqlBuilder = new SqlCeConnectionStringBuilder
+            {
+                DataSource = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "apps.sdf"),
+                MaxDatabaseSize = 4000,
+                Password = "zRFYJbeRdTTwbVs5r+gDN7ZWQK0="
 
             };
             return sqlBuilder;

@@ -41,7 +41,6 @@ namespace Task_Logger_Pro.Controls
         public static readonly DependencyProperty CenterTimeProperty =
             DependencyProperty.Register("CenterTime", typeof(double), typeof(ScrollingContentControl), new PropertyMetadata(2.0d));
 
-
         public string InfoContent
         {
             get { return (string)GetValue(InfoContentProperty); }
@@ -53,7 +52,7 @@ namespace Task_Logger_Pro.Controls
         private static void InfoContentCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ScrollingContentControl control = d as ScrollingContentControl;
-            if(!string.IsNullOrEmpty(e.NewValue as string))
+            if (!string.IsNullOrEmpty(e.NewValue as string))
                 control.EnqueueNewInfo(e.NewValue as string);
         }
 
@@ -75,7 +74,6 @@ namespace Task_Logger_Pro.Controls
         {
             _scrollIn = FindResource("scrollIn") as Storyboard;
             _scrollOut = FindResource("scrollOut") as Storyboard;
-            //Debug.Assert(_scrollIn != null & _scrollOut != null, "Failed to init storyboards");
         }
 
         private void EnqueueNewInfo(string info)
@@ -95,45 +93,52 @@ namespace Task_Logger_Pro.Controls
 
             if (_centerTimer == null)
                 InitTimer();
-                        
+
             string info = _requests.Peek();
             _child.Content = info;
 
             var scrollInClone = _scrollIn.Clone();
             scrollInClone.Completed += (s, e) =>
             {
-                _centerTimer.Tick += (sn, ea) =>
-                {
-                    _centerTimer.Stop();
-                    var scrollOutClone = _scrollOut.Clone();
-                    scrollOutClone.Completed += (snd, ear) =>
-                    {
-                        this.Visibility = System.Windows.Visibility.Collapsed;
-                        if(_requests.Count >0)
-                            _requests.Dequeue();
-                        if (_requests.Count == 0)
-                        {
-                            _processing = false;
-                            _child.Content = string.Empty;
-                            InfoContent = string.Empty;
-                        }
-                        else
-                        {
-                            HandleQueue();
-                        }
-                    };
-                    scrollOutClone.Begin(this);
-                };
+                _centerTimer.Tick += TimerTick;
                 _centerTimer.Start();
             };
             scrollInClone.Begin(this);
             this.Visibility = System.Windows.Visibility.Visible;
         }
 
+        private void TimerTick(object sender, EventArgs e)
+        {
+
+            _centerTimer.Tick -= TimerTick;
+            _centerTimer.Stop();
+
+            var scrollOutClone = _scrollOut.Clone();
+            scrollOutClone.Completed += (snd, ear) =>
+            {
+                this.Visibility = System.Windows.Visibility.Collapsed;
+                if (_requests.Count > 0)
+                    _requests.Dequeue();
+                if (_requests.Count == 0)
+                    _processing = false;
+                else
+                    HandleQueue();
+            };
+            scrollOutClone.Begin(this);
+        }
+
         private void InitTimer()
         {
             _centerTimer = new DispatcherTimer();
             _centerTimer.Interval = TimeSpan.FromSeconds(CenterTime);
+        }
+
+        private void CheckTimeInterval()
+        {
+            if (_centerTimer == null)
+                return;
+            if (_centerTimer.Interval != TimeSpan.FromSeconds(CenterTime))
+                _centerTimer.Interval = TimeSpan.FromSeconds(CenterTime);
         }
     }
 }

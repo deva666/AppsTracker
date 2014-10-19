@@ -13,7 +13,6 @@ namespace Task_Logger_Pro.ViewModels
 {
     class StatisticsHostViewModel : HostViewModel, IChildVM
     {
-
         public string Title { get { return "statistics"; } }
 
         public bool IsContentLoaded { get; private set; }

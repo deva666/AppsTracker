@@ -112,6 +112,16 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Test\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;TEST_SYMBOL</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="De.TorstenMandelkow.MetroChart, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d5b8d1bbc99c4a2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -229,6 +239,10 @@
     </Compile>
     <Compile Include="Controls\ScrollingContentControl.cs" />
     <Compile Include="Controls\SelectableListView.cs" />
+    <Compile Include="Hooks\EventArgs\KeyboardHookArgs.cs" />
+    <Compile Include="Hooks\EventArgs\MouseHookArgs.cs" />
+    <Compile Include="Hooks\EventArgs\WinEventArgs.cs" />
+    <Compile Include="Hooks\HookBase.cs" />
     <Compile Include="Logging\IdleMonitor.cs" />
     <Compile Include="Logging\IdleTimeWatcher.cs" />
     <Compile Include="MVVM\HostViewModel.cs" />
@@ -241,6 +255,7 @@
     <Compile Include="Utils\CustomEventArgs.cs" />
     <Compile Include="Utils\ListViewBehavior.cs" />
     <Compile Include="Utils\ListViewItemScroller.cs" />
+    <Compile Include="Utils\ParallelFilter.cs" />
     <Compile Include="Utils\SettingsQueue.cs" />
     <Compile Include="Utils\WorkQueue.cs" />
     <Compile Include="ViewModels\DataHostViewModel.cs" />
@@ -266,9 +281,6 @@
     </Compile>
     <Compile Include="Views\Data_singleSummaryView.xaml.cs">
       <DependentUpon>Data_singleSummaryView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DayView.xaml.cs">
-      <DependentUpon>DayView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsHostView.xaml.cs">
       <DependentUpon>SettingsHostView.xaml</DependentUpon>
@@ -314,7 +326,7 @@
     <Compile Include="Utils\Validation.cs" />
     <Compile Include="Utils\ExtensionMethods.cs" />
     <Compile Include="Models\UzerSetting.cs" />
-    <Compile Include="MVVM\AboutWindowViewModel.cs" />
+    <Compile Include="ViewModels\AboutWindowViewModel.cs" />
     <Compile Include="Logging\EmailReport.cs" />
     <Compile Include="Logging\FileWatcher.cs">
       <SubType>Component</SubType>
@@ -376,9 +388,6 @@
     <Compile Include="Views\ChartViews\UsersView.xaml.cs">
       <DependentUpon>UsersView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Data_computerUsageView.xaml.cs">
-      <DependentUpon>Data_computerUsageView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Data_filelogsView.xaml.cs">
       <DependentUpon>Data_filelogsView.xaml</DependentUpon>
     </Compile>
@@ -418,9 +427,6 @@
     <Compile Include="Views\Settings_licenseView.xaml.cs">
       <DependentUpon>Settings_licenseView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StatisticsView.xaml.cs">
-      <DependentUpon>StatisticsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\PasswordWindow.xaml.cs">
       <DependentUpon>PasswordWindow.xaml</DependentUpon>
     </Compile>
@@ -433,7 +439,7 @@
     <Compile Include="Encryption\Encrypt.cs" />
     <Compile Include="Utils\Globals.cs" />
     <Compile Include="Utils\ValueConverters.cs" />
-    <Compile Include="WinAPI.cs" />
+    <Compile Include="Utils\WinAPI.cs" />
     <Compile Include="Hooks\WinEvent.cs" />
     <Page Include="Controls\AboutWindow.xaml">
       <SubType>Designer</SubType>
@@ -565,8 +571,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AppDetailedView.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ChartViews\AppByDayView.xaml">
       <SubType>Designer</SubType>
@@ -620,10 +626,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Data_computerUsageView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Data_dayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -645,10 +647,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Data_weblogsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -697,10 +695,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\StatisticsHostView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\StatisticsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -933,6 +927,7 @@
       <FileType>Satellite</FileType>
     </PublishFile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

@@ -16,6 +16,7 @@ using System.ComponentModel;
 using System.Windows.Data;
 using AppsTracker.DAL;
 using AppsTracker.Models.EntityModels;
+using AppsTracker.DAL.Repos;
 
 namespace Task_Logger_Pro.Pages.ViewModels
 {
@@ -29,7 +30,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         DateTime _selectedDate;
 
-        List<Log> _logList;
+        IEnumerable<Log> _logList;
 
         ICommand _deleteSelectedScreenshotsCommand;
         ICommand _openScreenshotViewerCommand;
@@ -92,7 +93,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             get;
             set;
         }
-        public List<Log> LogList
+        public IEnumerable<Log> LogList
         {
             get
             {
@@ -142,7 +143,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         public Data_screenshotsViewModel()
         {
-            Mediator.Register(MediatorMessages.RefreshLogs, new Action(LoadContent));            
+            Mediator.Register(MediatorMessages.RefreshLogs, new Action(LoadContent));
             SelectedDate = DateTime.Today;
         }
 
@@ -151,55 +152,19 @@ namespace Task_Logger_Pro.Pages.ViewModels
         public async void LoadContent()
         {
             Working = true;
-            LogList = await GetContentAsync();
+            LogList = await GetContentFromRepo();
             Working = false;
             IsContentLoaded = true;
         }
 
-        private Task<List<Log>> GetContentAsync()
+        private Task<IEnumerable<Log>> GetContentFromRepo()
         {
-            return Task<List<Log>>.Run(new Func<List<Log>>(GetContent));
-        }
-
-        private List<Log> GetContent()
-        {
-            using (var context = new AppsEntities())
-            {
-                return (from u in context.Users.AsNoTracking()
-                        join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
-                        join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-                        join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                        where u.UserID == Globals.SelectedUserID
-                        && l.Screenshots.Count > 0
-                        && l.DateCreated >= Globals.Date1
-                        && l.DateCreated <= Globals.Date2
-                        orderby l.DateCreated
-                        select l).Include(w => w.Window.Application)
-                                .Include(l => l.Screenshots)
-                                .ToList();
-            }
-        }
-
-        private Task<List<Log>> LoadContentAsync()
-        {
-            return Task<List<Log>>.Factory.StartNew(() =>
-            {
-                using (var context = new AppsEntities())
-                {
-                    return (from u in context.Users.AsNoTracking()
-                            join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
-                            join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-                            join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                            where u.UserID == Globals.SelectedUserID
-                            && l.Screenshots.Count > 0
-                            && l.DateCreated >= Globals.Date1
-                            && l.DateCreated <= Globals.Date2
-                            orderby l.DateCreated
-                            select l).Include(w => w.Window.Application)
-                                    .Include(l => l.Screenshots)
-                                    .ToList();
-                }
-            });
+            return LogRepo.Instance.GetFilteredAsync(l => l.Screenshots.Count > 0
+                                                         && l.DateCreated >= Globals.Date1
+                                                         && l.DateCreated <= Globals.Date2
+                                                         && l.Window.Application.UserID == Globals.SelectedUserID
+                                                         ,l=>l.Screenshots
+                                                         ,l=>l.Window.Application);
         }
 
         private void OpenScreenshotViewer(object parameter)

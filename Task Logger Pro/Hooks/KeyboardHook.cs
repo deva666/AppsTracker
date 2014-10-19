@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace Task_Logger_Pro.Hooks
 {
-    public sealed class KeyBoardHook : IDisposable, INotifyPropertyChanged
+    public sealed class KeyBoardHook : HookBase, IDisposable, INotifyPropertyChanged
     {
         #region Fields
 
@@ -20,9 +20,9 @@ namespace Task_Logger_Pro.Hooks
         const int VK_MENU = 0x12;
         const int VK_CAPITAL = 0x14;
 
-        public event EventHandler<KeyboardHookEventArgs> KeyDown;
-        public event EventHandler<KeyboardHookEventArgs> KeyPress;
-        public event EventHandler<KeyboardHookEventArgs> KeyUp;
+        public event EventHandler<KeyboardHookArgs> KeyDown;
+        public event EventHandler<KeyboardHookArgs> KeyPress;
+        public event EventHandler<KeyboardHookArgs> KeyUp;
 
         HookHandlerCallBack hookCallBack;
         IntPtr hookID = IntPtr.Zero;
@@ -68,14 +68,14 @@ namespace Task_Logger_Pro.Hooks
             App.Current.Dispatcher.Invoke(SetHook);
         }
 
-        private void SetHook()
+        protected override void SetHook()
         {
             hookCallBack = new HookHandlerCallBack(HookProc);
             using (Process process = Process.GetCurrentProcess())
             {
                 using (ProcessModule module = process.MainModule)
                 {
-                    hookID = Win32.SetWindowsHookEx(WH_KEYBOARD_LL, hookCallBack, WinAPI.GetModuleHandle(module.ModuleName), 0);
+                    hookID = WinAPI.SetWindowsHookEx(WH_KEYBOARD_LL, hookCallBack, WinAPI.GetModuleHandle(module.ModuleName), 0);
                 }
             }
         }
@@ -108,7 +108,7 @@ namespace Task_Logger_Pro.Hooks
                     {
                         var handler = KeyDown;
                         if (handler != null)
-                            handler(this, new KeyboardHookEventArgs(keybStruct.vkCode, builder.ToString()));
+                            handler(this, new KeyboardHookArgs(keybStruct.vkCode, builder.ToString()));
                     }
                 }
             }
@@ -117,14 +117,14 @@ namespace Task_Logger_Pro.Hooks
             {
                 var handler = KeyPress;
                 if (handler != null)
-                    handler(this, new KeyboardHookEventArgs(keybStruct.vkCode));
+                    handler(this, new KeyboardHookArgs(keybStruct.vkCode));
             }
 
             if ((int)wParam == WM_KEYUP || (int)wParam == WM_SYSKEYUP)
             {
                 var handler = KeyUp;
                 if (handler != null)
-                    handler(this, new KeyboardHookEventArgs(keybStruct.vkCode));
+                    handler(this, new KeyboardHookArgs(keybStruct.vkCode));
             }
 
             return WinAPI.CallNextHookEx(hookID, code, wParam, lParam);
@@ -162,48 +162,6 @@ namespace Task_Logger_Pro.Hooks
 
         #endregion
 
-        internal class Win32
-        {
-            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-            public static extern IntPtr SetWindowsHookEx(int idHook, HookHandlerCallBack lpfn, IntPtr hMod, uint dwThreadId);
-        }
-    }
-
-    public class KeyboardHookEventArgs : EventArgs
-    {
-        #region Fields
-        int _keyCode;
-        string _keyName;
-        char _c;
-        string _string;
-        #endregion
-
-        #region Properties
-        public int KeyCode { get { return _keyCode; } }
-        public string KeyName { get { return _keyName; } }
-        public char Char { get { return _c; } }
-        public string String { get { return _string; } }
-        #endregion
-
-        #region Constructors
-        public KeyboardHookEventArgs(int keyCode)
-        {
-            _keyCode = keyCode;
-            _keyName = System.Windows.Input.KeyInterop.KeyFromVirtualKey(keyCode).ToString();
-        }
-
-        public KeyboardHookEventArgs(int keyCode, char c)
-            : this(keyCode)
-        {
-            _c = c;
-        }
-
-        public KeyboardHookEventArgs(int keyCode, string str)
-            : this(keyCode)
-        {
-            _string = str;
-        }
-        #endregion
     }
 
 }

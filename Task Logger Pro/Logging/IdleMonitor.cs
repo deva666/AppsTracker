@@ -56,8 +56,8 @@ namespace Task_Logger_Pro.Logging
                 {
                     using (ProcessModule module = process.MainModule)
                     {
-                        keyboardHookHandle = KeyBoardHook.Win32.SetWindowsHookEx(13, keyboardCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
-                        mouseHookHandle = MouseHook.Win32.SetWindowsHookEx(14, mouseHookCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
+                        keyboardHookHandle = WinAPI.SetWindowsHookEx(13, keyboardCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
+                        mouseHookHandle = WinAPI.SetWindowsHookEx(14, mouseHookCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
                         Debug.Assert(keyboardHookHandle != IntPtr.Zero && mouseHookHandle != IntPtr.Zero, "Setting hooks failed");
                     }
                 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -8,6 +10,9 @@ using Task_Logger_Pro.MVVM;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.Models.ChartModels;
 using AppsTracker.DAL;
+using System.Diagnostics;
+using AppsTracker.DAL.Repos;
+
 
 namespace Task_Logger_Pro.Pages.ViewModels
 {
@@ -18,9 +23,9 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         MostUsedAppModel _mostUsedAppModel;
 
-        List<MostUsedAppModel> _mostUsedAppsList;
+        IEnumerable<MostUsedAppModel> _mostUsedAppsList;
 
-        List<DailyAppModel> _dailyAppList;
+        IEnumerable<DailyAppModel> _dailyAppList;
 
         ICommand _returnFromDetailedViewCommand;
 
@@ -76,7 +81,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
         }
 
 
-        public List<MostUsedAppModel> MostUsedAppsList
+        public IEnumerable<MostUsedAppModel> MostUsedAppsList
         {
             get
             {
@@ -88,7 +93,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 PropertyChanging("MostUsedAppsList");
             }
         }
-        public List<DailyAppModel> DailyAppList
+        public IEnumerable<DailyAppModel> DailyAppList
         {
             get
             {
@@ -114,6 +119,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
         }
 
         #endregion
+
         private void ReturnFromDetailedView()
         {
             MostUsedAppModel = null;
@@ -133,90 +139,54 @@ namespace Task_Logger_Pro.Pages.ViewModels
             IsContentLoaded = true;
         }
 
-        private Task<List<MostUsedAppModel>> GetContentAsync()
+        private async Task<IEnumerable<MostUsedAppModel>> GetContentAsync()
         {
-            return Task<List<MostUsedAppModel>>.Run(new Func<List<MostUsedAppModel>>(GetContent));
-        }
+            var logs = await LogRepo.Instance.GetAsync(l => l.Window.Application, l => l.Window.Application.User).ConfigureAwait(false);
 
-        private List<MostUsedAppModel> GetContent()
-        {
-            using (var context = new AppsEntities())
-            {
-                return (from u in context.Users.AsNoTracking()
-                        join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
-                        join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-                        join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                        where u.UserID == Globals.SelectedUserID
-                        && l.DateCreated >= Globals.Date1
-                        && l.DateCreated <= Globals.Date2
-                        group l by a.Name into g
-                        select g).ToList()
-                                 .Select(g => new MostUsedAppModel() { AppName = g.Key, Duration = Math.Round(new TimeSpan(g.Sum(l => l.Duration)).TotalHours, 1) })
-                                 .ToList();
-            }
-        }
+            var grouped = logs.Where(l => l.Window.Application.User.UserID == Globals.SelectedUserID
+                                        && l.DateCreated >= Globals.Date1
+                                        && l.DateCreated <= Globals.Date2)
+                                .GroupBy(l => l.Window.Application.Name);
 
-        private Task<List<MostUsedAppModel>> LoadContentAsync()
-        {
-            return Task<List<MostUsedAppModel>>.Run(() =>
-            {
-                using (var context = new AppsEntities())
-                {
-                    return (from u in context.Users.AsNoTracking()
-                            join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
-                            join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-                            join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                            where u.UserID == Globals.SelectedUserID
-                            && l.DateCreated >= Globals.Date1
-                            && l.DateCreated <= Globals.Date2
-                            group l by a.Name into g
-                            select g).ToList()
-                                     .Select(g => new MostUsedAppModel() { AppName = g.Key, Duration = Math.Round(new TimeSpan(g.Sum(l => l.Duration)).TotalHours, 1) })
-                                     .ToList();
-                }
-            });
+            return grouped.Select(g => new MostUsedAppModel()
+                                                            {
+                                                                AppName = g.Key,
+                                                                Duration = Math.Round(new TimeSpan(g.Sum(l => l.Duration)).TotalHours, 1)
+                                                            });
         }
 
         private async void LoadSubContent()
         {
-            if (_mostUsedAppModel != null)
-            {
-                _dailyAppList = null;
-                PropertyChanging("DailyAppList");
-                Working = true;
-                _dailyAppList = await LoadSubContentAsync();
-                Working = false;
-                PropertyChanging("DailyAppList");
-            }
+            if (_mostUsedAppModel == null)
+                return;
+
+            DailyAppList = null;
+            Working = true;
+            DailyAppList = await LoadSubContentAsync();
+            Working = false;
         }
 
-        private Task<List<DailyAppModel>> LoadSubContentAsync()
+        private async Task<IEnumerable<DailyAppModel>> LoadSubContentAsync()
         {
-            return Task<List<DailyAppModel>>.Run(() =>
-            {
-                if (_mostUsedAppModel == null)
-                    return null;
-                var appName = MostUsedAppModel.AppName;
+            if (_mostUsedAppModel == null)
+                return null;
+            var appName = MostUsedAppModel.AppName;
 
-                using (var context = new AppsEntities())
-                {
-                    return (from a in context.Applications.AsNoTracking()
-                            join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-                            join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                            where a.Name == appName
-                            group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day } into g
-                            orderby g.Key.year, g.Key.month, g.Key.day
-                            select g)
-                            .ToList()
-                            .Select(g => new DailyAppModel
+            var logs = await LogRepo.Instance.GetFilteredAsync(l => l.Window.Application.Name == appName
+                                                                && l.Window.Application.User.UserID == Globals.SelectedUserID
+                                                                && l.DateCreated >= Globals.Date1
+                                                                && l.DateCreated <= Globals.Date2)
+                                                .ConfigureAwait(false);
+
+            var grouped = logs.GroupBy(l => new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day })
+                                .OrderBy(g => new DateTime(g.Key.year, g.Key.month, g.Key.day));
+
+            return grouped.Select(g => new DailyAppModel
                             {
                                 Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
                                 Duration = Math.Round(new TimeSpan(g.Sum(l => l.Duration)).TotalHours, 1)
-                            })
-                            .ToList();
-                }
-            });
-        }
+                            });
 
+        }
     }
 }

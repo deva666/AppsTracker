@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using AppsTracker.DAL;
+using AppsTracker.DAL.Repos;
 using AppsTracker.Models.ChartModels;
 using Task_Logger_Pro.Controls;
 using Task_Logger_Pro.MVVM;
@@ -19,7 +22,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         bool _working;
 
-        List<DailyUsedAppsSeries> _dailyUsedAppsList;
+        IEnumerable<DailyUsedAppsSeries> _dailyUsedAppsList;
 
         #endregion
 
@@ -58,7 +61,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             set;
         }
 
-        public List<DailyUsedAppsSeries> DailyUsedAppsList
+        public IEnumerable<DailyUsedAppsSeries> DailyUsedAppsList
         {
             get
             {
@@ -87,108 +90,63 @@ namespace Task_Logger_Pro.Pages.ViewModels
         public async void LoadContent()
         {
             Working = true;
-            DailyUsedAppsList = await GetContentAsync();
+            DailyUsedAppsList = await GetContentAsync().ConfigureAwait(false);
             Working = false;
             IsContentLoaded = true;
         }
 
-        private Task<List<DailyUsedAppsSeries>> GetContentAsync()
-        {
-            return Task.Run(new Func<List<DailyUsedAppsSeries>>(GetContent));
-        }
-
-        private List<DailyUsedAppsSeries> GetContent()
+        private async Task<IEnumerable<DailyUsedAppsSeries>> GetContentAsync()
         {
             List<DailyUsedAppsSeries> dailyUsedAppsSeriesTemp = new List<DailyUsedAppsSeries>();
-            using (var context = new AppsEntities())
+
+            var logs = await LogRepo.Instance.GetAsync(l => l.Window.Application, l=>l.Window.Application.User).ConfigureAwait(false);
+
+            var grouped = logs.Where(l => l.Window.Application.User.UserID == Globals.SelectedUserID
+                                          && l.DateCreated >= Globals.Date1
+                                          && l.DateCreated <= Globals.Date2)
+                                .OrderBy(l => l.DateCreated)
+                                .GroupBy(l => new
+                                                {
+                                                    year = l.DateCreated.Year,
+                                                    month = l.DateCreated.Month,
+                                                    day = l.DateCreated.Day,
+                                                    name = l.Window.Application.Name
+                                                });
+
+            var dailyApps = grouped.Select(g => new
+                                                    {
+                                                        Date = new DateTime(g.Key.year, g.Key.month, g.Key.day),
+                                                        AppName = g.Key.name,
+                                                        Duration = g.Sum(l => l.Duration)
+                                                    });
+
+            List<MostUsedAppModel> dailyUsedAppsCollection;
+
+            foreach (var app in dailyApps)
             {
-
-                var dailyApps = (from u in context.Users
-                                 join a in context.Applications on u.UserID equals a.UserID
-                                 join w in context.Windows on a.ApplicationID equals w.ApplicationID
-                                 join l in context.Logs on w.WindowID equals l.WindowID
-                                 where u.UserID == Globals.SelectedUserID
-                                 && l.DateCreated >= Globals.Date1
-                                 && l.DateCreated <= Globals.Date2
-                                 group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day, name = a.Name } into g
-                                 select g).ToList()
-                                 .Select(g => new { Date = new DateTime(g.Key.year, g.Key.month, g.Key.day), AppName = g.Key.name, Duration = g.Sum(l => l.Duration) });
-
-                List<MostUsedAppModel> dailyUsedAppsCollection;
-                foreach (var app in dailyApps)
+                if (app.Duration > 0)
                 {
-                    if (app.Duration > 0)
+                    if (!dailyUsedAppsSeriesTemp.Exists(d => d.Date == app.Date.ToShortDateString()))
                     {
-                        if (!dailyUsedAppsSeriesTemp.Exists(d => d.Date == app.Date.ToShortDateString()))
-                        {
-                            dailyUsedAppsCollection = new List<MostUsedAppModel>();
-                            dailyUsedAppsCollection.Add(new MostUsedAppModel() { AppName = app.AppName, Duration = Math.Round(new TimeSpan(app.Duration).TotalHours, 1) });
-                            dailyUsedAppsSeriesTemp.Add(new DailyUsedAppsSeries() { Date = app.Date.ToShortDateString(), DailyUsedAppsCollection = dailyUsedAppsCollection });
-                        }
-                        else
-                        {
-                            dailyUsedAppsSeriesTemp.First(d => d.Date == app.Date.ToShortDateString())
-                                .DailyUsedAppsCollection.Add(new MostUsedAppModel() { AppName = app.AppName, Duration = Math.Round(new TimeSpan(app.Duration).TotalHours, 1) });
-                        }
+                        dailyUsedAppsCollection = new List<MostUsedAppModel>();
+                        dailyUsedAppsCollection.Add(new MostUsedAppModel() { AppName = app.AppName, Duration = Math.Round(new TimeSpan(app.Duration).TotalHours, 1) });
+                        dailyUsedAppsSeriesTemp.Add(new DailyUsedAppsSeries() { Date = app.Date.ToShortDateString(), DailyUsedAppsCollection = dailyUsedAppsCollection });
+                    }
+                    else
+                    {
+                        dailyUsedAppsSeriesTemp.First(d => d.Date == app.Date.ToShortDateString())
+                            .DailyUsedAppsCollection.Add(new MostUsedAppModel() { AppName = app.AppName, Duration = Math.Round(new TimeSpan(app.Duration).TotalHours, 1) });
                     }
                 }
             }
 
+
             foreach (var item in dailyUsedAppsSeriesTemp)
-            {
                 item.DailyUsedAppsCollection = item.DailyUsedAppsCollection.OrderBy(d => d.Duration).ToList();
-            }
+
 
             return dailyUsedAppsSeriesTemp;
-        }
-       
-        private Task<List<DailyUsedAppsSeries>> LoadContentAsync()
-        {
-            return Task<List<DailyUsedAppsSeries>>.Factory.StartNew(() =>
-             {
-                 List<DailyUsedAppsSeries> dailyUsedAppsSeriesTemp = new List<DailyUsedAppsSeries>();
-                 using (var context = new AppsEntities())
-                 {
 
-                     var dailyApps = (from u in context.Users
-                                      join a in context.Applications on u.UserID equals a.UserID
-                                      join w in context.Windows on a.ApplicationID equals w.ApplicationID
-                                      join l in context.Logs on w.WindowID equals l.WindowID
-                                      where u.UserID == Globals.SelectedUserID
-                                      && l.DateCreated >= Globals.Date1
-                                      && l.DateCreated <= Globals.Date2
-                                      group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day, name = a.Name } into g
-                                      select g).ToList()
-                                      .Select(g => new { Date = new DateTime(g.Key.year, g.Key.month, g.Key.day), AppName = g.Key.name, Duration = g.Sum(l => l.Duration) });
-                     //.OrderByDescending(g=>g.Duration);
-
-                     List<MostUsedAppModel> dailyUsedAppsCollection;
-                     foreach (var app in dailyApps)
-                     {
-                         if (app.Duration > 0)
-                         {
-                             if (!dailyUsedAppsSeriesTemp.Exists(d => d.Date == app.Date.ToShortDateString()))
-                             {
-                                 dailyUsedAppsCollection = new List<MostUsedAppModel>();
-                                 dailyUsedAppsCollection.Add(new MostUsedAppModel() { AppName = app.AppName, Duration = Math.Round(new TimeSpan(app.Duration).TotalHours, 1) });
-                                 dailyUsedAppsSeriesTemp.Add(new DailyUsedAppsSeries() { Date = app.Date.ToShortDateString(), DailyUsedAppsCollection = dailyUsedAppsCollection });
-                             }
-                             else
-                             {
-                                 dailyUsedAppsSeriesTemp.First(d => d.Date == app.Date.ToShortDateString())
-                                     .DailyUsedAppsCollection.Add(new MostUsedAppModel() { AppName = app.AppName, Duration = Math.Round(new TimeSpan(app.Duration).TotalHours, 1) });
-                             }
-                         }
-                     }
-                 }
-
-                 foreach (var item in dailyUsedAppsSeriesTemp)
-                 {
-                     item.DailyUsedAppsCollection = item.DailyUsedAppsCollection.OrderBy(d => d.Duration).ToList();
-                 }
-
-                 return dailyUsedAppsSeriesTemp;
-             }, System.Threading.CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
-        }
+        }              
     }
 }

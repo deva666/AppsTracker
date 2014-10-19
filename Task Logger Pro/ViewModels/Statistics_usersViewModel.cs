@@ -11,6 +11,8 @@ using Task_Logger_Pro.Controls;
 using Task_Logger_Pro.MVVM;
 using System.Data.Entity;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using AppsTracker.DAL.Repos;
 
 namespace Task_Logger_Pro.Pages.ViewModels
 {
@@ -22,9 +24,9 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         AllUsersModel _allUsersModel;
 
-        List<AllUsersModel> _allUsersList;
+        IEnumerable<AllUsersModel> _allUsersList;
 
-        List<UsageTypeSeries> _dailyLogins;
+        IEnumerable<UsageTypeSeries> _dailyLogins;
 
         ICommand _returnFromDetailedViewCommand;
 
@@ -80,7 +82,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             get;
             set;
         }
-        public List<AllUsersModel> AllUsersList
+        public IEnumerable<AllUsersModel> AllUsersList
         {
             get
             {
@@ -92,7 +94,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 PropertyChanging("AllUsersList");
             }
         }
-        public List<UsageTypeSeries> DailyLogins
+        public IEnumerable<UsageTypeSeries> DailyLogins
         {
             get
             {
@@ -136,128 +138,126 @@ namespace Task_Logger_Pro.Pages.ViewModels
         public async void LoadContent()
         {
             Working = true;
-            AllUsersList = await LoadContentAsync();
+            AllUsersList = await GetContentAsync().ConfigureAwait(false);
             if (AllUsersModel != null)
                 DailyLogins = await LoadSubContentAsync();
             Working = false;
             IsContentLoaded = true;
         }
 
-        private Task<List<AllUsersModel>> LoadContentAsync()
-        {
-            return Task<List<AllUsersModel>>.Factory.StartNew(() =>
-            {
-                using (var context = new AppsEntities())
-                {
-                    string loginType = UsageTypes.Login.ToString();
-
-                    return (from l in context.Usages.AsNoTracking()
-                            where l.UsageStart >= Globals.Date1
-                            && l.UsageStart <= Globals.Date2
-                            && l.UsageType.UType == loginType
-                            group l by l.User.Name into g
-                            select g).ToList()
-                                    .Select(g => new AllUsersModel
-                                    {
-                                        Username = g.Key,
-                                        LoggedInTime = Math.Round(new TimeSpan(g.Sum(l => l.Duration.Ticks)).TotalHours, 1)
-                                    }).ToList();
-
-                }
-            }, System.Threading.CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
-        }
-
         private async void LoadSubContent()
         {
             if (AllUsersModel == null)
                 return;
-            _dailyLogins = null;
-            PropertyChanging("DailyLogins");
+            DailyLogins = null;
             Working = true;
-            _dailyLogins = await LoadSubContentAsync();
+            DailyLogins = await LoadSubContentAsync().ConfigureAwait(false);
             Working = false;
-            PropertyChanging("DailyLogins");
         }
 
-        private Task<List<UsageTypeSeries>> LoadSubContentAsync()
+        private async Task<IEnumerable<AllUsersModel>> GetContentAsync()
         {
-            return Task<List<UsageTypeSeries>>.Run(() =>
+            string loginType = UsageTypes.Login.ToString();
+            var logins = await UsageRepo.Instance.GetFilteredAsync(u => u.UsageStart >= Globals.Date1
+                                                                        && u.UsageStart <= Globals.Date2
+                                                                        && u.UsageType.UType == loginType
+                                                                        , u => u.User)
+                                                .ConfigureAwait(false);
+
+            return logins.GroupBy(u => u.User.Name)
+                            .Select(g => new AllUsersModel
+                                                        {
+                                                            Username = g.Key,
+                                                            LoggedInTime = Math.Round(new TimeSpan(g.Sum(l => l.Duration.Ticks)).TotalHours, 1)
+                                                        });
+        }
+
+        private async Task<List<UsageTypeSeries>> LoadSubContentAsync()
+        {
+            string usageLogin = UsageTypes.Login.ToString();
+            string usageIdle = UsageTypes.Idle.ToString();
+            string usageLocked = UsageTypes.Locked.ToString();
+            string usageStopped = UsageTypes.Stopped.ToString();
+
+            IEnumerable<Usage> idles;
+            IEnumerable<Usage> lockeds;
+            IEnumerable<Usage> stoppeds;
+
+            List<UsageTypeSeries> collection = new List<UsageTypeSeries>();
+
+            var logins = await UsageRepo.Instance.GetFilteredAsync(u => u.User.UserID == Globals.SelectedUserID
+                                                                 && u.UsageStart >= Globals.Date1
+                                                                 && u.UsageStart <= Globals.Date2
+                                                                 && u.UsageType.UType == usageLogin)
+                                     .ConfigureAwait(false);
+
+            var groupedLogins = logins.GroupBy(u => new
+                                                    {
+                                                        year = u.UsageStart.Year,
+                                                        month = u.UsageStart.Month,
+                                                        day = u.UsageStart.Day
+                                                    })
+                                        .OrderBy(g => new DateTime(g.Key.year, g.Key.month, g.Key.day));
+
+            foreach (var grp in groupedLogins)
             {
+                var usageIDs = grp.Select(u => u.UsageID);
 
-                string usageLogin = UsageTypes.Login.ToString();
-                string usageIdle = UsageTypes.Idle.ToString();
-                string usageLocked = UsageTypes.Locked.ToString();
-                string usageStopped = UsageTypes.Stopped.ToString();
+                var idlesTask = UsageRepo.Instance.GetFilteredAsync(u => u.SelfUsageID.HasValue 
+                                                                        && usageIDs.Contains(u.SelfUsageID.Value) 
+                                                                        && u.UsageType.UType == usageIdle);
 
-                List<Usage> idles;
-                List<Usage> lockeds;
-                List<Usage> stoppeds;
+                var lockedTask = UsageRepo.Instance.GetFilteredAsync(u => u.SelfUsageID.HasValue 
+                                                                            && usageIDs.Contains(u.SelfUsageID.Value) 
+                                                                            && u.UsageType.UType == usageLocked);
 
-                List<UsageTypeSeries> collection = new List<UsageTypeSeries>();
+                var stoppedTask = UsageRepo.Instance.GetFilteredAsync(u => u.SelfUsageID.HasValue 
+                                                                            && usageIDs.Contains(u.SelfUsageID.Value) 
+                                                                            && u.UsageType.UType == usageStopped);
 
-                using (var context = new AppsEntities())
+                await Task.WhenAll(idlesTask, lockedTask, stoppedTask)
+                        .ConfigureAwait(false);
+
+                idles = idlesTask.Result;
+                lockeds = lockedTask.Result;
+                stoppeds = stoppedTask.Result;
+
+                UsageTypeSeries series = new UsageTypeSeries() { Date = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day).ToShortDateString() };
+                
+                ObservableCollection<UsageTypeModel> observableCollection = new ObservableCollection<UsageTypeModel>();
+
+                long idleTime = 0;
+                long lockedTime = 0;
+                long loginTime = 0;
+                long stoppedTime = 0;
+
+                if (idles.Count() > 0)
                 {
-                    var groupedLogins = (from u in context.Users.AsNoTracking()
-                                         join l in context.Usages.AsNoTracking() on u.UserID equals l.UserID
-                                         where u.UserID == Globals.SelectedUserID
-                                         && l.UsageStart >= Globals.Date1
-                                         && l.UsageStart <= Globals.Date2
-                                         && l.UsageType.UType == usageLogin
-                                         group l by new { year = l.UsageStart.Year, month = l.UsageStart.Month, day = l.UsageStart.Day } into g
-                                         orderby g.Key.year, g.Key.month, g.Key.day
-                                         select g).ToList();
-
-                    foreach (var grp in groupedLogins)
-                    {
-                        var usageIDs = grp.Select(u => u.UsageID);
-
-                        idles = context.Usages.Where(u => u.SelfUsageID.HasValue && usageIDs.Contains(u.SelfUsageID.Value) && u.UsageType.UType == usageIdle).ToList();
-
-                        lockeds = context.Usages.Where(u => u.SelfUsageID.HasValue && usageIDs.Contains(u.SelfUsageID.Value) && u.UsageType.UType == usageLocked).ToList();
-
-                        stoppeds = context.Usages.Where(u => u.SelfUsageID.HasValue && usageIDs.Contains(u.SelfUsageID.Value) && u.UsageType.UType == usageStopped).ToList();
-
-                        UsageTypeSeries series = new UsageTypeSeries() { Date = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day).ToShortDateString() };
-
-
-                        ObservableCollection<UsageTypeModel> observableCollection = new ObservableCollection<UsageTypeModel>();
-
-                        long idleTime = 0;
-                        long lockedTime = 0;
-                        long loginTime = 0;
-                        long stoppedTime = 0;
-
-                        if (idles.Count() > 0)
-                        {
-                            idleTime = idles.Sum(l => l.Duration.Ticks);
-                            observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(idleTime).TotalHours, 2), UsageType = usageIdle });
-                        }
-
-                        if (lockeds.Count() > 0)
-                        {
-                            lockedTime = lockeds.Sum(l => l.Duration.Ticks);
-                            observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Computer locked" });
-                        }
-
-
-                        if (stoppeds.Count() > 0)
-                        {
-                            stoppedTime = stoppeds.Sum(l => l.Duration.Ticks);
-                            observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Stopped logging" });
-                        }
-
-                        loginTime = grp.Sum(l => l.Duration.Ticks) - lockedTime - idleTime - stoppedTime;
-                        observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(loginTime).TotalHours, 2), UsageType = "Work" });
-
-
-                        series.DailyUsageTypeCollection = observableCollection;
-
-                        collection.Add(series);
-
-                    }
+                    idleTime = idles.Sum(l => l.Duration.Ticks);
+                    observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(idleTime).TotalHours, 2), UsageType = usageIdle });
                 }
-                return collection;
-            });
+
+                if (lockeds.Count() > 0)
+                {
+                    lockedTime = lockeds.Sum(l => l.Duration.Ticks);
+                    observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Computer locked" });
+                }
+
+
+                if (stoppeds.Count() > 0)
+                {
+                    stoppedTime = stoppeds.Sum(l => l.Duration.Ticks);
+                    observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Stopped logging" });
+                }
+
+                loginTime = grp.Sum(l => l.Duration.Ticks) - lockedTime - idleTime - stoppedTime;
+                observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(loginTime).TotalHours, 2), UsageType = "Work" });
+
+                series.DailyUsageTypeCollection = observableCollection;
+
+                collection.Add(series);
+            }
+            return collection;
         }
 
         #endregion

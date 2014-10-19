@@ -21,7 +21,6 @@ namespace Task_Logger_Pro.Logging
         bool _enableIdle;
         bool _enableKeyboardHook;
         bool _takeScreenShots;
-        bool _enableFileWatcher;
 
         double _screenshotInterval = 2 * 60 * 1000;
 
@@ -34,8 +33,6 @@ namespace Task_Logger_Pro.Logging
         System.Threading.Timer _windowCheckTimer;
 
         IdleMonitor _idleMonitor;
-
-        FileWatcher _fileSystemWatcher;
 
         KeyBoardHook _keyBoardHook;
 
@@ -135,30 +132,6 @@ namespace Task_Logger_Pro.Logging
             }
         }
 
-        public FileSystemWatcher FileSystemWatcher
-        {
-            get
-            {
-                return _fileSystemWatcher;
-            }
-        }
-
-        public bool EnableFileWatcher
-        {
-            get
-            {
-                return _enableFileWatcher;
-            }
-            set
-            {
-                _enableFileWatcher = value;
-                if (_enableFileWatcher)
-                    InitFileWatcher();
-                else
-                    DisposeFileWatcher();
-            }
-        }
-
         public KeyBoardHook KeyBoardHook
         {
             get
@@ -182,6 +155,7 @@ namespace Task_Logger_Pro.Logging
             }
 
         }
+
         public LoggingStatus LoggingStatus
         {
             get
@@ -228,7 +202,6 @@ namespace Task_Logger_Pro.Logging
             this.EnableKeyboardHook = settings.EnableKeylogger;
             this.TakeScreenShots = settings.TakeScreenshots;
             this.ScreenShotInterval = settings.TimerInterval;
-            //this.EnableFileWatcher = settings.EnableFileWatcher;
 
             _winEvent = new WinEvent();
             _winEvent.ActiveWindowChanged += ActiveWindowChangedEventHandler;
@@ -287,31 +260,6 @@ namespace Task_Logger_Pro.Logging
             _screenshotTimer = null;
         }
 
-        private void InitFileWatcher()
-        {
-            if (_fileSystemWatcher != null)
-                return;
-            _fileSystemWatcher = new FileWatcher();
-            //_fileSystemWatcher.EnableRaisingEvents = false;
-            _fileSystemWatcher.Created += watcher_Changed;
-            _fileSystemWatcher.Deleted += watcher_Changed;
-            _fileSystemWatcher.Renamed += watcher_Renamed;
-            _fileSystemWatcher.Path = App.UzerSetting.FileWatcherPath;
-            _fileSystemWatcher.EnableRaisingEvents = true;
-        }
-
-        private void DisposeFileWatcher()
-        {
-            if (_fileSystemWatcher == null)
-                return;
-            _fileSystemWatcher.EnableRaisingEvents = false;
-            _fileSystemWatcher.Created -= watcher_Changed;
-            _fileSystemWatcher.Deleted -= watcher_Changed;
-            _fileSystemWatcher.Renamed -= watcher_Renamed;
-            _fileSystemWatcher.Dispose();
-            _fileSystemWatcher = null;
-        }
-
         private void InitIdleMonitor()
         {
             if (_idleMonitor != null)
@@ -336,7 +284,7 @@ namespace Task_Logger_Pro.Logging
 
         #region Event Handlers
 
-        private void KeyDownEventHandler(object sender, KeyboardHookEventArgs e)
+        private void KeyDownEventHandler(object sender, KeyboardHookArgs e)
         {
             if (IsLogggingStopped)
                 return;
@@ -354,7 +302,7 @@ namespace Task_Logger_Pro.Logging
             }
         }
 
-        private void KeyPressEventHandler(object sender, KeyboardHookEventArgs e)
+        private void KeyPressEventHandler(object sender, KeyboardHookArgs e)
         {
             if (IsLogggingStopped)
                 return;
@@ -443,34 +391,6 @@ namespace Task_Logger_Pro.Logging
                 CurrentLog = NewWindowEvent(_winEvent.GetWinEventArgs());
         }
 
-        private void watcher_Renamed(object sender, RenamedEventArgs e)
-        {
-            if (IsLogggingStopped)
-                return;
-
-            FileLog fileLog = new FileLog(e.OldFullPath, e.ChangeType.ToString(), e.FullPath, Globals.UserID);
-            using (var context = new AppsEntities())
-            {
-                context.FileLogs.Add(fileLog);
-                context.SaveChanges();
-            }
-
-        }
-
-        private void watcher_Changed(object sender, FileSystemEventArgs e)
-        {
-            if (IsLogggingStopped)
-                return;
-
-            FileLog fileLog = new FileLog(e.FullPath, e.ChangeType.ToString(), Globals.UserID);
-            using (var context = new AppsEntities())
-            {
-                context.FileLogs.Add(fileLog);
-                context.SaveChanges();
-            }
-
-        }
-
         private void _processKiller_ProcessKilledEvent(object sender, ProcessKilledEventArgs e)
         {
             using (var context = new AppsEntities())
@@ -481,7 +401,7 @@ namespace Task_Logger_Pro.Logging
             }
         }
 
-        private async void SystemEvents_SessionSwitch(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
+        private void SystemEvents_SessionSwitch(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
         {
             if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionLock)
             {
@@ -492,7 +412,7 @@ namespace Task_Logger_Pro.Logging
                 {
                     string usageType = UsageTypes.Idle.ToString();
                     _currentUsageIdle.UsageEnd = DateTime.Now;
-                    await SaveUsage(usageType, _currentUsageIdle);
+                    SaveUsage(usageType, _currentUsageIdle);
                     _currentUsageIdle = null;
                 }
                 StartStopIdleMonitor(false);
@@ -505,7 +425,7 @@ namespace Task_Logger_Pro.Logging
                 {
                     string usageType = UsageTypes.Locked.ToString();
                     _currentUsageLocked.UsageEnd = DateTime.Now;
-                    await SaveUsage(usageType, _currentUsageLocked);
+                    SaveUsage(usageType, _currentUsageLocked);
                     _currentUsageLocked = null;
                 }
             }
@@ -518,14 +438,14 @@ namespace Task_Logger_Pro.Logging
             _idleMonitor.Enabled = enabled;
         }
 
-        private async Task SaveUsage(string usageType, Usage usage)
+        private void SaveUsage(string usageType, Usage usage)
         {
             using (var context = new AppsEntities())
             {
                 var usageLockedID = context.UsageTypes.Where(t => t.UType == usageType).FirstOrDefault().UsageTypeID;
                 usage.UsageTypeID = usageLockedID;
                 context.Usages.Add(usage);
-                await context.SaveChangesAsync();
+                context.SaveChanges();
             }
         }
         private void IdleEntered(object sender, EventArgs e)
@@ -666,7 +586,6 @@ namespace Task_Logger_Pro.Logging
 
             if (_screenshotTimer != null)
                 _screenshotTimer.Elapsed -= TimerElapsedEventHandler;
-            DetachFileWatcherEventHandlers();
 
             if (_processKiller != null)
                 _processKiller.ProcessKilledEvent -= _processKiller_ProcessKilledEvent;
@@ -677,16 +596,6 @@ namespace Task_Logger_Pro.Logging
                 _idleMonitor.IdleStoped -= IdleStoped;
             }
             Microsoft.Win32.SystemEvents.SessionSwitch -= SystemEvents_SessionSwitch;
-        }
-
-        private void DetachFileWatcherEventHandlers()
-        {
-            if (_fileSystemWatcher != null)
-            {
-                _fileSystemWatcher.Created -= watcher_Changed;
-                _fileSystemWatcher.Deleted -= watcher_Changed;
-                _fileSystemWatcher.Renamed -= watcher_Renamed;
-            }
         }
 
         private void CheckBlockedApps()
@@ -717,7 +626,8 @@ namespace Task_Logger_Pro.Logging
             if (screenshot == null || log == null)
                 return;
             log.Screenshots.Add(screenshot);
-            var size = await dbSizeAsync.ConfigureAwait(true);
+            
+            await dbSizeAsync.ConfigureAwait(true); //check the DB size, this methods fires an event if near the maximum allowed size
         }
 
         #endregion
@@ -958,7 +868,6 @@ namespace Task_Logger_Pro.Logging
                 if (_winEvent != null) { _winEvent.Dispose(); _winEvent = null; }
                 if (_screenshotTimer != null) { _screenshotTimer.Dispose(); _screenshotTimer = null; }
                 if (_processKiller != null) { _processKiller.Dispose(); _processKiller = null; }
-                if (_fileSystemWatcher != null) { _fileSystemWatcher.Dispose(); _fileSystemWatcher = null; }
                 if (_windowCheckTimer != null) { _windowCheckTimer.Dispose(); _windowCheckTimer = null; }
                 if (_idleMonitor != null) { _idleMonitor.Dispose(); _idleMonitor = null; }
             }

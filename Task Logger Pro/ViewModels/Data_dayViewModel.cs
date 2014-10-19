@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using Task_Logger_Pro.Utils;
 using System.Diagnostics;
 using AppsTracker.DAL;
+using AppsTracker.DAL.Repos;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.Models.ChartModels;
 
@@ -27,8 +28,6 @@ namespace Task_Logger_Pro.ViewModels
         string _singleWindowDuration;
         string _duration;
         string _dayEnd;
-
-        WorkQueue<bool> _workQueue;
 
         TopAppsModel _topAppsSingle;
 
@@ -223,9 +222,7 @@ namespace Task_Logger_Pro.ViewModels
 
         public Data_dayViewModel()
         {
-            _workQueue = new WorkQueue<bool>();
-            _workQueue.WorkStarted += _workQueue_WorkStarted;
-            _workQueue.WorkEnded += _workQueue_WorkEnded;
+
         }
 
         void _workQueue_WorkEnded(object sender, EventArgs e)
@@ -243,261 +240,149 @@ namespace Task_Logger_Pro.ViewModels
 
             SingleAppDuration = string.Empty;
             SingleWindowDuration = string.Empty;
+            Working = true;
 
-            await LoadDayLogs();
-            await LoadAppsSingle();
-            await LoadChart();
-            await LoadDayInfo();
+            var daysTask = GetDayViewInfoAsync();
+            var appsTask = GetTopAppsSingleAsync();
+
+            var chartTask = GetChartContentAsync();
+            var dayInfoTask = GetDayInfoAsync();
+
+            await Task.WhenAll(daysTask, appsTask, chartTask, dayInfoTask);
+
+            DayViewModelList = daysTask.Result;
+            TopAppsList = appsTask.Result;
+            ChartList = chartTask.Result;
+            Duration = dayInfoTask.Result;
+
+            Working = false;
 
             IsContentLoaded = true;
         }
-
-        private async Task LoadDayLogs()
+        private async void LoadWindowsSingle()
         {
-            _workQueue.Add(true);
-            DayViewModelList = await GetContentAsync();
-            _workQueue.Remove();
+            Working = true;
+            TopWindowsList = await GetTopWindowsSingleAsync().ConfigureAwait(false);
+            Working = false;
         }
 
-        private async Task LoadAppsSingle()
-        {
-            _workQueue.Add(true);
-            TopAppsList = await GetTopAppsSingleAsync();
-            if (TopAppsList.Count == 0)
-                TopWindowsList = null;
-            _workQueue.Remove();
-        }
-
-        private async Task LoadWindowsSingle()
-        {
-            _workQueue.Add(true);
-            TopWindowsList = await GetTopWindowsSingleAsync();
-            _workQueue.Remove();
-        }
-        private async Task LoadDayInfo()
-        {
-            _workQueue.Add(true);
-            Duration = await GetDayInfoAsync();
-            _workQueue.Remove();
-        }
-        private async Task LoadChart()
-        {
-            _workQueue.Add(true);
-            ChartList = await GetChartContentAsync();
-            _workQueue.Remove();
-        }
-
-        private List<DayViewModel> GetContent()
+        private async Task<List<DayViewModel>> GetDayViewInfoAsync()
         {
             string ignore = UsageTypes.Login.ToString();
             DateTime date2 = _selectedDate.AddDays(1);
-            using (var context = new AppsEntities())
-            {
-                var logs = (from u in context.Users.AsNoTracking()
-                            join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
-                            join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-                            join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                            where u.UserID == Globals.SelectedUserID
-                            && l.DateCreated >= _selectedDate
-                            && l.DateCreated <= date2
-                            orderby l.DateCreated
-                            select l).Include(l => l.Window.Application)
-                            .ToList()
-                            .Select(l => new DayViewModel()
-                            {
-                                DateCreated = l.DateCreated.ToString("HH:mm:ss"),
-                                DateEnded = l.DateEnded.ToString("HH:mm:ss"),
-                                Duration = l.Duration,
-                                Name = l.Window.Application.Name,
-                                Title = l.Window.Title
-                            });
 
-                var usages = (from u in context.Users.AsNoTracking()
-                              join l in context.Usages.AsNoTracking() on u.UserID equals l.UserID
-                              where u.UserID == Globals.SelectedUserID
-                              && l.UsageStart >= _selectedDate
-                              && l.UsageEnd <= date2
-                              && l.UsageType.UType != ignore
-                              select l).Include(u => u.UsageType)
-                              .ToList()
-                              .Select(u => new DayViewModel()
-                              {
-                                  DateCreated = u.UsageStart.ToString("HH:mm:ss"),
-                                  DateEnded = u.UsageEnd.ToString("HH:mm:ss"),
-                                  Duration = u.Duration.Ticks,
-                                  Name = ((UsageTypes)Enum.Parse(typeof(UsageTypes), u.UsageType.UType)).ToExtendedString(),
-                                  Title = "*********",
-                                  IsRequested = true
-                              });
+            var logsTask = LogRepo.Instance.GetFilteredAsync(l => l.Window.Application.User.UserID == Globals.SelectedUserID
+                                                                      && l.DateCreated >= _selectedDate
+                                                                      && l.DateCreated <= date2
+                                                                      , l => l.Window.Application);
 
-                return logs.Union(usages).OrderBy(d => d.DateCreated).ToList();
-            }
+            var usagesTask = UsageRepo.Instance.GetFilteredAsync(u => u.User.UserID == Globals.SelectedUserID
+                                                                  && u.UsageStart >= _selectedDate
+                                                                  && u.UsageEnd <= date2
+                                                                  && u.UsageType.UType != ignore
+                                                                  , u => u.UsageType);
+
+            await Task.WhenAll(logsTask, usagesTask).ConfigureAwait(false);
+
+            var logModels = logsTask.Result.Select(l => new DayViewModel()
+                                                        {
+                                                            DateCreated = l.DateCreated.ToString("HH:mm:ss"),
+                                                            DateEnded = l.DateEnded.ToString("HH:mm:ss"),
+                                                            Duration = l.Duration,
+                                                            Name = l.Window.Application.Name,
+                                                            Title = l.Window.Title
+                                                        });
+
+            var usageModels = usagesTask.Result.Select(u => new DayViewModel()
+                                                           {
+                                                               DateCreated = u.UsageStart.ToString("HH:mm:ss"),
+                                                               DateEnded = u.UsageEnd.ToString("HH:mm:ss"),
+                                                               Duration = u.Duration.Ticks,
+                                                               Name = ((UsageTypes)Enum.Parse(typeof(UsageTypes), u.UsageType.UType)).ToExtendedString(),
+                                                               Title = "*********",
+                                                               IsRequested = true
+                                                           });
+
+            return logModels.Union(usageModels).OrderBy(d => d.DateCreated).ToList();
+
         }
 
-        private Task<List<DayViewModel>> GetContentAsync()
+        private async Task<List<TopAppsModel>> GetTopAppsSingleAsync()
         {
-            return Task<List<DayViewModel>>.Run(new Func<List<DayViewModel>>(GetContent));
+            DateTime date2 = _selectedDate.AddDays(1);
+            IEnumerable<Log> logs = await LogRepo.Instance.GetFilteredAsync(l => l.Window.Application.User.UserID == Globals.UserID
+                                                                                        && l.DateCreated >= _selectedDate
+                                                                                        && l.DateCreated <= date2
+                                                                                        , l => l.Window.Application)
+                                                                             .ConfigureAwait(false);
+            double totalDuration = (from l in logs
+                                    select (double?)l.Duration).Sum() ?? 0;
+
+            var result = (from l in logs
+                          group l by l.Window.Application.Name into grp
+                          select grp).ToList()
+                         .Select(g => new TopAppsModel { AppName = g.Key, Date = SelectedDate.ToShortDateString(), Usage = (g.Sum(l => l.Duration) / totalDuration), Duration = g.Sum(l => l.Duration) })
+                         .OrderByDescending(t => t.Duration)
+                         .ToList();
+
+            var first = result.FirstOrDefault();
+            if (first != null)
+                first.IsSelected = true;
+
+            return result;
         }
 
-        private Task<List<DayViewModel>> LoadContentAsync()
+        private async Task<List<TopWindowsModel>> GetTopWindowsSingleAsync()
         {
-            return Task<List<DayViewModel>>.Run(() =>
-            {
-                string ignore = UsageTypes.Login.ToString();
-                DateTime date2 = _selectedDate.AddDays(1);
-                using (var context = new AppsEntities())
-                {
-                    var logs = (from u in context.Users.AsNoTracking()
-                                join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
-                                join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-                                join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                                where u.UserID == Globals.SelectedUserID
-                                && l.DateCreated >= _selectedDate
-                                && l.DateCreated <= date2
-                                orderby l.DateCreated
-                                select l).Include(l => l.Window.Application)
-                                .ToList()
-                                .Select(l => new DayViewModel()
-                                {
-                                    DateCreated = l.DateCreated.ToString("HH:mm:ss"),
-                                    DateEnded = l.DateEnded.ToString("HH:mm:ss"),
-                                    Duration = l.Duration,
-                                    Name = l.Window.Application.Name,
-                                    Title = l.Window.Title
-                                });
+            if (TopAppsSingle == null)
+                return null;
 
-                    var usages = (from u in context.Users.AsNoTracking()
-                                  join l in context.Usages.AsNoTracking() on u.UserID equals l.UserID
-                                  where u.UserID == Globals.SelectedUserID
-                                  && l.UsageStart >= _selectedDate
-                                  && l.UsageEnd <= date2
-                                  && l.UsageType.UType != ignore
-                                  select l).Include(u => u.UsageType)
-                                  .ToList()
-                                  .Select(u => new DayViewModel()
-                                  {
-                                      DateCreated = u.UsageStart.ToString("HH:mm:ss"),
-                                      DateEnded = u.UsageEnd.ToString("HH:mm:ss"),
-                                      Duration = u.Duration.Ticks,
-                                      Name = ((UsageTypes)Enum.Parse(typeof(UsageTypes), u.UsageType.UType)).ToExtendedString(),
-                                      Title = "*********",
-                                      IsRequested = true
-                                  });
+            string appName = TopAppsSingle.AppName;
+            var nextDay = _selectedDate.AddDays(1);
 
-                    return logs.Union(usages).OrderBy(d => d.DateCreated).ToList();
-                }
+            var total = await LogRepo.Instance.GetFilteredAsync(l => l.Window.Application.User.UserID == Globals.UserID
+                                                         && l.DateCreated >= _selectedDate
+                                                         && l.DateCreated <= nextDay
+                                                         && l.Window.Application.Name == appName
+                                                         , l => l.Window)
+                                                     .ConfigureAwait(false);
 
-            });
+            double totalDuration = total.Sum(l => l.Duration);
+
+            return total.GroupBy(l => l.Window.Title)
+                                  .Select(g => new TopWindowsModel { Title = g.Key, Usage = (g.Sum(l => l.Duration) / totalDuration), Duration = g.Sum(l => l.Duration) })
+                                  .OrderByDescending(t => t.Duration)
+                                  .ToList();
         }
 
-        private Task<List<TopAppsModel>> GetTopAppsSingleAsync()
+        private async Task<string> GetDayInfoAsync()
         {
-            return Task<List<TopAppsModel>>.Run(() =>
-            {
-                DateTime date2 = _selectedDate.AddDays(1);
-                IEnumerable<Log> logs;
-                using (var context = new AppsEntities())
-                {
-                    logs = (from u in context.Users.AsNoTracking()
-                            join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
-                            join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-                            join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                            where u.UserID == Globals.SelectedUserID
-                            && l.DateCreated >= _selectedDate
-                            && l.DateCreated <= date2
-                            orderby l.DateCreated
-                            select l).Include(l => l.Window.Application).ToList();
-                }
+            DateTime today = SelectedDate.Date;
+            DateTime nextDay = today.AddDays(1d);
+            string loginType = UsageTypes.Login.ToString();
 
-                double totalDuration = (from l in logs
-                                        select (double?)l.Duration).Sum() ?? 0;
+            var logins = await UsageRepo.Instance.GetFilteredAsync(u => u.User.UserID == Globals.UserID
+                                                                    && u.UsageStart >= today
+                                                                    && u.UsageStart <= nextDay
+                                                                    && u.UsageType.UType == loginType)
+                                                   .ConfigureAwait(false);
 
-                var result = (from l in logs
-                              group l by l.Window.Application.Name into grp
-                              select grp).ToList()
-                                 .Select(g => new TopAppsModel { AppName = g.Key, Date = SelectedDate.ToShortDateString(), Usage = (g.Sum(l => l.Duration) / totalDuration), Duration = g.Sum(l => l.Duration) })
-                    .OrderByDescending(t => t.Duration)
-                                 .ToList();
-                var first = result.FirstOrDefault();
-                if (first != null)
-                    first.IsSelected = true;
+            var loginBegin = logins.OrderBy(l => l.UsageStart).FirstOrDefault();
 
-                return result;
+            var loginEnd = logins.OrderByDescending(l => l.UsageEnd).FirstOrDefault();
 
-            });
-        }
+            var totalDuraion = new TimeSpan(logins.Sum(l => l.Duration.Ticks));
 
-        private Task<List<TopWindowsModel>> GetTopWindowsSingleAsync()
-        {
-            return Task<List<TopWindowsModel>>.Run(() =>
-            {
-                if (TopAppsSingle == null)
-                    return null;
-                string appName = TopAppsSingle.AppName;
-                var nextDay = SelectedDate.AddDays(1);
-                using (var context = new AppsEntities())
-                {
-                    var total = (from u in context.Users.AsNoTracking()
-                                 join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
-                                 join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-                                 join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                                 where u.UserID == Globals.SelectedUserID
-                                 && a.Name == appName
-                                 && l.DateCreated >= SelectedDate
-                                 && l.DateCreated <= nextDay
-                                 select l).ToList();
+            string dayBegin = loginBegin == null ? "N/A" : loginBegin.UsageStart.ToShortTimeString();
+            string dayEnd = (loginEnd == null || loginEnd.IsCurrent) ? "N/A" : loginEnd.UsageEnd.ToShortTimeString();
+            string totalHours = totalDuraion.ToString(@"hh\:mm");
 
-                    double totalDuration = total.Sum(l => l.Duration);
-
-                    var result = (from l in total
-                                  group l by l.Window.Title into grp
-                                  select grp)
-                                          .Select(g => new TopWindowsModel { Title = g.Key, Usage = (g.Sum(l => l.Duration) / totalDuration), Duration = g.Sum(l => l.Duration) })
-                                          .OrderByDescending(t => t.Duration)
-                                          .ToList();
-                    return result;
-
-                }
-            });
-        }
-
-        private Task<string> GetDayInfoAsync()
-        {
-            return Task<string>.Run(() =>
-            {
-                DateTime today = SelectedDate.Date;
-                DateTime nextDay = today.AddDays(1d);
-
-                using (var context = new AppsEntities())
-                {
-                    string loginType = UsageTypes.Login.ToString();
-
-                    var logins = (from u in context.Users.AsNoTracking()
-                                  join l in context.Usages on u.UserID equals l.UserID
-                                  where l.UsageStart >= today
-                                  && l.UsageStart <= nextDay
-                                  && l.UserID == Globals.SelectedUserID
-                                  && l.UsageType.UType == loginType
-                                  select l).ToList();
-
-                    var loginBegin = logins.OrderBy(l => l.UsageStart).FirstOrDefault();
-
-                    var loginEnd = logins.OrderByDescending(l => l.UsageEnd).FirstOrDefault();
-
-                    var totalDuraion = new TimeSpan(logins.Sum(l => l.Duration.Ticks));
-
-                    string dayBegin = loginBegin == null ? "N/A" : loginBegin.UsageStart.ToShortTimeString();
-                    string dayEnd = (loginEnd == null || loginEnd.IsCurrent) ? "N/A" : loginEnd.UsageEnd.ToShortTimeString();
-                    string totalHours = totalDuraion.ToString(@"hh\:mm");
-                    return string.Format("Day start: {0}   -   Day end: {1} \t\t Total duration: {2}", dayBegin, dayEnd, totalHours);
-                }
-
-            });
+            return string.Format("Day start: {0}   -   Day end: {1} \t\t Total duration: {2}", dayBegin, dayEnd, totalHours);
         }
 
         private Task<List<DailyUsageTypeSeries>> GetChartContentAsync()
         {
-            return Task<List<DailyUsageTypeSeries>>.Run(() =>
+            return Task<List<DailyUsageTypeSeries>>.Run(async () =>
             {
                 DateTime today = SelectedDate.Date;
                 DateTime nextDay = today.AddDays(1d);
@@ -512,25 +397,36 @@ namespace Task_Logger_Pro.ViewModels
                 List<Usage> lockeds;
                 List<Usage> stoppeds;
 
-                using (var context = new AppsEntities())
-                {
-                    logins = (from u in context.Users.AsNoTracking()
-                              join l in context.Usages.AsNoTracking() on u.UserID equals l.UserID
-                              where u.UserID == Globals.SelectedUserID
-                              && l.UsageStart >= today
-                              && l.UsageStart <= nextDay
-                              && l.UsageType.UType == usageLogin
-                              select l).Include(u => u.UsageType).ToList();
+                logins = (await UsageRepo.Instance.GetFilteredAsync(u => u.User.UserID == Globals.UserID
+                                                                    && u.UsageStart >= today
+                                                                    && u.UsageStart <= nextDay
+                                                                    && u.UsageType.UType == usageLogin
+                                                                    , u => u.UsageType)
+                                                    .ConfigureAwait(false))
+                                                    .ToList();
 
-                    var usageIDs = logins.Select(u => u.UsageID);
+                var usageIDs = logins.Select(u => u.UsageID);
 
-                    idles = context.Usages.Where(u => u.SelfUsageID.HasValue && usageIDs.Contains(u.SelfUsageID.Value) && u.UsageType.UType == usageIdle).ToList();
+                var idlesTask = UsageRepo.Instance.GetFilteredAsync(u => u.SelfUsageID.HasValue
+                                                                    && usageIDs.Contains(u.SelfUsageID.Value)
+                                                                    && u.UsageType.UType == usageIdle
+                                                                    , u => u.UsageType);
 
-                    lockeds = context.Usages.Where(u => u.SelfUsageID.HasValue && usageIDs.Contains(u.SelfUsageID.Value) && u.UsageType.UType == usageLocked).ToList();
+                var lockedsTask = UsageRepo.Instance.GetFilteredAsync(u => u.SelfUsageID.HasValue 
+                                                                        && usageIDs.Contains(u.SelfUsageID.Value) 
+                                                                        && u.UsageType.UType == usageLocked
+                                                                        , u => u.UsageType);
 
-                    stoppeds = context.Usages.Where(u => u.SelfUsageID.HasValue && usageIDs.Contains(u.SelfUsageID.Value) && u.UsageType.UType == usageStopped).ToList();
+                var stoppedsTask = UsageRepo.Instance.GetFilteredAsync(u => u.SelfUsageID.HasValue 
+                                                                         && usageIDs.Contains(u.SelfUsageID.Value)
+                                                                         && u.UsageType.UType == usageStopped
+                                                                         , u => u.UsageType);
 
-                }
+                await Task.WhenAll(idlesTask, lockedsTask, stoppedsTask);
+
+                idles = idlesTask.Result.ToList();
+                lockeds = lockedsTask.Result.ToList();
+                stoppeds = stoppedsTask.Result.ToList();
 
                 List<DailyUsageTypeSeries> collection = new List<DailyUsageTypeSeries>();
 
@@ -616,9 +512,7 @@ namespace Task_Logger_Pro.ViewModels
                 }
 
                 return collection;
-
             });
-
         }
 
         #region Commmand Methods
@@ -675,8 +569,6 @@ namespace Task_Logger_Pro.ViewModels
 
         protected override void Disposing()
         {
-            _workQueue.WorkStarted -= _workQueue_WorkStarted;
-            _workQueue.WorkEnded -= _workQueue_WorkEnded;
             base.Disposing();
         }
     }

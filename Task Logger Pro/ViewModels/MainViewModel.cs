@@ -186,9 +186,7 @@ namespace Task_Logger_Pro.ViewModels
         {
             get
             {
-                if (_openPopupCommand == null)
-                    _openPopupCommand = new DelegateCommand(OpenPopup);
-                return _openPopupCommand;
+                return _openPopupCommand ?? (_openPopupCommand = new DelegateCommand(OpenPopup));
             }
         }
 
@@ -196,9 +194,7 @@ namespace Task_Logger_Pro.ViewModels
         {
             get
             {
-                if (_getLogsByDateCommand == null)
-                    _getLogsByDateCommand = new DelegateCommand(CloseDatesPopup);
-                return _getLogsByDateCommand;
+                return _getLogsByDateCommand ?? (_getLogsByDateCommand = new DelegateCommand(CloseDatesPopup));
             }
         }
 
@@ -206,9 +202,7 @@ namespace Task_Logger_Pro.ViewModels
         {
             get
             {
-                if (_clearFilterCommand == null)
-                    _clearFilterCommand = new DelegateCommand(ClearFilter);
-                return _clearFilterCommand;
+                return _clearFilterCommand ??  (_clearFilterCommand = new DelegateCommand(ClearFilter));
             }
         }
 
@@ -216,9 +210,7 @@ namespace Task_Logger_Pro.ViewModels
         {
             get
             {
-                if (_changeLoggingStatusCommand == null)
-                    _changeLoggingStatusCommand = new DelegateCommand(ChangeLoggingStatus);
-                return _changeLoggingStatusCommand;
+                return _changeLoggingStatusCommand ?? (_changeLoggingStatusCommand = new DelegateCommand(ChangeLoggingStatus));
             }
         }
         public ICommand ThisWeekCommand

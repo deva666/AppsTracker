@@ -91,5 +91,11 @@ namespace AppsTracker.Models.EntityModels
         public virtual ICollection<AppsToBlock> AppsToBlocks { get; set; }
         public virtual ICollection<BlockedApp> BlockedApps { get; set; }
         public virtual ICollection<Window> Windows { get; set; }
+
+        public override int GetHashCode()
+        {
+            int hash = 31;
+            return (hash + 7) * this.ApplicationID;
+        }
     }
 }

@@ -27,18 +27,17 @@ namespace Task_Logger_Pro.Utils
 
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            SettingsProxy uzerSetting;
             if (_queue.Count == 1)
             {
                 _timer.Enabled = false;
-                SettingsProxy uzerSetting;
                 _queue.TryDequeue(out uzerSetting);
-                var handler = SaveSettings;
+                var handler = System.Threading.Volatile.Read(ref SaveSettings);
                 if (handler != null)
                     handler(this, uzerSetting);
             }
             else
             {
-                SettingsProxy uzerSetting;
                 _queue.TryDequeue(out uzerSetting);
             }
         }
@@ -46,7 +45,7 @@ namespace Task_Logger_Pro.Utils
         public void Add(SettingsProxy setting)
         {
             if (_queue.Count == 0)
-                _timer.Start();
+                _timer.Enabled = true;
             _queue.Enqueue(setting);
         }
 

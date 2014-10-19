@@ -58,9 +58,6 @@ namespace Task_Logger_Pro.ViewModels
                 case "DAY VIEW":
                     SelectedChild = new Data_dayViewModel();
                     break;
-                //case "FILELOGS":
-                //    SelectedChild = new Data_filelogsViewModel();
-                //    break;
                 default:
                     break;
             }

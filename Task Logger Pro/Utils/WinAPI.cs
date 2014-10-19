@@ -6,13 +6,14 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Security.AccessControl;
 using System.ComponentModel;
+using Task_Logger_Pro.Hooks;
 
 namespace Task_Logger_Pro
 {
     internal class WinAPI
     {
         #region custom struct
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout(LayoutKind.Sequential)]
         internal struct KBDLLHOOKSTRUCT
         {
             internal int vkCode;
@@ -22,7 +23,7 @@ namespace Task_Logger_Pro
             IntPtr dwExtraInfo;
         }
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout(LayoutKind.Sequential)]
         internal struct MSLLHOOKSTRUCT
         {
             internal POINT pt;
@@ -32,7 +33,7 @@ namespace Task_Logger_Pro
             IntPtr dwExtraInfo;
         }
 
-       
+
         internal struct CURSORINFO
         {
             internal int cbSize;
@@ -50,26 +51,26 @@ namespace Task_Logger_Pro
             internal IntPtr hbmColor;
         }
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout(LayoutKind.Sequential)]
         internal struct POINT
         {
             internal int X;
             internal int Y;
 
-            internal POINT( int x, int y )
+            internal POINT(int x, int y)
             {
                 this.X = x;
                 this.Y = y;
             }
 
-            public static implicit operator System.Drawing.Point( POINT p )
+            public static implicit operator System.Drawing.Point(POINT p)
             {
-                return new System.Drawing.Point( p.X, p.Y );
+                return new System.Drawing.Point(p.X, p.Y);
             }
 
-            public static implicit operator POINT( System.Drawing.Point p )
+            public static implicit operator POINT(System.Drawing.Point p)
             {
-                return new POINT( p.X, p.Y );
+                return new POINT(p.X, p.Y);
             }
         }
 
@@ -81,7 +82,7 @@ namespace Task_Logger_Pro
         }
 
         #region RECT Struct
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout(LayoutKind.Sequential)]
         internal struct RECT
         {
             private int _Left;
@@ -89,11 +90,11 @@ namespace Task_Logger_Pro
             private int _Right;
             private int _Bottom;
 
-            internal RECT( RECT Rectangle )
-                : this( Rectangle.Left, Rectangle.Top, Rectangle.Right, Rectangle.Bottom )
+            internal RECT(RECT Rectangle)
+                : this(Rectangle.Left, Rectangle.Top, Rectangle.Right, Rectangle.Bottom)
             {
             }
-            internal RECT( int Left, int Top, int Right, int Bottom )
+            internal RECT(int Left, int Top, int Right, int Bottom)
             {
                 _Left = Left;
                 _Top = Top;
@@ -193,7 +194,7 @@ namespace Task_Logger_Pro
             {
                 get
                 {
-                    return new Point( Left, Top );
+                    return new Point(Left, Top);
                 }
                 set
                 {
@@ -205,7 +206,7 @@ namespace Task_Logger_Pro
             {
                 get
                 {
-                    return new Size( Width, Height );
+                    return new Size(Width, Height);
                 }
                 set
                 {
@@ -214,21 +215,21 @@ namespace Task_Logger_Pro
                 }
             }
 
-            public static implicit operator Rectangle( RECT Rectangle )
+            public static implicit operator Rectangle(RECT Rectangle)
             {
-                return new Rectangle( Rectangle.Left, Rectangle.Top, Rectangle.Width, Rectangle.Height );
+                return new Rectangle(Rectangle.Left, Rectangle.Top, Rectangle.Width, Rectangle.Height);
             }
-            public static implicit operator RECT( Rectangle Rectangle )
+            public static implicit operator RECT(Rectangle Rectangle)
             {
-                return new RECT( Rectangle.Left, Rectangle.Top, Rectangle.Right, Rectangle.Bottom );
+                return new RECT(Rectangle.Left, Rectangle.Top, Rectangle.Right, Rectangle.Bottom);
             }
-            public static bool operator ==( RECT Rectangle1, RECT Rectangle2 )
+            public static bool operator ==(RECT Rectangle1, RECT Rectangle2)
             {
-                return Rectangle1.Equals( Rectangle2 );
+                return Rectangle1.Equals(Rectangle2);
             }
-            public static bool operator !=( RECT Rectangle1, RECT Rectangle2 )
+            public static bool operator !=(RECT Rectangle1, RECT Rectangle2)
             {
-                return !Rectangle1.Equals( Rectangle2 );
+                return !Rectangle1.Equals(Rectangle2);
             }
 
             public override string ToString()
@@ -241,20 +242,20 @@ namespace Task_Logger_Pro
                 return ToString().GetHashCode();
             }
 
-            internal bool Equals( RECT Rectangle )
+            internal bool Equals(RECT Rectangle)
             {
                 return Rectangle.Left == _Left && Rectangle.Top == _Top && Rectangle.Right == _Right && Rectangle.Bottom == _Bottom;
             }
 
-            public override bool Equals( object Object )
+            public override bool Equals(object Object)
             {
-                if ( Object is RECT )
+                if (Object is RECT)
                 {
-                    return Equals( ( RECT ) Object );
+                    return Equals((RECT)Object);
                 }
-                else if ( Object is Rectangle )
+                else if (Object is Rectangle)
                 {
-                    return Equals( new RECT( ( Rectangle ) Object ) );
+                    return Equals(new RECT((Rectangle)Object));
                 }
 
                 return false;
@@ -326,7 +327,7 @@ namespace Task_Logger_Pro
             WRITE_DAC = 0x00040000, //  Required to modify the DACL in the security descriptor for the object.
             WRITE_OWNER = 0x00080000, //    Required to change the owner in the security descriptor for the object.
             STANDARD_RIGHTS_REQUIRED = 0x000f0000,
-            PROCESS_ALL_ACCESS = ( STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE | 0xFFF ),//    All possible access rights for a process object.
+            PROCESS_ALL_ACCESS = (STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE | 0xFFF),//    All possible access rights for a process object.
         }
 
         internal enum TokenInformationClass
@@ -369,7 +370,7 @@ namespace Task_Logger_Pro
             TokenElevationTypeLimited
         }
 
-        
+
         #endregion
 
         #region constants
@@ -387,115 +388,122 @@ namespace Task_Logger_Pro
         internal const uint MAPVK_VSC_TO_VK_EX = 0x03;
         internal const uint MAPVK_VK_TO_VSC_EX = 0x04;
 
-        
+
         #endregion
 
         #region delegates
-        public delegate IntPtr HookHandlerCallBack( int code, IntPtr wParam, IntPtr
- lParam );
-       
+        public delegate IntPtr HookHandlerCallBack(int code, IntPtr wParam, IntPtr
+ lParam);
 
-        public delegate void WinEventCallBack( IntPtr hWinEventHook, uint eventType, IntPtr hWnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime );
+
+        public delegate void WinEventCallBack(IntPtr hWinEventHook, uint eventType, IntPtr hWnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
         #endregion
 
         #region imported methods
 
-        [DllImport( "user32.dll", CharSet = CharSet.Auto )]
-        internal static extern bool GetWindowRect( IntPtr hWnd, ref RECT rect );
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        internal static extern bool GetWindowRect(IntPtr hWnd, ref RECT rect);
 
-      
-        [DllImport( "user32.dll", CharSet = CharSet.Auto, ExactSpelling = true )]
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         internal static extern IntPtr GetForegroundWindow();
 
 
-        [DllImport( "user32.dll", CharSet = CharSet.Auto )]
-        internal static extern IntPtr GetDC( IntPtr hwnd );
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        internal static extern IntPtr GetDC(IntPtr hwnd);
 
-        [DllImport( "user32.dll", CharSet = CharSet.Auto )]
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
         internal static extern IntPtr GetCursor();
 
-        [DllImport( "user32.dll", CharSet = CharSet.Auto )]
-        internal static extern bool GetCursorInfo( ref CURSORINFO cinfo );
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        internal static extern bool GetCursorInfo(ref CURSORINFO cinfo);
 
-        [DllImport( "user32.dll", CharSet = CharSet.Auto )]
-        internal static extern bool GetIconInfo( IntPtr hicon, ref ICONINFO iInfo );
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        internal static extern bool GetIconInfo(IntPtr hicon, ref ICONINFO iInfo);
 
-        [DllImport( "user32.dll", CharSet = CharSet.Auto )]
-        internal static extern IntPtr CopyIcon( IntPtr hicon );
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        internal static extern IntPtr CopyIcon(IntPtr hicon);
 
-        [DllImport( "user32", CharSet = CharSet.Unicode, ThrowOnUnmappableChar= true )]
-        internal static extern int GetWindowText( IntPtr hWnd, [Out, MarshalAs( UnmanagedType.LPWStr )] StringBuilder lpString, int nMaxCount );
+        [DllImport("user32", CharSet = CharSet.Unicode, ThrowOnUnmappableChar = true)]
+        internal static extern int GetWindowText(IntPtr hWnd, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder lpString, int nMaxCount);
 
-        [DllImport( "user32.dll", CharSet = CharSet.Auto )]
-        internal static extern int GetWindowTextLength( IntPtr hWnd );
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        internal static extern int GetWindowTextLength(IntPtr hWnd);
 
-        [DllImport( "user32.dll", SetLastError = true )]
-        internal static extern void GetWindowThreadProcessId( IntPtr hWnd,
-            out uint lpdwProcessId );
+        [DllImport("user32.dll", SetLastError = true)]
+        internal static extern void GetWindowThreadProcessId(IntPtr hWnd,
+            out uint lpdwProcessId);
 
-        [DllImport( "user32.dll" )]
-        internal static extern IntPtr SetWinEventHook( uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventCallBack lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags );
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern IntPtr SetWindowsHookEx(int idHook, KeyBoardHook.HookHandlerCallBack lpfn, IntPtr hMod, uint dwThreadId);
 
-        [DllImport( "user32.dll" )]
-        internal static extern bool UnhookWinEvent( IntPtr hWinEventHook );
 
-        [DllImport( "kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true )]
-        internal static extern IntPtr GetModuleHandle( string lpModuleName );
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern IntPtr SetWindowsHookEx(int idHook, MouseHook.HookHandlerCallBack lpfn, IntPtr hMod, uint dwThreadId);
 
-        [DllImport( "user32.dll", CharSet = CharSet.Auto, SetLastError = true )]
-        internal static extern IntPtr SetWindowsHookEx( int idHook, HookHandlerCallBack lpfn, IntPtr hMod, uint dwThreadId );
+        [DllImport("user32.dll")]
+        public static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEvent.WinEventCallBack lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
 
-        [DllImport( "user32.dll", CharSet = CharSet.Auto, SetLastError = true )]
-        [return: MarshalAs( UnmanagedType.Bool )]
-        internal static extern bool UnhookWindowsHookEx( IntPtr hhk );
+        [DllImport("user32.dll")]
+        internal static extern bool UnhookWinEvent(IntPtr hWinEventHook);
 
-        [DllImport( "user32.dll", CharSet = CharSet.Auto, SetLastError = true )]
-        internal static extern IntPtr CallNextHookEx( IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam );
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        internal static extern IntPtr GetModuleHandle(string lpModuleName);
 
-        [DllImport( "user32.dll", CharSet = CharSet.Auto, ExactSpelling = true, CallingConvention = CallingConvention.Winapi )]
-        internal static extern short GetKeyState( int keyCode );
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        internal static extern IntPtr SetWindowsHookEx(int idHook, HookHandlerCallBack lpfn, IntPtr hMod, uint dwThreadId);
 
-        [DllImport( "user32.dll" )]
-        internal static extern int ToAscii( uint uVirtKey, uint uScanCode, byte[] lpKeyState,
-           byte[] lpwTransKey, uint fuState );
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool UnhookWindowsHookEx(IntPtr hhk);
 
-        [DllImport( "user32.dll", CharSet= CharSet.Unicode )]
-        internal static extern int ToAscii( uint uVirtKey, uint uScanCode, byte[] lpKeyState,
-           [Out] StringBuilder lpChar, uint uFlags );
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        internal static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
 
-        [DllImport( "user32.dll" )]
-        [return: MarshalAs( UnmanagedType.Bool )]
-        internal static extern bool GetKeyboardState( byte[] lpKeyState );
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true, CallingConvention = CallingConvention.Winapi)]
+        internal static extern short GetKeyState(int keyCode);
 
-        [DllImport( "user32.dll" )]
-        internal static extern uint MapVirtualKeyEx( uint uCode, uint uMapType, IntPtr dwhkl );
+        [DllImport("user32.dll")]
+        internal static extern int ToAscii(uint uVirtKey, uint uScanCode, byte[] lpKeyState,
+           byte[] lpwTransKey, uint fuState);
 
-        [DllImport( "user32.dll" )]
-        internal static extern IntPtr GetKeyboardLayout( uint idThread );
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        internal static extern int ToAscii(uint uVirtKey, uint uScanCode, byte[] lpKeyState,
+           [Out] StringBuilder lpChar, uint uFlags);
 
-        [DllImport( "user32.dll" )]
-        internal static extern int ToUnicode( uint virtualKeyCode, uint scanCode, byte[] keyboardState,
-            [Out, MarshalAs( UnmanagedType.LPWStr, SizeConst = 64 )]
-StringBuilder receivingBuffer, int bufferSize, uint flags );
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool GetKeyboardState(byte[] lpKeyState);
 
-        [DllImport( "user32.dll" )]
-        internal static extern int ToUnicodeEx( uint wVirtKey, uint wScanCode, byte[]
-           lpKeyState, [Out, MarshalAs( UnmanagedType.LPWStr )] StringBuilder pwszBuff,
-           int cchBuff, uint wFlags, IntPtr dwhkl );
+        [DllImport("user32.dll")]
+        internal static extern uint MapVirtualKeyEx(uint uCode, uint uMapType, IntPtr dwhkl);
 
-        [DllImport( "advapi32.dll", SetLastError = true )]
-        internal static extern bool GetKernelObjectSecurity( IntPtr Handle, int securityInformation,
-            [Out] byte[] pSecurityDescriptor, uint nLength, out uint lpnLengthNeeded );
+        [DllImport("user32.dll")]
+        internal static extern IntPtr GetKeyboardLayout(uint idThread);
 
-        [DllImport( "advapi32.dll", SetLastError = true )]
-        internal static extern bool SetKernelObjectSecurity( IntPtr Handle, int securityInformation, [In] byte[] pSecurityDescriptor );
+        [DllImport("user32.dll")]
+        internal static extern int ToUnicode(uint virtualKeyCode, uint scanCode, byte[] keyboardState,
+            [Out, MarshalAs(UnmanagedType.LPWStr, SizeConst = 64)]
+StringBuilder receivingBuffer, int bufferSize, uint flags);
 
-        [DllImport( "advapi32.dll", SetLastError = true )]
-        internal static extern bool GetTokenInformation( IntPtr tokenHandle, TokenInformationClass tokenInformationClass, IntPtr tokenInformation, int tokenInformationLength, out int returnLength );
+        [DllImport("user32.dll")]
+        internal static extern int ToUnicodeEx(uint wVirtKey, uint wScanCode, byte[]
+           lpKeyState, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszBuff,
+           int cchBuff, uint wFlags, IntPtr dwhkl);
 
-        [DllImport( "kernel32.dll" )]
+        [DllImport("advapi32.dll", SetLastError = true)]
+        internal static extern bool GetKernelObjectSecurity(IntPtr Handle, int securityInformation,
+            [Out] byte[] pSecurityDescriptor, uint nLength, out uint lpnLengthNeeded);
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        internal static extern bool SetKernelObjectSecurity(IntPtr Handle, int securityInformation, [In] byte[] pSecurityDescriptor);
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        internal static extern bool GetTokenInformation(IntPtr tokenHandle, TokenInformationClass tokenInformationClass, IntPtr tokenInformation, int tokenInformationLength, out int returnLength);
+
+        [DllImport("kernel32.dll")]
         internal static extern IntPtr GetCurrentProcess();
-        
+
         [DllImport("user32.dll")]
         public static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
 
@@ -503,25 +511,25 @@ StringBuilder receivingBuffer, int bufferSize, uint flags );
 
         #region class methods
 
-        internal static RawSecurityDescriptor GetProcessSecurityDescriptor( IntPtr processHandle )
+        internal static RawSecurityDescriptor GetProcessSecurityDescriptor(IntPtr processHandle)
         {
             const int DACL_SECURITY_INFORMATION = 0x00000004;
             byte[] psd = new byte[0];
             uint bufSizeNeeded;
 
-            GetKernelObjectSecurity( processHandle, DACL_SECURITY_INFORMATION, psd, 0, out bufSizeNeeded );
-            if ( bufSizeNeeded < 0 || bufSizeNeeded > short.MaxValue ) throw new Win32Exception();
-            if ( !GetKernelObjectSecurity( processHandle, DACL_SECURITY_INFORMATION, psd = new byte[bufSizeNeeded], bufSizeNeeded, out bufSizeNeeded ) ) throw new Win32Exception();
+            GetKernelObjectSecurity(processHandle, DACL_SECURITY_INFORMATION, psd, 0, out bufSizeNeeded);
+            if (bufSizeNeeded < 0 || bufSizeNeeded > short.MaxValue) throw new Win32Exception();
+            if (!GetKernelObjectSecurity(processHandle, DACL_SECURITY_INFORMATION, psd = new byte[bufSizeNeeded], bufSizeNeeded, out bufSizeNeeded)) throw new Win32Exception();
 
-            return new RawSecurityDescriptor( psd, 0 );
+            return new RawSecurityDescriptor(psd, 0);
         }
 
-        internal static void SetProcessSecurityDescriptor( IntPtr processHandle, RawSecurityDescriptor dacl )
+        internal static void SetProcessSecurityDescriptor(IntPtr processHandle, RawSecurityDescriptor dacl)
         {
             const int DACL_SECURITY_INFORMATION = 0x00000004;
             byte[] rawsd = new byte[dacl.BinaryLength];
-            dacl.GetBinaryForm( rawsd, 0 );
-            if ( !SetKernelObjectSecurity( processHandle, DACL_SECURITY_INFORMATION, rawsd ) ) throw new Win32Exception();
+            dacl.GetBinaryForm(rawsd, 0);
+            if (!SetKernelObjectSecurity(processHandle, DACL_SECURITY_INFORMATION, rawsd)) throw new Win32Exception();
         }
 
 

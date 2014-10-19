@@ -20,6 +20,7 @@ using Task_Logger_Pro.ViewModels;
 using AppsTracker.DAL;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.Models.ChartModels;
+using AppsTracker.DAL.Repos;
 
 namespace Task_Logger_Pro.Pages.ViewModels
 {
@@ -36,10 +37,11 @@ namespace Task_Logger_Pro.Pages.ViewModels
         DateTime _date1;
         DateTime _date2;
 
-        List<Aplication> _aplicationList;
-        List<TopAppsModel> _topAppsList;
-        List<TopWindowsModel> _topWindowsList;
-        List<DailyWindowSeries> _chartList;
+        IEnumerable<Aplication> _aplicationList;
+        IEnumerable<TopAppsModel> _topAppsList;
+        IEnumerable<TopWindowsModel> _topWindowsList;
+        IEnumerable<DailyWindowSeries> _chartList;
+        IEnumerable<Log> _cachedLogs;
 
         Aplication _selectedApplication;
 
@@ -153,7 +155,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }
         }
 
-        public List<Aplication> AplicationList
+        public IEnumerable<Aplication> AplicationList
         {
             get
             {
@@ -165,7 +167,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 PropertyChanging("AplicationList");
             }
         }
-        public List<TopAppsModel> TopAppsList
+        public IEnumerable<TopAppsModel> TopAppsList
         {
             get
             {
@@ -177,7 +179,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 PropertyChanging("TopAppsList");
             }
         }
-        public List<TopWindowsModel> TopWindowsList
+        public IEnumerable<TopWindowsModel> TopWindowsList
         {
             get
             {
@@ -189,7 +191,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
                 PropertyChanging("TopWindowsList");
             }
         }
-        public List<DailyWindowSeries> ChartList
+        public IEnumerable<DailyWindowSeries> ChartList
         {
             get
             {
@@ -225,6 +227,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             {
                 _selectedApplication = value;
                 PropertyChanging("SelectedApplication");
+                _cachedLogs = null;
                 ChartVisible = false;
                 if (value != null)
                     LoadAppsOverall();
@@ -317,14 +320,15 @@ namespace Task_Logger_Pro.Pages.ViewModels
             OverallWindowDuration = string.Empty;
             Date1 = Globals.Date1;
             Date2 = Globals.Date2;
-            AplicationList = await GetContentAsync();
+            AplicationList = await GetContentFromRepo();
             Working = false;
             IsContentLoaded = true;
         }
+
         private async void LoadAppsOverall()
         {
             Working = true;
-            TopAppsList = await GetTopAppsOverallAsync();
+            TopAppsList = await GetTopAppsAsync();
             Working = false;
             ChartVisible = false;
         }
@@ -332,7 +336,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
         private async void LoadWindowsOverall()
         {
             Working = true;
-            TopWindowsList = await GetTopWindowsOverallAsync();
+            TopWindowsList = await GetTopWindowsAsync();
             Working = false;
         }
 
@@ -343,45 +347,78 @@ namespace Task_Logger_Pro.Pages.ViewModels
             Working = false;
         }
 
-        private Task<List<Aplication>> GetContentAsync()
+        private Task<IEnumerable<Aplication>> GetContentFromRepo()
         {
-            return Task<List<Aplication>>.Run(new Func<List<Aplication>>(GetContent));
+            return AplicationRepo.Instance.GetFilteredAsync(a => a.User.UserID == Globals.SelectedUserID
+                                                           && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= Globals.Date1).Any()
+                                                           && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= Globals.Date2).Any());
         }
 
-        private List<Aplication> GetContent()
+        private async Task<IEnumerable<TopAppsModel>> GetTopAppsAsync()
         {
-            using (var context = new AppsEntities())
-            {
-                return (from u in context.Users.AsNoTracking()
-                        join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
-                        join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-                        join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                        where u.UserID == Globals.SelectedUserID
-                        && l.DateCreated >= Globals.Date1
-                        && l.DateCreated <= Globals.Date2
-                        select a).Distinct()
-                                .ToList();
-            }
+            Aplication app = SelectedApplication;
+            if (app == null)
+                return null;
+
+            var logs = await LogRepo.Instance.GetFilteredAsync(l => l.Window.Application.User.UserID == Globals.SelectedUserID
+                                                                         && l.DateCreated >= Globals.Date1
+                                                                         && l.DateCreated <= Globals.Date2
+                                                                         , l => l.Window.Application)
+                                              .ConfigureAwait(false);
+
+            var totalDuration = (from l in logs
+                                 group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day } into grp
+                                 select grp).ToList().Select(g => new { Date = new DateTime(g.Key.year, g.Key.month, g.Key.day), Duration = (double)g.Sum(l => l.Duration) });
+
+
+            var result = (from l in logs
+                          where l.Window.Application.ApplicationID == app.ApplicationID
+                          group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day, name = l.Window.Application.Name } into grp
+                          select grp).ToList()
+                               .Select(g => new TopAppsModel
+                               {
+                                   AppName = g.Key.name,
+                                   Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
+                                   DateTime = new DateTime(g.Key.year, g.Key.month, g.Key.day),
+                                   Usage = g.Sum(l => l.Duration) / totalDuration.First(t => t.Date == new DateTime(g.Key.year, g.Key.month, g.Key.day)).Duration,
+                                   Duration = g.Sum(l => l.Duration)
+                               })
+                               .OrderByDescending(t => t.DateTime)
+                               .ToList();
+
+            var requestedApp = result.Where(a => a.AppName == app.Name).FirstOrDefault();
+
+            if (requestedApp != null)
+                requestedApp.IsSelected = true;
+
+            return result;
         }
 
-        private Task<List<Aplication>> LoadContentAsync()
+        private async Task<List<TopWindowsModel>> GetTopWindowsAsync()
         {
-            return Task<List<Aplication>>.Run(() =>
-            {
-                using (var context = new AppsEntities())
-                {
-                    return (from u in context.Users.AsNoTracking()
-                            join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
-                            join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-                            join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                            where u.UserID == Globals.SelectedUserID
-                            && l.DateCreated >= Globals.Date1
-                            && l.DateCreated <= Globals.Date2
-                            select a).Distinct()
-                                    .ToList();
-                }
+            var topApps = TopAppsOverall;
+            if (TopAppsList == null || topApps == null)
+                return null;
 
-            });
+            string appName = topApps.AppName;
+
+            var days = TopAppsList.Where(t => t.IsSelected).Select(t => t.DateTime);
+            var logs = _cachedLogs == null ? _cachedLogs = await LogRepo.Instance.GetFilteredAsync(l => l.Window.Application.User.UserID == Globals.SelectedUserID
+                                                                    && l.Window.Application.Name == appName
+                                                                    , l => l.Window)
+                                                                    .ConfigureAwait(false) : _cachedLogs;
+
+            var totalFiltered = logs.Where(l => days.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)));
+
+            double totalDuration = totalFiltered.Sum(l => l.Duration);
+
+            var result = (from l in totalFiltered
+                          group l by l.Window.Title into grp
+                          select grp).Select(g => new TopWindowsModel { Title = g.Key, Usage = (g.Sum(l => l.Duration) / totalDuration), Duration = g.Sum(l => l.Duration) })
+                                  .OrderByDescending(t => t.Duration)
+                                  .ToList();
+
+            return result;
 
         }
 
@@ -431,14 +468,10 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
                 var requestedApp = result.Where(a => a.AppName == app.Name).FirstOrDefault();
 
-                if (requestedApp == null)
-                    return result;
-                else
-                {
+                if (requestedApp != null)
                     requestedApp.IsSelected = true;
-                    return result;
-                }
 
+                return result;
             });
         }
 
@@ -481,61 +514,48 @@ namespace Task_Logger_Pro.Pages.ViewModels
             });
         }
 
-        private Task<List<DailyWindowSeries>> GetChartContentAsync()
+        private async Task<List<DailyWindowSeries>> GetChartContentAsync()
         {
-            return Task<List<DailyWindowSeries>>.Run(() =>
+            var topApps = TopAppsOverall;
+
+            if (TopAppsList == null || topApps == null || TopWindowsList == null)
+                return null;
+
+            string appName = topApps.AppName;
+            List<string> selectedWindows = TopWindowsList.Where(w => w.IsSelected).Select(w => w.Title).ToList();
+            if (selectedWindows.Count == 0)
+                return null;
+
+            var days = TopAppsList.Where(t => t.IsSelected).Select(t => t.DateTime);
+
+            var logs = _cachedLogs == null ? _cachedLogs = await LogRepo.Instance.GetFilteredAsync(l => l.Window.Application.User.UserID == Globals.SelectedUserID
+                                                                    && l.Window.Application.Name == appName
+                                                                    , l => l.Window)
+                                                                    .ConfigureAwait(false) : _cachedLogs;
+
+            var totalFiltered = logs.Where(l => days.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)) && selectedWindows.Contains(l.Window.Title));
+
+            List<DailyWindowSeries> result = new List<DailyWindowSeries>();
+
+            var projected = from l in totalFiltered
+                            group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day } into grp
+                            select grp;
+
+            foreach (var grp in projected)
             {
-
-                var topApps = TopAppsOverall;
-
-                if (TopAppsList == null || topApps == null || TopWindowsList == null)
-                    return null;
-
-                string appName = topApps.AppName;
-                List<string> selectedWindows = TopWindowsList.Where(w => w.IsSelected).Select(w => w.Title).ToList();
-                if (selectedWindows.Count == 0)
-                    return null;
-                var days = TopAppsList.Where(t => t.IsSelected).Select(t => t.DateTime);
-
-                IEnumerable<Log> logs;
-
-                using (var context = new AppsEntities())
+                var projected2 = grp.GroupBy(g => g.Window.Title);
+                DailyWindowSeries series = new DailyWindowSeries() { Date = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day).ToShortDateString() };
+                List<DailyWindowDurationModel> modelList = new List<DailyWindowDurationModel>();
+                foreach (var grp2 in projected2)
                 {
-                    logs = (from u in context.Users.AsNoTracking()
-                            join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
-                            join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-                            join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                            where u.UserID == Globals.SelectedUserID
-                            && a.Name == appName
-                            select l).Include(l => l.Window)
-                                    .ToList();
+                    DailyWindowDurationModel model = new DailyWindowDurationModel() { Title = grp2.Key, Duration = Math.Round(new TimeSpan(grp2.Sum(l => l.Duration)).TotalMinutes, 2) };
+                    modelList.Add(model);
                 }
+                series.DailyWindowCollection = modelList;
+                result.Add(series);
+            }
 
-                var totalFiltered = logs.Where(l => days.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)) && selectedWindows.Contains(l.Window.Title));
-
-                List<DailyWindowSeries> result = new List<DailyWindowSeries>();
-
-                var projected = from l in totalFiltered
-                                group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day } into grp
-                                select grp;
-
-                foreach (var grp in projected)
-                {
-                    var projected2 = grp.GroupBy(g => g.Window.Title);
-                    DailyWindowSeries series = new DailyWindowSeries() { Date = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day).ToShortDateString() };
-                    List<DailyWindowDurationModel> modelList = new List<DailyWindowDurationModel>();
-                    foreach (var grp2 in projected2)
-                    {
-                        DailyWindowDurationModel model = new DailyWindowDurationModel() { Title = grp2.Key, Duration = Math.Round(new TimeSpan(grp2.Sum(l => l.Duration)).TotalMinutes, 2) };
-                        modelList.Add(model);
-                    }
-                    series.DailyWindowCollection = modelList;
-                    result.Add(series);
-                }
-
-                return result;
-
-            });
+            return result;
         }
 
         #endregion
@@ -552,6 +572,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             copy = AplicationList.Union(copy).ToList();
             AplicationList = null;
             AplicationList = copy;
+            _cachedLogs = null;
         }
 
         #endregion
@@ -585,145 +606,6 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
             }
         }
-
-        //private async void DeleteSelectedAplication(object parameter)
-        //{
-        //    ObservableCollection<object> parameters = parameter as ObservableCollection<object>;
-        //    if (parameters == null)
-        //        return;
-
-        //    List<Aplication> aplicationList = parameters.Select(p => p as Aplication).ToList();
-        //    if (aplicationList == null)
-        //        return;
-
-        //    using (var context = new AppsEntities())
-        //    {
-        //        foreach (var aplication in aplicationList)
-        //        {
-        //            DeleteWindows(aplication.Windows.ToList(), context);
-        //            if (!context.Applications.Local.Any(a => a.ApplicationID == aplication.ApplicationID))
-        //                context.Applications.Attach(aplication);
-        //            context.Applications.Remove(aplication);
-        //        }
-        //        await context.SaveChangesAsync();
-        //        PropertyChanging("ApplicationCollection");
-        //    }
-        //}
-
-        //private async void DeleteSelectedWindow(object parameter)
-        //{
-        //    ObservableCollection<object> parameters = parameter as ObservableCollection<object>;
-        //    if (parameters != null)
-        //    {
-        //        List<Window> windowList = parameters.Select(o => o as Window).ToList();
-        //        if (windowList == null)
-        //            return;
-        //        using (var context = new AppsEntities())
-        //        {
-        //            DeleteWindows(windowList, context);
-        //            await context.SaveChangesAsync();
-        //        }
-        //        PropertyChanging("ApplicationCollection");
-        //    }
-        //}
-
-        //private void DeleteWindows(List<Window> windowList, AppsEntities context)
-        //{
-        //    foreach (var window in windowList)
-        //    {
-        //        DeleteLogsAndScreenshots(window.Logs, context);
-        //        if (!context.Windows.Local.Any(w => w.WindowID == window.WindowID))
-        //            context.Windows.Attach(window);
-        //        context.Windows.Remove(window);
-        //        var app = context.Applications.Find(window.ApplicationID);
-
-        //        if (app != null && app.Windows.Count == 0) context.Applications.Remove(app);
-        //    }
-        //}
-
-        //private void DeleteSelectedLog(object parameter)
-        //{
-        //    DeleteLogsAndScreenshots(parameter);
-        //}
-
-        //private void DeleteLogsAndScreenshots(ICollection<Log> logParam, AppsEntities context)
-        //{
-        //    List<Log> logs = logParam.ToList();
-        //    foreach (var log in logs)
-        //    {
-        //        foreach (var screenshot in log.Screenshots.ToList())
-        //        {
-        //            if (!context.Screenshots.Local.Any(s => s.ScreenshotID == screenshot.ScreenshotID))
-        //            {
-        //                context.Screenshots.Attach(screenshot);
-        //            }
-        //            context.Screenshots.Remove(screenshot);
-        //        }
-
-        //        if (!context.Logs.Local.Any(l => l.LogID == log.LogID))
-        //        {
-        //            context.Logs.Attach(log);
-        //        }
-        //        context.Logs.Remove(log);
-        //    }
-        //}
-
-        //private void DeleteLogsAndScreenshots(object parameter)
-        //{
-        //    ObservableCollection<object> parameters = parameter as ObservableCollection<object>;
-        //    if (parameters != null)
-        //    {
-        //        List<Log> logs = parameters.Select(o => o as Log).ToList();
-        //        using (var context = new AppsEntities())
-        //        {
-        //            foreach (var log in logs)
-        //            {
-
-        //                foreach (var screenshot in log.Screenshots.ToList())
-        //                {
-        //                    if (!context.Screenshots.Local.Any(s => s.ScreenshotID == screenshot.ScreenshotID))
-        //                    {
-        //                        context.Screenshots.Attach(screenshot);
-        //                    }
-        //                    context.Screenshots.Remove(screenshot);
-        //                }
-
-        //                if (!context.Logs.Local.Any(l => l.LogID == log.LogID))
-        //                {
-        //                    context.Logs.Attach(log);
-        //                }
-        //                context.Entry(log).State = System.Data.Entity.EntityState.Deleted;
-        //            }
-
-        //            DeleteEmptyLogs(context);
-        //            context.SaveChanges();
-        //        }
-        //    }
-
-        //}
-
-        //private void DeleteEmptyLogs(AppsEntities context)
-        //{
-        //    foreach (var window in context.Windows)
-        //    {
-        //        if (window.Logs.Count == 0)
-        //        {
-        //            if (!context.Windows.Local.Any(w => w.WindowID == window.WindowID))
-        //                context.Windows.Attach(window);
-        //            context.Windows.Remove(window);
-        //        }
-        //    }
-
-        //    foreach (var app in context.Applications)
-        //    {
-        //        if (app.Windows.Count == 0)
-        //        {
-        //            if (!context.Applications.Local.Any(a => a.ApplicationID == app.ApplicationID))
-        //                context.Applications.Attach(app);
-        //            context.Applications.Remove(app);
-        //        }
-        //    }
-        //}
 
 
         private void AddAplicationToBlockedList(object parameter)

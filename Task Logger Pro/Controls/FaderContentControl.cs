@@ -58,7 +58,6 @@ namespace Task_Logger_Pro.Controls
             this.Unloaded += FaderContentControl_Unloaded;
             this.IsVisibleChanged += FaderContentControl_IsVisibleChanged;
             InitStoryBoards(FadeVertically);
-            //Debug.Assert(fadeIn != null & fadeOut != null, "Storyboards not found");
             this.RenderTransform = new TranslateTransform();
         }
 
@@ -66,7 +65,6 @@ namespace Task_Logger_Pro.Controls
         {
             fadeIn = fadeVertical ? FindResource("fadeInVertical") as Storyboard : FindResource("fadeIn") as Storyboard;
             fadeOut = fadeVertical ? FindResource("fadeOutVertical") as Storyboard : FindResource("fadeOut") as Storyboard;
-            //Debug.Assert(fadeIn != null & fadeOut != null, "Failed to init storyboards");
         }
 
         private Brush CreateBrushFromVisual(Visual v)

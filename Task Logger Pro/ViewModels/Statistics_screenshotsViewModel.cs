@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.DAL;
+using AppsTracker.DAL.Repos;
 using AppsTracker.Models.ChartModels;
 using Task_Logger_Pro.Controls;
 using Task_Logger_Pro.MVVM;
@@ -21,9 +22,9 @@ namespace Task_Logger_Pro.Pages.ViewModels
 
         ScreenshotModel _screenshotModel;
 
-        List<ScreenshotModel> _screenshotList;
+        IEnumerable<ScreenshotModel> _screenshotList;
 
-        List<DailyScreenshotModel> _dailyScreenshotsList;
+        IEnumerable<DailyScreenshotModel> _dailyScreenshotsList;
 
         #endregion
 
@@ -85,7 +86,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }
         }
 
-        public List<ScreenshotModel> ScreenshotList
+        public IEnumerable<ScreenshotModel> ScreenshotList
         {
             get
             {
@@ -98,7 +99,7 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }
         }
 
-        public List<DailyScreenshotModel> DailyScreenshotsList
+        public IEnumerable<DailyScreenshotModel> DailyScreenshotsList
         {
             get
             {
@@ -133,52 +134,17 @@ namespace Task_Logger_Pro.Pages.ViewModels
             IsContentLoaded = true;
         }
 
-        private List<ScreenshotModel> GetContent()
+        private async Task<IEnumerable<ScreenshotModel>> GetContentAsync()
         {
-            using (var context = new AppsEntities())
-            {
-                return (from u in context.Users
-                        join a in context.Applications on u.UserID equals a.UserID
-                        join w in context.Windows on a.ApplicationID equals w.ApplicationID
-                        join l in context.Logs on w.WindowID equals l.WindowID
-                        join s in context.Screenshots on l.LogID equals s.LogID
-                        where u.UserID == Globals.SelectedUserID
-                        && s.Date >= Globals.Date1
-                        && s.Date <= Globals.Date2
-                        group s by a.Name into g
-                        select g)
-                            .ToList()
-                            .Select(g => new ScreenshotModel() { AppName = g.Key, Count = g.Count() })
-                            .ToList();
-            }
-        }
+            var screenshots = await ScreenshotRepo.Instance.GetAsync(s => s.Log.Window.Application , s => s.Log.Window.Application.User).ConfigureAwait(false);
 
-        private Task<List<ScreenshotModel>> GetContentAsync()
-        {
-            return Task<List<ScreenshotModel>>.Run(new Func<List<ScreenshotModel>>(GetContent));
-        }
-
-        private Task<List<ScreenshotModel>> LoadContentAsync()
-        {
-            return Task<List<ScreenshotModel>>.Run(() =>
-            {
-                using (var context = new AppsEntities())
-                {
-                    return (from u in context.Users
-                            join a in context.Applications on u.UserID equals a.UserID
-                            join w in context.Windows on a.ApplicationID equals w.ApplicationID
-                            join l in context.Logs on w.WindowID equals l.WindowID
-                            join s in context.Screenshots on l.LogID equals s.LogID
-                            where u.UserID == Globals.SelectedUserID
-                            && s.Date >= Globals.Date1
-                            && s.Date <= Globals.Date2
-                            group s by a.Name into g
-                            select g)
-                                .ToList()
-                                .Select(g => new ScreenshotModel() { AppName = g.Key, Count = g.Count() })
-                                .ToList();
-                }
-            });
+            var filtered = screenshots.Where(s => s.Log.Window.Application.User.UserID == Globals.SelectedUserID
+                                                && s.Date >= Globals.Date1
+                                                && s.Date <= Globals.Date2)
+                                            .GroupBy(s => s.Log.Window.Application.Name)
+                                            .Select(g => new ScreenshotModel() { AppName = g.Key, Count = g.Count() });
+                            
+            return filtered;
         }
 
         private async void LoadSubContent()
@@ -194,28 +160,19 @@ namespace Task_Logger_Pro.Pages.ViewModels
             }
         }
 
-        private Task<List<DailyScreenshotModel>> LoadSubContentAsync()
+        private async Task<IEnumerable<DailyScreenshotModel>> LoadSubContentAsync()
         {
-            return Task<List<DailyScreenshotModel>>.Factory.StartNew(() =>
-            {
-                using (var context = new AppsEntities())
-                {
-                    return (from u in context.Users
-                            join a in context.Applications on u.UserID equals a.UserID
-                            join w in context.Windows on a.ApplicationID equals w.ApplicationID
-                            join l in context.Logs on w.WindowID equals l.WindowID
-                            join s in context.Screenshots on l.LogID equals s.LogID
-                            where u.UserID == Globals.SelectedUserID
-                            && s.Date >= Globals.Date1
-                            && s.Date <= Globals.Date2
-                            && a.Name == ScreenshotModel.AppName
-                            group s by new { year = s.Date.Year, month = s.Date.Month, day = s.Date.Day } into g
-                            orderby g.Key.year, g.Key.month, g.Key.day
-                            select g).ToList()
-                                    .Select(g => new DailyScreenshotModel() { Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(), Count = g.Count() })
-                                    .ToList();
-                }
-            });
+            var screenshots = await ScreenshotRepo.Instance.GetFilteredAsync(s => s.Log.Window.Application.User.UserID == Globals.SelectedUserID
+                                                                                && s.Date >= Globals.Date1
+                                                                                && s.Date <= Globals.Date2
+                                                                                && s.Log.Window.Application.Name == ScreenshotModel.AppName
+                                                                                )
+                                                            .ConfigureAwait(false);
+
+            var grouped = screenshots.GroupBy(s => new { year = s.Date.Year, month = s.Date.Month, day = s.Date.Day })
+                                        .OrderBy(g=> new DateTime(g.Key.year, g.Key.month,g.Key.day));
+            
+            return grouped.Select(g => new DailyScreenshotModel() { Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(), Count = g.Count() });
         }
 
         private void ReturnFromDetailedView()

@@ -9,12 +9,17 @@ using System.ComponentModel.DataAnnotations;
 using AppsTracker.Models.EntityModels;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Configuration;
+using System.Diagnostics;
 
 namespace AppsTracker.DAL
 {
     public class AppsEntities : DbContext
     {
-        public static string GetConnectionString()
+        private static string _connectionString = GetConnectionString();
+
+        public static string ConnectionString { get { return _connectionString; } }
+        
+        private static string GetConnectionString()
         {
             var connections = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).ConnectionStrings.ConnectionStrings["AppsEntities"];
             if (connections != null)
@@ -24,9 +29,16 @@ namespace AppsTracker.DAL
         }
 
         public AppsEntities()
-            : base(GetConnectionString())
+            : base(_connectionString)
         {
-            
+#if DEBUG
+           Database.Log = FlushSql;
+#endif
+        }
+
+        private void FlushSql(string s)
+        {
+            Debug.WriteLine(s);
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

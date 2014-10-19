@@ -51,6 +51,15 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Test\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -87,7 +96,13 @@
     <Compile Include="AppsDataBaseInitializer.cs" />
     <Compile Include="AppsDBConfiguration.cs" />
     <Compile Include="AppsEntitites.cs" />
+    <Compile Include="Repos\AplicationRepo.cs" />
+    <Compile Include="Repos\BaseRepo.cs" />
+    <Compile Include="Repos\IRepo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repos\LogRepo.cs" />
+    <Compile Include="Repos\ScreenshotRepo.cs" />
+    <Compile Include="Repos\UsageRepo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

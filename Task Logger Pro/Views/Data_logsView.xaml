@@ -42,10 +42,7 @@
                     </Style>
                 </MenuItem.ItemContainerStyle>
             </MenuItem>
-            <!--<MenuItem Header="Delete selected log"
-                      Command="{Binding DeleteSelectedProcessCommand}"
-                      CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}">
-            </MenuItem>-->
+
         </ContextMenu>
         <ContextMenu x:Key="cmWin">
             <MenuItem Command="ApplicationCommands.SelectAll" />

@@ -4,9 +4,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 
-namespace Task_Logger_Pro
+namespace Task_Logger_Pro.Hooks
 {
-    public sealed class WinEvent : IDisposable
+    public sealed class WinEvent : HookBase, IDisposable
     {
         #region Fields
         public event EventHandler<WinEventArgs> ActiveWindowChanged;
@@ -26,20 +26,15 @@ namespace Task_Logger_Pro
         public WinEvent()
         {
             if (App.Current.Dispatcher.Thread != System.Threading.Thread.CurrentThread)
-                SetHookSameThread();
+                App.Current.Dispatcher.Invoke(SetHook);
             else
                 SetHook();
         }
 
-        private void SetHookSameThread()
-        {
-            App.Current.Dispatcher.Invoke(SetHook);
-        }
-
-        private void SetHook()
+        protected override void SetHook()
         {
             winEventCallBack = new WinEventCallBack(WinEventProc);
-            hookID = Win32.SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, winEventCallBack, 0, 0, WINEVENT_OUTOFCONTEXT);
+            hookID = WinAPI.SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, winEventCallBack, 0, 0, WINEVENT_OUTOFCONTEXT);
         }
 
 
@@ -72,9 +67,8 @@ namespace Task_Logger_Pro
             {
                 WinAPI.GetWindowThreadProcessId(hWnd, out processID);
                 if (processID != 0)
-                {
                     return System.Diagnostics.Process.GetProcessById(Convert.ToInt32(processID));
-                }
+
             }
             return null;
         }
@@ -89,7 +83,7 @@ namespace Task_Logger_Pro
             {
                 StringBuilder windowTitleBuilder = new StringBuilder(WinAPI.GetWindowTextLength(hWnd) + 1);
                 WinAPI.GetWindowText(hWnd, windowTitleBuilder, windowTitleBuilder.Capacity);
-                var handler = ActiveWindowChanged;
+                var handler = System.Threading.Volatile.Read(ref ActiveWindowChanged);
                 if (handler != null)
                     handler(this, new WinEventArgs(string.IsNullOrEmpty(windowTitleBuilder.ToString()) ? "No Title" : windowTitleBuilder.ToString(), GetProcess(hWnd)));
             }
@@ -122,12 +116,6 @@ namespace Task_Logger_Pro
         }
 
         #endregion
-
-        internal class Win32
-        {
-            [DllImport("user32.dll")]
-            public static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventCallBack lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
-        }
 
     }
 
@@ -218,25 +206,5 @@ namespace Task_Logger_Pro
 
     }
 
-    public class WinEventArgs : EventArgs
-    {
-
-        #region Properties
-
-        public string WindowTitle { get; private set; }
-        public ProcessInfo ProcessInfo { get; private set; }
-
-        #endregion
-
-        #region Constructor
-
-        public WinEventArgs(string windowTitle, Process process)
-        {
-            ProcessInfo = ProcessInfo.GetProcessInfo(process);
-            WindowTitle = windowTitle;
-        }
-
-        #endregion
-    }
 }
 

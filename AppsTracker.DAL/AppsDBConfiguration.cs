@@ -14,7 +14,7 @@ namespace AppsTracker.DAL
         public AppsDBConfiguration()
         {
             SetProviderServices("System.Data.SqlServerCe.4.0", SqlCeProviderServices.Instance);
-            SetDefaultConnectionFactory(new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0", "", AppsEntities.GetConnectionString()));
+            SetDefaultConnectionFactory(new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0", "", AppsEntities.ConnectionString));
         }
     }
 }
