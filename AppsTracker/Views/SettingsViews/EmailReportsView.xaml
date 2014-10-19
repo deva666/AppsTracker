@@ -1,0 +1,343 @@
+﻿<UserControl
+    x:Class="Task_Logger_Pro.Pages.Views.SettingsViews.EmailReportsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:controls="clr-namespace:Task_Logger_Pro.Controls"
+    xmlns:local="clr-namespace:Task_Logger_Pro"
+    xmlns:validate="clr-namespace:Task_Logger_Pro"
+    mc:Ignorable="d"
+    d:DesignHeight="3000"
+    d:DesignWidth="600">
+    <UserControl.Resources>
+        <validate:EmailValidation
+            x:Key="emailValidation" />
+        <validate:NumberValidation
+            x:Key="numberValidation" />
+        <validate:LengthValidation
+            x:Key="lengthValidation" />
+        <local:ConvertEmailInterval
+            x:Key="convertEmailInterval" />
+        <local:ConvertBoolToVisibility
+            x:Key="convertVisibility" />
+    </UserControl.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
+        <StackPanel Orientation="Vertical">
+            <Label Style="{DynamicResource LabelStyle}"
+                   FontSize="18"
+                   Content="Email reports"
+                   HorizontalAlignment="Left"
+                   FontFamily="Tahoma"
+                   Margin="0,0,0,0" />
+            <Label Style="{DynamicResource LabelStyle}"
+                   FontSize="14"
+                   Content="Reports with logging activity and screenshots can be sent to specified email address."
+                   Foreground="{DynamicResource WindowForegroundBrush}"
+                   HorizontalAlignment="Left"
+                   FontFamily="Tahoma"
+                   Margin="0,10,0,20" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="0.2*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Style="{DynamicResource LabelStyle}"
+                       Content="Send Email reports:"
+                       HorizontalAlignment="Left" />
+                <CheckBox Grid.Column="1"
+                          IsChecked="{Binding UserSettings.EnableEmailReports, UpdateSourceTrigger=PropertyChanged}"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Name="cbSend"
+                          Margin="50,0,0,0" />
+            </Grid>
+            <controls:FaderContentControl ClipToBounds="True"
+                                          FaderVisibility="{Binding UserSettings.EnableEmailReports}"
+                                          Margin="0,20,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="0.2*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Style="{DynamicResource LabelStyle}"
+                           Content="Use preconfigured settings:"
+                           Grid.Row="0"
+                           Grid.Column="0"
+                           HorizontalAlignment="Left" />
+
+                    <ComboBox Grid.Row="0"
+                              Grid.Column="1"
+                              Margin="5"
+                              Foreground="{DynamicResource HighlightBrush}"
+                              HorizontalAlignment="Center">
+                        <ComboBoxItem Foreground="{DynamicResource HighlightBrush}">Gmail
+                            <ComboBoxItem.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding SetMailConfCommand}"
+                                              CommandParameter="Gmail" />
+                            </ComboBoxItem.InputBindings>
+                        </ComboBoxItem>
+                        <ComboBoxItem Foreground="{DynamicResource HighlightBrush}">Yahoo
+                            <ComboBoxItem.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding SetMailConfCommand}"
+                                              CommandParameter="Yahoo" />
+                            </ComboBoxItem.InputBindings>
+                        </ComboBoxItem>
+                    </ComboBox>
+
+                    <Label Style="{DynamicResource LabelStyle}"
+                           Content="Email interval:"
+                           HorizontalAlignment="Left"
+                           Grid.Row="1" 
+                           
+                           Margin="0,20,0,0"/>
+
+                    <Button Width="{Binding ElementName=tbFrom, Path=ActualWidth}"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Name="tbEmailInterval"
+                            
+                            Margin="0,20,0,0"
+                            Content="{Binding Path=UserSettings.EmailIntervalEnum, Converter={StaticResource convertEmailInterval}}">
+                        <Button.InputBindings>
+                            <MouseBinding Gesture="LeftClick"
+                                          Command="{Binding ShowPopupCommand}"
+                                          CommandParameter="EmailInterval" />
+                        </Button.InputBindings>
+                    </Button>
+
+                    <Popup PopupAnimation="Slide"
+                           StaysOpen="True"
+                           PlacementTarget="{Binding ElementName=tbEmailInterval}"
+                           IsOpen="{Binding PopupEmailIntervalIsOpen}"
+                           Placement="Right"
+                           Name="popupEmailInterval">
+                        <Border BorderBrush="{DynamicResource WindowBorderBrush}"
+                                BorderThickness="1">
+                            <StackPanel Orientation="Vertical"
+                                        Background="{StaticResource WindowBackgroundBrush}">
+
+                                <Label Style="{StaticResource SelectableLabelStyle}"
+                                       Content="5 min">
+                                    <Label.InputBindings>
+                                        <MouseBinding Gesture="LeftClick"
+                                                      Command="{Binding ChangeEmailIntervalCommand }"
+                                                      CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Label}}}" />
+                                    </Label.InputBindings>
+                                </Label>
+                                <Label Style="{StaticResource SelectableLabelStyle}"
+                                       Content="10 min">
+                                    <Label.InputBindings>
+                                        <MouseBinding Gesture="LeftClick"
+                                                      Command="{Binding ChangeEmailIntervalCommand }"
+                                                      CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Label}}}" />
+                                    </Label.InputBindings>
+                                </Label>
+                                <Label Style="{StaticResource SelectableLabelStyle}"
+                                       Content="30 min">
+                                    <Label.InputBindings>
+                                        <MouseBinding Gesture="LeftClick"
+                                                      Command="{Binding ChangeEmailIntervalCommand }"
+                                                      CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Label}}}" />
+                                    </Label.InputBindings>
+                                </Label>
+                                <Label Style="{StaticResource SelectableLabelStyle}"
+                                       Content="1 hr">
+                                    <Label.InputBindings>
+                                        <MouseBinding Gesture="LeftClick"
+                                                      Command="{Binding ChangeEmailIntervalCommand }"
+                                                      CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Label}}}" />
+                                    </Label.InputBindings>
+                                </Label>
+                                <Label Style="{StaticResource SelectableLabelStyle}"
+                                       Content="2 hr">
+                                    <Label.InputBindings>
+                                        <MouseBinding Gesture="LeftClick"
+                                                      Command="{Binding ChangeEmailIntervalCommand }"
+                                                      CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Label}}}" />
+                                    </Label.InputBindings>
+                                </Label>
+                            </StackPanel>
+                        </Border>
+                    </Popup>
+
+                    <Label Style="{DynamicResource LabelStyle}"
+                           Content="From:"
+                           Grid.Row="2"
+                           Grid.Column="0"
+                           HorizontalAlignment="Left" />
+                    <TextBox Margin="5"
+                             Grid.Row="2"
+                             Grid.Column="1"
+                             MinWidth="150"
+                             Name="tbFrom"
+                             MaxLength="60">
+                        <TextBox.Text>
+                            <Binding Path="UserSettings.EmailFrom"
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <validate:EmailValidation />
+                                    <validate:LengthValidation ErrorMessage="This field is mandatory"
+                                                               MinimumLength="1" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+                    <Label Style="{DynamicResource LabelStyle}"
+                           Content="To:"
+                           Grid.Row="3"
+                           Grid.Column="0"
+                           HorizontalAlignment="Left" />
+                    <TextBox Margin="5"
+                             Grid.Row="3"
+                             Grid.Column="1"
+                             MaxLength="60"
+                             >
+                        <TextBox.Text>
+                            <Binding Path="UserSettings.EmailTo"
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <validate:EmailValidation />
+                                    <validate:LengthValidation ErrorMessage="This field is mandatory"
+                                                               MinimumLength="1" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+                    <Label Style="{DynamicResource LabelStyle}"
+                           Content="Smtp host:"
+                           Grid.Row="4"
+                           Grid.Column="0"
+                           HorizontalAlignment="Left" 
+                           />
+                    <TextBox Margin="5"
+                             Grid.Row="4"
+                             Grid.Column="1"
+                             MaxLength="30"
+                             >
+                        <TextBox.Text>
+                            <Binding Path="UserSettings.EmailSmtpHost"
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <validate:LengthValidation ErrorMessage="This field is mandatory"
+                                                               MinimumLength="1" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+
+                    </TextBox>
+
+                    <Label Style="{DynamicResource LabelStyle}"
+                           Content="Smtp port:"
+                           Grid.Row="5"
+                           Grid.Column="0"
+                           HorizontalAlignment="Left" 
+                           />
+                    <TextBox Margin="5"
+                             Grid.Row="5"
+                             Grid.Column="1"
+                             MaxLength="8"
+                             >
+                        <TextBox.Text>
+                            <Binding Path="UserSettings.EmailSmtpPort"
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <validate:LengthValidation ErrorMessage="This field is mandatory"
+                                                               MinimumLength="1" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+                    <Label Style="{DynamicResource LabelStyle}"
+                           Content="Smtp username:"
+                           Grid.Row="6"
+                           Grid.Column="0"
+                           HorizontalAlignment="Left" />
+                    <TextBox Margin="5"
+                             Grid.Row="6"
+                             Grid.Column="1"
+                             MaxLength="60"
+                             >
+                        <TextBox.Text>
+                            <Binding Path="UserSettings.EmailSmtpUsername"
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <validate:LengthValidation ErrorMessage="This field is mandatory"
+                                                               MinimumLength="1" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+                    <Label Style="{DynamicResource LabelStyle}"
+                           Content="Smtp password:"
+                           Grid.Row="7"
+                           Grid.Column="0"
+                           HorizontalAlignment="Left" />
+                    <PasswordBox Margin="5"
+                                 Grid.Row="7"
+                                 Grid.Column="1"
+                                 controls:PBAssistant.BindPassword="True"
+                                 Name="passBox"
+                                 MaxLength="60"
+                                 >
+                        <controls:PBAssistant.BoundPassword>
+                            <Binding Path="UserSettings.EmailSmtpPassword"
+                                     Mode="TwoWay"
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <validate:LengthValidation ErrorMessage="This field is mandatory"
+                                                               MinimumLength="1" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </controls:PBAssistant.BoundPassword>
+                    </PasswordBox>
+
+                    <Label Style="{DynamicResource LabelStyle}"
+                           Content="Enable SSL:"
+                           Grid.Row="8"
+                           Grid.Column="0"
+                           HorizontalAlignment="Left" />
+                    <CheckBox IsChecked="{Binding UserSettings.EmailSSL}"
+                              Grid.Row="8"
+                              Grid.Column="1"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center" />
+
+                    <Button Content="Send test email"
+                            Margin="0,30,10,5"
+                            HorizontalAlignment="Right"
+                            Grid.Row="9"
+                            Grid.Column="1">
+                        <Button.InputBindings>
+                            <MouseBinding Gesture="LeftClick"
+                                          Command="{Binding SendTestEmailCommand}" />
+                        </Button.InputBindings>
+                    </Button>
+
+                </Grid>
+            </controls:FaderContentControl>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

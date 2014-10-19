@@ -1,0 +1,75 @@
+﻿<Window x:Class="Task_Logger_Pro.Controls.EULAWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="License Agreement"
+        Style="{StaticResource WindowStyleWithFade}"
+       MaxHeight="600"
+        MaxWidth="800"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterScreen"
+        BorderBrush="{DynamicResource WindowBorderBrush}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Label Style="{DynamicResource LabelStyle}"
+               Grid.Row="0"
+               HorizontalAlignment="Left"
+               Content="apps tracker EULA"
+               Margin="15,5,0,5"
+               FontSize="15" />
+        <Separator Grid.Row="0"
+                   VerticalAlignment="Bottom"
+                   Margin="10,0,10,0" />
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto"
+                      Margin="0,20,0,20">
+            <TextBox Foreground="{DynamicResource HighlightBrush}"
+                     Width="600"
+                     Background="{DynamicResource 2ndBackgroundBrush}"
+                     TextWrapping="WrapWithOverflow"
+                     Padding="20"
+                     Text="Apps tracker End User License Agreement.&#x0a;&#x0a;This License Agreement details your rights and entitlement to use the Apps tracker, please read it carefully and treat it as valuable Property.&#x0a;&#x0a;This Agreement is between you (either an individual or an entity) and Marko Devcic, (hereinafter called 'Developer') Developer is willing to grant you the following the rights to use the Software known as Apps tracker and its accompanying documentation (collectively, the 'Software') only if you agree to be bound by all of the terms and conditions of this Agreement. If you are not willing to agree to any of the terms of this Agreement, Developer is unwilling to grant you a license and you should not open the distributed software files.
+Instead you must promptly delete it completely from any storage media you may have saved it to.&#x0a;&#x0a;This software is provided for your use free of charge, or as a licensed and chargeable product if you intend to use and access the advanced 'Licensed version' functionality, identified in the program User Interface. You may use the Free version without charge provided you are the End User and do not intend to distribute or incorporate it with or into any other product or software package intended for resale or distribution for any purpose whatsoever other than as provided for in this license.
+
+&#x0a;&#x0a;1.Ownership: The Software is and shall remain a propriety product of Developer. Developer and its suppliers shall retain ownership of all Copyrights, Patents, Trademarks, Trade Names, Trade Secrets and other proprietary rights relating to or residing in the Software. Except for the license grant provided in Section 2, you shall have no right, title or interest in or to the Software. The Software is licensed, not sold, to you for you to use only under the terms of this Agreement. If you agree to be bound by all of the terms of this Agreement you will only own the media (if any) on which the Software may have been provided, not the Software itself.
+
+&#x0a;&#x0a;2.Grant of License: Developer grants you a personal, non-exclusive, non-transferable, restricted right to use the Software, for your own Personal, Commercial, or Business uses provided you or your Business are end user's, not software developer's or distributors to end users - subject to the terms of this license Agreement. This license does not allow accessing of the API of the software - even if you have a developer's kit - this is an END USER version ONLY of the software - not a developer software tool, should you wish to utilise a version of this product linking to or from within another software application (directly or indirectly) - you must purchase and license a software development kit intended specifically for this purpose, available from Tracker Software Products. You understand that Developer may update the Software at any time and in doing so incurs no obligation pursuant to this Agreement to furnish such updates to you.  
+
+Developer welcomes all Magazine, Printed Publications, Software Download sites etc. in facilitating the distribution of the FREE version of this software, freely - provided no re-engineering occurs of the installer or components and no added charge is made for the distribution - other than any usual publishers subscription or News stand fees etc, charged for their publication.
+
+&#x0a;&#x0a;3.Restrictions: I) DEVELOPER RESERVES ALL RIGHTS IN THE SOFTWARE NOT EXPRESSLY GRANTED TO YOU. II) EXCEPT AS PERMITTED IN SECTION 2, YOU MAY NOT USE, COPY, MODIFY, CREATE DERIVATIVE WORKS OF, SELL, DISTRIBUTE, ASSIGN, PLEDGE, SUB LICENSE, LEASE, LOAN, RENT, TIMESHARE, DELIVER, ELECTRONICALLY TRANSMIT OR OTHERWISE TRANSFER THE SOFTWARE, NOR PERMIT ANY THIRD PARTY TO DO ANY OF THE FOREGOING. III) YOU MAY NOT REMOVE FROM THE SOFTWARE, OR ALTER ANY OF THE TRADEMARKS, TRADE NAMES, LOGO'S, PATENT OR COPYRIGHT NOTICES OR MARKINGS, OR ADD ANY OF THE FOREGOING TO THE SOFTWARE. IV) YOU MAY NOT DERIVE OR ATTEMPT TO DERIVE ANY OF THE SOURCE CODE BY ANY MEANS, NOR PERMIT A THIRD PARTY TO DO SO. V) YOU MAY NOT REVERSE ENGINEER, DECOMPILE, DISASSEMBLE, OR TRANSLATE THIS SOFTWARE OR ANY PART THEREOF. VI) NO LICENSES ARE GRANTED UNDER THIS LICENSE AGREEMENT UNDER ANY PATENTS OF IMAGES. IF YOU BELIEVE YOU NEED ANY SUCH LICENSES YOU MUST CONTACT ANY THIRD PARTIES YOURSELF DIRECTLY TO OBTAIN THEM.  
+
+&#x0a;&#x0a;4.No Warranty: Developer does not warrant that the functions contained in the Software will meet your requirement or that the operation of the Software will be uninterrupted or error free (it is finished 'As Is' and without warranty as to performance or results. This Software is not warranted against infringement of any third part patents. Developer has done no investigation as to infringement, and you agree that you will assume the risk of any such infringement from your use of Software.  
+
+&#x0a;&#x0a;5.No Other Warranties: THIS SOFTWARE IS BEING LICENSED TO YOU AS IS WITHOUT WARRANTY OF ANY KIND. DEVELOPER DISCLAIM AND REJECT ALL OTHER WARRANTIES EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT OF THIRD PARTY RIGHTS. 
+
+&#x0a;&#x0a;6.Limitation Of Liability: DEVELOPER'S AGGREGATE LIABILITY IN CONNECTION WITH THIS AGREEMENT AND THE SOFTWARE, REGARDLESS OF THE FORM OF ACTION GIVING RISE TO SUCH LIABILITY (WHETHER IN CONTRACT, TORT OR OTHERWISE), SHALL NOT EXCEED THE LICENSE FEES PAID BY YOU TO DEVELOPER UNDER THIS AGREEMENT. NO DEVELOPER SUPPLIER's SHALL HAVE ANY LIABILITY WHATSOEVER UNDER THIS AGREEMENT. DEVELOPER AND ANY OF DEVELOPER'S SUPPLIERS SHALL NOT BE LIABLE FOR ANY INDIRECT, EXEMPLARY, SPECIAL, CONSEQUENTIAL, OR INCIDENTAL DAMAGES OF ANY KIND (INCLUDING WITHOUT LIMITATION LOST PROFITS), EVEN IF DEVELOPER OR SUCH SUPPLIER HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. SOME JURISDICTIONS DO NOT ALLOW THE LIMITATION OR EXCLUSION OF LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES SO THE ABOVE LIMITATION OR EXCLUSION MAY NOT APPLY TO YOU. DEVELOPER SHALL NOT BE LIABLE FOR ANY CLAIMS OF THIRD PARTIES RELATING TO THE SOFTWARE. THE LIMITED WARRANTY, LIMITED REMEDIES AND LIMITED LIABILITY PROVISIONS CONTAINED IN THIS AGREEMENT ARE FUNDAMENTAL PARTS OF THE BASIS OF DEVELOPER'S BARGAIN HEREUNDER, AND DEVELOPER WOULD NOT BE ABLE TO PROVIDE THE SOFTWARE TO YOU ABSENT OF SUCH LIMITATIONS
+
+&#x0a;&#x0a;7:Free Versions: Where the Software is provided free on a permanent, semi permanent, limited use or trial basis all the terms relating to licensing shall be identical, save that you accept there has been no financial gain on Developer's part and as such you use the Software without warranty or guarantees of any kind. The risk is entirely yours and you acknowledge this. You agree to indemnify us against all claims by you or any third party for any reason whatsoever. You accept that we have provided the Software for your sole benefit and have received no financial reward and as such cannot be held responsible in any way and for any reason.
+ 
+&#x0a;&#x0a;8.Termination: You may terminate this Agreement at any time. This Agreement shall terminate automatically upon breach of any term of this Agreement. Upon termination you shall destroy the Software and any backup copy you made pursuant to this Agreement.
+
+
+&#x0a;&#x0a;Copyright: This Software and all accompanying documentation are copyrighted and Developer reserves all rights.  The accompanying End User License Agreement specifies the terms and conditions governing use of this product
+
+&#x0a;&#x0a;Copyright © 2014 Marko Devcic
+
+&#x0a;&#x0a;ALL RIGHTS RESERVED. 
+"
+>
+
+            </TextBox>
+        </ScrollViewer>
+        <Button Grid.Row="2" 
+                HorizontalAlignment="Center"
+                Margin="100,10,0,20"
+                Click="Button_Click">I agree</Button>
+        <Button Grid.Row="2"
+                HorizontalAlignment="Right"
+                Margin="0,10,150,20"
+                Click="Button_Click_1">I do not agree</Button>
+    </Grid>
+</Window>

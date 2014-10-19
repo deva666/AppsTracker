@@ -1,0 +1,76 @@
+﻿<Window x:Class="Task_Logger_Pro.Controls.DBCleanerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="apps tracker"
+        MinHeight="200"
+        MinWidth="350"
+        SizeToContent="WidthAndHeight"
+        Style="{StaticResource WindowStyleWithFade}"
+        WindowStartupLocation="CenterScreen"
+        ShowInTaskbar="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            
+
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Label Style="{DynamicResource LabelStyle}"
+               Content="apps tracker"
+               HorizontalAlignment="Left"
+               Margin="10,0,0,0"
+               FontSize="15" />
+        <Separator VerticalAlignment="Bottom"
+                   Grid.Row="0"
+                   Margin="10,0,10,0"
+                   Grid.ColumnSpan="3" />
+
+        <Label Style="{DynamicResource LabelStyle}"
+               Content="Screenshot cleaner."
+               Grid.Row="1"
+               Grid.Column="0"
+               Grid.ColumnSpan="2"
+               FontSize="16"
+               HorizontalAlignment="Center"
+               Margin="0,10,0,10" />
+
+        <Label Style="{DynamicResource LabelStyle}"
+               Content="Delete screenshots older than (days)"
+               Grid.Row="2"
+               Grid.Column="0"
+               HorizontalAlignment="Left"
+               Margin="15,0,0,0" />
+        <TextBox Grid.Row="2"
+                 Grid.Column="1"
+                 Name="tbDays"
+                 Margin="10"
+                 HorizontalAlignment="Left"
+                 MinWidth="40"
+                 PreviewTextInput="tbDays_PreviewTextInput"/>
+
+
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="3"
+                    Grid.Column="1">
+            <Label Style="{DynamicResource SelectableLabelStyle}"
+                   Content="CLEAN"
+                   Name="lblClean"
+                   MouseLeftButtonUp="lblClean_MouseLeftButtonUp"/>
+            <Label Style="{DynamicResource SelectableLabelStyle}"
+                   Content="CANCEL"
+                   Margin="15,0,0,0"
+                   Name="lblCancel"
+                   MouseLeftButtonUp="lblCancel_MouseLeftButtonUp"/>
+        </StackPanel>
+
+    </Grid>
+</Window>

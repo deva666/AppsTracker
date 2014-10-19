@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<?define RTMProductVersion="2.0.0.0" ?>
+<?define ProductVersion = "2.0.1.0"?>
+<?define ProductUpgradeCode = "022fe8de-4d33-499c-b8ec-99d3aca821d5"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+		xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+<Product Id="*" UpgradeCode="$(var.ProductUpgradeCode)" 
+            Name="Apps tracker" Version="$(var.ProductVersion)" Manufacturer="Marko Devcic" Language="1033">
+			
+    <Package InstallerVersion="200" Compressed="yes" Comments="Windows Installer Package"/>
+	<UI>
+	      <UIRef Id="WixUI_InstallDir" />
+			<Publish Dialog="ExitDialog" 
+				Control="Finish" 
+				Event="DoAction" 
+				Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+				
+	</UI>
+	
+	<Property Id="WixShellExecTarget" Value="[#ApplicationFile1]" />		
+		<CustomAction Id="LaunchApplication" 
+        BinaryKey="WixCA" 
+        DllEntry="WixShellExec"
+        Impersonate="yes" />
+
+		<Media Id="1" Cabinet="product.cab" EmbedCab="yes"/>
+      <Icon Id="ProductIcon" SourceFile="icon1.ico"/>
+      <Property Id="ARPPRODUCTICON" Value="ProductIcon"/>
+      <Property Id="ARPHELPLINK" Value="http://www.theappstracker.com"/>
+      <Property Id="ARPURLINFOABOUT" Value="http://www.theappstracker.com"/>
+      <Property Id="ARPNOREPAIR" Value="1"/>
+	  <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+	  <Property Id="ALLUSERS">1</Property>
+	  <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch Apps tracker" />
+	 
+	   <PropertyRef Id="NETFRAMEWORK45" /> 
+			<Condition Message="You must install Microsoft .NET 4.5"> 
+      <![CDATA[Installed OR NETFRAMEWORK45]]> 
+			</Condition> 
+
+	<WixVariable Id="WixUILicenseRtf" Value="EULA.rtf" />
+	<WixVariable Id="WixUIInfoIco" Value="icon1.ico" />
+		
+      <Directory Id="TARGETDIR" Name="SourceDir">
+         <Directory Id="ProgramFilesFolder">
+		    <Directory Id="INSTALLDIR" Name="Apps tracker">
+               <Component Id="ApplicationFiles" Guid="a0baf7f0-506b-4f1c-8409-643db29473d5">
+                  <File Id="ApplicationFile1" Source="Apps tracker.exe"/>
+				  <File Id="ApplicationFile2" Source="AppsTracker.DAL.dll"/>
+				  <File Id="ApplicationFile3" Source="AppsTracker.Models.dll"/>
+				  <File Id="ApplicationFile4" Source="EntityFramework.dll"/>
+				  <File Id="ApplicationFile5" Source="EntityFramework.SqlServer.dll"/>
+				  <File Id="ApplicationFile6" Source="EntityFramework.SqlServerCompact.dll"/>
+				  <File Id="ApplicationFile7" Source="Apps tracker.exe.manifest"/>
+				  <File Id="ApplicationFile8" Source="System.Windows.Interactivity.dll"/>
+				  <File Id="ApplicationFile10" Source="De.TorstenMandelkow.MetroChart.dll"/>
+				  <File Id="ApplicationFile11" Source="System.Data.SqlServerCe.dll"/>
+               </Component>
+			   <Component Id="ApplicationFilesVital" Guid="3d88719f-8065-456f-95c1-981c28952bff" >
+			   <File Id="ApplicationFileVital1" Source="Apps tracker.exe.config" Vital="yes" KeyPath="yes"/>
+			   </Component>
+			   <Directory Id="SqlCe64" Name="amd64" FileSource="amd64">
+					<Directory Id="SqlCe64Misc" Name="Microsoft.VC90.CRT" FileSource="amd64\Microsoft.VC90.CRT">
+						<Component Id="SqlCe64MiscFiles" Guid="c39ff25e-9c24-45d1-a6e1-b9a7acbf0871">
+							<File Id="SqlCe64MiscFile1" Name="Microsoft.VC90.CRT.manifest"/>
+							<File Id="SqlCe64MiscFile2" Name="msvcr90.dll"/>
+						</Component>
+					</Directory>
+					<Component Id="SqlCe64Files" Guid="a0bee29b-ef9c-4dd6-8272-f3603e3366c6">
+						<File Id="SqlCe64File1" Name="sqlceca40.dll"/>
+						<File Id="SqlCe64File2" Name="sqlcecompact40.dll"/>
+						<File Id="SqlCe64File3" Name="sqlceer40EN.dll"/>
+						<File Id="SqlCe64File4" Name="sqlceme40.dll"/>
+						<File Id="SqlCe64File5" Name="sqlceqp40.dll"/>
+						<File Id="SqlCe64File6" Name="sqlcese40.dll"/>
+					</Component>
+			   </Directory>
+				<Directory Id="ScreenshotsDir" Name="Screenshots">
+					
+				</Directory>
+				<Directory Id="SqlCe86" Name="x86" FileSource="x86">
+					<Directory Id="SqlCe86Misc" Name="Microsoft.VC90.CRT" FileSource="x86\Microsoft.VC90.CRT">
+						<Component Id="SqlCe86MiscFiles" Guid="75857f3a-47ef-4bcb-b997-825403c1d0e8">
+							<File Id="SqlCe86MiscFile1" Name="Microsoft.VC90.CRT.manifest"/>
+							<File Id="SqlCe86MiscFile2" Name="msvcr90.dll"/>
+						</Component>
+					</Directory>
+					<Component Id="SqlCe86Files" Guid="306673b5-fd71-4793-b182-c83ce91ee0d3">
+						<File Id="SqlCe86File1" Name="sqlceca40.dll"/>
+						<File Id="SqlCe86File2" Name="sqlcecompact40.dll"/>
+						<File Id="SqlCe86File3" Name="sqlceer40EN.dll"/>
+						<File Id="SqlCe86File4" Name="sqlceme40.dll"/>
+						<File Id="SqlCe86File5" Name="sqlceqp40.dll"/>
+						<File Id="SqlCe86File6" Name="sqlcese40.dll"/>
+					</Component>
+				</Directory>
+				<Directory Id="InteractivityDe" Name="de" FileSource="de">
+					<Component Id="InteractivityDeFile" Guid="8466bb9f-effb-4d40-b933-1841630a9b0c">
+						<File Id="InteractivityDeFile1" Name="System.Windows.Interactivity.resources.dll"/>
+					</Component>		
+				</Directory>
+				<Directory Id="InteractivityEn" Name="en" FileSource="en">
+					<Component Id="InteractivityEnFile" Guid="c1298200-b008-43db-b9c2-9c68ad056787">
+						<File Id="InteractivityEnFile1" Name="System.Windows.Interactivity.resources.dll"/>
+					</Component>		
+				</Directory>
+				<Directory Id="InteractivityEs" Name="es" FileSource="es">
+					<Component Id="InteractivityEsFile" Guid="1e4e0714-99b5-4bf1-bb8e-a7f4fa839cee">
+						<File Id="InteractivityEsFile1" Name="System.Windows.Interactivity.resources.dll"/>
+					</Component>		
+				</Directory>
+				<Directory Id="InteractivityFr" Name="fr" FileSource="fr">
+					<Component Id="InteractivityFrFile" Guid="1277d782-86a3-4fd3-942a-67955e363a2e">
+						<File Id="InteractivityFrFile1" Name="System.Windows.Interactivity.resources.dll"/>
+					</Component>		
+				</Directory>
+				<Directory Id="InteractivityIt" Name="it" FileSource="it">
+					<Component Id="InteractivityItFile" Guid="a3cf37d0-d273-44e7-9dff-f0fb205db8a9">
+						<File Id="InteractivityItFile1" Name="System.Windows.Interactivity.resources.dll"/>
+					</Component>		
+				</Directory>
+				<Directory Id="InteractivityJa" Name="ja" FileSource="ja">
+					<Component Id="InteractivityJaFile" Guid="d28a3365-8fc9-4bfe-8d28-fd75cf4af921">
+						<File Id="InteractivityJaFile1" Name="System.Windows.Interactivity.resources.dll"/>
+					</Component>		
+				</Directory>
+				<Directory Id="InteractivityKo" Name="ko" FileSource="ko">
+					<Component Id="InteractivityKoFile" Guid="e8ca961f-dd86-4045-b631-9d48e2aa7174">
+						<File Id="InteractivityKoFile1" Name="System.Windows.Interactivity.resources.dll"/>
+					</Component>		
+				</Directory>
+				<Directory Id="InteractivityRu" Name="ru" FileSource="ru">
+					<Component Id="InteractivityRuFile" Guid="fa820c34-ebae-4aec-8f01-f52175f594d5">
+						<File Id="InteractivityRuFile1" Name="System.Windows.Interactivity.resources.dll"/>
+					</Component>		
+				</Directory>
+				<Directory Id="InteractivityHans" Name="zh-Hans" FileSource="zh-Hans">
+					<Component Id="InteractivityHansFile" Guid="ed7c771a-507b-45f2-8561-e931228ab51a">
+						<File Id="InteractivityHansFile1" Name="System.Windows.Interactivity.resources.dll"/>
+					</Component>		
+				</Directory>
+				<Directory Id="InteractivityHant" Name="zh-Hant" FileSource="zh-Hant">
+					<Component Id="InteractivityHantFile" Guid="b4572e0d-bae1-4b21-bc2b-fe9fdd758057">
+						<File Id="InteractivityHantFile1" Name="System.Windows.Interactivity.resources.dll"/>
+					</Component>		
+				</Directory>
+        
+			</Directory>
+        
+		   </Directory>
+		   
+		   <Directory Id="CommonAppDataFolder"> 
+				<Directory Id="AppServiceFolder" Name="AppService" FileSource="AppService">
+					<Component Id="AppServiceFiles" Guid="c73013a2-1f09-4ef3-8c93-ae4393cd12af" KeyPath="yes"> 
+						<RemoveFile Id="RemoveDBfile" Name="apps.sdf" On="uninstall"/> 
+					</Component>
+				</Directory>
+		   </Directory>
+		   
+         <Directory Id="ProgramMenuFolder">
+            <Directory Id="ProgramMenuSubfolder" Name="Apps tracker">
+               <Component Id="ApplicationShortcuts" Guid="12345678-1234-1234-1234-333333333333">
+                  <Shortcut Id="ApplicationShortcut1" Name="Apps tracker" Description="Apps tracker" 
+                            Target="[INSTALLDIR]Apps tracker.exe" WorkingDirectory="INSTALLDIR"/>
+                  <RegistryValue Root="HKCU" Key="Software\Marko Devcic\Apps tracker" 
+                            Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+                  <RemoveFolder Id="ProgramMenuSubfolder" On="uninstall"/>
+               </Component>
+            </Directory>
+         </Directory>
+      </Directory>
+  
+	<MajorUpgrade
+		Schedule="afterInstallFinalize"
+		DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit."/>
+		<!--
+      <InstallExecuteSequence>
+		 <InstallExecute After="RemoveExistingProducts" />  
+      </InstallExecuteSequence>
+ -->
+	
+      <Feature Id="DefaultFeature" Level="1">
+         <ComponentRef Id="ApplicationFiles"/>
+		  <ComponentRef Id="ApplicationFilesVital"/>
+		  <ComponentRef Id="SqlCe64Files"/>
+		  <ComponentRef Id="SqlCe64MiscFiles"/>
+		  
+		  <ComponentRef Id="SqlCe86Files"/>
+		  <ComponentRef Id="SqlCe86MiscFiles"/>
+        	
+			<ComponentRef Id="InteractivityDeFile"/>	
+			<ComponentRef Id="InteractivityEnFile"/>	
+			<ComponentRef Id="InteractivityEsFile"/>	
+			<ComponentRef Id="InteractivityFrFile"/>	
+			<ComponentRef Id="InteractivityItFile"/>	
+			<ComponentRef Id="InteractivityJaFile"/>	
+			<ComponentRef Id="InteractivityKoFile"/>	
+			<ComponentRef Id="InteractivityRuFile"/>
+			<ComponentRef Id="InteractivityHansFile"/>
+			<ComponentRef Id="InteractivityHantFile"/>		
+			<ComponentRef Id="AppServiceFiles"/>		
+			
+			 <ComponentRef Id="ApplicationShortcuts"/>	
+      </Feature>
+   </Product>
+</Wix>

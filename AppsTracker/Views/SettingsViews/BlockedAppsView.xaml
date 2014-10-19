@@ -1,0 +1,346 @@
+﻿<UserControl x:Class="Task_Logger_Pro.Pages.Views.SettingsViews.BlockedAppsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:Task_Logger_Pro.Controls"
+             xmlns:local="clr-namespace:Task_Logger_Pro"
+             mc:Ignorable="d"
+             d:DesignHeight="500"
+             d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:ConvertIntToVisibility x:Key="convertIntToVisibility" />
+        <local:ConvertIntToVisibilityBackwards x:Key="convertIntToVisBack" />
+        <local:ConvertUsersAndProcesses x:Key="convertUsersAndProcesses" />
+        <local:ConvertTicksToTimespan x:Key="convertTicksToTimespan" />
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+
+            </Grid.ColumnDefinitions>
+
+            <Label Style="{DynamicResource LabelStyle}"
+                   FontSize="18"
+                   Content="Manage blocked apps for each user"
+                   FontFamily="Tahoma"
+                   Grid.Row="0"
+                   Grid.ColumnSpan="3"
+                   HorizontalAlignment="Left"
+                   Margin="0,0,0,10" />
+
+            <Label Style="{DynamicResource LabelStyle}"
+                   FontSize="14"
+                   Content="Apps can be added on the blocked list by right clicking the app name in the Data page."
+                   Foreground="{DynamicResource WindowForegroundBrush}"
+                   FontFamily="Tahoma"
+                   Grid.Row="1"
+                   Grid.ColumnSpan="3"
+                   HorizontalAlignment="Left"
+                   Margin="0,0,0,20" />
+
+            <Label Style="{DynamicResource LabelStyle}"
+                   Content="Users"
+                   Grid.Row="2"
+                   Grid.Column="0"
+                   FontSize="14"
+                   FontWeight="SemiBold"
+                   FontFamily="Tahoma" />
+
+            <controls:FaderContentControl   Grid.Column="1"
+                                            Grid.Row="2"
+                                            Visibility="{Binding ElementName=lbUsers, Path=SelectedIndex, Converter={StaticResource convertIntToVisBack}}">
+                <Label Style="{DynamicResource LabelStyle}"
+                       Content="Blocked apps"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       FontFamily="Tahoma" />
+            </controls:FaderContentControl>
+
+            <ListBox Name="lbUsers"
+                     Grid.Row="3"
+                     Grid.Column="0"
+                     BorderThickness="0"
+                     Margin="10"
+                     MinWidth="200"
+                     Background="Transparent"
+                     Foreground="{StaticResource WindowForegroundBrush}"
+                     ItemsSource="{Binding AllUsersCollection}"
+                     SelectedItem="{Binding SelectedUser}"
+                     ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
+                     SelectionMode="Single">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Label Style="{DynamicResource LBLabelStyle}"
+                               Content="{Binding Name}">
+
+                        </Label>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <controls:FaderContentControl Grid.Row="3"
+                                          Grid.Column="1"
+                                          Visibility="{Binding ElementName=lbUsers, Path=SelectedIndex, Converter={StaticResource convertIntToVisBack}}">
+                <Separator HorizontalAlignment="Left">
+                    <Separator.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </Separator.LayoutTransform>
+                </Separator>
+            </controls:FaderContentControl>
+
+            <controls:FaderContentControl Grid.Row="3"
+                                          Grid.Column="1"
+                                          Visibility="{Binding ElementName=lbUsers, Path=SelectedIndex, Converter={StaticResource convertIntToVisBack}}">
+                <ListBox Name="lbProcesses"
+                         Grid.Row="2"
+                         Grid.Column="1"
+                         BorderThickness="0"
+                         Margin="10"
+                         MinWidth="75"
+                         Background="Transparent"
+                         Foreground="{StaticResource WindowForegroundBrush}"
+                         SelectedItem="{Binding SelectedAppToBlock}"
+                         ItemsSource="{Binding AppsToBlockCollection}"
+                         ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
+                         SelectionMode="Single">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label Style="{DynamicResource LBLabelStyle}"
+                                   Content="{Binding Path=Application.Name}">
+                                <Label.ToolTip>
+                                    <ToolTip Style="{StaticResource ToolTipStyle}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Label Style="{DynamicResource LabelStyle}"
+                                                   Grid.Row="0"
+                                                   Grid.Column="0"
+                                                   HorizontalAlignment="Left"
+                                                   Content="Company:" />
+                                            <Label Style="{DynamicResource LabelStyle}"
+                                                   Grid.Row="0"
+                                                   Grid.Column="1"
+                                                   Content="{Binding Path=Application.Company, Mode=OneWay}" />
+
+                                            <Label Style="{DynamicResource LabelStyle}"
+                                                   Grid.Row="1"
+                                                   Grid.Column="0"
+                                                   HorizontalAlignment="Left"
+                                                   Content="Version:" />
+                                            <Label Style="{DynamicResource LabelStyle}"
+                                                   Grid.Row="1"
+                                                   Grid.Column="1"
+                                                   Content="{Binding Path=Application.Version, Mode=OneWay}" />
+
+                                            <Label Style="{DynamicResource LabelStyle}"
+                                                   Grid.Row="2"
+                                                   Grid.Column="0"
+                                                   HorizontalAlignment="Left"
+                                                   Content="Description:" />
+                                            <Label Style="{DynamicResource LabelStyle}"
+                                                   Grid.Row="2"
+                                                   Grid.Column="1"
+                                                   Content="{Binding Path=Application.Description, Mode=OneWay}" />
+
+                                            <Label Style="{DynamicResource LabelStyle}"
+                                                   Grid.Row="3"
+                                                   Grid.Column="0"
+                                                   HorizontalAlignment="Left"
+                                                   Content="File name:" />
+                                            <Label Style="{DynamicResource LabelStyle}"
+                                                   Grid.Row="3"
+                                                   Grid.Column="1"
+                                                   Content="{Binding Path=Application.FileName, Mode=OneWay}" />
+
+                                        </Grid>
+                                    </ToolTip>
+                                </Label.ToolTip>
+                            </Label>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:FaderContentControl>
+
+            <controls:FaderContentControl Grid.Row="5"
+                                          Grid.ColumnSpan="4"
+                                          Visibility="{Binding ElementName=lbProcesses, Path=SelectedIndex, Converter={StaticResource convertIntToVisBack}}">
+                <Label Style="{DynamicResource LabelStyle}"
+                       Content="Manage blocking on specific days and time"
+                       FontSize="16"
+                       FontFamily="Tahoma"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       Margin="0,20,0,30" />
+            </controls:FaderContentControl>
+
+            <controls:FaderContentControl Grid.Row="6"
+                                          Visibility="{Binding ElementName=lbProcesses, Path=SelectedIndex, Converter={StaticResource convertIntToVisBack}}"
+                                          Margin="0,0,20,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label Style="{DynamicResource LabelStyle}"
+                           Content="Allowed on days"
+                           Grid.Row="0"
+                           HorizontalAlignment="Center"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           FontFamily="Tahoma" />
+                    <StackPanel Orientation="Horizontal"
+                                Margin="10"
+                                Grid.Row="1">
+
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Monday"
+                                       Style="{DynamicResource LabelStyle}" />
+                                <CheckBox Name="mon"
+                                          HorizontalAlignment="Center"
+                                          IsChecked="{Binding SelectedAppToBlock.Monday}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Tuesday"
+                                       Style="{DynamicResource LabelStyle}" />
+                                <CheckBox Name="tue"
+                                          HorizontalAlignment="Center"
+                                          IsChecked="{Binding SelectedAppToBlock.Tuesday}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Wednesday"
+                                       Style="{DynamicResource LabelStyle}" />
+                                <CheckBox Name="wed"
+                                          HorizontalAlignment="Center"
+                                          IsChecked="{Binding SelectedAppToBlock.Wednesday}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Thursday"
+                                       Style="{DynamicResource LabelStyle}" />
+                                <CheckBox Name="thur"
+                                          HorizontalAlignment="Center"
+                                          IsChecked="{Binding SelectedAppToBlock.Thursday}" />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Friday"
+                                       Style="{DynamicResource LabelStyle}" />
+                                <CheckBox Name="fri"
+                                          HorizontalAlignment="Center"
+                                          IsChecked="{Binding SelectedAppToBlock.Friday}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Saturday"
+                                       Style="{DynamicResource LabelStyle}" />
+                                <CheckBox Name="sat"
+                                          HorizontalAlignment="Center"
+                                          IsChecked="{Binding SelectedAppToBlock.Saturday}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Sunday"
+                                       Style="{DynamicResource LabelStyle}" />
+                                <CheckBox Name="sun"
+                                          HorizontalAlignment="Center"
+                                          IsChecked="{Binding SelectedAppToBlock.Sunday}" />
+                            </StackPanel>
+                        </StackPanel>
+
+                    </StackPanel>
+                </Grid>
+            </controls:FaderContentControl>
+
+            <controls:FaderContentControl Grid.Row="6"
+                                          Grid.Column="1"
+                                          Visibility="{Binding ElementName=lbProcesses, Path=SelectedIndex, Converter={StaticResource convertIntToVisBack}}"
+                                          Margin="0,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label Style="{DynamicResource LabelStyle}"
+                           Content="Time allowed"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           FontFamily="Tahoma"
+                           Grid.Row="0"
+                           HorizontalAlignment="Center" />
+                    <StackPanel Orientation="Vertical"
+                                Grid.Row="1"
+                                VerticalAlignment="Center">
+
+                        <Label Style="{DynamicResource LabelStyle}"
+                               Content="From:"
+                               HorizontalAlignment="Center" />
+                        <TextBox Text="{Binding SelectedAppToBlock.TimeMin, StringFormat=hh\\:mm, Converter={StaticResource convertTicksToTimespan}}"
+                                 HorizontalContentAlignment="Center"
+                                 MaxLength="5"
+                                 MaxWidth="50" />
+                        <Label Style="{DynamicResource LabelStyle}"
+                               Content="To:"
+                               HorizontalAlignment="Center" />
+                        <TextBox Text="{Binding SelectedAppToBlock.TimeMax, StringFormat=hh\\:mm, Converter={StaticResource convertTicksToTimespan}}"
+                                 HorizontalContentAlignment="Center"
+                                 MaxLength="5"
+                                 MaxWidth="50" />
+
+                    </StackPanel>
+                </Grid>
+            </controls:FaderContentControl>
+
+            <controls:FaderContentControl Grid.Row="4"
+                                          Grid.Column="1"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Bottom"
+                                          Visibility="{Binding ElementName=lbProcesses, Path=SelectedIndex, Converter={StaticResource convertIntToVisBack}}"
+                                          Margin="0,10,0,0">
+                <Button Content="Remove selected app from list"
+                        Grid.Row="2"
+                        Grid.Column="1">
+                    <Button.InputBindings>
+                        <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding RemoveProcessFromBlockedCommand}">
+                            <MouseBinding.CommandParameter>
+                                <MultiBinding Converter="{StaticResource convertUsersAndProcesses}">
+                                    <Binding ElementName="lbUsers"
+                                             Path="SelectedItems" />
+                                    <Binding ElementName="lbProcesses"
+                                             Path="SelectedItems" />
+                                </MultiBinding>
+                            </MouseBinding.CommandParameter>
+                        </MouseBinding>
+                    </Button.InputBindings>
+                </Button>
+
+            </controls:FaderContentControl>
+
+        </Grid>
+    </ScrollViewer>
+
+</UserControl>

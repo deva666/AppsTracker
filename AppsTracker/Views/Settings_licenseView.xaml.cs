@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace Task_Logger_Pro.Views
+{
+    /// <summary>
+    /// Interaction logic for Settings_licenseView.xaml
+    /// </summary>
+    public partial class Settings_licenseView : UserControl
+    {
+        public Settings_licenseView()
+        {
+            InitializeComponent();
+        }
+    }
+}
