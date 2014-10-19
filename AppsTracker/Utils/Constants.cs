@@ -6,11 +6,11 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-[assembly:InternalsVisibleTo("AppLoggerLicenseKeys")]
+[assembly: InternalsVisibleTo("AppLoggerLicenseKeys")]
 
-namespace Task_Logger_Pro
+namespace AppsTracker
 {
-    class Constants
+    internal class Constants
     {
         internal const string APP_NAME = "Apps tracker";
         internal const string CMD_ARGS_AUTOSTART = "AUTOSTART";

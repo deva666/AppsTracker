@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Task_Logger_Pro.Controls
+namespace AppsTracker.Controls
 {
     /// <summary>
     /// Interaction logic for MessageWindow.xaml

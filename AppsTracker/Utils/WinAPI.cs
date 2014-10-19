@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Security.AccessControl;
 using System.ComponentModel;
-using Task_Logger_Pro.Hooks;
+using AppsTracker.Hooks;
 
-namespace Task_Logger_Pro
+namespace AppsTracker
 {
     internal class WinAPI
     {

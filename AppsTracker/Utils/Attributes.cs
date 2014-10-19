@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task_Logger_Pro.Utils
+namespace AppsTracker.Utils
 {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
     sealed class CleanUpAttribute : Attribute

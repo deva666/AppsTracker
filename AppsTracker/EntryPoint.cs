@@ -1,15 +1,15 @@
 ﻿using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Text;
-using Task_Logger_Pro.Controls;
+using AppsTracker.Controls;
 using System.Configuration;
-using Task_Logger_Pro.Utils;
+using AppsTracker.Utils;
 using AppsTracker.DAL;
 using System.Linq;
 using System.Data.Entity.Core;
 using System.IO;
 
-namespace Task_Logger_Pro
+namespace AppsTracker
 {
     public static class EntryPoint
     {
@@ -81,7 +81,7 @@ namespace Task_Logger_Pro
             try
             {
                 Exception ex = e.ExceptionObject as Exception;
-                Task_Logger_Pro.Exceptions.Logger.DumpExceptionInfo(ex);
+                AppsTracker.Exceptions.Logger.DumpExceptionInfo(ex);
                 if (App.UzerSetting != null)
                 {
                     if (!App.UzerSetting.Stealth)

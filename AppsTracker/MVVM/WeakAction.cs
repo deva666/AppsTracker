@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Security;
 using System.Runtime.InteropServices;
 
-namespace Task_Logger_Pro.MVVM
+namespace AppsTracker.MVVM
 {
     /// <summary>
     /// This class is an implementation detail of the MessageToActionsMap class.

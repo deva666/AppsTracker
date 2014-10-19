@@ -7,7 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
-using Task_Logger_Pro;
+using AppsTracker;
 
 namespace AppLoggerLicenseKeys
 {
@@ -15,8 +15,7 @@ namespace AppLoggerLicenseKeys
     {
         public Form1()
         {
-            InitializeComponent();
-            
+            InitializeComponent();            
         }
 
 

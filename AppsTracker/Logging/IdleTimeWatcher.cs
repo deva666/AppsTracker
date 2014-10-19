@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task_Logger_Pro.Logging
+namespace AppsTracker.Logging
 {
     public class IdleTimeWatcher
     {

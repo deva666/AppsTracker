@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Task_Logger_Pro.Logging;
-using Task_Logger_Pro.MVVM;
+using AppsTracker.Logging;
+using AppsTracker.MVVM;
 using AppsTracker.DAL;
 using AppsTracker.Models.EntityModels;
 
-namespace Task_Logger_Pro.Pages.ViewModels
+namespace AppsTracker.Pages.ViewModels
 {
     class Data_filelogsViewModel : ViewModelBase, IChildVM, ICommunicator
     {

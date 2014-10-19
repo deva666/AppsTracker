@@ -11,7 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Task_Logger_Pro.Controls
+namespace AppsTracker.Controls
 {
     public class FaderContentControl : ContentControl
     {

@@ -10,11 +10,11 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Task_Logger_Pro.Logging;
+using AppsTracker.Logging;
 using AppsTracker.Models.EntityModels;
-using Task_Logger_Pro.MVVM;
+using AppsTracker.MVVM;
 
-namespace Task_Logger_Pro
+namespace AppsTracker
 {
     public class ConvertDuration : IValueConverter
     {

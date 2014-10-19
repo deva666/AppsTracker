@@ -8,7 +8,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Task_Logger_Pro.Controls
+namespace AppsTracker.Controls
 {
     public class HideAdorner : Adorner
     {

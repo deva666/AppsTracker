@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
-namespace Task_Logger_Pro.MVVM
+namespace AppsTracker.MVVM
 {
     public class DelegateCommand : ICommand
     {

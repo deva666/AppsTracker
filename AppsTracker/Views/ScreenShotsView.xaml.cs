@@ -11,9 +11,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Task_Logger_Pro.Pages.ViewModels;
+using AppsTracker.Pages.ViewModels;
 
-namespace Task_Logger_Pro.Pages.Views
+namespace AppsTracker.Pages.Views
 {
 
     public partial class ScreenShotsView : UserControl

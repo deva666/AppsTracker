@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Task_Logger_Pro.Utils
+namespace AppsTracker.Utils
 {
     class WorkQueue<T> 
     {

@@ -5,12 +5,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Task_Logger_Pro.Hooks;
-using Task_Logger_Pro.MVVM;
+using AppsTracker.Hooks;
+using AppsTracker.MVVM;
 using AppsTracker.DAL;
 using AppsTracker.Models.EntityModels;
 
-namespace Task_Logger_Pro.Logging
+namespace AppsTracker.Logging
 {
     public sealed class DataLogger : IDisposable, ICommunicator
     {
@@ -168,7 +168,7 @@ namespace Task_Logger_Pro.Logging
                 {
                     _currentLoggingStatus = value;
 
-                    if (value == Task_Logger_Pro.LoggingStatus.Running)
+                    if (value == AppsTracker.LoggingStatus.Running)
                     {
                         if (IsLogggingStopped)
                             ResumeLogging();

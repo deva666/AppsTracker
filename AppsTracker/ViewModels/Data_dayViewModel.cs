@@ -4,17 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
-using Task_Logger_Pro.MVVM;
+using AppsTracker.MVVM;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
-using Task_Logger_Pro.Utils;
+using AppsTracker.Utils;
 using System.Diagnostics;
 using AppsTracker.DAL;
 using AppsTracker.DAL.Repos;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.Models.ChartModels;
 
-namespace Task_Logger_Pro.ViewModels
+namespace AppsTracker.ViewModels
 {
     class Data_dayViewModel : ViewModelBase, IWorker, IChildVM, ICommunicator
     {

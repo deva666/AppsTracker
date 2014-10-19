@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Task_Logger_Pro.Utils
+namespace AppsTracker.Utils
 {
     public static class ListViewItemScroller
     {

@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 using System.IO;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.DAL;
-using Task_Logger_Pro.MVVM;
+using AppsTracker.MVVM;
 
-namespace Task_Logger_Pro.Logging
+namespace AppsTracker.Logging
 {
     public sealed class ProcessKiller : IDisposable, ICommunicator
     {

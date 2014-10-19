@@ -2,10 +2,10 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-using Task_Logger_Pro.ViewModels;
+using AppsTracker.ViewModels;
 using AppsTracker.DAL;
 
-namespace Task_Logger_Pro
+namespace AppsTracker
 {
     public partial class MainWindow : Window, IDisposable
     {

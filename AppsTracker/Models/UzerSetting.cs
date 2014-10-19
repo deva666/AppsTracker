@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Task_Logger_Pro.MVVM;
+using AppsTracker.MVVM;
 using AppsTracker.Models.EntityModels;
 
-namespace Task_Logger_Pro
+namespace AppsTracker
 {
     public sealed class SettingsProxy : ObservableObject
     {

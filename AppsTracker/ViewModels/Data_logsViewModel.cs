@@ -2,27 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Task_Logger_Pro.MVVM;
-using Task_Logger_Pro.Logging;
+using AppsTracker.MVVM;
+using AppsTracker.Logging;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
 using System.Management;
 using System.Windows.Controls;
-using Task_Logger_Pro;
+using AppsTracker;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Task_Logger_Pro.Controls;
+using AppsTracker.Controls;
 using System.Data.Entity;
-using Task_Logger_Pro.Utils;
-using Task_Logger_Pro.ViewModels;
+using AppsTracker.Utils;
+using AppsTracker.ViewModels;
 using AppsTracker.DAL;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.Models.ChartModels;
 using AppsTracker.DAL.Repos;
 
-namespace Task_Logger_Pro.Pages.ViewModels
+namespace AppsTracker.Pages.ViewModels
 {
     class Data_logsViewModel : ViewModelBase, IWorker, IChildVM, ICommunicator
     {

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Task_Logger_Pro.Controls.progressBar"
+﻿<UserControl x:Class="AppsTracker.Controls.progressBar"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Height="Auto"

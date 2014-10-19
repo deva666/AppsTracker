@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 using AppsTracker.Models.EntityModels;
-using Task_Logger_Pro.Controls;
+using AppsTracker.Controls;
 
-namespace Task_Logger_Pro.Utils
+namespace AppsTracker.Utils
 {
     public class ListViewBehavior : Behavior<FilterableListView>
     {

@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Task_Logger_Pro.Logging;
-using Task_Logger_Pro.Pages.ViewModels;
+using AppsTracker.Logging;
+using AppsTracker.Pages.ViewModels;
 
-namespace Task_Logger_Pro.MVVM
+namespace AppsTracker.MVVM
 {
     public abstract class ViewModelBase : ObservableObject, IDisposable
     {

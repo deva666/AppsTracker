@@ -9,7 +9,7 @@ using System.Data.Entity;
 using AppsTracker.DAL.Repos;
 using System.Diagnostics;
 
-namespace Task_Logger_Pro.Cleaner
+namespace AppsTracker.Cleaner
 {
     static class DBCleaner
     {

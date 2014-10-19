@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 
-namespace Task_Logger_Pro.Controls
+namespace AppsTracker.Controls
 {
     public class FaderFrame : Frame
     {

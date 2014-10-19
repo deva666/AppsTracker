@@ -3,14 +3,14 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.IO;
-using Task_Logger_Pro.Logging;
+using AppsTracker.Logging;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Task_Logger_Pro.Controls;
+using AppsTracker.Controls;
 using AppsTracker.Models.EntityModels;
 
-namespace Task_Logger_Pro
+namespace AppsTracker
 {
     internal static class Screenshots
     {
@@ -63,19 +63,10 @@ namespace Task_Logger_Pro
         public static void SaveScreenshotToFileAsync(Screenshot screenshot, string path)
         {
             if (screenshot == null || screenshot.Screensht == null)
-                throw new ArgumentNullException();
-            //return Task.Run(() =>
-            //{
-                SaveScreenShot(screenshot.Screensht, path);
-            //});
-        }
+                throw new ArgumentNullException("Screenshot");
 
-        //public static Image ByteArrayToImage(byte[] byteArrayIn)
-        //{
-        //    MemoryStream ms = new MemoryStream(byteArrayIn);
-        //    Image returnImage = Image.FromStream(ms);
-        //    return returnImage;
-        //}
+            SaveScreenShot(screenshot.Screensht, path);
+        }
 
         public static string CorrectPath(string windowTitle)
         {

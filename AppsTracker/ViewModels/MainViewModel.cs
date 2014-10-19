@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
-using Task_Logger_Pro.Logging;
-using Task_Logger_Pro.Pages.ViewModels;
-using Task_Logger_Pro.Controls;
-using Task_Logger_Pro.MVVM;
+using AppsTracker.Logging;
+using AppsTracker.Pages.ViewModels;
+using AppsTracker.Controls;
+using AppsTracker.MVVM;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using AppsTracker.DAL;
 using AppsTracker.Models.EntityModels;
 
-namespace Task_Logger_Pro.ViewModels
+namespace AppsTracker.ViewModels
 {
     class MainViewModel : HostViewModel, ICommunicator
     {

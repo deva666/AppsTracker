@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 using AppsTracker.DAL;
 using AppsTracker.DAL.Repos;
 using AppsTracker.Models.ChartModels;
-using Task_Logger_Pro.Controls;
-using Task_Logger_Pro.MVVM;
+using AppsTracker.Controls;
+using AppsTracker.MVVM;
 
-namespace Task_Logger_Pro.Pages.ViewModels
+namespace AppsTracker.Pages.ViewModels
 {
     class Statistics_dailyAppUsageViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Task_Logger_Pro.MVVM
+namespace AppsTracker.MVVM
 {
     /// <summary>
     /// Attribute to decorate a method to be registered to the Mediator

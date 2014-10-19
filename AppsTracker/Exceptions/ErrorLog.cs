@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace Task_Logger_Pro.Exceptions
+namespace AppsTracker.Exceptions
 {
     public static class Logger
     {

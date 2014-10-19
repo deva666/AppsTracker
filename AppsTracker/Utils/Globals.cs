@@ -6,7 +6,7 @@ using AppsTracker.Models.EntityModels;
 using AppsTracker.DAL;
 using System.Threading.Tasks;
 
-namespace Task_Logger_Pro
+namespace AppsTracker
 {
     public static class Globals
     {

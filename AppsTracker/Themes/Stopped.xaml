@@ -1,8 +1,8 @@
-﻿<ResourceDictionary x:Class="Task_Logger_Pro.Themes.Stopped"
+﻿<ResourceDictionary x:Class="AppsTracker.Themes.Stopped"
                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:controls="clr-namespace:Task_Logger_Pro.Controls"
-                    xmlns:local="clr-namespace:Task_Logger_Pro"
+                    xmlns:controls="clr-namespace:AppsTracker.Controls"
+                    xmlns:local="clr-namespace:AppsTracker"
                     xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart">
 
     <local:ConvertHeaderVisibility x:Key="convertHeaderVisibility" />

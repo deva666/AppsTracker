@@ -7,7 +7,7 @@
     <ProjectGuid>{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Task_Logger_Pro</RootNamespace>
+    <RootNamespace>AppsTracker</RootNamespace>
     <AssemblyName>Apps tracker</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -62,7 +62,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Task_Logger_Pro.EntryPoint</StartupObject>
+    <StartupObject>AppsTracker.EntryPoint</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\AppsTrackerIcon.ico</ApplicationIcon>
@@ -331,7 +331,6 @@
     <Compile Include="Logging\FileWatcher.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Logging\WebWatcher.cs" />
     <Compile Include="MVVM\DelegateCommand.cs" />
     <Compile Include="MVVM\IPageViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -393,9 +392,6 @@
     </Compile>
     <Compile Include="Views\Data_logsView.xaml.cs">
       <DependentUpon>Data_logsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Data_weblogsView.xaml.cs">
-      <DependentUpon>Data_weblogsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\KeylogsView.xaml.cs">
       <DependentUpon>KeylogsView.xaml</DependentUpon>
@@ -643,10 +639,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Data_singleSummaryView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Data_weblogsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

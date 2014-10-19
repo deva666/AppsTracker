@@ -2,10 +2,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:controls="clr-namespace:Task_Logger_Pro.Controls"
+             xmlns:controls="clr-namespace:AppsTracker.Controls"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
-             x:Class="Task_Logger_Pro.Pages.Views.SettingsViews.GeneralView"
-             xmlns:local="clr-namespace:Task_Logger_Pro"
+             x:Class="AppsTracker.Pages.Views.SettingsViews.GeneralView"
+             xmlns:local="clr-namespace:AppsTracker"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="300">

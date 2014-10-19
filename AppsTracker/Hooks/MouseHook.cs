@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Task_Logger_Pro.Hooks
+namespace AppsTracker.Hooks
 {
     public enum MouseButton
     {

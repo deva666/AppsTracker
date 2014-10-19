@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Data.Entity;
-using Task_Logger_Pro.Controls;
-using Task_Logger_Pro.Logging;
-using Task_Logger_Pro.MVVM;
+using AppsTracker.Controls;
+using AppsTracker.Logging;
+using AppsTracker.MVVM;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Data;
@@ -18,7 +18,7 @@ using AppsTracker.DAL;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.DAL.Repos;
 
-namespace Task_Logger_Pro.Pages.ViewModels
+namespace AppsTracker.Pages.ViewModels
 {
     class Data_screenshotsViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
     {

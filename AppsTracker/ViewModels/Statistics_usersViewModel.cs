@@ -7,14 +7,14 @@ using System.Windows.Input;
 using AppsTracker.DAL;
 using AppsTracker.Models.ChartModels;
 using AppsTracker.Models.EntityModels;
-using Task_Logger_Pro.Controls;
-using Task_Logger_Pro.MVVM;
+using AppsTracker.Controls;
+using AppsTracker.MVVM;
 using System.Data.Entity;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using AppsTracker.DAL.Repos;
 
-namespace Task_Logger_Pro.Pages.ViewModels
+namespace AppsTracker.Pages.ViewModels
 {
     class Statistics_usersViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
     {

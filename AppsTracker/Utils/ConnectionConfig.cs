@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task_Logger_Pro.Utils
+namespace AppsTracker.Utils
 {
     public static class ConnectionConfig
     {

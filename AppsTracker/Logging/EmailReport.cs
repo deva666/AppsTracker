@@ -12,7 +12,7 @@ using System.Web.UI;
 using AppsTracker.DAL;
 using AppsTracker.Models.EntityModels;
 
-namespace Task_Logger_Pro.Logging
+namespace AppsTracker.Logging
 {
     public sealed class EmailReport : IDisposable
     {

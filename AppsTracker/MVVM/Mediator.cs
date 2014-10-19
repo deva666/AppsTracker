@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Task_Logger_Pro.MVVM
+namespace AppsTracker.MVVM
 {
 	/// <summary>
 	/// Provides loosely-coupled messaging between

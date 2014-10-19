@@ -6,9 +6,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using Task_Logger_Pro.MVVM;
+using AppsTracker.MVVM;
 
-namespace Task_Logger_Pro.Controls
+namespace AppsTracker.Controls
 {
     public partial class ScreenshotViewer : UserControl, INotifyPropertyChanged
     {

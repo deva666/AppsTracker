@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task_Logger_Pro.Hooks
+namespace AppsTracker.Hooks
 {
     public abstract class HookBase
     {

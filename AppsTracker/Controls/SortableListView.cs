@@ -8,7 +8,7 @@ using System.Windows.Data;
 using System.Windows;
 using WPFHelper;
 
-namespace Task_Logger_Pro.Controls
+namespace AppsTracker.Controls
 {
     public class SortableListView : ListView
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace Task_Logger_Pro.Logging
+namespace AppsTracker.Logging
 {
     public class FileWatcher : FileSystemWatcher, IDisposable
     {

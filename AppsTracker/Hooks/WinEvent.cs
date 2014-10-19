@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 
-namespace Task_Logger_Pro.Hooks
+namespace AppsTracker.Hooks
 {
     public sealed class WinEvent : HookBase, IDisposable
     {

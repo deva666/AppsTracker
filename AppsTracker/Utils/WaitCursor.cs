@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Task_Logger_Pro
+namespace AppsTracker
 {
     public class WaitCursor : IDisposable
     {

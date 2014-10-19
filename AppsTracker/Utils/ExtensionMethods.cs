@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using AppsTracker.Models.EntityModels;
 
-namespace Task_Logger_Pro
+namespace AppsTracker
 {
     public static class ExtensionMethods
     {

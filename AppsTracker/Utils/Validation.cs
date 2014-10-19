@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
 
-namespace Task_Logger_Pro
+namespace AppsTracker
 {
     public class EmailValidation : ValidationRule
     {

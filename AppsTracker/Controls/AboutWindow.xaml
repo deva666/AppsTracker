@@ -1,4 +1,4 @@
-﻿<Window x:Class="Task_Logger_Pro.Controls.AboutWindow"
+﻿<Window x:Class="AppsTracker.Controls.AboutWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="About apps tracker"
@@ -10,7 +10,7 @@
         WindowStartupLocation="CenterScreen"
         BorderBrush="{DynamicResource WindowBorderBrush}"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:viewModel="clr-namespace:Task_Logger_Pro.MVVM">
+        xmlns:viewModel="clr-namespace:AppsTracker.MVVM">
     <Window.DataContext>
         <viewModel:AboutWindowViewModel />
     </Window.DataContext>

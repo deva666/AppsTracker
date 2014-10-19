@@ -4,12 +4,12 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Task_Logger_Pro.Controls;
-using Task_Logger_Pro.MVVM;
-using Task_Logger_Pro.Utils;
+using AppsTracker.Controls;
+using AppsTracker.MVVM;
+using AppsTracker.Utils;
 
 
-namespace Task_Logger_Pro.ViewModels
+namespace AppsTracker.ViewModels
 {
     public class Settings_licenseViewModel : ViewModelBase, IChildVM
     {

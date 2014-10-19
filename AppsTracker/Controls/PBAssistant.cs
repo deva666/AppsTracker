@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Task_Logger_Pro.Controls
+namespace AppsTracker.Controls
 {
     public static class PBAssistant
     {

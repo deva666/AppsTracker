@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Task_Logger_Pro.MVVM;
+using AppsTracker.MVVM;
 
-namespace Task_Logger_Pro.ViewModels
+namespace AppsTracker.ViewModels
 {
     class SettingsHostViewModel : HostViewModel, IChildVM
     {

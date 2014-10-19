@@ -13,13 +13,13 @@ using System.Windows.Media.Animation;
 using AppsTracker.DAL;
 using AppsTracker.Models.EntityModels;
 using Microsoft.Win32;
-using Task_Logger_Pro.Cleaner;
-using Task_Logger_Pro.Controls;
-using Task_Logger_Pro.Logging;
-using Task_Logger_Pro.Utils;
+using AppsTracker.Cleaner;
+using AppsTracker.Controls;
+using AppsTracker.Logging;
+using AppsTracker.Utils;
 
 
-namespace Task_Logger_Pro
+namespace AppsTracker
 {
     #region Enums
 
@@ -460,7 +460,7 @@ namespace Task_Logger_Pro
             {
                 if (this.MainWindow == null)
                 {
-                    this.MainWindow = new Task_Logger_Pro.MainWindow();
+                    this.MainWindow = new AppsTracker.MainWindow();
                     this.MainWindow.Left = UzerSetting.MainWindowLeft;
                     this.MainWindow.Top = UzerSetting.MainWindowTop;
                     this.MainWindow.Show();
@@ -541,7 +541,7 @@ namespace Task_Logger_Pro
         {
             try
             {
-                Task_Logger_Pro.Exceptions.Logger.DumpExceptionInfo(e.Exception);
+                AppsTracker.Exceptions.Logger.DumpExceptionInfo(e.Exception);
                 if (App.UzerSetting != null)
                 {
                     if (!App.UzerSetting.Stealth)

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:ee="http://schemas.microsoft.com/expression/2010/effects"
-			 x:Class="Task_Logger_Pro.Controls.closeBtn" 
+			 x:Class="AppsTracker.Controls.closeBtn" 
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="50" ClipToBounds="True">
     <Grid Width="50" Height="50" ClipToBounds="True">

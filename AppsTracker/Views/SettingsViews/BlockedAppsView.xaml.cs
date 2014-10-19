@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Task_Logger_Pro.Pages.Views.SettingsViews
+namespace AppsTracker.Pages.Views.SettingsViews
 {
     /// <summary>
     /// Interaction logic for BlockedAppsView.xaml

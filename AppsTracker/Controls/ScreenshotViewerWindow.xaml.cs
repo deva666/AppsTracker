@@ -14,9 +14,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using Task_Logger_Pro.Pages.ViewModels;
+using AppsTracker.Pages.ViewModels;
 
-namespace Task_Logger_Pro.Controls
+namespace AppsTracker.Controls
 {
     public partial class ScreenshotViewerWindow : Window
     {

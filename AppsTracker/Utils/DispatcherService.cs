@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace Task_Logger_Pro
+namespace AppsTracker
 {
     public static class DispatcherService
     {

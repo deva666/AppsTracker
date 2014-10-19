@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Task_Logger_Pro.Controls
+namespace AppsTracker.Controls
 {
     public partial class progressBar : UserControl
     {

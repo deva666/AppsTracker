@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
 
-namespace Task_Logger_Pro.Controls
+namespace AppsTracker.Controls
 {
     class SelectableListView : ListView
     {

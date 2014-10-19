@@ -1,12 +1,12 @@
-﻿<UserControl x:Class="Task_Logger_Pro.Pages.Views.Data_logsView"
+﻿<UserControl x:Class="AppsTracker.Pages.Views.Data_logsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Task_Logger_Pro"
-             xmlns:controls="clr-namespace:Task_Logger_Pro.Controls"
-             xmlns:views="clr-namespace:Task_Logger_Pro.Views"
-             xmlns:viewModels="clr-namespace:Task_Logger_Pro.ViewModels"
+             xmlns:local="clr-namespace:AppsTracker"
+             xmlns:controls="clr-namespace:AppsTracker.Controls"
+             xmlns:views="clr-namespace:AppsTracker.Views"
+             xmlns:viewModels="clr-namespace:AppsTracker.ViewModels"
              mc:Ignorable="d">
     <UserControl.Resources>
 

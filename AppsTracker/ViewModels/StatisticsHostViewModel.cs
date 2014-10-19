@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using Task_Logger_Pro.MVVM;
-using Task_Logger_Pro.Pages.ViewModels;
+using AppsTracker.MVVM;
+using AppsTracker.Pages.ViewModels;
 
-namespace Task_Logger_Pro.ViewModels
+namespace AppsTracker.ViewModels
 {
     class StatisticsHostViewModel : HostViewModel, IChildVM
     {

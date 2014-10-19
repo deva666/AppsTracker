@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Task_Logger_Pro.Views
+namespace AppsTracker.Views
 {
     /// <summary>
     /// Interaction logic for Data_dayView.xaml

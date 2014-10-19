@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace Task_Logger_Pro.Utils
+namespace AppsTracker.Utils
 {
     class SettingsQueue : IDisposable
     {

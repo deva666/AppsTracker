@@ -1,9 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:controls="clr-namespace:Task_Logger_Pro.Controls"
-                    xmlns:local="clr-namespace:Task_Logger_Pro"
+                    xmlns:controls="clr-namespace:AppsTracker.Controls"
+                    xmlns:local="clr-namespace:AppsTracker"
                     xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
-                    xmlns:utils="clr-namespace:Task_Logger_Pro.Utils"
+                    xmlns:utils="clr-namespace:AppsTracker.Utils"
                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity">
 
     <local:ConvertHeaderVisibility x:Key="convertHeaderVisibility" />

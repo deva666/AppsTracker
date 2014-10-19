@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task_Logger_Pro.Encryption
+namespace AppsTracker.Encryption
 {
     class Encrypt
     {

@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task_Logger_Pro.MVVM
+namespace AppsTracker.MVVM
 {
     class AboutWindowViewModel : ViewModelBase
     {

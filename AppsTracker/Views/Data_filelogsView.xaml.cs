@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Task_Logger_Pro.Pages.Views
+namespace AppsTracker.Pages.Views
 {
     /// <summary>
     /// Interaction logic for Data_filelogsView.xaml

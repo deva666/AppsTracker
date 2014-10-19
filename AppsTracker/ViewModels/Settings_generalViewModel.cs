@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Task_Logger_Pro.Controls;
-using Task_Logger_Pro.MVVM;
-using Task_Logger_Pro.Encryption;
+using AppsTracker.Controls;
+using AppsTracker.MVVM;
+using AppsTracker.Encryption;
 using System.Collections.ObjectModel;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.DAL;
 using AppsTracker.Models.Proxy;
 using System.Security;
 
-namespace Task_Logger_Pro.ViewModels
+namespace AppsTracker.ViewModels
 {
     public class Settings_generalViewModel : ViewModelBase, IChildVM, ICommunicator
     {

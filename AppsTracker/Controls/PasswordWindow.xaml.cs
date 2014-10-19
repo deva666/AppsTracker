@@ -14,10 +14,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using Task_Logger_Pro.Controls;
+using AppsTracker.Controls;
 
 
-namespace Task_Logger_Pro
+namespace AppsTracker
 {
     public partial class PasswordWindow : Window
     {

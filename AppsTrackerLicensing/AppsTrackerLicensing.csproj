@@ -111,7 +111,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Task Logger Pro\AppsTrackerCore.csproj">
+    <ProjectReference Include="..\AppsTracker\AppsTrackerCore.csproj">
       <Project>{ed886551-a8b3-492d-acec-fe2df0b484f7}</Project>
       <Name>AppsTrackerCore</Name>
     </ProjectReference>

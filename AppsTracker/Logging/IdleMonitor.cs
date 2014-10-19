@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-using Task_Logger_Pro.Hooks;
+using AppsTracker.Hooks;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Reflection;
 
-namespace Task_Logger_Pro.Logging
+namespace AppsTracker.Logging
 {
     public class IdleMonitor : IDisposable
     {
