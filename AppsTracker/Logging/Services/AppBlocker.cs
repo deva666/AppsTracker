@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Threading;
-using System.Management;
-using System.Data.Entity;
 using System.Threading.Tasks;
-using System.IO;
+
+using AppsTracker;
 using AppsTracker.Models.EntityModels;
-using AppsTracker.DAL;
+using AppsTracker.Models.Proxy;
 using AppsTracker.MVVM;
 
 namespace AppsTracker.Logging
 {
-    public sealed class ProcessKiller : IDisposable, ICommunicator
+    internal sealed class AppBlocker : IComponent, ICommunicator
     {
         #region Fields
 
@@ -28,7 +26,7 @@ namespace AppsTracker.Logging
 
         #region Properties
 
-        public event EventHandler<ProcessKilledEventArgs> ProcessKilledEvent;
+        public event EventHandler<AppBlockerEventArgs> AppBlocked;
 
         public IEnumerable<AppsToBlock> AppsToBlockList
         {
@@ -47,7 +45,7 @@ namespace AppsTracker.Logging
 
         #region Constructor
 
-        public ProcessKiller()
+        public AppBlocker()
         {
             Mediator.Register(MediatorMessages.AppsToBlockChanged, new Action<List<AppsToBlock>>(RefreshAppsToBlock));
             WqlEventQuery query = new WqlEventQuery("__InstanceCreationEvent", new TimeSpan(0, 0, 1), "TargetInstance isa \"Win32_Process\"");
@@ -58,7 +56,7 @@ namespace AppsTracker.Logging
             _managementEventWatcher.EventArrived += processStartEvent_EventArrived;
         }
 
-        public ProcessKiller(IEnumerable<AppsToBlock> collection)
+        public AppBlocker(IEnumerable<AppsToBlock> collection)
             : this()
         {
             _appsToBlockList = collection;
@@ -102,9 +100,7 @@ namespace AppsTracker.Logging
                         foreach (var process in processCollection)
                             process.Kill();
 
-                        var handler = Volatile.Read(ref ProcessKilledEvent);
-                        if (handler != null)
-                            handler(this, new ProcessKilledEventArgs(blockedApp.Application));
+                        AppBlocked.InvokeSafely<AppBlockerEventArgs>(this, new AppBlockerEventArgs(blockedApp.Application));
                     }
                 }
             }
@@ -183,7 +179,6 @@ namespace AppsTracker.Logging
 
         private void Dispose(bool disposing)
         {
-            Debug.WriteLine("Disposing " + this.GetType());
             if (_managementEventWatcher != null)
             {
                 this.Stop();
@@ -192,20 +187,25 @@ namespace AppsTracker.Logging
             }
         }
 
+        #endregion
+
+        public IMediator Mediator
+        {
+            get { return AppsTracker.MVVM.Mediator.Instance; }
+        }
+
         public void Dispose()
         {
             Dispose(true);
         }
 
-        #endregion
-
-        public Mediator Mediator
+        public void SettingsChanged(ISettings settings)
         {
-            get { return Mediator.Instance; }
+            
         }
     }
 
-    public class ProcessKilledEventArgs : EventArgs
+    public class AppBlockerEventArgs : EventArgs
     {
         Aplication _aplication;
 
@@ -214,11 +214,9 @@ namespace AppsTracker.Logging
             get { return _aplication; }
         }
 
-        public ProcessKilledEventArgs(Aplication aplication)
+        public AppBlockerEventArgs(Aplication aplication)
         {
             _aplication = aplication;
         }
-
     }
-
 }

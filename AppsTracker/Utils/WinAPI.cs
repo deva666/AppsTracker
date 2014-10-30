@@ -391,14 +391,6 @@ namespace AppsTracker
 
         #endregion
 
-        #region delegates
-        public delegate IntPtr HookHandlerCallBack(int code, IntPtr wParam, IntPtr
- lParam);
-
-
-        public delegate void WinEventCallBack(IntPtr hWinEventHook, uint eventType, IntPtr hWnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
-        #endregion
-
         #region imported methods
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
@@ -411,16 +403,6 @@ namespace AppsTracker
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         internal static extern IntPtr GetDC(IntPtr hwnd);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        internal static extern IntPtr GetCursor();
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        internal static extern bool GetCursorInfo(ref CURSORINFO cinfo);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        internal static extern bool GetIconInfo(IntPtr hicon, ref ICONINFO iInfo);
-
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         internal static extern IntPtr CopyIcon(IntPtr hicon);
 
@@ -435,14 +417,14 @@ namespace AppsTracker
             out uint lpdwProcessId);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern IntPtr SetWindowsHookEx(int idHook, KeyBoardHook.HookHandlerCallBack lpfn, IntPtr hMod, uint dwThreadId);
+        public static extern IntPtr SetWindowsHookEx(int idHook, KeyboardHookCallback lpfn, IntPtr hMod, uint dwThreadId);
 
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern IntPtr SetWindowsHookEx(int idHook, MouseHook.HookHandlerCallBack lpfn, IntPtr hMod, uint dwThreadId);
+        internal static extern IntPtr SetWindowsHookEx(int idHook, MouseHookCallback lpfn, IntPtr hMod, uint dwThreadId);
 
         [DllImport("user32.dll")]
-        public static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEvent.WinEventCallBack lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
+        internal static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinHookCallBack lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
 
         [DllImport("user32.dll")]
         internal static extern bool UnhookWinEvent(IntPtr hWinEventHook);
@@ -450,8 +432,8 @@ namespace AppsTracker
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         internal static extern IntPtr GetModuleHandle(string lpModuleName);
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        internal static extern IntPtr SetWindowsHookEx(int idHook, HookHandlerCallBack lpfn, IntPtr hMod, uint dwThreadId);
+        //[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        //internal static extern IntPtr SetWindowsHookEx(int idHook, HookHandlerCallBack lpfn, IntPtr hMod, uint dwThreadId);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -464,27 +446,11 @@ namespace AppsTracker
         internal static extern short GetKeyState(int keyCode);
 
         [DllImport("user32.dll")]
-        internal static extern int ToAscii(uint uVirtKey, uint uScanCode, byte[] lpKeyState,
-           byte[] lpwTransKey, uint fuState);
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        internal static extern int ToAscii(uint uVirtKey, uint uScanCode, byte[] lpKeyState,
-           [Out] StringBuilder lpChar, uint uFlags);
-
-        [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool GetKeyboardState(byte[] lpKeyState);
 
         [DllImport("user32.dll")]
-        internal static extern uint MapVirtualKeyEx(uint uCode, uint uMapType, IntPtr dwhkl);
-
-        [DllImport("user32.dll")]
         internal static extern IntPtr GetKeyboardLayout(uint idThread);
-
-        [DllImport("user32.dll")]
-        internal static extern int ToUnicode(uint virtualKeyCode, uint scanCode, byte[] keyboardState,
-            [Out, MarshalAs(UnmanagedType.LPWStr, SizeConst = 64)]
-StringBuilder receivingBuffer, int bufferSize, uint flags);
 
         [DllImport("user32.dll")]
         internal static extern int ToUnicodeEx(uint wVirtKey, uint wScanCode, byte[]
@@ -497,9 +463,6 @@ StringBuilder receivingBuffer, int bufferSize, uint flags);
 
         [DllImport("advapi32.dll", SetLastError = true)]
         internal static extern bool SetKernelObjectSecurity(IntPtr Handle, int securityInformation, [In] byte[] pSecurityDescriptor);
-
-        [DllImport("advapi32.dll", SetLastError = true)]
-        internal static extern bool GetTokenInformation(IntPtr tokenHandle, TokenInformationClass tokenInformationClass, IntPtr tokenInformation, int tokenInformationLength, out int returnLength);
 
         [DllImport("kernel32.dll")]
         internal static extern IntPtr GetCurrentProcess();

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using AppsTracker.Models.EntityModels;
@@ -16,6 +17,20 @@ namespace AppsTracker
         {
             if (string.IsNullOrEmpty(value)) return value;
             return value.Length <= maxLength ? value : value.Substring(0, maxLength);
+        }
+
+        public static void InvokeSafely<T>(this EventHandler<T> handler, object sender, T args) where T : EventArgs
+        {
+            var copy = Volatile.Read(ref handler);
+            if (copy != null)
+                copy(sender, args);
+        }
+
+        public static void InvokeSafely(this EventHandler handler, object sender, EventArgs args)
+        {
+            var copy = Volatile.Read(ref handler);
+            if (copy != null)
+                copy(sender, args);
         }
 
         public static string ToExtendedString(this UsageTypes type)

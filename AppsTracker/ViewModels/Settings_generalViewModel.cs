@@ -20,7 +20,7 @@ using System.Security;
 
 namespace AppsTracker.ViewModels
 {
-    public class Settings_generalViewModel : ViewModelBase, IChildVM, ICommunicator
+    internal class Settings_generalViewModel : ViewModelBase, IChildVM, ICommunicator
     {
         #region Fields
 
@@ -629,7 +629,7 @@ namespace AppsTracker.ViewModels
                 {
                     if (IsMasterPasswordSet)
                     {
-                        string currentPassword =  Encrypt.GetEncryptedString(passwords[2].Password);
+                        string currentPassword = Encrypt.GetEncryptedString(passwords[2].Password);
                         string storedPassword = App.UzerSetting.WindowOpen;
                         if (storedPassword == null) { IsMasterPasswordSet = false; return; }
                         if (currentPassword != storedPassword)
@@ -980,9 +980,9 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public Mediator Mediator
+        public IMediator Mediator
         {
-            get { return Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
     }
 }

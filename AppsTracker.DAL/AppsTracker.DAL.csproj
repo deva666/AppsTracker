@@ -97,12 +97,25 @@
     <Compile Include="AppsDBConfiguration.cs" />
     <Compile Include="AppsEntitites.cs" />
     <Compile Include="Repos\AplicationRepo.cs" />
+    <Compile Include="Repos\BaseEditableRepository.cs" />
     <Compile Include="Repos\BaseRepo.cs" />
+    <Compile Include="Repos\BaseRepository.cs" />
+    <Compile Include="Repos\GenericRepository.cs" />
+    <Compile Include="Repos\IEditableRepository.cs" />
     <Compile Include="Repos\IRepo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repos\IRepository.cs" />
+    <Compile Include="Repos\IRepositoryFactory.cs" />
+    <Compile Include="Repos\LogEditableRepository.cs" />
     <Compile Include="Repos\LogRepo.cs" />
+    <Compile Include="Repos\LogRepository.cs" />
+    <Compile Include="Repos\RepositoryFactory.cs" />
     <Compile Include="Repos\ScreenshotRepo.cs" />
     <Compile Include="Repos\UsageRepo.cs" />
+    <Compile Include="Service\AppsService.cs" />
+    <Compile Include="Service\IAppsService.cs" />
+    <Compile Include="Service\IBaseService.cs" />
+    <Compile Include="Service\ServiceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

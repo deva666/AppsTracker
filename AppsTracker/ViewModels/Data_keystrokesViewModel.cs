@@ -67,9 +67,9 @@ namespace AppsTracker.Pages.ViewModels
             }
         }
 
-        public Mediator Mediator
+        public IMediator Mediator
         {
-            get { return Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
 
         #endregion

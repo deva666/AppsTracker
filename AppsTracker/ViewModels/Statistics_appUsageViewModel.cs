@@ -16,7 +16,7 @@ using AppsTracker.DAL.Repos;
 
 namespace AppsTracker.Pages.ViewModels
 {
-    class Statistics_appUsageViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
+    internal class Statistics_appUsageViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
     {
         #region Fields
         bool _working;
@@ -113,9 +113,9 @@ namespace AppsTracker.Pages.ViewModels
             }
         }
 
-        public Mediator Mediator
+        public IMediator Mediator
         {
-            get { return Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
 
         #endregion

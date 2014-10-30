@@ -9,7 +9,7 @@ namespace AppsTracker.MVVM
 	/// various colleagues.  All references to objects
 	/// are stored weakly, to prevent memory leaks.
 	/// </summary>
-	public class Mediator
+	public class Mediator : IMediator
 	{
         private static readonly Lazy<Mediator> _lazy = new Lazy<Mediator>(() => new Mediator());
         public static Mediator Instance { get { return _lazy.Value; } }

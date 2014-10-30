@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-using AppsTracker.Hooks;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Reflection;
+
+using AppsTracker.Hooks;
 
 namespace AppsTracker.Logging
 {
@@ -20,11 +21,11 @@ namespace AppsTracker.Logging
 
         private Timer _idleTimer;
 
-        KeyBoardHook.HookHandlerCallBack keyboardCallback = null;
-        MouseHook.HookHandlerCallBack mouseHookCallback = null;
+        KeyboardHookCallback _keyboardCallback = null;
+        MouseHookCallback _mouseHookCallback = null;
 
-        IntPtr keyboardHookHandle = IntPtr.Zero;
-        IntPtr mouseHookHandle = IntPtr.Zero;
+        IntPtr _keyboardHookHandle = IntPtr.Zero;
+        IntPtr _mouseHookHandle = IntPtr.Zero;
 
         public event EventHandler IdleEntered;
         public event EventHandler IdleStoped;
@@ -48,17 +49,17 @@ namespace AppsTracker.Logging
 
         private void SetHooks()
         {
-            if (keyboardHookHandle == IntPtr.Zero && mouseHookHandle == IntPtr.Zero)
+            if (_keyboardHookHandle == IntPtr.Zero && _mouseHookHandle == IntPtr.Zero)
             {
-                keyboardCallback = new KeyBoardHook.HookHandlerCallBack(KeyboardHookProc);
-                mouseHookCallback = new MouseHook.HookHandlerCallBack(MouseHookProc);
+                _keyboardCallback = new KeyboardHookCallback(KeyboardHookCallback);
+                _mouseHookCallback = new MouseHookCallback(MouseHookCallback);
                 using (Process process = Process.GetCurrentProcess())
                 {
                     using (ProcessModule module = process.MainModule)
                     {
-                        keyboardHookHandle = WinAPI.SetWindowsHookEx(13, keyboardCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
-                        mouseHookHandle = WinAPI.SetWindowsHookEx(14, mouseHookCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
-                        Debug.Assert(keyboardHookHandle != IntPtr.Zero && mouseHookHandle != IntPtr.Zero, "Setting hooks failed");
+                        _keyboardHookHandle = WinAPI.SetWindowsHookEx(13, _keyboardCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
+                        _mouseHookHandle = WinAPI.SetWindowsHookEx(14, _mouseHookCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
+                        Debug.Assert(_keyboardHookHandle != IntPtr.Zero && _mouseHookHandle != IntPtr.Zero, "Setting hooks failed");
                     }
                 }
                 _hooksRemoved = false;
@@ -66,19 +67,19 @@ namespace AppsTracker.Logging
         }
 
 
-        private IntPtr KeyboardHookProc(int nCode, IntPtr wParam, IntPtr lParam)
+        private IntPtr KeyboardHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0)
                 ResetBase();
-            return WinAPI.CallNextHookEx(keyboardHookHandle, nCode, wParam, lParam);
+            return WinAPI.CallNextHookEx(_keyboardHookHandle, nCode, wParam, lParam);
         }
 
 
-        private IntPtr MouseHookProc(int nCode, IntPtr wParam, IntPtr lParam)
+        private IntPtr MouseHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0)
                 ResetBase();
-            return WinAPI.CallNextHookEx(mouseHookHandle, nCode, wParam, lParam);
+            return WinAPI.CallNextHookEx(_mouseHookHandle, nCode, wParam, lParam);
         }
 
         private void ResetBase()
@@ -88,35 +89,34 @@ namespace AppsTracker.Logging
             _idleEntered = false;
             RemoveHooks();
             _idleTimer.Change(1 * 60 * 1000, 1000);
-            var handler = IdleStoped;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            IdleStoped.InvokeSafely(this, EventArgs.Empty);
         }
 
         private void CheckIdleState(object sender)
         {
             if (_idleEntered || !_enabled)
                 return;
+
             IdleTimeInfo idleInfo = IdleTimeWatcher.GetIdleTimeInfo();
+
             if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(App.UzerSetting.IdleInterval))
             {
                 _idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
                 _idleEntered = true;
                 App.Current.Dispatcher.Invoke(SetHooks);
-                var handler = IdleEntered;
-                if (handler != null)
-                    handler(this, EventArgs.Empty);
+                IdleEntered.InvokeSafely(this, EventArgs.Empty);
             }
         }
 
         private void RemoveHooks()
         {
-            WinAPI.UnhookWindowsHookEx(keyboardHookHandle);
-            WinAPI.UnhookWindowsHookEx(mouseHookHandle);
-            keyboardHookHandle = IntPtr.Zero;
-            mouseHookHandle = IntPtr.Zero;
-            keyboardCallback = null;
-            mouseHookCallback = null;
+            WinAPI.UnhookWindowsHookEx(_keyboardHookHandle);
+            WinAPI.UnhookWindowsHookEx(_mouseHookHandle);
+
+            _keyboardHookHandle = IntPtr.Zero;
+            _mouseHookHandle = IntPtr.Zero;
+            _keyboardCallback = null;
+            _mouseHookCallback = null;
             _hooksRemoved = true;
         }
 

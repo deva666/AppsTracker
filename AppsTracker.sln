@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTracker.DAL", "AppsTrac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTracker.Models", "AppsTracker.Models\AppsTracker.Models.csproj", "{CC8B5831-53C4-46DA-97DB-18C75ED7D929}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTracker.Tests", "AppsTracker.Tests\AppsTracker.Tests.csproj", "{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,16 @@ Global
 		{CC8B5831-53C4-46DA-97DB-18C75ED7D929}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CC8B5831-53C4-46DA-97DB-18C75ED7D929}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{CC8B5831-53C4-46DA-97DB-18C75ED7D929}.Test|Any CPU.Build.0 = Test|Any CPU
+		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Installer|Any CPU.ActiveCfg = Release|Any CPU
+		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Installer|Any CPU.Build.0 = Release|Any CPU
+		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Portable|Any CPU.ActiveCfg = Release|Any CPU
+		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Portable|Any CPU.Build.0 = Release|Any CPU
+		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Test|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

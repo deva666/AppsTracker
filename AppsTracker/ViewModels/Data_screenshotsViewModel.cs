@@ -20,7 +20,7 @@ using AppsTracker.DAL.Repos;
 
 namespace AppsTracker.Pages.ViewModels
 {
-    class Data_screenshotsViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
+    internal class Data_screenshotsViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
     {
         #region Fields
 
@@ -133,9 +133,9 @@ namespace AppsTracker.Pages.ViewModels
                 return _saveScreenshotCommand;
             }
         }
-        public Mediator Mediator
+        public IMediator Mediator
         {
-            get { return Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
         #endregion
 
@@ -163,8 +163,8 @@ namespace AppsTracker.Pages.ViewModels
                                                          && l.DateCreated >= Globals.Date1
                                                          && l.DateCreated <= Globals.Date2
                                                          && l.Window.Application.UserID == Globals.SelectedUserID
-                                                         ,l=>l.Screenshots
-                                                         ,l=>l.Window.Application);
+                                                         , l => l.Screenshots
+                                                         , l => l.Window.Application);
         }
 
         private void OpenScreenshotViewer(object parameter)

@@ -228,9 +228,9 @@ namespace AppsTracker.ViewModels
             }
         }
 
-        public Mediator Mediator
+        public IMediator Mediator
         {
-            get { return Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
 
         #endregion
@@ -240,14 +240,6 @@ namespace AppsTracker.ViewModels
         public MainViewModel()
         {
             this.SelectedChild = new DataHostViewModel();
-
-            //DataHostViewModel dataHostViewModel = new DataHostViewModel();
-            //StatisticsHostViewModel statisticsHostViewModel = new StatisticsHostViewModel();
-            //SettingsHostViewModel settingsHostViewModel = new SettingsHostViewModel();
-
-            //var tempChildren = new List<IChildVM>() { dataHostViewModel, statisticsHostViewModel, settingsHostViewModel };
-
-            //this.Children = new ReadOnlyCollection<IChildVM>(tempChildren);
         }
 
         #endregion

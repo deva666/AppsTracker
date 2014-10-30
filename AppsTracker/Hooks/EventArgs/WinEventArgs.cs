@@ -4,27 +4,22 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppsTracker.Models.Proxy;
 
 namespace AppsTracker.Hooks
 {
-    public sealed class WinEventArgs : EventArgs
+    public sealed class WinHookArgs : EventArgs
     {
 
-        #region Properties
-
         public string WindowTitle { get; private set; }
-        public ProcessInfo ProcessInfo { get; private set; }
+        public IAppInfo AppInfo{ get; private set; }
 
-        #endregion
 
-        #region Constructor
-
-        public WinEventArgs(string windowTitle, Process process)
+        public WinHookArgs(string windowTitle, IAppInfo appInfo)
         {
-            ProcessInfo = ProcessInfo.GetProcessInfo(process);
+            AppInfo = appInfo;
             WindowTitle = windowTitle;
         }
 
-        #endregion
     }
 }

@@ -11,6 +11,7 @@ namespace AppsTracker.MVVM
         public const string ApplicationAdded = "New Application added";
         public const string RefreshLogs = "Refresh logs";
         public const string AppsToBlockChanged = "Changing AppsToBlock";
-        //public const string FilterDatesChanged = "Filter dates";
+        public const string IdleEntered = "Idle entered";
+        public const string IdleStopped = "Idle stopped";
     }
 }

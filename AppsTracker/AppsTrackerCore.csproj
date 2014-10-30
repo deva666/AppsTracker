@@ -243,10 +243,21 @@
     <Compile Include="Hooks\EventArgs\MouseHookArgs.cs" />
     <Compile Include="Hooks\EventArgs\WinEventArgs.cs" />
     <Compile Include="Hooks\HookBase.cs" />
-    <Compile Include="Logging\IdleMonitor.cs" />
-    <Compile Include="Logging\IdleTimeWatcher.cs" />
+    <Compile Include="Hooks\IHook.cs" />
+    <Compile Include="Logging\EmailHelper.cs" />
+    <Compile Include="Logging\Services\AppBlocker.cs" />
+    <Compile Include="Logging\BlockLogger.cs" />
+    <Compile Include="Logging\ComponentContainer.cs" />
+    <Compile Include="Logging\Services\IdleMonitor.cs" />
+    <Compile Include="Logging\Services\IdleTimeWatcher.cs" />
+    <Compile Include="Logging\IComponent.cs" />
+    <Compile Include="Logging\Services\ServiceWrap.cs" />
+    <Compile Include="Logging\Services\LogService.cs" />
+    <Compile Include="Logging\UsageLogger.cs" />
+    <Compile Include="Logging\WindowLogger.cs" />
     <Compile Include="MVVM\HostViewModel.cs" />
     <Compile Include="MVVM\ICommunicator.cs" />
+    <Compile Include="MVVM\IMediator.cs" />
     <Compile Include="MVVM\IPage.cs" />
     <Compile Include="MVVM\IWorker.cs" />
     <Compile Include="MVVM\IChildVM.cs" />
@@ -327,10 +338,7 @@
     <Compile Include="Utils\ExtensionMethods.cs" />
     <Compile Include="Models\UzerSetting.cs" />
     <Compile Include="ViewModels\AboutWindowViewModel.cs" />
-    <Compile Include="Logging\EmailReport.cs" />
-    <Compile Include="Logging\FileWatcher.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Logging\Services\EmailService.cs" />
     <Compile Include="MVVM\DelegateCommand.cs" />
     <Compile Include="MVVM\IPageViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -342,7 +350,6 @@
     <Compile Include="MVVM\ViewModelBase.cs" />
     <Compile Include="Exceptions\ErrorLog.cs" />
     <Compile Include="Hooks\MouseHook.cs" />
-    <Compile Include="Logging\ProcessKiller.cs" />
     <Compile Include="MVVM\WeakAction.cs" />
     <Compile Include="ViewModels\Data_filelogsViewModel.cs" />
     <Compile Include="ViewModels\Data_logsViewModel.cs" />
@@ -436,7 +443,7 @@
     <Compile Include="Utils\Globals.cs" />
     <Compile Include="Utils\ValueConverters.cs" />
     <Compile Include="Utils\WinAPI.cs" />
-    <Compile Include="Hooks\WinEvent.cs" />
+    <Compile Include="Hooks\WinHook.cs" />
     <Page Include="Controls\AboutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

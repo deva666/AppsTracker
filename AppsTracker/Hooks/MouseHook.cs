@@ -17,29 +17,29 @@ namespace AppsTracker.Hooks
         None
     }
 
-    sealed class MouseHook : HookBase, IDisposable
+    internal delegate IntPtr MouseHookCallback(int code, IntPtr wParam, IntPtr lParam);
+
+    internal sealed class MouseHook : IHook<MouseHookArgs>
     {
         #region Fields
 
-        bool isDisposed;
+        private bool _isDisposed;
+        private bool _isHookEnabled = true;
 
         internal const int WM_LBUTTONDOWN = 0x0201;
         internal const int WM_RBUTTONDOWN = 0x0204;
         internal const int WM_LBUTTONUP = 0x0202;
         internal const int WM_RBUTTONUP = 0x0205;
-        const int WH_MOUSE_LL = 14;
 
-        Point point;
-        WinAPI.MSLLHOOKSTRUCT mouseStruct;
+        private const int WH_MOUSE_LL = 14;
 
-        public event EventHandler<MouseHookArgs> MouseMove;
-        public event EventHandler<MouseHookArgs> MouseClickUp;
-        public event EventHandler<MouseHookArgs> MouseClickDown;
+        public event EventHandler<MouseHookArgs> HookProc;
 
-        internal delegate IntPtr HookHandlerCallBack(int code, IntPtr wParam, IntPtr lParam);
+        WinAPI.MSLLHOOKSTRUCT _mouseStruct;
 
-        internal HookHandlerCallBack hookCallBack;
-        IntPtr hookID = IntPtr.Zero;
+        internal MouseHookCallback _hookCallBack;
+
+        IntPtr _hookID = IntPtr.Zero;
 
         #endregion
 
@@ -47,7 +47,6 @@ namespace AppsTracker.Hooks
 
         public MouseHook()
         {
-            point = new Point();
             SetHook();
         }
 
@@ -55,33 +54,16 @@ namespace AppsTracker.Hooks
 
         #region HookCallBack
 
-        IntPtr HookProc(int code, IntPtr wParam, IntPtr lParam)
+        IntPtr MouseHookCallback(int code, IntPtr wParam, IntPtr lParam)
         {
-            if (code < 0)
-            {
+            if (code < 0 || !_isHookEnabled)
                 return WinAPI.CallNextHookEx(IntPtr.Zero, code, wParam, lParam);
-            }
-            mouseStruct = (WinAPI.MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(WinAPI.MSLLHOOKSTRUCT));
-            if (point != mouseStruct.pt)
-            {
-                var handler = MouseMove;
-                if (handler != null) handler(this, new MouseHookArgs(point, (int)wParam));
-            }
-            point = mouseStruct.pt;
 
-            if (wParam == (IntPtr)WM_LBUTTONDOWN || wParam == (IntPtr)WM_RBUTTONDOWN)
-            {
-                var handler = MouseClickDown;
-                if (handler != null) handler(this, new MouseHookArgs(mouseStruct.pt, (int)wParam));
-            }
+            _mouseStruct = (WinAPI.MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(WinAPI.MSLLHOOKSTRUCT));
 
-            if (wParam == (IntPtr)WM_LBUTTONUP || wParam == (IntPtr)WM_RBUTTONUP)
-            {
-                var handler = MouseClickUp;
-                if (handler != null) handler(this, new MouseHookArgs(mouseStruct.pt, (int)wParam));
-            }
+            HookProc.InvokeSafely<MouseHookArgs>(this, new MouseHookArgs(_mouseStruct.pt, (int)wParam));
 
-            return WinAPI.CallNextHookEx(hookID, code, wParam, lParam);
+            return WinAPI.CallNextHookEx(_hookID, code, wParam, lParam);
         }
 
         #endregion
@@ -96,9 +78,9 @@ namespace AppsTracker.Hooks
         private void Dispose(bool disposing)
         {
             System.Diagnostics.Debug.WriteLine("Disposing " + this.GetType().Name + " " + this.GetType().FullName);
-            if (isDisposed) return;
-            WinAPI.UnhookWindowsHookEx(hookID);
-            isDisposed = true;
+            if (_isDisposed) return;
+            WinAPI.UnhookWindowsHookEx(_hookID);
+            _isDisposed = true;
         }
 
         public void Dispose()
@@ -109,16 +91,22 @@ namespace AppsTracker.Hooks
 
         #endregion
 
-        protected override void SetHook()
+        private void SetHook()
         {
-            hookCallBack = new HookHandlerCallBack(HookProc);
+            _hookCallBack = new MouseHookCallback(MouseHookCallback);
             using (Process process = Process.GetCurrentProcess())
             {
                 using (ProcessModule module = process.MainModule)
                 {
-                    hookID = WinAPI.SetWindowsHookEx(WH_MOUSE_LL, hookCallBack, WinAPI.GetModuleHandle(module.ModuleName), 0);
+                    _hookID = WinAPI.SetWindowsHookEx(WH_MOUSE_LL, _hookCallBack, WinAPI.GetModuleHandle(module.ModuleName), 0);
+                    Debug.Assert(_hookID != IntPtr.Zero, "Failed to set MouseHooke");
                 }
             }
+        }
+
+        public void EnableHook(bool enable)
+        {
+            _isHookEnabled = enable;
         }
     }
 }

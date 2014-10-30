@@ -31,6 +31,8 @@ namespace AppsTracker.DAL
         public AppsEntities()
             : base(_connectionString)
         {
+            //this.Configuration.LazyLoadingEnabled = false;
+            //this.Configuration.ProxyCreationEnabled = false;
 #if DEBUG
            Database.Log = FlushSql;
 #endif

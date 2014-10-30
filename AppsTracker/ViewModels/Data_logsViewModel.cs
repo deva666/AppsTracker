@@ -24,7 +24,7 @@ using AppsTracker.DAL.Repos;
 
 namespace AppsTracker.Pages.ViewModels
 {
-    class Data_logsViewModel : ViewModelBase, IWorker, IChildVM, ICommunicator
+    internal class Data_logsViewModel : ViewModelBase, IWorker, IChildVM, ICommunicator
     {
         #region Fields
 
@@ -294,9 +294,9 @@ namespace AppsTracker.Pages.ViewModels
             }
         }
 
-        public Mediator Mediator
+        public IMediator Mediator
         {
-            get { return Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
 
         #endregion

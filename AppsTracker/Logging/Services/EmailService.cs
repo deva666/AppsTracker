@@ -9,12 +9,13 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Web.UI;
+
 using AppsTracker.DAL;
 using AppsTracker.Models.EntityModels;
 
 namespace AppsTracker.Logging
 {
-    public sealed class EmailReport : IDisposable
+    internal sealed class EmailService : IDisposable
     {
         #region Fields
 
@@ -138,7 +139,7 @@ namespace AppsTracker.Logging
 
         #region Constructor
 
-        public EmailReport()
+        public EmailService()
         {
             _timer = new System.Timers.Timer();
             _timer.Interval = _interval = App.UzerSetting.EmailInterval;
@@ -345,9 +346,9 @@ namespace AppsTracker.Logging
                         {
                             Screenshots.SaveScreenshotToFileAsync(screenshot, Path.Combine(directoryPath, string.Format("{0}_{1}_{2}_{3}_{4}.jpg", screenshot.Date.Month, screenshot.Date.Day, screenshot.Date.Hour, screenshot.Date.Minute, screenshot.Date.Second)));
                         }
-                        catch 
+                        catch
                         {
-                            
+
                         }
                     }
                 }

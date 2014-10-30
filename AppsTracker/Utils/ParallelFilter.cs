@@ -8,11 +8,11 @@ namespace AppsTracker.Utils
 {
     public sealed class ParallelFilter
     {
-        public static List<T[]> CreateFilters<T>(T[] filter) where T : new()
+        public static List<T[]> PartitionEnumarable<T>(T[] filter) where T : new()
         {
             var procs = Environment.ProcessorCount;
 
-            List<T[]> filtersList = new List<T[]>(procs);
+            List<T[]> partitionList = new List<T[]>(procs);
             if (filter.Length >= procs && procs > 1)
             {
                 int cycle = Convert.ToInt32(Math.Floor((double)filter.Length / (double)procs));
@@ -26,13 +26,13 @@ namespace AppsTracker.Utils
                     Array.Resize<T>(ref array, cycle > arraySize ? arraySize : cycle);
                     Array.Copy(filter, i * cycle, array, 0, cycle > arraySize ? arraySize : cycle);
                     arraySize -= cycle;
-                    filtersList.Add(array);
+                    partitionList.Add(array);
                 }
             }
             else
-                filtersList.Add(filter);
+                partitionList.Add(filter);
 
-            return filtersList;
+            return partitionList;
         }
     }
 }

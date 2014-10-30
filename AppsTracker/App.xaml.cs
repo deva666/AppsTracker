@@ -51,7 +51,7 @@ namespace AppsTracker
         static SettingsProxy _uzerSetting;
         static Setting _settings;
         TrayIcon _trayIcon;
-        EmailReport _emailReport;
+        EmailService _emailReport;
         SettingsQueue _settingsQueue;
 
         #endregion
@@ -64,8 +64,7 @@ namespace AppsTracker
 
         public App(ReadOnlyCollection<string> args)
         {
-            InitializeComponent();
-
+            InitializeComponent();            
             bool autostart = false;
             foreach (var arg in args)
             {
@@ -323,7 +322,7 @@ namespace AppsTracker
             if (enable)
             {
                 if (_emailReport == null)
-                    _emailReport = new EmailReport();
+                    _emailReport = new EmailService();
                 _emailReport.EmailTo = _uzerSetting.EmailTo;
                 _emailReport.EmailFrom = _uzerSetting.EmailFrom;
                 _emailReport.Interval = _uzerSetting.EmailInterval;

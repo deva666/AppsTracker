@@ -16,7 +16,7 @@ using AppsTracker.Models.ChartModels;
 
 namespace AppsTracker.ViewModels
 {
-    class Data_dayViewModel : ViewModelBase, IWorker, IChildVM, ICommunicator
+    internal sealed class Data_dayViewModel : ViewModelBase, IWorker, IChildVM, ICommunicator
     {
         #region Fields
 
@@ -39,6 +39,11 @@ namespace AppsTracker.ViewModels
         ICommand _singleAppSelectionChangedCommand;
         ICommand _singleWindowSelectionChangedCommand;
         ICommand _addDaysCommand;
+
+        IRepository<Log> _logRepo;
+        IRepository<Usage> _usageRepo;
+
+        AppsEntities _context = new AppsEntities();
 
         #endregion
 
@@ -214,30 +219,20 @@ namespace AppsTracker.ViewModels
             get { return _addDaysCommand == null ? _addDaysCommand = new DelegateCommand(AddDays) : _addDaysCommand; }
         }
 
-        public Mediator Mediator
+        public IMediator Mediator
         {
-            get { return Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
         #endregion
 
         public Data_dayViewModel()
         {
-
-        }
-
-        void _workQueue_WorkEnded(object sender, EventArgs e)
-        {
-            Working = false;
-        }
-
-        void _workQueue_WorkStarted(object sender, EventArgs e)
-        {
-            Working = true;
+            _logRepo = RepositoryFactory.Instance.Get<IRepository<Log>>();
+            _usageRepo = RepositoryFactory.Instance.Get<IRepository<Usage>>();
         }
 
         public async void LoadContent()
         {
-
             SingleAppDuration = string.Empty;
             SingleWindowDuration = string.Empty;
             Working = true;
@@ -270,6 +265,13 @@ namespace AppsTracker.ViewModels
         {
             string ignore = UsageTypes.Login.ToString();
             DateTime date2 = _selectedDate.AddDays(1);
+
+            var logs = _context.Logs.Where(l => l.Window.Application.User.UserID == Globals.SelectedUserID
+                                                                      && l.DateCreated >= _selectedDate
+                                                                      && l.DateCreated <= date2)
+                                    .Include(l => l.Window.Application)
+                                    .AsNoTracking()
+                                    .ToList();
 
             var logsTask = LogRepo.Instance.GetFilteredAsync(l => l.Window.Application.User.UserID == Globals.SelectedUserID
                                                                       && l.DateCreated >= _selectedDate
@@ -412,12 +414,12 @@ namespace AppsTracker.ViewModels
                                                                     && u.UsageType.UType == usageIdle
                                                                     , u => u.UsageType);
 
-                var lockedsTask = UsageRepo.Instance.GetFilteredAsync(u => u.SelfUsageID.HasValue 
-                                                                        && usageIDs.Contains(u.SelfUsageID.Value) 
+                var lockedsTask = UsageRepo.Instance.GetFilteredAsync(u => u.SelfUsageID.HasValue
+                                                                        && usageIDs.Contains(u.SelfUsageID.Value)
                                                                         && u.UsageType.UType == usageLocked
                                                                         , u => u.UsageType);
 
-                var stoppedsTask = UsageRepo.Instance.GetFilteredAsync(u => u.SelfUsageID.HasValue 
+                var stoppedsTask = UsageRepo.Instance.GetFilteredAsync(u => u.SelfUsageID.HasValue
                                                                          && usageIDs.Contains(u.SelfUsageID.Value)
                                                                          && u.UsageType.UType == usageStopped
                                                                          , u => u.UsageType);
@@ -569,6 +571,7 @@ namespace AppsTracker.ViewModels
 
         protected override void Disposing()
         {
+            _context.Dispose();
             base.Disposing();
         }
     }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace AppsTracker.MVVM
 {
-  public  interface ICommunicator
+    public interface ICommunicator
     {
-      Mediator Mediator { get; }
+        IMediator Mediator { get; }
     }
 }

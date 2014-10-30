@@ -5,10 +5,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
 using AppsTracker.Hooks;
 using AppsTracker.MVVM;
 using AppsTracker.DAL;
 using AppsTracker.Models.EntityModels;
+using AppsTracker.DAL.Service;
 
 namespace AppsTracker.Logging
 {
@@ -34,9 +36,12 @@ namespace AppsTracker.Logging
 
         IdleMonitor _idleMonitor;
 
+        IHook<KeyboardHookArgs> _keyboardHook;
+        IHook<WinHookArgs> _winEventHook;
+
         KeyBoardHook _keyBoardHook;
 
-        WinEvent _winEvent;
+        WinHook _winEvent;
 
         ProcessKiller _processKiller;
 
@@ -46,6 +51,8 @@ namespace AppsTracker.Logging
         Usage _currentUsageIdle;
         Usage _currentUsageLogin;
         Usage _currentUsageStopped;
+
+        IAppsService _service;
 
         #endregion
 
@@ -132,7 +139,7 @@ namespace AppsTracker.Logging
             }
         }
 
-        public KeyBoardHook KeyBoardHook
+        internal KeyBoardHook KeyBoardHook
         {
             get
             {
@@ -193,6 +200,8 @@ namespace AppsTracker.Logging
 
         public DataLogger(SettingsProxy settings)
         {
+            _service = ServiceFactory.Instance.GetService<IAppsService>();
+            
             CreateLoadUser();
 
             _currentLoggingStatus = settings.LoggingEnabled.ConvertToLoggingStatus();
@@ -203,7 +212,7 @@ namespace AppsTracker.Logging
             this.TakeScreenShots = settings.TakeScreenshots;
             this.ScreenShotInterval = settings.TimerInterval;
 
-            _winEvent = new WinEvent();
+            _winEvent = new WinHook();
             _winEvent.ActiveWindowChanged += ActiveWindowChangedEventHandler;
             _windowCheckTimer = new System.Threading.Timer((o) => App.Current.Dispatcher.Invoke(CheckWindowTitle), null, 500, 500);
 
@@ -375,7 +384,7 @@ namespace AppsTracker.Logging
             AddScreenShot();
         }
 
-        private void ActiveWindowChangedEventHandler(object sender, WinEventArgs e)
+        private void ActiveWindowChangedEventHandler(object sender, WinHookArgs e)
         {
             if (IsLogggingStopped)
                 return;
@@ -393,12 +402,13 @@ namespace AppsTracker.Logging
 
         private void _processKiller_ProcessKilledEvent(object sender, ProcessKilledEventArgs e)
         {
-            using (var context = new AppsEntities())
-            {
-                BlockedApp blockedApp = new BlockedApp() { Date = DateTime.Now, ApplicationID = e.Aplication.ApplicationID, UserID = Globals.UserID };
-                context.BlockedApps.Add(blockedApp);
-                context.SaveChanges();
-            }
+            _service.Add<BlockedApp>(new BlockedApp() { Date = DateTime.Now, ApplicationID = e.Aplication.ApplicationID, UserID = Globals.UserID });
+            //using (var context = new AppsEntities())
+            //{
+            //    BlockedApp blockedApp = new BlockedApp() { Date = DateTime.Now, ApplicationID = e.Aplication.ApplicationID, UserID = Globals.UserID };
+            //    context.BlockedApps.Add(blockedApp);
+            //    context.SaveChanges();
+            //}
         }
 
         private void SystemEvents_SessionSwitch(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
@@ -440,13 +450,20 @@ namespace AppsTracker.Logging
 
         private void SaveUsage(string usageType, Usage usage)
         {
-            using (var context = new AppsEntities())
-            {
-                var usageLockedID = context.UsageTypes.Where(t => t.UType == usageType).FirstOrDefault().UsageTypeID;
-                usage.UsageTypeID = usageLockedID;
-                context.Usages.Add(usage);
-                context.SaveChanges();
-            }
+            var usageT = _service.GetSingle<UsageType>(t => t.UType == usageType);
+            if (usageT == null)
+                throw new InvalidOperationException(string.Concat("Can't load ", usageType));
+            var usageID = usageT.UsageTypeID;
+            usage.UsageTypeID = usageID;
+            _service.Add<Usage>(usage);
+
+            //using (var context = new AppsEntities())
+            //{
+            //    var usageLockedID = context.UsageTypes.Where(t => t.UType == usageType).FirstOrDefault().UsageTypeID;
+            //    usage.UsageTypeID = usageLockedID;
+            //    context.Usages.Add(usage);
+            //    context.SaveChanges();
+            //}
         }
         private void IdleEntered(object sender, EventArgs e)
         {
@@ -626,7 +643,7 @@ namespace AppsTracker.Logging
             if (screenshot == null || log == null)
                 return;
             log.Screenshots.Add(screenshot);
-            
+
             await dbSizeAsync.ConfigureAwait(true); //check the DB size, this methods fires an event if near the maximum allowed size
         }
 
@@ -634,169 +651,172 @@ namespace AppsTracker.Logging
 
         #region Logging Methods
 
-        private Log NewWindowEvent(WinEventArgs e)
+        private Log NewWindowEvent(WinHookArgs e)
         {
             if (e.ProcessInfo == null || string.IsNullOrEmpty(e.ProcessInfo.ProcessName))
                 return null;
+            bool newAppAdded;
+            var log = _service.CreateNewLog(e.WindowTitle, Globals.UsageID, Globals.UserID, null, out newAppAdded);
 
-            using (var context = new AppsEntities())
+            //using (var context = new AppsEntities())
+            //{
+            //    bool newApp = false;
+
+            //    Aplication app = (from a in context.Applications
+            //                      where a.UserID == Globals.UserID
+            //                      && a.Name == e.ProcessInfo.ProcessName
+            //                      select a).FirstOrDefault();
+
+            //    if (app == null)
+            //    {
+            //        app = new Aplication(e.ProcessInfo.ProcessName,
+            //                                        e.ProcessInfo.ProcessFileName,
+            //                                        e.ProcessInfo.ProcessVersion,
+            //                                        e.ProcessInfo.ProcessDescription,
+            //                                        e.ProcessInfo.ProcessCompany,
+            //                                        e.ProcessInfo.ProcessRealName) { UserID = Globals.UserID };
+            //        newApp = true;
+            //        context.Applications.Add(app);
+            //        try
+            //        {
+            //            context.SaveChanges();
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            if (ex is System.Data.Entity.Validation.DbEntityValidationException)
+            //                foreach (var eve in (ex as System.Data.Entity.Validation.DbEntityValidationException).EntityValidationErrors)
+            //                {
+            //                    Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+            //                        eve.Entry.Entity.GetType().Name, eve.Entry.State));
+            //                    foreach (var ve in eve.ValidationErrors)
+            //                    {
+            //                        Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
+            //                            ve.PropertyName, ve.ErrorMessage));
+            //                    }
+            //                }
+            //            else if (ex.InnerException != null && ex.InnerException is System.Data.Entity.Validation.DbEntityValidationException)
+            //            {
+            //                System.Data.Entity.Validation.DbEntityValidationException evex = ex.InnerException as System.Data.Entity.Validation.DbEntityValidationException;
+            //                foreach (var eve in evex.EntityValidationErrors)
+            //                {
+            //                    Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+            //                        eve.Entry.Entity.GetType().Name, eve.Entry.State));
+            //                    foreach (var ve in eve.ValidationErrors)
+            //                    {
+            //                        Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
+            //                            ve.PropertyName, ve.ErrorMessage));
+            //                    }
+            //                }
+            //            }
+            //            throw;
+            //        }
+            //    }
+
+            //    Window window = (from w in context.Windows
+            //                     where w.Title == e.WindowTitle
+            //                     && w.ApplicationID == app.ApplicationID
+            //                     select w).FirstOrDefault();
+
+            //    if (window == null)
+            //    {
+            //        window = Window.CreateByTitleAndAppID(e.WindowTitle, app.ApplicationID);
+
+            //        context.Windows.Add(window);
+            //        try
+            //        {
+            //            context.SaveChanges();
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            if (ex is System.Data.Entity.Validation.DbEntityValidationException)
+            //                foreach (var eve in (ex as System.Data.Entity.Validation.DbEntityValidationException).EntityValidationErrors)
+            //                {
+            //                    Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+            //                        eve.Entry.Entity.GetType().Name, eve.Entry.State));
+            //                    foreach (var ve in eve.ValidationErrors)
+            //                    {
+            //                        Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
+            //                            ve.PropertyName, ve.ErrorMessage));
+            //                    }
+            //                }
+            //            else if (ex.InnerException != null && ex.InnerException is System.Data.Entity.Validation.DbEntityValidationException)
+            //            {
+            //                System.Data.Entity.Validation.DbEntityValidationException evex = ex.InnerException as System.Data.Entity.Validation.DbEntityValidationException;
+            //                foreach (var eve in evex.EntityValidationErrors)
+            //                {
+            //                    Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+            //                        eve.Entry.Entity.GetType().Name, eve.Entry.State));
+            //                    foreach (var ve in eve.ValidationErrors)
+            //                    {
+            //                        Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
+            //                            ve.PropertyName, ve.ErrorMessage));
+            //                    }
+            //                }
+            //            }
+            //            throw;
+            //        }
+            //    }
+
+            _currentWindowTitle = e.WindowTitle;
+
+            if (newAppAdded)
             {
-                bool newApp = false;
-
-                Aplication app = (from a in context.Applications
-                                  where a.UserID == Globals.UserID
-                                  && a.Name == e.ProcessInfo.ProcessName
-                                  select a).FirstOrDefault();
-
-                if (app == null)
-                {
-                    app = new Aplication(e.ProcessInfo.ProcessName,
-                                                    e.ProcessInfo.ProcessFileName,
-                                                    e.ProcessInfo.ProcessVersion,
-                                                    e.ProcessInfo.ProcessDescription,
-                                                    e.ProcessInfo.ProcessCompany,
-                                                    e.ProcessInfo.ProcessRealName) { UserID = Globals.UserID };
-                    newApp = true;
-                    context.Applications.Add(app);
-                    try
-                    {
-                        context.SaveChanges();
-                    }
-                    catch (Exception ex)
-                    {
-                        if (ex is System.Data.Entity.Validation.DbEntityValidationException)
-                            foreach (var eve in (ex as System.Data.Entity.Validation.DbEntityValidationException).EntityValidationErrors)
-                            {
-                                Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                                    eve.Entry.Entity.GetType().Name, eve.Entry.State));
-                                foreach (var ve in eve.ValidationErrors)
-                                {
-                                    Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
-                                        ve.PropertyName, ve.ErrorMessage));
-                                }
-                            }
-                        else if (ex.InnerException != null && ex.InnerException is System.Data.Entity.Validation.DbEntityValidationException)
-                        {
-                            System.Data.Entity.Validation.DbEntityValidationException evex = ex.InnerException as System.Data.Entity.Validation.DbEntityValidationException;
-                            foreach (var eve in evex.EntityValidationErrors)
-                            {
-                                Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                                    eve.Entry.Entity.GetType().Name, eve.Entry.State));
-                                foreach (var ve in eve.ValidationErrors)
-                                {
-                                    Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
-                                        ve.PropertyName, ve.ErrorMessage));
-                                }
-                            }
-                        }
-                        throw;
-                    }
-                }
-
-                Window window = (from w in context.Windows
-                                 where w.Title == e.WindowTitle
-                                 && w.ApplicationID == app.ApplicationID
-                                 select w).FirstOrDefault();
-
-                if (window == null)
-                {
-                    window = Window.CreateByTitleAndAppID(e.WindowTitle, app.ApplicationID);
-
-                    context.Windows.Add(window);
-                    try
-                    {
-                        context.SaveChanges();
-                    }
-                    catch (Exception ex)
-                    {
-                        if (ex is System.Data.Entity.Validation.DbEntityValidationException)
-                            foreach (var eve in (ex as System.Data.Entity.Validation.DbEntityValidationException).EntityValidationErrors)
-                            {
-                                Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                                    eve.Entry.Entity.GetType().Name, eve.Entry.State));
-                                foreach (var ve in eve.ValidationErrors)
-                                {
-                                    Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
-                                        ve.PropertyName, ve.ErrorMessage));
-                                }
-                            }
-                        else if (ex.InnerException != null && ex.InnerException is System.Data.Entity.Validation.DbEntityValidationException)
-                        {
-                            System.Data.Entity.Validation.DbEntityValidationException evex = ex.InnerException as System.Data.Entity.Validation.DbEntityValidationException;
-                            foreach (var eve in evex.EntityValidationErrors)
-                            {
-                                Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                                    eve.Entry.Entity.GetType().Name, eve.Entry.State));
-                                foreach (var ve in eve.ValidationErrors)
-                                {
-                                    Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
-                                        ve.PropertyName, ve.ErrorMessage));
-                                }
-                            }
-                        }
-                        throw;
-                    }
-                }
-
-                _currentWindowTitle = e.WindowTitle;
-
-                if (newApp)
-                {
-                    context.Entry(app).Collection(a => a.Windows).Load();
-                    Mediator.NotifyColleagues(MediatorMessages.ApplicationAdded, app);
-                }
-
-                return new Log(window.WindowID, Globals.UsageID);
+                //context.Entry(app).Collection(a => a.Windows).Load();
+                var newApp = _service.GetSingle<Aplication>(a => a.Name == e.ProcessInfo.ProcessName, a => a.Windows);
+                Mediator.NotifyColleagues(MediatorMessages.ApplicationAdded, newApp);
             }
+            return log;
+            //return new Log(window.WindowID, Globals.UsageID);
         }
+
 
         private void EndSaveLog(Log log)
         {
             if (!log.Finished)
                 log.Finish();
-
-            using (var context = new AppsEntities())
-            {
-                context.Logs.Add(log);
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (System.Data.Entity.Core.OptimisticConcurrencyException)
-                {
-                    context.Entry<Log>(log).Reload();
-                    context.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    if (ex is System.Data.Entity.Validation.DbEntityValidationException)
-                        foreach (var eve in (ex as System.Data.Entity.Validation.DbEntityValidationException).EntityValidationErrors)
-                        {
-                            Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                                eve.Entry.Entity.GetType().Name, eve.Entry.State));
-                            foreach (var ve in eve.ValidationErrors)
-                            {
-                                Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
-                                    ve.PropertyName, ve.ErrorMessage));
-                            }
-                        }
-                    else if (ex.InnerException != null && ex.InnerException is System.Data.Entity.Validation.DbEntityValidationException)
-                    {
-                        System.Data.Entity.Validation.DbEntityValidationException evex = ex.InnerException as System.Data.Entity.Validation.DbEntityValidationException;
-                        foreach (var eve in evex.EntityValidationErrors)
-                        {
-                            Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                                eve.Entry.Entity.GetType().Name, eve.Entry.State));
-                            foreach (var ve in eve.ValidationErrors)
-                            {
-                                Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
-                                    ve.PropertyName, ve.ErrorMessage));
-                            }
-                        }
-                    }
-                    throw;
-                }
-            }
+            _service.Add<Log>(log);
+            //using (var context = new AppsEntities())
+            //{
+            //    context.Logs.Add(log);
+            //    try
+            //    {
+            //        context.SaveChanges();
+            //    }
+            //    catch (System.Data.Entity.Core.OptimisticConcurrencyException)
+            //    {
+            //        context.Entry<Log>(log).Reload();
+            //        context.SaveChanges();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        if (ex is System.Data.Entity.Validation.DbEntityValidationException)
+            //            foreach (var eve in (ex as System.Data.Entity.Validation.DbEntityValidationException).EntityValidationErrors)
+            //            {
+            //                Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+            //                    eve.Entry.Entity.GetType().Name, eve.Entry.State));
+            //                foreach (var ve in eve.ValidationErrors)
+            //                {
+            //                    Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
+            //                        ve.PropertyName, ve.ErrorMessage));
+            //                }
+            //            }
+            //        else if (ex.InnerException != null && ex.InnerException is System.Data.Entity.Validation.DbEntityValidationException)
+            //        {
+            //            System.Data.Entity.Validation.DbEntityValidationException evex = ex.InnerException as System.Data.Entity.Validation.DbEntityValidationException;
+            //            foreach (var eve in evex.EntityValidationErrors)
+            //            {
+            //                Exceptions.Logger.DumpDebug(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+            //                    eve.Entry.Entity.GetType().Name, eve.Entry.State));
+            //                foreach (var ve in eve.ValidationErrors)
+            //                {
+            //                    Exceptions.Logger.DumpDebug(string.Format("- Property: \"{0}\", Error: \"{1}\"",
+            //                        ve.PropertyName, ve.ErrorMessage));
+            //                }
+            //            }
+            //        }
+            //        throw;
+            //    }
+            //}
         }
 
         private void StopLogging(Log log)
@@ -820,6 +840,8 @@ namespace AppsTracker.Logging
         internal void FinishLogging()
         {
             StopLogging(CurrentLog);
+            _currentUsageLogin.UsageEnd = DateTime.Now;
+            _currentUsageLogin.IsCurrent = false;
 
             using (var context = new AppsEntities())
             {
@@ -870,6 +892,7 @@ namespace AppsTracker.Logging
                 if (_processKiller != null) { _processKiller.Dispose(); _processKiller = null; }
                 if (_windowCheckTimer != null) { _windowCheckTimer.Dispose(); _windowCheckTimer = null; }
                 if (_idleMonitor != null) { _idleMonitor.Dispose(); _idleMonitor = null; }
+                if (_service != null) { _service.Dispose(); _service = null; }
             }
         }
 
@@ -877,9 +900,9 @@ namespace AppsTracker.Logging
 
         #region IComunicator
 
-        public Mediator Mediator
+        public IMediator Mediator
         {
-            get { return Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
 
         #endregion
