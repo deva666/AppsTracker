@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AppsTracker.Logging;
+using AppsTracker.Models.Proxy;
 
 namespace AppsTracker.Views
 {
@@ -23,26 +25,28 @@ namespace AppsTracker.Views
 
         private void popupMasterPassword_Opened(object sender, EventArgs e)
         {
-            if ( App.DataLogger.KeyBoardHook != null)
-                App.DataLogger.KeyBoardHook.KeyLoggerEnabled = false;
+            SetKeylogger(false);
         }
 
         private void popupMasterPassword_Closed(object sender, EventArgs e)
         {
-            if ( App.UzerSetting.EnableKeylogger && App.DataLogger.KeyBoardHook != null) 
-                App.DataLogger.KeyBoardHook.KeyLoggerEnabled = true;
+            SetKeylogger(true);
         }
 
-        private void popupEmailInterval_Opened( object sender, EventArgs e )
+        private void popupEmailInterval_Opened(object sender, EventArgs e)
         {
-            if (App.DataLogger.KeyBoardHook != null)
-                App.DataLogger.KeyBoardHook.KeyLoggerEnabled = false;
+            SetKeylogger(false);
         }
 
-        private void popupEmailInterval_Closed( object sender, EventArgs e )
+        private void popupEmailInterval_Closed(object sender, EventArgs e)
         {
-            if (App.UzerSetting.EnableKeylogger && App.DataLogger.KeyBoardHook != null)
-                App.DataLogger.KeyBoardHook.KeyLoggerEnabled = true;
+            SetKeylogger(true);
+        }
+
+        private void SetKeylogger(bool enabled)
+        {
+            if (App.UzerSetting.LoggingEnabled && App.UzerSetting.EnableKeylogger)
+                App.Container.SetKeyboardHookEnabled(enabled);
         }
 
     }

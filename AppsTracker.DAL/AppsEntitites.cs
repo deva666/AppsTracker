@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.ComponentModel.DataAnnotations;
-using AppsTracker.Models.EntityModels;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Configuration;
 using System.Diagnostics;
+
+using AppsTracker.Models.EntityModels;
 
 namespace AppsTracker.DAL
 {

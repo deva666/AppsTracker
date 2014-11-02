@@ -239,10 +239,10 @@
     </Compile>
     <Compile Include="Controls\ScrollingContentControl.cs" />
     <Compile Include="Controls\SelectableListView.cs" />
+    <Compile Include="Exceptions\ILogger.cs" />
     <Compile Include="Hooks\EventArgs\KeyboardHookArgs.cs" />
     <Compile Include="Hooks\EventArgs\MouseHookArgs.cs" />
     <Compile Include="Hooks\EventArgs\WinEventArgs.cs" />
-    <Compile Include="Hooks\HookBase.cs" />
     <Compile Include="Hooks\IHook.cs" />
     <Compile Include="Logging\EmailHelper.cs" />
     <Compile Include="Logging\Services\AppBlocker.cs" />
@@ -255,20 +255,23 @@
     <Compile Include="Logging\Services\LogService.cs" />
     <Compile Include="Logging\UsageLogger.cs" />
     <Compile Include="Logging\WindowLogger.cs" />
+    <Compile Include="MVVM\ChildrenMap.cs" />
     <Compile Include="MVVM\HostViewModel.cs" />
     <Compile Include="MVVM\ICommunicator.cs" />
     <Compile Include="MVVM\IMediator.cs" />
     <Compile Include="MVVM\IPage.cs" />
     <Compile Include="MVVM\IWorker.cs" />
     <Compile Include="MVVM\IChildVM.cs" />
-    <Compile Include="Utils\Attributes.cs" />
     <Compile Include="Utils\ConnectionConfig.cs" />
-    <Compile Include="Utils\CustomEventArgs.cs" />
+    <Compile Include="Utils\DispatcherService.cs" />
+    <Compile Include="Utils\ExtensionMethods.cs" />
+    <Compile Include="Utils\Globals.cs" />
     <Compile Include="Utils\ListViewBehavior.cs" />
     <Compile Include="Utils\ListViewItemScroller.cs" />
-    <Compile Include="Utils\ParallelFilter.cs" />
     <Compile Include="Utils\SettingsQueue.cs" />
-    <Compile Include="Utils\WorkQueue.cs" />
+    <Compile Include="Utils\Validation.cs" />
+    <Compile Include="Utils\ValueConverters.cs" />
+    <Compile Include="Utils\WinAPI.cs" />
     <Compile Include="ViewModels\DataHostViewModel.cs" />
     <Compile Include="ViewModels\Data_dayViewModel.cs" />
     <Compile Include="ViewModels\ScreenshotViewerViewModel.cs" />
@@ -299,7 +302,6 @@
     <Compile Include="Views\StatisticsHostView.xaml.cs">
       <DependentUpon>StatisticsHostView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\Constants.cs" />
     <Compile Include="Controls\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
@@ -309,7 +311,6 @@
     <Compile Include="Controls\Calendar.xaml.cs">
       <DependentUpon>Calendar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\DispatcherService.cs" />
     <Compile Include="Controls\EULAWindow.xaml.cs">
       <DependentUpon>EULAWindow.xaml</DependentUpon>
     </Compile>
@@ -330,12 +331,8 @@
     <Compile Include="Controls\SortableGridViewColumn.cs" />
     <Compile Include="Controls\SortableListView.cs" />
     <Compile Include="Controls\TrayIcon.cs" />
-    <Compile Include="Utils\HelperClasses.cs" />
-    <Compile Include="Utils\WaitCursor.cs" />
     <Compile Include="Controls\WPFHelper.cs" />
     <Compile Include="EntryPoint.cs" />
-    <Compile Include="Utils\Validation.cs" />
-    <Compile Include="Utils\ExtensionMethods.cs" />
     <Compile Include="Models\UzerSetting.cs" />
     <Compile Include="ViewModels\AboutWindowViewModel.cs" />
     <Compile Include="Logging\Services\EmailService.cs" />
@@ -348,7 +345,7 @@
     <Compile Include="MVVM\MessageToActionsMap.cs" />
     <Compile Include="MVVM\ObservableObject.cs" />
     <Compile Include="MVVM\ViewModelBase.cs" />
-    <Compile Include="Exceptions\ErrorLog.cs" />
+    <Compile Include="Exceptions\Logger.cs" />
     <Compile Include="Hooks\MouseHook.cs" />
     <Compile Include="MVVM\WeakAction.cs" />
     <Compile Include="ViewModels\Data_filelogsViewModel.cs" />
@@ -440,9 +437,6 @@
     </Compile>
     <Compile Include="Screenshots\Screenshots.cs" />
     <Compile Include="Encryption\Encrypt.cs" />
-    <Compile Include="Utils\Globals.cs" />
-    <Compile Include="Utils\ValueConverters.cs" />
-    <Compile Include="Utils\WinAPI.cs" />
     <Compile Include="Hooks\WinHook.cs" />
     <Page Include="Controls\AboutWindow.xaml">
       <SubType>Designer</SubType>
@@ -805,6 +799,10 @@
     <Resource Include="Resources\down.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AppsTracker.Common\AppsTracker.Common.csproj">
+      <Project>{0c42bfba-8444-4789-bd3f-65f84ccd94ed}</Project>
+      <Name>AppsTracker.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AppsTracker.DAL\AppsTracker.DAL.csproj">
       <Project>{dfff3918-1c83-4acd-9fa3-87cba98db030}</Project>
       <Name>AppsTracker.DAL</Name>

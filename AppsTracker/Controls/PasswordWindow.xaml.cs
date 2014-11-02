@@ -1,20 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.IsolatedStorage;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Cryptography;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
+
 using AppsTracker.Controls;
+using AppsTracker.Logging;
+using AppsTracker.Models.Proxy;
 
 
 namespace AppsTracker
@@ -25,13 +16,8 @@ namespace AppsTracker
         public PasswordWindow()
         {
             InitializeComponent();
-            if (App.DataLogger.KeyBoardHook != null)
-                App.DataLogger.KeyBoardHook.KeyLoggerEnabled = false;
-            this.Closing += (s, e) =>
-            {
-                if (App.UzerSetting.EnableKeylogger && App.DataLogger.KeyBoardHook != null) 
-                    App.DataLogger.KeyBoardHook.KeyLoggerEnabled = true;
-            };
+            SetKeylogger(false);
+            this.Closing += (s, e) => SetKeylogger(true);
         }
 
         private void FadeUnloaded()
@@ -79,6 +65,12 @@ namespace AppsTracker
         #endregion
 
         #region Class Methods
+
+        private void SetKeylogger(bool enabled)
+        {
+            if (App.UzerSetting.LoggingEnabled && App.UzerSetting.EnableKeylogger)
+                App.Container.SetKeyboardHookEnabled(enabled);
+        }
 
         private void CheckPassword()
         {

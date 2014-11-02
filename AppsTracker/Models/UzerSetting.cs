@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using AppsTracker.MVVM;
 using AppsTracker.Models.EntityModels;
+using AppsTracker.Models.Proxy;
 
 namespace AppsTracker
 {
-    public sealed class SettingsProxy : ObservableObject
+    public sealed class SettingsProxy : ObservableObject, ISettings
     {
         public bool Licence { get { return App.Settings.Licence; } set { App.Settings.Licence = value; PropertyChanging("Licence"); } }
         public bool RunAtStartup { get { return App.Settings.RunAtStartup; } set { App.Settings.RunAtStartup = value; PropertyChanging("RunAtStartup"); } }
@@ -42,8 +44,8 @@ namespace AppsTracker
         public EmailInterval EmailIntervalEnum { get { return App.Settings.EmailIntervalEnum; } set { App.Settings.EmailIntervalEnum = value; PropertyChanging("EmailIntervalEnum"); } }
         public ScreenShotInterval ScreenshotInterval { get { return App.Settings.ScreenshotInterval; } set { App.Settings.ScreenshotInterval = value; PropertyChanging("ScreenshotInterval"); } }
         public DateTime TrialStartDate { get { return App.Settings.TrialStartDate; } set { App.Settings.TrialStartDate = value; PropertyChanging("TrialStartDate"); } }
-        public bool EnableIdle { get { return App.Settings.EnableIdle; } set { App.Settings.EnableIdle = value;  PropertyChanging("EnableIdle");} }
-        public long IdleInterval { get { return App.Settings.IdleTimer; } set { App.Settings.IdleTimer = value;  PropertyChanging("IdleInterval");} }
+        public bool EnableIdle { get { return App.Settings.EnableIdle; } set { App.Settings.EnableIdle = value; PropertyChanging("EnableIdle"); } }
+        public long IdleInterval { get { return App.Settings.IdleTimer; } set { App.Settings.IdleTimer = value; PropertyChanging("IdleInterval"); } }
         public double ScreenshotWindowLeft { get { return App.Settings.ScreenshotWindowLeft; } set { App.Settings.ScreenshotWindowLeft = value; PropertyChanging("ScreenshotWindowLeft"); } }
         public double ScreenshotWindowTop { get { return App.Settings.MainWindowTop; } set { App.Settings.ScreenshotWindowTop = value; PropertyChanging("ScreenshotWindowTop"); } }
         public double ScreenshotWindowWidth { get { return App.Settings.ScreenshotWindowWidth; } set { App.Settings.ScreenshotWindowWidth = value; PropertyChanging("ScreenshotWindowWidth"); } }
@@ -51,5 +53,6 @@ namespace AppsTracker
         public DateTime? LastExecutedDate { get { return App.Settings.LastExecutedDate; } set { App.Settings.LastExecutedDate = value; PropertyChanging("LastExecutedDate"); } }
         public string Username { get { return App.Settings.Username; } set { App.Settings.Username = value; PropertyChanging("Username"); } }
         public string DefaultScreenshotSavePath { get { return App.Settings.DefaultScreenshotSavePath; } set { App.Settings.DefaultScreenshotSavePath = value; PropertyChanging("DefaultScreenshotSavePath"); } }
+        public long IdleTimer { get { return App.Settings.IdleTimer; } set { App.Settings.IdleTimer = value; PropertyChanging("IdleTimer"); } }
     }
 }

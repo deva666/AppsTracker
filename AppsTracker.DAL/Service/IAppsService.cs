@@ -13,6 +13,12 @@ namespace AppsTracker.DAL.Service
     {
         Log CreateNewLog(string windowTitle, int usageID, int userID, IAppInfo appInfo, out bool newApp);
         Uzer InitUzer(string userName);
-        Usage InitLogin();
+        Usage InitLogin(int userID);
+
+        Task<IEnumerable<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> filter) where T : class;
+        Task<IEnumerable<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class;
+        Task<T> GetSingleAsync<T>(Expression<Func<T, bool>> filter) where T : class;
+        Task<T> GetSingleAsync<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class;
+        Task AddAsync<T>(T item) where T : class;
     }
 }

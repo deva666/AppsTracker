@@ -14,12 +14,12 @@ namespace AppsTracker.Logging
 {
     public class IdleMonitor : IDisposable
     {
-        private bool _disposed = false;
-        private bool _idleEntered = false;
-        private bool _hooksRemoved = true;
-        private bool _enabled = true;
+        bool _disposed = false;
+        bool _idleEntered = false;
+        bool _hooksRemoved = true;
+        bool _enabled = true;
 
-        private Timer _idleTimer;
+        Timer _idleTimer;
 
         KeyboardHookCallback _keyboardCallback = null;
         MouseHookCallback _mouseHookCallback = null;

@@ -25,7 +25,6 @@ namespace AppsTracker.MVVM
 
         protected virtual void Disposing()
         {
-            //ClearPropertyChangedEventHandlers();
             Debug.WriteLine(string.Format("{0}, {1}, {2} Disposed", this.GetType().Name, this.GetType().FullName, this.GetHashCode()));
         }
 

@@ -17,6 +17,7 @@ using AppsTracker.Cleaner;
 using AppsTracker.Controls;
 using AppsTracker.Logging;
 using AppsTracker.Utils;
+using AppsTracker.DAL.Service;
 
 
 namespace AppsTracker
@@ -31,14 +32,6 @@ namespace AppsTracker
         Stopped
     }
 
-    public enum UsageTypes : byte
-    {
-        Login,
-        Idle,
-        Locked,
-        Stopped
-    }
-
     #endregion
 
     public partial class App : Application, IDisposable
@@ -47,34 +40,38 @@ namespace AppsTracker
 
         bool _disposed;
         bool _userTriggerExit = false;
-        static DataLogger _dataLogger;
+        static ComponentContainer _container;
+        //static DataLogger _dataLogger;
         static SettingsProxy _uzerSetting;
         static Setting _settings;
         TrayIcon _trayIcon;
-        EmailService _emailReport;
-        SettingsQueue _settingsQueue;
+        //EmailService _emailReport;
+        //SettingsQueue _settingsQueue;
 
         #endregion
 
-        internal static DataLogger DataLogger { get { return _dataLogger; } }
-        internal static SettingsProxy UzerSetting { get { return _uzerSetting; } }
-        internal static Setting Settings { get { return _settings; } }
+        //internal static DataLogger DataLogger { get { return _dataLogger; } }
+        internal static ComponentContainer Container { get { return _container; } }
+        public static SettingsProxy UzerSetting { get { return _uzerSetting; } }
+        public static Setting Settings { get { return _settings; } }
 
         #region Constructor
 
         public App(ReadOnlyCollection<string> args)
         {
-            InitializeComponent();            
+            InitializeComponent();
+
+            ServiceFactory.Register<IAppsService>(() => new AppsService());
             bool autostart = false;
             foreach (var arg in args)
-            {
-                if (arg.ToUpper().Contains(Constants.CMD_ARGS_AUTOSTART)) autostart = true;
-            }
+                if (arg.ToUpper().Contains(Constants.CMD_ARGS_AUTOSTART))
+                    autostart = true;
 
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement)
                                                                 , new FrameworkPropertyMetadata(System.Windows.Markup.XmlLanguage.GetLanguage(System.Globalization.CultureInfo.CurrentCulture.IetfLanguageTag)));
 
-            Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new PropertyMetadata() { DefaultValue = 40 });
+            Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline)
+                                                                , new PropertyMetadata() { DefaultValue = 40 });
 
             this.ShutdownMode = System.Windows.ShutdownMode.OnExplicitShutdown;
 
@@ -86,15 +83,18 @@ namespace AppsTracker
 
             ChangeTheme();
 
+            _container = new ComponentContainer(_uzerSetting);
+
             _uzerSetting.PropertyChanged += (s, e) =>
             {
-                UpdateLogData(e.PropertyName);
+                //UpdateLogData(e.PropertyName);
                 SaveSettings();
+                _container.SettingsChanging(_uzerSetting);
                 //_settingsQueue.Add(_uzerSetting);          
             };
 
-            DBCleaner.CleanLogs(30);
-            
+            // DBCleaner.CleanLogs(30);
+
             if (CheckTrialExpiration())
             {
                 LicenceWindow licenceWindow = new LicenceWindow();
@@ -131,8 +131,8 @@ namespace AppsTracker
             }
 
 #endif
-            
-            _dataLogger = new DataLogger(_uzerSetting);
+
+            // _dataLogger = new DataLogger(_uzerSetting);
 
             Globals.DBCleaningRequired += Globals_DBCleaningRequired;
             Globals.GetDBSize();
@@ -181,7 +181,7 @@ namespace AppsTracker
 
         void Globals_DBCleaningRequired(object sender, EventArgs e)
         {
-            UzerSetting.TakeScreenshots = DataLogger.TakeScreenShots = false;
+            //UzerSetting.TakeScreenshots = DataLogger.TakeScreenShots = false;
 
             if (!UzerSetting.Stealth)
             {
@@ -189,12 +189,6 @@ namespace AppsTracker
                 msgWindow.ShowDialog();
             }
             Globals.DBCleaningRequired -= Globals_DBCleaningRequired;
-        }
-
-        void _settingsQueue_SaveSettings(object sender, SettingsProxy e)
-        {
-            SaveSettings();
-            Console.WriteLine("setting saved");
         }
 
         public App()
@@ -237,13 +231,8 @@ namespace AppsTracker
             }
         }
 
-        public void SaveSettings(string propertyname = "")
-        {
-            _settingsQueue.Add(_uzerSetting);
-        }
-
         private async void SaveSettings()
-        {            
+        {
             using (var context = new AppsEntities())
             {
                 context.Entry(_settings).State = System.Data.Entity.EntityState.Modified;
@@ -251,52 +240,52 @@ namespace AppsTracker
             }
         }
 
-        private void UpdateLogData(string propertyName)
-        {
-            if (_dataLogger == null)
-                return;
-            if (propertyName == "RunAtStartup")
-                return;
+        //private void UpdateLogData(string propertyName)
+        //{
+        //    if (_dataLogger == null)
+        //        return;
+        //    if (propertyName == "RunAtStartup")
+        //        return;
 
-            if (_dataLogger.EnableIdle != UzerSetting.EnableIdle)
-                _dataLogger.EnableIdle = UzerSetting.EnableIdle;
+        //    if (_dataLogger.EnableIdle != UzerSetting.EnableIdle)
+        //        _dataLogger.EnableIdle = UzerSetting.EnableIdle;
 
-            if (_dataLogger.TakeScreenShots != _uzerSetting.TakeScreenshots) _dataLogger.TakeScreenShots = _uzerSetting.TakeScreenshots;
+        //    if (_dataLogger.TakeScreenShots != _uzerSetting.TakeScreenshots) _dataLogger.TakeScreenShots = _uzerSetting.TakeScreenshots;
 
-            if (_dataLogger.ScreenShotInterval != _uzerSetting.TimerInterval) _dataLogger.ScreenShotInterval = _uzerSetting.TimerInterval;
+        //    if (_dataLogger.ScreenShotInterval != _uzerSetting.TimerInterval) _dataLogger.ScreenShotInterval = _uzerSetting.TimerInterval;
 
-            if (_dataLogger.EnableKeyboardHook != _uzerSetting.EnableKeylogger) _dataLogger.EnableKeyboardHook = _uzerSetting.EnableKeylogger;
+        //    if (_dataLogger.EnableKeyboardHook != _uzerSetting.EnableKeylogger) _dataLogger.EnableKeyboardHook = _uzerSetting.EnableKeylogger;
 
-            if (_dataLogger.LoggingStatus.Running() != _uzerSetting.LoggingEnabled)
-                _dataLogger.LoggingStatus = _uzerSetting.LoggingEnabled ? LoggingStatus.Running : LoggingStatus.Stopped;
+        //    if (_dataLogger.LoggingStatus.Running() != _uzerSetting.LoggingEnabled)
+        //        _dataLogger.LoggingStatus = _uzerSetting.LoggingEnabled ? LoggingStatus.Running : LoggingStatus.Stopped;
 
-            if (_uzerSetting.EnableEmailReports)
-                UpdateEmailSettings(true);
-            else
-                UpdateEmailSettings(false);
+        //    if (_uzerSetting.EnableEmailReports)
+        //        UpdateEmailSettings(true);
+        //    else
+        //        UpdateEmailSettings(false);
 
-            //if (_dataLogger.EnableFileWatcher != _uzerSetting.EnableFileWatcher)
-            //{
-            //    _dataLogger.EnableFileWatcher = _uzerSetting.EnableFileWatcher;
-            //    if (_dataLogger.FileSystemWatcher == null)
-            //        return;
-            //    if (_dataLogger.FileSystemWatcher.Path != _uzerSetting.FileWatcherPath)
-            //    {
-            //        try
-            //        {
-            //            _dataLogger.FileSystemWatcher.Path = _uzerSetting.FileWatcherPath;
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            _dataLogger.FileSystemWatcher.Path = _uzerSetting.FileWatcherPath = @"C:\";
-            //            MessageWindow window = new MessageWindow(ex);
-            //            window.Show();
-            //        }
-            //    }
+        //    //if (_dataLogger.EnableFileWatcher != _uzerSetting.EnableFileWatcher)
+        //    //{
+        //    //    _dataLogger.EnableFileWatcher = _uzerSetting.EnableFileWatcher;
+        //    //    if (_dataLogger.FileSystemWatcher == null)
+        //    //        return;
+        //    //    if (_dataLogger.FileSystemWatcher.Path != _uzerSetting.FileWatcherPath)
+        //    //    {
+        //    //        try
+        //    //        {
+        //    //            _dataLogger.FileSystemWatcher.Path = _uzerSetting.FileWatcherPath;
+        //    //        }
+        //    //        catch (Exception ex)
+        //    //        {
+        //    //            _dataLogger.FileSystemWatcher.Path = _uzerSetting.FileWatcherPath = @"C:\";
+        //    //            MessageWindow window = new MessageWindow(ex);
+        //    //            window.Show();
+        //    //        }
+        //    //    }
 
-            //    if (_dataLogger.FileSystemWatcher.IncludeSubdirectories != _uzerSetting.FileWatcherSubdirectories) _dataLogger.FileSystemWatcher.IncludeSubdirectories = _uzerSetting.FileWatcherSubdirectories;
-            //}
-        }
+        //    //    if (_dataLogger.FileSystemWatcher.IncludeSubdirectories != _uzerSetting.FileWatcherSubdirectories) _dataLogger.FileSystemWatcher.IncludeSubdirectories = _uzerSetting.FileWatcherSubdirectories;
+        //    //}
+        //}
 
         private void ShowHideTrayIcon()
         {
@@ -317,32 +306,32 @@ namespace AppsTracker
             }
         }
 
-        private void UpdateEmailSettings(bool enable)
-        {
-            if (enable)
-            {
-                if (_emailReport == null)
-                    _emailReport = new EmailService();
-                _emailReport.EmailTo = _uzerSetting.EmailTo;
-                _emailReport.EmailFrom = _uzerSetting.EmailFrom;
-                _emailReport.Interval = _uzerSetting.EmailInterval;
-                _emailReport.SmtpHost = _uzerSetting.EmailSmtpHost;
-                _emailReport.SmtpPort = _uzerSetting.EmailSmtpPort;
-                _emailReport.SmtpUsername = _uzerSetting.EmailSmtpUsername;
-                _emailReport.SmtpPassword = _uzerSetting.EmailSmtpPassword;
-                _emailReport.SSL = _uzerSetting.EmailSSL;
-            }
-            else
-            {
-                if (_emailReport != null)
-                {
-                    _emailReport.StopReporting();
-                    _emailReport.Dispose();
-                    _emailReport = null;
-                }
-            }
+        //private void UpdateEmailSettings(bool enable)
+        //{
+        //    if (enable)
+        //    {
+        //        if (_emailReport == null)
+        //            _emailReport = new EmailService();
+        //        _emailReport.EmailTo = _uzerSetting.EmailTo;
+        //        _emailReport.EmailFrom = _uzerSetting.EmailFrom;
+        //        _emailReport.Interval = _uzerSetting.EmailInterval;
+        //        _emailReport.SmtpHost = _uzerSetting.EmailSmtpHost;
+        //        _emailReport.SmtpPort = _uzerSetting.EmailSmtpPort;
+        //        _emailReport.SmtpUsername = _uzerSetting.EmailSmtpUsername;
+        //        _emailReport.SmtpPassword = _uzerSetting.EmailSmtpPassword;
+        //        _emailReport.SSL = _uzerSetting.EmailSSL;
+        //    }
+        //    else
+        //    {
+        //        if (_emailReport != null)
+        //        {
+        //            _emailReport.StopReporting();
+        //            _emailReport.Dispose();
+        //            _emailReport = null;
+        //        }
+        //    }
 
-        }
+        //}
 
         #endregion
 
@@ -407,14 +396,9 @@ namespace AppsTracker
         {
             if (!_uzerSetting.Licence)
             {
-                //if (ConnectionConfig.ExpExists())
-                //    return true;
                 bool expired = false;
                 if (_uzerSetting.TrialStartDate.AddDays(15) < DateTime.Now)
-                {
                     expired = true;
-                   //ConnectionConfig.FlushExp();
-                }
                 if (_uzerSetting.LastExecutedDate.HasValue && _uzerSetting.LastExecutedDate.Value > DateTime.Now)
                     expired = true;
                 return expired;
@@ -540,7 +524,7 @@ namespace AppsTracker
         {
             try
             {
-                AppsTracker.Exceptions.Logger.DumpExceptionInfo(e.Exception);
+                AppsTracker.Exceptions.FileLogger.Log(e.Exception);
                 if (App.UzerSetting != null)
                 {
                     if (!App.UzerSetting.Stealth)
@@ -560,8 +544,8 @@ namespace AppsTracker
         internal void FinishAndExit(bool userTriggered)
         {
             _userTriggerExit = userTriggered;
-            if (App.DataLogger != null)
-                App.DataLogger.FinishLogging();
+            //if (App.DataLogger != null)
+            //    App.DataLogger.FinishLogging();
             CloseMainWindow();
             Dispose();
             Application.Current.Shutdown();
@@ -582,10 +566,10 @@ namespace AppsTracker
             {
                 _disposed = true;
                 this.DispatcherUnhandledException -= App_DispatcherUnhandledException;
-                if (_dataLogger != null) { _dataLogger.Dispose(); _dataLogger = null; }
-                if (_emailReport != null) { _emailReport.Dispose(); _emailReport = null; }
+                //if (_dataLogger != null) { _dataLogger.Dispose(); _dataLogger = null; }
+                //  if (_emailReport != null) { _emailReport.Dispose(); _emailReport = null; }
                 if (_trayIcon != null) { _trayIcon.Dispose(); _trayIcon = null; }
-                if (_settingsQueue != null) { _settingsQueue.Dispose(); _settingsQueue = null; }
+                //if (_settingsQueue != null) { _settingsQueue.Dispose(); _settingsQueue = null; }
             }
         }
 

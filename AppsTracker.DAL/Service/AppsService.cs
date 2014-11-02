@@ -129,9 +129,63 @@ namespace AppsTracker.DAL.Service
             }
         }
 
-        public Usage InitLogin()
+        public Usage InitLogin(int userID)
         {
-            throw new NotImplementedException();
+            using (var context = new AppsEntities())
+            {
+                string filterUsage = UsageTypes.Login.ToString();
+
+                if (context.Usages.Where(u => u.IsCurrent && u.UsageType.UType == filterUsage).Count() > 0)
+                {
+                    var failedSaveUsage = context.Usages.Where(u => u.IsCurrent && u.UsageType.UType == filterUsage).ToList();
+                    foreach (var usage in failedSaveUsage)
+                    {
+                        var lastLog = context.Logs.Where(l => l.UsageID == usage.UsageID).OrderByDescending(l => l.DateCreated).FirstOrDefault();
+                        var lastUsage = context.Usages.Where(u => u.SelfUsageID == usage.UsageID).OrderByDescending(u => u.UsageEnd).FirstOrDefault();
+
+                        DateTime lastLogDate = DateTime.MinValue;
+                        DateTime lastUsageDate = DateTime.MinValue;
+
+                        if (lastLog != null)
+                            lastLogDate = lastLog.DateEnded;
+
+                        if (lastUsage != null)
+                            lastUsageDate = lastUsage.UsageEnd;
+
+
+                        usage.UsageEnd = lastLogDate == lastUsageDate ? usage.UsageEnd : lastUsageDate > lastLogDate ? lastUsageDate : lastLogDate;
+                        usage.IsCurrent = false;
+                        context.Entry(usage).State = EntityState.Modified;
+                    }
+                }
+
+                var login = new Usage() { UserID = userID, UsageEnd = DateTime.Now, UsageTypeID = context.UsageTypes.First(u => u.UType == filterUsage).UsageTypeID, IsCurrent = true };
+
+                context.Usages.Add(login);
+                context.SaveChanges();
+
+                return login;
+            }
+        }
+
+        public Task<IEnumerable<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> filter) where T : class
+        {
+            return Task<IEnumerable<T>>.Run(() => GetFiltered<T>(filter));
+        }
+
+        public Task<IEnumerable<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class
+        {
+            return Task<IEnumerable<T>>.Run(() => GetFiltered<T>(filter, navigations));
+        }
+
+        public Task<T> GetSingleAsync<T>(Expression<Func<T, bool>> filter) where T : class
+        {
+            return Task<T>.Run(() => GetSingle(filter));
+        }
+
+        public Task<T> GetSingleAsync<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class
+        {
+            return Task<T>.Run(() => GetSingle(filter, navigations));
         }
     }
 }

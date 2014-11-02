@@ -9,6 +9,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppsTracker.Models.EntityModels
 {
+    public enum UsageTypes : byte
+    {
+        Login,
+        Idle,
+        Locked,
+        Stopped
+    }
+
     public class UsageType
     {
         public UsageType()

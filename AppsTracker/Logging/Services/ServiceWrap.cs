@@ -49,6 +49,12 @@ namespace AppsTracker.Logging
             _onDispose = onDispose;
         }
 
+        public void CallOnService(Action<T> action)
+        {
+            if (_component != null)
+                action(_component);
+        }
+
         public void Dispose()
         {
             DisposeService();

@@ -13,16 +13,19 @@ using AppsTracker.MVVM;
 using AppsTracker.DAL;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.DAL.Repos;
+using AppsTracker.DAL.Service;
 
 namespace AppsTracker.Pages.ViewModels
 {
-    class Data_keystrokesViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
+    internal sealed class Data_keystrokesViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
     {
         #region Fields
 
         bool _working;
 
         IEnumerable<Log> _logList;
+
+        IAppsService _service;
 
 
         #endregion
@@ -77,25 +80,26 @@ namespace AppsTracker.Pages.ViewModels
         public Data_keystrokesViewModel()
         {
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(LoadContent));
+            _service = ServiceFactory.Get<IAppsService>();
         }
 
         public async void LoadContent()
         {
             Working = true;
-            LogList = await GetContentFromRepo();
+            LogList = await GetContentAsync();
             Working = false;
             IsContentLoaded = true;
         }
 
 
-        private Task<IEnumerable<Log>> GetContentFromRepo()
+        private Task<IEnumerable<Log>> GetContentAsync()
         {
-            return LogRepo.Instance.GetFilteredAsync(l => l.KeystrokesRaw != null
+            return _service.GetFilteredAsync<Log>(l => l.KeystrokesRaw != null
                                                         && l.DateCreated >= Globals.Date1
                                                         && l.DateCreated <= Globals.Date2
                                                         && l.Window.Application.UserID == Globals.SelectedUserID
-                                                        ,l=>l.Window.Application
-                                                        ,l=>l.Screenshots);
-        }      
+                                                        , l => l.Window.Application
+                                                        , l => l.Screenshots);
+        }
     }
 }

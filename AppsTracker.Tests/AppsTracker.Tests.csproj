@@ -35,7 +35,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Apps tracker.Fakes">
+      <HintPath>FakesAssemblies\Apps tracker.Fakes.dll</HintPath>
+    </Reference>
+    <Reference Include="AppsTracker.DAL.Fakes">
+      <HintPath>FakesAssemblies\AppsTracker.DAL.Fakes.dll</HintPath>
+    </Reference>
+    <Reference Include="AppsTracker.Models.Fakes">
+      <HintPath>FakesAssemblies\AppsTracker.Models.Fakes.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -50,8 +69,43 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="Common\UnitTest1.cs" />
+    <Compile Include="Core\Logging\ComponentContainerTest.cs" />
+    <Compile Include="Core\Logging\ServiceWrapTest.cs" />
+    <Compile Include="Core\ViewModels\MainViewModelTest.cs" />
+    <Compile Include="Fakes\Logging\DisposableMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AppsTracker.Common\AppsTracker.Common.csproj">
+      <Project>{0c42bfba-8444-4789-bd3f-65f84ccd94ed}</Project>
+      <Name>AppsTracker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppsTracker.DAL\AppsTracker.DAL.csproj">
+      <Project>{dfff3918-1c83-4acd-9fa3-87cba98db030}</Project>
+      <Name>AppsTracker.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppsTracker.Models\AppsTracker.Models.csproj">
+      <Project>{cc8b5831-53c4-46da-97db-18c75ed7d929}</Project>
+      <Name>AppsTracker.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppsTrackerLicensing\AppsTrackerLicensing.csproj">
+      <Project>{3018122a-aac6-4304-9ec1-d415fa060505}</Project>
+      <Name>AppsTrackerLicensing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppsTracker\AppsTrackerCore.csproj">
+      <Project>{ed886551-a8b3-492d-acec-fe2df0b484f7}</Project>
+      <Name>AppsTrackerCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Fakes Include="Fakes\AppsTracker.DAL.fakes" />
+  </ItemGroup>
+  <ItemGroup>
+    <Fakes Include="Fakes\AppsTracker.Models.fakes" />
+  </ItemGroup>
+  <ItemGroup>
+    <Fakes Include="Fakes\Apps tracker.fakes" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

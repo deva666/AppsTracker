@@ -32,15 +32,29 @@ namespace AppsTracker.Logging
             Parallel.ForEach<IComponent>(_components, action);
         }
 
+        public void OnSingle(Type type, Action<IComponent> action)
+        {
+            var single = _components.FirstOrDefault(c => c.GetType() == type);
+            if (single != null)
+                action(single);
+        }
+
         public void SettingsChanging(ISettings settings)
         {
             foreach (var comp in _components)
-                comp.SettingsChanged(settings);       
+                comp.SettingsChanged(settings);
+        }
+
+        public void SetKeyboardHookEnabled(bool enabled)
+        {
+            var windowLogger = _components.FirstOrDefault(c => c.GetType() == typeof(WindowLogger)) as WindowLogger;
+            if (windowLogger != null)
+                windowLogger.SetKeyboardHookEnabled(enabled);
         }
 
         public void Dispose()
         {
-            OnAllParallel(l => l.Dispose());
+            OnAll(l => l.Dispose());            
         }
     }
 }

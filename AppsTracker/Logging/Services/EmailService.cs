@@ -9,8 +9,8 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Web.UI;
-
 using AppsTracker.DAL;
+using AppsTracker.DAL.Service;
 using AppsTracker.Models.EntityModels;
 
 namespace AppsTracker.Logging
@@ -28,9 +28,12 @@ namespace AppsTracker.Logging
         string _emailTo;
         string _emailFrom;
         bool _ssl;
+
         DateTime _dateNow;
         DateTime _dateLast;
         System.Timers.Timer _timer;
+
+        IAppsService _service;
 
 
         #endregion
@@ -141,6 +144,8 @@ namespace AppsTracker.Logging
 
         public EmailService()
         {
+            _service = ServiceFactory.Get<IAppsService>();
+
             _timer = new System.Timers.Timer();
             _timer.Interval = _interval = App.UzerSetting.EmailInterval;
             _timer.AutoReset = true;
@@ -154,17 +159,14 @@ namespace AppsTracker.Logging
 
         private async void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            IEnumerable<IGrouping<string, Log>> logs;
-            Usage usage;
-            using (var context = new AppsEntities())
-            {
-                logs = GetLogsByDate(context);
-                usage = GetCurrentLogin(context);
-            }
-            string emailBody = GenerateEmailBody(logs, usage);
-            string attachment = await GetZipFile(logs);
+            var logsTask = GetLogsByDateAsync();
+            var usageTask = GetCurrentLoginAsync();
+            await Task.WhenAll(logsTask, usageTask);
+            
+            string emailBody = GenerateEmailBody(logsTask.Result, usageTask.Result);
+            string attachment = await GetZipFile(logsTask.Result);
+
             await SendEmailAsync(emailBody, attachment);
-            Interval = _timer.Interval = App.UzerSetting.EmailInterval;
         }
 
         #endregion
@@ -195,7 +197,7 @@ namespace AppsTracker.Logging
                 }
                 catch (Exception ex)
                 {
-                    Exceptions.Logger.DumpExceptionInfo(ex);
+                    Exceptions.FileLogger.Log(ex);
                 }
             });
         }
@@ -283,30 +285,26 @@ namespace AppsTracker.Logging
 
         }
 
-        private Usage GetCurrentLogin(AppsEntities context)
+        private Task<Usage> GetCurrentLoginAsync()
         {
             string usageType = UsageTypes.Login.ToString();
-            return (from u in context.Usages
-                    where u.UsageType.UType == usageType
-                    && u.IsCurrent
-                    orderby u.UsageStart descending
-                    select u).FirstOrDefault();
+            return Task<Usage>.Run(() => _service.GetFiltered<Usage>(u => u.UsageType.UType == usageType
+                                                && u.IsCurrent)
+                                                .OrderByDescending(u => u.UsageStart)
+                                                .First());
         }
 
-        private IEnumerable<IGrouping<string, Log>> GetLogsByDate(AppsEntities context)
+        private Task<IEnumerable<IGrouping<string, Log>>> GetLogsByDateAsync()
         {
             _dateNow = DateTime.Now;
             _dateLast = DateTime.Now.AddMilliseconds(-(Interval));
 
-            return (from u in context.Users
-                    join a in context.Applications on u.UserID equals a.UserID
-                    join w in context.Windows on a.ApplicationID equals w.ApplicationID
-                    join l in context.Logs on w.WindowID equals l.WindowID
-                    where u.UserID == Globals.UserID
-                    && l.DateCreated >= _dateLast
-                    && l.DateCreated <= _dateNow
-                    select l).Include(l => l.Window.Application).Include(l => l.Screenshots).ToList()
-                   .GroupBy(l => l.Window.Application.Name);
+            return Task<IEnumerable<IGrouping<string, Log>>>.Run(() => _service.GetFiltered<Log>(l => l.Window.Application.User.UserID == Globals.UserID
+                                                                    && l.DateCreated >= _dateLast
+                                                                    && l.DateCreated <= _dateNow
+                                                                    , l => l.Window.Application
+                                                                    , l => l.Screenshots)
+                                                                .GroupBy(l => l.Window.Application.Name));
         }
 
         private Task<string> GetZipFile(IEnumerable<IGrouping<string, Log>> logs)
@@ -324,7 +322,7 @@ namespace AppsTracker.Logging
                 }
                 catch (Exception ex)
                 {
-                    Exceptions.Logger.DumpExceptionInfo(ex);
+                    Exceptions.FileLogger.Log(ex);
                     return null;
                 }
 
@@ -364,7 +362,7 @@ namespace AppsTracker.Logging
             });
         }
 
-        public void StopReporting()
+        private void StopReporting()
         {
             _timer.Enabled = false;
         }

@@ -54,3 +54,4 @@ using System.Windows;
 [assembly: AssemblyVersion("2.1.0.0")]
 [assembly: AssemblyFileVersion("2.1.0.0")]
 [assembly: GuidAttribute("2589C23C-F317-45F7-B1EB-5C27C97B29F7")]
+[assembly: InternalsVisibleTo("AppsTracker.Tests")]

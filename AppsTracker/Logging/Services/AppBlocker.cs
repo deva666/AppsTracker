@@ -120,56 +120,37 @@ namespace AppsTracker.Logging
             switch (today)
             {
                 case DayOfWeek.Friday:
-                    break;
-                case DayOfWeek.Monday:
-                    break;
-                case DayOfWeek.Saturday:
-                    break;
-                case DayOfWeek.Sunday:
-                    break;
-                case DayOfWeek.Thursday:
-                    break;
-                case DayOfWeek.Tuesday:
-                    break;
-                case DayOfWeek.Wednesday:
-                    break;
-                default:
-                    break;
-            }
-            string day = System.Enum.GetName(typeof(DayOfWeek), today);
-            switch (day)
-            {
-                case "Monday":
-                    if (appsToBlock.Monday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
-                        return false;
-                    break;
-                case "Tuesday":
-                    if (appsToBlock.Tuesday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
-                        return false;
-                    break;
-                case "Wednesday":
-                    if (appsToBlock.Wednesday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
-                        return false;
-                    break;
-                case "Thursday":
-                    if (appsToBlock.Thursday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
-                        return false;
-                    break;
-                case "Friday":
                     if (appsToBlock.Friday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
                         return false;
                     break;
-                case "Saturday":
+                case DayOfWeek.Monday:
+                    if (appsToBlock.Monday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
+                        return false;
+                    break;
+                case DayOfWeek.Saturday:
                     if (appsToBlock.Saturday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
                         return false;
                     break;
-                case "Sunday":
+                case DayOfWeek.Sunday:
                     if (appsToBlock.Sunday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
+                        return false;
+                    break;
+                case DayOfWeek.Thursday:
+                    if (appsToBlock.Thursday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
+                        return false;
+                    break;
+                case DayOfWeek.Tuesday:
+                    if (appsToBlock.Tuesday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
+                        return false;
+                    break;
+                case DayOfWeek.Wednesday:
+                    if (appsToBlock.Wednesday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
                         return false;
                     break;
                 default:
                     break;
             }
+
             return true;
         }
 
@@ -200,6 +181,12 @@ namespace AppsTracker.Logging
         }
 
         public void SettingsChanged(ISettings settings)
+        {
+
+        }
+
+
+        public void SetLoggingEnabled(bool enabled)
         {
             
         }

@@ -22,13 +22,13 @@ namespace AppsTracker
             }
             catch (System.IO.IOException ex)
             {
-                Exceptions.Logger.DumpExceptionInfo(ex);
+                Exceptions.FileLogger.Log(ex);
                 System.Windows.Forms.MessageBox.Show("Database folder creation failed, check error log for more information.", Constants.APP_NAME);
                 return;
             }
             catch (System.Security.SecurityException ex)
             {
-                Exceptions.Logger.DumpExceptionInfo(ex);
+                Exceptions.FileLogger.Log(ex);
                 System.Windows.Forms.MessageBox.Show("Database creation forbidden./nConnection string is not encrypted.", Constants.APP_NAME);
                 return;
             }
@@ -50,7 +50,7 @@ namespace AppsTracker
             }
             catch (EntityException ee)
             {
-                Exceptions.Logger.DumpExceptionInfo(ee);
+                Exceptions.FileLogger.Log(ee);
                 if (ee.Message == "The underlying provider failed on Open.")
                 {
                     string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "apps.sdf");
@@ -65,7 +65,7 @@ namespace AppsTracker
             }
             catch (Exception ex)
             {
-                Exceptions.Logger.DumpExceptionInfo(ex);
+                Exceptions.FileLogger.Log(ex);
                 System.Windows.Forms.MessageBox.Show("Error occured while trying to access the database!\n" + ex.Message + "\nCheck ErrorLog.log for more details", Constants.APP_NAME);
                 return;
             }
@@ -81,7 +81,7 @@ namespace AppsTracker
             try
             {
                 Exception ex = e.ExceptionObject as Exception;
-                AppsTracker.Exceptions.Logger.DumpExceptionInfo(ex);
+                AppsTracker.Exceptions.FileLogger.Log(ex);
                 if (App.UzerSetting != null)
                 {
                     if (!App.UzerSetting.Stealth)

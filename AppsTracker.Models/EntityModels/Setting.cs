@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
 using System.Reflection;
+using AppsTracker.Models.Proxy;
 
 namespace AppsTracker.Models.EntityModels
 {
@@ -44,7 +45,7 @@ namespace AppsTracker.Models.EntityModels
         TwoHour = 7200000
     }
 
-    public class Setting
+    public class Setting : ISettings
     {
         [NotMapped]
         public ScreenShotInterval ScreenshotInterval

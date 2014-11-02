@@ -6,7 +6,7 @@ using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
-    class SettingsHostViewModel : HostViewModel, IChildVM
+    internal sealed class SettingsHostViewModel : HostViewModel, IChildVM
     {
         public string Title
         {
@@ -19,31 +19,37 @@ namespace AppsTracker.ViewModels
             private set;
         }
 
+        public SettingsHostViewModel()
+        {
+            Register<Settings_generalViewModel>(() => new Settings_generalViewModel());
+            Register<Settings_licenseViewModel>(() => new Settings_licenseViewModel());
+        }
+
         public void LoadContent()
         {
-            this.SelectedChild = new Settings_generalViewModel();
+            SelectedChild = Resolve(typeof(Settings_generalViewModel));
             this.IsContentLoaded = true;
         }
 
-        protected override void ChangePage(object parameter)
-        {
-            string viewName = parameter as string;
-            if (viewName == null)
-                return;
+        //protected override void ChangePage(object parameter)
+        //{
+        //    string viewName = parameter as string;
+        //    if (viewName == null)
+        //        return;
 
-            switch (viewName)
-            {
-                case "APP SETTINGS":
-                    SelectedChild = new Settings_generalViewModel();
-                    break;
-                case "LICENCE":
-                    SelectedChild = new Settings_licenseViewModel();
-                    break;
-                default:
-                    break;
-            }
+        //    switch (viewName)
+        //    {
+        //        case "APP SETTINGS":
+        //            SelectedChild = new Settings_generalViewModel();
+        //            break;
+        //        case "LICENCE":
+        //            SelectedChild = new Settings_licenseViewModel();
+        //            break;
+        //        default:
+        //            break;
+        //    }
 
-        }
+        //}
 
     }
 }

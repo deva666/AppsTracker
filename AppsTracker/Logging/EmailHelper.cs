@@ -21,6 +21,16 @@ namespace AppsTracker.Logging
         private void Configure(ISettings settings)
         {
             _emailService.Enabled = settings.EnableEmailReports;
+            if (settings.EnableEmailReports == false)
+                return;
+            _emailService.Component.EmailFrom = settings.EmailFrom;
+            _emailService.Component.EmailTo = settings.EmailTo;
+            _emailService.Component.Interval = settings.EmailInterval;
+            _emailService.Component.SmtpHost = settings.EmailSmtpHost;
+            _emailService.Component.SmtpPassword = settings.EmailSmtpPassword;
+            _emailService.Component.SmtpPort = settings.EmailSmtpPort;
+            _emailService.Component.SmtpUsername = settings.EmailSmtpUsername;
+            _emailService.Component.SSL = settings.EmailSSL;
         }
 
         public void SettingsChanged(Models.Proxy.ISettings settings)
@@ -31,6 +41,12 @@ namespace AppsTracker.Logging
         public void Dispose()
         {
             _emailService.Enabled = false;
+        }
+
+
+        public void SetLoggingEnabled(bool enabled)
+        {
+            //do nothing
         }
     }
 }

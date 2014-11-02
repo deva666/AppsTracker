@@ -49,9 +49,6 @@
     <Window.RenderTransform>
         <ScaleTransform />
     </Window.RenderTransform>
-    <!--<Window.DataContext>
-        <viewModels:MainViewModel />
-    </Window.DataContext>-->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -127,7 +124,7 @@
             <Label.InputBindings>
                 <MouseBinding Gesture="LeftClick"
                               Command="{Binding ChangePageCommand}"
-                              CommandParameter="settings" />
+                              CommandParameter="{x:Type viewModels:SettingsHostViewModel}" />
             </Label.InputBindings>
         </Label>
         
@@ -148,7 +145,7 @@
                 <customControls:FadingUC.InputBindings>
                     <MouseBinding Gesture="LeftClick"
                                   Command="{Binding ChangePageCommand}"
-                                  CommandParameter="data" />
+                                  CommandParameter="{x:Type viewModels:DataHostViewModel}" />
                 </customControls:FadingUC.InputBindings>
             </customControls:FadingUC>
             <customControls:FadingUC StringContent="statistics"
@@ -158,7 +155,7 @@
                 <customControls:FadingUC.InputBindings>
                     <MouseBinding Gesture="LeftClick"
                                   Command="{Binding ChangePageCommand}"
-                                  CommandParameter="statistics" />
+                                  CommandParameter="{x:Type viewModels:StatisticsHostViewModel}" />
                 </customControls:FadingUC.InputBindings>
             </customControls:FadingUC>
             <customControls:BackButton Style="{DynamicResource BackBtnStyle}"

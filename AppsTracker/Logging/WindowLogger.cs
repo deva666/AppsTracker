@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 using AppsTracker.Hooks;
 using AppsTracker.Models.Proxy;
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.MVVM;
-using System.Timers;
+using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Logging
 {
@@ -28,7 +29,9 @@ namespace AppsTracker.Logging
 
         public WindowLogger(ISettings settings)
         {
-            _service = ServiceFactory.Instance.GetService<IAppsService>();
+            Ensure.NotNull(settings);
+
+            _service = ServiceFactory.Get<IAppsService>();
             _settings = settings;
             Init();
             Configure();
@@ -210,6 +213,16 @@ namespace AppsTracker.Logging
             _keyboardHook.Enabled =
                 _screenshotTimer.Enabled =
                     _winHook.Enabled = false;
+        }
+
+        public void SetLoggingEnabled(bool enabled)
+        {
+            _isLoggingEnabled = enabled;
+        }
+
+        public void SetKeyboardHookEnabled(bool enabled)
+        {
+            _keyboardHook.CallOnService(k => k.EnableHook(enabled));
         }
     }
 }

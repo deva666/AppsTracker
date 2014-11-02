@@ -12,10 +12,11 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using AppsTracker.DAL;
 using AppsTracker.Models.EntityModels;
+using AppsTracker.DAL.Service;
 
 namespace AppsTracker.ViewModels
 {
-    class MainViewModel : HostViewModel, ICommunicator
+    internal sealed class MainViewModel : HostViewModel, ICommunicator
     {
         #region Fields
 
@@ -34,6 +35,8 @@ namespace AppsTracker.ViewModels
         ICommand _changeLoggingStatusCommand;
         ICommand _thisWeekCommand;
         ICommand _thisMonthCommand;
+
+        IAppsService _service;
 
         #endregion
 
@@ -202,7 +205,7 @@ namespace AppsTracker.ViewModels
         {
             get
             {
-                return _clearFilterCommand ??  (_clearFilterCommand = new DelegateCommand(ClearFilter));
+                return _clearFilterCommand ?? (_clearFilterCommand = new DelegateCommand(ClearFilter));
             }
         }
 
@@ -217,14 +220,14 @@ namespace AppsTracker.ViewModels
         {
             get
             {
-                return _thisWeekCommand == null ? _thisWeekCommand = new DelegateCommand(ThisWeek) : _thisWeekCommand;
+                return _thisWeekCommand ?? (_thisWeekCommand = new DelegateCommand(ThisWeek));
             }
         }
         public ICommand ThisMonthCommand
         {
             get
             {
-                return _thisMonthCommand == null ? _thisMonthCommand = new DelegateCommand(ThisMonth) : _thisMonthCommand;
+                return _thisMonthCommand ?? (_thisMonthCommand = new DelegateCommand(ThisMonth));
             }
         }
 
@@ -239,32 +242,27 @@ namespace AppsTracker.ViewModels
 
         public MainViewModel()
         {
-            this.SelectedChild = new DataHostViewModel();
+            _service = ServiceFactory.Get<IAppsService>();
+
+            Register<DataHostViewModel>(() => new DataHostViewModel());
+            Register<StatisticsHostViewModel>(() => new StatisticsHostViewModel());
+            Register<SettingsHostViewModel>(() => new SettingsHostViewModel());
+
+            SelectedChild = Resolve(typeof(DataHostViewModel));
         }
 
         #endregion
 
         private void GetUsers()
         {
-            using (var context = new AppsEntities())
-            {
-                _uzerCollection = (from u in context.Users
-                                   select u).ToList();
-            }
+            _uzerCollection = _service.GetQueryable<Uzer>().ToList();
         }
 
         #region Command Methods
 
         private void ChangeLoggingStatus()
         {
-            if (UserSettings.LoggingEnabled)
-            {
-                UserSettings.LoggingEnabled = false;
-            }
-            else
-            {
-                UserSettings.LoggingEnabled = true;
-            }
+            UserSettings.LoggingEnabled = !UserSettings.LoggingEnabled;
         }
 
         private void OpenPopup(object parameter)
@@ -295,31 +293,31 @@ namespace AppsTracker.ViewModels
                 IsPopupCalendarOpen = false;
         }
 
-        protected override void ChangePage(object parameter)
-        {
-            string viewName = parameter as string;
-            if (viewName == null)
-                return;
-            if (viewName.ToLower() == "settings" && this.SelectedChild.Title != "settings")
-                ToSettings = this.SelectedChild.Title;
+        //protected override void ChangePage(object parameter)
+        //{
+        //    string viewName = parameter as string;
+        //    if (viewName == null)
+        //        return;
+        //    if (viewName.ToLower() == "settings" && this.SelectedChild.Title != "settings")
+        //        ToSettings = this.SelectedChild.Title;
 
-            switch (viewName)
-            {
-                case "data":
-                    this.SelectedChild = new DataHostViewModel();
-                    break;
-                case "statistics":
-                    this.SelectedChild = new StatisticsHostViewModel();
-                    break;
-                case "settings":
-                    this.SelectedChild = new SettingsHostViewModel();
-                    break;
-                default:
-                    break;
-            }
+        //    switch (viewName)
+        //    {
+        //        case "data":
+        //            this.SelectedChild = new DataHostViewModel();
+        //            break;
+        //        case "statistics":
+        //            this.SelectedChild = new StatisticsHostViewModel();
+        //            break;
+        //        case "settings":
+        //            this.SelectedChild = new SettingsHostViewModel();
+        //            break;
+        //        default:
+        //            break;
+        //    }
 
-            PropertyChanging("DBSize");
-        }
+        //    PropertyChanging("DBSize");
+        //}
 
         private void ThisMonth()
         {
@@ -343,9 +341,12 @@ namespace AppsTracker.ViewModels
 
         protected override void Disposing()
         {
-            this._selectedChild = null;
+            if (_selectedChild != null)
+            {
+                ((ViewModelBase)_selectedChild).Dispose();
+                _selectedChild = null;
+            }
             base.Disposing();
         }
-
     }
 }

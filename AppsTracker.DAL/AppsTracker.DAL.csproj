@@ -112,6 +112,7 @@
     <Compile Include="Repos\RepositoryFactory.cs" />
     <Compile Include="Repos\ScreenshotRepo.cs" />
     <Compile Include="Repos\UsageRepo.cs" />
+    <Compile Include="Service\AppsServiceMock.cs" />
     <Compile Include="Service\AppsService.cs" />
     <Compile Include="Service\IAppsService.cs" />
     <Compile Include="Service\IBaseService.cs" />
@@ -122,6 +123,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AppsTracker.Common\AppsTracker.Common.csproj">
+      <Project>{0c42bfba-8444-4789-bd3f-65f84ccd94ed}</Project>
+      <Name>AppsTracker.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AppsTracker.Models\AppsTracker.Models.csproj">
       <Project>{cc8b5831-53c4-46da-97db-18c75ed7d929}</Project>
       <Name>AppsTracker.Models</Name>

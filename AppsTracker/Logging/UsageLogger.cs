@@ -8,6 +8,7 @@ using AppsTracker.Models.Proxy;
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.MVVM;
+using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Logging
 {
@@ -27,14 +28,22 @@ namespace AppsTracker.Logging
 
         public UsageLogger(ISettings settings)
         {
-            _service = ServiceFactory.Instance.GetService<IAppsService>();
+            Ensure.NotNull(settings);
+
+            _service = ServiceFactory.Get<IAppsService>();
             _settings = settings;
-            Configure();
+
             Init();
+            Configure();
         }
 
         private void Init()
         {
+            var user = _service.InitUzer(Environment.UserName);
+            _currentUsageLogin = _service.InitLogin(user.UserID);
+
+            Globals.Initialize(user, _currentUsageLogin.UsageID);
+
             _idleMonitor = new ServiceWrap<IdleMonitor>(() => new IdleMonitor(),
                                                             m =>
                                                             {
@@ -46,8 +55,8 @@ namespace AppsTracker.Logging
                                                                 m.IdleEntered -= IdleEntered;
                                                                 m.IdleStoped -= IdleStopped;
                                                             }) { Enabled = (_settings.EnableIdle && _settings.LoggingEnabled) };
+            
             Microsoft.Win32.SystemEvents.SessionSwitch += SessionSwitch;
-
         }
 
         private void IdleStopped(object sender, EventArgs e)
@@ -130,6 +139,12 @@ namespace AppsTracker.Logging
         public IMediator Mediator
         {
             get { return MVVM.Mediator.Instance; }
+        }
+
+
+        public void SetLoggingEnabled(bool enabled)
+        {
+            _isLoggingEnabled = enabled;
         }
     }
 }

@@ -53,19 +53,13 @@
 
         <controls:FaderContentControl Grid.Row="0"
                                       Margin="30,0,0,0">
-            <!--<ListBox ItemTemplate="{StaticResource lbItemTemplate}"
-                     ItemsPanel="{StaticResource hostViewTemplate}"
-                     ItemsSource="{Binding Children}"
-                     SelectedItem="{Binding SelectedChild, Mode=TwoWay}"
-                     ItemContainerStyle="{StaticResource FlatListBoxItem}"
-                     Name="lbChildren" />-->
             <StackPanel Orientation="Horizontal">
                 <Label Content="APPS"
                        Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=APPS}">
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="APPS">
+                                      CommandParameter="{x:Type viewModels:Data_logsViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>
@@ -74,7 +68,7 @@
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="KEYSTROKES">
+                                      CommandParameter="{x:Type viewModels:Data_keystrokesViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>
@@ -83,25 +77,16 @@
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="SCREENSHOTS">
+                                      CommandParameter="{x:Type viewModels:Data_screenshotsViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>
-                <!--<Label Content="FILELOGS"
-                       Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=FILELOGS}">
-                    <Label.InputBindings>
-                        <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding ChangePageCommand}"
-                                      CommandParameter="FILELOGS">
-                        </MouseBinding>
-                    </Label.InputBindings>
-                </Label>-->
                 <Label Content="DAY VIEW"
                        Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=DAY VIEW}">
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="DAY VIEW">
+                                      CommandParameter="{x:Type vModels:Data_dayViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>

@@ -5,6 +5,7 @@ using System.Linq;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.DAL;
 using System.Threading.Tasks;
+using AppsTracker.DAL.Service;
 
 namespace AppsTracker
 {
@@ -15,6 +16,8 @@ namespace AppsTracker
         private static DateTime _date1;
         private static DateTime _date2;
 
+        private static IAppsService _service = ServiceFactory.Get<IAppsService>();
+
         public static bool DBSizeOperational { get; private set; }
         public static int UserID { get; private set; }
         public static string UserName { get; private set; }
@@ -22,7 +25,7 @@ namespace AppsTracker
         public static int SelectedUserID { get; private set; }
         public static string SelectedUserName { get; private set; }
         public static Uzer SelectedUser { get; private set; }
-        
+
         public static DateTime Date1
         {
             get
@@ -53,31 +56,26 @@ namespace AppsTracker
 
         public static event EventHandler DBCleaningRequired;
 
-        public static void Initialize(Uzer uzer, int usageID, AppsEntities context)
+        public static void Initialize(Uzer uzer, int usageID)
         {
             UserID = uzer.UserID;
             UserName = uzer.Name;
             SelectedUserID = UserID;
             SelectedUserName = UserName;
-            _date1 = GetFirstDate(context);
+            _date1 = GetFirstDate();
             UsageID = usageID;
         }
 
         public static void ClearDateFilter()
         {
-            using (var context = new AppsEntities())
-            {
-                _date1 = GetFirstDate(context);
-            }
+            _date1 = GetFirstDate();
             _isLastDateFiltered = false;
         }
 
-        private static DateTime GetFirstDate(AppsEntities context)
+        private static DateTime GetFirstDate()
         {
-            return context.Usages.Count() == 0 ? DateTime.Now.Date : (from u in context.Users.AsNoTracking()
-                                                                      join l in context.Usages.AsNoTracking() on u.UserID equals l.UserID
-                                                                      where u.UserID == SelectedUserID
-                                                                      select l.UsageStart).Min();
+            return _service.GetQueryable<Usage>().ToList().Count == 0 ? DateTime.Now.Date 
+                : _service.GetQueryable<Usage>().Where(u => u.UserID == SelectedUserID).Select(u => u.UsageStart).Min();
         }
 
         public static void ChangeUser(Uzer uzer)
@@ -109,7 +107,7 @@ namespace AppsTracker
             }
             catch (Exception ex)
             {
-                Exceptions.Logger.DumpExceptionInfo(ex);
+                Exceptions.FileLogger.Log(ex);
                 return -1;
             }
         }
