@@ -20,7 +20,7 @@ namespace AppsTracker.DAL.Service
         public static void Register<T>(Func<T> getter) where T : class, IBaseService
         {
             Ensure.NotNull(getter);
-            Ensure.Condition<InvalidOperationException>(!_hashTable.ContainsKey(typeof(T)), string.Format("{0} is already inserted", typeof(T)));
+            Ensure.Condition<InvalidOperationException>(_hashTable.ContainsKey(typeof(T)) == false, string.Format("{0} is already inserted", typeof(T)));
 
             _hashTable.Add(typeof(T), getter);
         }

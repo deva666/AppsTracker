@@ -115,9 +115,9 @@
       <Project>{0c42bfba-8444-4789-bd3f-65f84ccd94ed}</Project>
       <Name>AppsTracker.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppsTracker\AppsTrackerCore.csproj">
+    <ProjectReference Include="..\AppsTracker\AppsTracker.Core.csproj">
       <Project>{ed886551-a8b3-492d-acec-fe2df0b484f7}</Project>
-      <Name>AppsTrackerCore</Name>
+      <Name>AppsTracker.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

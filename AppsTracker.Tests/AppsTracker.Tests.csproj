@@ -89,13 +89,13 @@
       <Project>{cc8b5831-53c4-46da-97db-18c75ed7d929}</Project>
       <Name>AppsTracker.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppsTrackerLicensing\AppsTrackerLicensing.csproj">
+    <ProjectReference Include="..\AppsTrackerLicensing\AppsTracker.Licensing.csproj">
       <Project>{3018122a-aac6-4304-9ec1-d415fa060505}</Project>
-      <Name>AppsTrackerLicensing</Name>
+      <Name>AppsTracker.Licensing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppsTracker\AppsTrackerCore.csproj">
+    <ProjectReference Include="..\AppsTracker\AppsTracker.Core.csproj">
       <Project>{ed886551-a8b3-492d-acec-fe2df0b484f7}</Project>
-      <Name>AppsTrackerCore</Name>
+      <Name>AppsTracker.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
