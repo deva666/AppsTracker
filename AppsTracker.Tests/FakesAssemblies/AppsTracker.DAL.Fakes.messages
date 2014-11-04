@@ -1,0 +1,70 @@
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.DAL.AppsDBConfiguration: type is not visible to exported or assembly(AppsTracker.DAL.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.DAL.Repos.IRepo`1: type is not visible to exported or assembly(AppsTracker.DAL.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.DAL.Repos.AplicationRepo: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.DAL.Repos.IEditableRepository`1: type is not visible to exported or assembly(AppsTracker.DAL.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.DAL.Repos.LogEditableRepository: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.DAL.Repos.LogRepo: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.DAL.Repos.LogRepository: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.DAL.Repos.RepositoryFactory: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.DAL.Repos.ScreenshotRepo: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.DAL.Repos.UsageRepo: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.DAL.Service.AppsService: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.DAL.Service.ServiceFactory: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for <>f__AnonymousType0`2: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for <>f__AnonymousType1`2: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for <>f__AnonymousType2`2: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for <>f__AnonymousType3`2: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for <>f__AnonymousType4`3: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for <>f__AnonymousType5`2: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for <>f__AnonymousType6`4: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.AppsDBConfiguration: type is not visible to exported or assembly(AppsTracker.DAL.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Repos.IRepo`1: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Repos.AplicationRepo+<>c__DisplayClass1: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Repos.AplicationRepo+AppComparer: type is not visible to exported or assembly(AppsTracker.DAL.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Repos.IRepository`1: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Repos.IEditableRepository`1: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Repos.IRepositoryFactory: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Repos.LogRepo+<>c__DisplayClass1: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Repos.LogRepo+<>c__DisplayClass4: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Repos.LogRepo+<>c__DisplayClass7: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Repos.ScreenshotRepo+<>c__DisplayClass1: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Repos.ScreenshotRepo+<>c__DisplayClass4: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Repos.ScreenshotRepo+<>c__DisplayClass7: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Repos.UsageRepo+<>c__DisplayClass2: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Repos.UsageRepo+<>c__DisplayClass5: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Repos.UsageRepo+<>c__DisplayClass8: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.IBaseService: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.IAppsService: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.AppsService+<>c__DisplayClass12`1: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.AppsService+<>c__DisplayClass15`1: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.AppsService+<>c__DisplayClass18`1: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.AppsService+<>c__DisplayClass2: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.AppsService+<>c__DisplayClass4: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.AppsService+<>c__DisplayClass7: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.AppsService+<>c__DisplayClassa: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.AppsService+<>c__DisplayClassc: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.AppsService+<>c__DisplayClassf`1: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.IChartService: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass16: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass18: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass2e: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass30: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass3e: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass40: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass4f: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass59: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass5b: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass69: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass6b: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass8c: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass8e: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass93: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass95: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass97: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for <>f__AnonymousType0`2: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for <>f__AnonymousType1`2: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for <>f__AnonymousType2`2: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for <>f__AnonymousType3`2: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for <>f__AnonymousType4`3: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for <>f__AnonymousType5`2: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for <>f__AnonymousType6`4: type is not supported because of internal limitations.
