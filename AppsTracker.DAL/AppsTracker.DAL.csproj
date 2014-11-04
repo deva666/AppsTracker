@@ -114,8 +114,10 @@
     <Compile Include="Repos\UsageRepo.cs" />
     <Compile Include="Service\AppsServiceMock.cs" />
     <Compile Include="Service\AppsService.cs" />
+    <Compile Include="Service\ChartService.cs" />
     <Compile Include="Service\IAppsService.cs" />
     <Compile Include="Service\IBaseService.cs" />
+    <Compile Include="Service\IChartService.cs" />
     <Compile Include="Service\ServiceFactory.cs" />
   </ItemGroup>
   <ItemGroup>

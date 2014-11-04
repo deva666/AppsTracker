@@ -17,14 +17,13 @@ using System.Windows.Data;
 using AppsTracker.DAL;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.DAL.Repos;
+using AppsTracker.DAL.Service;
 
 namespace AppsTracker.Pages.ViewModels
 {
-    internal class Data_screenshotsViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
+    internal sealed class Data_screenshotsViewModel : ViewModelBase, IChildVM, ICommunicator
     {
         #region Fields
-
-        bool _working;
 
         string _infoContent;
 
@@ -35,6 +34,8 @@ namespace AppsTracker.Pages.ViewModels
         ICommand _deleteSelectedScreenshotsCommand;
         ICommand _openScreenshotViewerCommand;
         ICommand _saveScreenshotCommand;
+
+        IAppsService _service;
 
         #endregion
 
@@ -50,18 +51,6 @@ namespace AppsTracker.Pages.ViewModels
         {
             get;
             private set;
-        }
-        public bool Working
-        {
-            get
-            {
-                return _working;
-            }
-            set
-            {
-                _working = value;
-                PropertyChanging("Working");
-            }
         }
         public string InfoContent
         {
@@ -143,6 +132,7 @@ namespace AppsTracker.Pages.ViewModels
 
         public Data_screenshotsViewModel()
         {
+            _service = ServiceFactory.Get<IAppsService>();
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(LoadContent));
             SelectedDate = DateTime.Today;
         }
@@ -151,20 +141,18 @@ namespace AppsTracker.Pages.ViewModels
 
         public async void LoadContent()
         {
-            Working = true;
-            LogList = await GetContentFromRepo();
-            Working = false;
+            await LoadAsync(GetContent, logs => LogList = logs);
             IsContentLoaded = true;
         }
 
-        private Task<IEnumerable<Log>> GetContentFromRepo()
+        private IEnumerable<Log> GetContent()
         {
-            return LogRepo.Instance.GetFilteredAsync(l => l.Screenshots.Count > 0
-                                                         && l.DateCreated >= Globals.Date1
-                                                         && l.DateCreated <= Globals.Date2
-                                                         && l.Window.Application.UserID == Globals.SelectedUserID
-                                                         , l => l.Screenshots
-                                                         , l => l.Window.Application);
+            return _service.GetFiltered<Log>(l => l.Screenshots.Count > 0
+                                                && l.DateCreated >= Globals.Date1
+                                                && l.DateCreated <= Globals.Date2
+                                                && l.Window.Application.UserID == Globals.SelectedUserID
+                                                , l => l.Screenshots
+                                                , l => l.Window.Application);
         }
 
         private void OpenScreenshotViewer(object parameter)

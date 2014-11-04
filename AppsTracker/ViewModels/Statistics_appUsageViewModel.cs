@@ -16,10 +16,9 @@ using AppsTracker.DAL.Repos;
 
 namespace AppsTracker.Pages.ViewModels
 {
-    internal class Statistics_appUsageViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
+    internal sealed class Statistics_appUsageViewModel : ViewModelBase, IChildVM, ICommunicator
     {
         #region Fields
-        bool _working;
 
         MostUsedAppModel _mostUsedAppModel;
 
@@ -45,19 +44,6 @@ namespace AppsTracker.Pages.ViewModels
         {
             get;
             private set;
-        }
-
-        public bool Working
-        {
-            get
-            {
-                return _working;
-            }
-            set
-            {
-                _working = value;
-                PropertyChanging("Working");
-            }
         }
 
         public MostUsedAppModel MostUsedAppModel

@@ -16,11 +16,9 @@ using AppsTracker.MVVM;
 
 namespace AppsTracker.Pages.ViewModels
 {
-    class Statistics_dailyAppUsageViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
+    internal sealed class Statistics_dailyAppUsageViewModel : ViewModelBase, IChildVM, ICommunicator
     {
         #region Fields
-
-        bool _working;
 
         IEnumerable<DailyUsedAppsSeries> _dailyUsedAppsList;
 
@@ -40,19 +38,6 @@ namespace AppsTracker.Pages.ViewModels
         {
             get;
             private set;
-        }
-
-        public bool Working
-        {
-            get
-            {
-                return _working;
-            }
-            set
-            {
-                _working = value;
-                PropertyChanging("Working");
-            }
         }
 
         public object SelectedItem
@@ -101,7 +86,7 @@ namespace AppsTracker.Pages.ViewModels
             {
                 List<DailyUsedAppsSeries> dailyUsedAppsSeriesTemp = new List<DailyUsedAppsSeries>();
 
-                var logs =  LogRepo.Instance.Get(l => l.Window.Application, l => l.Window.Application.User);
+                var logs = LogRepo.Instance.Get(l => l.Window.Application, l => l.Window.Application.User);
 
                 var grouped = logs.Where(l => l.Window.Application.User.UserID == Globals.SelectedUserID
                                               && l.DateCreated >= Globals.Date1
@@ -150,6 +135,6 @@ namespace AppsTracker.Pages.ViewModels
                 return dailyUsedAppsSeriesTemp;
             });
 
-        }              
+        }
     }
 }

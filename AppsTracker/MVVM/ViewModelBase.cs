@@ -12,10 +12,44 @@ namespace AppsTracker.MVVM
 {
     public abstract class ViewModelBase : ObservableObject, IDisposable
     {
+        protected bool _working;
+
+        protected object @lock = new object();
+
+        public bool Working
+        {
+            get
+            {
+                lock (@lock)
+                    return _working;
+            }
+            protected set
+            {
+                lock (@lock)
+                    _working = value;
+                PropertyChanging("Working");
+            }
+        }
+
 
         public ViewModelBase()
         {
             Debug.WriteLine(string.Format("{0}, {1}, {2} Constructed", this.GetType().Name, this.GetType().FullName, this.GetHashCode()));
+        }
+
+        protected async Task LoadAsync<T>(Func<T> getter, Action<T> onComplete, bool captureContext = true)
+        {
+            Working = true;
+            T result = await Task<T>.Run(getter).ConfigureAwait(captureContext);
+            onComplete(result);
+            Working = false;
+        }
+
+        protected void Load<T>(Func<T> getter, Action<T> onComplete, bool captureContext = false)
+        {
+            Working = true;
+            var task = Task<T>.Run(getter);
+            task.ContinueWith(t => { Working = false; onComplete(t.Result); }, captureContext ? TaskScheduler.FromCurrentSynchronizationContext() : TaskScheduler.Default);
         }
 
         public void Dispose()
@@ -34,6 +68,7 @@ namespace AppsTracker.MVVM
             Debug.WriteLine(string.Format("{0}, {1}, {2} Finalized", this.GetType().Name, this.GetType().FullName, this.GetHashCode()));
         }
 #endif
+
     }
 
 }

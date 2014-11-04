@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+
 using AppsTracker.Models.EntityModels;
 
 namespace AppsTracker
@@ -49,109 +50,7 @@ namespace AppsTracker
                     return string.Empty;
             }
         }
-
-        public static bool CheckIfAppExists(this DbSet<Aplication> collection, Aplication item, Uzer uzer)
-        {
-            var app = from a in collection
-                      where a.Name == item.Name & a.UserID == uzer.UserID
-                      select a;
-            return app.Count() > 0;
-        }
-
-        public static bool CheckIfAppExists(this DbSet<Aplication> collection, string appName, Uzer uzer)
-        {
-            var app = from a in collection
-                      where a.Name == appName & a.UserID == uzer.UserID
-                      select a;
-            return app.Count() > 0;
-        }
-
-        public static bool CheckIfWindowExists(this DbSet<Window> collection, Window item, int appID)
-        {
-            var window = from w in collection
-                         where w.ApplicationID == appID & w.Title == item.Title
-                         select w;
-            return window.Count() > 0;
-        }
-
-        public static bool CheckIfWindowExists(this DbSet<Window> collection, string windowTitle, int appID)
-        {
-            var window = from w in collection
-                         where w.ApplicationID == appID & w.Title == windowTitle
-                         select w;
-            return window.Count() > 0;
-        }
-
-        public static bool CheckIfUserExists(this DbSet<Uzer> collection, string username)
-        {
-            if (collection.Count(a => a.Name == username) == 0) return false;
-            else return true;
-        }
-
-        public static TimeSpan GetAllAppDuration(this DbSet<Aplication> collection)
-        {
-            TimeSpan duration = new TimeSpan();
-            foreach (var item in collection)
-            {
-                duration += item.Windows.GetAllWindowDuration();
-            }
-            return duration;
-        }
-
-        public static TimeSpan GetAllWindowDuration(this DbSet<Window> collection)
-        {
-            TimeSpan duration = new TimeSpan();
-            foreach (var window in collection)
-            {
-                foreach (var log in window.Logs)
-                {
-                    duration += TimeSpan.FromTicks(log.Duration);
-                }
-            }
-            return duration;
-        }
-
-        public static TimeSpan GetAllWindowDuration(this IEnumerable<Window> collection)
-        {
-            TimeSpan duration = new TimeSpan();
-            foreach (var window in collection)
-            {
-                foreach (var log in window.Logs)
-                {
-                    duration += TimeSpan.FromTicks(log.Duration);
-                }
-            }
-            return duration;
-        }
-
-        public static TimeSpan GetAppDuration(this Aplication aplication)
-        {
-            TimeSpan duration = new TimeSpan();
-            foreach (var window in aplication.Windows)
-            {
-                foreach (var log in window.Logs)
-                {
-                    duration += TimeSpan.FromTicks(log.Duration);
-                }
-            }
-            return duration;
-        }
-
-        public static TimeSpan GetWindowDuration(this Window window)
-        {
-            TimeSpan duration = new TimeSpan();
-            foreach (var log in window.Logs)
-            {
-                duration += TimeSpan.FromTicks(log.Duration);
-            }
-            return duration;
-        }
-
-        public static void Reset(this System.Timers.Timer timer)
-        {
-            timer.Stop(); timer.Start();
-        }
-
+     
         public static bool ItemExists(this DbSet<AppsToBlock> appsToBlock, Uzer uzer, Aplication aplication)
         {
             return (from a in appsToBlock

@@ -12,11 +12,9 @@ using AppsTracker.MVVM;
 
 namespace AppsTracker.Pages.ViewModels
 {
-    class Statistics_screenshotsViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
+    internal sealed class Statistics_screenshotsViewModel : ViewModelBase, IChildVM, ICommunicator
     {
         #region Fields
-
-        bool _working;
 
         ICommand _returnFromDetailedViewCommand;
 
@@ -42,19 +40,6 @@ namespace AppsTracker.Pages.ViewModels
         {
             get;
             private set;
-        }
-
-        public bool Working
-        {
-            get
-            {
-                return _working;
-            }
-            set
-            {
-                _working = value;
-                PropertyChanging("Working");
-            }
         }
 
         public object SelectedItem

@@ -12,10 +12,7 @@ namespace AppsTracker.DAL.Service
     {
         private static readonly Hashtable _hashTable = new Hashtable();
 
-        private ServiceFactory()
-        {
-            Register<IAppsService>(() => new AppsService());
-        }
+        private ServiceFactory() { }
 
         public static void Register<T>(Func<T> getter) where T : class, IBaseService
         {

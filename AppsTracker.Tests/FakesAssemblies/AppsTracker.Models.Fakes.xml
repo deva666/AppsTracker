@@ -5665,6 +5665,9 @@
         <member name="P:AppsTracker.Models.Utils.Fakes.ShimExtensions.Behavior">
             <summary>Assigns the behavior for all methods of the shimmed type</summary>
         </member>
+        <member name="P:AppsTracker.Models.Utils.Fakes.ShimExtensions.ToExtendedStringUsageTypes">
+            <summary>Sets the shim of Extensions.ToExtendedString(UsageTypes type)</summary>
+        </member>
         <member name="P:AppsTracker.Models.Utils.Fakes.ShimExtensions.TruncateStringInt32">
             <summary>Sets the shim of Extensions.Truncate(String value, Int32 maxLength)</summary>
         </member>

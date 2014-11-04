@@ -13,11 +13,9 @@ using AppsTracker.MVVM;
 
 namespace AppsTracker.Pages.ViewModels
 {
-    class Statistics_keystrokesViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
+    internal sealed class Statistics_keystrokesViewModel : ViewModelBase, IChildVM, ICommunicator
     {
         #region Fields
-
-        bool _working;
 
         ICommand _returnFromDetailedViewCommand;
 
@@ -49,19 +47,6 @@ namespace AppsTracker.Pages.ViewModels
         {
             get;
             set;
-        }
-
-        public bool Working
-        {
-            get
-            {
-                return _working;
-            }
-            set
-            {
-                _working = value;
-                PropertyChanging("Working");
-            }
         }
 
         public ICommand ReturnFromDetailedViewCommand

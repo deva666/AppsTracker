@@ -17,11 +17,9 @@ using AppsTracker.DAL.Service;
 
 namespace AppsTracker.Pages.ViewModels
 {
-    internal sealed class Data_keystrokesViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
+    internal sealed class Data_keystrokesViewModel : ViewModelBase, IChildVM, ICommunicator
     {
         #region Fields
-
-        bool _working;
 
         IEnumerable<Log> _logList;
 
@@ -57,19 +55,6 @@ namespace AppsTracker.Pages.ViewModels
             }
         }
 
-        public bool Working
-        {
-            get
-            {
-                return _working;
-            }
-            set
-            {
-                _working = value;
-                PropertyChanging("Working");
-            }
-        }
-
         public IMediator Mediator
         {
             get { return MVVM.Mediator.Instance; }
@@ -85,21 +70,18 @@ namespace AppsTracker.Pages.ViewModels
 
         public async void LoadContent()
         {
-            Working = true;
-            LogList = await GetContentAsync();
-            Working = false;
+            await LoadAsync(GetContent, logs => LogList = logs);
             IsContentLoaded = true;
         }
 
-
-        private Task<IEnumerable<Log>> GetContentAsync()
+        private IEnumerable<Log> GetContent()
         {
-            return _service.GetFilteredAsync<Log>(l => l.KeystrokesRaw != null
-                                                        && l.DateCreated >= Globals.Date1
-                                                        && l.DateCreated <= Globals.Date2
-                                                        && l.Window.Application.UserID == Globals.SelectedUserID
-                                                        , l => l.Window.Application
-                                                        , l => l.Screenshots);
+            return _service.GetFiltered<Log>(l => l.KeystrokesRaw != null
+                                                && l.DateCreated >= Globals.Date1
+                                                && l.DateCreated <= Globals.Date2
+                                                && l.Window.Application.UserID == Globals.SelectedUserID
+                                                , l => l.Window.Application
+                                                , l => l.Screenshots);
         }
     }
 }

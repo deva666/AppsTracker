@@ -21,14 +21,14 @@ using AppsTracker.DAL;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.Models.ChartModels;
 using AppsTracker.DAL.Repos;
+using AppsTracker.DAL.Service;
 
 namespace AppsTracker.Pages.ViewModels
 {
-    internal class Data_logsViewModel : ViewModelBase, IWorker, IChildVM, ICommunicator
+    internal class Data_logsViewModel : ViewModelBase, IChildVM, ICommunicator
     {
         #region Fields
 
-        bool _working;
         bool _chartVisible;
 
         string _overallAppDuration;
@@ -56,6 +56,9 @@ namespace AppsTracker.Pages.ViewModels
         ICommand _addDaysCommand1;
         ICommand _addDaysCommand2;
         ICommand _changeDaysCommand;
+
+        IAppsService _appsService;
+        IChartService _chartService;
 
         #endregion
 
@@ -141,18 +144,6 @@ namespace AppsTracker.Pages.ViewModels
         {
             get;
             private set;
-        }
-        public bool Working
-        {
-            get
-            {
-                return _working;
-            }
-            set
-            {
-                _working = value;
-                PropertyChanging("Working");
-            }
         }
 
         public IEnumerable<Aplication> AplicationList
@@ -301,125 +292,67 @@ namespace AppsTracker.Pages.ViewModels
 
         #endregion
 
-        #region Constructor
-
         public Data_logsViewModel()
         {
             Mediator.Register(MediatorMessages.ApplicationAdded, new Action<Aplication>(ApplicationAdded));
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(LoadContent));
-        }
 
-        #endregion
+            _appsService = ServiceFactory.Get<IAppsService>();
+            _chartService = ServiceFactory.Get<IChartService>();
+        }
 
         #region Loader Methods
 
         public async void LoadContent()
         {
-            Working = true;
             OverallAppDuration = string.Empty;
             OverallWindowDuration = string.Empty;
             Date1 = Globals.Date1;
             Date2 = Globals.Date2;
-            AplicationList = await GetContentFromRepo();
-            Working = false;
+            await LoadAsync(GetContent, a => AplicationList = a);
             IsContentLoaded = true;
         }
 
-        private async void LoadAppsOverall()
+        private void LoadAppsOverall()
         {
-            Working = true;
-            TopAppsList = await GetTopAppsAsync();
-            Working = false;
-            ChartVisible = false;
+            Load(GetTopApps, a => { TopAppsList = a; ChartVisible = false; });
         }
 
-        private async void LoadWindowsOverall()
+        private void LoadWindowsOverall()
         {
-            Working = true;
-            TopWindowsList = await GetTopWindowsAsync();
-            Working = false;
+            Load(GetTopWindows, w => TopWindowsList = w);
         }
 
-        private async void LoadChart()
+        private void LoadChart()
         {
-            Working = true;
-            ChartList = await GetChartContentAsync();
-            Working = false;
+            Load(GetChartContent, c => ChartList = c);
         }
 
-        private Task<IEnumerable<Aplication>> GetContentFromRepo()
+        private IEnumerable<Aplication> GetContent()
         {
-            return AplicationRepo.Instance.GetFilteredAsync(a => a.User.UserID == Globals.SelectedUserID
-                                                           && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= Globals.Date1).Any()
-                                                           && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= Globals.Date2).Any());
+            return _appsService.GetQueryable<Aplication>().Where(a => a.User.UserID == Globals.SelectedUserID
+                                                                && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= Globals.Date1).Any()
+                                                                && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= Globals.Date2).Any())
+                                                           .ToList()
+                                                           .Distinct();
         }
 
-        private async Task<IEnumerable<TopAppsModel>> GetTopAppsAsync()
+        private IEnumerable<TopAppsModel> GetTopApps()
         {
-            Aplication app = SelectedApplication;
-            if (app == null)
+            if (SelectedApplication == null)
                 return null;
 
-            var logs = await LogRepo.Instance.GetFilteredAsync(l => l.Window.Application.User.UserID == Globals.SelectedUserID
-                                                                         && l.DateCreated >= Globals.Date1
-                                                                         && l.DateCreated <= Globals.Date2
-                                                                         , l => l.Window.Application)
-                                              .ConfigureAwait(false);
-
-            var totalDuration = (from l in logs
-                                 group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day } into grp
-                                 select grp).ToList().Select(g => new { Date = new DateTime(g.Key.year, g.Key.month, g.Key.day), Duration = (double)g.Sum(l => l.Duration) });
-
-
-            var result = (from l in logs
-                          where l.Window.Application.ApplicationID == app.ApplicationID
-                          group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day, name = l.Window.Application.Name } into grp
-                          select grp).ToList()
-                               .Select(g => new TopAppsModel
-                               {
-                                   AppName = g.Key.name,
-                                   Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
-                                   DateTime = new DateTime(g.Key.year, g.Key.month, g.Key.day),
-                                   Usage = g.Sum(l => l.Duration) / totalDuration.First(t => t.Date == new DateTime(g.Key.year, g.Key.month, g.Key.day)).Duration,
-                                   Duration = g.Sum(l => l.Duration)
-                               })
-                               .OrderByDescending(t => t.DateTime)
-                               .ToList();
-
-            var requestedApp = result.Where(a => a.AppName == app.Name).FirstOrDefault();
-
-            if (requestedApp != null)
-                requestedApp.IsSelected = true;
-
-            return result;
+            return _chartService.GetLogTopApps(Globals.SelectedUserID, SelectedApplication.ApplicationID, SelectedApplication.Name, Globals.Date1, Globals.Date2);
         }
 
-        private async Task<List<TopWindowsModel>> GetTopWindowsAsync()
+        private IEnumerable<TopWindowsModel> GetTopWindows()
         {
             var topApps = TopAppsOverall;
             if (TopAppsList == null || topApps == null)
                 return null;
 
-            string appName = topApps.AppName;
-
             var days = TopAppsList.Where(t => t.IsSelected).Select(t => t.DateTime);
-            var logs = _cachedLogs == null ? _cachedLogs = await LogRepo.Instance.GetFilteredAsync(l => l.Window.Application.User.UserID == Globals.SelectedUserID
-                                                                    && l.Window.Application.Name == appName
-                                                                    , l => l.Window)
-                                                                    .ConfigureAwait(false) : _cachedLogs;
-
-            var totalFiltered = logs.Where(l => days.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)));
-
-            double totalDuration = totalFiltered.Sum(l => l.Duration);
-
-            var result = (from l in totalFiltered
-                          group l by l.Window.Title into grp
-                          select grp).Select(g => new TopWindowsModel { Title = g.Key, Usage = (g.Sum(l => l.Duration) / totalDuration), Duration = g.Sum(l => l.Duration) })
-                                  .OrderByDescending(t => t.Duration)
-                                  .ToList();
-
-            return result;
-
+            return _chartService.GetLogTopWindows(Globals.SelectedUserID, topApps.AppName, days);
         }
 
         private Task<List<TopAppsModel>> GetTopAppsOverallAsync()
@@ -514,48 +447,17 @@ namespace AppsTracker.Pages.ViewModels
             });
         }
 
-        private async Task<List<DailyWindowSeries>> GetChartContentAsync()
+        private IEnumerable<DailyWindowSeries> GetChartContent()
         {
             var topApps = TopAppsOverall;
 
             if (TopAppsList == null || topApps == null || TopWindowsList == null)
                 return null;
 
-            string appName = topApps.AppName;
-            List<string> selectedWindows = TopWindowsList.Where(w => w.IsSelected).Select(w => w.Title).ToList();
-            if (selectedWindows.Count == 0)
-                return null;
-
+            var selectedWindows = TopWindowsList.Where(w => w.IsSelected).Select(w => w.Title).ToList();
             var days = TopAppsList.Where(t => t.IsSelected).Select(t => t.DateTime);
 
-            var logs = _cachedLogs == null ? _cachedLogs = await LogRepo.Instance.GetFilteredAsync(l => l.Window.Application.User.UserID == Globals.SelectedUserID
-                                                                    && l.Window.Application.Name == appName
-                                                                    , l => l.Window)
-                                                                    .ConfigureAwait(false) : _cachedLogs;
-
-            var totalFiltered = logs.Where(l => days.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)) && selectedWindows.Contains(l.Window.Title));
-
-            List<DailyWindowSeries> result = new List<DailyWindowSeries>();
-
-            var projected = from l in totalFiltered
-                            group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day } into grp
-                            select grp;
-
-            foreach (var grp in projected)
-            {
-                var projected2 = grp.GroupBy(g => g.Window.Title);
-                DailyWindowSeries series = new DailyWindowSeries() { Date = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day).ToShortDateString() };
-                List<DailyWindowDurationModel> modelList = new List<DailyWindowDurationModel>();
-                foreach (var grp2 in projected2)
-                {
-                    DailyWindowDurationModel model = new DailyWindowDurationModel() { Title = grp2.Key, Duration = Math.Round(new TimeSpan(grp2.Sum(l => l.Duration)).TotalMinutes, 2) };
-                    modelList.Add(model);
-                }
-                series.DailyWindowCollection = modelList;
-                result.Add(series);
-            }
-
-            return result;
+            return _chartService.GetDailyWindowSeries(Globals.SelectedUserID, topApps.AppName, selectedWindows, days);
         }
 
         #endregion
@@ -608,6 +510,7 @@ namespace AppsTracker.Pages.ViewModels
         }
 
 
+        //this should go to service
         private void AddAplicationToBlockedList(object parameter)
         {
             Dictionary<string, ObservableCollection<object>> processesDict = parameter as Dictionary<string, ObservableCollection<object>>;

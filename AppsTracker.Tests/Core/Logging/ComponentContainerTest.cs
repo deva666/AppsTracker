@@ -37,7 +37,7 @@ namespace AppsTracker.Tests.Core.Logging
 
             ComponentContainer container = new ComponentContainer(settings);
 
-            Assert.AreNotSame(container, null, "Container not constucted");
+            Assert.IsNotNull(container, "Container not constucted");
         }
     }
 }

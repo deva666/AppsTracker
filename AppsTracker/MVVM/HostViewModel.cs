@@ -10,7 +10,7 @@ using AppsTracker.Common.Utils;
 
 namespace AppsTracker.MVVM
 {
-    abstract class HostViewModel : ViewModelBase
+    internal abstract class HostViewModel : ViewModelBase
     {
         private Hashtable _childrenSet = new Hashtable();
 

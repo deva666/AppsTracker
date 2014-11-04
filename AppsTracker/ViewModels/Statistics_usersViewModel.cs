@@ -16,11 +16,9 @@ using AppsTracker.DAL.Repos;
 
 namespace AppsTracker.Pages.ViewModels
 {
-    class Statistics_usersViewModel : ViewModelBase, IChildVM, IWorker, ICommunicator
+    internal sealed class Statistics_usersViewModel : ViewModelBase, IChildVM, ICommunicator
     {
         #region Fields
-
-        bool _working;
 
         AllUsersModel _allUsersModel;
 
@@ -51,18 +49,7 @@ namespace AppsTracker.Pages.ViewModels
             get;
             private set;
         }
-        public bool Working
-        {
-            get
-            {
-                return _working;
-            }
-            set
-            {
-                _working = value;
-                PropertyChanging("Working");
-            }
-        }
+        
         public AllUsersModel AllUsersModel
         {
             get
@@ -184,7 +171,7 @@ namespace AppsTracker.Pages.ViewModels
             IEnumerable<Usage> stoppeds;
 
             List<UsageTypeSeries> collection = new List<UsageTypeSeries>();
-
+            //wrong, selected user
             var logins = await UsageRepo.Instance.GetFilteredAsync(u => u.User.UserID == Globals.SelectedUserID
                                                                  && u.UsageStart >= Globals.Date1
                                                                  && u.UsageStart <= Globals.Date2
@@ -203,16 +190,16 @@ namespace AppsTracker.Pages.ViewModels
             {
                 var usageIDs = grp.Select(u => u.UsageID);
 
-                var idlesTask = UsageRepo.Instance.GetFilteredAsync(u => u.SelfUsageID.HasValue 
-                                                                        && usageIDs.Contains(u.SelfUsageID.Value) 
+                var idlesTask = UsageRepo.Instance.GetFilteredAsync(u => u.SelfUsageID.HasValue
+                                                                        && usageIDs.Contains(u.SelfUsageID.Value)
                                                                         && u.UsageType.UType == usageIdle);
 
-                var lockedTask = UsageRepo.Instance.GetFilteredAsync(u => u.SelfUsageID.HasValue 
-                                                                            && usageIDs.Contains(u.SelfUsageID.Value) 
+                var lockedTask = UsageRepo.Instance.GetFilteredAsync(u => u.SelfUsageID.HasValue
+                                                                            && usageIDs.Contains(u.SelfUsageID.Value)
                                                                             && u.UsageType.UType == usageLocked);
 
-                var stoppedTask = UsageRepo.Instance.GetFilteredAsync(u => u.SelfUsageID.HasValue 
-                                                                            && usageIDs.Contains(u.SelfUsageID.Value) 
+                var stoppedTask = UsageRepo.Instance.GetFilteredAsync(u => u.SelfUsageID.HasValue
+                                                                            && usageIDs.Contains(u.SelfUsageID.Value)
                                                                             && u.UsageType.UType == usageStopped);
 
                 await Task.WhenAll(idlesTask, lockedTask, stoppedTask)
@@ -223,7 +210,7 @@ namespace AppsTracker.Pages.ViewModels
                 stoppeds = stoppedTask.Result;
 
                 UsageTypeSeries series = new UsageTypeSeries() { Date = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day).ToShortDateString() };
-                
+
                 ObservableCollection<UsageTypeModel> observableCollection = new ObservableCollection<UsageTypeModel>();
 
                 long idleTime = 0;

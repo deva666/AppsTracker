@@ -62,6 +62,8 @@ namespace AppsTracker
             InitializeComponent();
 
             ServiceFactory.Register<IAppsService>(() => new AppsService());
+            ServiceFactory.Register<IChartService>(() => new ChartService());
+
             bool autostart = false;
             foreach (var arg in args)
                 if (arg.ToUpper().Contains(Constants.CMD_ARGS_AUTOSTART))
