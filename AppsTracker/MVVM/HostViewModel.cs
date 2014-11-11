@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
+
 using AppsTracker.Common.Utils;
 
 namespace AppsTracker.MVVM
@@ -18,7 +14,7 @@ namespace AppsTracker.MVVM
 
         protected ICommand _changePageCommand;
 
-        public virtual IChildVM SelectedChild
+        public IChildVM SelectedChild
         {
             get
             {
@@ -32,7 +28,6 @@ namespace AppsTracker.MVVM
                     ((ViewModelBase)_selectedChild).Dispose();
                 _selectedChild = value;
                 PropertyChanging("SelectedChild");
-                LoadChildContent();
             }
         }
 
@@ -60,20 +55,11 @@ namespace AppsTracker.MVVM
         protected IChildVM Resolve(object type)
         {
             Ensure.NotNull(type);
-            Ensure.Condition<InvalidOperationException>(_childrenSet.ContainsKey(type) == true, string.Format("Can't resolve {0} type!", type.GetType()));
+            Ensure.Condition<InvalidOperationException>(_childrenSet.ContainsKey(type) == true, string.Format("Can't resolve {0} type!", type));
 
             var getter = _childrenSet[type];
             var res = (Func<IChildVM>)getter;
             return res();
-        }
-
-        protected virtual void LoadChildContent()
-        {
-            if (this.SelectedChild != null)
-            {
-                if (!this.SelectedChild.IsContentLoaded)
-                    this.SelectedChild.LoadContent();
-            }
         }
     }
 }

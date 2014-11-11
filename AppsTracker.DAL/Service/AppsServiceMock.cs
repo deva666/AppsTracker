@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppsTracker.Models.EntityModels;
 
 namespace AppsTracker.DAL.Service
 {
@@ -79,6 +80,16 @@ namespace AppsTracker.DAL.Service
         public void Add<T>(T item) where T : class
         {
             //do nothing
+        }
+
+        public DateTime GetStartDate(int userID)
+        {
+            return DateTime.Now.AddDays(-10);
+        }
+
+        public IList<AppsToBlock> AddToBlockedList(List<Aplication> apps, string username, int userID)
+        {
+            return new List<AppsToBlock>();
         }
     }
 }

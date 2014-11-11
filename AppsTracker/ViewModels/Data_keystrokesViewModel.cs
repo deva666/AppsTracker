@@ -21,7 +21,9 @@ namespace AppsTracker.Pages.ViewModels
     {
         #region Fields
 
-        IEnumerable<Log> _logList;
+        AsyncProperty<IEnumerable<Log>> _logList;
+
+        //IEnumerable<Log> _logList;
 
         IAppsService _service;
 
@@ -42,7 +44,7 @@ namespace AppsTracker.Pages.ViewModels
             get;
             private set;
         }
-        public IEnumerable<Log> LogList
+        public AsyncProperty<IEnumerable<Log>> LogList
         {
             get
             {
@@ -64,14 +66,16 @@ namespace AppsTracker.Pages.ViewModels
 
         public Data_keystrokesViewModel()
         {
-            Mediator.Register(MediatorMessages.RefreshLogs, new Action(LoadContent));
             _service = ServiceFactory.Get<IAppsService>();
+            _logList = new AsyncProperty<IEnumerable<Log>>(GetContent, this);
+
+            Mediator.Register(MediatorMessages.RefreshLogs, new Action(_logList.Reload));
         }
 
-        public async void LoadContent()
+        public void LoadContent()
         {
-            await LoadAsync(GetContent, logs => LogList = logs);
-            IsContentLoaded = true;
+            //await LoadAsync(GetContent, logs => LogList = logs);
+            //IsContentLoaded = true;
         }
 
         private IEnumerable<Log> GetContent()

@@ -1,18 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
-using AppsTracker.Logging;
-using AppsTracker.Pages.ViewModels;
-using AppsTracker.Controls;
-using AppsTracker.MVVM;
-using System.Diagnostics;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using AppsTracker.DAL;
-using AppsTracker.Models.EntityModels;
+
 using AppsTracker.DAL.Service;
+using AppsTracker.Models.EntityModels;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
@@ -255,7 +247,7 @@ namespace AppsTracker.ViewModels
 
         private void GetUsers()
         {
-            _uzerCollection = _service.GetQueryable<Uzer>().ToList();
+            _uzerCollection = _service.GetFiltered<Uzer>(u=>u.UserID >= 0);
         }
 
         #region Command Methods
@@ -292,32 +284,6 @@ namespace AppsTracker.ViewModels
             if (IsPopupCalendarOpen)
                 IsPopupCalendarOpen = false;
         }
-
-        //protected override void ChangePage(object parameter)
-        //{
-        //    string viewName = parameter as string;
-        //    if (viewName == null)
-        //        return;
-        //    if (viewName.ToLower() == "settings" && this.SelectedChild.Title != "settings")
-        //        ToSettings = this.SelectedChild.Title;
-
-        //    switch (viewName)
-        //    {
-        //        case "data":
-        //            this.SelectedChild = new DataHostViewModel();
-        //            break;
-        //        case "statistics":
-        //            this.SelectedChild = new StatisticsHostViewModel();
-        //            break;
-        //        case "settings":
-        //            this.SelectedChild = new SettingsHostViewModel();
-        //            break;
-        //        default:
-        //            break;
-        //    }
-
-        //    PropertyChanging("DBSize");
-        //}
 
         private void ThisMonth()
         {

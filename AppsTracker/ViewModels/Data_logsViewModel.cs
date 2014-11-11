@@ -1,26 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using AppsTracker.MVVM;
-using AppsTracker.Logging;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
-using System.Management;
 using System.Windows.Controls;
-using AppsTracker;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using AppsTracker.Controls;
-using System.Data.Entity;
-using AppsTracker.Utils;
-using AppsTracker.ViewModels;
-using AppsTracker.DAL;
+
+using AppsTracker.MVVM;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.Models.ChartModels;
-using AppsTracker.DAL.Repos;
 using AppsTracker.DAL.Service;
 
 namespace AppsTracker.Pages.ViewModels
@@ -37,11 +26,10 @@ namespace AppsTracker.Pages.ViewModels
         DateTime _date1;
         DateTime _date2;
 
-        IEnumerable<Aplication> _aplicationList;
-        IEnumerable<TopAppsModel> _topAppsList;
-        IEnumerable<TopWindowsModel> _topWindowsList;
-        IEnumerable<DailyWindowSeries> _chartList;
-        IEnumerable<Log> _cachedLogs;
+        AsyncProperty<IEnumerable<Aplication>> _aplicationList;
+        AsyncProperty<IEnumerable<TopAppsModel>> _topAppsList;
+        AsyncProperty<IEnumerable<TopWindowsModel>> _topWindowsList;
+        AsyncProperty<IEnumerable<DailyWindowSeries>> _chartList;
 
         Aplication _selectedApplication;
 
@@ -119,9 +107,8 @@ namespace AppsTracker.Pages.ViewModels
                 _date1 = value;
                 PropertyChanging("Date1");
                 if (SelectedApplication != null)
-                {
-                    LoadAppsOverall();
-                }
+                    _topAppsList.Reload();    
+                
             }
         }
         public DateTime Date2
@@ -135,9 +122,7 @@ namespace AppsTracker.Pages.ViewModels
                 _date2 = value;
                 PropertyChanging("Date2");
                 if (SelectedApplication != null)
-                {
-                    LoadAppsOverall();
-                }
+                    _topAppsList.Reload();  
             }
         }
         public bool IsContentLoaded
@@ -146,7 +131,7 @@ namespace AppsTracker.Pages.ViewModels
             private set;
         }
 
-        public IEnumerable<Aplication> AplicationList
+        public AsyncProperty<IEnumerable<Aplication>> AplicationList
         {
             get
             {
@@ -158,7 +143,7 @@ namespace AppsTracker.Pages.ViewModels
                 PropertyChanging("AplicationList");
             }
         }
-        public IEnumerable<TopAppsModel> TopAppsList
+        public AsyncProperty<IEnumerable<TopAppsModel>> TopAppsList
         {
             get
             {
@@ -170,7 +155,7 @@ namespace AppsTracker.Pages.ViewModels
                 PropertyChanging("TopAppsList");
             }
         }
-        public IEnumerable<TopWindowsModel> TopWindowsList
+        public AsyncProperty<IEnumerable<TopWindowsModel>> TopWindowsList
         {
             get
             {
@@ -182,7 +167,7 @@ namespace AppsTracker.Pages.ViewModels
                 PropertyChanging("TopWindowsList");
             }
         }
-        public IEnumerable<DailyWindowSeries> ChartList
+        public AsyncProperty<IEnumerable<DailyWindowSeries>> ChartList
         {
             get
             {
@@ -218,10 +203,9 @@ namespace AppsTracker.Pages.ViewModels
             {
                 _selectedApplication = value;
                 PropertyChanging("SelectedApplication");
-                _cachedLogs = null;
                 ChartVisible = false;
                 if (value != null)
-                    LoadAppsOverall();
+                    TopAppsList.Reload();
             }
         }
 
@@ -294,43 +278,48 @@ namespace AppsTracker.Pages.ViewModels
 
         public Data_logsViewModel()
         {
-            Mediator.Register(MediatorMessages.ApplicationAdded, new Action<Aplication>(ApplicationAdded));
-            Mediator.Register(MediatorMessages.RefreshLogs, new Action(LoadContent));
-
             _appsService = ServiceFactory.Get<IAppsService>();
             _chartService = ServiceFactory.Get<IChartService>();
+
+            _aplicationList = new AsyncProperty<IEnumerable<Aplication>>(GetContent, this);
+            _topAppsList = new AsyncProperty<IEnumerable<TopAppsModel>>(GetTopApps, this);
+            _topWindowsList = new AsyncProperty<IEnumerable<TopWindowsModel>>(GetTopWindows, this);
+            _chartList = new AsyncProperty<IEnumerable<DailyWindowSeries>>(GetChartContent, this);
+
+
+            Mediator.Register(MediatorMessages.ApplicationAdded, new Action<Aplication>(ApplicationAdded));
+            Mediator.Register(MediatorMessages.RefreshLogs, new Action(_aplicationList.Reload));
         }
 
         #region Loader Methods
 
-        public async void LoadContent()
+        public void LoadContent()
         {
             OverallAppDuration = string.Empty;
             OverallWindowDuration = string.Empty;
             Date1 = Globals.Date1;
             Date2 = Globals.Date2;
-            await LoadAsync(GetContent, a => AplicationList = a);
-            IsContentLoaded = true;
         }
 
         private void LoadAppsOverall()
         {
-            Load(GetTopApps, a => { TopAppsList = a; ChartVisible = false; });
+            _topAppsList.Reload();
+            ChartVisible = false;
         }
 
-        private void LoadWindowsOverall()
+        private async void LoadWindowsOverall()
         {
-            Load(GetTopWindows, w => TopWindowsList = w);
+            //await LoadAsync(GetTopWindows, w => TopWindowsList = w);
         }
 
-        private void LoadChart()
+        private async void LoadChart()
         {
-            Load(GetChartContent, c => ChartList = c);
+            //await LoadAsync(GetChartContent, c => ChartList = c);
         }
 
         private IEnumerable<Aplication> GetContent()
         {
-            return _appsService.GetQueryable<Aplication>().Where(a => a.User.UserID == Globals.SelectedUserID
+            return _appsService.GetFiltered<Aplication>(a => a.User.UserID == Globals.SelectedUserID
                                                                 && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= Globals.Date1).Any()
                                                                 && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= Globals.Date2).Any())
                                                            .ToList()
@@ -339,123 +328,32 @@ namespace AppsTracker.Pages.ViewModels
 
         private IEnumerable<TopAppsModel> GetTopApps()
         {
-            if (SelectedApplication == null)
+            var app = SelectedApplication;
+            if (app == null)
                 return null;
 
-            return _chartService.GetLogTopApps(Globals.SelectedUserID, SelectedApplication.ApplicationID, SelectedApplication.Name, Globals.Date1, Globals.Date2);
+            return _chartService.GetLogTopApps(Globals.SelectedUserID, app.ApplicationID, app.Name, Globals.Date1, Globals.Date2);
         }
 
         private IEnumerable<TopWindowsModel> GetTopWindows()
         {
             var topApps = TopAppsOverall;
-            if (TopAppsList == null || topApps == null)
+            if (TopAppsList.Result == null || topApps == null)
                 return null;
 
-            var days = TopAppsList.Where(t => t.IsSelected).Select(t => t.DateTime);
+            var days = TopAppsList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
             return _chartService.GetLogTopWindows(Globals.SelectedUserID, topApps.AppName, days);
-        }
-
-        private Task<List<TopAppsModel>> GetTopAppsOverallAsync()
-        {
-            return Task<List<TopAppsModel>>.Run(() =>
-            {
-                Aplication app = SelectedApplication;
-                if (app == null)
-                    return null;
-
-                IEnumerable<Log> logs;
-                using (var context = new AppsEntities())
-                {
-
-                    logs = (from u in context.Users.AsNoTracking()
-                            join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
-                            join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-                            join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                            where u.UserID == Globals.SelectedUserID
-                            && l.DateCreated >= Globals.Date1
-                            && l.DateCreated <= Globals.Date2
-                            select l).Include(l => l.Window.Application).ToList();
-                }
-
-                var totalDuration = (from l in logs
-                                     group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day } into grp
-                                     select grp).ToList().Select(g => new { Date = new DateTime(g.Key.year, g.Key.month, g.Key.day), Duration = (double)g.Sum(l => l.Duration) });
-
-
-                var result = (from l in logs
-                              where l.Window.Application.ApplicationID == app.ApplicationID
-                              group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day, name = l.Window.Application.Name } into grp
-                              select grp).ToList()
-                                   .Select(g => new TopAppsModel
-                                   {
-                                       AppName = g.Key.name,
-                                       Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
-                                       DateTime = new DateTime(g.Key.year, g.Key.month, g.Key.day)
-                                       ,
-                                       Usage = g.Sum(l => l.Duration) / totalDuration.First(t => t.Date == new DateTime(g.Key.year, g.Key.month, g.Key.day)).Duration
-                                       ,
-                                       Duration = g.Sum(l => l.Duration)
-                                   })
-                                   .OrderByDescending(t => t.DateTime)
-                                   .ToList();
-
-                var requestedApp = result.Where(a => a.AppName == app.Name).FirstOrDefault();
-
-                if (requestedApp != null)
-                    requestedApp.IsSelected = true;
-
-                return result;
-            });
-        }
-
-        private Task<List<TopWindowsModel>> GetTopWindowsOverallAsync()
-        {
-            return Task<List<TopWindowsModel>>.Run(() =>
-            {
-                var topApps = TopAppsOverall;
-                if (TopAppsList == null || topApps == null)
-                    return null;
-                string appName = topApps.AppName;
-
-                var days = TopAppsList.Where(t => t.IsSelected).Select(t => t.DateTime);
-                IEnumerable<Log> logs;
-
-                using (var context = new AppsEntities())
-                {
-                    logs = (from u in context.Users.AsNoTracking()
-                            join a in context.Applications.AsNoTracking() on u.UserID equals a.UserID
-                            join w in context.Windows.AsNoTracking() on a.ApplicationID equals w.ApplicationID
-                            join l in context.Logs.AsNoTracking() on w.WindowID equals l.WindowID
-                            where u.UserID == Globals.SelectedUserID
-                            && a.Name == appName
-                            select l).Include(l => l.Window)
-                                    .ToList();
-                }
-
-                var totalFiltered = logs.Where(l => days.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)));
-
-                double totalDuration = totalFiltered.Sum(l => l.Duration);
-
-                var result = (from l in totalFiltered
-                              group l by l.Window.Title into grp
-                              select grp).Select(g => new TopWindowsModel { Title = g.Key, Usage = (g.Sum(l => l.Duration) / totalDuration), Duration = g.Sum(l => l.Duration) })
-                                      .OrderByDescending(t => t.Duration)
-                                      .ToList();
-
-                return result;
-
-            });
         }
 
         private IEnumerable<DailyWindowSeries> GetChartContent()
         {
             var topApps = TopAppsOverall;
 
-            if (TopAppsList == null || topApps == null || TopWindowsList == null)
+            if (TopAppsList.Result == null || topApps == null || TopWindowsList.Result == null)
                 return null;
 
-            var selectedWindows = TopWindowsList.Where(w => w.IsSelected).Select(w => w.Title).ToList();
-            var days = TopAppsList.Where(t => t.IsSelected).Select(t => t.DateTime);
+            var selectedWindows = TopWindowsList.Result.Where(w => w.IsSelected).Select(w => w.Title).ToList();
+            var days = TopAppsList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
 
             return _chartService.GetDailyWindowSeries(Globals.SelectedUserID, topApps.AppName, selectedWindows, days);
         }
@@ -466,15 +364,21 @@ namespace AppsTracker.Pages.ViewModels
 
         private void ApplicationAdded(Aplication app)
         {
-            TopAppsList = null;
-            TopWindowsList = null;
-            ChartList = null;
-            List<Aplication> copy = new List<Aplication>();
-            copy.Add(app);
-            copy = AplicationList.Union(copy).ToList();
-            AplicationList = null;
-            AplicationList = copy;
-            _cachedLogs = null;
+            _aplicationList.Reload();
+
+            _chartList.Reset();
+            _topAppsList.Reset();
+            _topWindowsList.Reset();
+
+            //TopAppsList = null;
+            //TopWindowsList = null;
+            //ChartList = null;
+
+            //List<Aplication> copy = new List<Aplication>();
+            //copy.Add(app);
+            //copy = AplicationList.Union(copy).ToList();
+            //AplicationList = null;
+            //AplicationList = copy;
         }
 
         #endregion
@@ -509,8 +413,6 @@ namespace AppsTracker.Pages.ViewModels
             }
         }
 
-
-        //this should go to service
         private void AddAplicationToBlockedList(object parameter)
         {
             Dictionary<string, ObservableCollection<object>> processesDict = parameter as Dictionary<string, ObservableCollection<object>>;
@@ -523,57 +425,22 @@ namespace AppsTracker.Pages.ViewModels
                     List<Aplication> appList = objectCollection.Select(o => o as Aplication).ToList();
                     if (appList != null)
                     {
-                        using (var context = new AppsEntities())
-                        {
-                            if (username == "All users")
-                            {
-                                foreach (var user in context.Users)
-                                {
-                                    foreach (var app in appList)
-                                    {
-                                        if (app.Description.ToLower() != "apps tracker" || !string.IsNullOrEmpty(app.WinName))
-                                        {
-                                            if (!context.AppsToBlocks.ItemExists(user, app))
-                                            {
-                                                AppsToBlock appToBlock = new AppsToBlock(user, app);
-                                                context.AppsToBlocks.Add(appToBlock);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                foreach (var app in appList)
-                                {
-                                    if (app.Description.ToLower() != "apps tracker" || !string.IsNullOrEmpty(app.WinName))
-                                    {
-                                        var uzer = context.Users.FirstOrDefault(u => u.Name == username);
-                                        if (!context.AppsToBlocks.ItemExists(uzer, app))
-                                        {
-                                            AppsToBlock appToBlock = new AppsToBlock(uzer, app);
-                                            context.AppsToBlocks.Add(appToBlock);
-                                        }
-                                    }
-                                }
-                            }
-                            context.SaveChangesAsync();
-                            var notifyList = context.AppsToBlocks.Where(a => a.UserID == Globals.UserID).Include(a => a.Application).ToList();
-                            Mediator.NotifyColleagues<List<AppsToBlock>>(MediatorMessages.AppsToBlockChanged, notifyList);
-                        }
+                        var notifyList = _appsService.AddToBlockedList(appList, username, Globals.UserID);
+                        Mediator.NotifyColleagues<IList<AppsToBlock>>(MediatorMessages.AppsToBlockChanged, notifyList);
                     }
                 }
             }
+
         }
         private void OverallAppSelectionChanged()
         {
             ChartVisible = false;
 
-            if (TopAppsList == null)
+            if (TopAppsList.Result == null)
                 return;
 
             long ticks = 0;
-            var filteredApps = TopAppsList.Where(t => t.IsSelected);
+            var filteredApps = TopAppsList.Result.Where(t => t.IsSelected);
 
             if (filteredApps.Count() == 0)
             {
@@ -582,28 +449,25 @@ namespace AppsTracker.Pages.ViewModels
             }
 
             foreach (var app in filteredApps)
-            {
                 ticks += app.Duration;
-            }
-
 
             if (ticks == 0)
                 return;
 
             TimeSpan timeSpan = new TimeSpan(ticks);
             OverallAppDuration = string.Format("Selected: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
-            LoadWindowsOverall();
+            _topWindowsList.Reload();
         }
         private void OverallWindowSelectionChanged()
         {
-            if (TopWindowsList == null)
+            if (TopWindowsList.Result == null)
             {
-                ChartList = null;
+                ChartList.Reset();
                 ChartVisible = false;
                 return;
             }
 
-            if (TopWindowsList.Where(w => w.IsSelected).Count() == 0)
+            if (TopWindowsList.Result.Where(w => w.IsSelected).Count() == 0)
             {
                 ChartVisible = false;
                 return;
@@ -612,7 +476,7 @@ namespace AppsTracker.Pages.ViewModels
             ChartVisible = true;
             long ticks = 0;
 
-            foreach (var window in TopWindowsList.Where(w => w.IsSelected))
+            foreach (var window in TopWindowsList.Result.Where(w => w.IsSelected))
                 ticks += window.Duration;
 
             if (ticks == 0)
@@ -621,23 +485,24 @@ namespace AppsTracker.Pages.ViewModels
             TimeSpan timeSpan = new TimeSpan(ticks);
             OverallWindowDuration = string.Format("Selected: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
 
-            LoadChart();
+            _chartList.Reload();
         }
 
         private void GetAllUsers()
         {
-            if (_allUsersList == null) _allUsersList = new List<MenuItem>();
+            if (_allUsersList == null)
+                _allUsersList = new List<MenuItem>();
+
             MenuItem menuItem = new MenuItem();
             menuItem.Header = "All users";
             _allUsersList.Add(menuItem);
-            using (var context = new AppsEntities())
+            var users = _appsService.GetFiltered<Uzer>(u => u.Name != null);
+
+            foreach (var user in users)
             {
-                foreach (var user in context.Users)
-                {
-                    menuItem = new MenuItem();
-                    menuItem.Header = user.Name;
-                    _allUsersList.Add(menuItem);
-                }
+                menuItem = new MenuItem();
+                menuItem.Header = user.Name;
+                _allUsersList.Add(menuItem);
             }
         }
 
@@ -691,7 +556,7 @@ namespace AppsTracker.Pages.ViewModels
                     _date2 = Date1.AddHours(23.99d);
                     PropertyChanging("Date1");
                     PropertyChanging("Date2");
-                    LoadAppsOverall();
+                    _topAppsList.Reload();
                     break;
                 case "This week":
                     {

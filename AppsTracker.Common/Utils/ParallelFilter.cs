@@ -4,33 +4,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using AppsTracker.Common.Utils;
+
 namespace AppsTracker.Utils
 {
     public sealed class ParallelFilter
     {
-        public static List<T[]> PartitionEnumarable<T>(T[] filter) where T : new()
+        public static List<T[]> PartitionEnumerable<T>(IEnumerable<T> items) 
         {
+            Ensure.NotNull(items, "items");
+
             var procs = Environment.ProcessorCount;
+            var itemsArray = items.ToArray();
 
             List<T[]> partitionList = new List<T[]>(procs);
-            if (filter.Length >= procs && procs > 1)
+            if (itemsArray.Length >= procs && procs > 1)
             {
-                int cycle = Convert.ToInt32(Math.Floor((double)filter.Length / (double)procs));
-                int rem = filter.Length % procs;
+                int cycle = Convert.ToInt32(Math.Floor((double)itemsArray.Length / (double)procs));
+                int rem = itemsArray.Length % procs;
                 if (rem > 0)
                     cycle++;
-                int arraySize = filter.Length;
+                int arraySize = itemsArray.Length;
                 for (int i = 0; i < procs; i++)
                 {
                     T[] array = new T[] { };
                     Array.Resize<T>(ref array, cycle > arraySize ? arraySize : cycle);
-                    Array.Copy(filter, i * cycle, array, 0, cycle > arraySize ? arraySize : cycle);
+                    Array.Copy(itemsArray, i * cycle, array, 0, cycle > arraySize ? arraySize : cycle);
                     arraySize -= cycle;
                     partitionList.Add(array);
                 }
             }
             else
-                partitionList.Add(filter);
+                partitionList.Add(itemsArray);
 
             return partitionList;
         }

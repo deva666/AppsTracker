@@ -9,7 +9,5 @@ namespace AppsTracker.MVVM
     interface IChildVM 
     {
         string Title { get; }
-        bool IsContentLoaded { get; }
-        void LoadContent();
     }
 }

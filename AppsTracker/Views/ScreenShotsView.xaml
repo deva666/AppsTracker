@@ -19,7 +19,6 @@
         <local:ConvertBoolToVisibility x:Key="convertVisibility" />
         <local:ConvertSelectedIndexToBool x:Key="convertSelectedIndexToBool" />
         <ContextMenu x:Key="cMenu">
-            <!--<MenuItem Command="ApplicationCommands.SelectAll" />-->
             <MenuItem Header="Save selected screenshots to file"
                       Command="{Binding SaveScreenshotCommand}"
                       CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}" />
@@ -139,22 +138,6 @@
             </Label.Triggers>
             </Label>
         </DataTemplate>
-        <!--<DataTemplate x:Key="keyLogTemplate">
-            <TextBlock Text="{Binding KeyLogData}"
-                       Style="{StaticResource TextblockStyle}"
-                       MaxHeight="30"
-                       MaxWidth="350">
-                <TextBlock.ToolTip>
-                    <ToolTip Style="{StaticResource ToolTipStyle}">
-                        <TextBox Text="{Binding Path=Keystrokes, Mode=OneWay}"
-                                 Background="Transparent"
-                                 Foreground="WhiteSmoke"
-                                 BorderBrush="Transparent" />
-                    </ToolTip>
-                </TextBlock.ToolTip>
-            </TextBlock>
-        </DataTemplate>-->
-
     </UserControl.Resources>
 
             <Grid Name="rootLayout">
@@ -170,7 +153,7 @@
                                       Grid.ColumnSpan="5" />
                 <controls:FilterableListView Background="Transparent"
                                              x:Name="mainContentHolder"
-                                     ItemsSource="{Binding LogList, Mode=OneWay}"
+                                     ItemsSource="{Binding LogList.Result, Mode=OneWay}"
                                              BorderBrush="{x:Null}"
                                              BorderThickness="0"
                                              ItemContainerStyle="{DynamicResource ListViewItemStyle}"
@@ -208,20 +191,6 @@
                        Grid.Row="1"
                        HorizontalAlignment="Right"
                        Margin="0,0,20,0" />
-                <!--<ToggleButton    Grid.Row="1"
-                                 HorizontalAlignment="Right"
-                                 Margin="0,0,100,0"
-                                 x:Name="btnSelect">
-                    <ToggleButton.Template>
-                        <ControlTemplate>
-                            <Label Style="{DynamicResource SelectableLabelStyle}"
-                                   Content="Select...">
-
-                            </Label>
-                        </ControlTemplate>
-                    </ToggleButton.Template>
-               
-                </ToggleButton>-->
 
                 <controls:ScrollingContentControl Grid.Row="1"
                                                   HorizontalAlignment="Center"
@@ -230,39 +199,6 @@
                            />
                 </controls:ScrollingContentControl>
                 
-                <!--<Popup PlacementTarget="{Binding ElementName=btnSelect}"
-                       Placement="Top"
-                       PopupAnimation="Slide"
-                       IsOpen="{Binding ElementName=btnSelect, Path=IsChecked}">
-                    <Border Style="{StaticResource ThemeBorderStyle}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Calendar SelectedDate="{Binding SelectedDate}"/>
-                            <Label Style="{DynamicResource SelectableLabelStyle}"
-                                   Content="Today"
-                                   Grid.Column="1">
-
-                            </Label>
-                            <ListBox Grid.Row="1"
-                                     ItemContainerStyle="{StaticResource ListBoxScreenshotAppStyle}"
-                                     ItemsSource="{Binding ScreenshotAppList}"
-                                     >
-                
-                                
-                            </ListBox>
-                        </Grid>
-                    </Border>
-                </Popup>-->
-            
                 <controls:FaderContentControl  FaderVisibility="{Binding ElementName=mainContentHolder, Path=SelectedIndex
                                                ,Converter={StaticResource convertSelectedIndexToBool}}"
                                                Margin="10,0,220,0"

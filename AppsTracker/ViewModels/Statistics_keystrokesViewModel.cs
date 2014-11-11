@@ -10,6 +10,7 @@ using AppsTracker.Models.ChartModels;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.Controls;
 using AppsTracker.MVVM;
+using AppsTracker.DAL.Service;
 
 namespace AppsTracker.Pages.ViewModels
 {
@@ -24,6 +25,8 @@ namespace AppsTracker.Pages.ViewModels
         IEnumerable<KeystrokeModel> _keystrokeList;
 
         IEnumerable<DailyKeystrokeModel> _dailyKeystrokesList;
+
+        IChartService _service;
 
         #endregion
 
@@ -107,16 +110,20 @@ namespace AppsTracker.Pages.ViewModels
         public Statistics_keystrokesViewModel()
         {
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(LoadContent));
+            _service = ServiceFactory.Get<IChartService>();
         }
 
         public async void LoadContent()
         {
-            Working = true;
-            KeystrokeList = await GetContentAsync();
-            if (KeystrokeModel != null)
-                DailyKeystrokesList = await GetSubContentAsync();
-            Working = false;
+            await LoadAsync(GetContent, k => KeystrokeList = k);
+            if (_keystrokeModel != null)
+                LoadSubContent();
             IsContentLoaded = true;
+        }
+
+        private IEnumerable<KeystrokeModel> GetContent()
+        {
+            return _service.GetKeystrokes(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
         }
 
         private Task<List<KeystrokeModel>> GetContentAsync()
@@ -139,12 +146,16 @@ namespace AppsTracker.Pages.ViewModels
 
         private async void LoadSubContent()
         {
-            if (KeystrokeModel == null)
-                return;
             DailyKeystrokesList = null;
-            Working = true;
-            DailyKeystrokesList = await GetSubContentAsync();
-            Working = false;
+            await LoadAsync(GetSubContent, d => DailyKeystrokesList = d);
+        }
+
+        IEnumerable<DailyKeystrokeModel> GetSubContent()
+        {
+            if (KeystrokeModel == null)
+                return null;
+
+            return _service.GetKeystrokesByApp(Globals.SelectedUserID, KeystrokeModel.AppName, Globals.Date1, Globals.Date2);
         }
 
         private Task<IEnumerable<DailyKeystrokeModel>> GetSubContentAsync()

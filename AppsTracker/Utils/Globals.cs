@@ -74,8 +74,7 @@ namespace AppsTracker
 
         private static DateTime GetFirstDate()
         {
-            return _service.GetQueryable<Usage>().ToList().Count == 0 ? DateTime.Now.Date 
-                : _service.GetQueryable<Usage>().Where(u => u.UserID == SelectedUserID).Select(u => u.UsageStart).Min();
+            return _service.GetStartDate(SelectedUserID);
         }
 
         public static void ChangeUser(Uzer uzer)

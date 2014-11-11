@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Collections.ObjectModel;
@@ -9,12 +8,13 @@ using System.Collections.ObjectModel;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.Models.ChartModels;
 using AppsTracker.Models.Utils;
-using AppsTracker.Common;
 
 namespace AppsTracker.DAL.Service
 {
     public class ChartService : IChartService
     {
+        object @parallelLock = new object();
+
         IEnumerable<Log> _cachedLogs = null;
 
         public IEnumerable<TopAppsModel> GetLogTopApps(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo)
@@ -111,18 +111,26 @@ namespace AppsTracker.DAL.Service
                 string ignore = UsageTypes.Login.ToString();
                 DateTime dateTo = dateFrom.AddDays(1);
 
-                var logs = context.Logs.Where(l => l.Window.Application.User.UserID == userID
-                                                                          && l.DateCreated >= dateFrom
-                                                                          && l.DateCreated <= dateTo)
-                                                            .Include(l => l.Window.Application)
-                                                            .ToList();
+                IEnumerable<Log> logs = null;
+                IEnumerable<Usage> usages = null;
 
-                var usages = context.Usages.Where(u => u.User.UserID == userID
-                                                                      && u.UsageStart >= dateFrom
-                                                                      && u.UsageEnd <= dateTo
-                                                                      && u.UsageType.UType != ignore)
-                                                             .Include(u => u.UsageType)
-                                                             .ToList();
+                Parallel.Invoke(() =>
+                {
+                    logs = context.Logs.Where(l => l.Window.Application.User.UserID == userID
+                                                       && l.DateCreated >= dateFrom
+                                                       && l.DateCreated <= dateTo)
+                                         .Include(l => l.Window.Application)
+                                         .ToList();
+                }, () =>
+                {
+                    usages = context.Usages.Where(u => u.User.UserID == userID
+                                                           && u.UsageStart >= dateFrom
+                                                           && u.UsageEnd <= dateTo
+                                                           && u.UsageType.UType != ignore)
+                                                  .Include(u => u.UsageType)
+                                                  .ToList();
+                }
+              );
 
                 var logModels = logs.Select(l => new DayViewModel()
                                                             {
@@ -194,7 +202,8 @@ namespace AppsTracker.DAL.Service
                 var logs = context.Logs.Where(l => l.Window.Application.User.UserID == userID
                                                 && l.DateCreated >= dateFrom
                                                 && l.DateCreated <= dateTo)
-                                        .Include(l => l.Window.Application);
+                                        .Include(l => l.Window.Application)
+                                        .ToList();
 
                 double totalDuration = (from l in logs
                                         select (double?)l.Duration).Sum() ?? 0;
@@ -262,9 +271,9 @@ namespace AppsTracker.DAL.Service
                 string usageStopped = UsageTypes.Stopped.ToString();
 
                 List<Usage> logins;
-                List<Usage> idles;
-                List<Usage> lockeds;
-                List<Usage> stoppeds;
+                List<Usage> idles = null;
+                List<Usage> lockeds = null;
+                List<Usage> stoppeds = null;
 
                 logins = context.Usages.Where(u => u.User.UserID == userID
                                                 && u.UsageStart >= today
@@ -275,23 +284,41 @@ namespace AppsTracker.DAL.Service
 
                 var usageIDs = logins.Select(u => u.UsageID);
 
-                idles = context.Usages.Where(u => u.SelfUsageID.HasValue
-                                                    && usageIDs.Contains(u.SelfUsageID.Value)
-                                                    && u.UsageType.UType == usageIdle)
+                Parallel.Invoke(() =>
+                {
+                    using (var newContext = new AppsEntities())
+                    {
+                        idles =
+                       newContext.Usages.Where(u => u.SelfUsageID.HasValue
+                               && usageIDs.Contains(u.SelfUsageID.Value)
+                               && u.UsageType.UType == usageIdle)
+                      .Include(u => u.UsageType)
+                      .ToList();
+                    }
+
+                }, () =>
+                {
+                    using (var newContext = new AppsEntities())
+                    {
+                        lockeds = newContext.Usages.Where(u => u.SelfUsageID.HasValue
+                                                                   && usageIDs.Contains(u.SelfUsageID.Value)
+                                                                   && u.UsageType.UType == usageLocked)
+                                                          .Include(u => u.UsageType)
+                                                          .ToList();
+                    }
+
+                }, () =>
+                {
+                    using (var newContext = new AppsEntities())
+                    {
+                        stoppeds = newContext.Usages.Where(u => u.SelfUsageID.HasValue
+                                                                   && usageIDs.Contains(u.SelfUsageID.Value)
+                                                                   && u.UsageType.UType == usageStopped)
                                            .Include(u => u.UsageType)
                                            .ToList();
+                    }
 
-                lockeds = context.Usages.Where(u => u.SelfUsageID.HasValue
-                                                  && usageIDs.Contains(u.SelfUsageID.Value)
-                                                  && u.UsageType.UType == usageLocked)
-                                         .Include(u => u.UsageType)
-                                         .ToList();
-
-                stoppeds = context.Usages.Where(u => u.SelfUsageID.HasValue
-                                                                         && usageIDs.Contains(u.SelfUsageID.Value)
-                                                                         && u.UsageType.UType == usageStopped)
-                                                 .Include(u => u.UsageType)
-                                                 .ToList();
+                });
 
                 List<DailyUsageTypeSeries> collection = new List<DailyUsageTypeSeries>();
 
@@ -380,49 +407,318 @@ namespace AppsTracker.DAL.Service
             }
         }
 
-        public IEnumerable<Models.ChartModels.MostUsedAppModel> GetMostUsedApps(int userID, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<MostUsedAppModel> GetMostUsedApps(int userID, DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            using (var context = new AppsEntities())
+            {
+                var logs = context.Logs.Include(l => l.Window.Application)
+                                    .Include(l => l.Window.Application.User)
+                                    .ToList();
+
+                var grouped = logs.Where(l => l.Window.Application.User.UserID == userID
+                                            && l.DateCreated >= dateFrom
+                                            && l.DateCreated <= dateTo)
+                                    .GroupBy(l => l.Window.Application.Name);
+
+                return grouped.Select(g => new MostUsedAppModel()
+                                                                {
+                                                                    AppName = g.Key,
+                                                                    Duration = Math.Round(new TimeSpan(g.Sum(l => l.Duration)).TotalHours, 1)
+                                                                });
+            }
         }
 
-        public IEnumerable<Models.ChartModels.DailyAppModel> GetSingleMostUsedApp(int userID, string appName, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<DailyAppModel> GetSingleMostUsedApp(int userID, string appName, DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            using (var context = new AppsEntities())
+            {
+                var logs = context.Logs.Where(l => l.Window.Application.Name == appName
+                                                && l.Window.Application.User.UserID == userID
+                                                && l.DateCreated >= dateFrom
+                                                && l.DateCreated <= dateTo)
+                                                .ToList();
+
+                var grouped = logs.GroupBy(l => new
+                                            {
+                                                year = l.DateCreated.Year,
+                                                month = l.DateCreated.Month,
+                                                day = l.DateCreated.Day
+                                            })
+                                    .OrderBy(g => new DateTime(g.Key.year, g.Key.month, g.Key.day));
+
+                return grouped.Select(g => new DailyAppModel
+                                {
+                                    Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
+                                    Duration = Math.Round(new TimeSpan(g.Sum(l => l.Duration)).TotalHours, 1)
+                                });
+            }
         }
 
-        public IEnumerable<Models.ChartModels.KeystrokeModel> GetKeystrokes(int userID, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<KeystrokeModel> GetKeystrokes(int userID, DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            using (var context = new AppsEntities())
+            {
+                var logs = context.Logs.Include(l => l.Window.Application)
+                                        .Include(l => l.Window.Application.User)
+                                        .ToList();
+
+                var filtered = logs.Where(l => l.Window.Application.User.UserID == userID
+                                                                    && l.DateCreated >= dateFrom
+                                                                    && l.DateCreated <= dateTo
+                                                                    && l.Keystrokes != null);
+                return filtered
+                        .GroupBy(l => l.Window.Application.Name)
+                        .Select(g => new KeystrokeModel()
+                        {
+                            AppName = g.Key,
+                            Count = g.Sum(l => l.Keystrokes.Length)
+                        })
+                        .OrderByDescending(k => k.Count)
+                        .ToList();
+            }
         }
 
-        public IEnumerable<Models.ChartModels.KeystrokeModel> GetKeystrokesByApp(int userID, string appName, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<DailyKeystrokeModel> GetKeystrokesByApp(int userID, string appName, DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            using (var context = new AppsEntities())
+            {
+                var logs = context.Logs.Include(l => l.Window.Application)
+                                        .Include(l => l.Window.Application.User)
+                                        .ToList();
+
+                var filtered = logs.Where(l => l.Window.Application.User.UserID == userID
+                                             && l.DateCreated >= dateFrom
+                                             && l.DateCreated <= dateTo
+                                             && l.Keystrokes != null
+                                             && l.Window.Application.Name == appName);
+
+                return filtered.GroupBy(l => new
+                                            {
+                                                year = l.DateCreated.Year,
+                                                month = l.DateCreated.Month,
+                                                day = l.DateCreated.Day
+                                            })
+                            .Select(g => new DailyKeystrokeModel()
+                            {
+                                Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
+                                Count = g.Sum(l => l.Keystrokes.Length)
+                            });
+            }
         }
 
-        public IEnumerable<Models.ChartModels.DailyUsedAppsSeries> GetAppsUsageSeries(int userID, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<DailyUsedAppsSeries> GetAppsUsageSeries(int userID, DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            using (var context = new AppsEntities())
+            {
+                List<DailyUsedAppsSeries> dailyUsedAppsSeriesTemp = new List<DailyUsedAppsSeries>();
+
+                var logs = context.Logs.Include(l => l.Window.Application)
+                                    .Include(l => l.Window.Application.User)
+                                    .ToList();
+
+                var grouped = logs.Where(l => l.Window.Application.User.UserID == userID
+                                              && l.DateCreated >= dateFrom
+                                              && l.DateCreated <= dateTo)
+                                    .OrderBy(l => l.DateCreated)
+                                    .GroupBy(l => new
+                                                    {
+                                                        year = l.DateCreated.Year,
+                                                        month = l.DateCreated.Month,
+                                                        day = l.DateCreated.Day,
+                                                        name = l.Window.Application.Name
+                                                    });
+
+                var dailyApps = grouped.Select(g => new
+                                                        {
+                                                            Date = new DateTime(g.Key.year, g.Key.month, g.Key.day),
+                                                            AppName = g.Key.name,
+                                                            Duration = g.Sum(l => l.Duration)
+                                                        });
+
+                List<MostUsedAppModel> dailyUsedAppsCollection;
+
+                foreach (var app in dailyApps)
+                {
+                    if (app.Duration > 0)
+                    {
+                        if (!dailyUsedAppsSeriesTemp.Exists(d => d.Date == app.Date.ToShortDateString()))
+                        {
+                            dailyUsedAppsCollection = new List<MostUsedAppModel>();
+                            dailyUsedAppsCollection.Add(new MostUsedAppModel() { AppName = app.AppName, Duration = Math.Round(new TimeSpan(app.Duration).TotalHours, 1) });
+                            dailyUsedAppsSeriesTemp.Add(new DailyUsedAppsSeries() { Date = app.Date.ToShortDateString(), DailyUsedAppsCollection = dailyUsedAppsCollection });
+                        }
+                        else
+                        {
+                            dailyUsedAppsSeriesTemp.First(d => d.Date == app.Date.ToShortDateString())
+                                .DailyUsedAppsCollection.Add(new MostUsedAppModel() { AppName = app.AppName, Duration = Math.Round(new TimeSpan(app.Duration).TotalHours, 1) });
+                        }
+                    }
+                }
+
+
+                foreach (var item in dailyUsedAppsSeriesTemp)
+                    item.DailyUsedAppsCollection = item.DailyUsedAppsCollection.OrderBy(d => d.Duration).ToList();
+
+
+                return dailyUsedAppsSeriesTemp;
+            }
         }
 
-        public IEnumerable<Models.ChartModels.ScreenshotModel> GetScreenshots(int userID, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<ScreenshotModel> GetScreenshots(int userID, DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            using (var context = new AppsEntities())
+            {
+                var screenshots = context.Screenshots.Include(s => s.Log.Window.Application)
+                                                       .Include(s => s.Log.Window.Application.User)
+                                                       .ToList();
+
+                var filtered = screenshots.Where(s => s.Log.Window.Application.User.UserID == userID
+                                                    && s.Date >= dateFrom
+                                                    && s.Date <= dateTo)
+                                                .GroupBy(s => s.Log.Window.Application.Name)
+                                                .Select(g => new ScreenshotModel() { AppName = g.Key, Count = g.Count() });
+
+                return filtered;
+            }
         }
 
-        public IEnumerable<Models.ChartModels.DailyScreenshotModel> GetScreenshotsByApp(int userID, string appName, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<DailyScreenshotModel> GetScreenshotsByApp(int userID, string appName, DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            using (var context = new AppsEntities())
+            {
+                var screenshots = context.Screenshots.Include(s => s.Log.Window.Application)
+                                                       .Include(s => s.Log.Window.Application.User)
+                                                       .ToList();
+
+                var filtered = screenshots.Where(s => s.Log.Window.Application.User.UserID == userID
+                                                                                && s.Date >= dateFrom
+                                                                                && s.Date <= dateTo
+                                                                                && s.Log.Window.Application.Name == appName
+                                                                                )
+                                                            .ToList();
+
+                var grouped = screenshots.GroupBy(s => new
+                                                    {
+                                                        year = s.Date.Year,
+                                                        month = s.Date.Month,
+                                                        day = s.Date.Day
+                                                    })
+                                            .OrderBy(g => new DateTime(g.Key.year, g.Key.month, g.Key.day));
+
+                return grouped.Select(g => new DailyScreenshotModel() { Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(), Count = g.Count() });
+            }
         }
 
-        public IEnumerable<Models.ChartModels.AllUsersModel> GetAllUsers(DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<AllUsersModel> GetAllUsers(DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            using (var context = new AppsEntities())
+            {
+                string loginType = UsageTypes.Login.ToString();
+                var logins = context.Usages.Where(u => u.UsageStart >= dateFrom
+                                                     && u.UsageStart <= dateTo
+                                                     && u.UsageType.UType == loginType)
+                                       .Include(u => u.User)
+                                       .ToList();
+
+                return logins.GroupBy(u => u.User.Name)
+                                .Select(g => new AllUsersModel
+                                                            {
+                                                                Username = g.Key,
+                                                                LoggedInTime = Math.Round(new TimeSpan(g.Sum(l => l.Duration.Ticks)).TotalHours, 1)
+                                                            });
+            }
         }
 
-        public IEnumerable<Models.ChartModels.UsageTypeSeries> GetUsageSeries(int userID, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<UsageTypeSeries> GetUsageSeries(string username, DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            using (var context = new AppsEntities())
+            {
+                string usageLogin = UsageTypes.Login.ToString();
+                string usageIdle = UsageTypes.Idle.ToString();
+                string usageLocked = UsageTypes.Locked.ToString();
+                string usageStopped = UsageTypes.Stopped.ToString();
+
+                IEnumerable<Usage> idles;
+                IEnumerable<Usage> lockeds;
+                IEnumerable<Usage> stoppeds;
+
+                List<UsageTypeSeries> collection = new List<UsageTypeSeries>();
+
+                var logins = context.Usages.Where(u => u.User.Name == username
+                                                     && u.UsageStart >= dateFrom
+                                                     && u.UsageStart <= dateTo
+                                                     && u.UsageType.UType == usageLogin)
+                                         .ToList();
+
+                var groupedLogins = logins.GroupBy(u => new
+                                                {
+                                                    year = u.UsageStart.Year,
+                                                    month = u.UsageStart.Month,
+                                                    day = u.UsageStart.Day
+                                                })
+                                           .OrderBy(g => new DateTime(g.Key.year, g.Key.month, g.Key.day));
+
+
+                Parallel.ForEach(groupedLogins.ToList(), grp =>
+                {
+
+                    var usageIDs = grp.Select(u => u.UsageID);
+
+                    idles = context.Usages.Where(u => u.SelfUsageID.HasValue
+                                                    && usageIDs.Contains(u.SelfUsageID.Value)
+                                                    && u.UsageType.UType == usageIdle)
+                                                    .ToList();
+
+                    lockeds = context.Usages.Where(u => u.SelfUsageID.HasValue
+                                                      && usageIDs.Contains(u.SelfUsageID.Value)
+                                                      && u.UsageType.UType == usageLocked)
+                                                      .ToList();
+
+                    stoppeds = context.Usages.Where(u => u.SelfUsageID.HasValue
+                                                      && usageIDs.Contains(u.SelfUsageID.Value)
+                                                      && u.UsageType.UType == usageStopped)
+                                                      .ToList();
+
+                    UsageTypeSeries series = new UsageTypeSeries() { Date = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day).ToShortDateString() };
+
+                    ObservableCollection<UsageTypeModel> observableCollection = new ObservableCollection<UsageTypeModel>();
+
+                    long idleTime = 0;
+                    long lockedTime = 0;
+                    long loginTime = 0;
+                    long stoppedTime = 0;
+
+                    if (idles.Count() > 0)
+                    {
+                        idleTime = idles.Sum(l => l.Duration.Ticks);
+                        observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(idleTime).TotalHours, 2), UsageType = usageIdle });
+                    }
+
+                    if (lockeds.Count() > 0)
+                    {
+                        lockedTime = lockeds.Sum(l => l.Duration.Ticks);
+                        observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Computer locked" });
+                    }
+
+
+                    if (stoppeds.Count() > 0)
+                    {
+                        stoppedTime = stoppeds.Sum(l => l.Duration.Ticks);
+                        observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Stopped logging" });
+                    }
+
+                    loginTime = grp.Sum(l => l.Duration.Ticks) - lockedTime - idleTime - stoppedTime;
+                    observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(loginTime).TotalHours, 2), UsageType = "Work" });
+
+                    series.DailyUsageTypeCollection = observableCollection;
+
+                    lock (@parallelLock)
+                        collection.Add(series);
+
+                });
+
+                return collection.OrderBy(d => d.Date);
+            }
         }
 
         public Tuple<string, string, string> GetDayInfo(int userID, DateTime dateFrom)
@@ -436,7 +732,8 @@ namespace AppsTracker.DAL.Service
                 var logins = context.Usages.Where(u => u.User.UserID == userID
                                                                         && u.UsageStart >= today
                                                                         && u.UsageStart <= nextDay
-                                                                        && u.UsageType.UType == loginType);
+                                                                        && u.UsageType.UType == loginType)
+                                            .ToList();
 
                 var loginBegin = logins.OrderBy(l => l.UsageStart).FirstOrDefault();
 

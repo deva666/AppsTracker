@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Security.AccessControl;
 using System.ComponentModel;
+
 using AppsTracker.Hooks;
 
 namespace AppsTracker

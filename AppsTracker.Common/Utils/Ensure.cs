@@ -14,10 +14,10 @@ namespace AppsTracker.Common.Utils
                 throw new ArgumentNullException(string.Format("Argument is null"));
         }
 
-        public static void NotNull(object argument, string message)
+        public static void NotNull(object argument, string argumentName)
         {
             if (argument == null)
-                throw new ArgumentNullException(message);
+                throw new ArgumentNullException(string.Format("{0} is null" , argumentName));
         }
 
         public static void Condition<TEx>(bool predicate) where TEx : Exception, new()

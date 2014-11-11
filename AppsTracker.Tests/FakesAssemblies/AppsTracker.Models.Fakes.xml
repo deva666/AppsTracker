@@ -3613,9 +3613,6 @@
         <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimWindow.ConstructorString">
             <summary>Sets the shim of Window.Window(String title)</summary>
         </member>
-        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimWindow.CreateByTitleAndAppIDStringInt32">
-            <summary>Sets the shim of Window.CreateByTitleAndAppID(String title, Int32 appID)</summary>
-        </member>
         <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimWindow.DurationGet">
             <summary>Sets the shim of Window.get_Duration()</summary>
         </member>

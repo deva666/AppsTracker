@@ -4,7 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-
+using AppsTracker.Common.Utils;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.Models.Proxy;
 
@@ -24,9 +24,9 @@ namespace AppsTracker.DAL.Service
         {
             using (var context = new AppsEntities())
             {
-                var query = context.Set<T>();
+                var query = context.Set<T>().AsQueryable();
                 foreach (var nav in navigations)
-                    query.Include(nav);
+                   query =  query.Include(nav);
                 return query.AsNoTracking().Where(filter).ToList();
             }
         }
@@ -133,11 +133,11 @@ namespace AppsTracker.DAL.Service
         {
             using (var context = new AppsEntities())
             {
-                string filterUsage = UsageTypes.Login.ToString();
+                string loginUsage = UsageTypes.Login.ToString();
 
-                if (context.Usages.Where(u => u.IsCurrent && u.UsageType.UType == filterUsage).Count() > 0)
+                if (context.Usages.Where(u => u.IsCurrent && u.UsageType.UType == loginUsage).Count() > 0)
                 {
-                    var failedSaveUsage = context.Usages.Where(u => u.IsCurrent && u.UsageType.UType == filterUsage).ToList();
+                    var failedSaveUsage = context.Usages.Where(u => u.IsCurrent && u.UsageType.UType == loginUsage).ToList();
                     foreach (var usage in failedSaveUsage)
                     {
                         var lastLog = context.Logs.Where(l => l.UsageID == usage.UsageID).OrderByDescending(l => l.DateCreated).FirstOrDefault();
@@ -159,7 +159,7 @@ namespace AppsTracker.DAL.Service
                     }
                 }
 
-                var login = new Usage() { UserID = userID, UsageEnd = DateTime.Now, UsageTypeID = context.UsageTypes.First(u => u.UType == filterUsage).UsageTypeID, IsCurrent = true };
+                var login = new Usage() { UserID = userID, UsageEnd = DateTime.Now, UsageTypeID = context.UsageTypes.First(u => u.UType == loginUsage).UsageTypeID, IsCurrent = true };
 
                 context.Usages.Add(login);
                 context.SaveChanges();
@@ -186,6 +186,68 @@ namespace AppsTracker.DAL.Service
         public Task<T> GetSingleAsync<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class
         {
             return Task<T>.Run(() => GetSingle(filter, navigations));
+        }
+
+
+        public DateTime GetStartDate(int userID)
+        {
+            using (var context = new AppsEntities())
+            {
+                return context.Usages.Count(u => u.UserID == userID) == 0 ? DateTime.Now.Date
+                    : context.Usages.Where(u => u.UserID == userID).Select(u => u.UsageStart).Min();
+            }
+        }
+
+        public IList<AppsToBlock> AddToBlockedList(List<Aplication> apps, string blockUsername, int loadUserID)
+        {
+            Ensure.NotNull(apps, "apps");
+            Ensure.NotNull(blockUsername, "blockUsername");
+
+            using (var context = new AppsEntities())
+            {
+                if (blockUsername.ToUpper() == "ALL USERS")
+                {
+                    foreach (var user in context.Users)
+                    {
+                        foreach (var app in apps)
+                        {
+                            if (app.Description.ToUpper() != "APPS TRACKER" || !string.IsNullOrEmpty(app.WinName))
+                            {
+                                if (!context.AppsToBlocks.Any(a => a.ApplicationID == app.ApplicationID
+                                                            && a.UserID == user.UserID))
+                                {
+                                    AppsToBlock appToBlock = new AppsToBlock(user, app);
+                                    context.AppsToBlocks.Add(appToBlock);
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    var uzer = context.Users.FirstOrDefault(u => u.Name == blockUsername);
+                    foreach (var app in apps)
+                    {
+                        if (app.Description.ToUpper() != "APPS TRACKER" || !string.IsNullOrEmpty(app.WinName))
+                        {
+                            if (!context.AppsToBlocks.Any(a => a.ApplicationID == app.ApplicationID
+                                                            && a.UserID == uzer.UserID))
+                            {
+                                AppsToBlock appToBlock = new AppsToBlock(uzer, app);
+                                context.AppsToBlocks.Add(appToBlock);
+                            }
+                        }
+                    }
+                }
+
+                context.SaveChanges();
+
+                var notifyList = context.AppsToBlocks.Where(a => a.UserID == loadUserID)
+                                                .Include(a => a.Application)
+                                                .ToList();
+                return notifyList;
+            }
+
         }
     }
 }

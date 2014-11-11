@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using AppsTracker.DAL;
+
 using AppsTracker.DAL.Repos;
 using AppsTracker.Models.ChartModels;
-using AppsTracker.Controls;
 using AppsTracker.MVVM;
+using AppsTracker.DAL.Service;
 
 namespace AppsTracker.Pages.ViewModels
 {
@@ -21,6 +15,8 @@ namespace AppsTracker.Pages.ViewModels
         #region Fields
 
         IEnumerable<DailyUsedAppsSeries> _dailyUsedAppsList;
+
+        IChartService _service;
 
         #endregion
 
@@ -74,10 +70,13 @@ namespace AppsTracker.Pages.ViewModels
 
         public async void LoadContent()
         {
-            Working = true;
-            DailyUsedAppsList = await GetContentAsync().ConfigureAwait(false);
-            Working = false;
+            await LoadAsync(GetContent, d => DailyUsedAppsList = d);
             IsContentLoaded = true;
+        }
+
+        private IEnumerable<DailyUsedAppsSeries> GetContent()
+        {
+            return _service.GetAppsUsageSeries(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
         }
 
         private Task<List<DailyUsedAppsSeries>> GetContentAsync()

@@ -73,10 +73,13 @@
   <ItemGroup>
     <Compile Include="Common\UnitTest1.cs" />
     <Compile Include="Core\Logging\ComponentContainerTest.cs" />
-    <Compile Include="Core\Logging\ServiceWrapTest.cs" />
+    <Compile Include="Core\Logging\LazyInitTest.cs" />
+    <Compile Include="Core\MVVM\AsyncPropertyTest.cs" />
     <Compile Include="Core\ViewModels\MainViewModelTest.cs" />
     <Compile Include="Core\ViewModels\KeystrokeViewModelTest.cs" />
     <Compile Include="Fakes\Logging\DisposableMock.cs" />
+    <Compile Include="Fakes\MVVM\ViewModelMock.cs" />
+    <Compile Include="Fakes\Service\ChartServiceMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

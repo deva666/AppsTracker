@@ -23,8 +23,8 @@ namespace AppsTracker.Hooks
     {
         #region Fields
 
-        private bool _isDisposed;
-        private bool _isHookEnabled = true;
+        bool _isDisposed;
+        bool _isHookEnabled = true;
 
         internal const int WM_LBUTTONDOWN = 0x0201;
         internal const int WM_RBUTTONDOWN = 0x0204;
@@ -37,7 +37,7 @@ namespace AppsTracker.Hooks
 
         WinAPI.MSLLHOOKSTRUCT _mouseStruct;
 
-        internal MouseHookCallback _hookCallBack;
+        MouseHookCallback _hookCallBack;
 
         IntPtr _hookID = IntPtr.Zero;
 

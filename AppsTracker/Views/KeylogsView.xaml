@@ -18,12 +18,6 @@
         <local:ConvertBoolToStyle x:Key="convertStyle"
                                   SelectableLabelStyle="{StaticResource SelectableLabelStyle}"
                                   SelectedLabelStyle="{StaticResource SelectedLabelStyle}" />
-        <!--<ContextMenu x:Key="cMenu">
-            <MenuItem Command="ApplicationCommands.SelectAll" />
-            <MenuItem Header="Delete selcted logs"
-                      Command="{Binding DeleteSelectedLogsCommand}"
-                      CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}" />
-        </ContextMenu>-->
 
         <DataTemplate x:Key="appTemplate">
             <Label Style="{DynamicResource GVLabelStyle}"
@@ -169,7 +163,7 @@
                                          Grid.Column="1"
                                          Grid.ColumnSpan="2"
                                          Grid.Row="0"
-                                         ItemsSource="{Binding LogList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                         ItemsSource="{Binding LogList.Result, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                          ItemContainerStyle="{DynamicResource ListViewItemStyle}"
                                          BorderBrush="{x:Null}"
                                          BorderThickness="0"

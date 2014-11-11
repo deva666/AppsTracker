@@ -218,7 +218,7 @@
                 <Label Style="{DynamicResource LabelStyle}"
                        FontSize="15"
                        Margin="35,0,0,0"
-                       Content="{Binding Duration}" />
+                       Content="{Binding Duration.Result}" />
 
             </StackPanel>
 
@@ -226,7 +226,7 @@
                                        Grid.Column="0"
                                        Grid.ColumnSpan="1"
                                        Grid.Row="1"
-                                       ItemsSource="{Binding TopAppsList, Mode=Default, UpdateSourceTrigger=PropertyChanged}"
+                                       ItemsSource="{Binding TopAppsList.Result, Mode=Default, UpdateSourceTrigger=PropertyChanged}"
                                        ItemContainerStyle="{DynamicResource ListViewItemStyle}"
                                        SelectedItem="{Binding TopAppsSingle}"
                                        BorderBrush="{x:Null}"
@@ -259,7 +259,7 @@
                                        Grid.Column="1"
                                        Grid.ColumnSpan="1"
                                        Grid.Row="1"
-                                       ItemsSource="{Binding TopWindowsList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                       ItemsSource="{Binding TopWindowsList.Result, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                        ItemContainerStyle="{DynamicResource ListViewItemStyle}"
                                        BorderBrush="{x:Null}"
                                        BorderThickness="0"
@@ -351,7 +351,7 @@
                                               Style="{StaticResource MinimalChartStyle}"
                                               BorderBrush="{DynamicResource WindowBorderBrush}"
                                               BorderThickness="1"
-                                              SeriesSource="{Binding ChartList}"
+                                              SeriesSource="{Binding ChartList.Result}"
                                               Margin="5"
                                               Width="Auto"
                                               Height="Auto"
@@ -380,7 +380,7 @@
                                              Grid.Column="0"
                                              Grid.ColumnSpan="2"
                                              Grid.Row="6"
-                                             ItemsSource="{Binding DayViewModelList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                             ItemsSource="{Binding DayViewModelList.Result, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                              ItemContainerStyle="{DynamicResource ListViewItemStyle}"
                                              BorderBrush="{x:Null}"
                                              FilterType="{StaticResource logData}"

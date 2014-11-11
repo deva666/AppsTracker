@@ -33,17 +33,19 @@ namespace AppsTracker.ViewModels
             this.Register<Data_keystrokesViewModel>(() => new Data_keystrokesViewModel());
             this.Register<Data_screenshotsViewModel>(() => new Data_screenshotsViewModel());
             this.Register<Data_dayViewModel>(() => new Data_dayViewModel());
+
+            this.SelectedChild = Resolve(typeof(Data_logsViewModel));
         }
 
         public void LoadContent()
         {
-            this.SelectedChild = Resolve(typeof(Data_logsViewModel));
             IsContentLoaded = true;
         }
 
         protected override void Disposing()
         {
-            ((ViewModelBase)_selectedChild).Dispose();
+            if (_selectedChild != null)
+                ((ViewModelBase)_selectedChild).Dispose();
             _selectedChild = null;
             base.Disposing();
         }

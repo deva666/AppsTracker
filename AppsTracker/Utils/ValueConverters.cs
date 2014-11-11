@@ -356,9 +356,11 @@ namespace AppsTracker
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            IChildVM child = value as IChildVM;
-            if (child.Title == (parameter as string)) return SelectedLabelStyle;
-            else return SelectableLabelStyle;
+            IChildVM child = (IChildVM)value;
+            if (child.Title == (string)parameter)
+                return SelectedLabelStyle;
+            else
+                return SelectableLabelStyle;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -480,13 +482,13 @@ namespace AppsTracker
 
         #region IValueConverter Members
 
-      public  object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if ((int)value <= 1) return System.Windows.Visibility.Collapsed;
             else return System.Windows.Visibility.Visible;
         }
 
-      public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
         }
@@ -1079,7 +1081,7 @@ namespace AppsTracker
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             DateTime trialStart = (DateTime)value;
-            return string.Format("You are running trial version of this app. {0}Trial started on {1}{2}{3} days left.{4}To remove this limitation please upgrade to licensed version.", Environment.NewLine, trialStart.ToShortDateString(), Environment.NewLine, 15- (DateTime.Now - trialStart).Days, Environment.NewLine);
+            return string.Format("You are running trial version of this app. {0}Trial started on {1}{2}{3} days left.{4}To remove this limitation please upgrade to licensed version.", Environment.NewLine, trialStart.ToShortDateString(), Environment.NewLine, 15 - (DateTime.Now - trialStart).Days, Environment.NewLine);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

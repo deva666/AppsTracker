@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.EntityModels;
+using AppsTracker.Tests.Fakes.Service;
 using AppsTracker.ViewModels;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,6 +21,8 @@ namespace AppsTracker.Tests.Core.ViewModels
         {
             if (!ServiceFactory.ContainsKey<IAppsService>())
                 ServiceFactory.Register<IAppsService>(() => new AppsServiceMock());
+            if (!ServiceFactory.ContainsKey<IChartService>())
+                ServiceFactory.Register<IChartService>(() => new ChartServiceMock());
         }
 
         [TestMethod]

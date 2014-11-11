@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.EntityModels;
+using AppsTracker.MVVM;
 using AppsTracker.Pages.ViewModels;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,6 +13,8 @@ namespace AppsTracker.Tests.Core.ViewModels
     [TestClass]
     public class KeystrokeViewModelTest
     {
+        private volatile bool _loaded = false;
+
         [TestInitialize]
         public void Init()
         {
@@ -20,14 +23,23 @@ namespace AppsTracker.Tests.Core.ViewModels
         }
 
         [TestMethod]
-        public void TestLoader()
+        public void TestKeystrokeVMLoader()
         {
             var vm = new Data_keystrokesViewModel();
-            vm.LoadContent();
+            vm.LogList.PropertyChanged += LogList_PropertyChanged;
+            var r = vm.LogList.Result;
 
-            Assert.IsTrue(vm.IsContentLoaded, "Content not loaded");
-            Assert.IsNotNull(vm.LogList, "LogList not loaded");
-            Assert.IsInstanceOfType(vm.LogList, typeof(IEnumerable<Log>), "Log types don't match");
+            while (_loaded == false)
+            {
+            }
+
+            Assert.IsNotNull(vm.LogList.Result, "Content not loaded");
+        }
+
+        void LogList_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Result")
+                _loaded = true;
         }
     }
 }

@@ -175,7 +175,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Cleaner\DBCleaner.cs" />
     <Compile Include="Controls\Adorners.cs" />
     <Compile Include="Controls\ArrowLeft.xaml.cs">
       <DependentUpon>ArrowLeft.xaml</DependentUpon>
@@ -244,17 +243,20 @@
     <Compile Include="Hooks\EventArgs\MouseHookArgs.cs" />
     <Compile Include="Hooks\EventArgs\WinEventArgs.cs" />
     <Compile Include="Hooks\IHook.cs" />
-    <Compile Include="Logging\EmailHelper.cs" />
-    <Compile Include="Logging\Services\AppBlocker.cs" />
+    <Compile Include="Logging\EmailService.cs" />
+    <Compile Include="Logging\LogCleaner.cs" />
+    <Compile Include="Logging\Helpers\AppBlocker.cs" />
     <Compile Include="Logging\BlockLogger.cs" />
     <Compile Include="Logging\ComponentContainer.cs" />
-    <Compile Include="Logging\Services\IdleMonitor.cs" />
-    <Compile Include="Logging\Services\IdleTimeWatcher.cs" />
+    <Compile Include="Logging\Helpers\LogCleanerHelper.cs" />
+    <Compile Include="Logging\Helpers\IdleMonitor.cs" />
+    <Compile Include="Logging\Helpers\IdleTimeWatcher.cs" />
     <Compile Include="Logging\IComponent.cs" />
-    <Compile Include="Logging\Services\ServiceWrap.cs" />
-    <Compile Include="Logging\Services\LogService.cs" />
+    <Compile Include="Logging\Helpers\LazyInit.cs" />
+    <Compile Include="Logging\Helpers\WindowHelper.cs" />
     <Compile Include="Logging\UsageLogger.cs" />
     <Compile Include="Logging\WindowLogger.cs" />
+    <Compile Include="MVVM\AsyncProperty.cs" />
     <Compile Include="MVVM\HostViewModel.cs" />
     <Compile Include="MVVM\ICommunicator.cs" />
     <Compile Include="MVVM\IMediator.cs" />
@@ -286,12 +288,6 @@
     </Compile>
     <Compile Include="Views\Data_dayView.xaml.cs">
       <DependentUpon>Data_dayView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Data_overallSummaryView.xaml.cs">
-      <DependentUpon>Data_overallSummaryView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Data_singleSummaryView.xaml.cs">
-      <DependentUpon>Data_singleSummaryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsHostView.xaml.cs">
       <DependentUpon>SettingsHostView.xaml</DependentUpon>
@@ -332,7 +328,7 @@
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Models\UzerSetting.cs" />
     <Compile Include="ViewModels\AboutWindowViewModel.cs" />
-    <Compile Include="Logging\Services\EmailService.cs" />
+    <Compile Include="Logging\Helpers\EmailHelper.cs" />
     <Compile Include="MVVM\DelegateCommand.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="MVVM\Mediator.cs" />
@@ -628,14 +624,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Data_logsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Data_overallSummaryView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Data_singleSummaryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

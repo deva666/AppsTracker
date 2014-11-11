@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Entity;
@@ -7,17 +6,16 @@ using System.Diagnostics;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Security.AccessControl;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Animation;
-using AppsTracker.DAL;
-using AppsTracker.Models.EntityModels;
-using Microsoft.Win32;
-using AppsTracker.Cleaner;
+
 using AppsTracker.Controls;
-using AppsTracker.Logging;
-using AppsTracker.Utils;
+using AppsTracker.DAL;
 using AppsTracker.DAL.Service;
+using AppsTracker.Logging;
+using AppsTracker.Models.EntityModels;
+
+using Microsoft.Win32;
 
 
 namespace AppsTracker
@@ -80,8 +78,6 @@ namespace AppsTracker
             CreateSettingsAndUsageTypes();
 
             _uzerSetting = new SettingsProxy();
-            //_settingsQueue = new SettingsQueue();
-            //_settingsQueue.SaveSettings += _settingsQueue_SaveSettings;
 
             ChangeTheme();
 
@@ -89,13 +85,12 @@ namespace AppsTracker
 
             _uzerSetting.PropertyChanged += (s, e) =>
             {
-                //UpdateLogData(e.PropertyName);
                 SaveSettings();
                 _container.SettingsChanging(_uzerSetting);
-                //_settingsQueue.Add(_uzerSetting);          
             };
 
-            // DBCleaner.CleanLogs(30);
+            if (!UzerSetting.Licence)
+                UzerSetting.Licence = true;
 
             if (CheckTrialExpiration())
             {
@@ -113,11 +108,6 @@ namespace AppsTracker
                 }
             }
 
-            Task deleteOldLogsTask = null;
-
-            if (_uzerSetting.DeleteOldLogs)
-                deleteOldLogsTask = Task.Run(() => DBCleaner.DeleteOldScreenshots(UzerSetting.OldLogDeleteDays));
-
 #if PORTABLE_SYMBOL
 
             if (UzerSetting.FirstRun)
@@ -134,13 +124,8 @@ namespace AppsTracker
 
 #endif
 
-            // _dataLogger = new DataLogger(_uzerSetting);
-
             Globals.DBCleaningRequired += Globals_DBCleaningRequired;
             Globals.GetDBSize();
-
-            if (deleteOldLogsTask != null)
-                deleteOldLogsTask.Wait();
 
             if (!_uzerSetting.Stealth & !autostart)
             {
@@ -156,14 +141,14 @@ namespace AppsTracker
 
             #region Event Handlers
 
-            this.Startup += (s, e) =>
-               {
-                   SetProcessKillAuth();
-               };
+            //this.Startup += (s, e) =>
+            //   {
+            //       SetProcessKillAuth();
+            //   };
 
             this.SessionEnding += (s, e) =>
             {
-                FinishAndExit(true);
+                FinishAndExit();
             };
 
             EntryPoint.SingleInstanceManager.SecondInstanceActivating += (s, e) =>
@@ -242,53 +227,6 @@ namespace AppsTracker
             }
         }
 
-        //private void UpdateLogData(string propertyName)
-        //{
-        //    if (_dataLogger == null)
-        //        return;
-        //    if (propertyName == "RunAtStartup")
-        //        return;
-
-        //    if (_dataLogger.EnableIdle != UzerSetting.EnableIdle)
-        //        _dataLogger.EnableIdle = UzerSetting.EnableIdle;
-
-        //    if (_dataLogger.TakeScreenShots != _uzerSetting.TakeScreenshots) _dataLogger.TakeScreenShots = _uzerSetting.TakeScreenshots;
-
-        //    if (_dataLogger.ScreenShotInterval != _uzerSetting.TimerInterval) _dataLogger.ScreenShotInterval = _uzerSetting.TimerInterval;
-
-        //    if (_dataLogger.EnableKeyboardHook != _uzerSetting.EnableKeylogger) _dataLogger.EnableKeyboardHook = _uzerSetting.EnableKeylogger;
-
-        //    if (_dataLogger.LoggingStatus.Running() != _uzerSetting.LoggingEnabled)
-        //        _dataLogger.LoggingStatus = _uzerSetting.LoggingEnabled ? LoggingStatus.Running : LoggingStatus.Stopped;
-
-        //    if (_uzerSetting.EnableEmailReports)
-        //        UpdateEmailSettings(true);
-        //    else
-        //        UpdateEmailSettings(false);
-
-        //    //if (_dataLogger.EnableFileWatcher != _uzerSetting.EnableFileWatcher)
-        //    //{
-        //    //    _dataLogger.EnableFileWatcher = _uzerSetting.EnableFileWatcher;
-        //    //    if (_dataLogger.FileSystemWatcher == null)
-        //    //        return;
-        //    //    if (_dataLogger.FileSystemWatcher.Path != _uzerSetting.FileWatcherPath)
-        //    //    {
-        //    //        try
-        //    //        {
-        //    //            _dataLogger.FileSystemWatcher.Path = _uzerSetting.FileWatcherPath;
-        //    //        }
-        //    //        catch (Exception ex)
-        //    //        {
-        //    //            _dataLogger.FileSystemWatcher.Path = _uzerSetting.FileWatcherPath = @"C:\";
-        //    //            MessageWindow window = new MessageWindow(ex);
-        //    //            window.Show();
-        //    //        }
-        //    //    }
-
-        //    //    if (_dataLogger.FileSystemWatcher.IncludeSubdirectories != _uzerSetting.FileWatcherSubdirectories) _dataLogger.FileSystemWatcher.IncludeSubdirectories = _uzerSetting.FileWatcherSubdirectories;
-        //    //}
-        //}
-
         private void ShowHideTrayIcon()
         {
             if (!_uzerSetting.Stealth)
@@ -307,33 +245,6 @@ namespace AppsTracker
                 }
             }
         }
-
-        //private void UpdateEmailSettings(bool enable)
-        //{
-        //    if (enable)
-        //    {
-        //        if (_emailReport == null)
-        //            _emailReport = new EmailService();
-        //        _emailReport.EmailTo = _uzerSetting.EmailTo;
-        //        _emailReport.EmailFrom = _uzerSetting.EmailFrom;
-        //        _emailReport.Interval = _uzerSetting.EmailInterval;
-        //        _emailReport.SmtpHost = _uzerSetting.EmailSmtpHost;
-        //        _emailReport.SmtpPort = _uzerSetting.EmailSmtpPort;
-        //        _emailReport.SmtpUsername = _uzerSetting.EmailSmtpUsername;
-        //        _emailReport.SmtpPassword = _uzerSetting.EmailSmtpPassword;
-        //        _emailReport.SSL = _uzerSetting.EmailSSL;
-        //    }
-        //    else
-        //    {
-        //        if (_emailReport != null)
-        //        {
-        //            _emailReport.StopReporting();
-        //            _emailReport.Dispose();
-        //            _emailReport = null;
-        //        }
-        //    }
-
-        //}
 
         #endregion
 
@@ -539,15 +450,13 @@ namespace AppsTracker
             }
             finally
             {
-                FinishAndExit(false);
+                FinishAndExit();
             }
         }
 
-        internal void FinishAndExit(bool userTriggered)
+        internal void FinishAndExit()
         {
-            _userTriggerExit = userTriggered;
-            //if (App.DataLogger != null)
-            //    App.DataLogger.FinishLogging();
+            _container.Dispose();
             CloseMainWindow();
             Dispose();
             Application.Current.Shutdown();
@@ -558,20 +467,16 @@ namespace AppsTracker
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            Dispose(true);            
         }
 
         private void Dispose(bool disposing)
         {
             if (!_disposed)
-            {
-                _disposed = true;
+            {             
                 this.DispatcherUnhandledException -= App_DispatcherUnhandledException;
-                //if (_dataLogger != null) { _dataLogger.Dispose(); _dataLogger = null; }
-                //  if (_emailReport != null) { _emailReport.Dispose(); _emailReport = null; }
                 if (_trayIcon != null) { _trayIcon.Dispose(); _trayIcon = null; }
-                //if (_settingsQueue != null) { _settingsQueue.Dispose(); _settingsQueue = null; }
+                _disposed = true;
             }
         }
 

@@ -23,14 +23,15 @@ namespace AppsTracker.MVVM
                 lock (@lock)
                     return _working;
             }
-            protected set
+            set
             {
                 lock (@lock)
+                {
                     _working = value;
-                PropertyChanging("Working");
+                    PropertyChanging("Working");
+                }
             }
         }
-
 
         public ViewModelBase()
         {
@@ -45,6 +46,7 @@ namespace AppsTracker.MVVM
             Working = false;
         }
 
+        [Obsolete]
         protected void Load<T>(Func<T> getter, Action<T> onComplete, bool captureContext = false)
         {
             Working = true;

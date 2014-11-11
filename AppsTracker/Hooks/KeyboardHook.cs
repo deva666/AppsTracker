@@ -4,49 +4,33 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.ComponentModel;
 
+using AppsTracker.Common.Utils;
+
 namespace AppsTracker.Hooks
 {
     internal delegate IntPtr KeyboardHookCallback(int code, IntPtr wParam, IntPtr lParam);
 
-    internal sealed class KeyBoardHook : IHook<KeyboardHookArgs>, INotifyPropertyChanged
+    internal sealed class KeyBoardHook : IHook<KeyboardHookArgs>
     {
         #region Fields
 
-        private const int WH_KEYBOARD_LL = 13;
-        private const int WM_KEYDOWN = 0x0100;
-        private const int WM_KEYUP = 0x0101;
-        private const int WM_SYSKEYDOWN = 0x0104;
-        private const int WM_SYSKEYUP = 0x0105;
-        private const int VK_SHIFT = 0x10;
-        private const int VK_CONTROL = 0x11;
-        private const int VK_MENU = 0x12;
-        private const int VK_CAPITAL = 0x14;
+        const int WH_KEYBOARD_LL = 13;
+        const int WM_KEYDOWN = 0x0100;
+        const int WM_KEYUP = 0x0101;
+        const int WM_SYSKEYDOWN = 0x0104;
+        const int WM_SYSKEYUP = 0x0105;
+        const int VK_SHIFT = 0x10;
+        const int VK_CONTROL = 0x11;
+        const int VK_MENU = 0x12;
+        const int VK_CAPITAL = 0x14;
+
+        bool _keyLoggerEnabled = true;
+        bool _isDisposed;
 
         public event EventHandler<KeyboardHookArgs> HookProc;
 
         KeyboardHookCallback _hookCallBack;
         IntPtr _hookID = IntPtr.Zero;
-
-        private bool _keyLoggerEnabled = true;
-        private bool _isDisposed;
-
-        #endregion
-
-        #region Properties
-
-        public bool KeyLoggerEnabled
-        {
-            get
-            {
-                return _keyLoggerEnabled;
-            }
-            set
-            {
-                _keyLoggerEnabled = value;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("KeyLoggerEnabled"));
-            }
-        }
 
         #endregion
 
@@ -68,7 +52,7 @@ namespace AppsTracker.Hooks
                 using (ProcessModule module = process.MainModule)
                 {
                     _hookID = WinAPI.SetWindowsHookEx(WH_KEYBOARD_LL, _hookCallBack, WinAPI.GetModuleHandle(module.ModuleName), 0);
-                    Debug.Assert(_hookID != IntPtr.Zero, "Failed to set keyboardhook");
+                    Ensure.Condition<InvalidOperationException>(_hookID != IntPtr.Zero, "Failed to set keyboardhook");
                 }
             }
         }
@@ -135,14 +119,7 @@ namespace AppsTracker.Hooks
             GC.SuppressFinalize(this);
         }
 
-        #endregion
-
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
+        #endregion      
     }
 
 }

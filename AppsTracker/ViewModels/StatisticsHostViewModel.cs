@@ -24,45 +24,14 @@ namespace AppsTracker.ViewModels
             Register<Statistics_dailyAppUsageViewModel>(() => new Statistics_dailyAppUsageViewModel());
             Register<Statistics_keystrokesViewModel>(() => new Statistics_keystrokesViewModel());
             Register<Statistics_screenshotsViewModel>(() => new Statistics_screenshotsViewModel());
+
+            SelectedChild = Resolve(typeof(Statistics_usersViewModel));
         }
 
         public void LoadContent()
-        {
-            SelectedChild = Resolve(typeof(Statistics_usersViewModel));
+        {            
             IsContentLoaded = true;
         }
 
-        protected override void Disposing()
-        {
-            _selectedChild = null;
-            base.Disposing();
-        }
-
-        //protected override void ChangePage(object parameter)
-        //{
-        //    string viewName = parameter as string;
-        //    if (viewName == null)
-        //        return;
-        //    switch (viewName)
-        //    {
-        //        case "USERS":
-        //            SelectedChild = new Statistics_usersViewModel();
-        //            break;
-        //        case "APPS":
-        //            SelectedChild = new Statistics_appUsageViewModel();
-        //            break;
-        //        case "DAILY APP USAGE":
-        //            SelectedChild = new Statistics_dailyAppUsageViewModel();
-        //            break;
-        //        case "KEYSTROKES":
-        //            SelectedChild = new Statistics_keystrokesViewModel();
-        //            break;
-        //        case "SCREENSHOTS":
-        //            SelectedChild = new Statistics_screenshotsViewModel();
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //}
     }
 }

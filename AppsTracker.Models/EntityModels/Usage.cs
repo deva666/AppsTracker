@@ -25,8 +25,7 @@ namespace AppsTracker.Models.EntityModels
 
         public Usage(int userID)
             : this()
-        {
-            this.UsageStart = DateTime.Now;
+        {            
             this.UserID = userID;
         }
 
@@ -38,6 +37,7 @@ namespace AppsTracker.Models.EntityModels
 
         public Usage()
         {
+            this.UsageStart = DateTime.Now;
             //this.Logs = new HashSet<Log>();
             //this.SelfUsages = new HashSet<Usage>();
             //this.SelfUsage = new HashSet<Usage>();

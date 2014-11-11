@@ -4,17 +4,17 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace AppsTracker.MVVM
 {
     public class ObservableObject : INotifyPropertyChanged
     {
         protected void PropertyChanging(string propertyName)
-        {
-            var handler = PropertyChanged;
+        {            
+            var handler = Volatile.Read(ref PropertyChanged);
             if (handler != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            //if (this.PropertyChanged != null) this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected virtual bool ThrowExceptionOnInvalidProperty { get; private set; }

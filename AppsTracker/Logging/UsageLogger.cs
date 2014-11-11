@@ -14,17 +14,17 @@ namespace AppsTracker.Logging
 {
     internal sealed class UsageLogger : IComponent, ICommunicator
     {
-        bool _isLoggingEnabled;
+        private bool _isLoggingEnabled;
 
-        Usage _currentUsageLocked;
-        Usage _currentUsageIdle;
-        Usage _currentUsageLogin;
-        Usage _currentUsageStopped;
+        private Usage _currentUsageLocked;
+        private Usage _currentUsageIdle;
+        private Usage _currentUsageLogin;
+        private Usage _currentUsageStopped;
 
-        ServiceWrap<IdleMonitor> _idleMonitor;
+        private LazyInit<IdleMonitor> _idleMonitor;
 
-        IAppsService _service;
-        ISettings _settings;
+        private IAppsService _service;
+        private ISettings _settings;
 
         public UsageLogger(ISettings settings)
         {
@@ -44,7 +44,7 @@ namespace AppsTracker.Logging
 
             Globals.Initialize(user, _currentUsageLogin.UsageID);
 
-            _idleMonitor = new ServiceWrap<IdleMonitor>(() => new IdleMonitor(),
+            _idleMonitor = new LazyInit<IdleMonitor>(() => new IdleMonitor(),
                                                             m =>
                                                             {
                                                                 m.IdleEntered += IdleEntered;
@@ -54,8 +54,11 @@ namespace AppsTracker.Logging
                                                             {
                                                                 m.IdleEntered -= IdleEntered;
                                                                 m.IdleStoped -= IdleStopped;
-                                                            }) { Enabled = (_settings.EnableIdle && _settings.LoggingEnabled) };
-            
+                                                            })
+                                                            {
+                                                                Enabled = (_settings.EnableIdle && _settings.LoggingEnabled)
+                                                            };
+
             Microsoft.Win32.SystemEvents.SessionSwitch += SessionSwitch;
         }
 
@@ -112,8 +115,8 @@ namespace AppsTracker.Logging
         private void SaveUsage(string usageType, Usage usage)
         {
             var usageT = _service.GetSingle<UsageType>(t => t.UType == usageType);
-            if (usageT == null)
-                throw new InvalidOperationException(string.Concat("Can't load ", usageType));
+            Ensure.NotNull(usageT, string.Concat("Can't load ", usageType));
+
             var usageID = usageT.UsageTypeID;
             usage.UsageTypeID = usageID;
             _service.Add<Usage>(usage);
@@ -121,18 +124,28 @@ namespace AppsTracker.Logging
 
         public void SettingsChanged(ISettings settings)
         {
-            _settings = settings;            
+            _settings = settings;
+            Configure();
         }
 
         private void Configure()
         {
-            if (_idleMonitor.Enabled != _settings.EnableIdle && _settings.LoggingEnabled)
-                _idleMonitor.Enabled = _settings.EnableIdle && _settings.LoggingEnabled;
+           _idleMonitor.Enabled = 
+               _isLoggingEnabled =
+               _settings.EnableIdle && _settings.LoggingEnabled;
+        }
+
+        private void Finish()
+        {
+            _currentUsageLogin.UsageEnd = DateTime.Now;
+            _currentUsageLogin.IsCurrent = false;
+            SaveUsage(UsageTypes.Login.ToString(), _currentUsageLogin);
         }
 
         public void Dispose()
         {
             _idleMonitor.Enabled = false;
+            Finish();
             Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;
         }
 
@@ -142,7 +155,7 @@ namespace AppsTracker.Logging
         }
 
 
-        public void SetLoggingEnabled(bool enabled)
+        public void SetComponentEnabled(bool enabled)
         {
             _isLoggingEnabled = enabled;
         }

@@ -23,11 +23,13 @@ namespace AppsTracker.ViewModels
         {
             Register<Settings_generalViewModel>(() => new Settings_generalViewModel());
             Register<Settings_licenseViewModel>(() => new Settings_licenseViewModel());
+
+            SelectedChild = Resolve(typeof(Settings_generalViewModel));
         }
 
         public void LoadContent()
         {
-            SelectedChild = Resolve(typeof(Settings_generalViewModel));
+            
             this.IsContentLoaded = true;
         }
 

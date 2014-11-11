@@ -11,10 +11,13 @@ namespace AppsTracker.Controls
         NotifyIcon notifyIcon;
         ContextMenuStrip iconMenu;
         ToolStripMenuItem menuItemShowApp;
-        ToolStripMenuItem menuItemEnterStealth;
         ToolStripMenuItem menuItemExit;
 
-        public bool IsVisible { get { return notifyIcon.Visible; } set { notifyIcon.Visible = value; } }
+        public bool IsVisible
+        {
+            get { return notifyIcon.Visible; }
+            set { notifyIcon.Visible = value; }
+        }
 
         #region Constructor
 
@@ -22,11 +25,10 @@ namespace AppsTracker.Controls
         {
             notifyIcon = new NotifyIcon();
             iconMenu = new ContextMenuStrip();
-            menuItemShowApp = new ToolStripMenuItem( string.Format("Open {0}", Constants.APP_NAME) );
-            menuItemEnterStealth = new ToolStripMenuItem( "Enter stealth mode" );
-            menuItemExit = new ToolStripMenuItem( "Exit" );
-            iconMenu.Items.Add( menuItemShowApp );
-            iconMenu.Items.Add( menuItemExit );
+            menuItemShowApp = new ToolStripMenuItem(string.Format("Open {0}", Constants.APP_NAME));
+            menuItemExit = new ToolStripMenuItem("Exit");
+            iconMenu.Items.Add(menuItemShowApp);
+            iconMenu.Items.Add(menuItemExit);
             notifyIcon.ContextMenuStrip = iconMenu;
             notifyIcon.Icon = Properties.Resources.icon1;
             notifyIcon.Text = Constants.APP_NAME;
@@ -34,8 +36,8 @@ namespace AppsTracker.Controls
 
             #region Event Handlers
 
-            menuItemExit.Click += ( s, e ) => { ( App.Current as App ).FinishAndExit(true); };
-            menuItemShowApp.Click += ( s, e ) => { ( App.Current as App ).CreateOrShowMainWindow(); };
+            menuItemExit.Click += (s, e) => { (App.Current as App).FinishAndExit(); };
+            menuItemShowApp.Click += (s, e) => { (App.Current as App).CreateOrShowMainWindow(); };
 
             #endregion
         }
@@ -47,19 +49,17 @@ namespace AppsTracker.Controls
 
         public void Dispose()
         {
-            Dispose( true );
-            GC.SuppressFinalize( this );
+            Dispose(true);            
         }
 
-        private void Dispose( bool disposing )
+        private void Dispose(bool disposing)
         {
-            if ( disposing )
+            if (disposing)
             {
-                if ( menuItemEnterStealth != null ) menuItemEnterStealth.Dispose();
-                if ( menuItemExit != null ) menuItemExit.Dispose();
-                if ( menuItemShowApp != null ) menuItemShowApp.Dispose();
-                if ( iconMenu != null ) iconMenu.Dispose();
-                if ( notifyIcon != null ) notifyIcon.Dispose();
+                if (menuItemExit != null) { menuItemExit.Dispose(); menuItemExit = null; }
+                if (menuItemShowApp != null) { menuItemShowApp.Dispose(); menuItemShowApp = null; }
+                if (iconMenu != null) { iconMenu.Dispose(); iconMenu = null; }
+                if (notifyIcon != null) { notifyIcon.Dispose(); notifyIcon = null; }
             }
         }
 

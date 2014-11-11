@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AppsTracker.MVVM
 {
-    class AboutWindowViewModel : ViewModelBase
+    internal sealed class AboutWindowViewModel : ViewModelBase
     {
         public Version AppVersion { get { return Assembly.GetExecutingAssembly().GetName().Version; } }
         public string AppName { get { return Constants.APP_NAME; } }

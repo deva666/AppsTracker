@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace AppsTracker.Utils
 {
-    class SettingsQueue : IDisposable
+    internal class SettingsQueue : IDisposable
     {
         private Timer _timer;
         private ConcurrentQueue<SettingsProxy> _queue;

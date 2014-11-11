@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using AppsTracker.DAL;
+
 using AppsTracker.DAL.Repos;
 using AppsTracker.Models.ChartModels;
-using AppsTracker.Controls;
 using AppsTracker.MVVM;
+using AppsTracker.DAL.Service;
 
 namespace AppsTracker.Pages.ViewModels
 {
@@ -23,6 +22,8 @@ namespace AppsTracker.Pages.ViewModels
         IEnumerable<ScreenshotModel> _screenshotList;
 
         IEnumerable<DailyScreenshotModel> _dailyScreenshotsList;
+
+        IChartService _service;
 
         #endregion
 
@@ -107,42 +108,47 @@ namespace AppsTracker.Pages.ViewModels
         public Statistics_screenshotsViewModel()
         {
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(LoadContent));
+            _service = ServiceFactory.Get<IChartService>();
         }
 
         public async void LoadContent()
         {
-            Working = true;
-            ScreenshotList = await GetContentAsync();
+            await LoadAsync(GetContent, s => ScreenshotList = s);
             if (ScreenshotModel != null)
-                DailyScreenshotsList = await LoadSubContentAsync();
-            Working = false;
+                LoadSubContent();
             IsContentLoaded = true;
+        }
+
+        private IEnumerable<ScreenshotModel> GetContent()
+        {
+            return _service.GetScreenshots(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
+        }
+
+        private IEnumerable<DailyScreenshotModel> GetSubContent()
+        {
+            var model = ScreenshotModel;
+            if (model == null)
+                return null;
+            return _service.GetScreenshotsByApp(Globals.SelectedUserID, model.AppName, Globals.Date1, Globals.Date2);
         }
 
         private async Task<IEnumerable<ScreenshotModel>> GetContentAsync()
         {
-            var screenshots = await ScreenshotRepo.Instance.GetAsync(s => s.Log.Window.Application , s => s.Log.Window.Application.User).ConfigureAwait(false);
+            var screenshots = await ScreenshotRepo.Instance.GetAsync(s => s.Log.Window.Application, s => s.Log.Window.Application.User).ConfigureAwait(false);
 
             var filtered = screenshots.Where(s => s.Log.Window.Application.User.UserID == Globals.SelectedUserID
                                                 && s.Date >= Globals.Date1
                                                 && s.Date <= Globals.Date2)
                                             .GroupBy(s => s.Log.Window.Application.Name)
                                             .Select(g => new ScreenshotModel() { AppName = g.Key, Count = g.Count() });
-                            
+
             return filtered;
         }
 
         private async void LoadSubContent()
         {
-            if (ScreenshotModel != null)
-            {
-                _dailyScreenshotsList = null;
-                PropertyChanging("DailyScreenshotsList");
-                Working = true;
-                _dailyScreenshotsList = await LoadSubContentAsync();
-                Working = false;
-                PropertyChanging("DailyScreenshotsList");
-            }
+            DailyScreenshotsList = null;
+            await LoadAsync(GetSubContent, d => DailyScreenshotsList = d);
         }
 
         private async Task<IEnumerable<DailyScreenshotModel>> LoadSubContentAsync()
@@ -155,8 +161,8 @@ namespace AppsTracker.Pages.ViewModels
                                                             .ConfigureAwait(false);
 
             var grouped = screenshots.GroupBy(s => new { year = s.Date.Year, month = s.Date.Month, day = s.Date.Day })
-                                        .OrderBy(g=> new DateTime(g.Key.year, g.Key.month,g.Key.day));
-            
+                                        .OrderBy(g => new DateTime(g.Key.year, g.Key.month, g.Key.day));
+
             return grouped.Select(g => new DailyScreenshotModel() { Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(), Count = g.Count() });
         }
 

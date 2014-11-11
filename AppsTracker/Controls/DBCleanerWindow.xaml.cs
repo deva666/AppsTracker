@@ -13,11 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using AppsTracker.Cleaner;
+
 
 namespace AppsTracker.Controls
 {
-
     public partial class DBCleanerWindow : Window
     {
         public DBCleanerWindow()
@@ -74,17 +73,17 @@ namespace AppsTracker.Controls
             ScaleUnloaded();
         }
 
-        private  async void lblClean_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void lblClean_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            int days;
-            if (!int.TryParse(tbDays.Text, out days))
-                return;
+            //int days;
+            //if (!int.TryParse(tbDays.Text, out days))
+            //    return;
 
-            decimal beforeSize = Globals.GetDBSize();
-            await DBCleaner.DeleteOldScreenshotsAsync(days,true);
-            decimal afterSize = Globals.GetDBSize();
-            MessageWindow msgWindow = new MessageWindow(string.Format("Freed {0} MB", beforeSize - afterSize));
-            msgWindow.ShowDialog();
+            //decimal beforeSize = Globals.GetDBSize();
+            //await DBCleaner.DeleteOldScreenshotsAsync(days,true);
+            //decimal afterSize = Globals.GetDBSize();
+            //MessageWindow msgWindow = new MessageWindow(string.Format("Freed {0} MB", beforeSize - afterSize));
+            //msgWindow.ShowDialog();
             ScaleUnloaded();
         }
 

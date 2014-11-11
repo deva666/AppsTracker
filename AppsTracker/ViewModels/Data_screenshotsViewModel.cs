@@ -29,7 +29,7 @@ namespace AppsTracker.Pages.ViewModels
 
         DateTime _selectedDate;
 
-        IEnumerable<Log> _logList;
+        AsyncProperty<IEnumerable<Log>> _logList;
 
         ICommand _deleteSelectedScreenshotsCommand;
         ICommand _openScreenshotViewerCommand;
@@ -82,7 +82,7 @@ namespace AppsTracker.Pages.ViewModels
             get;
             set;
         }
-        public IEnumerable<Log> LogList
+        public AsyncProperty<IEnumerable<Log>> LogList
         {
             get
             {
@@ -133,7 +133,9 @@ namespace AppsTracker.Pages.ViewModels
         public Data_screenshotsViewModel()
         {
             _service = ServiceFactory.Get<IAppsService>();
-            Mediator.Register(MediatorMessages.RefreshLogs, new Action(LoadContent));
+            _logList = new AsyncProperty<IEnumerable<Log>>(GetContent, this);
+
+            Mediator.Register(MediatorMessages.RefreshLogs, new Action(_logList.Reload));
             SelectedDate = DateTime.Today;
         }
 
@@ -141,8 +143,8 @@ namespace AppsTracker.Pages.ViewModels
 
         public async void LoadContent()
         {
-            await LoadAsync(GetContent, logs => LogList = logs);
-            IsContentLoaded = true;
+            //await LoadAsync(GetContent, logs => LogList = logs);
+            //IsContentLoaded = true;
         }
 
         private IEnumerable<Log> GetContent()
@@ -167,6 +169,7 @@ namespace AppsTracker.Pages.ViewModels
 
         }
 
+        //this should be moved to service
         private void DeleteSelectedScreenshots(object parameter)
         {
             ObservableCollection<object> parameterCollection = parameter as ObservableCollection<object>;

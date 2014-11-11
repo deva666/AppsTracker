@@ -95,7 +95,7 @@
                      BorderThickness="0"
                      Background="Transparent"
                      Foreground="{DynamicResource WindowForegroundBrush}"
-                     ItemsSource="{Binding AplicationList, UpdateSourceTrigger=PropertyChanged}"
+                     ItemsSource="{Binding AplicationList.Result, UpdateSourceTrigger=PropertyChanged}"
                      SelectedItem="{Binding SelectedApplication, Mode=TwoWay}"
                      ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
                      SelectionMode="Single"

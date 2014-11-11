@@ -67,14 +67,18 @@ namespace AppsTracker
 
         public static bool Running(this LoggingStatus status)
         {
-            if (status == LoggingStatus.Running) return true;
-            else return false;
+            if (status == LoggingStatus.Running)
+                return true;
+            else
+                return false;
         }
 
         public static LoggingStatus ConvertToLoggingStatus(this bool boolean)
         {
-            if (boolean) return LoggingStatus.Running;
-            else return LoggingStatus.Stopped;
+            if (boolean) 
+                return LoggingStatus.Running;
+            else
+                return LoggingStatus.Stopped;
         }
 
 

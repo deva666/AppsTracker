@@ -18,7 +18,7 @@ namespace AppsTracker.Logging
             _components.Add(new WindowLogger(settings));
             _components.Add(new UsageLogger(settings));
             _components.Add(new BlockLogger());
-            _components.Add(new EmailHelper(settings));
+            _components.Add(new EmailService(settings));
         }
 
         private void OnAll(Action<IComponent> action)

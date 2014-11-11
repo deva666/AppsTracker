@@ -16,16 +16,16 @@ namespace AppsTracker.Logging
 {
     internal sealed class WindowLogger : IComponent, ICommunicator
     {
-        bool _isLoggingEnabled;
+        private bool _isLoggingEnabled;
 
-        Log _currentLog;
+        private Log _currentLog;
 
-        ServiceWrap<Timer> _screenshotTimer;
-        ServiceWrap<IHook<WinHookArgs>> _winHook;
-        ServiceWrap<IHook<KeyboardHookArgs>> _keyboardHook;
+        private LazyInit<Timer> _screenshotTimer;
+        private LazyInit<IHook<WinHookArgs>> _winHook;
+        private LazyInit<IHook<KeyboardHookArgs>> _keyboardHook;
 
-        IAppsService _service;
-        ISettings _settings;
+        private IAppsService _service;
+        private ISettings _settings;
 
         public WindowLogger(ISettings settings)
         {
@@ -33,6 +33,7 @@ namespace AppsTracker.Logging
 
             _service = ServiceFactory.Get<IAppsService>();
             _settings = settings;
+
             Init();
             Configure();
         }
@@ -42,13 +43,16 @@ namespace AppsTracker.Logging
             Mediator.Register(MediatorMessages.IdleEntered, new Action(StopLogging));
             Mediator.Register(MediatorMessages.IdleStopped, new Action(ResumeLogging));
 
-            _winHook = new ServiceWrap<IHook<WinHookArgs>>(() => new WinHook(),
+            _winHook = new LazyInit<IHook<WinHookArgs>>(() => new WinHook(),
                                                                 w => w.HookProc += WindowChanged,
-                                                                w => w.HookProc -= WindowChanged) { Enabled = _settings.LoggingEnabled };
-            _keyboardHook = new ServiceWrap<IHook<KeyboardHookArgs>>(() => new KeyBoardHook(),
+                                                                w => w.HookProc -= WindowChanged)
+                                                                {
+                                                                    Enabled = _settings.LoggingEnabled
+                                                                };
+            _keyboardHook = new LazyInit<IHook<KeyboardHookArgs>>(() => new KeyBoardHook(),
                                                                          k => k.HookProc += KeyPressed,
                                                                          k => k.HookProc -= KeyPressed);
-            _screenshotTimer = new ServiceWrap<Timer>(() => new Timer()
+            _screenshotTimer = new LazyInit<Timer>(() => new Timer()
                                                              {
                                                                  AutoReset = true,
                                                                  Interval = _settings.TimerInterval
@@ -58,12 +62,12 @@ namespace AppsTracker.Logging
 
         }
 
-        private void ScreenshotTick(object sender, System.Timers.ElapsedEventArgs e)
+        private async void ScreenshotTick(object sender, System.Timers.ElapsedEventArgs e)
         {
             if (_isLoggingEnabled == false)
                 return;
 
-            AddScreenshot();
+            await AddScreenshot();
         }
 
         private void KeyPressed(object sender, KeyboardHookArgs e)
@@ -144,7 +148,7 @@ namespace AppsTracker.Logging
                 NewAppAdded(e.AppInfo);
         }
 
-        private async void AddScreenshot()
+        private async Task AddScreenshot()
         {
             var dbSizeAsync = Globals.GetDBSizeAsync();
 
@@ -181,14 +185,11 @@ namespace AppsTracker.Logging
 
         private void Configure()
         {
-            if (_keyboardHook.Enabled != (_settings.EnableKeylogger && _settings.LoggingEnabled))
-                _keyboardHook.Enabled = (_settings.EnableKeylogger && _settings.LoggingEnabled);
-            if (_screenshotTimer.Enabled != (_settings.TakeScreenshots && _settings.LoggingEnabled))
-                _screenshotTimer.Enabled = (_settings.TakeScreenshots && _settings.LoggingEnabled);
+            _keyboardHook.Enabled = (_settings.EnableKeylogger && _settings.LoggingEnabled);
+            _screenshotTimer.Enabled = (_settings.TakeScreenshots && _settings.LoggingEnabled);
             if ((_settings.TakeScreenshots && _settings.LoggingEnabled) && _settings.TimerInterval != _screenshotTimer.Component.Interval)
                 _screenshotTimer.Component.Interval = _settings.TimerInterval;
-            if (_settings.LoggingEnabled != _isLoggingEnabled)
-                _isLoggingEnabled = _winHook.Enabled = _settings.LoggingEnabled;
+            _isLoggingEnabled = _winHook.Enabled = _settings.LoggingEnabled;
         }
 
         private void StopLogging()
@@ -213,16 +214,17 @@ namespace AppsTracker.Logging
             _keyboardHook.Enabled =
                 _screenshotTimer.Enabled =
                     _winHook.Enabled = false;
+            StopLogging();
         }
 
-        public void SetLoggingEnabled(bool enabled)
+        public void SetComponentEnabled(bool enabled)
         {
             _isLoggingEnabled = enabled;
         }
 
         public void SetKeyboardHookEnabled(bool enabled)
         {
-            _keyboardHook.CallOnService(k => k.EnableHook(enabled));
+            _keyboardHook.CallOn(k => k.EnableHook(enabled));
         }
     }
 }

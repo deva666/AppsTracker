@@ -33,9 +33,6 @@ namespace AppsTracker
                 return;
             }
 
-            //if (args != null && args.Contains("password"))
-            //    ConnectionConfig.ChangeDBPassword("test");
-
             System.Data.Entity.Database.SetInitializer<AppsTracker.DAL.AppsEntities>(new AppsTracker.DAL.AppsDataBaseInitializer());
 
             ConnectionConfig.ToggleConfigEncryption();
@@ -78,6 +75,7 @@ namespace AppsTracker
 
         static void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
         {
+            var app = App.Current as App;
             try
             {
                 Exception ex = e.ExceptionObject as Exception;
@@ -97,7 +95,8 @@ namespace AppsTracker
             }
             finally
             {
-                (App.Current as App).FinishAndExit(false);
+                if (app != null)
+                    app.FinishAndExit();
             }
         }
 
@@ -125,7 +124,7 @@ namespace AppsTracker
             protected override void OnStartupNextInstance(StartupNextInstanceEventArgs eventArgs)
             {
                 base.OnStartupNextInstance(eventArgs);
-                if (SecondInstanceActivating != null) SecondInstanceActivating(this, new EventArgs());
+                SecondInstanceActivating.InvokeSafely(this, EventArgs.Empty);
             }
         }
     }

@@ -15,7 +15,8 @@ namespace AppsTracker.Logging
     {
         bool _isLoggingEnabled;
 
-        ServiceWrap<AppBlocker> _appBlocker;
+        LazyInit<AppBlocker> _appBlocker;
+
         IAppsService _service;
 
         public BlockLogger()
@@ -26,12 +27,11 @@ namespace AppsTracker.Logging
 
         private void Init()
         {
-            _appBlocker = new ServiceWrap<AppBlocker>(() => new AppBlocker()
+            _appBlocker = new LazyInit<AppBlocker>(() => new AppBlocker()
                                                         , a => a.AppBlocked += AppBlocked
                                                         , a => a.AppBlocked -= AppBlocked);
-            var enabled = _service.GetQueryable<AppsToBlock>()
-                                    .Where(a => a.UserID == Globals.UserID)
-                                    .Count() > 0;
+            var enabled = _service.GetFiltered<AppsToBlock>(a => a.UserID == Globals.UserID)
+                                                .Count() > 0;
 
             _appBlocker.Enabled = enabled;
         }
@@ -60,7 +60,7 @@ namespace AppsTracker.Logging
         }
 
 
-        public void SetLoggingEnabled(bool enabled)
+        public void SetComponentEnabled(bool enabled)
         {
             _isLoggingEnabled = enabled;   
         }
