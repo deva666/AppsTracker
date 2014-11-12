@@ -12,23 +12,23 @@ namespace AppsTracker.ViewModels
     {
         #region Fields
 
-        bool _isPopupCalendarOpen = false;
-        bool _isPopupUsersOpen = false;
-        bool _isFilterApplied = false;
+        private bool _isPopupCalendarOpen = false;
+        private bool _isPopupUsersOpen = false;
+        private bool _isFilterApplied = false;
 
-        string _userName;
-        string _toSettings;
+        private string _userName;
+        private object _toSettings;
 
-        IEnumerable<Uzer> _uzerCollection;
+        private IEnumerable<Uzer> _uzerCollection;
 
-        ICommand _openPopupCommand;
-        ICommand _getLogsByDateCommand;
-        ICommand _clearFilterCommand;
-        ICommand _changeLoggingStatusCommand;
-        ICommand _thisWeekCommand;
-        ICommand _thisMonthCommand;
+        private ICommand _openPopupCommand;
+        private ICommand _getLogsByDateCommand;
+        private ICommand _clearFilterCommand;
+        private ICommand _changeLoggingStatusCommand;
+        private ICommand _thisWeekCommand;
+        private ICommand _thisMonthCommand;
 
-        IAppsService _service;
+        private IAppsService _service;
 
         #endregion
 
@@ -73,7 +73,12 @@ namespace AppsTracker.ViewModels
             }
         }
 
-        public string ToSettings
+        public override string Title
+        {
+            get { return "apps tracker"; }
+        }
+
+        public object ToSettings
         {
             get
             {
@@ -247,10 +252,16 @@ namespace AppsTracker.ViewModels
 
         private void GetUsers()
         {
-            _uzerCollection = _service.GetFiltered<Uzer>(u=>u.UserID >= 0);
+            _uzerCollection = _service.GetFiltered<Uzer>(u => u.UserID >= 0);
         }
 
         #region Command Methods
+
+        protected override void ChangePage(object parameter)
+        {
+            ToSettings = (SelectedChild == null || SelectedChild.GetType() == (Type)parameter) ? ToSettings : SelectedChild.GetType();
+            base.ChangePage(parameter);
+        }
 
         private void ChangeLoggingStatus()
         {
@@ -309,7 +320,7 @@ namespace AppsTracker.ViewModels
         {
             if (_selectedChild != null)
             {
-                ((ViewModelBase)_selectedChild).Dispose();
+                _selectedChild.Dispose();
                 _selectedChild = null;
             }
             base.Disposing();

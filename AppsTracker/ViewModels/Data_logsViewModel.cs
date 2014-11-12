@@ -14,7 +14,7 @@ using AppsTracker.DAL.Service;
 
 namespace AppsTracker.Pages.ViewModels
 {
-    internal class Data_logsViewModel : ViewModelBase, IChildVM, ICommunicator
+    internal class Data_logsViewModel : ViewModelBase, ICommunicator
     {
         #region Fields
 
@@ -64,7 +64,7 @@ namespace AppsTracker.Pages.ViewModels
                 PropertyChanging("ChartVisible");
             }
         }
-        public string Title
+        public override string Title
         {
             get
             {
@@ -125,22 +125,12 @@ namespace AppsTracker.Pages.ViewModels
                     _topAppsList.Reload();  
             }
         }
-        public bool IsContentLoaded
-        {
-            get;
-            private set;
-        }
 
         public AsyncProperty<IEnumerable<Aplication>> AplicationList
         {
             get
             {
                 return _aplicationList;
-            }
-            set
-            {
-                _aplicationList = value;
-                PropertyChanging("AplicationList");
             }
         }
         public AsyncProperty<IEnumerable<TopAppsModel>> TopAppsList
@@ -149,11 +139,6 @@ namespace AppsTracker.Pages.ViewModels
             {
                 return _topAppsList;
             }
-            set
-            {
-                _topAppsList = value;
-                PropertyChanging("TopAppsList");
-            }
         }
         public AsyncProperty<IEnumerable<TopWindowsModel>> TopWindowsList
         {
@@ -161,22 +146,12 @@ namespace AppsTracker.Pages.ViewModels
             {
                 return _topWindowsList;
             }
-            set
-            {
-                _topWindowsList = value;
-                PropertyChanging("TopWindowsList");
-            }
         }
         public AsyncProperty<IEnumerable<DailyWindowSeries>> ChartList
         {
             get
             {
                 return _chartList;
-            }
-            set
-            {
-                _chartList = value;
-                PropertyChanging("ChartList");
             }
         }
 
@@ -293,28 +268,10 @@ namespace AppsTracker.Pages.ViewModels
 
         #region Loader Methods
 
-        public void LoadContent()
-        {
-            OverallAppDuration = string.Empty;
-            OverallWindowDuration = string.Empty;
-            Date1 = Globals.Date1;
-            Date2 = Globals.Date2;
-        }
-
         private void LoadAppsOverall()
         {
             _topAppsList.Reload();
             ChartVisible = false;
-        }
-
-        private async void LoadWindowsOverall()
-        {
-            //await LoadAsync(GetTopWindows, w => TopWindowsList = w);
-        }
-
-        private async void LoadChart()
-        {
-            //await LoadAsync(GetChartContent, c => ChartList = c);
         }
 
         private IEnumerable<Aplication> GetContent()
@@ -444,7 +401,7 @@ namespace AppsTracker.Pages.ViewModels
 
             if (filteredApps.Count() == 0)
             {
-                TopWindowsList = null;
+                TopWindowsList.Reset();
                 return;
             }
 

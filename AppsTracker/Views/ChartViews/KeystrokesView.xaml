@@ -35,7 +35,7 @@
                         <chart:ChartSeries SeriesTitle="Keystrokes"
                                            DisplayMember="AppName"
                                            ValueMember="Count"
-                                           ItemsSource="{Binding KeystrokeList}" />
+                                           ItemsSource="{Binding KeystrokeList.Result}" />
                     </chart:ClusteredColumnChart.Series>
 
                 </chart:ClusteredColumnChart>

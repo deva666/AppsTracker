@@ -9,5 +9,9 @@ namespace AppsTracker.Tests.Fakes.MVVM
 {
     public class ViewModelMock : ViewModelBase
     {
+        public override string Title
+        {
+            get { return "Mock"; }
+        }
     }
 }

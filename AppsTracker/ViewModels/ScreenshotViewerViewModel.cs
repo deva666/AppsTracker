@@ -4,17 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+
 using AppsTracker.MVVM;
 using AppsTracker.Models.EntityModels;
 
+
 namespace AppsTracker.Pages.ViewModels
 {
-    class ScreenshotViewerViewModel : ViewModelBase
+    internal sealed class ScreenshotViewerViewModel : ViewModelBase
     {
         public event EventHandler CloseEvent;
 
-        IEnumerable<Screenshot> _screenshotCollection;
-        
+        private IEnumerable<Screenshot> _screenshotCollection;
+
+        public override string Title
+        {
+            get { return "Screenshots"; }
+        }   
+
         public IEnumerable<Screenshot> ScreenshotCollection { get { return _screenshotCollection; } }
         public ICommand CloseCommand { get { return new DelegateCommand(Close); } }
 
@@ -31,7 +38,7 @@ namespace AppsTracker.Pages.ViewModels
 
         private void Close()
         {
-            if (CloseEvent != null) CloseEvent(this, EventArgs.Empty);
+            CloseEvent.InvokeSafely(this, EventArgs.Empty);
         }
     }
 }

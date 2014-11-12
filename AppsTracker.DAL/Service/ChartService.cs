@@ -116,19 +116,26 @@ namespace AppsTracker.DAL.Service
 
                 Parallel.Invoke(() =>
                 {
-                    logs = context.Logs.Where(l => l.Window.Application.User.UserID == userID
-                                                       && l.DateCreated >= dateFrom
-                                                       && l.DateCreated <= dateTo)
-                                         .Include(l => l.Window.Application)
-                                         .ToList();
+                    using (var newContext = new AppsEntities())
+                    {
+                        logs = newContext.Logs.Where(l => l.Window.Application.User.UserID == userID
+                                   && l.DateCreated >= dateFrom
+                                   && l.DateCreated <= dateTo)
+                                 .Include(l => l.Window.Application)
+                                 .ToList();
+                    }
+
                 }, () =>
                 {
-                    usages = context.Usages.Where(u => u.User.UserID == userID
-                                                           && u.UsageStart >= dateFrom
-                                                           && u.UsageEnd <= dateTo
-                                                           && u.UsageType.UType != ignore)
-                                                  .Include(u => u.UsageType)
-                                                  .ToList();
+                    using (var newContext = new AppsEntities())
+                    {
+                        usages = newContext.Usages.Where(u => u.User.UserID == userID
+                                         && u.UsageStart >= dateFrom
+                                         && u.UsageEnd <= dateTo
+                                         && u.UsageType.UType != ignore)
+                                .Include(u => u.UsageType)
+                                .ToList();
+                    }
                 }
               );
 
@@ -591,13 +598,13 @@ namespace AppsTracker.DAL.Service
                                                        .ToList();
 
                 var filtered = screenshots.Where(s => s.Log.Window.Application.User.UserID == userID
-                                                                                && s.Date >= dateFrom
-                                                                                && s.Date <= dateTo
-                                                                                && s.Log.Window.Application.Name == appName
-                                                                                )
-                                                            .ToList();
+                                                     && s.Date >= dateFrom
+                                                     && s.Date <= dateTo
+                                                     && s.Log.Window.Application.Name == appName
+                                                     )
+                                            .ToList();
 
-                var grouped = screenshots.GroupBy(s => new
+                var grouped = filtered.GroupBy(s => new
                                                     {
                                                         year = s.Date.Year,
                                                         month = s.Date.Month,
@@ -659,25 +666,29 @@ namespace AppsTracker.DAL.Service
                                            .OrderBy(g => new DateTime(g.Key.year, g.Key.month, g.Key.day));
 
 
+
                 Parallel.ForEach(groupedLogins.ToList(), grp =>
                 {
 
                     var usageIDs = grp.Select(u => u.UsageID);
 
-                    idles = context.Usages.Where(u => u.SelfUsageID.HasValue
-                                                    && usageIDs.Contains(u.SelfUsageID.Value)
-                                                    && u.UsageType.UType == usageIdle)
-                                                    .ToList();
+                    using (var newContext = new AppsEntities())
+                    {
+                        idles = newContext.Usages.Where(u => u.SelfUsageID.HasValue
+                                                && usageIDs.Contains(u.SelfUsageID.Value)
+                                                && u.UsageType.UType == usageIdle)
+                                                .ToList();
 
-                    lockeds = context.Usages.Where(u => u.SelfUsageID.HasValue
-                                                      && usageIDs.Contains(u.SelfUsageID.Value)
-                                                      && u.UsageType.UType == usageLocked)
-                                                      .ToList();
+                        lockeds = newContext.Usages.Where(u => u.SelfUsageID.HasValue
+                                                          && usageIDs.Contains(u.SelfUsageID.Value)
+                                                          && u.UsageType.UType == usageLocked)
+                                                          .ToList();
 
-                    stoppeds = context.Usages.Where(u => u.SelfUsageID.HasValue
-                                                      && usageIDs.Contains(u.SelfUsageID.Value)
-                                                      && u.UsageType.UType == usageStopped)
-                                                      .ToList();
+                        stoppeds = newContext.Usages.Where(u => u.SelfUsageID.HasValue
+                                                          && usageIDs.Contains(u.SelfUsageID.Value)
+                                                          && u.UsageType.UType == usageStopped)
+                                                          .ToList(); 
+                    }
 
                     UsageTypeSeries series = new UsageTypeSeries() { Date = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day).ToShortDateString() };
 

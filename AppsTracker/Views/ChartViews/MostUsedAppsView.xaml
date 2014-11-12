@@ -37,7 +37,7 @@
                         <chart:ChartSeries SeriesTitle="Applications"
                                            DisplayMember="AppName"
                                            ValueMember="Duration"
-                                           ItemsSource="{Binding MostUsedAppsList}" />
+                                           ItemsSource="{Binding MostUsedAppsList.Result}" />
 
                     </chart:PieChart.Series>
                 </chart:PieChart>

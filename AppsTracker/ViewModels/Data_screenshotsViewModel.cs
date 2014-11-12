@@ -21,26 +21,26 @@ using AppsTracker.DAL.Service;
 
 namespace AppsTracker.Pages.ViewModels
 {
-    internal sealed class Data_screenshotsViewModel : ViewModelBase, IChildVM, ICommunicator
+    internal sealed class Data_screenshotsViewModel : ViewModelBase, ICommunicator
     {
         #region Fields
 
-        string _infoContent;
+        private string _infoContent;
 
-        DateTime _selectedDate;
+        private DateTime _selectedDate;
 
-        AsyncProperty<IEnumerable<Log>> _logList;
+        private AsyncProperty<IEnumerable<Log>> _logList;
 
-        ICommand _deleteSelectedScreenshotsCommand;
-        ICommand _openScreenshotViewerCommand;
-        ICommand _saveScreenshotCommand;
+        private ICommand _deleteSelectedScreenshotsCommand;
+        private ICommand _openScreenshotViewerCommand;
+        private ICommand _saveScreenshotCommand;
 
-        IAppsService _service;
+        private IAppsService _service;
 
         #endregion
 
         #region Properties
-        public string Title
+        public override string Title
         {
             get
             {
@@ -141,12 +141,6 @@ namespace AppsTracker.Pages.ViewModels
 
         #endregion
 
-        public async void LoadContent()
-        {
-            //await LoadAsync(GetContent, logs => LogList = logs);
-            //IsContentLoaded = true;
-        }
-
         private IEnumerable<Log> GetContent()
         {
             return _service.GetFiltered<Log>(l => l.Screenshots.Count > 0
@@ -194,7 +188,7 @@ namespace AppsTracker.Pages.ViewModels
                 }
                 if (count > 0)
                     InfoContent = "Screenshots deleted";
-                LoadContent();
+                _logList.Reload();
             }
         }
 

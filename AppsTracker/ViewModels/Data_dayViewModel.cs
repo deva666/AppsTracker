@@ -9,35 +9,35 @@ using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class Data_dayViewModel : ViewModelBase, IChildVM, ICommunicator
+    internal sealed class Data_dayViewModel : ViewModelBase, ICommunicator
     {
         #region Fields
 
-        DateTime _selectedDate = DateTime.Today;
+        private DateTime _selectedDate = DateTime.Today;
 
-        string _singleAppDuration;
-        string _singleWindowDuration;
+        private string _singleAppDuration;
+        private string _singleWindowDuration;
 
-        TopAppsModel _topAppsSingle;
+        private TopAppsModel _topAppsSingle;
 
-        AsyncProperty<IEnumerable<TopAppsModel>> _topAppsList;
-        AsyncProperty<IEnumerable<DayViewModel>> _dayViewModelList;
-        AsyncProperty<IEnumerable<TopWindowsModel>> _topWindowsList;
-        AsyncProperty<IEnumerable<DailyUsageTypeSeries>> _chartList;
-        AsyncProperty<string> _duration;
+        private AsyncProperty<IEnumerable<TopAppsModel>> _topAppsList;
+        private AsyncProperty<IEnumerable<DayViewModel>> _dayViewModelList;
+        private AsyncProperty<IEnumerable<TopWindowsModel>> _topWindowsList;
+        private AsyncProperty<IEnumerable<DailyUsageTypeSeries>> _chartList;
+        private AsyncProperty<string> _duration;
 
-        ICommand _singleAppSelectionChangedCommand;
-        ICommand _singleWindowSelectionChangedCommand;
-        ICommand _addDaysCommand;
+        private ICommand _singleAppSelectionChangedCommand;
+        private ICommand _singleWindowSelectionChangedCommand;
+        private ICommand _addDaysCommand;
 
-        IAppsService _appsService;
-        IChartService _chartService;
+        private IAppsService _appsService;
+        private IChartService _chartService;
 
         #endregion
 
         #region Properties
 
-        public string Title
+        public override string Title
         {
             get { return "DAY VIEW"; }
         }
@@ -52,7 +52,7 @@ namespace AppsTracker.ViewModels
             {
                 _selectedDate = value;
                 PropertyChanging("SelectedDate");
-                LoadContent();
+                ReloadContent();
             }
         }
 
@@ -86,19 +86,7 @@ namespace AppsTracker.ViewModels
             {
                 return _duration;
             }
-            set
-            {
-                _duration = value;
-                PropertyChanging("Duration");
-            }
         }
-
-        public bool IsContentLoaded
-        {
-            get;
-            private set;
-        }
-
         public TopAppsModel TopAppsSingle
         {
             get
@@ -121,22 +109,12 @@ namespace AppsTracker.ViewModels
             {
                 return _topAppsList;
             }
-            set
-            {
-                _topAppsList = value;
-                PropertyChanging("TopAppsList");
-            }
         }
         public AsyncProperty<IEnumerable<DayViewModel>> DayViewModelList
         {
             get
             {
                 return _dayViewModelList;
-            }
-            set
-            {
-                _dayViewModelList = value;
-                PropertyChanging("DayViewModelList");
             }
         }
         public AsyncProperty<IEnumerable<TopWindowsModel>> TopWindowsList
@@ -145,22 +123,12 @@ namespace AppsTracker.ViewModels
             {
                 return _topWindowsList;
             }
-            set
-            {
-                _topWindowsList = value;
-                PropertyChanging("TopWindowsList");
-            }
         }
         public AsyncProperty<IEnumerable<DailyUsageTypeSeries>> ChartList
         {
             get
             {
                 return _chartList;
-            }
-            set
-            {
-                _chartList = value;
-                PropertyChanging("ChartList");
             }
         }
 
@@ -201,24 +169,14 @@ namespace AppsTracker.ViewModels
             _topWindowsList = new AsyncProperty<IEnumerable<TopWindowsModel>>(GetTopWindowsSingle, this);
         }
 
-        public async void LoadContent()
+        private void ReloadContent()
         {
-            //SingleAppDuration = string.Empty;
-            //SingleWindowDuration = string.Empty;
-
-            //var daysTask = LoadAsync(GetDayViewInfo, d => DayViewModelList = d);
-            //var appsTask = LoadAsync(GetTopAppsSingle, a => TopAppsList = a);
-            //var chartTask = LoadAsync(GetChartContent, c => ChartList = c);
-            //var dayInfoTask = LoadAsync(GetDayInfo, d => Duration = d);
-
-            //await Task.WhenAll(daysTask, appsTask, chartTask, dayInfoTask);
-
-            IsContentLoaded = true;
+            _dayViewModelList.Reload();
+            _topAppsList.Reload();
+            _chartList.Reload();
+            _duration.Reload();
+            _topWindowsList.Reload();
         }
-        //private async void LoadWindowsSingle()
-        //{
-        //    await LoadAsync(GetTopWindowsSingle, w => TopWindowsList = w);
-        //}
 
         private IEnumerable<DayViewModel> GetDayViewInfo()
         {

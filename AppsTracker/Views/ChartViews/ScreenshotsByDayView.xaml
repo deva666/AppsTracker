@@ -45,7 +45,7 @@
                     <chart:ChartSeries SeriesTitle="Screenshots Count"
                                        DisplayMember="Date"
                                        ValueMember="Count"
-                                       ItemsSource="{Binding DailyScreenshotsList}" />
+                                       ItemsSource="{Binding DailyScreenshotsList.Result}" />
 
                 </chart:ClusteredColumnChart.Series>
             </chart:ClusteredColumnChart>

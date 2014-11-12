@@ -9,36 +9,30 @@ using AppsTracker.DAL.Service;
 
 namespace AppsTracker.Pages.ViewModels
 {
-    internal sealed class Statistics_appUsageViewModel : ViewModelBase, IChildVM, ICommunicator
+    internal sealed class Statistics_appUsageViewModel : ViewModelBase, ICommunicator
     {
         #region Fields
 
-        MostUsedAppModel _mostUsedAppModel;
+        private MostUsedAppModel _mostUsedAppModel;
 
-        IEnumerable<MostUsedAppModel> _mostUsedAppsList;
+        private AsyncProperty<IEnumerable<MostUsedAppModel>> _mostUsedAppsList;
 
-        IEnumerable<DailyAppModel> _dailyAppList;
+        private AsyncProperty<IEnumerable<DailyAppModel>> _dailyAppList;
 
-        ICommand _returnFromDetailedViewCommand;
+        private ICommand _returnFromDetailedViewCommand;
 
-        IChartService _service;
+        private IChartService _service;
 
         #endregion
 
         #region Properties
 
-        public string Title
+        public override string Title
         {
             get
             {
                 return "APPS";
             }
-        }
-
-        public bool IsContentLoaded
-        {
-            get;
-            private set;
         }
 
         public MostUsedAppModel MostUsedAppModel
@@ -51,7 +45,7 @@ namespace AppsTracker.Pages.ViewModels
             {
                 _mostUsedAppModel = value;
                 PropertyChanging("MostUsedAppModel");
-                LoadSubContent();
+                _dailyAppList.Reload();
             }
         }
 
@@ -62,28 +56,18 @@ namespace AppsTracker.Pages.ViewModels
         }
 
 
-        public IEnumerable<MostUsedAppModel> MostUsedAppsList
+        public AsyncProperty<IEnumerable<MostUsedAppModel>> MostUsedAppsList
         {
             get
             {
                 return _mostUsedAppsList;
             }
-            set
-            {
-                _mostUsedAppsList = value;
-                PropertyChanging("MostUsedAppsList");
-            }
         }
-        public IEnumerable<DailyAppModel> DailyAppList
+        public AsyncProperty<IEnumerable<DailyAppModel>> DailyAppList
         {
             get
             {
                 return _dailyAppList;
-            }
-            set
-            {
-                _dailyAppList = value;
-                PropertyChanging("DailyAppList");
             }
         }
         public ICommand ReturnFromDetailedViewCommand
@@ -107,30 +91,23 @@ namespace AppsTracker.Pages.ViewModels
         }
 
         public Statistics_appUsageViewModel()
-        {
-            Mediator.Register(MediatorMessages.RefreshLogs, new Action(LoadContent));
+        {            
             _service = ServiceFactory.Get<IChartService>();
+
+            _mostUsedAppsList = new AsyncProperty<IEnumerable<MostUsedAppModel>>(GetContent, this);
+            _dailyAppList = new AsyncProperty<IEnumerable<DailyAppModel>>(GetSubContent, this);
+
+            Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadAll));
         }
 
-        public async void LoadContent()
+        private void ReloadAll()
         {
-            await LoadAsync(GetContent, m => MostUsedAppsList = m);
-            LoadSubContent();
-            IsContentLoaded = true;
+            _mostUsedAppsList.Reload();
+            _dailyAppList.Reload();
         }
-
         private IEnumerable<MostUsedAppModel> GetContent()
         {
             return _service.GetMostUsedApps(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
-        }
-
-        private async void LoadSubContent()
-        {
-            if (_mostUsedAppModel == null)
-                return;
-
-            DailyAppList = null;
-            await LoadAsync(GetSubContent, d => DailyAppList = d);
         }
 
         private IEnumerable<DailyAppModel> GetSubContent()

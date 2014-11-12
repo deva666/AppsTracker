@@ -356,7 +356,7 @@ namespace AppsTracker
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            IChildVM child = (IChildVM)value;
+            ViewModelBase child = (ViewModelBase)value;
             if (child.Title == (string)parameter)
                 return SelectedLabelStyle;
             else
@@ -394,7 +394,7 @@ namespace AppsTracker
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            IChildVM child = value as IChildVM;
+            ViewModelBase child = (ViewModelBase)value;
             if (child.Title == (parameter as string)) return System.Windows.Visibility.Visible;
             else return System.Windows.Visibility.Collapsed;
         }
@@ -409,7 +409,7 @@ namespace AppsTracker
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            IChildVM child = value as IChildVM;
+            ViewModelBase child = (ViewModelBase)value;
             if (child.Title != (parameter as string)) return System.Windows.Visibility.Visible;
             else return System.Windows.Visibility.Collapsed;
         }

@@ -17,40 +17,36 @@ using AppsTracker.DAL.Service;
 
 namespace AppsTracker.Pages.ViewModels
 {
-    internal sealed class Statistics_usersViewModel : ViewModelBase, IChildVM, ICommunicator
+    internal sealed class Statistics_usersViewModel : ViewModelBase, ICommunicator
     {
         #region Fields
 
-        AllUsersModel _allUsersModel;
+        private AllUsersModel _allUsersModel;
 
-        IEnumerable<AllUsersModel> _allUsersList;
+        private AsyncProperty<IEnumerable<AllUsersModel>> _allUsersList;
 
-        IEnumerable<UsageTypeSeries> _dailyLogins;
+        private AsyncProperty<IEnumerable<UsageTypeSeries>> _dailyLogins;
 
-        ICommand _returnFromDetailedViewCommand;
+        private ICommand _returnFromDetailedViewCommand;
 
-        IChartService _service;
+        private IChartService _service;
 
         #endregion
 
         #region Properties
 
-        public string Title
+        public override string Title
         {
             get
             {
                 return "USERS";
             }
         }
+
         public object SelectedItem
         {
             get;
             set;
-        }
-        public bool IsContentLoaded
-        {
-            get;
-            private set;
         }
         
         public AllUsersModel AllUsersModel
@@ -64,7 +60,7 @@ namespace AppsTracker.Pages.ViewModels
                 _allUsersModel = value;
                 PropertyChanging("AllUsersModel");
                 if (_allUsersModel != null)
-                    LoadSubContent();
+                    _dailyLogins.Reload();
             }
         }
         public UsageModel UsageModel
@@ -72,28 +68,18 @@ namespace AppsTracker.Pages.ViewModels
             get;
             set;
         }
-        public IEnumerable<AllUsersModel> AllUsersList
+        public AsyncProperty<IEnumerable<AllUsersModel>> AllUsersList
         {
             get
             {
                 return _allUsersList;
             }
-            set
-            {
-                _allUsersList = value;
-                PropertyChanging("AllUsersList");
-            }
         }
-        public IEnumerable<UsageTypeSeries> DailyLogins
+        public AsyncProperty<IEnumerable<UsageTypeSeries>> DailyLogins
         {
             get
             {
                 return _dailyLogins;
-            }
-            set
-            {
-                _dailyLogins = value;
-                PropertyChanging("DailyLogins");
             }
         }
         public SettingsProxy UserSettings
@@ -120,26 +106,20 @@ namespace AppsTracker.Pages.ViewModels
 
         public Statistics_usersViewModel()
         {
-            Mediator.Register(MediatorMessages.RefreshLogs, new Action(LoadContent));
             _service = ServiceFactory.Get<IChartService>();
+
+            _allUsersList = new AsyncProperty<IEnumerable<AllUsersModel>>(GetContent, this);
+            _dailyLogins = new AsyncProperty<IEnumerable<UsageTypeSeries>>(GetSubContent, this);
+
+            Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadAll));
         }
 
         #region Loader Methods
 
-        public async void LoadContent()
+        public void ReloadAll()
         {
-            await LoadAsync(GetContent, a => AllUsersList = a);
-            LoadSubContent();
-            IsContentLoaded = true;
-        }
-
-        private async void LoadSubContent()
-        {
-            if (AllUsersModel == null)
-                return;
-
-            DailyLogins = null;
-            await LoadAsync(GetSubContent, d => DailyLogins = d);
+            _allUsersList.Reload();
+            _dailyLogins.Reload();
         }
 
         private IEnumerable<AllUsersModel> GetContent()

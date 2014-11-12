@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AppsTracker.MVVM
@@ -11,7 +12,10 @@ namespace AppsTracker.MVVM
         private ViewModelBase _host;
         private Func<T> _getter;
 
+        private CancellationTokenSource _tokenSource = new CancellationTokenSource();
+        
         private Task<T> _task;
+
         public Task<T> Task
         {
             get { return _task; }
@@ -48,12 +52,14 @@ namespace AppsTracker.MVVM
 
         public void Reload()
         {
+            if (_task != null && _task.Status == TaskStatus.Running)
+                _tokenSource.Cancel();            
             ScheduleWork();
         }
 
         private void ScheduleWork()
         {
-            _task = Task<T>.Run(_getter);
+            _task = Task<T>.Factory.StartNew(_getter, _tokenSource.Token);
             ObserveTask(_task);
         }
 

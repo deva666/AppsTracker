@@ -29,7 +29,7 @@
                 <chart:ChartSeries SeriesTitle="Times"
                                    DisplayMember="AppName"
                                    ValueMember="Count"
-                                   ItemsSource="{Binding BlockedAppsCollection}" />
+                                   ItemsSource="{Binding BlockedAppsCollection.Result}" />
             </chart:ClusteredColumnChart.Series>
 
         </chart:ClusteredColumnChart>

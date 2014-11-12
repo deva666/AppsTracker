@@ -260,7 +260,6 @@
     <Compile Include="MVVM\HostViewModel.cs" />
     <Compile Include="MVVM\ICommunicator.cs" />
     <Compile Include="MVVM\IMediator.cs" />
-    <Compile Include="MVVM\IChildVM.cs" />
     <Compile Include="Utils\ConnectionConfig.cs" />
     <Compile Include="Utils\DispatcherService.cs" />
     <Compile Include="Utils\ExtensionMethods.cs" />

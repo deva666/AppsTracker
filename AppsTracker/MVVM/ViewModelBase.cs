@@ -16,6 +16,8 @@ namespace AppsTracker.MVVM
 
         protected object @lock = new object();
 
+        public abstract string Title { get; }
+
         public bool Working
         {
             get
@@ -46,14 +48,6 @@ namespace AppsTracker.MVVM
             Working = false;
         }
 
-        [Obsolete]
-        protected void Load<T>(Func<T> getter, Action<T> onComplete, bool captureContext = false)
-        {
-            Working = true;
-            var task = Task<T>.Run(getter);
-            task.ContinueWith(t => { Working = false; onComplete(t.Result); }, captureContext ? TaskScheduler.FromCurrentSynchronizationContext() : TaskScheduler.Default);
-        }
-
         public void Dispose()
         {
             Disposing();
@@ -70,7 +64,6 @@ namespace AppsTracker.MVVM
             Debug.WriteLine(string.Format("{0}, {1}, {2} Finalized", this.GetType().Name, this.GetType().FullName, this.GetHashCode()));
         }
 #endif
-
     }
 
 }

@@ -36,9 +36,6 @@
             <views:ScreenShotsView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModels:Data_filelogsViewModel}">
-            <views:Data_filelogsView />
-        </DataTemplate>
         <DataTemplate DataType="{x:Type vModels:Data_dayViewModel}">
             <v:Data_dayView />
         </DataTemplate>

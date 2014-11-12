@@ -11,11 +11,9 @@ using AppsTracker.Pages.ViewModels;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class StatisticsHostViewModel : HostViewModel, IChildVM
+    internal sealed class StatisticsHostViewModel : HostViewModel
     {
-        public string Title { get { return "statistics"; } }
-
-        public bool IsContentLoaded { get; private set; }
+        public override string Title { get { return "statistics"; } }
 
         public StatisticsHostViewModel()
         {
@@ -27,11 +25,5 @@ namespace AppsTracker.ViewModels
 
             SelectedChild = Resolve(typeof(Statistics_usersViewModel));
         }
-
-        public void LoadContent()
-        {            
-            IsContentLoaded = true;
-        }
-
     }
 }

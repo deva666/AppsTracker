@@ -11,21 +11,21 @@ using AppsTracker.Utils;
 
 namespace AppsTracker.ViewModels
 {
-    public class Settings_licenseViewModel : ViewModelBase, IChildVM
+    internal sealed class Settings_licenseViewModel : ViewModelBase
     {
         #region Fields
 
-        bool _isPopupLicenseOpen = false;
+        private bool _isPopupLicenseOpen = false;
 
-        ICommand _applyLicenseCommand;
-        ICommand _showHidePopupLicenceCommand;
-        ICommand _getLicenseCommand;
+        private ICommand _applyLicenseCommand;
+        private ICommand _showHidePopupLicenceCommand;
+        private ICommand _getLicenseCommand;
 
         #endregion
 
         #region Properties
 
-        public string Title { get { return "LICENCE"; } }
+        public override string Title { get { return "LICENCE"; } }
         public bool IsContentLoaded { get; private set; }
 
         public bool IsPopupLicenseOpen
@@ -59,8 +59,6 @@ namespace AppsTracker.ViewModels
 
         #endregion
 
-        public void LoadContent() { }
-
         #region Command Methods
 
         private void ApplyLicense(object parameter)
@@ -87,9 +85,9 @@ namespace AppsTracker.ViewModels
 
         private void ShowHidePopup()
         {
-            if (IsPopupLicenseOpen) 
+            if (IsPopupLicenseOpen)
                 IsPopupLicenseOpen = false;
-            else 
+            else
                 IsPopupLicenseOpen = true;
         }
 
@@ -107,7 +105,6 @@ namespace AppsTracker.ViewModels
             string serialized = username + Environment.NewLine + license;
             UserSettings.Username = username;
             Licence = true;
-           // ConnectionConfig.DeleteExp();
             ShowHidePopup();
         }
 

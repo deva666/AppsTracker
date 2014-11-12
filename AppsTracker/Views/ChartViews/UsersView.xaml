@@ -36,7 +36,7 @@
                         <chart:ChartSeries SeriesTitle="Users"
                                            DisplayMember="Username"
                                            ValueMember="LoggedInTime"
-                                           ItemsSource="{Binding AllUsersList}" />
+                                           ItemsSource="{Binding AllUsersList.Result}" />
                     </chart:ClusteredColumnChart.Series>
 
                 </chart:ClusteredColumnChart>

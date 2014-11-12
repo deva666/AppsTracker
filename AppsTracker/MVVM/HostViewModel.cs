@@ -10,11 +10,11 @@ namespace AppsTracker.MVVM
     {
         private Hashtable _childrenSet = new Hashtable();
 
-        protected IChildVM _selectedChild;
+        protected ViewModelBase _selectedChild;
 
         protected ICommand _changePageCommand;
 
-        public IChildVM SelectedChild
+        public ViewModelBase SelectedChild
         {
             get
             {
@@ -25,7 +25,7 @@ namespace AppsTracker.MVVM
                 if (_selectedChild != null && _selectedChild.Title == value.Title)
                     return;
                 if (_selectedChild != null)
-                    ((ViewModelBase)_selectedChild).Dispose();
+                    _selectedChild.Dispose();
                 _selectedChild = value;
                 PropertyChanging("SelectedChild");
             }
@@ -44,7 +44,7 @@ namespace AppsTracker.MVVM
             SelectedChild = Resolve(parameter);
         }
 
-        protected void Register<T>(Func<T> getter) where T : IChildVM
+        protected void Register<T>(Func<T> getter) where T : ViewModelBase
         {
             Ensure.NotNull(getter);
             Ensure.Condition<InvalidOperationException>(_childrenSet.ContainsKey(typeof(T)) == false, string.Format("Type {0} is already bound!", typeof(T)));
@@ -52,13 +52,13 @@ namespace AppsTracker.MVVM
             _childrenSet.Add(typeof(T), getter);
         }
 
-        protected IChildVM Resolve(object type)
+        protected ViewModelBase Resolve(object type)
         {
             Ensure.NotNull(type);
             Ensure.Condition<InvalidOperationException>(_childrenSet.ContainsKey(type) == true, string.Format("Can't resolve {0} type!", type));
 
             var getter = _childrenSet[type];
-            var res = (Func<IChildVM>)getter;
+            var res = (Func<ViewModelBase>)getter;
             return res();
         }
     }

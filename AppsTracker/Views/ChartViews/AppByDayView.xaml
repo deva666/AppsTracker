@@ -44,7 +44,7 @@
                     <chart:ChartSeries SeriesTitle="Hours"
                                        DisplayMember="Date"
                                        ValueMember="Duration"
-                                       ItemsSource="{Binding DailyAppList}"
+                                       ItemsSource="{Binding DailyAppList.Result}"
                                        Height="Auto" />
 
                 </chart:ClusteredColumnChart.Series>

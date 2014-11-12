@@ -20,60 +20,55 @@ using System.Security;
 
 namespace AppsTracker.ViewModels
 {
-    internal class Settings_generalViewModel : ViewModelBase, IChildVM, ICommunicator
+    internal sealed class Settings_generalViewModel : ViewModelBase, ICommunicator
     {
         #region Fields
 
-        bool _popupIntervalIsOpen = false;
-        bool _popupUsersToLogIsOpen = false;
-        bool _popupBlockedProcessesIsOpen = false;
-        bool _popupPasswordIsOpen = false;
-        bool _popupEmailReportsIsOpen = false;
-        bool _popupFilewatcherFilterIsOpen = false;
-        bool _popupEmailIntervalIsOpen = false;
-        bool _popupOldLogsIsOpen = false;
-        bool _popupidleTimerIsOpen = false;
+       private bool _popupIntervalIsOpen = false;
+       private bool _popupUsersToLogIsOpen = false;
+       private bool _popupBlockedProcessesIsOpen = false;
+       private bool _popupPasswordIsOpen = false;
+       private bool _popupEmailReportsIsOpen = false;
+       private bool _popupFilewatcherFilterIsOpen = false;
+       private bool _popupEmailIntervalIsOpen = false;
+       private bool _popupOldLogsIsOpen = false;
+       private bool _popupidleTimerIsOpen = false;
 
-        string _selectedUserName = Environment.UserName;
+       private string _selectedUserName = Environment.UserName;
 
-        Uzer _selectedUser;
-        AppsToBlockProxy _selectedAppToBlock;
+       private Uzer _selectedUser;
+       private AppsToBlockProxy _selectedAppToBlock;
 
-        IEnumerable<AppsToBlockProxy> _appsToBlockCollection;
-        IEnumerable<Uzer> _allUsersCollection;
+       private IEnumerable<AppsToBlockProxy> _appsToBlockCollection;
+       private IEnumerable<Uzer> _allUsersCollection;
 
-        ICommand _changeStealthModeCommand;
-        ICommand _changeScreenshotIntervalCommand;
-        ICommand _showPopUpCommand;
-        ICommand _showFolderBrowserDialogCommand;
-        ICommand _removeProcessesFromBlockedCommand;
-        ICommand _setPasswordCommand;
-        ICommand _setMailConfCommand;
-        ICommand _sendTestEmailCommand;
-        ICommand _changeEmailIntervalCommand;
-        ICommand _showAboutWindowCommand;
-        ICommand _changeOldLogsDaysCommand;
-        ICommand _changeThemeCommand;
-        ICommand _setStartupCommand;
-        ICommand _changeIdleTimerCommand;
-        ICommand _runDBCleanerCommand;
-        ICommand _changeScreenshotsCommand;
+       private ICommand _changeStealthModeCommand;
+       private ICommand _changeScreenshotIntervalCommand;
+       private ICommand _showPopUpCommand;
+       private ICommand _showFolderBrowserDialogCommand;
+       private ICommand _removeProcessesFromBlockedCommand;
+       private ICommand _setPasswordCommand;
+       private ICommand _setMailConfCommand;
+       private ICommand _sendTestEmailCommand;
+       private ICommand _changeEmailIntervalCommand;
+       private ICommand _showAboutWindowCommand;
+       private ICommand _changeOldLogsDaysCommand;
+       private ICommand _changeThemeCommand;
+       private ICommand _setStartupCommand;
+       private ICommand _changeIdleTimerCommand;
+       private ICommand _runDBCleanerCommand;
+       private ICommand _changeScreenshotsCommand;
 
         #endregion
 
         #region Properties
 
-        public string Title
+        public override string Title
         {
             get
             {
                 return "APP SETTINGS";
             }
-        }
-        public bool IsContentLoaded
-        {
-            get;
-            private set;
         }
 
         public SettingsProxy UserSettings
@@ -552,8 +547,6 @@ namespace AppsTracker.ViewModels
 
         #endregion
 
-        public void LoadContent() { }
-
         #region Class Methods
 
         private void ShowMessageWindow(string text)
@@ -958,7 +951,7 @@ namespace AppsTracker.ViewModels
 
         #endregion
 
-        void _selectedAppToBlock_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void _selectedAppToBlock_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             AppsToBlockProxy proxy = _selectedAppToBlock;
             if (proxy == null)

@@ -36,19 +36,14 @@ namespace AppsTracker
     {
         #region Fields
 
-        bool _disposed;
-        bool _userTriggerExit = false;
-        static ComponentContainer _container;
-        //static DataLogger _dataLogger;
-        static SettingsProxy _uzerSetting;
-        static Setting _settings;
-        TrayIcon _trayIcon;
-        //EmailService _emailReport;
-        //SettingsQueue _settingsQueue;
+        private bool _disposed;
+        private static ComponentContainer _container;
+        private static SettingsProxy _uzerSetting;
+        private static Setting _settings;
+        private TrayIcon _trayIcon;
 
         #endregion
 
-        //internal static DataLogger DataLogger { get { return _dataLogger; } }
         internal static ComponentContainer Container { get { return _container; } }
         public static SettingsProxy UzerSetting { get { return _uzerSetting; } }
         public static Setting Settings { get { return _settings; } }

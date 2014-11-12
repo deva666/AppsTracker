@@ -83,7 +83,7 @@
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="USERS">
+                                      CommandParameter="{x:Type viewModels:Statistics_usersViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>
@@ -93,7 +93,7 @@
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="APPS">
+                                      CommandParameter="{x:Type viewModels:Statistics_appUsageViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>
@@ -103,7 +103,7 @@
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="DAILY APP USAGE">
+                                      CommandParameter="{x:Type viewModels:Statistics_dailyAppUsageViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>
@@ -113,7 +113,7 @@
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="KEYSTROKES">
+                                      CommandParameter="{x:Type viewModels:Statistics_keystrokesViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>
@@ -123,7 +123,7 @@
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="SCREENSHOTS">
+                                      CommandParameter="{x:Type viewModels:Statistics_screenshotsViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>

@@ -40,7 +40,7 @@
                     <chart:ChartSeries SeriesTitle="Times"
                                        DisplayMember="Date"
                                        ValueMember="Count"
-                                       ItemsSource="{Binding DailyBlockedAppCollection}" />
+                                       ItemsSource="{Binding DailyBlockedAppCollection.Result}" />
 
                 </chart:ClusteredColumnChart.Series>
             </chart:ClusteredColumnChart>

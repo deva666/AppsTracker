@@ -38,7 +38,7 @@
                                       Style="{StaticResource MinimalChartStyle}"
                                       MinHeight="{Binding UserSettings.MainWindowHeight, Converter={StaticResource convertWidth}}"
                                       BorderBrush="{DynamicResource WindowBorderBrush}"
-                                      SeriesSource="{Binding DailyLogins}"
+                                      SeriesSource="{Binding DailyLogins.Result}"
                                       BorderThickness="1"
                                       Margin="10,10,10,20"
                                       Width="Auto"
