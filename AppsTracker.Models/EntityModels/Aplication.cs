@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 using AppsTracker.Models.Utils;
 
 namespace AppsTracker.Models.EntityModels
@@ -35,15 +32,7 @@ namespace AppsTracker.Models.EntityModels
             return new TimeSpan(ticks);
         }
 
-        public Aplication()
-            : this("", "", "", "", "", "")
-        {
-            this.FileName = "";
-            this.Description = "";
-            this.Company = "";
-            this.Version = "";
-            this.WinName = "";
-        }
+        public Aplication() { }
 
         public Aplication(string name, string fileName, string version, string description, string company, string realName)
         {
@@ -51,7 +40,7 @@ namespace AppsTracker.Models.EntityModels
             this.BlockedApps = new HashSet<BlockedApp>();
             this.Windows = new HashSet<Window>();
 
-            this.Name = name.Truncate(250);
+            this.Name = !string.IsNullOrEmpty(name) ? name.Truncate(250) : !string.IsNullOrEmpty(realName) ? realName.Truncate(250) : fileName.Truncate(250);
             this.FileName = fileName.Truncate(360);
             this.Version = version.Truncate(50);
             this.Description = description.Truncate(150);

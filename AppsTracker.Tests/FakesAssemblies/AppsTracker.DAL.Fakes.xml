@@ -328,768 +328,6 @@
         <member name="P:AppsTracker.DAL.Fakes.StubAppsEntities.InstanceObserver">
             <summary>Gets or sets the instance observer.</summary>
         </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo">
-            <summary>Shim type of AppsTracker.DAL.Repos.AplicationRepo</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo.#ctor">
-            <summary>Initializes a new shim instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo.#ctor(AppsTracker.DAL.Repos.AplicationRepo)">
-            <summary>Initializes a new shim for the given instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo.BehaveAsCurrent">
-            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo.BehaveAsNotImplemented">
-            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo.BaseQueryAppsEntities">
-            <summary>Sets the shim of AplicationRepo.BaseQuery(AppsEntities context)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo.Behavior">
-            <summary>Assigns the behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo.Constructor">
-            <summary>Sets the shim of AplicationRepo.AplicationRepo()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo.Get">
-            <summary>Sets the shim of AplicationRepo.Get()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo.GetFilteredAsyncExpressionOfFuncOfAplicationBoolean">
-            <summary>Sets the shim of AplicationRepo.GetFilteredAsync(Expression`1&lt;Func`2&lt;Aplication,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo.GetFilteredExpressionOfFuncOfAplicationBoolean">
-            <summary>Sets the shim of AplicationRepo.GetFiltered(Expression`1&lt;Func`2&lt;Aplication,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo.InstanceGet">
-            <summary>Sets the shim of AplicationRepo.get_Instance()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo.StaticConstructor">
-            <summary>Sets the shim of AplicationRepo.AplicationRepo()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo._cctorb__6">
-            <summary>Sets the shim of AplicationRepo.&lt;.cctor&gt;b__6()</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo.AllInstances">
-            <summary>Define shims for all instances members</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo.AllInstances.BaseQueryAppsEntities">
-            <summary>Sets the shim of AplicationRepo.BaseQuery(AppsEntities context)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo.AllInstances.Get">
-            <summary>Sets the shim of AplicationRepo.Get()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo.AllInstances.GetFilteredAsyncExpressionOfFuncOfAplicationBoolean">
-            <summary>Sets the shim of AplicationRepo.GetFilteredAsync(Expression`1&lt;Func`2&lt;Aplication,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimAplicationRepo.AllInstances.GetFilteredExpressionOfFuncOfAplicationBoolean">
-            <summary>Sets the shim of AplicationRepo.GetFiltered(Expression`1&lt;Func`2&lt;Aplication,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1">
-            <summary>Shim type of AppsTracker.DAL.Repos.BaseEditableRepository`1</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.#ctor(AppsTracker.DAL.Repos.BaseEditableRepository{`0})">
-            <summary>Initializes a new shim for the given instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.BehaveAsCurrent">
-            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.BehaveAsNotImplemented">
-            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.Bind(AppsTracker.DAL.Repos.IRepository{`0})">
-            <summary>Binds the members of the interface to the shim.</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.AddT0">
-            <summary>Sets the shim of BaseEditableRepository`1.Add(!0 entity)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.Behavior">
-            <summary>Assigns the behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.Constructor">
-            <summary>Sets the shim of BaseEditableRepository`1.BaseEditableRepository`1()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.DeleteT0">
-            <summary>Sets the shim of BaseEditableRepository`1.Delete(!0 entity)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.GetAll">
-            <summary>Sets the shim of BaseEditableRepository`1.GetAll()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.GetAllExpressionOfFuncOfT0ObjectArray">
-            <summary>Sets the shim of BaseEditableRepository`1.GetAll(Expression`1&lt;Func`2&lt;!0,Object&gt;&gt;[] navigation)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.GetByIDInt32">
-            <summary>Sets the shim of BaseEditableRepository`1.GetByID(Int32 id)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.GetFilteredExpressionOfFuncOfT0Boolean">
-            <summary>Sets the shim of BaseEditableRepository`1.GetFiltered(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.GetFilteredExpressionOfFuncOfT0BooleanExpressionOfFuncOfT0ObjectArray">
-            <summary>Sets the shim of BaseEditableRepository`1.GetFiltered(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!0,Object&gt;&gt;[] navigation)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.GetQueryable">
-            <summary>Sets the shim of BaseEditableRepository`1.GetQueryable()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.GetSingleExpressionOfFuncOfT0Boolean">
-            <summary>Sets the shim of BaseEditableRepository`1.GetSingle(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.UpdateT0">
-            <summary>Sets the shim of BaseEditableRepository`1.Update(!0 entity)</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.AllInstances">
-            <summary>Define shims for all instances members</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.AllInstances.AddT0">
-            <summary>Sets the shim of BaseEditableRepository`1.Add(!0 entity)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.AllInstances.DeleteT0">
-            <summary>Sets the shim of BaseEditableRepository`1.Delete(!0 entity)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.AllInstances.GetAll">
-            <summary>Sets the shim of BaseEditableRepository`1.GetAll()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.AllInstances.GetAllExpressionOfFuncOfT0ObjectArray">
-            <summary>Sets the shim of BaseEditableRepository`1.GetAll(Expression`1&lt;Func`2&lt;!0,Object&gt;&gt;[] navigation)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.AllInstances.GetByIDInt32">
-            <summary>Sets the shim of BaseEditableRepository`1.GetByID(Int32 id)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.AllInstances.GetFilteredExpressionOfFuncOfT0Boolean">
-            <summary>Sets the shim of BaseEditableRepository`1.GetFiltered(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.AllInstances.GetFilteredExpressionOfFuncOfT0BooleanExpressionOfFuncOfT0ObjectArray">
-            <summary>Sets the shim of BaseEditableRepository`1.GetFiltered(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!0,Object&gt;&gt;[] navigation)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.AllInstances.GetQueryable">
-            <summary>Sets the shim of BaseEditableRepository`1.GetQueryable()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.AllInstances.GetSingleExpressionOfFuncOfT0Boolean">
-            <summary>Sets the shim of BaseEditableRepository`1.GetSingle(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseEditableRepository`1.AllInstances.UpdateT0">
-            <summary>Sets the shim of BaseEditableRepository`1.Update(!0 entity)</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimBaseRepo`1">
-            <summary>Shim type of AppsTracker.DAL.Repos.BaseRepo`1</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimBaseRepo`1.#ctor(AppsTracker.DAL.Repos.BaseRepo{`0})">
-            <summary>Initializes a new shim for the given instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimBaseRepo`1.BehaveAsCurrent">
-            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimBaseRepo`1.BehaveAsNotImplemented">
-            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseRepo`1.Behavior">
-            <summary>Assigns the behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseRepo`1.Constructor">
-            <summary>Sets the shim of BaseRepo`1.BaseRepo`1()</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimBaseRepo`1.AllInstances">
-            <summary>Define shims for all instances members</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1">
-            <summary>Shim type of AppsTracker.DAL.Repos.BaseRepository`1</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.#ctor(AppsTracker.DAL.Repos.BaseRepository{`0})">
-            <summary>Initializes a new shim for the given instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.BehaveAsCurrent">
-            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.BehaveAsNotImplemented">
-            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.Bind(AppsTracker.DAL.Repos.IRepository{`0})">
-            <summary>Binds the members of the interface to the shim.</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.Behavior">
-            <summary>Assigns the behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.Constructor">
-            <summary>Sets the shim of BaseRepository`1.BaseRepository`1()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.GetAll">
-            <summary>Sets the shim of BaseRepository`1.GetAll()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.GetAllExpressionOfFuncOfT0ObjectArray">
-            <summary>Sets the shim of BaseRepository`1.GetAll(Expression`1&lt;Func`2&lt;!0,Object&gt;&gt;[] navigation)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.GetFilteredExpressionOfFuncOfT0Boolean">
-            <summary>Sets the shim of BaseRepository`1.GetFiltered(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.GetFilteredExpressionOfFuncOfT0BooleanExpressionOfFuncOfT0ObjectArray">
-            <summary>Sets the shim of BaseRepository`1.GetFiltered(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!0,Object&gt;&gt;[] navigation)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.GetQueryable">
-            <summary>Sets the shim of BaseRepository`1.GetQueryable()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.GetSingleExpressionOfFuncOfT0Boolean">
-            <summary>Sets the shim of BaseRepository`1.GetSingle(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.AllInstances">
-            <summary>Define shims for all instances members</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.AllInstances.GetAll">
-            <summary>Sets the shim of BaseRepository`1.GetAll()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.AllInstances.GetAllExpressionOfFuncOfT0ObjectArray">
-            <summary>Sets the shim of BaseRepository`1.GetAll(Expression`1&lt;Func`2&lt;!0,Object&gt;&gt;[] navigation)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.AllInstances.GetFilteredExpressionOfFuncOfT0Boolean">
-            <summary>Sets the shim of BaseRepository`1.GetFiltered(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.AllInstances.GetFilteredExpressionOfFuncOfT0BooleanExpressionOfFuncOfT0ObjectArray">
-            <summary>Sets the shim of BaseRepository`1.GetFiltered(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!0,Object&gt;&gt;[] navigation)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.AllInstances.GetQueryable">
-            <summary>Sets the shim of BaseRepository`1.GetQueryable()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimBaseRepository`1.AllInstances.GetSingleExpressionOfFuncOfT0Boolean">
-            <summary>Sets the shim of BaseRepository`1.GetSingle(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimLogEditableRepository">
-            <summary>Shim type of AppsTracker.DAL.Repos.LogEditableRepository</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimLogEditableRepository.#ctor">
-            <summary>Initializes a new shim instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimLogEditableRepository.#ctor(AppsTracker.DAL.Repos.LogEditableRepository)">
-            <summary>Initializes a new shim for the given instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimLogEditableRepository.BehaveAsCurrent">
-            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimLogEditableRepository.BehaveAsNotImplemented">
-            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimLogEditableRepository.Bind(AppsTracker.DAL.Repos.IRepository{AppsTracker.Models.EntityModels.Log})">
-            <summary>Binds the members of the interface to the shim.</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogEditableRepository.Behavior">
-            <summary>Assigns the behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogEditableRepository.Constructor">
-            <summary>Sets the shim of LogEditableRepository.LogEditableRepository()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogEditableRepository.InstanceGet">
-            <summary>Sets the shim of LogEditableRepository.get_Instance()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogEditableRepository.StaticConstructor">
-            <summary>Sets the shim of LogEditableRepository.LogEditableRepository()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogEditableRepository._cctorb__0">
-            <summary>Sets the shim of LogEditableRepository.&lt;.cctor&gt;b__0()</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimLogEditableRepository.AllInstances">
-            <summary>Define shims for all instances members</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimLogRepo">
-            <summary>Shim type of AppsTracker.DAL.Repos.LogRepo</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.#ctor">
-            <summary>Initializes a new shim instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.#ctor(AppsTracker.DAL.Repos.LogRepo)">
-            <summary>Initializes a new shim for the given instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.BehaveAsCurrent">
-            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.BehaveAsNotImplemented">
-            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.BaseQueryAppsEntities">
-            <summary>Sets the shim of LogRepo.BaseQuery(AppsEntities context)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.Behavior">
-            <summary>Assigns the behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.Constructor">
-            <summary>Sets the shim of LogRepo.LogRepo()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.Get">
-            <summary>Sets the shim of LogRepo.Get()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.GetAsync">
-            <summary>Sets the shim of LogRepo.GetAsync()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.GetAsyncExpressionOfFuncOfLogObjectArray">
-            <summary>Sets the shim of LogRepo.GetAsync(Expression`1&lt;Func`2&lt;Log,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.GetExpressionOfFuncOfLogObjectArray">
-            <summary>Sets the shim of LogRepo.Get(Expression`1&lt;Func`2&lt;Log,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.GetFilteredAsyncExpressionOfFuncOfLogBoolean">
-            <summary>Sets the shim of LogRepo.GetFilteredAsync(Expression`1&lt;Func`2&lt;Log,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.GetFilteredAsyncExpressionOfFuncOfLogBooleanExpressionOfFuncOfLogObjectArray">
-            <summary>Sets the shim of LogRepo.GetFilteredAsync(Expression`1&lt;Func`2&lt;Log,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;Log,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.GetFilteredExpressionOfFuncOfLogBoolean">
-            <summary>Sets the shim of LogRepo.GetFiltered(Expression`1&lt;Func`2&lt;Log,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.GetFilteredExpressionOfFuncOfLogBooleanExpressionOfFuncOfLogObjectArray">
-            <summary>Sets the shim of LogRepo.GetFiltered(Expression`1&lt;Func`2&lt;Log,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;Log,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.InstanceGet">
-            <summary>Sets the shim of LogRepo.get_Instance()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.StaticConstructor">
-            <summary>Sets the shim of LogRepo.LogRepo()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo._cctorb__c">
-            <summary>Sets the shim of LogRepo.&lt;.cctor&gt;b__c()</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.AllInstances">
-            <summary>Define shims for all instances members</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.AllInstances.BaseQueryAppsEntities">
-            <summary>Sets the shim of LogRepo.BaseQuery(AppsEntities context)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.AllInstances.Get">
-            <summary>Sets the shim of LogRepo.Get()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.AllInstances.GetAsync">
-            <summary>Sets the shim of LogRepo.GetAsync()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.AllInstances.GetAsyncExpressionOfFuncOfLogObjectArray">
-            <summary>Sets the shim of LogRepo.GetAsync(Expression`1&lt;Func`2&lt;Log,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.AllInstances.GetExpressionOfFuncOfLogObjectArray">
-            <summary>Sets the shim of LogRepo.Get(Expression`1&lt;Func`2&lt;Log,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.AllInstances.GetFilteredAsyncExpressionOfFuncOfLogBoolean">
-            <summary>Sets the shim of LogRepo.GetFilteredAsync(Expression`1&lt;Func`2&lt;Log,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.AllInstances.GetFilteredAsyncExpressionOfFuncOfLogBooleanExpressionOfFuncOfLogObjectArray">
-            <summary>Sets the shim of LogRepo.GetFilteredAsync(Expression`1&lt;Func`2&lt;Log,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;Log,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.AllInstances.GetFilteredExpressionOfFuncOfLogBoolean">
-            <summary>Sets the shim of LogRepo.GetFiltered(Expression`1&lt;Func`2&lt;Log,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepo.AllInstances.GetFilteredExpressionOfFuncOfLogBooleanExpressionOfFuncOfLogObjectArray">
-            <summary>Sets the shim of LogRepo.GetFiltered(Expression`1&lt;Func`2&lt;Log,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;Log,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimLogRepository">
-            <summary>Shim type of AppsTracker.DAL.Repos.LogRepository</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimLogRepository.#ctor">
-            <summary>Initializes a new shim instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimLogRepository.#ctor(AppsTracker.DAL.Repos.LogRepository)">
-            <summary>Initializes a new shim for the given instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimLogRepository.BehaveAsCurrent">
-            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimLogRepository.BehaveAsNotImplemented">
-            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimLogRepository.Bind(AppsTracker.DAL.Repos.IRepository{AppsTracker.Models.EntityModels.Log})">
-            <summary>Binds the members of the interface to the shim.</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepository.Behavior">
-            <summary>Assigns the behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepository.Constructor">
-            <summary>Sets the shim of LogRepository.LogRepository()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepository.GetByIDInt32">
-            <summary>Sets the shim of LogRepository.GetByID(Int32 id)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepository.InstanceGet">
-            <summary>Sets the shim of LogRepository.get_Instance()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepository.StaticConstructor">
-            <summary>Sets the shim of LogRepository.LogRepository()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepository._cctorb__0">
-            <summary>Sets the shim of LogRepository.&lt;.cctor&gt;b__0()</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimLogRepository.AllInstances">
-            <summary>Define shims for all instances members</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimLogRepository.AllInstances.GetByIDInt32">
-            <summary>Sets the shim of LogRepository.GetByID(Int32 id)</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimRepositoryFactory">
-            <summary>Shim type of AppsTracker.DAL.Repos.RepositoryFactory</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimRepositoryFactory.#ctor">
-            <summary>Initializes a new shim instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimRepositoryFactory.#ctor(AppsTracker.DAL.Repos.RepositoryFactory)">
-            <summary>Initializes a new shim for the given instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimRepositoryFactory.BehaveAsCurrent">
-            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimRepositoryFactory.BehaveAsNotImplemented">
-            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimRepositoryFactory.Bind(AppsTracker.DAL.Repos.IRepositoryFactory)">
-            <summary>Binds the members of the interface to the shim.</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimRepositoryFactory.BindOf1FuncOfM0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Action{System.Func{``0}})">
-            <summary>Sets the shim of RepositoryFactory.Bind(Func`1&lt;!!0&gt; getter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimRepositoryFactory.GetOf1``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{``0})">
-            <summary>Sets the shim of RepositoryFactory.Get()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimRepositoryFactory.Behavior">
-            <summary>Assigns the behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimRepositoryFactory.Constructor">
-            <summary>Sets the shim of RepositoryFactory.RepositoryFactory()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimRepositoryFactory.InstanceGet">
-            <summary>Sets the shim of RepositoryFactory.get_Instance()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimRepositoryFactory.StaticConstructor">
-            <summary>Sets the shim of RepositoryFactory.RepositoryFactory()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimRepositoryFactory._cctorb__4">
-            <summary>Sets the shim of RepositoryFactory.&lt;.cctor&gt;b__4()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimRepositoryFactory._ctorb__0">
-            <summary>Sets the shim of RepositoryFactory.&lt;.ctor&gt;b__0()</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimRepositoryFactory.AllInstances">
-            <summary>Define shims for all instances members</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimRepositoryFactory.AllInstances.BindOf1FuncOfM0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Action{AppsTracker.DAL.Repos.RepositoryFactory,System.Func{``0}})">
-            <summary>Sets the shim of RepositoryFactory.Bind(Func`1&lt;!!0&gt; getter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimRepositoryFactory.AllInstances.GetOf1``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Repos.RepositoryFactory,``0})">
-            <summary>Sets the shim of RepositoryFactory.Get()</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo">
-            <summary>Shim type of AppsTracker.DAL.Repos.ScreenshotRepo</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.#ctor">
-            <summary>Initializes a new shim instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.#ctor(AppsTracker.DAL.Repos.ScreenshotRepo)">
-            <summary>Initializes a new shim for the given instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.BehaveAsCurrent">
-            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.BehaveAsNotImplemented">
-            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.BaseQueryAppsEntities">
-            <summary>Sets the shim of ScreenshotRepo.BaseQuery(AppsEntities context)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.Behavior">
-            <summary>Assigns the behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.Constructor">
-            <summary>Sets the shim of ScreenshotRepo.ScreenshotRepo()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.Get">
-            <summary>Sets the shim of ScreenshotRepo.Get()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.GetAsyncExpressionOfFuncOfScreenshotObjectArray">
-            <summary>Sets the shim of ScreenshotRepo.GetAsync(Expression`1&lt;Func`2&lt;Screenshot,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.GetExpressionOfFuncOfScreenshotObjectArray">
-            <summary>Sets the shim of ScreenshotRepo.Get(Expression`1&lt;Func`2&lt;Screenshot,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.GetFilteredAsyncExpressionOfFuncOfScreenshotBoolean">
-            <summary>Sets the shim of ScreenshotRepo.GetFilteredAsync(Expression`1&lt;Func`2&lt;Screenshot,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.GetFilteredAsyncExpressionOfFuncOfScreenshotBooleanExpressionOfFuncOfScreenshotObjectArray">
-            <summary>Sets the shim of ScreenshotRepo.GetFilteredAsync(Expression`1&lt;Func`2&lt;Screenshot,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;Screenshot,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.GetFilteredExpressionOfFuncOfScreenshotBoolean">
-            <summary>Sets the shim of ScreenshotRepo.GetFiltered(Expression`1&lt;Func`2&lt;Screenshot,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.GetFilteredExpressionOfFuncOfScreenshotBooleanExpressionOfFuncOfScreenshotObjectArray">
-            <summary>Sets the shim of ScreenshotRepo.GetFiltered(Expression`1&lt;Func`2&lt;Screenshot,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;Screenshot,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.InstanceGet">
-            <summary>Sets the shim of ScreenshotRepo.get_Instance()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.StaticConstructor">
-            <summary>Sets the shim of ScreenshotRepo.ScreenshotRepo()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo._cctorb__d">
-            <summary>Sets the shim of ScreenshotRepo.&lt;.cctor&gt;b__d()</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.AllInstances">
-            <summary>Define shims for all instances members</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.AllInstances.BaseQueryAppsEntities">
-            <summary>Sets the shim of ScreenshotRepo.BaseQuery(AppsEntities context)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.AllInstances.Get">
-            <summary>Sets the shim of ScreenshotRepo.Get()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.AllInstances.GetAsyncExpressionOfFuncOfScreenshotObjectArray">
-            <summary>Sets the shim of ScreenshotRepo.GetAsync(Expression`1&lt;Func`2&lt;Screenshot,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.AllInstances.GetExpressionOfFuncOfScreenshotObjectArray">
-            <summary>Sets the shim of ScreenshotRepo.Get(Expression`1&lt;Func`2&lt;Screenshot,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.AllInstances.GetFilteredAsyncExpressionOfFuncOfScreenshotBoolean">
-            <summary>Sets the shim of ScreenshotRepo.GetFilteredAsync(Expression`1&lt;Func`2&lt;Screenshot,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.AllInstances.GetFilteredAsyncExpressionOfFuncOfScreenshotBooleanExpressionOfFuncOfScreenshotObjectArray">
-            <summary>Sets the shim of ScreenshotRepo.GetFilteredAsync(Expression`1&lt;Func`2&lt;Screenshot,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;Screenshot,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.AllInstances.GetFilteredExpressionOfFuncOfScreenshotBoolean">
-            <summary>Sets the shim of ScreenshotRepo.GetFiltered(Expression`1&lt;Func`2&lt;Screenshot,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimScreenshotRepo.AllInstances.GetFilteredExpressionOfFuncOfScreenshotBooleanExpressionOfFuncOfScreenshotObjectArray">
-            <summary>Sets the shim of ScreenshotRepo.GetFiltered(Expression`1&lt;Func`2&lt;Screenshot,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;Screenshot,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo">
-            <summary>Shim type of AppsTracker.DAL.Repos.UsageRepo</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.#ctor">
-            <summary>Initializes a new shim instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.#ctor(AppsTracker.DAL.Repos.UsageRepo)">
-            <summary>Initializes a new shim for the given instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.BehaveAsCurrent">
-            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.BehaveAsNotImplemented">
-            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.BaseQueryAppsEntities">
-            <summary>Sets the shim of UsageRepo.BaseQuery(AppsEntities context)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.Behavior">
-            <summary>Assigns the behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.Constructor">
-            <summary>Sets the shim of UsageRepo.UsageRepo()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.Get">
-            <summary>Sets the shim of UsageRepo.Get()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.GetAsync">
-            <summary>Sets the shim of UsageRepo.GetAsync()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.GetAsyncExpressionOfFuncOfUsageObjectArray">
-            <summary>Sets the shim of UsageRepo.GetAsync(Expression`1&lt;Func`2&lt;Usage,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.GetExpressionOfFuncOfUsageObjectArray">
-            <summary>Sets the shim of UsageRepo.Get(Expression`1&lt;Func`2&lt;Usage,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.GetFilteredAsyncExpressionOfFuncOfUsageBoolean">
-            <summary>Sets the shim of UsageRepo.GetFilteredAsync(Expression`1&lt;Func`2&lt;Usage,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.GetFilteredAsyncExpressionOfFuncOfUsageBooleanExpressionOfFuncOfUsageObjectArray">
-            <summary>Sets the shim of UsageRepo.GetFilteredAsync(Expression`1&lt;Func`2&lt;Usage,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;Usage,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.GetFilteredExpressionOfFuncOfUsageBoolean">
-            <summary>Sets the shim of UsageRepo.GetFiltered(Expression`1&lt;Func`2&lt;Usage,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.GetFilteredExpressionOfFuncOfUsageBooleanExpressionOfFuncOfUsageObjectArray">
-            <summary>Sets the shim of UsageRepo.GetFiltered(Expression`1&lt;Func`2&lt;Usage,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;Usage,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.InstanceGet">
-            <summary>Sets the shim of UsageRepo.get_Instance()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.StaticConstructor">
-            <summary>Sets the shim of UsageRepo.UsageRepo()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo._GetAsyncb__0">
-            <summary>Sets the shim of UsageRepo.&lt;GetAsync&gt;b__0()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo._cctorb__b">
-            <summary>Sets the shim of UsageRepo.&lt;.cctor&gt;b__b()</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.AllInstances">
-            <summary>Define shims for all instances members</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.AllInstances.BaseQueryAppsEntities">
-            <summary>Sets the shim of UsageRepo.BaseQuery(AppsEntities context)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.AllInstances.Get">
-            <summary>Sets the shim of UsageRepo.Get()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.AllInstances.GetAsync">
-            <summary>Sets the shim of UsageRepo.GetAsync()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.AllInstances.GetAsyncExpressionOfFuncOfUsageObjectArray">
-            <summary>Sets the shim of UsageRepo.GetAsync(Expression`1&lt;Func`2&lt;Usage,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.AllInstances.GetExpressionOfFuncOfUsageObjectArray">
-            <summary>Sets the shim of UsageRepo.Get(Expression`1&lt;Func`2&lt;Usage,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.AllInstances.GetFilteredAsyncExpressionOfFuncOfUsageBoolean">
-            <summary>Sets the shim of UsageRepo.GetFilteredAsync(Expression`1&lt;Func`2&lt;Usage,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.AllInstances.GetFilteredAsyncExpressionOfFuncOfUsageBooleanExpressionOfFuncOfUsageObjectArray">
-            <summary>Sets the shim of UsageRepo.GetFilteredAsync(Expression`1&lt;Func`2&lt;Usage,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;Usage,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.AllInstances.GetFilteredExpressionOfFuncOfUsageBoolean">
-            <summary>Sets the shim of UsageRepo.GetFiltered(Expression`1&lt;Func`2&lt;Usage,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.AllInstances.GetFilteredExpressionOfFuncOfUsageBooleanExpressionOfFuncOfUsageObjectArray">
-            <summary>Sets the shim of UsageRepo.GetFiltered(Expression`1&lt;Func`2&lt;Usage,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;Usage,Object&gt;&gt;[] include)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.ShimUsageRepo.AllInstances._GetAsyncb__0">
-            <summary>Sets the shim of UsageRepo.&lt;GetAsync&gt;b__0()</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.StubBaseEditableRepository`1">
-            <summary>Stub type of AppsTracker.DAL.Repos.BaseEditableRepository`1</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubBaseEditableRepository`1.#ctor">
-            <summary>Initializes a new instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubBaseEditableRepository`1.InitializeStub">
-            <summary>Initializes a new instance of type StubBaseEditableRepository</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.StubBaseEditableRepository`1.CallBase">
-            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.StubBaseEditableRepository`1.InstanceBehavior">
-            <summary>Gets or sets the instance behavior.</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.StubBaseEditableRepository`1.InstanceObserver">
-            <summary>Gets or sets the instance observer.</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.StubBaseRepo`1">
-            <summary>Stub type of AppsTracker.DAL.Repos.BaseRepo`1</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubBaseRepo`1.#ctor">
-            <summary>Initializes a new instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubBaseRepo`1.BaseQuery(AppsTracker.DAL.AppsEntities)">
-            <summary>Sets the stub of BaseRepo`1.BaseQuery(AppsEntities context)</summary>
-        </member>
-        <member name="F:AppsTracker.DAL.Repos.Fakes.StubBaseRepo`1.BaseQueryAppsEntities">
-            <summary>Sets the stub of BaseRepo`1.BaseQuery(AppsEntities context)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubBaseRepo`1.InitializeStub">
-            <summary>Initializes a new instance of type StubBaseRepo</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.StubBaseRepo`1.CallBase">
-            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.StubBaseRepo`1.InstanceBehavior">
-            <summary>Gets or sets the instance behavior.</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.StubBaseRepo`1.InstanceObserver">
-            <summary>Gets or sets the instance observer.</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.StubBaseRepository`1">
-            <summary>Stub type of AppsTracker.DAL.Repos.BaseRepository`1</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubBaseRepository`1.#ctor">
-            <summary>Initializes a new instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubBaseRepository`1.GetAll">
-            <summary>Sets the stub of BaseRepository`1.GetAll()</summary>
-        </member>
-        <member name="F:AppsTracker.DAL.Repos.Fakes.StubBaseRepository`1.GetAll01">
-            <summary>Sets the stub of BaseRepository`1.GetAll()</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubBaseRepository`1.GetByID(System.Int32)">
-            <summary>Sets the stub of BaseRepository`1.GetByID(Int32 id)</summary>
-        </member>
-        <member name="F:AppsTracker.DAL.Repos.Fakes.StubBaseRepository`1.GetByIDInt32">
-            <summary>Sets the stub of BaseRepository`1.GetByID(Int32 id)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubBaseRepository`1.GetFiltered(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
-            <summary>Sets the stub of BaseRepository`1.GetFiltered(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="F:AppsTracker.DAL.Repos.Fakes.StubBaseRepository`1.GetFilteredExpressionOfFuncOfT0Boolean">
-            <summary>Sets the stub of BaseRepository`1.GetFiltered(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubBaseRepository`1.GetQueryable">
-            <summary>Sets the stub of BaseRepository`1.GetQueryable()</summary>
-        </member>
-        <member name="F:AppsTracker.DAL.Repos.Fakes.StubBaseRepository`1.GetQueryable01">
-            <summary>Sets the stub of BaseRepository`1.GetQueryable()</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubBaseRepository`1.GetSingle(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
-            <summary>Sets the stub of BaseRepository`1.GetSingle(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="F:AppsTracker.DAL.Repos.Fakes.StubBaseRepository`1.GetSingleExpressionOfFuncOfT0Boolean">
-            <summary>Sets the stub of BaseRepository`1.GetSingle(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubBaseRepository`1.InitializeStub">
-            <summary>Initializes a new instance of type StubBaseRepository</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.StubBaseRepository`1.CallBase">
-            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.StubBaseRepository`1.InstanceBehavior">
-            <summary>Gets or sets the instance behavior.</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Repos.Fakes.StubBaseRepository`1.InstanceObserver">
-            <summary>Gets or sets the instance observer.</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.StubIRepository`1">
-            <summary>Stub type of AppsTracker.DAL.Repos.IRepository`1</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubIRepository`1.#ctor">
-            <summary>Initializes a new instance of type StubIRepository</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubIRepository`1.atdal::AppsTracker#DAL#Repos#IRepository{TEntity}#GetAll">
-            <summary>Sets the stub of IRepository`1.GetAll()</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubIRepository`1.atdal::AppsTracker#DAL#Repos#IRepository{TEntity}#GetAll(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])">
-            <summary>Sets the stub of IRepository`1.GetAll(Expression`1&lt;Func`2&lt;!0,Object&gt;&gt;[] navigation)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubIRepository`1.atdal::AppsTracker#DAL#Repos#IRepository{TEntity}#GetByID(System.Int32)">
-            <summary>Sets the stub of IRepository`1.GetByID(Int32 id)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubIRepository`1.atdal::AppsTracker#DAL#Repos#IRepository{TEntity}#GetFiltered(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
-            <summary>Sets the stub of IRepository`1.GetFiltered(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubIRepository`1.atdal::AppsTracker#DAL#Repos#IRepository{TEntity}#GetFiltered(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])">
-            <summary>Sets the stub of IRepository`1.GetFiltered(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!0,Object&gt;&gt;[] navigation)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubIRepository`1.atdal::AppsTracker#DAL#Repos#IRepository{TEntity}#GetQueryable">
-            <summary>Sets the stub of IRepository`1.GetQueryable()</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubIRepository`1.atdal::AppsTracker#DAL#Repos#IRepository{TEntity}#GetSingle(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
-            <summary>Sets the stub of IRepository`1.GetSingle(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="F:AppsTracker.DAL.Repos.Fakes.StubIRepository`1.GetAll">
-            <summary>Sets the stub of IRepository`1.GetAll()</summary>
-        </member>
-        <member name="F:AppsTracker.DAL.Repos.Fakes.StubIRepository`1.GetAllExpressionOfFuncOfT0ObjectArray">
-            <summary>Sets the stub of IRepository`1.GetAll(Expression`1&lt;Func`2&lt;!0,Object&gt;&gt;[] navigation)</summary>
-        </member>
-        <member name="F:AppsTracker.DAL.Repos.Fakes.StubIRepository`1.GetByIDInt32">
-            <summary>Sets the stub of IRepository`1.GetByID(Int32 id)</summary>
-        </member>
-        <member name="F:AppsTracker.DAL.Repos.Fakes.StubIRepository`1.GetFilteredExpressionOfFuncOfT0Boolean">
-            <summary>Sets the stub of IRepository`1.GetFiltered(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="F:AppsTracker.DAL.Repos.Fakes.StubIRepository`1.GetFilteredExpressionOfFuncOfT0BooleanExpressionOfFuncOfT0ObjectArray">
-            <summary>Sets the stub of IRepository`1.GetFiltered(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!0,Object&gt;&gt;[] navigation)</summary>
-        </member>
-        <member name="F:AppsTracker.DAL.Repos.Fakes.StubIRepository`1.GetQueryable">
-            <summary>Sets the stub of IRepository`1.GetQueryable()</summary>
-        </member>
-        <member name="F:AppsTracker.DAL.Repos.Fakes.StubIRepository`1.GetSingleExpressionOfFuncOfT0Boolean">
-            <summary>Sets the stub of IRepository`1.GetSingle(Expression`1&lt;Func`2&lt;!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Repos.Fakes.StubIRepositoryFactory">
-            <summary>Stub type of AppsTracker.DAL.Repos.IRepositoryFactory</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubIRepositoryFactory.#ctor">
-            <summary>Initializes a new instance of type StubIRepositoryFactory</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubIRepositoryFactory.atdal::AppsTracker#DAL#Repos#IRepositoryFactory#Get``1">
-            <summary>Sets the stub of IRepositoryFactory.Get()</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Repos.Fakes.StubIRepositoryFactory.GetOf1``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{``0})">
-            <summary>Sets stubs of Get()</summary>
-        </member>
         <member name="T:AppsTracker.DAL.Service.Fakes.ShimAppsService">
             <summary>Shim type of AppsTracker.DAL.Service.AppsService</summary>
         </member>
@@ -1098,9 +336,6 @@
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.#ctor(AppsTracker.DAL.Service.AppsService)">
             <summary>Initializes a new shim for the given instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AddAsyncOf1M0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{``0,System.Threading.Tasks.Task})">
-            <summary>Sets the shim of AppsService.AddAsync(!!0 item)</summary>
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AddOf1M0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Action{``0})">
             <summary>Sets the shim of AppsService.Add(!!0 item)</summary>
@@ -1117,12 +352,6 @@
         <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.Bind(AppsTracker.DAL.Service.IBaseService)">
             <summary>Binds the members of the interface to the shim.</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.GetFilteredAsyncOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}})">
-            <summary>Sets the shim of AppsService.GetFilteredAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.GetFilteredAsyncOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}})">
-            <summary>Sets the shim of AppsService.GetFilteredAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
-        </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.GetFilteredOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Collections.Generic.IEnumerable{``0}})">
             <summary>Sets the shim of AppsService.GetFiltered(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
         </member>
@@ -1131,12 +360,6 @@
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.GetQueryableOf1``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.IQueryable{``0}})">
             <summary>Sets the shim of AppsService.GetQueryable()</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.GetSingleAsyncOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.Tasks.Task{``0}})">
-            <summary>Sets the shim of AppsService.GetSingleAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.GetSingleAsyncOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],System.Threading.Tasks.Task{``0}})">
-            <summary>Sets the shim of AppsService.GetSingleAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.GetSingleOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},``0})">
             <summary>Sets the shim of AppsService.GetSingle(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
@@ -1168,17 +391,8 @@
         <member name="T:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances">
             <summary>Define shims for all instances members</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.AddAsyncOf1M0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsService,``0,System.Threading.Tasks.Task})">
-            <summary>Sets the shim of AppsService.AddAsync(!!0 item)</summary>
-        </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.AddOf1M0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Action{AppsTracker.DAL.Service.AppsService,``0})">
             <summary>Sets the shim of AppsService.Add(!!0 item)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.GetFilteredAsyncOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsService,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}})">
-            <summary>Sets the shim of AppsService.GetFilteredAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.GetFilteredAsyncOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsService,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}})">
-            <summary>Sets the shim of AppsService.GetFilteredAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.GetFilteredOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsService,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Collections.Generic.IEnumerable{``0}})">
             <summary>Sets the shim of AppsService.GetFiltered(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
@@ -1188,12 +402,6 @@
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.GetQueryableOf1``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsService,System.Linq.IQueryable{``0}})">
             <summary>Sets the shim of AppsService.GetQueryable()</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.GetSingleAsyncOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsService,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.Tasks.Task{``0}})">
-            <summary>Sets the shim of AppsService.GetSingleAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.GetSingleAsyncOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsService,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],System.Threading.Tasks.Task{``0}})">
-            <summary>Sets the shim of AppsService.GetSingleAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.GetSingleOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsService,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},``0})">
             <summary>Sets the shim of AppsService.GetSingle(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
@@ -1215,144 +423,6 @@
         </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.InitUzerString">
             <summary>Sets the shim of AppsService.InitUzer(String userName)</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock">
-            <summary>Shim type of AppsTracker.DAL.Service.AppsServiceMock</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.#ctor">
-            <summary>Initializes a new shim instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.#ctor(AppsTracker.DAL.Service.AppsServiceMock)">
-            <summary>Initializes a new shim for the given instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AddAsyncOf1M0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{``0,System.Threading.Tasks.Task})">
-            <summary>Sets the shim of AppsServiceMock.AddAsync(!!0 item)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AddOf1M0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Action{``0})">
-            <summary>Sets the shim of AppsServiceMock.Add(!!0 item)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.BehaveAsCurrent">
-            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.BehaveAsNotImplemented">
-            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.Bind(AppsTracker.DAL.Service.IAppsService)">
-            <summary>Binds the members of the interface to the shim.</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.Bind(AppsTracker.DAL.Service.IBaseService)">
-            <summary>Binds the members of the interface to the shim.</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.GetFilteredAsyncOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}})">
-            <summary>Sets the shim of AppsServiceMock.GetFilteredAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.GetFilteredAsyncOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}})">
-            <summary>Sets the shim of AppsServiceMock.GetFilteredAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.GetFilteredOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Collections.Generic.IEnumerable{``0}})">
-            <summary>Sets the shim of AppsServiceMock.GetFiltered(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.GetFilteredOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],System.Collections.Generic.IEnumerable{``0}})">
-            <summary>Sets the shim of AppsServiceMock.GetFiltered(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.GetQueryableOf1``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.IQueryable{``0}})">
-            <summary>Sets the shim of AppsServiceMock.GetQueryable()</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.GetSingleAsyncOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.Tasks.Task{``0}})">
-            <summary>Sets the shim of AppsServiceMock.GetSingleAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.GetSingleAsyncOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],System.Threading.Tasks.Task{``0}})">
-            <summary>Sets the shim of AppsServiceMock.GetSingleAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.GetSingleOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},``0})">
-            <summary>Sets the shim of AppsServiceMock.GetSingle(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.GetSingleOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],``0})">
-            <summary>Sets the shim of AppsServiceMock.GetSingle(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock._GetFilteredAsyncb__2Of1``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Collections.Generic.IEnumerable{``0}})">
-            <summary>Sets the shim of AppsServiceMock.&lt;GetFilteredAsync&gt;b__2()</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock._GetFilteredAsyncb__3Of1``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Collections.Generic.IEnumerable{``0}})">
-            <summary>Sets the shim of AppsServiceMock.&lt;GetFilteredAsync&gt;b__3()</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock._GetSingleAsyncb__4Of1``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{``0})">
-            <summary>Sets the shim of AppsServiceMock.&lt;GetSingleAsync&gt;b__4()</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock._GetSingleAsyncb__5Of1``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{``0})">
-            <summary>Sets the shim of AppsServiceMock.&lt;GetSingleAsync&gt;b__5()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AddToBlockedListListOfAplicationStringInt32">
-            <summary>Sets the shim of AppsServiceMock.AddToBlockedList(List`1&lt;Aplication&gt; apps, String username, Int32 userID)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.Behavior">
-            <summary>Assigns the behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.Constructor">
-            <summary>Sets the shim of AppsServiceMock.AppsServiceMock()</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.CreateNewLogStringInt32Int32IAppInfoBooleanOut">
-            <summary>Sets the shim of AppsServiceMock.CreateNewLog(String windowTitle, Int32 usageID, Int32 userID, IAppInfo appInfo, Boolean&amp; newApp)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.GetStartDateInt32">
-            <summary>Sets the shim of AppsServiceMock.GetStartDate(Int32 userID)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.InitLoginInt32">
-            <summary>Sets the shim of AppsServiceMock.InitLogin(Int32 userId)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.InitUzerString">
-            <summary>Sets the shim of AppsServiceMock.InitUzer(String userName)</summary>
-        </member>
-        <member name="T:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AllInstances">
-            <summary>Define shims for all instances members</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AllInstances.AddAsyncOf1M0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsServiceMock,``0,System.Threading.Tasks.Task})">
-            <summary>Sets the shim of AppsServiceMock.AddAsync(!!0 item)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AllInstances.AddOf1M0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Action{AppsTracker.DAL.Service.AppsServiceMock,``0})">
-            <summary>Sets the shim of AppsServiceMock.Add(!!0 item)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AllInstances.GetFilteredAsyncOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsServiceMock,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}})">
-            <summary>Sets the shim of AppsServiceMock.GetFilteredAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AllInstances.GetFilteredAsyncOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsServiceMock,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}})">
-            <summary>Sets the shim of AppsServiceMock.GetFilteredAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AllInstances.GetFilteredOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsServiceMock,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Collections.Generic.IEnumerable{``0}})">
-            <summary>Sets the shim of AppsServiceMock.GetFiltered(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AllInstances.GetFilteredOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsServiceMock,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],System.Collections.Generic.IEnumerable{``0}})">
-            <summary>Sets the shim of AppsServiceMock.GetFiltered(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AllInstances.GetQueryableOf1``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsServiceMock,System.Linq.IQueryable{``0}})">
-            <summary>Sets the shim of AppsServiceMock.GetQueryable()</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AllInstances.GetSingleAsyncOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsServiceMock,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.Tasks.Task{``0}})">
-            <summary>Sets the shim of AppsServiceMock.GetSingleAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AllInstances.GetSingleAsyncOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsServiceMock,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],System.Threading.Tasks.Task{``0}})">
-            <summary>Sets the shim of AppsServiceMock.GetSingleAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AllInstances.GetSingleOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsServiceMock,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},``0})">
-            <summary>Sets the shim of AppsServiceMock.GetSingle(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AllInstances.GetSingleOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsServiceMock,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],``0})">
-            <summary>Sets the shim of AppsServiceMock.GetSingle(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AllInstances.AddToBlockedListListOfAplicationStringInt32">
-            <summary>Sets the shim of AppsServiceMock.AddToBlockedList(List`1&lt;Aplication&gt; apps, String username, Int32 userID)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AllInstances.CreateNewLogStringInt32Int32IAppInfoBooleanOut">
-            <summary>Sets the shim of AppsServiceMock.CreateNewLog(String windowTitle, Int32 usageID, Int32 userID, IAppInfo appInfo, Boolean&amp; newApp)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AllInstances.GetStartDateInt32">
-            <summary>Sets the shim of AppsServiceMock.GetStartDate(Int32 userID)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AllInstances.InitLoginInt32">
-            <summary>Sets the shim of AppsServiceMock.InitLogin(Int32 userId)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsServiceMock.AllInstances.InitUzerString">
-            <summary>Sets the shim of AppsServiceMock.InitUzer(String userName)</summary>
         </member>
         <member name="T:AppsTracker.DAL.Service.Fakes.ShimChartService">
             <summary>Shim type of AppsTracker.DAL.Service.ChartService</summary>
@@ -1438,26 +508,32 @@
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService.GetUsageSeriesStringDateTimeDateTime">
             <summary>Sets the shim of ChartService.GetUsageSeries(String username, DateTime dateFrom, DateTime dateTo)</summary>
         </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAllUsersb__faUsage">
+            <summary>Sets the shim of ChartService.&lt;GetAllUsers&gt;b__fa(Usage u)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAllUsersb__fbIGroupingOfStringUsage">
+            <summary>Sets the shim of ChartService.&lt;GetAllUsers&gt;b__fb(IGrouping`2&lt;String,Usage&gt; g)</summary>
+        </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAllUsersb__fcUsage">
-            <summary>Sets the shim of ChartService.&lt;GetAllUsers&gt;b__fc(Usage u)</summary>
+            <summary>Sets the shim of ChartService.&lt;GetAllUsers&gt;b__fc(Usage l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAllUsersb__fdIGroupingOfStringUsage">
-            <summary>Sets the shim of ChartService.&lt;GetAllUsers&gt;b__fd(IGrouping`2&lt;String,Usage&gt; g)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAppsUsageSeriesb__d2Log">
+            <summary>Sets the shim of ChartService.&lt;GetAppsUsageSeries&gt;b__d2(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAllUsersb__feUsage">
-            <summary>Sets the shim of ChartService.&lt;GetAllUsers&gt;b__fe(Usage l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAppsUsageSeriesb__d5Log">
+            <summary>Sets the shim of ChartService.&lt;GetAppsUsageSeries&gt;b__d5(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAppsUsageSeriesb__d4Log">
-            <summary>Sets the shim of ChartService.&lt;GetAppsUsageSeries&gt;b__d4(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAppsUsageSeriesb__d8MostUsedAppModel">
+            <summary>Sets the shim of ChartService.&lt;GetAppsUsageSeries&gt;b__d8(MostUsedAppModel d)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAppsUsageSeriesb__d7Log">
-            <summary>Sets the shim of ChartService.&lt;GetAppsUsageSeries&gt;b__d7(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailySeriesb__81Usage">
+            <summary>Sets the shim of ChartService.&lt;GetDailySeries&gt;b__81(Usage u)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAppsUsageSeriesb__daMostUsedAppModel">
-            <summary>Sets the shim of ChartService.&lt;GetAppsUsageSeries&gt;b__da(MostUsedAppModel d)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailySeriesb__88Usage">
+            <summary>Sets the shim of ChartService.&lt;GetDailySeries&gt;b__88(Usage l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailySeriesb__83Usage">
-            <summary>Sets the shim of ChartService.&lt;GetDailySeries&gt;b__83(Usage u)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailySeriesb__89Usage">
+            <summary>Sets the shim of ChartService.&lt;GetDailySeries&gt;b__89(Usage l)</summary>
         </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailySeriesb__8aUsage">
             <summary>Sets the shim of ChartService.&lt;GetDailySeries&gt;b__8a(Usage l)</summary>
@@ -1474,47 +550,41 @@
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailySeriesb__8eUsage">
             <summary>Sets the shim of ChartService.&lt;GetDailySeries&gt;b__8e(Usage l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailySeriesb__8fUsage">
-            <summary>Sets the shim of ChartService.&lt;GetDailySeries&gt;b__8f(Usage l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailyWindowSeriesb__4aLog">
+            <summary>Sets the shim of ChartService.&lt;GetDailyWindowSeries&gt;b__4a(Log g)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailySeriesb__90Usage">
-            <summary>Sets the shim of ChartService.&lt;GetDailySeries&gt;b__90(Usage l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailyWindowSeriesb__4bLog">
+            <summary>Sets the shim of ChartService.&lt;GetDailyWindowSeries&gt;b__4b(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailyWindowSeriesb__4cLog">
-            <summary>Sets the shim of ChartService.&lt;GetDailyWindowSeries&gt;b__4c(Log g)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayInfob__121Usage">
+            <summary>Sets the shim of ChartService.&lt;GetDayInfo&gt;b__121(Usage l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailyWindowSeriesb__4dLog">
-            <summary>Sets the shim of ChartService.&lt;GetDailyWindowSeries&gt;b__4d(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayInfob__122Usage">
+            <summary>Sets the shim of ChartService.&lt;GetDayInfo&gt;b__122(Usage l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayInfob__127Usage">
-            <summary>Sets the shim of ChartService.&lt;GetDayInfo&gt;b__127(Usage l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayInfob__123Usage">
+            <summary>Sets the shim of ChartService.&lt;GetDayInfo&gt;b__123(Usage l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayInfob__128Usage">
-            <summary>Sets the shim of ChartService.&lt;GetDayInfo&gt;b__128(Usage l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopAppsb__56Log">
+            <summary>Sets the shim of ChartService.&lt;GetDayTopApps&gt;b__56(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayInfob__129Usage">
-            <summary>Sets the shim of ChartService.&lt;GetDayInfo&gt;b__129(Usage l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopAppsb__57Log">
+            <summary>Sets the shim of ChartService.&lt;GetDayTopApps&gt;b__57(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopAppsb__58Log">
-            <summary>Sets the shim of ChartService.&lt;GetDayTopApps&gt;b__58(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopAppsb__58IGroupingOfStringLog">
+            <summary>Sets the shim of ChartService.&lt;GetDayTopApps&gt;b__58(IGrouping`2&lt;String,Log&gt; grp)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopAppsb__59Log">
-            <summary>Sets the shim of ChartService.&lt;GetDayTopApps&gt;b__59(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopAppsb__5cTopAppsModel">
+            <summary>Sets the shim of ChartService.&lt;GetDayTopApps&gt;b__5c(TopAppsModel t)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopAppsb__5aIGroupingOfStringLog">
-            <summary>Sets the shim of ChartService.&lt;GetDayTopApps&gt;b__5a(IGrouping`2&lt;String,Log&gt; grp)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopWindowsb__68Log">
+            <summary>Sets the shim of ChartService.&lt;GetDayTopWindows&gt;b__68(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopAppsb__5eTopAppsModel">
-            <summary>Sets the shim of ChartService.&lt;GetDayTopApps&gt;b__5e(TopAppsModel t)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopWindowsb__69Log">
+            <summary>Sets the shim of ChartService.&lt;GetDayTopWindows&gt;b__69(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopWindowsb__6aLog">
-            <summary>Sets the shim of ChartService.&lt;GetDayTopWindows&gt;b__6a(Log l)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopWindowsb__6bLog">
-            <summary>Sets the shim of ChartService.&lt;GetDayTopWindows&gt;b__6b(Log l)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopWindowsb__6fTopWindowsModel">
-            <summary>Sets the shim of ChartService.&lt;GetDayTopWindows&gt;b__6f(TopWindowsModel t)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopWindowsb__6dTopWindowsModel">
+            <summary>Sets the shim of ChartService.&lt;GetDayTopWindows&gt;b__6d(TopWindowsModel t)</summary>
         </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayViewb__3aLog">
             <summary>Sets the shim of ChartService.&lt;GetDayView&gt;b__3a(Log l)</summary>
@@ -1525,20 +595,20 @@
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayViewb__3cDayViewModel">
             <summary>Sets the shim of ChartService.&lt;GetDayView&gt;b__3c(DayViewModel d)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesByAppb__c9Log">
-            <summary>Sets the shim of ChartService.&lt;GetKeystrokesByApp&gt;b__c9(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesByAppb__c7Log">
+            <summary>Sets the shim of ChartService.&lt;GetKeystrokesByApp&gt;b__c7(Log l)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesb__b8Log">
+            <summary>Sets the shim of ChartService.&lt;GetKeystrokes&gt;b__b8(Log l)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesb__b9IGroupingOfStringLog">
+            <summary>Sets the shim of ChartService.&lt;GetKeystrokes&gt;b__b9(IGrouping`2&lt;String,Log&gt; g)</summary>
         </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesb__baLog">
             <summary>Sets the shim of ChartService.&lt;GetKeystrokes&gt;b__ba(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesb__bbIGroupingOfStringLog">
-            <summary>Sets the shim of ChartService.&lt;GetKeystrokes&gt;b__bb(IGrouping`2&lt;String,Log&gt; g)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesb__bcLog">
-            <summary>Sets the shim of ChartService.&lt;GetKeystrokes&gt;b__bc(Log l)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesb__bdKeystrokeModel">
-            <summary>Sets the shim of ChartService.&lt;GetKeystrokes&gt;b__bd(KeystrokeModel k)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesb__bbKeystrokeModel">
+            <summary>Sets the shim of ChartService.&lt;GetKeystrokes&gt;b__bb(KeystrokeModel k)</summary>
         </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetLogTopAppsb__4Log">
             <summary>Sets the shim of ChartService.&lt;GetLogTopApps&gt;b__4(Log l)</summary>
@@ -1558,26 +628,23 @@
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetLogTopWindowsb__28TopWindowsModel">
             <summary>Sets the shim of ChartService.&lt;GetLogTopWindows&gt;b__28(TopWindowsModel t)</summary>
         </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetMostUsedAppsb__a2Log">
+            <summary>Sets the shim of ChartService.&lt;GetMostUsedApps&gt;b__a2(Log l)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetMostUsedAppsb__a3IGroupingOfStringLog">
+            <summary>Sets the shim of ChartService.&lt;GetMostUsedApps&gt;b__a3(IGrouping`2&lt;String,Log&gt; g)</summary>
+        </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetMostUsedAppsb__a4Log">
             <summary>Sets the shim of ChartService.&lt;GetMostUsedApps&gt;b__a4(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetMostUsedAppsb__a5IGroupingOfStringLog">
-            <summary>Sets the shim of ChartService.&lt;GetMostUsedApps&gt;b__a5(IGrouping`2&lt;String,Log&gt; g)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetScreenshotsb__e7Screenshot">
+            <summary>Sets the shim of ChartService.&lt;GetScreenshots&gt;b__e7(Screenshot s)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetMostUsedAppsb__a6Log">
-            <summary>Sets the shim of ChartService.&lt;GetMostUsedApps&gt;b__a6(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetScreenshotsb__e8IGroupingOfStringScreenshot">
+            <summary>Sets the shim of ChartService.&lt;GetScreenshots&gt;b__e8(IGrouping`2&lt;String,Screenshot&gt; g)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetScreenshotsb__e9Screenshot">
-            <summary>Sets the shim of ChartService.&lt;GetScreenshots&gt;b__e9(Screenshot s)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetScreenshotsb__eaIGroupingOfStringScreenshot">
-            <summary>Sets the shim of ChartService.&lt;GetScreenshots&gt;b__ea(IGrouping`2&lt;String,Screenshot&gt; g)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetSingleMostUsedAppb__b1Log">
-            <summary>Sets the shim of ChartService.&lt;GetSingleMostUsedApp&gt;b__b1(Log l)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetUsageSeriesb__116UsageTypeSeries">
-            <summary>Sets the shim of ChartService.&lt;GetUsageSeries&gt;b__116(UsageTypeSeries d)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetSingleMostUsedAppb__afLog">
+            <summary>Sets the shim of ChartService.&lt;GetSingleMostUsedApp&gt;b__af(Log l)</summary>
         </member>
         <member name="T:AppsTracker.DAL.Service.Fakes.ShimChartService.AllInstances">
             <summary>Define shims for all instances members</summary>
@@ -1672,24 +739,6 @@
         <member name="T:AppsTracker.DAL.Service.Fakes.ShimServiceFactory.AllInstances">
             <summary>Define shims for all instances members</summary>
         </member>
-        <member name="T:AppsTracker.DAL.Service.Fakes.StubAppsServiceMock">
-            <summary>Stub type of AppsTracker.DAL.Service.AppsServiceMock</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubAppsServiceMock.#ctor">
-            <summary>Initializes a new instance</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubAppsServiceMock.InitializeStub">
-            <summary>Initializes a new instance of type StubAppsServiceMock</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.StubAppsServiceMock.CallBase">
-            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.StubAppsServiceMock.InstanceBehavior">
-            <summary>Gets or sets the instance behavior.</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.StubAppsServiceMock.InstanceObserver">
-            <summary>Gets or sets the instance observer.</summary>
-        </member>
         <member name="T:AppsTracker.DAL.Service.Fakes.StubChartService">
             <summary>Stub type of AppsTracker.DAL.Service.ChartService</summary>
         </member>
@@ -1714,9 +763,6 @@
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.#ctor">
             <summary>Initializes a new instance of type StubIAppsService</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.AddAsyncOf1M0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{``0,System.Threading.Tasks.Task})">
-            <summary>Sets stubs of AddAsync(!!0 item)</summary>
-        </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.AddOf1M0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Action{``0})">
             <summary>Sets stubs of Add(!!0 item)</summary>
         </member>
@@ -1725,9 +771,6 @@
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#Add``1(``0)">
             <summary>Sets the stub of IAppsService.Add(!!0 item)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#AddAsync``1(``0)">
-            <summary>Sets the stub of IAppsService.AddAsync(!!0 item)</summary>
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#AddToBlockedList(System.Collections.Generic.List{AppsTracker.Models.EntityModels.Aplication},System.String,System.Int32)">
             <summary>Sets the stub of IAppsService.AddToBlockedList(List`1&lt;Aplication&gt; apps, String blockUsername, Int32 loadUserID)</summary>
@@ -1741,12 +784,6 @@
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#GetFiltered``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[])">
             <summary>Sets the stub of IAppsService.GetFiltered(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#GetFilteredAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
-            <summary>Sets the stub of IAppsService.GetFilteredAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#GetFilteredAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[])">
-            <summary>Sets the stub of IAppsService.GetFilteredAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
-        </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#GetQueryable``1">
             <summary>Sets the stub of IAppsService.GetQueryable()</summary>
         </member>
@@ -1755,12 +792,6 @@
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#GetSingle``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[])">
             <summary>Sets the stub of IAppsService.GetSingle(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#GetSingleAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
-            <summary>Sets the stub of IAppsService.GetSingleAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#GetSingleAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[])">
-            <summary>Sets the stub of IAppsService.GetSingleAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#GetStartDate(System.Int32)">
             <summary>Sets the stub of IAppsService.GetStartDate(Int32 userID)</summary>
@@ -1774,12 +805,6 @@
         <member name="F:AppsTracker.DAL.Service.Fakes.StubIAppsService.CreateNewLogStringInt32Int32IAppInfoBooleanOut">
             <summary>Sets the stub of IAppsService.CreateNewLog(String windowTitle, Int32 usageID, Int32 userID, IAppInfo appInfo, Boolean&amp; newApp)</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.GetFilteredAsyncOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}})">
-            <summary>Sets stubs of GetFilteredAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.GetFilteredAsyncOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}})">
-            <summary>Sets stubs of GetFilteredAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
-        </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.GetFilteredOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Collections.Generic.IEnumerable{``0}})">
             <summary>Sets stubs of GetFiltered(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
         </member>
@@ -1788,12 +813,6 @@
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.GetQueryableOf1``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.IQueryable{``0}})">
             <summary>Sets stubs of GetQueryable()</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.GetSingleAsyncOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.Tasks.Task{``0}})">
-            <summary>Sets stubs of GetSingleAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.GetSingleAsyncOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],System.Threading.Tasks.Task{``0}})">
-            <summary>Sets stubs of GetSingleAsync(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.GetSingleOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},``0})">
             <summary>Sets stubs of GetSingle(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>

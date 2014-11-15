@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using AppsTracker.Models.Proxy;
+using AppsTracker.Common.Utils;
+using AppsTracker.DAL;
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.EntityModels;
+using AppsTracker.Models.Proxy;
 using AppsTracker.MVVM;
-using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Logging
 {
@@ -23,14 +22,12 @@ namespace AppsTracker.Logging
 
         private LazyInit<IdleMonitor> _idleMonitor;
 
-        private IAppsService _service;
         private ISettings _settings;
 
         public UsageLogger(ISettings settings)
         {
             Ensure.NotNull(settings);
 
-            _service = ServiceFactory.Get<IAppsService>();
             _settings = settings;
 
             Init();
@@ -39,8 +36,8 @@ namespace AppsTracker.Logging
 
         private void Init()
         {
-            var user = _service.InitUzer(Environment.UserName);
-            _currentUsageLogin = _service.InitLogin(user.UserID);
+            var user = InitUzer(Environment.UserName);
+            _currentUsageLogin = InitLogin(user.UserID);
 
             Globals.Initialize(user, _currentUsageLogin.UsageID);
 
@@ -54,10 +51,7 @@ namespace AppsTracker.Logging
                                                             {
                                                                 m.IdleEntered -= IdleEntered;
                                                                 m.IdleStoped -= IdleStopped;
-                                                            })
-                                                            {
-                                                                Enabled = (_settings.EnableIdle && _settings.LoggingEnabled)
-                                                            };
+                                                            });
 
             Microsoft.Win32.SystemEvents.SessionSwitch += SessionSwitch;
         }
@@ -69,7 +63,7 @@ namespace AppsTracker.Logging
                 return;
 
             _currentUsageIdle.UsageEnd = DateTime.Now;
-            SaveUsage(UsageTypes.Idle.ToString(), _currentUsageIdle);
+            AddUsage(UsageTypes.Idle.ToString(), _currentUsageIdle);
             _currentUsageIdle = null;
         }
 
@@ -94,7 +88,7 @@ namespace AppsTracker.Logging
                 {
                     string usageType = UsageTypes.Idle.ToString();
                     _currentUsageIdle.UsageEnd = DateTime.Now;
-                    SaveUsage(usageType, _currentUsageIdle);
+                    AddUsage(usageType, _currentUsageIdle);
                     _currentUsageIdle = null;
                 }
                 _idleMonitor.Enabled = false;
@@ -106,20 +100,30 @@ namespace AppsTracker.Logging
                 {
                     string usageType = UsageTypes.Locked.ToString();
                     _currentUsageLocked.UsageEnd = DateTime.Now;
-                    SaveUsage(usageType, _currentUsageLocked);
+                    AddUsage(usageType, _currentUsageLocked);
                     _currentUsageLocked = null;
                 }
             }
         }
 
-        private void SaveUsage(string usageType, Usage usage)
+        private void AddUsage(string usagetype, Usage usage)
         {
-            var usageT = _service.GetSingle<UsageType>(t => t.UType == usageType);
-            Ensure.NotNull(usageT, string.Concat("Can't load ", usageType));
+            using (var context =new AppsEntities())
+            {
+                var typeID = context.UsageTypes.First(t => t.UType == usagetype).UsageTypeID;
+                usage.UsageTypeID = typeID;
+                context.Usages.Add(usage);
+                context.SaveChanges();
+            }
+        }
 
-            var usageID = usageT.UsageTypeID;
-            usage.UsageTypeID = usageID;
-            _service.Add<Usage>(usage);
+        private void SaveUsage(Usage usage)
+        {
+            using (var context = new AppsEntities())
+            {
+                context.Entry<Usage>(usage).State = EntityState.Modified;
+                context.SaveChanges();
+            }
         }
 
         public void SettingsChanged(ISettings settings)
@@ -130,16 +134,35 @@ namespace AppsTracker.Logging
 
         private void Configure()
         {
-           _idleMonitor.Enabled = 
-               _isLoggingEnabled =
-               _settings.EnableIdle && _settings.LoggingEnabled;
+            _idleMonitor.Enabled = _settings.EnableIdle && _settings.LoggingEnabled;
+            _isLoggingEnabled = _settings.LoggingEnabled;
+            CheckStoppedUsage();
+        }
+
+        private void CheckStoppedUsage()
+        {
+            if (_isLoggingEnabled == false && _currentUsageStopped == null)
+                _currentUsageStopped = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
+            else if (_isLoggingEnabled && _currentUsageStopped != null)
+                SaveStoppedUsage();
+        }
+
+        private void SaveStoppedUsage()
+        {
+            if (_currentUsageStopped != null)
+            {
+                _currentUsageStopped.UsageEnd = DateTime.Now;
+                AddUsage(UsageTypes.Stopped.ToString(), _currentUsageStopped);
+                _currentUsageStopped = null;
+            }
         }
 
         private void Finish()
         {
             _currentUsageLogin.UsageEnd = DateTime.Now;
             _currentUsageLogin.IsCurrent = false;
-            SaveUsage(UsageTypes.Login.ToString(), _currentUsageLogin);
+            SaveUsage(_currentUsageLogin);
+            SaveStoppedUsage();
         }
 
         public void Dispose()
@@ -154,10 +177,65 @@ namespace AppsTracker.Logging
             get { return MVVM.Mediator.Instance; }
         }
 
-
         public void SetComponentEnabled(bool enabled)
         {
             _isLoggingEnabled = enabled;
+        }
+
+        private Usage InitLogin(int userID)
+        {
+            using (var context = new AppsEntities())
+            {
+                string loginUsage = UsageTypes.Login.ToString();
+
+                if (context.Usages.Where(u => u.IsCurrent && u.UsageType.UType == loginUsage).Count() > 0)
+                {
+                    var failedSaveUsage = context.Usages.Where(u => u.IsCurrent && u.UsageType.UType == loginUsage).ToList();
+                    foreach (var usage in failedSaveUsage)
+                    {
+                        var lastLog = context.Logs.Where(l => l.UsageID == usage.UsageID).OrderByDescending(l => l.DateCreated).FirstOrDefault();
+                        var lastUsage = context.Usages.Where(u => u.SelfUsageID == usage.UsageID).OrderByDescending(u => u.UsageEnd).FirstOrDefault();
+
+                        DateTime lastLogDate = DateTime.MinValue;
+                        DateTime lastUsageDate = DateTime.MinValue;
+
+                        if (lastLog != null)
+                            lastLogDate = lastLog.DateEnded;
+
+                        if (lastUsage != null)
+                            lastUsageDate = lastUsage.UsageEnd;
+
+
+                        usage.UsageEnd = lastLogDate == lastUsageDate ? usage.UsageEnd : lastUsageDate > lastLogDate ? lastUsageDate : lastLogDate;
+                        usage.IsCurrent = false;
+                        context.Entry(usage).State = EntityState.Modified;
+                    }
+                }
+
+                var login = new Usage() { UserID = userID, UsageEnd = DateTime.Now, UsageTypeID = context.UsageTypes.First(u => u.UType == loginUsage).UsageTypeID, IsCurrent = true };
+
+                context.Usages.Add(login);
+                context.SaveChanges();
+
+                return login;
+            }
+        }
+
+        private Uzer InitUzer(string userName)
+        {
+            using (var context = new AppsEntities())
+            {
+                Uzer user = context.Users.FirstOrDefault(u => u.Name == userName);
+
+                if (user == null)
+                {
+                    user = new Uzer() { Name = userName };
+                    context.Users.Add(user);
+                    context.SaveChanges();
+                }
+
+                return user;
+            }
         }
     }
 }

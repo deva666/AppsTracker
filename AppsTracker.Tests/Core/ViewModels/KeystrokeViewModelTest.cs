@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.MVVM;
 using AppsTracker.Pages.ViewModels;
-
+using AppsTracker.Tests.Fakes.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AppsTracker.Tests.Core.ViewModels

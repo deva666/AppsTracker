@@ -13,9 +13,9 @@ namespace AppsTracker.DAL.Service
 {
     public class ChartService : IChartService
     {
-        object @parallelLock = new object();
+        private object @parallelLock = new object();
 
-        IEnumerable<Log> _cachedLogs = null;
+        private IEnumerable<Log> _cachedLogs = null;
 
         public IEnumerable<TopAppsModel> GetLogTopApps(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo)
         {
@@ -665,11 +665,8 @@ namespace AppsTracker.DAL.Service
                                                 })
                                            .OrderBy(g => new DateTime(g.Key.year, g.Key.month, g.Key.day));
 
-
-
                 Parallel.ForEach(groupedLogins.ToList(), grp =>
                 {
-
                     var usageIDs = grp.Select(u => u.UsageID);
 
                     using (var newContext = new AppsEntities())
@@ -687,7 +684,7 @@ namespace AppsTracker.DAL.Service
                         stoppeds = newContext.Usages.Where(u => u.SelfUsageID.HasValue
                                                           && usageIDs.Contains(u.SelfUsageID.Value)
                                                           && u.UsageType.UType == usageStopped)
-                                                          .ToList(); 
+                                                          .ToList();
                     }
 
                     UsageTypeSeries series = new UsageTypeSeries() { Date = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day).ToShortDateString() };
@@ -711,7 +708,6 @@ namespace AppsTracker.DAL.Service
                         observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Computer locked" });
                     }
 
-
                     if (stoppeds.Count() > 0)
                     {
                         stoppedTime = stoppeds.Sum(l => l.Duration.Ticks);
@@ -728,7 +724,7 @@ namespace AppsTracker.DAL.Service
 
                 });
 
-                return collection.OrderBy(d => d.Date);
+                return collection;
             }
         }
 
@@ -741,9 +737,9 @@ namespace AppsTracker.DAL.Service
                 string loginType = UsageTypes.Login.ToString();
 
                 var logins = context.Usages.Where(u => u.User.UserID == userID
-                                                                        && u.UsageStart >= today
-                                                                        && u.UsageStart <= nextDay
-                                                                        && u.UsageType.UType == loginType)
+                                                     && u.UsageStart >= today
+                                                     && u.UsageStart <= nextDay
+                                                     && u.UsageType.UType == loginType)
                                             .ToList();
 
                 var loginBegin = logins.OrderBy(l => l.UsageStart).FirstOrDefault();

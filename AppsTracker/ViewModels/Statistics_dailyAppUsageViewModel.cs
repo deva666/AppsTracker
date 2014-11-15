@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using AppsTracker.DAL.Repos;
 using AppsTracker.Models.ChartModels;
 using AppsTracker.MVVM;
 using AppsTracker.DAL.Service;

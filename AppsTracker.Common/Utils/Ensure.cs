@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppsTracker.Common.Utils
 {
@@ -11,7 +7,7 @@ namespace AppsTracker.Common.Utils
         public static void NotNull(object argument)
         {
             if (argument == null)
-                throw new ArgumentNullException(string.Format("Argument is null"));
+                throw new ArgumentNullException("Argument is null");
         }
 
         public static void NotNull(object argument, string argumentName)

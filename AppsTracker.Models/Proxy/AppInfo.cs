@@ -22,6 +22,7 @@ namespace AppsTracker.Models.Proxy
         {
             if (process == null)
                 return null;
+
             AppInfo appInfo = new AppInfo();
 
             try

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
+
 using AppsTracker.Common.Utils;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.Models.Proxy;
@@ -26,7 +26,7 @@ namespace AppsTracker.DAL.Service
             {
                 var query = context.Set<T>().AsQueryable();
                 foreach (var nav in navigations)
-                   query =  query.Include(nav);
+                    query = query.Include(nav);
                 return query.AsNoTracking().Where(filter).ToList();
             }
         }
@@ -44,9 +44,9 @@ namespace AppsTracker.DAL.Service
             using (var context = new AppsEntities())
             {
                 newApp = false;
-
+                string appName = (!string.IsNullOrEmpty(appInfo.ProcessName) ? appInfo.ProcessName : !string.IsNullOrEmpty(appInfo.ProcessRealName) ? appInfo.ProcessRealName : appInfo.ProcessFileName);
                 Aplication app = context.Applications.FirstOrDefault(a => a.UserID == userID
-                                                        && a.Name == appInfo.ProcessName);
+                                                        && a.Name == appName);
 
                 if (app == null)
                 {
@@ -56,11 +56,13 @@ namespace AppsTracker.DAL.Service
                                                     appInfo.ProcessDescription,
                                                     appInfo.ProcessCompany,
                                                     appInfo.ProcessRealName) { UserID = userID };
+                    context.Applications.Add(app);
+
                     newApp = true;
                 }
 
                 Window window = context.Windows.FirstOrDefault(w => w.Title == windowTitle
-                                                     && w.ApplicationID == app.ApplicationID);
+                                                     && w.Application.ApplicationID == app.ApplicationID);
 
                 if (window == null)
                 {
@@ -101,16 +103,6 @@ namespace AppsTracker.DAL.Service
                 context.SaveChanges();
             }
         }
-
-        public Task AddAsync<T>(T item) where T : class
-        {
-            using (var context = new AppsEntities())
-            {
-                context.Set<T>().Add(item);
-                return context.SaveChangesAsync();
-            }
-        }
-
 
         public Uzer InitUzer(string userName)
         {
@@ -167,27 +159,6 @@ namespace AppsTracker.DAL.Service
                 return login;
             }
         }
-
-        public Task<IEnumerable<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> filter) where T : class
-        {
-            return Task<IEnumerable<T>>.Run(() => GetFiltered<T>(filter));
-        }
-
-        public Task<IEnumerable<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class
-        {
-            return Task<IEnumerable<T>>.Run(() => GetFiltered<T>(filter, navigations));
-        }
-
-        public Task<T> GetSingleAsync<T>(Expression<Func<T, bool>> filter) where T : class
-        {
-            return Task<T>.Run(() => GetSingle(filter));
-        }
-
-        public Task<T> GetSingleAsync<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class
-        {
-            return Task<T>.Run(() => GetSingle(filter, navigations));
-        }
-
 
         public DateTime GetStartDate(int userID)
         {

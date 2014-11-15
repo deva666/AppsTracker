@@ -943,10 +943,7 @@ namespace AppsTracker.ViewModels
 
         private void ChangeScreenshots()
         {
-            if (UserSettings.TakeScreenshots)
-                UserSettings.TakeScreenshots = false;
-            else
-                UserSettings.TakeScreenshots = true;
+            UserSettings.TakeScreenshots = !UserSettings.TakeScreenshots;
         }
 
         #endregion

@@ -24,11 +24,5 @@ namespace AppsTracker.DAL.Service
         T GetSingle<T>(Expression<Func<T, bool>> filter) where T : class;
         T GetSingle<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class;
         void Add<T>(T item) where T : class;
-
-        Task<IEnumerable<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> filter) where T : class;
-        Task<IEnumerable<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class;
-        Task<T> GetSingleAsync<T>(Expression<Func<T, bool>> filter) where T : class;
-        Task<T> GetSingleAsync<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class;
-        Task AddAsync<T>(T item) where T : class;
     }
 }

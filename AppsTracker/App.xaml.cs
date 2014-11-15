@@ -37,10 +37,11 @@ namespace AppsTracker
         #region Fields
 
         private bool _disposed;
+        private TrayIcon _trayIcon;
+
         private static ComponentContainer _container;
         private static SettingsProxy _uzerSetting;
         private static Setting _settings;
-        private TrayIcon _trayIcon;
 
         #endregion
 
@@ -199,26 +200,28 @@ namespace AppsTracker
 
                 if (context.UsageTypes.Count() != Enum.GetValues(typeof(UsageTypes)).Length)
                 {
+                    bool modified = false;
                     foreach (var type in Enum.GetNames(typeof(UsageTypes)))
                     {
-                        if (context.Usages.Include(u => u.UsageType).Any(u => u.UsageType.UType == type))
-                            continue;
-                        UsageType usageType = new UsageType() { UType = type };
-                        usageType = context.UsageTypes.Add(usageType);
-
+                        if (context.UsageTypes.Any(u => u.UType == type) == false)
+                        {
+                            modified = true;
+                            UsageType usageType = new UsageType() { UType = type };
+                            usageType = context.UsageTypes.Add(usageType);
+                        }
                     }
-                    context.Entry(_settings).State = System.Data.Entity.EntityState.Modified;
-                    context.SaveChanges();
+                    if (modified)
+                        context.SaveChanges();
                 }
             }
         }
 
-        private async void SaveSettings()
+        private void SaveSettings()
         {
             using (var context = new AppsEntities())
             {
                 context.Entry(_settings).State = System.Data.Entity.EntityState.Modified;
-                await context.SaveChangesAsync();
+                context.SaveChanges();
             }
         }
 
@@ -462,13 +465,13 @@ namespace AppsTracker
 
         public void Dispose()
         {
-            Dispose(true);            
+            Dispose(true);
         }
 
         private void Dispose(bool disposing)
         {
             if (!_disposed)
-            {             
+            {
                 this.DispatcherUnhandledException -= App_DispatcherUnhandledException;
                 if (_trayIcon != null) { _trayIcon.Dispose(); _trayIcon = null; }
                 _disposed = true;

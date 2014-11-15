@@ -266,6 +266,7 @@ namespace AppsTracker.ViewModels
         private void ChangeLoggingStatus()
         {
             UserSettings.LoggingEnabled = !UserSettings.LoggingEnabled;
+            (App.Current as App).ChangeTheme();
         }
 
         private void OpenPopup(object parameter)

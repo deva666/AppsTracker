@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppsTracker.DAL.Service;
 using AppsTracker.Models.EntityModels;
 
-namespace AppsTracker.DAL.Service
+namespace AppsTracker.Tests.Fakes.Service
 {
     public class AppsServiceMock : IAppsService
     {
@@ -23,31 +24,6 @@ namespace AppsTracker.DAL.Service
         public Models.EntityModels.Usage InitLogin(int userId)
         {
             return new Models.EntityModels.Usage() { UserID = userId };
-        }
-
-        public Task<IEnumerable<T>> GetFilteredAsync<T>(System.Linq.Expressions.Expression<Func<T, bool>> filter) where T : class
-        {
-            return Task<IEnumerable<T>>.Run(() => new List<T>().AsEnumerable());
-        }
-
-        public Task<IEnumerable<T>> GetFilteredAsync<T>(System.Linq.Expressions.Expression<Func<T, bool>> filter, params System.Linq.Expressions.Expression<Func<T, object>>[] navigations) where T : class
-        {
-            return Task<IEnumerable<T>>.Run(() => new List<T>().AsEnumerable());
-        }
-
-        public Task<T> GetSingleAsync<T>(System.Linq.Expressions.Expression<Func<T, bool>> filter) where T : class
-        {
-            return Task<T>.Run(() => { return Activator.CreateInstance<T>(); });
-        }
-
-        public Task<T> GetSingleAsync<T>(System.Linq.Expressions.Expression<Func<T, bool>> filter, params System.Linq.Expressions.Expression<Func<T, object>>[] navigations) where T : class
-        {
-            return Task<T>.Run(() => { return Activator.CreateInstance<T>(); });
-        }
-
-        public Task AddAsync<T>(T item) where T : class
-        {
-            return Task.Delay(0);
         }
 
         public IEnumerable<T> GetFiltered<T>(System.Linq.Expressions.Expression<Func<T, bool>> filter) where T : class

@@ -11,6 +11,7 @@ using AppsTracker.DAL.Service;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.MVVM;
 using AppsTracker.Common.Utils;
+using AppsTracker.DAL;
 
 namespace AppsTracker.Logging
 {
@@ -18,20 +19,21 @@ namespace AppsTracker.Logging
     {
         private bool _isLoggingEnabled;
 
+        private string _currentWindowTitle;
+
         private Log _currentLog;
 
         private LazyInit<Timer> _screenshotTimer;
         private LazyInit<IHook<WinHookArgs>> _winHook;
         private LazyInit<IHook<KeyboardHookArgs>> _keyboardHook;
+        private LazyInit<System.Threading.Timer> _windowCheckTimer;
 
-        private IAppsService _service;
         private ISettings _settings;
 
         public WindowLogger(ISettings settings)
         {
             Ensure.NotNull(settings);
 
-            _service = ServiceFactory.Get<IAppsService>();
             _settings = settings;
 
             Init();
@@ -45,20 +47,23 @@ namespace AppsTracker.Logging
 
             _winHook = new LazyInit<IHook<WinHookArgs>>(() => new WinHook(),
                                                                 w => w.HookProc += WindowChanged,
-                                                                w => w.HookProc -= WindowChanged)
-                                                                {
-                                                                    Enabled = _settings.LoggingEnabled
-                                                                };
+                                                                w => w.HookProc -= WindowChanged);
+
             _keyboardHook = new LazyInit<IHook<KeyboardHookArgs>>(() => new KeyBoardHook(),
                                                                          k => k.HookProc += KeyPressed,
                                                                          k => k.HookProc -= KeyPressed);
+
             _screenshotTimer = new LazyInit<Timer>(() => new Timer()
                                                              {
                                                                  AutoReset = true,
                                                                  Interval = _settings.TimerInterval
                                                              },
-                                                             t => t.Elapsed += ScreenshotTick,
-                                                             t => t.Elapsed -= ScreenshotTick);
+                                                             t => { t.Enabled = true; t.Elapsed += ScreenshotTick; },
+                                                             t => { t.Enabled = false; t.Elapsed -= ScreenshotTick; });
+
+            _windowCheckTimer = new LazyInit<System.Threading.Timer>(() => new System.Threading.Timer(s => App.Current.Dispatcher.Invoke(CheckWindowTitle))
+                                                                        , t => t.Change(500, 500)
+                                                                        , t => t.Dispose());
 
         }
 
@@ -68,6 +73,15 @@ namespace AppsTracker.Logging
                 return;
 
             await AddScreenshot();
+        }
+
+        private void CheckWindowTitle()
+        {
+            if (_isLoggingEnabled == false)
+                return;
+
+            if (_currentWindowTitle != WindowHelper.GetActiveWindowName())
+                NewLogArrived(WindowHelper.GetActiveWindowName(), WindowHelper.GetActiveWindowAppInfo());
         }
 
         private void KeyPressed(object sender, KeyboardHookArgs e)
@@ -141,11 +155,23 @@ namespace AppsTracker.Logging
             if (e.AppInfo == null || string.IsNullOrEmpty(e.AppInfo.ProcessName) || _isLoggingEnabled == false)
                 return;
 
+            NewLogArrived(e.WindowTitle, e.AppInfo);
+        }
+
+        private void NewLogArrived(string windowTitle, IAppInfo appInfo)
+        {
+            if (appInfo == null)
+            {
+                SaveOldLog();
+                return;
+            }
+
             bool newApp;
-            AddLog();
-            _currentLog = _service.CreateNewLog(e.WindowTitle, Globals.UsageID, Globals.UserID, e.AppInfo, out newApp);
+            SaveOldLog();
+            _currentLog = CreateNewLog(windowTitle, Globals.UsageID, Globals.UserID, appInfo, out newApp);
+            _currentWindowTitle = windowTitle;
             if (newApp)
-                NewAppAdded(e.AppInfo);
+                NewAppAdded(appInfo);
         }
 
         private async Task AddScreenshot()
@@ -162,19 +188,28 @@ namespace AppsTracker.Logging
             await dbSizeAsync.ConfigureAwait(true); //check the DB size, this methods fires an event if near the maximum allowed size
         }
 
-        private void AddLog()
+        private void SaveOldLog()
         {
             if (_currentLog != null)
             {
                 _currentLog.Finish();
-                _service.Add<Log>(_currentLog);
+                using (var context = new AppsEntities())
+                {
+                    context.Entry<Log>(_currentLog).State = System.Data.Entity.EntityState.Added;
+                    context.SaveChanges();
+                }
+                _currentLog = null;
             }
         }
 
         private void NewAppAdded(IAppInfo appInfo)
         {
-            var newApp = _service.GetSingle<Aplication>(a => a.Name == appInfo.ProcessName, a => a.Windows);
-            Mediator.NotifyColleagues(MediatorMessages.ApplicationAdded, newApp);
+            using (var context = new AppsEntities())
+            {
+                var name = !string.IsNullOrEmpty(appInfo.ProcessName) ? appInfo.ProcessName.Truncate(250) : !string.IsNullOrEmpty(appInfo.ProcessRealName) ? appInfo.ProcessRealName.Truncate(250) : appInfo.ProcessFileName.Truncate(250);
+                var newApp = context.Applications.First(a => a.Name == name);
+                Mediator.NotifyColleagues(MediatorMessages.ApplicationAdded, newApp);
+            }
         }
 
         public void SettingsChanged(ISettings settings)
@@ -187,15 +222,18 @@ namespace AppsTracker.Logging
         {
             _keyboardHook.Enabled = (_settings.EnableKeylogger && _settings.LoggingEnabled);
             _screenshotTimer.Enabled = (_settings.TakeScreenshots && _settings.LoggingEnabled);
+            _windowCheckTimer.Enabled = _settings.LoggingEnabled;
+
             if ((_settings.TakeScreenshots && _settings.LoggingEnabled) && _settings.TimerInterval != _screenshotTimer.Component.Interval)
                 _screenshotTimer.Component.Interval = _settings.TimerInterval;
+
             _isLoggingEnabled = _winHook.Enabled = _settings.LoggingEnabled;
         }
 
         private void StopLogging()
         {
             _isLoggingEnabled = false;
-            AddLog();
+            SaveOldLog();
             _currentLog = null;
         }
 
@@ -213,7 +251,9 @@ namespace AppsTracker.Logging
         {
             _keyboardHook.Enabled =
                 _screenshotTimer.Enabled =
-                    _winHook.Enabled = false;
+                    _windowCheckTimer.Enabled =
+                        _winHook.Enabled = false;
+
             StopLogging();
         }
 
@@ -225,6 +265,43 @@ namespace AppsTracker.Logging
         public void SetKeyboardHookEnabled(bool enabled)
         {
             _keyboardHook.CallOn(k => k.EnableHook(enabled));
+        }
+
+        private Log CreateNewLog(string windowTitle, int usageID, int userID, IAppInfo appInfo, out bool newApp)
+        {
+            using (var context = new AppsEntities())
+            {
+                newApp = false;
+                string appName = (!string.IsNullOrEmpty(appInfo.ProcessName) ? appInfo.ProcessName : !string.IsNullOrEmpty(appInfo.ProcessRealName) ? appInfo.ProcessRealName : appInfo.ProcessFileName);
+                Aplication app = context.Applications.FirstOrDefault(a => a.UserID == userID
+                                                        && a.Name == appName);
+
+                if (app == null)
+                {
+                    app = new Aplication(appInfo.ProcessName,
+                                                    appInfo.ProcessFileName,
+                                                    appInfo.ProcessVersion,
+                                                    appInfo.ProcessDescription,
+                                                    appInfo.ProcessCompany,
+                                                    appInfo.ProcessRealName) { UserID = userID };
+                    context.Applications.Add(app);
+
+                    newApp = true;
+                }
+
+                Window window = context.Windows.FirstOrDefault(w => w.Title == windowTitle
+                                                     && w.Application.ApplicationID == app.ApplicationID);
+
+                if (window == null)
+                {
+                    window = new Window(windowTitle) { Application = app };
+                    context.Windows.Add(window);
+                }
+
+                context.SaveChanges();
+
+                return new Log(window.WindowID, usageID);
+            }
         }
     }
 }

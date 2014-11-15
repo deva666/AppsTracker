@@ -19,6 +19,7 @@ namespace AppsTracker.Logging
             _components.Add(new UsageLogger(settings));
             _components.Add(new BlockLogger());
             _components.Add(new EmailService(settings));
+            _components.Add(new LogCleaner(settings));
         }
 
         private void OnAll(Action<IComponent> action)
@@ -30,13 +31,6 @@ namespace AppsTracker.Logging
         private void OnAllParallel(Action<IComponent> action)
         {
             Parallel.ForEach<IComponent>(_components, action);
-        }
-
-        public void OnSingle(Type type, Action<IComponent> action)
-        {
-            var single = _components.FirstOrDefault(c => c.GetType() == type);
-            if (single != null)
-                action(single);
         }
 
         public void SettingsChanging(ISettings settings)

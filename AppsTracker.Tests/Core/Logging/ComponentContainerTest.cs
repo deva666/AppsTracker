@@ -15,6 +15,7 @@ using AppsTracker.Models.Proxy;
 using AppsTracker.Models.Proxy.Fakes;
 using AppsTracker.DAL.Service;
 using AppsTracker.DAL.Service.Fakes;
+using AppsTracker.Tests.Fakes.Service;
 
 
 

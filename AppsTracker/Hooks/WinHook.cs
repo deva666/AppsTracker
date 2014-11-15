@@ -21,9 +21,9 @@ namespace AppsTracker.Hooks
 
         public event EventHandler<WinHookArgs> HookProc;
 
-        WinHookCallBack _winHookCallBack;
+        private WinHookCallBack _winHookCallBack;
 
-        IntPtr _hookID = IntPtr.Zero;
+        private IntPtr _hookID = IntPtr.Zero;
 
         #endregion
 
@@ -49,26 +49,7 @@ namespace AppsTracker.Hooks
 
         #region ClassMethods
 
-        //public WinHookArgs GetWinEventArgs()
-        //{
-        //    IntPtr hWnd = WinAPI.GetForegroundWindow();
-        //    return new WinHookArgs(GetActiveWindowName(), GetProcess(hWnd));
-        //}
-
-        //public string GetActiveWindowName()
-        //{
-        //    IntPtr foregroundWindow = WinAPI.GetForegroundWindow();
-        //    StringBuilder windowTitle = new StringBuilder(WinAPI.GetWindowTextLength(foregroundWindow) + 1);
-        //    if (WinAPI.GetWindowText(foregroundWindow, windowTitle, windowTitle.Capacity) > 0)
-        //    {
-        //        if (string.IsNullOrEmpty(windowTitle.ToString().Trim()))
-        //            return "No Title";
-        //        return windowTitle.ToString();
-        //    }
-        //    return "No Title";
-        //}
-
-        private Process GetProcess(IntPtr hWnd)
+        private Process GetProcessFromHandle(IntPtr hWnd)
         {
             uint processID = 0;
             if (hWnd != IntPtr.Zero)
@@ -87,18 +68,15 @@ namespace AppsTracker.Hooks
 
         private void WinHookCallback(IntPtr hWinEventHook, uint eventType, IntPtr hWnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
-            if (!_isHookEnabled)
+            if (!_isHookEnabled || hWnd == IntPtr.Zero)
                 return;
 
-            if (hWnd != IntPtr.Zero)
-            {
-                StringBuilder windowTitleBuilder = new StringBuilder(WinAPI.GetWindowTextLength(hWnd) + 1);
-                WinAPI.GetWindowText(hWnd, windowTitleBuilder, windowTitleBuilder.Capacity);
-                var process = GetProcess(hWnd);
-                var title = string.IsNullOrEmpty(windowTitleBuilder.ToString()) ? "No Title" : windowTitleBuilder.ToString();
-                IAppInfo appInfo = AppInfo.GetAppInfo(process);
-                HookProc.InvokeSafely<WinHookArgs>(this, new WinHookArgs(title, appInfo));
-            }
+            StringBuilder windowTitleBuilder = new StringBuilder(WinAPI.GetWindowTextLength(hWnd) + 1);
+            WinAPI.GetWindowText(hWnd, windowTitleBuilder, windowTitleBuilder.Capacity);
+            var process = GetProcessFromHandle(hWnd);
+            var title = string.IsNullOrEmpty(windowTitleBuilder.ToString()) ? "No Title" : windowTitleBuilder.ToString();
+            IAppInfo appInfo = AppInfo.GetAppInfo(process);
+            HookProc.InvokeSafely<WinHookArgs>(this, new WinHookArgs(title, appInfo));
         }
 
         #endregion

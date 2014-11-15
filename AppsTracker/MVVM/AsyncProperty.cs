@@ -1,7 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +18,7 @@ namespace AppsTracker.MVVM
         private Func<T> _getter;
 
         private CancellationTokenSource _tokenSource = new CancellationTokenSource();
-        
+
         private Task<T> _task;
 
         public Task<T> Task
@@ -52,8 +57,6 @@ namespace AppsTracker.MVVM
 
         public void Reload()
         {
-            if (_task != null && _task.Status == TaskStatus.Running)
-                _tokenSource.Cancel();            
             ScheduleWork();
         }
 
@@ -68,7 +71,7 @@ namespace AppsTracker.MVVM
             try
             {
                 _host.Working = true;
-                _result = await task.ConfigureAwait(false);                
+                _result = await task.ConfigureAwait(false);
             }
             catch
             {
