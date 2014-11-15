@@ -1,12 +1,20 @@
-﻿using System;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+
 using AppsTracker.Controls;
 using AppsTracker.MVVM;
-using AppsTracker.Utils;
 
 
 namespace AppsTracker.ViewModels

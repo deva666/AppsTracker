@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.ComponentModel.DataAnnotations;
-using System.Data.Entity.ModelConfiguration.Conventions;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
 using System.Configuration;
-using System.Diagnostics;
+using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 using AppsTracker.Models.EntityModels;
 
@@ -19,7 +20,7 @@ namespace AppsTracker.DAL
         private static string _connectionString = GetConnectionString();
 
         public static string ConnectionString { get { return _connectionString; } }
-        
+
         private static string GetConnectionString()
         {
             var connections = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).ConnectionStrings.ConnectionStrings["AppsEntities"];
@@ -32,16 +33,16 @@ namespace AppsTracker.DAL
         public AppsEntities()
             : base(_connectionString)
         {
-            //this.Configuration.LazyLoadingEnabled = false;
-            //this.Configuration.ProxyCreationEnabled = false;
+            this.Configuration.LazyLoadingEnabled = false;
+            this.Configuration.ProxyCreationEnabled = false;
 #if DEBUG
-           Database.Log = FlushSql;
+            Database.Log = FlushSql;
 #endif
         }
 
         private void FlushSql(string s)
         {
-           // Debug.WriteLine(s);
+            // Debug.WriteLine(s);
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

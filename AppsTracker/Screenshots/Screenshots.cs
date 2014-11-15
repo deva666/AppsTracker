@@ -1,12 +1,17 @@
-﻿using System;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
 using System.IO;
-using AppsTracker.Logging;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Linq;
+
 using AppsTracker.Controls;
 using AppsTracker.Models.EntityModels;
 

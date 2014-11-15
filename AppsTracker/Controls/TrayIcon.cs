@@ -1,7 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
 using System.Windows.Forms;
 
 namespace AppsTracker.Controls
@@ -49,7 +54,7 @@ namespace AppsTracker.Controls
 
         public void Dispose()
         {
-            Dispose(true);            
+            Dispose(true);
         }
 
         private void Dispose(bool disposing)

@@ -1,11 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
 
+using System;
+using System.Collections.Generic;
+
+using AppsTracker.DAL.Service;
 using AppsTracker.Models.ChartModels;
 using AppsTracker.MVVM;
-using AppsTracker.DAL.Service;
 
 namespace AppsTracker.Pages.ViewModels
 {
@@ -63,6 +69,6 @@ namespace AppsTracker.Pages.ViewModels
         private IEnumerable<DailyUsedAppsSeries> GetContent()
         {
             return _service.GetAppsUsageSeries(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
-        }        
+        }
     }
 }

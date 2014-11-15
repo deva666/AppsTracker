@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Threading;
 
 using AppsTracker.Models.EntityModels;
@@ -50,7 +54,7 @@ namespace AppsTracker
                     return string.Empty;
             }
         }
-     
+
         public static bool ItemExists(this DbSet<AppsToBlock> appsToBlock, Uzer uzer, Aplication aplication)
         {
             return (from a in appsToBlock
@@ -75,7 +79,7 @@ namespace AppsTracker
 
         public static LoggingStatus ConvertToLoggingStatus(this bool boolean)
         {
-            if (boolean) 
+            if (boolean)
                 return LoggingStatus.Running;
             else
                 return LoggingStatus.Stopped;

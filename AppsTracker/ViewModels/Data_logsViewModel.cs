@@ -1,16 +1,24 @@
-﻿using System;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Data;
+using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
 
-using AppsTracker.MVVM;
-using AppsTracker.Models.EntityModels;
-using AppsTracker.Models.ChartModels;
 using AppsTracker.DAL.Service;
+using AppsTracker.Models.ChartModels;
+using AppsTracker.Models.EntityModels;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.Pages.ViewModels
 {
@@ -107,8 +115,8 @@ namespace AppsTracker.Pages.ViewModels
                 _date1 = value;
                 PropertyChanging("Date1");
                 if (SelectedApplication != null)
-                    _topAppsList.Reload();    
-                
+                    _topAppsList.Reload();
+
             }
         }
         public DateTime Date2
@@ -122,7 +130,7 @@ namespace AppsTracker.Pages.ViewModels
                 _date2 = value;
                 PropertyChanging("Date2");
                 if (SelectedApplication != null)
-                    _topAppsList.Reload();  
+                    _topAppsList.Reload();
             }
         }
 

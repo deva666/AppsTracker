@@ -1,8 +1,14 @@
-﻿using System;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using AppsTracker.Common.Utils;
 
@@ -10,7 +16,7 @@ namespace AppsTracker.Utils
 {
     public sealed class ParallelFilter
     {
-        public static List<T[]> PartitionEnumerable<T>(IEnumerable<T> items) 
+        public static List<T[]> PartitionEnumerable<T>(IEnumerable<T> items)
         {
             Ensure.NotNull(items, "items");
 

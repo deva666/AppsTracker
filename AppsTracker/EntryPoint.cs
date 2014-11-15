@@ -1,13 +1,21 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
 using System;
-using System.Text;
-using AppsTracker.Controls;
-using System.Configuration;
-using AppsTracker.Utils;
-using AppsTracker.DAL;
-using System.Linq;
 using System.Data.Entity.Core;
 using System.IO;
+using System.Linq;
+
+using AppsTracker.Controls;
+using AppsTracker.DAL;
+using AppsTracker.Utils;
+
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace AppsTracker
 {

@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
 using AppsTracker.MVVM;
 using AppsTracker.Pages.ViewModels;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class DataHostViewModel : HostViewModel 
+    internal sealed class DataHostViewModel : HostViewModel
     {
         public override string Title
         {
@@ -19,7 +20,7 @@ namespace AppsTracker.ViewModels
                 return "data";
             }
         }
-      
+
         public DataHostViewModel()
         {
             this.Register<Data_logsViewModel>(() => new Data_logsViewModel());

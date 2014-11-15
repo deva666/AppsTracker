@@ -1,9 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppsTracker.MVVM
 {
@@ -12,6 +16,6 @@ namespace AppsTracker.MVVM
         public override string Title { get { return "About"; } }
         public Version AppVersion { get { return Assembly.GetExecutingAssembly().GetName().Version; } }
         public string AppName { get { return Constants.APP_NAME; } }
-        public string License { get { if (App.UzerSetting.Licence) return "Licensed version."; else return "Trial version."; } }        
+        public string License { get { if (App.UzerSetting.Licence) return "Licensed version."; else return "Trial version."; } }
     }
 }

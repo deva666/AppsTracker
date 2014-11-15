@@ -1,6 +1,14 @@
-﻿using Microsoft.Win32;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -9,14 +17,15 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+
 using AppsTracker.Controls;
-using AppsTracker.MVVM;
-using AppsTracker.Encryption;
-using System.Collections.ObjectModel;
-using AppsTracker.Models.EntityModels;
 using AppsTracker.DAL;
+using AppsTracker.Encryption;
+using AppsTracker.Models.EntityModels;
 using AppsTracker.Models.Proxy;
-using System.Security;
+using AppsTracker.MVVM;
+
+using Microsoft.Win32;
 
 namespace AppsTracker.ViewModels
 {
@@ -24,40 +33,40 @@ namespace AppsTracker.ViewModels
     {
         #region Fields
 
-       private bool _popupIntervalIsOpen = false;
-       private bool _popupUsersToLogIsOpen = false;
-       private bool _popupBlockedProcessesIsOpen = false;
-       private bool _popupPasswordIsOpen = false;
-       private bool _popupEmailReportsIsOpen = false;
-       private bool _popupFilewatcherFilterIsOpen = false;
-       private bool _popupEmailIntervalIsOpen = false;
-       private bool _popupOldLogsIsOpen = false;
-       private bool _popupidleTimerIsOpen = false;
+        private bool _popupIntervalIsOpen = false;
+        private bool _popupUsersToLogIsOpen = false;
+        private bool _popupBlockedProcessesIsOpen = false;
+        private bool _popupPasswordIsOpen = false;
+        private bool _popupEmailReportsIsOpen = false;
+        private bool _popupFilewatcherFilterIsOpen = false;
+        private bool _popupEmailIntervalIsOpen = false;
+        private bool _popupOldLogsIsOpen = false;
+        private bool _popupidleTimerIsOpen = false;
 
-       private string _selectedUserName = Environment.UserName;
+        private string _selectedUserName = Environment.UserName;
 
-       private Uzer _selectedUser;
-       private AppsToBlockProxy _selectedAppToBlock;
+        private Uzer _selectedUser;
+        private AppsToBlockProxy _selectedAppToBlock;
 
-       private IEnumerable<AppsToBlockProxy> _appsToBlockCollection;
-       private IEnumerable<Uzer> _allUsersCollection;
+        private IEnumerable<AppsToBlockProxy> _appsToBlockCollection;
+        private IEnumerable<Uzer> _allUsersCollection;
 
-       private ICommand _changeStealthModeCommand;
-       private ICommand _changeScreenshotIntervalCommand;
-       private ICommand _showPopUpCommand;
-       private ICommand _showFolderBrowserDialogCommand;
-       private ICommand _removeProcessesFromBlockedCommand;
-       private ICommand _setPasswordCommand;
-       private ICommand _setMailConfCommand;
-       private ICommand _sendTestEmailCommand;
-       private ICommand _changeEmailIntervalCommand;
-       private ICommand _showAboutWindowCommand;
-       private ICommand _changeOldLogsDaysCommand;
-       private ICommand _changeThemeCommand;
-       private ICommand _setStartupCommand;
-       private ICommand _changeIdleTimerCommand;
-       private ICommand _runDBCleanerCommand;
-       private ICommand _changeScreenshotsCommand;
+        private ICommand _changeStealthModeCommand;
+        private ICommand _changeScreenshotIntervalCommand;
+        private ICommand _showPopUpCommand;
+        private ICommand _showFolderBrowserDialogCommand;
+        private ICommand _removeProcessesFromBlockedCommand;
+        private ICommand _setPasswordCommand;
+        private ICommand _setMailConfCommand;
+        private ICommand _sendTestEmailCommand;
+        private ICommand _changeEmailIntervalCommand;
+        private ICommand _showAboutWindowCommand;
+        private ICommand _changeOldLogsDaysCommand;
+        private ICommand _changeThemeCommand;
+        private ICommand _setStartupCommand;
+        private ICommand _changeIdleTimerCommand;
+        private ICommand _runDBCleanerCommand;
+        private ICommand _changeScreenshotsCommand;
 
         #endregion
 
@@ -835,15 +844,11 @@ namespace AppsTracker.ViewModels
                 SetYahooConf();
         }
 
-        private void SendTestEmailAsync()
+        private async void SendTestEmailAsync()
         {
-            Task task = Task.Factory.StartNew(SendTestEmail);
             try
             {
-                using (var wait = new WaitCursor())
-                {
-                    task.Wait();
-                }
+                await Task.Factory.StartNew(SendTestEmail);
                 ShowMessageWindow("Email sent successfully.");
             }
             catch (Exception ex)

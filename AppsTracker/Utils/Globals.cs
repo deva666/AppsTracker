@@ -1,11 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
 using System.IO;
 using System.Linq;
-using AppsTracker.Models.EntityModels;
-using AppsTracker.DAL;
 using System.Threading.Tasks;
-using AppsTracker.DAL.Service;
+
+using AppsTracker.DAL;
+using AppsTracker.Models.EntityModels;
 
 namespace AppsTracker
 {
@@ -15,8 +22,6 @@ namespace AppsTracker
 
         private static DateTime _date1;
         private static DateTime _date2;
-
-        private static IAppsService _service = ServiceFactory.Get<IAppsService>();
 
         public static bool DBSizeOperational { get; private set; }
         public static int UserID { get; private set; }
@@ -74,7 +79,11 @@ namespace AppsTracker
 
         private static DateTime GetFirstDate()
         {
-            return _service.GetStartDate(SelectedUserID);
+            using (var context = new AppsEntities())
+            {
+                return context.Usages.Count(u => u.UserID == UserID) == 0 ? DateTime.Now.Date
+                    : context.Usages.Where(u => u.UserID == UserID).Select(u => u.UsageStart).Min();
+            }
         }
 
         public static void ChangeUser(Uzer uzer)

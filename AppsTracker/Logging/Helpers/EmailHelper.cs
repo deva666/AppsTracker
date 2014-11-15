@@ -1,6 +1,13 @@
-﻿using System;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -10,7 +17,6 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Web.UI;
 
-using AppsTracker.DAL;
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.EntityModels;
 
@@ -163,7 +169,7 @@ namespace AppsTracker.Logging
             var logsTask = GetLogsByDateAsync();
             var usageTask = GetCurrentLoginAsync();
             await Task.WhenAll(logsTask, usageTask);
-            
+
             string emailBody = GenerateEmailBody(logsTask.Result, usageTask.Result);
             string attachment = await GetZipFile(logsTask.Result);
 

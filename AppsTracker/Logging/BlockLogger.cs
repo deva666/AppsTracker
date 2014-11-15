@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
 
-using AppsTracker.Common.Utils;
-using AppsTracker.DAL.Service;
+using System;
+using System.Linq;
+
+using AppsTracker.DAL;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.Models.Proxy;
 
@@ -17,11 +21,8 @@ namespace AppsTracker.Logging
 
         LazyInit<AppBlocker> _appBlocker;
 
-        IAppsService _service;
-
         public BlockLogger()
         {
-            _service = ServiceFactory.Get<IAppsService>();
             Init();
         }
 
@@ -30,8 +31,7 @@ namespace AppsTracker.Logging
             _appBlocker = new LazyInit<AppBlocker>(() => new AppBlocker()
                                                         , a => a.AppBlocked += AppBlocked
                                                         , a => a.AppBlocked -= AppBlocked);
-            var enabled = _service.GetFiltered<AppsToBlock>(a => a.UserID == Globals.UserID)
-                                                .Count() > 0;
+            var enabled = IsServiceEnabled();
 
             _appBlocker.Enabled = enabled;
         }
@@ -41,17 +41,29 @@ namespace AppsTracker.Logging
 
         }
 
+        private bool IsServiceEnabled()
+        {
+            using (var context = new AppsEntities())
+            {
+                return context.AppsToBlocks.Any(a => a.UserID == Globals.UserID);
+            }
+        }
+
         private void AppBlocked(object sender, AppBlockerEventArgs args)
         {
             if (_isLoggingEnabled == false)
                 return;
 
-            _service.Add<BlockedApp>(new BlockedApp()
+            using (var context = new AppsEntities())
             {
-                Date = DateTime.Now,
-                ApplicationID = args.Aplication.ApplicationID,
-                UserID = Globals.UserID
-            });
+                context.BlockedApps.Add(new BlockedApp()
+                {
+                    Date = DateTime.Now,
+                    ApplicationID = args.Aplication.ApplicationID,
+                    UserID = Globals.UserID
+                });
+                context.SaveChanges();
+            }
         }
 
         public void Dispose()
@@ -62,7 +74,7 @@ namespace AppsTracker.Logging
 
         public void SetComponentEnabled(bool enabled)
         {
-            _isLoggingEnabled = enabled;   
+            _isLoggingEnabled = enabled;
         }
     }
 }

@@ -1,13 +1,17 @@
-﻿using System;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Management;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
-using AppsTracker;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.Models.Proxy;
 using AppsTracker.MVVM;
@@ -188,7 +192,7 @@ namespace AppsTracker.Logging
 
         public void SetComponentEnabled(bool enabled)
         {
-            
+
         }
     }
 

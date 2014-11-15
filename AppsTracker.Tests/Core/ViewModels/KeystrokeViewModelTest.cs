@@ -1,8 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
 using AppsTracker.DAL.Service;
-using AppsTracker.Models.EntityModels;
-using AppsTracker.MVVM;
 using AppsTracker.Pages.ViewModels;
 using AppsTracker.Tests.Fakes.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

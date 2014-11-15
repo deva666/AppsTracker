@@ -1,12 +1,17 @@
-﻿using System;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
-using AppsTracker.MVVM;
 using AppsTracker.Models.EntityModels;
+using AppsTracker.MVVM;
 
 
 namespace AppsTracker.Pages.ViewModels
@@ -20,7 +25,7 @@ namespace AppsTracker.Pages.ViewModels
         public override string Title
         {
             get { return "Screenshots"; }
-        }   
+        }
 
         public IEnumerable<Screenshot> ScreenshotCollection { get { return _screenshotCollection; } }
         public ICommand CloseCommand { get { return new DelegateCommand(Close); } }
