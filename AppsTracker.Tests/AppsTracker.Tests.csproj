@@ -75,7 +75,7 @@
     <Compile Include="Core\Logging\ComponentContainerTest.cs" />
     <Compile Include="Core\Logging\LazyInitTest.cs" />
     <Compile Include="Core\MVVM\AsyncPropertyTest.cs" />
-    <Compile Include="Core\MVVM\UnitTest1.cs" />
+    <Compile Include="Core\MVVM\MediatorTest.cs" />
     <Compile Include="Core\ViewModels\MainViewModelTest.cs" />
     <Compile Include="Core\ViewModels\KeystrokeViewModelTest.cs" />
     <Compile Include="Core\ViewModels\ScreenshotViewModelTest.cs" />
