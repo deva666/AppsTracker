@@ -105,9 +105,7 @@ namespace AppsTracker
                 if (size >= 3900m)
                 {
                     DBSizeOperational = false;
-                    var handler = System.Threading.Volatile.Read(ref DBCleaningRequired);
-                    if (handler != null)
-                        handler(typeof(Globals), EventArgs.Empty);
+                    DBCleaningRequired.InvokeSafely(typeof(Globals), EventArgs.Empty);
                 }
                 else
                     DBSizeOperational = true;
@@ -122,7 +120,7 @@ namespace AppsTracker
 
         public static Task<decimal> GetDBSizeAsync()
         {
-            return Task<decimal>.Run(() => GetDBSize());
+            return Task<decimal>.Run(new Func<decimal>(GetDBSize));
         }
 
     }

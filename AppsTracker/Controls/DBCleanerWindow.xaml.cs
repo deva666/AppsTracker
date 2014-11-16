@@ -7,10 +7,14 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+
+using AppsTracker.DAL;
 
 
 namespace AppsTracker.Controls
@@ -71,17 +75,15 @@ namespace AppsTracker.Controls
             ScaleUnloaded();
         }
 
-        private void lblClean_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private async void lblClean_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            //int days;
-            //if (!int.TryParse(tbDays.Text, out days))
-            //    return;
-
-            //decimal beforeSize = Globals.GetDBSize();
-            //await DBCleaner.DeleteOldScreenshotsAsync(days,true);
-            //decimal afterSize = Globals.GetDBSize();
-            //MessageWindow msgWindow = new MessageWindow(string.Format("Freed {0} MB", beforeSize - afterSize));
-            //msgWindow.ShowDialog();
+            int days;
+            if (!int.TryParse(tbDays.Text, out days))
+                return;
+         
+            int count = await Task<int>.Run(() => DeleteOldScreenshots(days));          
+            MessageWindow msgWindow = new MessageWindow(string.Format("Deleted {0} screenshots", count));
+            msgWindow.ShowDialog();
             ScaleUnloaded();
         }
 
@@ -89,6 +91,17 @@ namespace AppsTracker.Controls
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private int DeleteOldScreenshots(int days)
+        {
+            using (var context = new AppsEntities())
+            {
+                DateTime dateTreshold = DateTime.Now.AddDays(-1d * days);
+                var oldScreenshots = context.Screenshots.Where(s => s.Date < dateTreshold).ToList();
+                context.Screenshots.RemoveRange(oldScreenshots);
+                return context.SaveChanges();
+            }
         }
     }
 }

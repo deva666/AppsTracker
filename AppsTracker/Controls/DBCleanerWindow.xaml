@@ -54,7 +54,8 @@
                  Margin="10"
                  HorizontalAlignment="Left"
                  MinWidth="40"
-                 PreviewTextInput="tbDays_PreviewTextInput"/>
+                 PreviewTextInput="tbDays_PreviewTextInput"
+                 MaxLength="3"/>
 
 
 

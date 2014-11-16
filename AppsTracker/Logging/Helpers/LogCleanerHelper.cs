@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 using AppsTracker.Common.Utils;
 using AppsTracker.DAL;
@@ -33,7 +34,7 @@ namespace AppsTracker.Logging
                 _days = value;
             }
         }
-        
+
         public LogCleanerHelper(int daysToDelete)
         {
             Days = daysToDelete;
@@ -86,26 +87,20 @@ namespace AppsTracker.Logging
         {
             using (var context = new AppsEntities())
             {
-                foreach (var window in context.Windows)
+                foreach (var window in context.Windows.Where(w => w.Logs.Count == 0))
                 {
-                    if (window.Logs.Count == 0)
-                    {
-                        if (!context.Windows.Local.Any(w => w.WindowID == window.WindowID))
-                            context.Windows.Attach(window);
-                        context.Windows.Remove(window);
-                    }
+                    if (!context.Windows.Local.Any(w => w.WindowID == window.WindowID))
+                        context.Windows.Attach(window);
+                    context.Windows.Remove(window);
                 }
 
                 context.SaveChanges();
 
-                foreach (var app in context.Applications)
+                foreach (var app in context.Applications.Where(a => a.Windows.Count == 0))
                 {
-                    if (app.Windows.Count == 0)
-                    {
-                        if (!context.Applications.Local.Any(a => a.ApplicationID == app.ApplicationID))
-                            context.Applications.Attach(app);
-                        context.Applications.Remove(app);
-                    }
+                    if (!context.Applications.Local.Any(a => a.ApplicationID == app.ApplicationID))
+                        context.Applications.Attach(app);
+                    context.Applications.Remove(app);
                 }
 
                 context.SaveChanges();

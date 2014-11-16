@@ -172,7 +172,7 @@ namespace AppsTracker
 
         void Globals_DBCleaningRequired(object sender, EventArgs e)
         {
-            //UzerSetting.TakeScreenshots = DataLogger.TakeScreenShots = false;
+            UzerSetting.TakeScreenshots = false;
 
             if (!UzerSetting.Stealth)
             {

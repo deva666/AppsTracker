@@ -75,9 +75,13 @@
     <Compile Include="Core\Logging\ComponentContainerTest.cs" />
     <Compile Include="Core\Logging\LazyInitTest.cs" />
     <Compile Include="Core\MVVM\AsyncPropertyTest.cs" />
+    <Compile Include="Core\MVVM\UnitTest1.cs" />
     <Compile Include="Core\ViewModels\MainViewModelTest.cs" />
     <Compile Include="Core\ViewModels\KeystrokeViewModelTest.cs" />
+    <Compile Include="Core\ViewModels\ScreenshotViewModelTest.cs" />
+    <Compile Include="DAL\Service\ServiceFactoryTest.cs" />
     <Compile Include="Fakes\Logging\DisposableMock.cs" />
+    <Compile Include="Fakes\MVVM\MediatorParamMock.cs" />
     <Compile Include="Fakes\MVVM\ViewModelMock.cs" />
     <Compile Include="Fakes\Service\AppServiceMock.cs" />
     <Compile Include="Fakes\Service\ChartServiceMock.cs" />

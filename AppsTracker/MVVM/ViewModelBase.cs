@@ -37,19 +37,6 @@ namespace AppsTracker.MVVM
             }
         }
 
-        public ViewModelBase()
-        {
-            Debug.WriteLine(string.Format("{0}, {1}, {2} Constructed", this.GetType().Name, this.GetType().FullName, this.GetHashCode()));
-        }
-
-        protected async Task LoadAsync<T>(Func<T> getter, Action<T> onComplete, bool captureContext = true)
-        {
-            Working = true;
-            T result = await Task<T>.Run(getter).ConfigureAwait(captureContext);
-            onComplete(result);
-            Working = false;
-        }
-
         public void Dispose()
         {
             Disposing();

@@ -17,8 +17,6 @@ namespace AppsTracker.MVVM
         private ViewModelBase _host;
         private Func<T> _getter;
 
-        private CancellationTokenSource _tokenSource = new CancellationTokenSource();
-
         private Task<T> _task;
 
         public Task<T> Task
@@ -62,7 +60,7 @@ namespace AppsTracker.MVVM
 
         private void ScheduleWork()
         {
-            _task = Task<T>.Factory.StartNew(_getter, _tokenSource.Token);
+            _task = Task<T>.Run(_getter);
             ObserveTask(_task);
         }
 

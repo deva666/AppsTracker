@@ -5014,30 +5014,6 @@
         <member name="P:AppsTracker.Models.Proxy.Fakes.ShimDummySettings.AllInstances.WindowOpenSetString">
             <summary>Sets the shim of DummySettings.set_WindowOpen(String value)</summary>
         </member>
-        <member name="T:AppsTracker.Models.Proxy.Fakes.ShimUzerProxy">
-            <summary>Shim type of AppsTracker.Models.Proxy.UzerProxy</summary>
-        </member>
-        <member name="M:AppsTracker.Models.Proxy.Fakes.ShimUzerProxy.#ctor">
-            <summary>Initializes a new shim instance</summary>
-        </member>
-        <member name="M:AppsTracker.Models.Proxy.Fakes.ShimUzerProxy.#ctor(AppsTracker.Models.Proxy.UzerProxy)">
-            <summary>Initializes a new shim for the given instance</summary>
-        </member>
-        <member name="M:AppsTracker.Models.Proxy.Fakes.ShimUzerProxy.BehaveAsCurrent">
-            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:AppsTracker.Models.Proxy.Fakes.ShimUzerProxy.BehaveAsNotImplemented">
-            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.Models.Proxy.Fakes.ShimUzerProxy.Behavior">
-            <summary>Assigns the behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:AppsTracker.Models.Proxy.Fakes.ShimUzerProxy.Constructor">
-            <summary>Sets the shim of UzerProxy.UzerProxy()</summary>
-        </member>
-        <member name="T:AppsTracker.Models.Proxy.Fakes.ShimUzerProxy.AllInstances">
-            <summary>Define shims for all instances members</summary>
-        </member>
         <member name="T:AppsTracker.Models.Proxy.Fakes.StubAppsToBlockProxy">
             <summary>Stub type of AppsTracker.Models.Proxy.AppsToBlockProxy</summary>
         </member>
@@ -5571,24 +5547,6 @@
         </member>
         <member name="P:AppsTracker.Models.Proxy.Fakes.StubISettings.atm::AppsTracker#Models#Proxy#ISettings#WindowOpen">
             <summary>Sets the stub of ISettings.get_WindowOpen()</summary>
-        </member>
-        <member name="T:AppsTracker.Models.Proxy.Fakes.StubUzerProxy">
-            <summary>Stub type of AppsTracker.Models.Proxy.UzerProxy</summary>
-        </member>
-        <member name="M:AppsTracker.Models.Proxy.Fakes.StubUzerProxy.#ctor">
-            <summary>Initializes a new instance</summary>
-        </member>
-        <member name="M:AppsTracker.Models.Proxy.Fakes.StubUzerProxy.InitializeStub">
-            <summary>Initializes a new instance of type StubUzerProxy</summary>
-        </member>
-        <member name="P:AppsTracker.Models.Proxy.Fakes.StubUzerProxy.CallBase">
-            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
-        </member>
-        <member name="P:AppsTracker.Models.Proxy.Fakes.StubUzerProxy.InstanceBehavior">
-            <summary>Gets or sets the instance behavior.</summary>
-        </member>
-        <member name="P:AppsTracker.Models.Proxy.Fakes.StubUzerProxy.InstanceObserver">
-            <summary>Gets or sets the instance observer.</summary>
         </member>
         <member name="T:AppsTracker.Models.Utils.Fakes.ShimDelegateCommand">
             <summary>Shim type of AppsTracker.Models.Utils.DelegateCommand</summary>

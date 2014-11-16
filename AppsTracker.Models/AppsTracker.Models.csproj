@@ -100,7 +100,6 @@
     <Compile Include="Proxy\DummySettings.cs" />
     <Compile Include="Proxy\IAppInfo.cs" />
     <Compile Include="Proxy\ISettings.cs" />
-    <Compile Include="Proxy\UzerProxy.cs" />
     <Compile Include="Utils\DelegateCommand.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\ObservableObject.cs" />
