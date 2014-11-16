@@ -18,16 +18,19 @@ namespace AppsTracker.Tests.Fakes.Service
     {
         public IEnumerable<T> GetFiltered<T>(System.Linq.Expressions.Expression<Func<T, bool>> filter) where T : class
         {
+            System.Threading.Thread.Sleep(500);
             return new List<T>();
         }
 
         public IEnumerable<T> GetFiltered<T>(System.Linq.Expressions.Expression<Func<T, bool>> filter, params System.Linq.Expressions.Expression<Func<T, object>>[] navigations) where T : class
         {
+            System.Threading.Thread.Sleep(500);
             return new List<T>();
         }
 
         public IList<AppsToBlock> AddToBlockedList(List<Aplication> apps, string username, int userID)
         {
+            System.Threading.Thread.Sleep(500);
             return new List<AppsToBlock>();
         }
     }

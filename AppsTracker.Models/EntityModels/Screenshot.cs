@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Input;
 using AppsTracker.Models.Utils;
@@ -101,7 +105,7 @@ namespace AppsTracker.Models.EntityModels
         }
 
         #region INotifyPropertyChanged Members
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
@@ -109,27 +113,27 @@ namespace AppsTracker.Models.EntityModels
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ScreenshotID { get; set; }
-       
+
         [Required]
         public System.DateTime Date { get; set; }
-        
+
         [Required]
         public int Width { get; set; }
-        
+
         [Required]
         public int Height { get; set; }
-        
+
         [Required]
         public int LogID { get; set; }
-        
+
         [Required]
         [Column(TypeName = "image")]
         [MaxLength]
         public byte[] Screensht { get; set; }
-        
+
         [Required]
         public double PopupHeight { get; set; }
-        
+
         [Required]
         public double PopupWidth { get; set; }
 

@@ -192,7 +192,6 @@
     <Compile Include="Controls\ImageView.xaml.cs">
       <DependentUpon>ImageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ISelectable.cs" />
     <Compile Include="Controls\KeystrokeViewer.xaml.cs">
       <DependentUpon>KeystrokeViewer.xaml</DependentUpon>
     </Compile>
@@ -237,7 +236,6 @@
       <DependentUpon>ScreenshotViewerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ScrollingContentControl.cs" />
-    <Compile Include="Controls\SelectableListView.cs" />
     <Compile Include="Exceptions\ILogger.cs" />
     <Compile Include="Hooks\EventArgs\KeyboardHookArgs.cs" />
     <Compile Include="Hooks\EventArgs\MouseHookArgs.cs" />
@@ -261,10 +259,8 @@
     <Compile Include="MVVM\ICommunicator.cs" />
     <Compile Include="MVVM\IMediator.cs" />
     <Compile Include="Utils\ConnectionConfig.cs" />
-    <Compile Include="Utils\DispatcherService.cs" />
     <Compile Include="Utils\ExtensionMethods.cs" />
     <Compile Include="Utils\Globals.cs" />
-    <Compile Include="Utils\ListViewBehavior.cs" />
     <Compile Include="Utils\ListViewItemScroller.cs" />
     <Compile Include="Utils\SettingsQueue.cs" />
     <Compile Include="Utils\Validation.cs" />
@@ -307,7 +303,6 @@
       <DependentUpon>EULAWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\FaderContentControl.cs" />
-    <Compile Include="Controls\FaderFrame.cs" />
     <Compile Include="Controls\FaderLabel.cs" />
     <Compile Include="Controls\FadingUC.xaml.cs">
       <DependentUpon>FadingUC.xaml</DependentUpon>

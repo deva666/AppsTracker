@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel;
 using System.Reflection;
+
 using AppsTracker.Models.Proxy;
 
 namespace AppsTracker.Models.EntityModels
@@ -106,7 +111,7 @@ namespace AppsTracker.Models.EntityModels
             this.EnableIdle = true;
             this.IdleTimer = 2 * 60 * 1000;
             this.FirstRun = true;
-            if(CreateScreenshotFolder())
+            if (CreateScreenshotFolder())
                 this.DefaultScreenshotSavePath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Screenshots");
             else
                 this.DefaultScreenshotSavePath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -120,7 +125,7 @@ namespace AppsTracker.Models.EntityModels
                     System.IO.Directory.CreateDirectory(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Screenshots"));
                 return true;
             }
-            catch 
+            catch
             {
                 return false;
             }

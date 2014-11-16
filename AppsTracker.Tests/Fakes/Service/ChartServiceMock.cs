@@ -10,94 +10,112 @@ using System;
 using System.Collections.Generic;
 
 using AppsTracker.DAL.Service;
+using AppsTracker.Models.ChartModels;
 
 namespace AppsTracker.Tests.Fakes.Service
 {
     public class ChartServiceMock : IChartService
     {
-        public IEnumerable<Models.ChartModels.TopAppsModel> GetLogTopApps(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<TopAppsModel> GetLogTopApps(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            System.Threading.Thread.Sleep(500);
+            return new List<TopAppsModel>();
         }
 
-        public IEnumerable<Models.ChartModels.TopWindowsModel> GetLogTopWindows(int userID, string appName, IEnumerable<DateTime> dates)
+        public IEnumerable<TopWindowsModel> GetLogTopWindows(int userID, string appName, IEnumerable<DateTime> dates)
         {
-            throw new NotImplementedException();
+            System.Threading.Thread.Sleep(500);
+            return new List<TopWindowsModel>();
         }
 
-        public IEnumerable<Models.ChartModels.DailyWindowSeries> GetDailyWindowSeries(int userID, string appName, IEnumerable<string> selectedWindows, IEnumerable<DateTime> days)
+        public IEnumerable<DailyWindowSeries> GetDailyWindowSeries(int userID, string appName, IEnumerable<string> selectedWindows, IEnumerable<DateTime> days)
         {
-            throw new NotImplementedException();
+            System.Threading.Thread.Sleep(500);
+            return new List<DailyWindowSeries>();
         }
 
-        public IEnumerable<Models.ChartModels.DayViewModel> GetDayView(int userID, DateTime dateFrom)
+        public IEnumerable<DayViewModel> GetDayView(int userID, DateTime dateFrom)
         {
-            throw new NotImplementedException();
+            System.Threading.Thread.Sleep(500);
+            return new List<DayViewModel>();
         }
 
-        public IEnumerable<Models.ChartModels.TopAppsModel> GetDayTopApps(int userID, DateTime dateFrom)
+        public IEnumerable<TopAppsModel> GetDayTopApps(int userID, DateTime dateFrom)
         {
-            throw new NotImplementedException();
+            System.Threading.Thread.Sleep(500);
+            return new List<TopAppsModel>();
         }
 
-        public IEnumerable<Models.ChartModels.TopWindowsModel> GetDayTopWindows(int userID, string appName, DateTime dateFrom)
+        public IEnumerable<TopWindowsModel> GetDayTopWindows(int userID, string appName, DateTime dateFrom)
         {
-            throw new NotImplementedException();
+            System.Threading.Thread.Sleep(500);
+            return new List<TopWindowsModel>();
         }
 
-        public IEnumerable<Models.ChartModels.DailyUsageTypeSeries> GetDailySeries(int userID, DateTime dateFrom)
+        public IEnumerable<DailyUsageTypeSeries> GetDailySeries(int userID, DateTime dateFrom)
         {
-            throw new NotImplementedException();
+            System.Threading.Thread.Sleep(500);
+            return new List<DailyUsageTypeSeries>();
         }
 
-        public IEnumerable<Models.ChartModels.MostUsedAppModel> GetMostUsedApps(int userID, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<MostUsedAppModel> GetMostUsedApps(int userID, DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            System.Threading.Thread.Sleep(500);
+            return new List<MostUsedAppModel>();
         }
 
-        public IEnumerable<Models.ChartModels.DailyAppModel> GetSingleMostUsedApp(int userID, string appName, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<DailyAppModel> GetSingleMostUsedApp(int userID, string appName, DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            System.Threading.Thread.Sleep(500);
+            return new List<DailyAppModel>();
         }
 
-        public IEnumerable<Models.ChartModels.KeystrokeModel> GetKeystrokes(int userID, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<KeystrokeModel> GetKeystrokes(int userID, DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            System.Threading.Thread.Sleep(500);
+            return new List<KeystrokeModel>();
         }
 
-        public IEnumerable<Models.ChartModels.DailyKeystrokeModel> GetKeystrokesByApp(int userID, string appName, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<DailyKeystrokeModel> GetKeystrokesByApp(int userID, string appName, DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            System.Threading.Thread.Sleep(500);
+            return new List<DailyKeystrokeModel>();
         }
 
-        public IEnumerable<Models.ChartModels.DailyUsedAppsSeries> GetAppsUsageSeries(int userID, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<DailyUsedAppsSeries> GetAppsUsageSeries(int userID, DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            System.Threading.Thread.Sleep(500);
+            return new List<DailyUsedAppsSeries>();
         }
 
-        public IEnumerable<Models.ChartModels.ScreenshotModel> GetScreenshots(int userID, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<ScreenshotModel> GetScreenshots(int userID, DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            System.Threading.Thread.Sleep(500);
+            return new List<ScreenshotModel>();
         }
 
-        public IEnumerable<Models.ChartModels.DailyScreenshotModel> GetScreenshotsByApp(int userID, string appName, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<DailyScreenshotModel> GetScreenshotsByApp(int userID, string appName, DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            System.Threading.Thread.Sleep(500);
+            return new List<DailyScreenshotModel>();
         }
 
-        public IEnumerable<Models.ChartModels.AllUsersModel> GetAllUsers(DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<AllUsersModel> GetAllUsers(DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            System.Threading.Thread.Sleep(500);
+            return new List<AllUsersModel>();
         }
 
-        public IEnumerable<Models.ChartModels.UsageTypeSeries> GetUsageSeries(string username, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<UsageTypeSeries> GetUsageSeries(string username, DateTime dateFrom, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            System.Threading.Thread.Sleep(500);
+            return new List<UsageTypeSeries>();
         }
 
         public Tuple<string, string, string> GetDayInfo(int userID, DateTime dateFrom)
         {
-            throw new NotImplementedException();
+            System.Threading.Thread.Sleep(500);
+            return new Tuple<string, string, string>("", "", "");
         }
 
         public void Dispose()

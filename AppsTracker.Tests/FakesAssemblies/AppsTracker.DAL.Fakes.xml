@@ -337,9 +337,6 @@
         <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.#ctor(AppsTracker.DAL.Service.AppsService)">
             <summary>Initializes a new shim for the given instance</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AddOf1M0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Action{``0})">
-            <summary>Sets the shim of AppsService.Add(!!0 item)</summary>
-        </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.BehaveAsCurrent">
             <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
         </member>
@@ -358,15 +355,6 @@
         <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.GetFilteredOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],System.Collections.Generic.IEnumerable{``0}})">
             <summary>Sets the shim of AppsService.GetFiltered(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.GetQueryableOf1``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.IQueryable{``0}})">
-            <summary>Sets the shim of AppsService.GetQueryable()</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.GetSingleOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},``0})">
-            <summary>Sets the shim of AppsService.GetSingle(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.GetSingleOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],``0})">
-            <summary>Sets the shim of AppsService.GetSingle(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
-        </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.AddToBlockedListListOfAplicationStringInt32">
             <summary>Sets the shim of AppsService.AddToBlockedList(List`1&lt;Aplication&gt; apps, String blockUsername, Int32 loadUserID)</summary>
         </member>
@@ -376,23 +364,8 @@
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.Constructor">
             <summary>Sets the shim of AppsService.AppsService()</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.CreateNewLogStringInt32Int32IAppInfoBooleanOut">
-            <summary>Sets the shim of AppsService.CreateNewLog(String windowTitle, Int32 usageID, Int32 userID, IAppInfo appInfo, Boolean&amp; newApp)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.GetStartDateInt32">
-            <summary>Sets the shim of AppsService.GetStartDate(Int32 userID)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.InitLoginInt32">
-            <summary>Sets the shim of AppsService.InitLogin(Int32 userID)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.InitUzerString">
-            <summary>Sets the shim of AppsService.InitUzer(String userName)</summary>
-        </member>
         <member name="T:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances">
             <summary>Define shims for all instances members</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.AddOf1M0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Action{AppsTracker.DAL.Service.AppsService,``0})">
-            <summary>Sets the shim of AppsService.Add(!!0 item)</summary>
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.GetFilteredOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsService,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Collections.Generic.IEnumerable{``0}})">
             <summary>Sets the shim of AppsService.GetFiltered(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
@@ -400,29 +373,8 @@
         <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.GetFilteredOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsService,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],System.Collections.Generic.IEnumerable{``0}})">
             <summary>Sets the shim of AppsService.GetFiltered(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.GetQueryableOf1``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsService,System.Linq.IQueryable{``0}})">
-            <summary>Sets the shim of AppsService.GetQueryable()</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.GetSingleOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsService,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},``0})">
-            <summary>Sets the shim of AppsService.GetSingle(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.GetSingleOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsService,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],``0})">
-            <summary>Sets the shim of AppsService.GetSingle(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
-        </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.AddToBlockedListListOfAplicationStringInt32">
             <summary>Sets the shim of AppsService.AddToBlockedList(List`1&lt;Aplication&gt; apps, String blockUsername, Int32 loadUserID)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.CreateNewLogStringInt32Int32IAppInfoBooleanOut">
-            <summary>Sets the shim of AppsService.CreateNewLog(String windowTitle, Int32 usageID, Int32 userID, IAppInfo appInfo, Boolean&amp; newApp)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.GetStartDateInt32">
-            <summary>Sets the shim of AppsService.GetStartDate(Int32 userID)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.InitLoginInt32">
-            <summary>Sets the shim of AppsService.InitLogin(Int32 userID)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.InitUzerString">
-            <summary>Sets the shim of AppsService.InitUzer(String userName)</summary>
         </member>
         <member name="T:AppsTracker.DAL.Service.Fakes.ShimChartService">
             <summary>Shim type of AppsTracker.DAL.Service.ChartService</summary>
@@ -763,20 +715,11 @@
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.#ctor">
             <summary>Initializes a new instance of type StubIAppsService</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.AddOf1M0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Action{``0})">
-            <summary>Sets stubs of Add(!!0 item)</summary>
-        </member>
         <member name="F:AppsTracker.DAL.Service.Fakes.StubIAppsService.AddToBlockedListListOfAplicationStringInt32">
             <summary>Sets the stub of IAppsService.AddToBlockedList(List`1&lt;Aplication&gt; apps, String blockUsername, Int32 loadUserID)</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#Add``1(``0)">
-            <summary>Sets the stub of IAppsService.Add(!!0 item)</summary>
-        </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#AddToBlockedList(System.Collections.Generic.List{AppsTracker.Models.EntityModels.Aplication},System.String,System.Int32)">
             <summary>Sets the stub of IAppsService.AddToBlockedList(List`1&lt;Aplication&gt; apps, String blockUsername, Int32 loadUserID)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#CreateNewLog(System.String,System.Int32,System.Int32,AppsTracker.Models.Proxy.IAppInfo,System.Boolean@)">
-            <summary>Sets the stub of IAppsService.CreateNewLog(String windowTitle, Int32 usageID, Int32 userID, IAppInfo appInfo, Boolean&amp; newApp)</summary>
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#GetFiltered``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
             <summary>Sets the stub of IAppsService.GetFiltered(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
@@ -784,50 +727,11 @@
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#GetFiltered``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[])">
             <summary>Sets the stub of IAppsService.GetFiltered(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#GetQueryable``1">
-            <summary>Sets the stub of IAppsService.GetQueryable()</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#GetSingle``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
-            <summary>Sets the stub of IAppsService.GetSingle(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#GetSingle``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[])">
-            <summary>Sets the stub of IAppsService.GetSingle(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#GetStartDate(System.Int32)">
-            <summary>Sets the stub of IAppsService.GetStartDate(Int32 userID)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#InitLogin(System.Int32)">
-            <summary>Sets the stub of IAppsService.InitLogin(Int32 userID)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#InitUzer(System.String)">
-            <summary>Sets the stub of IAppsService.InitUzer(String userName)</summary>
-        </member>
-        <member name="F:AppsTracker.DAL.Service.Fakes.StubIAppsService.CreateNewLogStringInt32Int32IAppInfoBooleanOut">
-            <summary>Sets the stub of IAppsService.CreateNewLog(String windowTitle, Int32 usageID, Int32 userID, IAppInfo appInfo, Boolean&amp; newApp)</summary>
-        </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.GetFilteredOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Collections.Generic.IEnumerable{``0}})">
             <summary>Sets stubs of GetFiltered(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.GetFilteredOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],System.Collections.Generic.IEnumerable{``0}})">
             <summary>Sets stubs of GetFiltered(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.GetQueryableOf1``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.IQueryable{``0}})">
-            <summary>Sets stubs of GetQueryable()</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.GetSingleOf1ExpressionOfFuncOfM0Boolean``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},``0})">
-            <summary>Sets stubs of GetSingle(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter)</summary>
-        </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.GetSingleOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],``0})">
-            <summary>Sets stubs of GetSingle(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
-        </member>
-        <member name="F:AppsTracker.DAL.Service.Fakes.StubIAppsService.GetStartDateInt32">
-            <summary>Sets the stub of IAppsService.GetStartDate(Int32 userID)</summary>
-        </member>
-        <member name="F:AppsTracker.DAL.Service.Fakes.StubIAppsService.InitLoginInt32">
-            <summary>Sets the stub of IAppsService.InitLogin(Int32 userID)</summary>
-        </member>
-        <member name="F:AppsTracker.DAL.Service.Fakes.StubIAppsService.InitUzerString">
-            <summary>Sets the stub of IAppsService.InitUzer(String userName)</summary>
         </member>
         <member name="T:AppsTracker.DAL.Service.Fakes.StubIBaseService">
             <summary>Stub type of AppsTracker.DAL.Service.IBaseService</summary>

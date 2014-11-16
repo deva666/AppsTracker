@@ -12,8 +12,6 @@ namespace AppsTracker.DAL
 {
     public class AppsDataBaseInitializer : IDatabaseInitializer<AppsEntities>
     {
-        private bool _canCreate;
-
         public AppsDataBaseInitializer()
         {
 
