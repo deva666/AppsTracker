@@ -92,7 +92,7 @@
     <ManifestKeyFile>AppsTrackerCore_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Portable|AnyCPU'">
     <OutputPath>bin\Portable\</OutputPath>
@@ -334,7 +334,6 @@
     <Compile Include="Exceptions\Logger.cs" />
     <Compile Include="Hooks\MouseHook.cs" />
     <Compile Include="MVVM\WeakAction.cs" />
-    <Compile Include="ViewModels\Data_filelogsViewModel.cs" />
     <Compile Include="ViewModels\Data_logsViewModel.cs" />
     <Compile Include="ViewModels\Data_keystrokesViewModel.cs" />
     <Compile Include="ViewModels\Data_screenshotsViewModel.cs" />
@@ -376,9 +375,6 @@
     </Compile>
     <Compile Include="Views\ChartViews\UsersView.xaml.cs">
       <DependentUpon>UsersView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Data_filelogsView.xaml.cs">
-      <DependentUpon>Data_filelogsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Data_logsView.xaml.cs">
       <DependentUpon>Data_logsView.xaml</DependentUpon>
@@ -610,10 +606,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Data_dayView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Data_filelogsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
