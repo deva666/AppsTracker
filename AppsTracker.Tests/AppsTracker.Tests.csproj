@@ -48,7 +48,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -72,7 +71,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Common\EnsureTest.cs" />
-    <Compile Include="Core\Logging\ComponentContainerTest.cs" />
     <Compile Include="Core\Logging\LazyInitTest.cs" />
     <Compile Include="Core\MVVM\AsyncPropertyTest.cs" />
     <Compile Include="Core\MVVM\MediatorTest.cs" />
