@@ -1,0 +1,142 @@
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Controls.FadingItemsListView: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Exceptions.ILogger: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Hooks.KeyboardHookArgs: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Hooks.MouseHookArgs: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Hooks.WinHookArgs: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Logging.IComponent: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Logging.EmailService: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Logging.LogCleaner: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Logging.AppBlocker: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Logging.BlockLogger: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Logging.ComponentContainer: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Logging.LogCleanerHelper: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Logging.IdleTimeWatcher: type has no family visible contructors.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Logging.LazyInit`1: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Logging.WindowHelper: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Logging.UsageLogger: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Logging.WindowLogger: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.MVVM.AsyncProperty`1: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.MVVM.HostViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Utils.ConnectionConfig: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.ExtensionMethods: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Globals: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Utils.ListViewItemScroller: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Utils.SettingsQueue: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.ConvertSelectedIndexToBool: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.ConvertTicksToTimespan: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.ConvertTopWindowDuration: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.ConvertDateRangeToString: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.ConvertIdleTimer: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.ConvertTrialStartDate: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.WinAPI: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.ViewModels.DataHostViewModel: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.ViewModels.Data_dayViewModel: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Pages.ViewModels.ScreenshotViewerViewModel: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.ViewModels.StatisticsHostViewModel: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Pages.ViewModels.Statistics_appUsageViewModel: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Pages.ViewModels.Statistics_dailyAppUsageViewModel: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Pages.ViewModels.Statistics_keystrokesViewModel: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Pages.ViewModels.Statistics_screenshotsViewModel: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Pages.ViewModels.Statistics_usersViewModel: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Controls.FilterItem: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Controls.PBAssistant: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.EntryPoint: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.SettingsProxy: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.MVVM.AboutWindowViewModel: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Logging.EmailHelper: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.ViewModels.MainViewModel: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.MVVM.Mediator: type has no family visible contructors.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.MVVM.MediatorMessages: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.MVVM.MessageToActionsMap: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Hooks.MouseButton: type is a value type.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Hooks.MouseHookCallback: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Hooks.MouseHook: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.MVVM.WeakAction: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Pages.ViewModels.Data_logsViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Pages.ViewModels.Data_keystrokesViewModel: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Pages.ViewModels.Data_screenshotsViewModel: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.ViewModels.SettingsHostViewModel: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.ViewModels.Settings_generalViewModel: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.ViewModels.Settings_licenseViewModel: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Properties.Resources: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Screenshots: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Encryption.Encrypt: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Hooks.WinHookCallBack: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Hooks.WinHook: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.LoggingStatus: type is a value type.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Hooks.KeyboardHookCallback: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Hooks.KeyBoardHook: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Properties.Settings: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for XamlGeneratedNamespace.GeneratedInternalTypeHelper: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for <PrivateImplementationDetails>{ACFA559D-A0BA-405F-814C-44BF3C69116D}: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Controls.DBCleanerWindow+<>c__DisplayClass4: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Controls.DBCleanerWindow+<>c__DisplayClassb: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Controls.DBCleanerWindow+<lblClean_MouseLeftButtonUp>d__6: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Controls.FilterableListView+FilterStruct: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Controls.FadingItemsListView: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Exceptions.ILogger: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Hooks.IHook`1: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Logging.IComponent: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Logging.EmailService: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Logging.LogCleaner: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.MVVM.ICommunicator: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Logging.AppBlocker: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Logging.BlockLogger: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Logging.ComponentContainer: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Logging.LogCleanerHelper: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Logging.LazyInit`1: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Logging.WindowHelper: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Logging.UsageLogger: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Logging.WindowLogger: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.MVVM.AsyncProperty`1: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.MVVM.HostViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.MVVM.IMediator: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Utils.ConnectionConfig+<FlushExp>d__3: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.ExtensionMethods+<>c__DisplayClass0: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Utils.SettingsQueue: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.ConvertSelectedIndexToBool: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.ConvertTicksToTimespan: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.ConvertTopWindowDuration: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.ConvertDateRangeToString: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.ConvertIdleTimer: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.ConvertTrialStartDate: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.WinAPI: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.ViewModels.DataHostViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.ViewModels.Data_dayViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Pages.ViewModels.ScreenshotViewerViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.ViewModels.StatisticsHostViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Pages.ViewModels.Statistics_appUsageViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Pages.ViewModels.Statistics_dailyAppUsageViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Pages.ViewModels.Statistics_keystrokesViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Pages.ViewModels.Statistics_screenshotsViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Pages.ViewModels.Statistics_usersViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Controls.FaderContentControl+<>c__DisplayClass3: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Controls.FilterItem: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for WPFHelper.Helpers+IFinderMatchVisualHelper: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.EntryPoint+<>c__DisplayClass2: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.MVVM.AboutWindowViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Logging.EmailHelper: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.ViewModels.MainViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.MVVM.Mediator+<>c__DisplayClass1`1: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.MVVM.MessageToActionsMap: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Hooks.MouseButton: type is an enum.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Hooks.MouseHookCallback: type is a delegate.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Hooks.MouseHook: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.MVVM.WeakAction: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Pages.ViewModels.Data_logsViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Pages.ViewModels.Data_keystrokesViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Pages.ViewModels.Data_screenshotsViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.ViewModels.SettingsHostViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.ViewModels.Settings_generalViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.ViewModels.Settings_licenseViewModel: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Properties.Resources: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Screenshots: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Encryption.Encrypt: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Hooks.WinHookCallBack: type is a delegate.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.LoggingStatus: type is an enum.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.App+<>c__DisplayClassc: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Hooks.KeyboardHookCallback: type is a delegate.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Hooks.KeyBoardHook: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Properties.Settings: type is not visible to exported or assembly(Apps tracker.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for XamlGeneratedNamespace.GeneratedInternalTypeHelper: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for <PrivateImplementationDetails>{ACFA559D-A0BA-405F-814C-44BF3C69116D}: type is not supported because of internal limitations.
