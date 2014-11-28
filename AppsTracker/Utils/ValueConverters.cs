@@ -937,6 +937,21 @@ namespace AppsTracker
         }
     }
 
+    public class ConvertVisibiltyToBool : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            Visibility visibilty = (Visibility)value;
+            return visibilty == Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
     public class ConvertNullToBool : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
