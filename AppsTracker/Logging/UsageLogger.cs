@@ -44,10 +44,7 @@ namespace AppsTracker.Logging
 
         private void Init()
         {
-            var user = InitUzer(Environment.UserName);
-            _currentUsageLogin = InitLogin(user.UserID);
-
-            Globals.Initialize(user, _currentUsageLogin.UsageID);
+            InitLogin();
 
             _idleMonitor = new LazyInit<IdleMonitor>(() => new IdleMonitor(),
                                                             m =>
@@ -62,11 +59,20 @@ namespace AppsTracker.Logging
                                                             });
 
             Microsoft.Win32.SystemEvents.SessionSwitch += SessionSwitch;
+            Microsoft.Win32.SystemEvents.PowerModeChanged += PowerModeChanged;
         }
 
+        private void InitLogin()
+        {
+            var user = InitUzer(Environment.UserName);
+            _currentUsageLogin = InitLogin(user.UserID);
+
+            Globals.Initialize(user, _currentUsageLogin.UsageID);
+        }
+    
         private void IdleStopped(object sender, EventArgs e)
         {
-            Mediator.NotifyColleagues<object>(MediatorMessages.IdleStopped);
+            Mediator.NotifyColleagues<object>(MediatorMessages.RESUME_LOGGING);
             if (_currentUsageIdle == null)
                 return;
 
@@ -81,7 +87,30 @@ namespace AppsTracker.Logging
                 return;
 
             _currentUsageIdle = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
-            Mediator.NotifyColleagues<object>(MediatorMessages.IdleEntered);
+            Mediator.NotifyColleagues<object>(MediatorMessages.STOP_LOGGING);
+        }
+        private void PowerModeChanged(object sender, Microsoft.Win32.PowerModeChangedEventArgs e)
+        {
+            switch (e.Mode)
+            {
+                case Microsoft.Win32.PowerModes.Resume:
+                    InitLogin();
+                    Configure();
+                    Mediator.NotifyColleagues<object>(MediatorMessages.RESUME_LOGGING);
+                    Microsoft.Win32.SystemEvents.SessionSwitch += SessionSwitch;                    
+                    break;
+                case Microsoft.Win32.PowerModes.StatusChange:
+                    break;
+                case Microsoft.Win32.PowerModes.Suspend:
+                    //Looks like the Session Switch event is fired immediately after the computer is being put to sleep,
+                    //If it's going to sleep, than don't log this as computer locked
+                    _isLoggingEnabled = false;
+                    Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;
+                    Mediator.NotifyColleagues<object>(MediatorMessages.STOP_LOGGING);
+                    Finish();
+                    break;
+            }
+
         }
 
         private void SessionSwitch(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
@@ -178,6 +207,7 @@ namespace AppsTracker.Logging
             _idleMonitor.Enabled = false;
             Finish();
             Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;
+            Microsoft.Win32.SystemEvents.PowerModeChanged -= PowerModeChanged;
         }
 
         public IMediator Mediator

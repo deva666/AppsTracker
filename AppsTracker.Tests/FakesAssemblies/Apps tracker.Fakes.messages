@@ -68,7 +68,7 @@ F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cann
 F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Hooks.KeyBoardHook: type is sealed.
 F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for AppsTracker.Properties.Settings: type is sealed.
 F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for XamlGeneratedNamespace.GeneratedInternalTypeHelper: type is sealed.
-F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for <PrivateImplementationDetails>{D6AD63E9-4905-4E12-AAE9-A33B7E3AB6B2}: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate stub for <PrivateImplementationDetails>{131B90EB-286E-4F26-B8DE-2D1FC84AF3C8}: type is not supported because of internal limitations.
 F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Controls.DBCleanerWindow+<>c__DisplayClass4: type is not supported because of internal limitations.
 F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Controls.DBCleanerWindow+<>c__DisplayClassb: type is not supported because of internal limitations.
 F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Controls.DBCleanerWindow+<lblClean_MouseLeftButtonUp>d__6: type is not supported because of internal limitations.
@@ -139,4 +139,4 @@ F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cann
 F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Hooks.KeyBoardHook: type is not visible to exported or assembly(Apps tracker.Fakes).
 F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for AppsTracker.Properties.Settings: type is not visible to exported or assembly(Apps tracker.Fakes).
 F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for XamlGeneratedNamespace.GeneratedInternalTypeHelper: type is not supported because of internal limitations.
-F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for <PrivateImplementationDetails>{D6AD63E9-4905-4E12-AAE9-A33B7E3AB6B2}: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\Apps tracker.fakes : warning : Cannot generate shim for <PrivateImplementationDetails>{131B90EB-286E-4F26-B8DE-2D1FC84AF3C8}: type is not supported because of internal limitations.

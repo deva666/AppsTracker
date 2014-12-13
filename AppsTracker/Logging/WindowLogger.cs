@@ -50,8 +50,8 @@ namespace AppsTracker.Logging
 
         private void Init()
         {
-            Mediator.Register(MediatorMessages.IdleEntered, new Action(StopLogging));
-            Mediator.Register(MediatorMessages.IdleStopped, new Action(ResumeLogging));
+            Mediator.Register(MediatorMessages.STOP_LOGGING, new Action(StopLogging));
+            Mediator.Register(MediatorMessages.RESUME_LOGGING, new Action(ResumeLogging));
 
             _winHook = new LazyInit<IHook<WinHookArgs>>(() => new WinHook(),
                                                                 w => w.HookProc += WindowChanged,
@@ -181,21 +181,6 @@ namespace AppsTracker.Logging
             if (newApp)
                 NewAppAdded(appInfo);
         }
-
-        private async Task AddScreenshot()
-        {
-            var dbSizeAsync = Globals.GetDBSizeAsync();
-
-            Log log = _currentLog;
-            Screenshot screenshot = Screenshots.GetScreenshot();
-
-            if (screenshot == null || log == null)
-                return;
-            log.Screenshots.Add(screenshot);
-
-            await dbSizeAsync.ConfigureAwait(true); //check the DB size, this methods fires an event if near the maximum allowed size
-        }
-
         private void SaveOldLog()
         {
             if (_currentLog != null)
@@ -209,6 +194,59 @@ namespace AppsTracker.Logging
                 _currentLog = null;
             }
         }
+
+        private Log CreateNewLog(string windowTitle, int usageID, int userID, IAppInfo appInfo, out bool newApp)
+        {
+            using (var context = new AppsEntities())
+            {
+                newApp = false;
+                string appName = (!string.IsNullOrEmpty(appInfo.ProcessName) ? appInfo.ProcessName : !string.IsNullOrEmpty(appInfo.ProcessRealName) ? appInfo.ProcessRealName : appInfo.ProcessFileName);
+                Aplication app = context.Applications.FirstOrDefault(a => a.UserID == userID
+                                                        && a.Name == appName);
+
+                if (app == null)
+                {
+                    app = new Aplication(appInfo.ProcessName,
+                                                    appInfo.ProcessFileName,
+                                                    appInfo.ProcessVersion,
+                                                    appInfo.ProcessDescription,
+                                                    appInfo.ProcessCompany,
+                                                    appInfo.ProcessRealName) { UserID = userID };
+                    context.Applications.Add(app);
+
+                    newApp = true;
+                }
+
+                Window window = context.Windows.FirstOrDefault(w => w.Title == windowTitle
+                                                     && w.Application.ApplicationID == app.ApplicationID);
+
+                if (window == null)
+                {
+                    window = new Window(windowTitle) { Application = app };
+                    context.Windows.Add(window);
+                }
+
+                context.SaveChanges();
+
+                return new Log(window.WindowID, usageID);
+            }
+        }
+
+        private async Task AddScreenshot()
+        {
+            var dbSizeAsync = Globals.GetDBSizeAsync(); //check the DB size, this methods fires an event if near the maximum allowed size
+
+            Log log = _currentLog;
+            Screenshot screenshot = Screenshots.GetScreenshot();
+
+            if (screenshot == null || log == null)
+                return;
+            log.Screenshots.Add(screenshot);
+
+            await dbSizeAsync.ConfigureAwait(true); 
+        }
+
+
 
         private void NewAppAdded(IAppInfo appInfo)
         {
@@ -273,43 +311,6 @@ namespace AppsTracker.Logging
         public void SetKeyboardHookEnabled(bool enabled)
         {
             _keyboardHook.CallOn(k => k.EnableHook(enabled));
-        }
-
-        private Log CreateNewLog(string windowTitle, int usageID, int userID, IAppInfo appInfo, out bool newApp)
-        {
-            using (var context = new AppsEntities())
-            {
-                newApp = false;
-                string appName = (!string.IsNullOrEmpty(appInfo.ProcessName) ? appInfo.ProcessName : !string.IsNullOrEmpty(appInfo.ProcessRealName) ? appInfo.ProcessRealName : appInfo.ProcessFileName);
-                Aplication app = context.Applications.FirstOrDefault(a => a.UserID == userID
-                                                        && a.Name == appName);
-
-                if (app == null)
-                {
-                    app = new Aplication(appInfo.ProcessName,
-                                                    appInfo.ProcessFileName,
-                                                    appInfo.ProcessVersion,
-                                                    appInfo.ProcessDescription,
-                                                    appInfo.ProcessCompany,
-                                                    appInfo.ProcessRealName) { UserID = userID };
-                    context.Applications.Add(app);
-
-                    newApp = true;
-                }
-
-                Window window = context.Windows.FirstOrDefault(w => w.Title == windowTitle
-                                                     && w.Application.ApplicationID == app.ApplicationID);
-
-                if (window == null)
-                {
-                    window = new Window(windowTitle) { Application = app };
-                    context.Windows.Add(window);
-                }
-
-                context.SaveChanges();
-
-                return new Log(window.WindowID, usageID);
-            }
         }
     }
 }

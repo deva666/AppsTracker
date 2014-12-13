@@ -127,7 +127,7 @@
                               CommandParameter="{x:Type viewModels:SettingsHostViewModel}" />
             </Label.InputBindings>
         </Label>
-        
+
         <Separator Grid.Row="1"
                    Grid.ColumnSpan="3"
                    Margin="30,10,30,0"
@@ -168,7 +168,7 @@
                                   CommandParameter="{Binding ToSettings}" />
                 </customControls:BackButton.InputBindings>
             </customControls:BackButton>
-            
+
         </StackPanel>
 
         <StackPanel Name="utilityMenu"
@@ -444,26 +444,24 @@
                    Grid.Column="2" />
             <customControls:FaderContentControl Grid.Column="3"
                                                 FaderVisibility="{Binding IsFilterApplied}">
-            <Label Margin="20,0,0,0"
-                   Style="{DynamicResource LabelStyle}"
-                   Foreground="White"
-                   FontSize="11"
-                   >
-                <Label.Content>
-                    <MultiBinding Converter="{StaticResource convertDateFilter}">
-                        <Binding Path="Date1" />
-                        <Binding Path="Date2" />
-                    </MultiBinding>
-                </Label.Content>
-            </Label>
+                <Label Margin="20,0,0,0"
+                       Style="{DynamicResource LabelStyle}"
+                       Foreground="White"
+                       FontSize="11">
+                    <Label.Content>
+                        <MultiBinding Converter="{StaticResource convertDateFilter}">
+                            <Binding Path="Date1" />
+                            <Binding Path="Date2" />
+                        </MultiBinding>
+                    </Label.Content>
+                </Label>
             </customControls:FaderContentControl>
             <customControls:FaderContentControl Grid.Column="4"
                                                 FaderVisibility="{Binding IsFilterApplied}">
                 <Label Margin="20,0,0,0"
                        FontSize="11"
                        Style="{StaticResource TrayLabelStyle}"
-                       Content="Clear filter"
-                       >
+                       Content="Clear filter">
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ClearFilterCommand}" />
@@ -493,7 +491,6 @@
                    Grid.Column="7">
             </Label>
         </Grid>
-       
 
     </Grid>
 

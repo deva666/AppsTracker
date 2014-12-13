@@ -92,18 +92,16 @@ namespace AppsTracker.Logging
                     if (!context.Windows.Local.Any(w => w.WindowID == window.WindowID))
                         context.Windows.Attach(window);
                     context.Windows.Remove(window);
-                }
-
-                context.SaveChanges();
+                    context.SaveChanges();
+                }                             
 
                 foreach (var app in context.Applications.Where(a => a.Windows.Count == 0))
                 {
                     if (!context.Applications.Local.Any(a => a.ApplicationID == app.ApplicationID))
                         context.Applications.Attach(app);
                     context.Applications.Remove(app);
-                }
-
-                context.SaveChanges();
+                    context.SaveChanges();
+                }               
             }
         }
 

@@ -291,8 +291,8 @@ namespace AppsTracker.DAL.Service
                 List<Usage> stoppeds = null;
 
                 logins = context.Usages.Where(u => u.User.UserID == userID
-                                                && u.UsageStart >= today
-                                                && u.UsageStart <= nextDay
+                                                && ((u.UsageStart >= today && u.UsageStart <= nextDay)
+                                                        || u.IsCurrent)
                                                 && u.UsageType.UType == usageLogin)
                                       .Include(u => u.UsageType)
                                       .ToList();
