@@ -80,8 +80,10 @@ namespace AppsTracker.Controls
             int days;
             if (!int.TryParse(tbDays.Text, out days))
                 return;
-         
-            int count = await Task<int>.Run(() => DeleteOldScreenshots(days));          
+
+            overlayGrd.Visibility = System.Windows.Visibility.Visible;
+            int count = await Task<int>.Run(() => DeleteOldScreenshots(days));
+            overlayGrd.Visibility = System.Windows.Visibility.Collapsed;
             MessageWindow msgWindow = new MessageWindow(string.Format("Deleted {0} screenshots", count));
             msgWindow.ShowDialog();
             ScaleUnloaded();
