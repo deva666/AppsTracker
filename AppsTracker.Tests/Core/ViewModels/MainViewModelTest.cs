@@ -6,13 +6,13 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
-
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.EntityModels;
+using AppsTracker.MVVM;
 using AppsTracker.Tests.Fakes.Service;
 using AppsTracker.ViewModels;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AppsTracker.Tests.Core.ViewModels
@@ -20,6 +20,9 @@ namespace AppsTracker.Tests.Core.ViewModels
     [TestClass]
     public class MainViewModelTest
     {
+        private bool _refreshCallbackCalled = false;
+        private MainViewModel _mainVM;
+
         [TestInitialize]
         public void Init()
         {
@@ -27,20 +30,48 @@ namespace AppsTracker.Tests.Core.ViewModels
                 ServiceFactory.Register<IAppsService>(() => new AppsServiceMock());
             if (!ServiceFactory.ContainsKey<IChartService>())
                 ServiceFactory.Register<IChartService>(() => new ChartServiceMock());
+
+            _mainVM = new MainViewModel();
+
+            Mediator.Instance.Register(MediatorMessages.RefreshLogs, new Action(RefreshLogsCallback));
+        }
+
+        private void RefreshLogsCallback()
+        {
+            _refreshCallbackCalled = true;
         }
 
         [TestMethod]
-        public void TestMainVM()
+        public void TestChildTypes()
         {
-            var mainVM = new MainViewModel();
-
-            Assert.IsNotNull(mainVM);
-            Assert.IsInstanceOfType(mainVM.UserCollection, typeof(List<Uzer>), "UserCollection types don't match");
-            Assert.IsInstanceOfType(mainVM.SelectedChild, typeof(DataHostViewModel), "Selected child types don't match");
-
-            mainVM.ChangePageCommand.Execute(typeof(StatisticsHostViewModel));
-
-            Assert.IsInstanceOfType(mainVM.SelectedChild, typeof(StatisticsHostViewModel), "Change page is not working");
+            Assert.IsInstanceOfType(_mainVM.UserCollection, typeof(List<Uzer>), "UserCollection types don't match");
+            Assert.IsInstanceOfType(_mainVM.SelectedChild, typeof(DataHostViewModel), "Selected child types don't match");
         }
+
+        [TestMethod]
+        public void TestChangePageCommand()
+        {
+            _mainVM.ChangePageCommand.Execute(typeof(StatisticsHostViewModel));
+            Assert.IsInstanceOfType(_mainVM.SelectedChild, typeof(StatisticsHostViewModel), "Change page is not working");
+        }
+
+        [TestMethod]
+        public void TestChangeFirstDate()
+        {
+            _mainVM.Date1 = DateTime.Now.AddDays(19);
+            Assert.IsTrue(_mainVM.IsFilterApplied, "Date filter not set");
+            Assert.IsTrue(_refreshCallbackCalled, "Set first date mediator callback failed");
+            _refreshCallbackCalled = false;
+        }
+
+        [TestMethod]
+        public void TestChangeSecondDate()
+        {
+            _mainVM.Date2 = DateTime.Now.AddDays(24);
+            Assert.IsTrue(_mainVM.IsFilterApplied, "Date filter not set");
+            Assert.IsTrue(_refreshCallbackCalled, "Set second date mediator callback failed");
+            _refreshCallbackCalled = false;
+        }
+
     }
 }

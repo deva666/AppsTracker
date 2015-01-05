@@ -80,7 +80,7 @@ namespace AppsTracker.Controls
             int days;
             if (!int.TryParse(tbDays.Text, out days))
                 return;
-
+                        
             overlayGrd.Visibility = System.Windows.Visibility.Visible;
             int count = await Task<int>.Run(() => DeleteOldScreenshots(days));
             overlayGrd.Visibility = System.Windows.Visibility.Collapsed;

@@ -262,6 +262,9 @@
     <Compile Include="Utils\ExtensionMethods.cs" />
     <Compile Include="Utils\Globals.cs" />
     <Compile Include="Utils\ListViewItemScroller.cs" />
+    <Compile Include="Utils\LocalSettings.cs" />
+    <Compile Include="Utils\SettingsAttribute.cs" />
+    <Compile Include="Utils\SettingsBase.cs" />
     <Compile Include="Utils\SettingsQueue.cs" />
     <Compile Include="Utils\Validation.cs" />
     <Compile Include="Utils\ValueConverters.cs" />

@@ -150,15 +150,9 @@ namespace AppsTracker
             //       SetProcessKillAuth();
             //   };
 
-            this.SessionEnding += (s, e) =>
-            {
-                FinishAndExit();
-            };
+            this.SessionEnding += (s, e) => FinishAndExit();
 
-            EntryPoint.SingleInstanceManager.SecondInstanceActivating += (s, e) =>
-            {
-                CreateOrShowMainWindow();
-            };
+            EntryPoint.SingleInstanceManager.SecondInstanceActivating += (s, e) => CreateOrShowMainWindow();
 
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
 

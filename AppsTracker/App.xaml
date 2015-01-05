@@ -6,13 +6,13 @@
              xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
              xmlns:utils="clr-namespace:AppsTracker.Utils"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity">
-    
+
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Themes/RunningLight.xaml" />            
+                <ResourceDictionary Source="/Themes/RunningLight.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
             <Style x:Key="MinimalChartStyle"
                    TargetType="chart:ChartBase">
 
@@ -21,7 +21,7 @@
                 <Setter Property="Foreground"
                         Value="{DynamicResource HighlightBrush}" />
                 <Setter Property="FontSize"
-                        Value="12" /> 
+                        Value="12" />
                 <Setter Property="Margin"
                         Value="5" />
 
@@ -91,7 +91,7 @@
                 <Setter Property="Control.Foreground"
                         Value="{DynamicResource LabelBrush}" />
             </Style>
-            
+
             <Style x:Key="LBLabelStyle"
                    BasedOn="{StaticResource SelectableLabelStyle}">
                 <Setter Property="Control.Foreground"
@@ -249,7 +249,7 @@
                    TargetType="Border">
                 <Setter Property="CornerRadius"
                         Value="0" />
-  
+
             </Style>
 
             <Style x:Key="ListViewItemStyle"
@@ -1043,7 +1043,7 @@
                 </Setter>
             </Style>
 
-      
+
             <SolidColorBrush x:Key="StandardBorderBrush"
                              Color="#888" />
             <SolidColorBrush x:Key="StandardBackgroundBrush"
@@ -1791,14 +1791,16 @@
 
                                             <Border BorderBrush="{DynamicResource LightAccent}"
                                                     BorderThickness="1" />
-                                            --><!--<CalendarItem Name="PART_CalendarItem"
+                                            -->
+                <!--<CalendarItem Name="PART_CalendarItem"
                                                           Background="{DynamicResource 2ndBackgroundBrush}"
                                                           Style="{TemplateBinding CalendarItemStyle}"
                                                           BorderThickness="0"
                                                           Margin="1" />
 
                                             <Border BorderBrush="{DynamicResource WindowBorderBrush}"
-                                                    BorderThickness="1" />--><!--
+                                                    BorderThickness="1" />-->
+                <!--
                                         </Grid>
                                     </ControlTemplate>
                                 </Setter.Value>

@@ -175,7 +175,6 @@ namespace AppsTracker.ViewModels
                     Globals.ChangeUser(value);
                     PropertyChanging("User");
                     ClearFilter();
-                    Mediator.NotifyColleagues<object>(MediatorMessages.RefreshLogs);
                 }
             }
         }
@@ -321,7 +320,6 @@ namespace AppsTracker.ViewModels
             Date1 = now.AddDays(delta);
             Date2 = Date1.AddDays(6);
         }
-
 
         #endregion
 

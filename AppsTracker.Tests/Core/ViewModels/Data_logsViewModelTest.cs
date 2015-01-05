@@ -41,7 +41,6 @@ namespace AppsTracker.Tests.Core.ViewModels
                     break;
             }
 
-
             Assert.IsNotNull(vm.AplicationList.Result, "App list not loaded");
             //Assert.IsInstanceOfType(vm.AplicationList.Result, typeof(List<Aplication>), "App list type mismatch");
         }

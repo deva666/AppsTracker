@@ -335,15 +335,6 @@ namespace AppsTracker.Pages.ViewModels
             _topAppsList.Reset();
             _topWindowsList.Reset();
 
-            //TopAppsList = null;
-            //TopWindowsList = null;
-            //ChartList = null;
-
-            //List<Aplication> copy = new List<Aplication>();
-            //copy.Add(app);
-            //copy = AplicationList.Union(copy).ToList();
-            //AplicationList = null;
-            //AplicationList = copy;
         }
 
         #endregion
