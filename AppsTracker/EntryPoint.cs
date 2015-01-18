@@ -45,6 +45,8 @@ namespace AppsTracker
 
             ConnectionConfig.ToggleConfigEncryption();
 
+            //ConnectionConfig.ChangeDBPassword("");
+
             try
             {
                 using (AppsEntities context = new AppsEntities())

@@ -403,6 +403,9 @@
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService.Behavior">
             <summary>Assigns the behavior for all methods of the shimmed type</summary>
         </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService.CacheLogsInt32String">
+            <summary>Sets the shim of ChartService.CacheLogs(Int32 userID, String appName)</summary>
+        </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService.Constructor">
             <summary>Sets the shim of ChartService.ChartService()</summary>
         </member>
@@ -460,26 +463,32 @@
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService.GetUsageSeriesStringDateTimeDateTime">
             <summary>Sets the shim of ChartService.GetUsageSeries(String username, DateTime dateFrom, DateTime dateTo)</summary>
         </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAllUsersb__f8Usage">
+            <summary>Sets the shim of ChartService.&lt;GetAllUsers&gt;b__f8(Usage u)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAllUsersb__f9IGroupingOfStringUsage">
+            <summary>Sets the shim of ChartService.&lt;GetAllUsers&gt;b__f9(IGrouping`2&lt;String,Usage&gt; g)</summary>
+        </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAllUsersb__faUsage">
-            <summary>Sets the shim of ChartService.&lt;GetAllUsers&gt;b__fa(Usage u)</summary>
+            <summary>Sets the shim of ChartService.&lt;GetAllUsers&gt;b__fa(Usage l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAllUsersb__fbIGroupingOfStringUsage">
-            <summary>Sets the shim of ChartService.&lt;GetAllUsers&gt;b__fb(IGrouping`2&lt;String,Usage&gt; g)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAppsUsageSeriesb__d0Log">
+            <summary>Sets the shim of ChartService.&lt;GetAppsUsageSeries&gt;b__d0(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAllUsersb__fcUsage">
-            <summary>Sets the shim of ChartService.&lt;GetAllUsers&gt;b__fc(Usage l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAppsUsageSeriesb__d3Log">
+            <summary>Sets the shim of ChartService.&lt;GetAppsUsageSeries&gt;b__d3(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAppsUsageSeriesb__d2Log">
-            <summary>Sets the shim of ChartService.&lt;GetAppsUsageSeries&gt;b__d2(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAppsUsageSeriesb__d6MostUsedAppModel">
+            <summary>Sets the shim of ChartService.&lt;GetAppsUsageSeries&gt;b__d6(MostUsedAppModel d)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAppsUsageSeriesb__d5Log">
-            <summary>Sets the shim of ChartService.&lt;GetAppsUsageSeries&gt;b__d5(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailySeriesb__7fUsage">
+            <summary>Sets the shim of ChartService.&lt;GetDailySeries&gt;b__7f(Usage u)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetAppsUsageSeriesb__d8MostUsedAppModel">
-            <summary>Sets the shim of ChartService.&lt;GetAppsUsageSeries&gt;b__d8(MostUsedAppModel d)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailySeriesb__86Usage">
+            <summary>Sets the shim of ChartService.&lt;GetDailySeries&gt;b__86(Usage l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailySeriesb__81Usage">
-            <summary>Sets the shim of ChartService.&lt;GetDailySeries&gt;b__81(Usage u)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailySeriesb__87Usage">
+            <summary>Sets the shim of ChartService.&lt;GetDailySeries&gt;b__87(Usage l)</summary>
         </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailySeriesb__88Usage">
             <summary>Sets the shim of ChartService.&lt;GetDailySeries&gt;b__88(Usage l)</summary>
@@ -496,71 +505,65 @@
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailySeriesb__8cUsage">
             <summary>Sets the shim of ChartService.&lt;GetDailySeries&gt;b__8c(Usage l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailySeriesb__8dUsage">
-            <summary>Sets the shim of ChartService.&lt;GetDailySeries&gt;b__8d(Usage l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailyWindowSeriesb__3bLog">
+            <summary>Sets the shim of ChartService.&lt;GetDailyWindowSeries&gt;b__3b(Log g)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailySeriesb__8eUsage">
-            <summary>Sets the shim of ChartService.&lt;GetDailySeries&gt;b__8e(Usage l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailyWindowSeriesb__3cLog">
+            <summary>Sets the shim of ChartService.&lt;GetDailyWindowSeries&gt;b__3c(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailyWindowSeriesb__4aLog">
-            <summary>Sets the shim of ChartService.&lt;GetDailyWindowSeries&gt;b__4a(Log g)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayInfob__11fUsage">
+            <summary>Sets the shim of ChartService.&lt;GetDayInfo&gt;b__11f(Usage l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailyWindowSeriesb__4bLog">
-            <summary>Sets the shim of ChartService.&lt;GetDailyWindowSeries&gt;b__4b(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayInfob__120Usage">
+            <summary>Sets the shim of ChartService.&lt;GetDayInfo&gt;b__120(Usage l)</summary>
         </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayInfob__121Usage">
             <summary>Sets the shim of ChartService.&lt;GetDayInfo&gt;b__121(Usage l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayInfob__122Usage">
-            <summary>Sets the shim of ChartService.&lt;GetDayInfo&gt;b__122(Usage l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopAppsb__54Log">
+            <summary>Sets the shim of ChartService.&lt;GetDayTopApps&gt;b__54(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayInfob__123Usage">
-            <summary>Sets the shim of ChartService.&lt;GetDayInfo&gt;b__123(Usage l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopAppsb__55Log">
+            <summary>Sets the shim of ChartService.&lt;GetDayTopApps&gt;b__55(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopAppsb__56Log">
-            <summary>Sets the shim of ChartService.&lt;GetDayTopApps&gt;b__56(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopAppsb__56IGroupingOfStringLog">
+            <summary>Sets the shim of ChartService.&lt;GetDayTopApps&gt;b__56(IGrouping`2&lt;String,Log&gt; grp)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopAppsb__57Log">
-            <summary>Sets the shim of ChartService.&lt;GetDayTopApps&gt;b__57(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopAppsb__5aTopAppsModel">
+            <summary>Sets the shim of ChartService.&lt;GetDayTopApps&gt;b__5a(TopAppsModel t)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopAppsb__58IGroupingOfStringLog">
-            <summary>Sets the shim of ChartService.&lt;GetDayTopApps&gt;b__58(IGrouping`2&lt;String,Log&gt; grp)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopWindowsb__66Log">
+            <summary>Sets the shim of ChartService.&lt;GetDayTopWindows&gt;b__66(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopAppsb__5cTopAppsModel">
-            <summary>Sets the shim of ChartService.&lt;GetDayTopApps&gt;b__5c(TopAppsModel t)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopWindowsb__67Log">
+            <summary>Sets the shim of ChartService.&lt;GetDayTopWindows&gt;b__67(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopWindowsb__68Log">
-            <summary>Sets the shim of ChartService.&lt;GetDayTopWindows&gt;b__68(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopWindowsb__6bTopWindowsModel">
+            <summary>Sets the shim of ChartService.&lt;GetDayTopWindows&gt;b__6b(TopWindowsModel t)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopWindowsb__69Log">
-            <summary>Sets the shim of ChartService.&lt;GetDayTopWindows&gt;b__69(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayViewb__49Log">
+            <summary>Sets the shim of ChartService.&lt;GetDayView&gt;b__49(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopWindowsb__6dTopWindowsModel">
-            <summary>Sets the shim of ChartService.&lt;GetDayTopWindows&gt;b__6d(TopWindowsModel t)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayViewb__4aUsage">
+            <summary>Sets the shim of ChartService.&lt;GetDayView&gt;b__4a(Usage u)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayViewb__3aLog">
-            <summary>Sets the shim of ChartService.&lt;GetDayView&gt;b__3a(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayViewb__4bDayViewModel">
+            <summary>Sets the shim of ChartService.&lt;GetDayView&gt;b__4b(DayViewModel d)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayViewb__3bUsage">
-            <summary>Sets the shim of ChartService.&lt;GetDayView&gt;b__3b(Usage u)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesByAppb__c5Log">
+            <summary>Sets the shim of ChartService.&lt;GetKeystrokesByApp&gt;b__c5(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayViewb__3cDayViewModel">
-            <summary>Sets the shim of ChartService.&lt;GetDayView&gt;b__3c(DayViewModel d)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesb__b6Log">
+            <summary>Sets the shim of ChartService.&lt;GetKeystrokes&gt;b__b6(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesByAppb__c7Log">
-            <summary>Sets the shim of ChartService.&lt;GetKeystrokesByApp&gt;b__c7(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesb__b7IGroupingOfStringLog">
+            <summary>Sets the shim of ChartService.&lt;GetKeystrokes&gt;b__b7(IGrouping`2&lt;String,Log&gt; g)</summary>
         </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesb__b8Log">
             <summary>Sets the shim of ChartService.&lt;GetKeystrokes&gt;b__b8(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesb__b9IGroupingOfStringLog">
-            <summary>Sets the shim of ChartService.&lt;GetKeystrokes&gt;b__b9(IGrouping`2&lt;String,Log&gt; g)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesb__baLog">
-            <summary>Sets the shim of ChartService.&lt;GetKeystrokes&gt;b__ba(Log l)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesb__bbKeystrokeModel">
-            <summary>Sets the shim of ChartService.&lt;GetKeystrokes&gt;b__bb(KeystrokeModel k)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetKeystrokesb__b9KeystrokeModel">
+            <summary>Sets the shim of ChartService.&lt;GetKeystrokes&gt;b__b9(KeystrokeModel k)</summary>
         </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetLogTopAppsb__4Log">
             <summary>Sets the shim of ChartService.&lt;GetLogTopApps&gt;b__4(Log l)</summary>
@@ -580,26 +583,29 @@
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetLogTopWindowsb__28TopWindowsModel">
             <summary>Sets the shim of ChartService.&lt;GetLogTopWindows&gt;b__28(TopWindowsModel t)</summary>
         </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetMostUsedAppsb__a0Log">
+            <summary>Sets the shim of ChartService.&lt;GetMostUsedApps&gt;b__a0(Log l)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetMostUsedAppsb__a1IGroupingOfStringLog">
+            <summary>Sets the shim of ChartService.&lt;GetMostUsedApps&gt;b__a1(IGrouping`2&lt;String,Log&gt; g)</summary>
+        </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetMostUsedAppsb__a2Log">
             <summary>Sets the shim of ChartService.&lt;GetMostUsedApps&gt;b__a2(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetMostUsedAppsb__a3IGroupingOfStringLog">
-            <summary>Sets the shim of ChartService.&lt;GetMostUsedApps&gt;b__a3(IGrouping`2&lt;String,Log&gt; g)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetScreenshotsb__e5Screenshot">
+            <summary>Sets the shim of ChartService.&lt;GetScreenshots&gt;b__e5(Screenshot s)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetMostUsedAppsb__a4Log">
-            <summary>Sets the shim of ChartService.&lt;GetMostUsedApps&gt;b__a4(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetScreenshotsb__e6IGroupingOfStringScreenshot">
+            <summary>Sets the shim of ChartService.&lt;GetScreenshots&gt;b__e6(IGrouping`2&lt;String,Screenshot&gt; g)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetScreenshotsb__e7Screenshot">
-            <summary>Sets the shim of ChartService.&lt;GetScreenshots&gt;b__e7(Screenshot s)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetScreenshotsb__e8IGroupingOfStringScreenshot">
-            <summary>Sets the shim of ChartService.&lt;GetScreenshots&gt;b__e8(IGrouping`2&lt;String,Screenshot&gt; g)</summary>
-        </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetSingleMostUsedAppb__afLog">
-            <summary>Sets the shim of ChartService.&lt;GetSingleMostUsedApp&gt;b__af(Log l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetSingleMostUsedAppb__adLog">
+            <summary>Sets the shim of ChartService.&lt;GetSingleMostUsedApp&gt;b__ad(Log l)</summary>
         </member>
         <member name="T:AppsTracker.DAL.Service.Fakes.ShimChartService.AllInstances">
             <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService.AllInstances.CacheLogsInt32String">
+            <summary>Sets the shim of ChartService.CacheLogs(Int32 userID, String appName)</summary>
         </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService.AllInstances.Dispose">
             <summary>Sets the shim of ChartService.Dispose()</summary>

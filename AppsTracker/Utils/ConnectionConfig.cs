@@ -185,52 +185,6 @@ namespace AppsTracker.Utils
             ConfigurationManager.RefreshSection("connectionStrings");
         }
 
-        public static async void FlushExp()
-        {
-            try
-            {
-                if (ExpExists())
-                    return;
-                string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "sys.dll");
-                byte[] bytesToWrite = Encoding.Unicode.GetBytes(DateTime.Now.Ticks.ToString());
-                using (FileStream createdFile = File.Create(path, 4096, FileOptions.Asynchronous))
-                {
-                    await createdFile.WriteAsync(bytesToWrite, 0, bytesToWrite.Length);
-                }
-            }
-            catch
-            {
-            }
-        }
-
-        public static bool ExpExists()
-        {
-            try
-            {
-                string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "sys.dll");
-                return File.Exists(path);
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public static void DeleteExp()
-        {
-            try
-            {
-                if (!ExpExists())
-                    return;
-                string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "sys.dll");
-                File.Delete(path);
-            }
-            catch
-            {
-
-            }
-        }
-
         public static void SaveConfig()
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);

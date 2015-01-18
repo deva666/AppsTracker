@@ -25,6 +25,8 @@ namespace AppsTracker.DAL.Service
 
         private IEnumerable<Log> _cachedLogs = null;
 
+        private string _cachedLogsForApp;
+
         public IEnumerable<TopAppsModel> GetLogTopApps(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo)
         {
             using (var context = new AppsEntities())
@@ -85,31 +87,80 @@ namespace AppsTracker.DAL.Service
 
         public IEnumerable<TopWindowsModel> GetLogTopWindows(int userID, string appName, IEnumerable<DateTime> days)
         {
+
+            if (_cachedLogs == null || (_cachedLogs != null && string.Equals(_cachedLogsForApp, appName) == false))
+            {
+                CacheLogs(userID, appName);
+            }
+
+            var logs = _cachedLogs;
+
+            var totalFiltered = logs.Where(l => days.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)));
+
+            double totalDuration = totalFiltered.Sum(l => l.Duration);
+
+            var result = (from l in totalFiltered
+                          group l by l.Window.Title into grp
+                          select grp).Select(g => new TopWindowsModel
+                          {
+                              Title = g.Key,
+                              Usage = (g.Sum(l => l.Duration) / totalDuration),
+                              Duration = g.Sum(l => l.Duration)
+                          })
+                          .OrderByDescending(t => t.Duration)
+                          .ToList();
+
+            return result;
+        }
+
+        private void CacheLogs(int userID, string appName)
+        {
             using (var context = new AppsEntities())
             {
-                var logs = _cachedLogs == null ? _cachedLogs = context.Logs.Where(l => l.Window.Application.User.UserID == userID
-                                                                                    && l.Window.Application.Name == appName)
-                                                                        .Include(l => l.Window)
-                                                                        .ToList()
-                                                                        : _cachedLogs;
-
-                var totalFiltered = logs.Where(l => days.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)));
-
-                double totalDuration = totalFiltered.Sum(l => l.Duration);
-
-                var result = (from l in totalFiltered
-                              group l by l.Window.Title into grp
-                              select grp).Select(g => new TopWindowsModel
-                              {
-                                  Title = g.Key,
-                                  Usage = (g.Sum(l => l.Duration) / totalDuration),
-                                  Duration = g.Sum(l => l.Duration)
-                              })
-                              .OrderByDescending(t => t.Duration)
-                              .ToList();
-
-                return result;
+                _cachedLogs = context.Logs.Where(l => l.Window.Application.User.UserID == userID
+                                                                && l.Window.Application.Name == appName)
+                                                    .Include(l => l.Window)
+                                                    .ToList();
+                _cachedLogsForApp = appName;
             }
+        }
+
+        public IEnumerable<DailyWindowSeries> GetDailyWindowSeries(int userID, string appName, IEnumerable<string> selectedWindows, IEnumerable<DateTime> days)
+        {
+
+            if (selectedWindows.Count() == 0)
+                return null;
+
+            if (_cachedLogs == null || (_cachedLogs != null && _cachedLogsForApp != appName))
+            {
+                CacheLogs(userID, appName);
+            }
+
+            var logs = _cachedLogs;
+
+            var totalFiltered = logs.Where(l => days.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)) && selectedWindows.Contains(l.Window.Title));
+
+            List<DailyWindowSeries> result = new List<DailyWindowSeries>();
+
+            var projected = from l in totalFiltered
+                            group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day } into grp
+                            select grp;
+
+            foreach (var grp in projected)
+            {
+                var projected2 = grp.GroupBy(g => g.Window.Title);
+                DailyWindowSeries series = new DailyWindowSeries() { Date = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day).ToShortDateString() };
+                List<DailyWindowDurationModel> modelList = new List<DailyWindowDurationModel>();
+                foreach (var grp2 in projected2)
+                {
+                    DailyWindowDurationModel model = new DailyWindowDurationModel() { Title = grp2.Key, Duration = Math.Round(new TimeSpan(grp2.Sum(l => l.Duration)).TotalMinutes, 2) };
+                    modelList.Add(model);
+                }
+                series.DailyWindowCollection = modelList;
+                result.Add(series);
+            }
+
+            return result;
         }
 
         public IEnumerable<DayViewModel> GetDayView(int userID, DateTime dateFrom)
@@ -167,45 +218,6 @@ namespace AppsTracker.DAL.Service
                                                                });
 
                 return logModels.Union(usageModels).OrderBy(d => d.DateCreated).ToList();
-            }
-        }
-
-        public IEnumerable<DailyWindowSeries> GetDailyWindowSeries(int userID, string appName, IEnumerable<string> selectedWindows, IEnumerable<DateTime> days)
-        {
-            using (var context = new AppsEntities())
-            {
-                if (selectedWindows.Count() == 0)
-                    return null;
-
-                var logs = _cachedLogs == null ? _cachedLogs = context.Logs.Where(l => l.Window.Application.User.UserID == userID
-                                                                                    && l.Window.Application.Name == appName)
-                                                                        .Include(l => l.Window)
-                                                                        .ToList()
-                                                                        : _cachedLogs;
-
-                var totalFiltered = logs.Where(l => days.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)) && selectedWindows.Contains(l.Window.Title));
-
-                List<DailyWindowSeries> result = new List<DailyWindowSeries>();
-
-                var projected = from l in totalFiltered
-                                group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day } into grp
-                                select grp;
-
-                foreach (var grp in projected)
-                {
-                    var projected2 = grp.GroupBy(g => g.Window.Title);
-                    DailyWindowSeries series = new DailyWindowSeries() { Date = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day).ToShortDateString() };
-                    List<DailyWindowDurationModel> modelList = new List<DailyWindowDurationModel>();
-                    foreach (var grp2 in projected2)
-                    {
-                        DailyWindowDurationModel model = new DailyWindowDurationModel() { Title = grp2.Key, Duration = Math.Round(new TimeSpan(grp2.Sum(l => l.Duration)).TotalMinutes, 2) };
-                        modelList.Add(model);
-                    }
-                    series.DailyWindowCollection = modelList;
-                    result.Add(series);
-                }
-
-                return result;
             }
         }
 
@@ -292,7 +304,7 @@ namespace AppsTracker.DAL.Service
 
                 logins = context.Usages.Where(u => u.User.UserID == userID
                                                 && ((u.UsageStart >= today && u.UsageStart <= nextDay)
-                                                        || u.IsCurrent)
+                                                        || (u.IsCurrent && u.UsageStart < today))
                                                 && u.UsageType.UType == usageLogin)
                                       .Include(u => u.UsageType)
                                       .ToList();

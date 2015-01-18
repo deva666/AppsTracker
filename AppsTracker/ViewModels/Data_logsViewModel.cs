@@ -188,7 +188,10 @@ namespace AppsTracker.Pages.ViewModels
                 PropertyChanging("SelectedApplication");
                 ChartVisible = false;
                 if (value != null)
-                    TopAppsList.Reload();
+                {
+                    _topAppsList.Reload();
+                    //_topWindowsList.Reset();
+                }
             }
         }
 
@@ -305,6 +308,7 @@ namespace AppsTracker.Pages.ViewModels
             var topApps = TopAppsOverall;
             if (TopAppsList.Result == null || topApps == null)
                 return null;
+           // System.Windows.Forms.MessageBox.Show(topApps.AppName);
 
             var days = TopAppsList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
             return _chartService.GetLogTopWindows(Globals.SelectedUserID, topApps.AppName, days);
@@ -388,6 +392,7 @@ namespace AppsTracker.Pages.ViewModels
             }
 
         }
+
         private void OverallAppSelectionChanged()
         {
             ChartVisible = false;
@@ -400,7 +405,7 @@ namespace AppsTracker.Pages.ViewModels
 
             if (filteredApps.Count() == 0)
             {
-                TopWindowsList.Reset();
+                _topWindowsList.Reset();
                 return;
             }
 
@@ -416,14 +421,14 @@ namespace AppsTracker.Pages.ViewModels
         }
         private void OverallWindowSelectionChanged()
         {
-            if (TopWindowsList.Result == null)
+            if (_topWindowsList.Result == null)
             {
                 ChartList.Reset();
                 ChartVisible = false;
                 return;
             }
 
-            if (TopWindowsList.Result.Where(w => w.IsSelected).Count() == 0)
+            if (_topWindowsList.Result.Where(w => w.IsSelected).Count() == 0)
             {
                 ChartVisible = false;
                 return;
@@ -432,7 +437,7 @@ namespace AppsTracker.Pages.ViewModels
             ChartVisible = true;
             long ticks = 0;
 
-            foreach (var window in TopWindowsList.Result.Where(w => w.IsSelected))
+            foreach (var window in _topWindowsList.Result.Where(w => w.IsSelected))
                 ticks += window.Duration;
 
             if (ticks == 0)

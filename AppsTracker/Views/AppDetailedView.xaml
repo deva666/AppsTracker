@@ -102,7 +102,7 @@
                                    Grid.Row="1"
                                    ItemsSource="{Binding TopAppsList.Result, Mode=OneWay}"
                                    ItemContainerStyle="{DynamicResource ListViewItemStyle}"
-                                   SelectedItem="{Binding TopAppsOverall}"
+                                   SelectedItem="{Binding TopAppsOverall, Mode=TwoWay}"
                                    BorderBrush="{x:Null}"
                                    BorderThickness="0"
                                    Margin="10,20,10,10"
