@@ -20,7 +20,7 @@ namespace AppsTracker.ViewModels
         public SettingsHostViewModel()
         {
             Register<Settings_generalViewModel>(() => new Settings_generalViewModel());
-            Register<Settings_licenseViewModel>(() => new Settings_licenseViewModel());
+            //Register<Settings_licenseViewModel>(() => new Settings_licenseViewModel());
 
             SelectedChild = Resolve(typeof(Settings_generalViewModel));
         }

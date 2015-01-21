@@ -96,22 +96,6 @@ namespace AppsTracker
             if (!UzerSetting.Licence)
                 UzerSetting.Licence = true;
 
-            if (CheckTrialExpiration())
-            {
-                LicenceWindow licenceWindow = new LicenceWindow();
-                var result = licenceWindow.ShowDialog();
-                if (result.HasValue && result.Value)
-                {
-                    //OK, licence valid
-                }
-                else
-                {
-                    (App.Current as App).Shutdown();
-                    Environment.Exit(0);
-                    return;
-                }
-            }
-
 #if PORTABLE_SYMBOL
 
             if (UzerSetting.FirstRun)
@@ -144,11 +128,6 @@ namespace AppsTracker
             MatchSettingsAndRegistry();
 
             #region Event Handlers
-
-            //this.Startup += (s, e) =>
-            //   {
-            //       SetProcessKillAuth();
-            //   };
 
             this.SessionEnding += (s, e) => FinishAndExit();
 
@@ -433,7 +412,7 @@ namespace AppsTracker
 
         #endregion
 
-        void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             try
             {

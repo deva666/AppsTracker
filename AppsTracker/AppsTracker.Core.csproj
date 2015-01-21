@@ -762,9 +762,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="De.TorstenMandelkow.MetroChart.dll" />
-    <Resource Include="icon1.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
     <None Include="installer.wxs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

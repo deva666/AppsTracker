@@ -45,8 +45,6 @@ namespace AppsTracker
 
             ConnectionConfig.ToggleConfigEncryption();
 
-            //ConnectionConfig.ChangeDBPassword("");
-
             try
             {
                 using (AppsEntities context = new AppsEntities())
@@ -83,7 +81,7 @@ namespace AppsTracker
             singleInstanceApp.Run(args);
         }
 
-        static void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
+       private static void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
         {
             var app = App.Current as App;
             try

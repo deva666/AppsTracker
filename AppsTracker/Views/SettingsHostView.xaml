@@ -51,7 +51,7 @@
                     </MouseBinding>
                 </Label.InputBindings>
             </Label>
-            <Label Content="LICENCE"
+            <!--<Label Content="LICENCE"
                    Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=LICENCE}">
                 <Label.InputBindings>
                     <MouseBinding Gesture="LeftClick"
@@ -59,7 +59,7 @@
                                   CommandParameter="{x:Type viewModels:Settings_licenseViewModel}">
                     </MouseBinding>
                 </Label.InputBindings>
-            </Label>
+            </Label>-->
         </StackPanel>
         
         <controls:FaderContentControl Content="{Binding SelectedChild}"
