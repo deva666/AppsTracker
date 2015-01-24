@@ -9,10 +9,9 @@
 using System;
 using System.Data.Entity;
 using System.Linq;
-
+using System.Threading;
 using AppsTracker.Common.Utils;
 using AppsTracker.DAL;
-using AppsTracker.DAL.Service;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.Models.Proxy;
 using AppsTracker.MVVM;
@@ -29,6 +28,7 @@ namespace AppsTracker.Logging
         private Usage _currentUsageStopped;
 
         private LazyInit<IdleMonitor> _idleMonitor;
+        private Timer _dayEndTimer;
 
         private ISettings _settings;
 
@@ -65,11 +65,88 @@ namespace AppsTracker.Logging
         private void InitLogin()
         {
             var user = InitUzer(Environment.UserName);
-            _currentUsageLogin = InitLogin(user.UserID);
+            _currentUsageLogin = LoginUser(user.UserID);
 
             Globals.Initialize(user, _currentUsageLogin.UsageID);
         }
-    
+
+
+        private Usage LoginUser(int userID)
+        {
+            using (var context = new AppsEntities())
+            {
+                string loginUsage = UsageTypes.Login.ToString();
+
+                if (context.Usages.Where(u => u.IsCurrent && u.UsageType.UType == loginUsage).Count() > 0)
+                {
+                    var failedSaveUsage = context.Usages.Where(u => u.IsCurrent && u.UsageType.UType == loginUsage).ToList();
+                    foreach (var usage in failedSaveUsage)
+                    {
+                        var lastLog = context.Logs.Where(l => l.UsageID == usage.UsageID).OrderByDescending(l => l.DateCreated).FirstOrDefault();
+                        var lastUsage = context.Usages.Where(u => u.SelfUsageID == usage.UsageID).OrderByDescending(u => u.UsageEnd).FirstOrDefault();
+
+                        DateTime lastLogDate = DateTime.MinValue;
+                        DateTime lastUsageDate = DateTime.MinValue;
+
+                        if (lastLog != null)
+                            lastLogDate = lastLog.DateEnded;
+
+                        if (lastUsage != null)
+                            lastUsageDate = lastUsage.UsageEnd;
+
+
+                        usage.UsageEnd = lastLogDate == lastUsageDate ? usage.UsageEnd : lastUsageDate > lastLogDate ? lastUsageDate : lastLogDate;
+                        usage.IsCurrent = false;
+                        context.Entry(usage).State = EntityState.Modified;
+                    }
+                }
+
+                var login = new Usage() { UserID = userID, UsageEnd = DateTime.Now, UsageTypeID = context.UsageTypes.First(u => u.UType == loginUsage).UsageTypeID, IsCurrent = true };
+
+                context.Usages.Add(login);
+                context.SaveChanges();
+
+                return login;
+            }
+        }
+
+        private void InitDayEndTimer()
+        {
+            var midnight = _currentUsageLogin.UsageStart.Date.AddDays(1);
+            var milisecondsToDayEnd = (midnight - _currentUsageLogin.UsageStart).Milliseconds;
+
+            _dayEndTimer = new Timer(OnDayEnded, null, milisecondsToDayEnd, Timeout.Infinite);
+        }
+
+        private void OnDayEnded(object state)
+        {
+            if (_isLoggingEnabled == false)
+                return;
+            _isLoggingEnabled = false;
+
+            Finish();
+
+            InitLogin();
+            InitDayEndTimer();
+        }
+
+        private Uzer InitUzer(string userName)
+        {
+            using (var context = new AppsEntities())
+            {
+                Uzer user = context.Users.FirstOrDefault(u => u.Name == userName);
+
+                if (user == null)
+                {
+                    user = new Uzer() { Name = userName };
+                    context.Users.Add(user);
+                    context.SaveChanges();
+                }
+
+                return user;
+            }
+        }
+
         private void IdleStopped(object sender, EventArgs e)
         {
             Mediator.NotifyColleagues<object>(MediatorMessages.RESUME_LOGGING);
@@ -97,7 +174,7 @@ namespace AppsTracker.Logging
                     InitLogin();
                     Configure();
                     Mediator.NotifyColleagues<object>(MediatorMessages.RESUME_LOGGING);
-                    Microsoft.Win32.SystemEvents.SessionSwitch += SessionSwitch;                    
+                    Microsoft.Win32.SystemEvents.SessionSwitch += SessionSwitch;
                     break;
                 case Microsoft.Win32.PowerModes.StatusChange:
                     break;
@@ -145,7 +222,7 @@ namespace AppsTracker.Logging
 
         private void AddUsage(string usagetype, Usage usage)
         {
-            using (var context =new AppsEntities())
+            using (var context = new AppsEntities())
             {
                 var typeID = context.UsageTypes.First(t => t.UType == usagetype).UsageTypeID;
                 usage.UsageTypeID = typeID;
@@ -156,6 +233,10 @@ namespace AppsTracker.Logging
 
         private void SaveUsage(Usage usage)
         {
+            if (usage == null)
+                return;
+
+            usage.UsageEnd = DateTime.Now;
             using (var context = new AppsEntities())
             {
                 context.Entry<Usage>(usage).State = EntityState.Modified;
@@ -196,8 +277,9 @@ namespace AppsTracker.Logging
 
         private void Finish()
         {
-            _currentUsageLogin.UsageEnd = DateTime.Now;
             _currentUsageLogin.IsCurrent = false;
+            SaveUsage(_currentUsageIdle);
+            SaveUsage(_currentUsageLocked);
             SaveUsage(_currentUsageLogin);
             SaveStoppedUsage();
         }
@@ -205,6 +287,7 @@ namespace AppsTracker.Logging
         public void Dispose()
         {
             _idleMonitor.Enabled = false;
+            _dayEndTimer.Dispose();
             Finish();
             Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;
             Microsoft.Win32.SystemEvents.PowerModeChanged -= PowerModeChanged;
@@ -220,60 +303,5 @@ namespace AppsTracker.Logging
             _isLoggingEnabled = enabled;
         }
 
-        private Usage InitLogin(int userID)
-        {
-            using (var context = new AppsEntities())
-            {
-                string loginUsage = UsageTypes.Login.ToString();
-
-                if (context.Usages.Where(u => u.IsCurrent && u.UsageType.UType == loginUsage).Count() > 0)
-                {
-                    var failedSaveUsage = context.Usages.Where(u => u.IsCurrent && u.UsageType.UType == loginUsage).ToList();
-                    foreach (var usage in failedSaveUsage)
-                    {
-                        var lastLog = context.Logs.Where(l => l.UsageID == usage.UsageID).OrderByDescending(l => l.DateCreated).FirstOrDefault();
-                        var lastUsage = context.Usages.Where(u => u.SelfUsageID == usage.UsageID).OrderByDescending(u => u.UsageEnd).FirstOrDefault();
-
-                        DateTime lastLogDate = DateTime.MinValue;
-                        DateTime lastUsageDate = DateTime.MinValue;
-
-                        if (lastLog != null)
-                            lastLogDate = lastLog.DateEnded;
-
-                        if (lastUsage != null)
-                            lastUsageDate = lastUsage.UsageEnd;
-
-
-                        usage.UsageEnd = lastLogDate == lastUsageDate ? usage.UsageEnd : lastUsageDate > lastLogDate ? lastUsageDate : lastLogDate;
-                        usage.IsCurrent = false;
-                        context.Entry(usage).State = EntityState.Modified;
-                    }
-                }
-
-                var login = new Usage() { UserID = userID, UsageEnd = DateTime.Now, UsageTypeID = context.UsageTypes.First(u => u.UType == loginUsage).UsageTypeID, IsCurrent = true };
-
-                context.Usages.Add(login);
-                context.SaveChanges();
-
-                return login;
-            }
-        }
-
-        private Uzer InitUzer(string userName)
-        {
-            using (var context = new AppsEntities())
-            {
-                Uzer user = context.Users.FirstOrDefault(u => u.Name == userName);
-
-                if (user == null)
-                {
-                    user = new Uzer() { Name = userName };
-                    context.Users.Add(user);
-                    context.SaveChanges();
-                }
-
-                return user;
-            }
-        }
     }
 }
