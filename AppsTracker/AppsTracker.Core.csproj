@@ -258,6 +258,7 @@
     <Compile Include="MVVM\HostViewModel.cs" />
     <Compile Include="MVVM\ICommunicator.cs" />
     <Compile Include="MVVM\IMediator.cs" />
+    <Compile Include="MVVM\IWorker.cs" />
     <Compile Include="Utils\ConnectionConfig.cs" />
     <Compile Include="Utils\ExtensionMethods.cs" />
     <Compile Include="Utils\Globals.cs" />
@@ -330,7 +331,6 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="MVVM\Mediator.cs" />
     <Compile Include="MVVM\MediatorMessages.cs" />
-    <Compile Include="MVVM\MediatorMessageSinkAttribute.cs" />
     <Compile Include="MVVM\MessageToActionsMap.cs" />
     <Compile Include="MVVM\ObservableObject.cs" />
     <Compile Include="MVVM\ViewModelBase.cs" />

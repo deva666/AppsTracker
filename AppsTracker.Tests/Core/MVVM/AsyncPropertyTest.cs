@@ -10,16 +10,16 @@ namespace AppsTracker.Tests.Core.MVVM
     public class AsyncPropertyTest
     {
         private volatile bool _propertyChanged = false;
-        private ViewModelMock vm;
-        private AsyncProperty<int> prop;
+        private IWorker _worker;
+        private AsyncProperty<int> _prop;
 
 
         [TestInitialize]
         public void Init()
         {
-            vm = new ViewModelMock();
-            prop = new AsyncProperty<int>(FakeGet, vm);
-            prop.PropertyChanged += prop_PropertyChanged;
+            _worker = new ViewModelMock();
+            _prop = new AsyncProperty<int>(FakeGet, _worker);
+            _prop.PropertyChanged += prop_PropertyChanged;
         }
 
         void prop_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -32,10 +32,10 @@ namespace AppsTracker.Tests.Core.MVVM
         public void TestAsyncGet()
         {
             _propertyChanged = false;
-            var result = prop.Result;
+            var result = _prop.Result;
             Assert.IsTrue(result == default(int), "Default result value");
             while (_propertyChanged == false) { }
-            result = prop.Result;
+            result = _prop.Result;
             Assert.IsTrue(result == 1, "Result value mismatch");
         }
 
@@ -43,11 +43,11 @@ namespace AppsTracker.Tests.Core.MVVM
         public void TestAsyncReset()
         {
             _propertyChanged = false;
-            prop.Reset();
-            var result = prop.Result;
+            _prop.Reset();
+            var result = _prop.Result;
             Assert.IsTrue(result == default(int), "Default result value");
             while (_propertyChanged == false) { }
-            result = prop.Result;
+            result = _prop.Result;
             Assert.IsTrue(result == default(int), "Result value mismatch");
         }
 
@@ -55,11 +55,11 @@ namespace AppsTracker.Tests.Core.MVVM
         public void TestAsyncReload()
         {
             _propertyChanged = false;
-            prop.Reload();
-            var result = prop.Result;
+            _prop.Reload();
+            var result = _prop.Result;
             Assert.IsTrue(result == default(int), "Default result value");
             while (_propertyChanged == false) { }
-            result = prop.Result;
+            result = _prop.Result;
             Assert.IsTrue(result == 1, "Result value mismatch");
         }
 
@@ -67,11 +67,11 @@ namespace AppsTracker.Tests.Core.MVVM
         public void TestVMHostWorker()
         {
             _propertyChanged = false;
-            Assert.IsFalse(vm.Working, "Host VM should not be working");
-            prop.Reload();
-            Assert.IsTrue(vm.Working, "Host VM should be working");
+            Assert.IsFalse(_worker.Working, "Host VM should not be working");
+            _prop.Reload();
+            Assert.IsTrue(_worker.Working, "Host VM should be working");
             while (_propertyChanged == false) { }
-            Assert.IsFalse(vm.Working, "Host VM should not be working");
+            Assert.IsFalse(_worker.Working, "Host VM should not be working");
         }
 
         private int FakeGet()

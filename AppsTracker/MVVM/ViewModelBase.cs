@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace AppsTracker.MVVM
 {
-    public abstract class ViewModelBase : ObservableObject, IDisposable
+    public abstract class ViewModelBase : ObservableObject, IWorker, IDisposable
     {
         protected bool _working;
 

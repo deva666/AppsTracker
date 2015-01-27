@@ -14,7 +14,7 @@ namespace AppsTracker.MVVM
 {
     internal class AsyncProperty<T> : ObservableObject
     {
-        private ViewModelBase _host;
+        private IWorker _worker;
         private Func<T> _getter;
 
         private Task<T> _task;
@@ -42,9 +42,9 @@ namespace AppsTracker.MVVM
             }
         }
 
-        public AsyncProperty(Func<T> getter, ViewModelBase host)
+        public AsyncProperty(Func<T> getter, IWorker worker)
         {
-            _host = host;
+            _worker = worker;
             _getter = getter;
         }
 
@@ -68,7 +68,7 @@ namespace AppsTracker.MVVM
         {
             try
             {
-                _host.Working = true;
+                _worker.Working = true;
                 _result = await task.ConfigureAwait(false);
             }
             catch
@@ -76,7 +76,7 @@ namespace AppsTracker.MVVM
             }
             finally
             {
-                _host.Working = false;
+                _worker.Working = false;
             }
             if (task.Status == TaskStatus.RanToCompletion)
             {
