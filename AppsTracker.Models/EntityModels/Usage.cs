@@ -27,24 +27,39 @@ namespace AppsTracker.Models.EntityModels
             }
         }
 
+        [NotMapped]
+        public DateTime DisplayedStart
+        {
+            get
+            {
+                return UsageStart.Date.Day == DateTime.Now.Day ? UsageStart : DateTime.Now.Date;
+            }
+        }
+
+        [NotMapped]
+        public TimeSpan DisplayedDuration
+        {
+            get
+            {
+                return IsCurrent ? new TimeSpan(DateTime.Now.Ticks - DisplayedStart.Ticks) : new TimeSpan(UsageEnd.Ticks - DisplayedStart.Ticks);
+            }
+        }
+
         public Usage(int userID)
             : this()
         {
-            this.UserID = userID;
+            UserID = userID;
         }
 
         public Usage(int userID, int usageTypeID)
             : this(userID)
         {
-            this.UsageTypeID = usageTypeID;
+            UsageTypeID = usageTypeID;
         }
 
         public Usage()
         {
-            this.UsageStart = DateTime.Now;
-            //this.Logs = new HashSet<Log>();
-            //this.SelfUsages = new HashSet<Usage>();
-            //this.SelfUsage = new HashSet<Usage>();
+            UsageStart = DateTime.Now;
         }
 
         [Key]
@@ -58,10 +73,10 @@ namespace AppsTracker.Models.EntityModels
         public int UserID { get; set; }
 
         [Required]
-        public System.DateTime UsageStart { get; set; }
+        public DateTime UsageStart { get; set; }
 
         [Required]
-        public System.DateTime UsageEnd { get; set; }
+        public DateTime UsageEnd { get; set; }
 
         [Required]
         public bool IsCurrent { get; set; }

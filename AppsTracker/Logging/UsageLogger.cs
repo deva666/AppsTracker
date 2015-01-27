@@ -28,7 +28,6 @@ namespace AppsTracker.Logging
         private Usage _currentUsageStopped;
 
         private LazyInit<IdleMonitor> _idleMonitor;
-        private Timer _dayEndTimer;
 
         private ISettings _settings;
 
@@ -109,27 +108,7 @@ namespace AppsTracker.Logging
                 return login;
             }
         }
-
-        private void InitDayEndTimer()
-        {
-            var midnight = _currentUsageLogin.UsageStart.Date.AddDays(1);
-            var milisecondsToDayEnd = (midnight - _currentUsageLogin.UsageStart).Milliseconds;
-
-            _dayEndTimer = new Timer(OnDayEnded, null, milisecondsToDayEnd, Timeout.Infinite);
-        }
-
-        private void OnDayEnded(object state)
-        {
-            if (_isLoggingEnabled == false)
-                return;
-            _isLoggingEnabled = false;
-
-            Finish();
-
-            InitLogin();
-            InitDayEndTimer();
-        }
-
+               
         private Uzer InitUzer(string userName)
         {
             using (var context = new AppsEntities())
@@ -287,7 +266,6 @@ namespace AppsTracker.Logging
         public void Dispose()
         {
             _idleMonitor.Enabled = false;
-            _dayEndTimer.Dispose();
             Finish();
             Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;
             Microsoft.Win32.SystemEvents.PowerModeChanged -= PowerModeChanged;

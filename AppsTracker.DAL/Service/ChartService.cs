@@ -289,8 +289,9 @@ namespace AppsTracker.DAL.Service
         {
             using (var context = new AppsEntities())
             {
-                DateTime today = dateFrom.Date;
-                DateTime nextDay = today.AddDays(1d);
+                DateTime fromDay = dateFrom.Date;
+                DateTime nextDay = fromDay.AddDays(1d);
+                DateTime today = DateTime.Now.Date;
 
                 string usageLogin = UsageTypes.Login.ToString();
                 string usageIdle = UsageTypes.Idle.ToString();
@@ -303,8 +304,8 @@ namespace AppsTracker.DAL.Service
                 List<Usage> stoppeds = null;
 
                 logins = context.Usages.Where(u => u.User.UserID == userID
-                                                && ((u.UsageStart >= today && u.UsageStart <= nextDay)
-                                                        || (u.IsCurrent && u.UsageStart < today))
+                                                && ((u.UsageStart >= fromDay && u.UsageStart <= nextDay)
+                                                        || (u.IsCurrent && u.UsageStart < fromDay && today <= fromDay))
                                                 && u.UsageType.UType == usageLogin)
                                       .Include(u => u.UsageType)
                                       .ToList();
@@ -351,7 +352,7 @@ namespace AppsTracker.DAL.Service
 
                 foreach (var login in logins)
                 {
-                    DailyUsageTypeSeries series = new DailyUsageTypeSeries() { Time = login.UsageStart.ToString("HH:mm:ss") };
+                    DailyUsageTypeSeries series = new DailyUsageTypeSeries() { Time = login.DisplayedStart.ToString("HH:mm:ss") };
                     ObservableCollection<UsageTypeModel> observableCollection = new ObservableCollection<UsageTypeModel>();
 
                     long idleTime = 0;
@@ -359,33 +360,32 @@ namespace AppsTracker.DAL.Service
                     long loginTime = 0;
                     long stoppedTime = 0;
 
-                    var currentIdles = idles.Where(u => u.SelfUsageID == login.UsageID);
-                    var currentLockeds = lockeds.Where(u => u.SelfUsageID == login.UsageID);
-                    var currentStopppeds = stoppeds.Where(u => u.SelfUsageID == login.UsageID);
+                    var tempIdles = idles.Where(u => u.SelfUsageID == login.UsageID);
+                    var tempLockeds = lockeds.Where(u => u.SelfUsageID == login.UsageID);
+                    var tempStopppeds = stoppeds.Where(u => u.SelfUsageID == login.UsageID);
 
-                    if (currentIdles.Count() > 0)
+                    if (tempIdles.Count() > 0)
                     {
-                        idleTime = currentIdles.Sum(l => l.Duration.Ticks);
+                        idleTime = tempIdles.Sum(l => l.Duration.Ticks);
                         observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(idleTime).TotalHours, 2), UsageType = usageIdle });
                     }
 
-                    if (currentLockeds.Count() > 0)
+                    if (tempLockeds.Count() > 0)
                     {
-                        lockedTime = currentLockeds.Sum(l => l.Duration.Ticks);
+                        lockedTime = tempLockeds.Sum(l => l.Duration.Ticks);
                         observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Computer locked" });
                     }
 
 
-                    if (currentStopppeds.Count() > 0)
+                    if (tempStopppeds.Count() > 0)
                     {
-                        stoppedTime = currentStopppeds.Sum(l => l.Duration.Ticks);
+                        stoppedTime = tempStopppeds.Sum(l => l.Duration.Ticks);
                         observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Stopped logging" });
                     }
 
                     loginTime = login.Duration.Ticks - lockedTime - idleTime - stoppedTime;
                     observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(loginTime).TotalHours, 2), UsageType = "Work" });
-
-
+                    
                     series.DailyUsageTypeCollection = observableCollection;
 
                     collection.Add(series);
@@ -394,7 +394,7 @@ namespace AppsTracker.DAL.Service
                 if (logins.Count > 1)
                 {
                     DailyUsageTypeSeries seriesTotal = new DailyUsageTypeSeries() { Time = "TOTAL" };
-                    ObservableCollection<UsageTypeModel> observableCollectionTotal = new ObservableCollection<UsageTypeModel>();
+                    ObservableCollection<UsageTypeModel> observableTotal = new ObservableCollection<UsageTypeModel>();
 
                     long idleTimeTotal = 0;
                     long lockedTimeTotal = 0;
@@ -404,28 +404,28 @@ namespace AppsTracker.DAL.Service
                     if (idles.Count > 0)
                     {
                         idleTimeTotal = idles.Sum(l => l.Duration.Ticks);
-                        observableCollectionTotal.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(idleTimeTotal).TotalHours, 2), UsageType = usageIdle });
+                        observableTotal.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(idleTimeTotal).TotalHours, 2), UsageType = usageIdle });
                     }
 
                     if (lockeds.Count > 0)
                     {
                         lockedTimeTotal = lockeds.Sum(l => l.Duration.Ticks);
-                        observableCollectionTotal.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTimeTotal).TotalHours, 2), UsageType = "Computer locked" });
+                        observableTotal.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTimeTotal).TotalHours, 2), UsageType = "Computer locked" });
                     }
 
                     if (logins.Count > 0)
                     {
                         loginTimeTotal = logins.Sum(l => l.Duration.Ticks) - lockedTimeTotal - idleTimeTotal;
-                        observableCollectionTotal.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(loginTimeTotal).TotalHours, 2), UsageType = "Work" });
+                        observableTotal.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(loginTimeTotal).TotalHours, 2), UsageType = "Work" });
                     }
 
                     if (stoppeds.Count > 0)
                     {
                         stoppedTimeTotal = stoppeds.Sum(l => l.Duration.Ticks);
-                        observableCollectionTotal.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(stoppedTimeTotal).TotalHours, 2), UsageType = "Stopped logging" });
+                        observableTotal.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(stoppedTimeTotal).TotalHours, 2), UsageType = "Stopped logging" });
                     }
 
-                    seriesTotal.DailyUsageTypeCollection = observableCollectionTotal;
+                    seriesTotal.DailyUsageTypeCollection = observableTotal;
 
                     collection.Add(seriesTotal);
                 }

@@ -7,14 +7,13 @@
 #endregion
 
 using System;
+using System.Collections.ObjectModel;
 using System.Data.Entity.Core;
 using System.IO;
 using System.Linq;
-
 using AppsTracker.Controls;
 using AppsTracker.DAL;
 using AppsTracker.Utils;
-
 using Microsoft.VisualBasic.ApplicationServices;
 
 namespace AppsTracker
@@ -76,9 +75,13 @@ namespace AppsTracker
             }
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            SingleInstanceManager singleInstanceApp = new SingleInstanceManager();
+#if DEBUG
+            RunApp(new ReadOnlyCollection<string>(args));
+#else
 
+            SingleInstanceManager singleInstanceApp = new SingleInstanceManager();
             singleInstanceApp.Run(args);
+#endif
         }
 
        private static void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
@@ -108,6 +111,17 @@ namespace AppsTracker
             }
         }
 
+       private static void RunApp(ReadOnlyCollection<String> eventArgs)
+       {
+           if (eventArgs.Count == 0)
+           {
+               System.Windows.SplashScreen splashScreen = new System.Windows.SplashScreen("resources/appstrackersplashresized.png");
+               splashScreen.Show(true);
+           }
+           App app = new App(eventArgs);
+           app.Run();
+       }
+
         public class SingleInstanceManager : WindowsFormsApplicationBase
         {
             public static event EventHandler SecondInstanceActivating;
@@ -119,13 +133,7 @@ namespace AppsTracker
 
             protected override bool OnStartup(StartupEventArgs eventArgs)
             {
-                if (eventArgs.CommandLine.Count == 0)
-                {
-                    System.Windows.SplashScreen splashScreen = new System.Windows.SplashScreen("resources/appstrackersplashresized.png");
-                    splashScreen.Show(true);
-                }
-                App app = new App(eventArgs.CommandLine);
-                app.Run();
+                RunApp(eventArgs.CommandLine);
                 return false;
             }
 
