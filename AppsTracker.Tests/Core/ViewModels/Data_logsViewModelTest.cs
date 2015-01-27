@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using AppsTracker.Pages.ViewModels;
+﻿using System.Threading.Tasks;
 using AppsTracker.DAL.Service;
+using AppsTracker.Pages.ViewModels;
 using AppsTracker.Tests.Fakes.Service;
-using AppsTracker.Models.EntityModels;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AppsTracker.Tests.Core.ViewModels
@@ -41,8 +34,9 @@ namespace AppsTracker.Tests.Core.ViewModels
                     break;
             }
 
+            System.Threading.Thread.Sleep(100);
+
             Assert.IsNotNull(vm.AplicationList.Result, "App list not loaded");
-            //Assert.IsInstanceOfType(vm.AplicationList.Result, typeof(List<Aplication>), "App list type mismatch");
         }
     }
 }

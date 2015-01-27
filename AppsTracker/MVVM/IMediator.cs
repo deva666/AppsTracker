@@ -8,9 +8,10 @@ namespace AppsTracker.MVVM
 {
     public interface IMediator
     {
-        void Register(object target);
-        void Register(string message, Delegate callback);
+        void Register<T>(string message, Action<T> callBack);
+        void Register(string message, Action callBack);
+      //  void Register(string message, Delegate callback);
         void NotifyColleagues<T>(string message, T parameter);
-        void NotifyColleagues<T>(string message);
+        void NotifyColleagues(string message);
     }
 }

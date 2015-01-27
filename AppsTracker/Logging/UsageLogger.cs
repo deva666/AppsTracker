@@ -128,7 +128,7 @@ namespace AppsTracker.Logging
 
         private void IdleStopped(object sender, EventArgs e)
         {
-            Mediator.NotifyColleagues<object>(MediatorMessages.RESUME_LOGGING);
+            Mediator.NotifyColleagues(MediatorMessages.RESUME_LOGGING);
             if (_currentUsageIdle == null)
                 return;
 
@@ -143,7 +143,7 @@ namespace AppsTracker.Logging
                 return;
 
             _currentUsageIdle = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
-            Mediator.NotifyColleagues<object>(MediatorMessages.STOP_LOGGING);
+            Mediator.NotifyColleagues(MediatorMessages.STOP_LOGGING);
         }
         private void PowerModeChanged(object sender, Microsoft.Win32.PowerModeChangedEventArgs e)
         {
@@ -152,7 +152,7 @@ namespace AppsTracker.Logging
                 case Microsoft.Win32.PowerModes.Resume:
                     InitLogin();
                     Configure();
-                    Mediator.NotifyColleagues<object>(MediatorMessages.RESUME_LOGGING);
+                    Mediator.NotifyColleagues(MediatorMessages.RESUME_LOGGING);
                     Microsoft.Win32.SystemEvents.SessionSwitch += SessionSwitch;
                     break;
                 case Microsoft.Win32.PowerModes.StatusChange:
@@ -162,7 +162,7 @@ namespace AppsTracker.Logging
                     //If it's going to sleep, than don't log this as computer locked
                     _isLoggingEnabled = false;
                     Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;
-                    Mediator.NotifyColleagues<object>(MediatorMessages.STOP_LOGGING);
+                    Mediator.NotifyColleagues(MediatorMessages.STOP_LOGGING);
                     Finish();
                     break;
             }

@@ -3244,6 +3244,12 @@
         <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.ConstructorInt32Int32">
             <summary>Sets the shim of Usage.Usage(Int32 userID, Int32 usageTypeID)</summary>
         </member>
+        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.DisplayedDurationGet">
+            <summary>Sets the shim of Usage.get_DisplayedDuration()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.DisplayedStartGet">
+            <summary>Sets the shim of Usage.get_DisplayedStart()</summary>
+        </member>
         <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.DurationGet">
             <summary>Sets the shim of Usage.get_Duration()</summary>
         </member>
@@ -3327,6 +3333,12 @@
         </member>
         <member name="T:AppsTracker.Models.EntityModels.Fakes.ShimUsage.AllInstances">
             <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.AllInstances.DisplayedDurationGet">
+            <summary>Sets the shim of Usage.get_DisplayedDuration()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.AllInstances.DisplayedStartGet">
+            <summary>Sets the shim of Usage.get_DisplayedStart()</summary>
         </member>
         <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.AllInstances.DurationGet">
             <summary>Sets the shim of Usage.get_Duration()</summary>

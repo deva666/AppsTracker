@@ -120,7 +120,7 @@ namespace AppsTracker.ViewModels
                 IsFilterApplied = true;
                 Globals.Date1 = value;
                 PropertyChanging("Date1");
-                Mediator.NotifyColleagues<object>(MediatorMessages.RefreshLogs);
+                Mediator.NotifyColleagues(MediatorMessages.RefreshLogs);
             }
         }
 
@@ -137,7 +137,7 @@ namespace AppsTracker.ViewModels
                 IsFilterApplied = true;
                 Globals.Date2 = value;
                 PropertyChanging("Date2");
-                Mediator.NotifyColleagues<object>(MediatorMessages.RefreshLogs);
+                Mediator.NotifyColleagues(MediatorMessages.RefreshLogs);
             }
         }
 
@@ -295,7 +295,7 @@ namespace AppsTracker.ViewModels
         {
             IsFilterApplied = false;
             Globals.ClearDateFilter();
-            Mediator.NotifyColleagues<object>(MediatorMessages.RefreshLogs);
+            Mediator.NotifyColleagues(MediatorMessages.RefreshLogs);
         }
 
         private void CloseDatesPopup()
