@@ -27,24 +27,6 @@ namespace AppsTracker.Models.EntityModels
             }
         }
 
-        [NotMapped]
-        public DateTime DisplayedStart
-        {
-            get
-            {
-                return UsageStart.Date.Day == DateTime.Now.Day ? UsageStart : DateTime.Now.Date;
-            }
-        }
-
-        [NotMapped]
-        public TimeSpan DisplayedDuration
-        {
-            get
-            {
-                return IsCurrent ? new TimeSpan(DateTime.Now.Ticks - DisplayedStart.Ticks) : new TimeSpan(UsageEnd.Ticks - DisplayedStart.Ticks);
-            }
-        }
-
         public Usage(int userID)
             : this()
         {
@@ -60,6 +42,39 @@ namespace AppsTracker.Models.EntityModels
         public Usage()
         {
             UsageStart = DateTime.Now;
+        }
+
+        public DateTime GetDisplayedStart(DateTime day)
+        {
+            if ((IsCurrent && UsageStart.Date < day && day <= DateTime.Now.Date))
+                return day;
+
+            if (UsageStart.Date < day && UsageEnd.Date >= day)
+                return day;
+
+            return UsageStart;
+        }
+
+        public DateTime GetDisplayedEnd(DateTime day)
+        {
+            if ((IsCurrent && UsageStart.Date < day && day <= DateTime.Now.Date))
+                return UsageEnd.Date.Date == day ? UsageEnd : day.AddDays(1).Date;
+
+            if (UsageStart.Date < day && UsageEnd.Date >= day)
+                return UsageEnd.Date.Date == day ? UsageEnd : day.AddDays(1).Date;
+
+            return UsageEnd;
+        }
+
+        public long GetDisplayedTicks(DateTime day)
+        {
+            if ((IsCurrent && UsageStart.Date < day && day <= DateTime.Now.Date))                
+                return (GetDisplayedEnd(day).Ticks - GetDisplayedStart(day).Ticks);
+
+            if (UsageStart.Date < day && UsageEnd.Date >= day)            
+                return (GetDisplayedEnd(day).Ticks - GetDisplayedStart(day).Ticks);            
+
+            return Duration.Ticks;
         }
 
         [Key]

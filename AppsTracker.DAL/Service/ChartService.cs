@@ -352,7 +352,7 @@ namespace AppsTracker.DAL.Service
 
                 foreach (var login in logins)
                 {
-                    DailyUsageTypeSeries series = new DailyUsageTypeSeries() { Time = login.DisplayedStart.ToString("HH:mm:ss") };
+                    DailyUsageTypeSeries series = new DailyUsageTypeSeries() { Time = login.GetDisplayedStart(fromDay).ToString("HH:mm:ss") };
                     ObservableCollection<UsageTypeModel> observableCollection = new ObservableCollection<UsageTypeModel>();
 
                     long idleTime = 0;
@@ -366,24 +366,24 @@ namespace AppsTracker.DAL.Service
 
                     if (tempIdles.Count() > 0)
                     {
-                        idleTime = tempIdles.Sum(l => l.Duration.Ticks);
+                        idleTime = tempIdles.Sum(l => l.GetDisplayedTicks(fromDay));
                         observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(idleTime).TotalHours, 2), UsageType = usageIdle });
                     }
 
                     if (tempLockeds.Count() > 0)
                     {
-                        lockedTime = tempLockeds.Sum(l => l.Duration.Ticks);
+                        lockedTime = tempLockeds.Sum(l => l.GetDisplayedTicks(fromDay));
                         observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Computer locked" });
                     }
 
 
                     if (tempStopppeds.Count() > 0)
                     {
-                        stoppedTime = tempStopppeds.Sum(l => l.Duration.Ticks);
+                        stoppedTime = tempStopppeds.Sum(l => l.GetDisplayedTicks(fromDay));
                         observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Stopped logging" });
                     }
 
-                    loginTime = login.Duration.Ticks - lockedTime - idleTime - stoppedTime;
+                    loginTime = login.GetDisplayedTicks(fromDay) - lockedTime - idleTime - stoppedTime;
                     observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(loginTime).TotalHours, 2), UsageType = "Work" });
                     
                     series.DailyUsageTypeCollection = observableCollection;
