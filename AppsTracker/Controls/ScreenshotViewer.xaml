@@ -124,24 +124,25 @@
                     VerticalAlignment="Bottom"
                     Margin="0,0,30,0"
                     HorizontalAlignment="Right"></StackPanel>
-        
+
+        <Label Style="{DynamicResource LabelStyle}"
+               Grid.Row="1"
+               VerticalAlignment="Bottom"
+               Margin="0,0,150,0"
+               HorizontalAlignment="Right">
+            <Label.Content>
+                <MultiBinding Converter="{StaticResource lbConverter}">
+                    <Binding Path="CurrentIndex" />
+                    <Binding Path="TotalItemCount" />
+                </MultiBinding>
+            </Label.Content>
+        </Label>
+
         <ToggleButton Grid.Row="1"
                       VerticalAlignment="Bottom"
                       Margin="0,0,30,0"
                       x:Name="rbInterval"
                       HorizontalAlignment="Right">
-            <Label Style="{DynamicResource LabelStyle}"
-                   Content="{Binding ElementName=lbImages, Path=Items.Count}">
-                <!--<Label.Content>
-                    <MultiBinding Converter="{StaticResource lbConverter}">
-                        <Binding ElementName="lbImages"
-                                 Path="SelectedIndex" />
-                        <Binding ElementName="lbImages"
-                                 Path="Items.Count" />
-                    </MultiBinding>
-                </Label.Content>-->
-            </Label>
-            
             <ToggleButton.Template>
                 <ControlTemplate>
                     <Label Style="{StaticResource SelectableLabelStyle}"
@@ -150,7 +151,7 @@
                 </ControlTemplate>
             </ToggleButton.Template>
         </ToggleButton>
-        
+
         <Popup PopupAnimation="Slide"
                StaysOpen="True"
                IsOpen="{Binding ElementName=rbInterval, Path=IsChecked}"
@@ -203,8 +204,7 @@
                     BorderBrush="Purple"
                     Background="{StaticResource 2ndBackgroundBrush}"
                     CornerRadius="10"
-                    HorizontalAlignment="Center"
-                    >
+                    HorizontalAlignment="Center">
                 <Grid Name="contolsHost">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -247,7 +247,7 @@
                             </controls:Play.InputBindings>
                         </controls:Play>
                     </controls:FaderContentControl>
-                    
+
                     <controls:PullDown Style="{DynamicResource BackBtnStyle}"
                                        Background="{DynamicResource 2ndBackgroundBrush}"
                                        Grid.Column="4"
@@ -264,40 +264,39 @@
                         </controls:PullDown.InputBindings>
                     </controls:PullDown>
 
-                        <controls:Previous Grid.Column="1"
-                                         Style="{DynamicResource BackBtnStyle}"
-                                         Background="{DynamicResource  2ndBackgroundBrush}"
-                                         Width="25"
-                                         Height="25"
-                                         Margin="0,0,0,0">
-                            <controls:Previous.InputBindings>
-                                <MouseBinding Gesture="LeftClick"
-                                              Command="{x:Static controls:ScreenshotViewer.PreviousCommand}" />
-                            </controls:Previous.InputBindings>
-                        </controls:Previous>
-                        <ListBox Grid.Column="2"
-                                 ItemsPanel="{StaticResource viewerTemplate}"
-                                 ItemContainerStyle="{DynamicResource ScreenshotViewerItemStyle}"
-                                 x:Name="lbImages"
-                                 ItemsSource="{Binding ScreenshotCollection}"
-                                 Background="{x:Null}"
-                                 BorderBrush="{x:Null}"
-                                 BorderThickness="0"
-                                 Margin="5"
-                                 
-                                 />
-                        <controls:Next Grid.Column="3"
-                                          Style="{DynamicResource BackBtnStyle}"
-                                          Background="{DynamicResource 2ndBackgroundBrush}"
-                                          Width="25"
-                                          Height="25"
-                                          Margin="0,0,60,0">
-                            <controls:Next.InputBindings>
-                                <MouseBinding Gesture="LeftClick"
-                                              Command="{x:Static controls:ScreenshotViewer.ForwardCommand}" />
-                            </controls:Next.InputBindings>
+                    <controls:Previous Grid.Column="1"
+                                       Style="{DynamicResource BackBtnStyle}"
+                                       Background="{DynamicResource  2ndBackgroundBrush}"
+                                       Width="25"
+                                       Height="25"
+                                       Margin="0,0,0,0">
+                        <controls:Previous.InputBindings>
+                            <MouseBinding Gesture="LeftClick"
+                                          Command="{x:Static controls:ScreenshotViewer.PreviousCommand}" />
+                        </controls:Previous.InputBindings>
+                    </controls:Previous>
+                    <ListBox Grid.Column="2"
+                             ItemsPanel="{StaticResource viewerTemplate}"
+                             ItemContainerStyle="{DynamicResource ScreenshotViewerItemStyle}"
+                             x:Name="lbImages"
+                             ItemsSource="{Binding ScreenshotCollection}"
+                             Background="{x:Null}"
+                             BorderBrush="{x:Null}"
+                             BorderThickness="0"
+                             Margin="5"
+                             SelectedIndex="{Binding CurrentIndex,Mode=OneWayToSource}" />
+                    <controls:Next Grid.Column="3"
+                                   Style="{DynamicResource BackBtnStyle}"
+                                   Background="{DynamicResource 2ndBackgroundBrush}"
+                                   Width="25"
+                                   Height="25"
+                                   Margin="0,0,60,0">
+                        <controls:Next.InputBindings>
+                            <MouseBinding Gesture="LeftClick"
+                                          Command="{x:Static controls:ScreenshotViewer.ForwardCommand}" />
+                        </controls:Next.InputBindings>
 
-                        </controls:Next>
+                    </controls:Next>
 
                 </Grid>
             </Border>

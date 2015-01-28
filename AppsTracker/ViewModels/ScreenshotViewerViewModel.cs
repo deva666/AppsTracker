@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using System.Linq;
 
 using AppsTracker.Models.EntityModels;
 using AppsTracker.MVVM;
@@ -20,11 +21,39 @@ namespace AppsTracker.Pages.ViewModels
     {
         public event EventHandler CloseEvent;
 
+        private int _currentIndex;
+        private int _totalItemCount;
         private IEnumerable<Screenshot> _screenshotCollection;
 
         public override string Title
         {
             get { return "Screenshots"; }
+        }
+
+        public int CurrentIndex
+        {
+            get
+            {
+                return _currentIndex;
+            }
+            set
+            {
+                _currentIndex = ++value;
+                PropertyChanging("CurrentIndex");
+            }
+        }
+
+        public int TotalItemCount
+        {
+            get
+            {
+                return _totalItemCount;
+            }
+            set
+            {
+                _totalItemCount = value;
+                PropertyChanging("TotalItemCount");
+            }
         }
 
         public IEnumerable<Screenshot> ScreenshotCollection { get { return _screenshotCollection; } }
@@ -39,6 +68,7 @@ namespace AppsTracker.Pages.ViewModels
             : this()
         {
             _screenshotCollection = screenshotCollection;
+            TotalItemCount = _screenshotCollection.Count();
         }
 
         private void Close()

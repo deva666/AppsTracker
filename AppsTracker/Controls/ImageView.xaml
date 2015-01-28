@@ -71,19 +71,6 @@
                            Content="{Binding RelativeSource={RelativeSource FindAncestor,
                     AncestorType=UserControl}, Path=SynchronizationElement.SelectedItem.Date}" />
                    
-
-                    <!--<Label Style="{DynamicResource LabelStyle}"
-                           Grid.Column="0"
-                           Grid.Row="3"
-                           Content="Size:" />
-                    <Label Style="{DynamicResource LabelStyle}"
-                           Grid.Column="1"
-                           Grid.Row="3"
-                           FontWeight="Bold"
-                           Margin="10,0,10,0"
-                           Content="{Binding RelativeSource={RelativeSource FindAncestor,
-                    AncestorType=UserControl}, Path=SynchronizationElement.SelectedItem.Height}" />-->
-
                     <TextBlock Style="{StaticResource ControlBoxStyle}"
                                Grid.Column="4"
                                x:Name="CloseButton"
