@@ -81,8 +81,8 @@ namespace AppsTracker
         {
             using (var context = new AppsEntities())
             {
-                return context.Usages.Count(u => u.UserID == UserID) == 0 ? DateTime.Now.Date
-                    : context.Usages.Where(u => u.UserID == UserID).Select(u => u.UsageStart).Min();
+                return context.Usages.Count(u => u.UserID == SelectedUserID) == 0 ? DateTime.Now.Date
+                    : context.Usages.Where(u => u.UserID == SelectedUserID).Select(u => u.UsageStart).Min();
             }
         }
 
@@ -93,7 +93,7 @@ namespace AppsTracker
             SelectedUserID = uzer.UserID;
             SelectedUserName = uzer.Name;
             SelectedUser = uzer;
-            ClearDateFilter();
+            ClearDateFilter();            
         }
 
         public static decimal GetDBSize()
