@@ -46,6 +46,9 @@ namespace AppsTracker.Models.EntityModels
 
         public DateTime GetDisplayedStart(DateTime day)
         {
+            if (IsCurrent == false && UsageEnd.Date == day && UsageStart.Date == day)
+                return UsageStart;
+
             if ((IsCurrent && UsageStart.Date < day && day <= DateTime.Now.Date))
                 return day;
 
@@ -60,7 +63,7 @@ namespace AppsTracker.Models.EntityModels
             if ((IsCurrent && UsageStart.Date < day && day <= DateTime.Now.Date))
                 return UsageEnd.Date.Date == day ? UsageEnd : day.AddDays(1).Date;
 
-            if (UsageStart.Date < day && UsageEnd.Date >= day)
+            if (UsageStart.Date <= day && UsageEnd.Date >= day)
                 return UsageEnd.Date.Date == day ? UsageEnd : day.AddDays(1).Date;
 
             return UsageEnd;
@@ -68,13 +71,13 @@ namespace AppsTracker.Models.EntityModels
 
         public long GetDisplayedTicks(DateTime day)
         {
-            if ((IsCurrent && UsageStart.Date < day && day <= DateTime.Now.Date))                
+            if (IsCurrent == false && UsageEnd.Date == day && UsageStart.Date == day)
+                return Duration.Ticks;
+           
+            if(UsageStart.Date <= day && UsageEnd.Date >= day)
                 return (GetDisplayedEnd(day).Ticks - GetDisplayedStart(day).Ticks);
 
-            if (UsageStart.Date < day && UsageEnd.Date >= day)            
-                return (GetDisplayedEnd(day).Ticks - GetDisplayedStart(day).Ticks);            
-
-            return Duration.Ticks;
+            return 0;
         }
 
         [Key]

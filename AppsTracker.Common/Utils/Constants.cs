@@ -6,10 +6,6 @@
  */
 #endregion
 
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("AppLoggerLicenseKeys")]
-
 namespace AppsTracker
 {
     public class Constants

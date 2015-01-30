@@ -167,6 +167,7 @@ namespace AppsTracker.ViewModels
 
         public Data_dayViewModel()
         {
+            Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadContent));
             _appsService = ServiceFactory.Get<IAppsService>();
             _chartService = ServiceFactory.Get<IChartService>();
 
