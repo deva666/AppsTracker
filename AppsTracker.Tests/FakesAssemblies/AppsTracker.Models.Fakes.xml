@@ -1162,6 +1162,12 @@
         <member name="P:AppsTracker.Models.ChartModels.Fakes.ShimUsageTypeSeries.DateGet">
             <summary>Sets the shim of UsageTypeSeries.get_Date()</summary>
         </member>
+        <member name="P:AppsTracker.Models.ChartModels.Fakes.ShimUsageTypeSeries.DateInstanceGet">
+            <summary>Sets the shim of UsageTypeSeries.get_DateInstance()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.ChartModels.Fakes.ShimUsageTypeSeries.DateInstanceSetDateTime">
+            <summary>Sets the shim of UsageTypeSeries.set_DateInstance(DateTime value)</summary>
+        </member>
         <member name="P:AppsTracker.Models.ChartModels.Fakes.ShimUsageTypeSeries.DateSetString">
             <summary>Sets the shim of UsageTypeSeries.set_Date(String value)</summary>
         </member>
@@ -1176,6 +1182,12 @@
         </member>
         <member name="P:AppsTracker.Models.ChartModels.Fakes.ShimUsageTypeSeries.AllInstances.DateGet">
             <summary>Sets the shim of UsageTypeSeries.get_Date()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.ChartModels.Fakes.ShimUsageTypeSeries.AllInstances.DateInstanceGet">
+            <summary>Sets the shim of UsageTypeSeries.get_DateInstance()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.ChartModels.Fakes.ShimUsageTypeSeries.AllInstances.DateInstanceSetDateTime">
+            <summary>Sets the shim of UsageTypeSeries.set_DateInstance(DateTime value)</summary>
         </member>
         <member name="P:AppsTracker.Models.ChartModels.Fakes.ShimUsageTypeSeries.AllInstances.DateSetString">
             <summary>Sets the shim of UsageTypeSeries.set_Date(String value)</summary>
@@ -3244,14 +3256,20 @@
         <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.ConstructorInt32Int32">
             <summary>Sets the shim of Usage.Usage(Int32 userID, Int32 usageTypeID)</summary>
         </member>
-        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.DisplayedDurationGet">
-            <summary>Sets the shim of Usage.get_DisplayedDuration()</summary>
-        </member>
-        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.DisplayedStartGet">
-            <summary>Sets the shim of Usage.get_DisplayedStart()</summary>
+        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.ConstructorUsage">
+            <summary>Sets the shim of Usage.Usage(Usage usage)</summary>
         </member>
         <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.DurationGet">
             <summary>Sets the shim of Usage.get_Duration()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.GetDisplayedEndDateTime">
+            <summary>Sets the shim of Usage.GetDisplayedEnd(DateTime day)</summary>
+        </member>
+        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.GetDisplayedStartDateTime">
+            <summary>Sets the shim of Usage.GetDisplayedStart(DateTime day)</summary>
+        </member>
+        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.GetDisplayedTicksDateTime">
+            <summary>Sets the shim of Usage.GetDisplayedTicks(DateTime day)</summary>
         </member>
         <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.IsCurrentGet">
             <summary>Sets the shim of Usage.get_IsCurrent()</summary>
@@ -3334,14 +3352,17 @@
         <member name="T:AppsTracker.Models.EntityModels.Fakes.ShimUsage.AllInstances">
             <summary>Define shims for all instances members</summary>
         </member>
-        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.AllInstances.DisplayedDurationGet">
-            <summary>Sets the shim of Usage.get_DisplayedDuration()</summary>
-        </member>
-        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.AllInstances.DisplayedStartGet">
-            <summary>Sets the shim of Usage.get_DisplayedStart()</summary>
-        </member>
         <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.AllInstances.DurationGet">
             <summary>Sets the shim of Usage.get_Duration()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.AllInstances.GetDisplayedEndDateTime">
+            <summary>Sets the shim of Usage.GetDisplayedEnd(DateTime day)</summary>
+        </member>
+        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.AllInstances.GetDisplayedStartDateTime">
+            <summary>Sets the shim of Usage.GetDisplayedStart(DateTime day)</summary>
+        </member>
+        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.AllInstances.GetDisplayedTicksDateTime">
+            <summary>Sets the shim of Usage.GetDisplayedTicks(DateTime day)</summary>
         </member>
         <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimUsage.AllInstances.IsCurrentGet">
             <summary>Sets the shim of Usage.get_IsCurrent()</summary>
@@ -4013,6 +4034,9 @@
             <summary>Initializes a new instance</summary>
         </member>
         <member name="M:AppsTracker.Models.EntityModels.Fakes.StubUsage.#ctor(System.Int32)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Models.EntityModels.Fakes.StubUsage.#ctor(AppsTracker.Models.EntityModels.Usage)">
             <summary>Initializes a new instance</summary>
         </member>
         <member name="M:AppsTracker.Models.EntityModels.Fakes.StubUsage.#ctor(System.Int32,System.Int32)">

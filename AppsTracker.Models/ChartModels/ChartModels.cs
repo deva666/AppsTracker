@@ -6,6 +6,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -80,6 +81,7 @@ namespace AppsTracker.Models.ChartModels
     public class UsageTypeSeries
     {
         public string Date { get; set; }
+        public DateTime DateInstance { get; set; }
         public ObservableCollection<UsageTypeModel> DailyUsageTypeCollection { get; set; }
     }
 

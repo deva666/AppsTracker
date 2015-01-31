@@ -61,6 +61,13 @@ namespace AppsTracker.Logging
             Microsoft.Win32.SystemEvents.PowerModeChanged += PowerModeChanged;
         }
 
+        private void Configure()
+        {
+            _idleMonitor.Enabled = _settings.EnableIdle && _settings.LoggingEnabled;
+            _isLoggingEnabled = _settings.LoggingEnabled;
+            CheckStoppedUsage();
+        }
+
         private void InitLogin()
         {
             var user = InitUzer(Environment.UserName);
@@ -68,7 +75,6 @@ namespace AppsTracker.Logging
 
             Globals.Initialize(user, _currentUsageLogin.UsageID);
         }
-
 
         private Usage LoginUser(int userID)
         {
@@ -227,13 +233,6 @@ namespace AppsTracker.Logging
         {
             _settings = settings;
             Configure();
-        }
-
-        private void Configure()
-        {
-            _idleMonitor.Enabled = _settings.EnableIdle && _settings.LoggingEnabled;
-            _isLoggingEnabled = _settings.LoggingEnabled;
-            CheckStoppedUsage();
         }
 
         private void CheckStoppedUsage()

@@ -11,7 +11,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading;
 using System.Windows.Threading;
-
 using AppsTracker.Models.EntityModels;
 
 namespace AppsTracker

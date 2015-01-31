@@ -655,11 +655,13 @@ namespace AppsTracker.DAL.Service
 
                 List<UsageTypeSeries> collection = new List<UsageTypeSeries>();
 
-                var logins = context.Usages.Where(u => u.User.Name == username
+                var tempLogins = context.Usages.Where(u => u.User.Name == username
                                                      && u.UsageStart >= dateFrom
                                                      && u.UsageStart <= dateTo
                                                      && u.UsageType.UType == usageLogin)
                                          .ToList();
+
+                var logins = BreakUsagesByDay(tempLogins);
 
                 var groupedLogins = logins.GroupBy(u => new
                                                 {
@@ -691,7 +693,11 @@ namespace AppsTracker.DAL.Service
                                                           .ToList();
                     }
 
-                    UsageTypeSeries series = new UsageTypeSeries() { Date = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day).ToShortDateString() };
+                    UsageTypeSeries series = new UsageTypeSeries()
+                    {
+                        DateInstance = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day),
+                        Date = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day).ToShortDateString()
+                    };
 
                     ObservableCollection<UsageTypeModel> observableCollection = new ObservableCollection<UsageTypeModel>();
 
@@ -700,25 +706,27 @@ namespace AppsTracker.DAL.Service
                     long loginTime = 0;
                     long stoppedTime = 0;
 
+                    var day = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day);
+
                     if (idles.Count() > 0)
                     {
-                        idleTime = idles.Sum(l => l.Duration.Ticks);
+                        idleTime = idles.Sum(l => l.GetDisplayedTicks(day));
                         observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(idleTime).TotalHours, 2), UsageType = usageIdle });
                     }
 
                     if (lockeds.Count() > 0)
                     {
-                        lockedTime = lockeds.Sum(l => l.Duration.Ticks);
+                        lockedTime = lockeds.Sum(l => l.GetDisplayedTicks(day));
                         observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Computer locked" });
                     }
 
                     if (stoppeds.Count() > 0)
                     {
-                        stoppedTime = stoppeds.Sum(l => l.Duration.Ticks);
+                        stoppedTime = stoppeds.Sum(l => l.GetDisplayedTicks(day));
                         observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Stopped logging" });
                     }
 
-                    loginTime = grp.Sum(l => l.Duration.Ticks) - lockedTime - idleTime - stoppedTime;
+                    loginTime = grp.Sum(l => l.GetDisplayedTicks(day)) - lockedTime - idleTime - stoppedTime;
                     observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(loginTime).TotalHours, 2), UsageType = "Work" });
 
                     series.DailyUsageTypeCollection = observableCollection;
@@ -728,7 +736,7 @@ namespace AppsTracker.DAL.Service
 
                 });
 
-                return collection;
+                return collection.OrderBy(c => c.Date);
             }
         }
 
@@ -736,13 +744,17 @@ namespace AppsTracker.DAL.Service
         {
             using (var context = new AppsEntities())
             {
-                DateTime today = dateFrom.Date;
-                DateTime nextDay = today.AddDays(1d);
+                DateTime fromDay = dateFrom.Date;
+                DateTime nextDay = fromDay.AddDays(1d);
+                DateTime today = DateTime.Now.Date;
+
                 string loginType = UsageTypes.Login.ToString();
 
                 var logins = context.Usages.Where(u => u.User.UserID == userID
-                                                     && u.UsageStart >= today
-                                                     && u.UsageStart <= nextDay
+                                                     && ((u.UsageStart >= fromDay
+                                                     && u.UsageStart <= nextDay)
+                                                        || (u.IsCurrent && u.UsageStart < fromDay && today >= fromDay)
+                                                        || (u.IsCurrent == false && u.UsageStart <= fromDay && u.UsageEnd >= fromDay))
                                                      && u.UsageType.UType == loginType)
                                             .ToList();
 
@@ -750,14 +762,54 @@ namespace AppsTracker.DAL.Service
 
                 var loginEnd = logins.OrderByDescending(l => l.UsageEnd).FirstOrDefault();
 
-                var totalDuraion = new TimeSpan(logins.Sum(l => l.Duration.Ticks));
+                string dayBegin = loginBegin == null ? "N/A" : loginBegin.GetDisplayedStart(fromDay).ToShortTimeString();
+                string dayEnd = (loginEnd == null || loginEnd.IsCurrent) ? "N/A" : loginEnd.GetDisplayedEnd(fromDay).ToShortTimeString();
+                string duration = "N/A";
 
-                string dayBegin = loginBegin == null ? "N/A" : loginBegin.UsageStart.ToShortTimeString();
-                string dayEnd = (loginEnd == null || loginEnd.IsCurrent) ? "N/A" : loginEnd.UsageEnd.ToShortTimeString();
-                string totalHours = totalDuraion.ToString(@"hh\:mm");
+                if (loginBegin != null && loginEnd != null)
+                {
+                    var span = new TimeSpan(loginEnd.GetDisplayedEnd(fromDay).Ticks - loginBegin.GetDisplayedStart(fromDay).Ticks);
+                    duration = span.Days > 0 ? string.Format("{0:D2}:{1:D2}:{2:D2}", span.Days, span.Hours, span.Minutes) : string.Format("{0:D2}:{1:D2}", span.Hours, span.Minutes); ;
+                }
 
-                return new Tuple<string, string, string>(dayBegin, dayEnd, totalHours);
+                return new Tuple<string, string, string>(dayBegin, dayEnd, duration);
             }
+        }
+
+        private IList<Usage> BreakUsagesByDay(IEnumerable<Usage> usages)
+        {
+            List<Usage> tempUsages = new List<Usage>();
+
+            foreach (var usage in usages)
+            {
+                if (usage.UsageEnd.Date == usage.UsageStart.Date)
+                    tempUsages.Add(usage);
+
+                var startDaysInYear = GetDaysInYear(usage.UsageStart.Year);
+                var dayBegin = (startDaysInYear * usage.UsageStart.Year) + usage.UsageStart.DayOfYear - startDaysInYear;
+
+                var endDaysInYear = GetDaysInYear(usage.UsageEnd.Year);
+                var dayEnd = (endDaysInYear * usage.UsageEnd.Year) + usage.UsageEnd.DayOfYear - endDaysInYear;
+
+                for (int i = 0; i <= dayEnd - dayBegin; i++)
+                {
+                    Usage tempUsage = new Usage(usage);
+                    tempUsage.UsageStart = usage.GetDisplayedStart(usage.UsageStart.Date.AddDays(i));
+                    tempUsage.UsageEnd = usage.GetDisplayedEnd(usage.UsageEnd.Date.AddDays(i));
+                    tempUsages.Add(tempUsage);
+                }
+
+            }
+
+            return tempUsages;
+        }
+
+        private int GetDaysInYear(int year)
+        {
+            var thisYear = new DateTime(year, 1, 1);
+            var nextYear = new DateTime(year + 1, 1, 1);
+
+            return (nextYear - thisYear).Days;
         }
 
         public void Dispose()

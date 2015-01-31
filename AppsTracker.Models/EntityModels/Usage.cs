@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppsTracker.Models.EntityModels
 {
-    public class Usage
+    public class Usage 
     {
         [NotMapped]
         public bool IsSelected { get; set; }
@@ -42,6 +42,19 @@ namespace AppsTracker.Models.EntityModels
         public Usage()
         {
             UsageStart = DateTime.Now;
+        }
+
+        public Usage(Usage usage)
+        {
+            this.SelfUsageID = usage.SelfUsageID;
+            this.IsCurrent = usage.IsCurrent;
+            this.UsageEnd = usage.UsageEnd;
+            this.UsageID = usage.UsageID;
+            this.UsageStart = usage.UsageStart;
+            this.UsageType = usage.UsageType;
+            this.UsageTypeID = usage.UsageTypeID;
+            this.User = usage.User;
+            this.UserID = usage.UserID;
         }
 
         public DateTime GetDisplayedStart(DateTime day)
@@ -80,6 +93,8 @@ namespace AppsTracker.Models.EntityModels
             return 0;
         }
 
+
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UsageID { get; set; }
@@ -108,5 +123,6 @@ namespace AppsTracker.Models.EntityModels
         public virtual ICollection<Log> Logs { get; set; }
         public virtual ICollection<Usage> SelfUsages { get; set; }
         public virtual ICollection<Usage> SelfUsage { get; set; }
+
     }
 }
