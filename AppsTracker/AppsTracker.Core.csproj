@@ -185,7 +185,6 @@
     <Compile Include="Controls\DBCleanerWindow.xaml.cs">
       <DependentUpon>DBCleanerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FadingItemsListView.cs" />
     <Compile Include="Controls\Forward.xaml.cs">
       <DependentUpon>Forward.xaml</DependentUpon>
     </Compile>

@@ -1911,14 +1911,14 @@
                                        Storyboard.TargetProperty="(UIElement.Opacity)">
             <SplineDoubleKeyFrame KeyTime="00:00:00"
                                   Value="0" />
-            <SplineDoubleKeyFrame KeyTime="00:00:01.6"
+            <SplineDoubleKeyFrame KeyTime="00:00:00.7"
                                   Value="1" />
         </DoubleAnimationUsingKeyFrames>
         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)">
             <SplineDoubleKeyFrame KeyTime="00:00:00"
                                   Value="150" />
-            <EasingDoubleKeyFrame KeyTime="00:00:01.6"
+            <EasingDoubleKeyFrame KeyTime="00:00:00.75"
                                   Value="0">
                 <EasingDoubleKeyFrame.EasingFunction>
                     <CubicEase EasingMode="EaseOut" />
@@ -1971,14 +1971,14 @@
                                        Storyboard.TargetProperty="(UIElement.Opacity)">
             <SplineDoubleKeyFrame KeyTime="00:00:00"
                                   Value="1" />
-            <SplineDoubleKeyFrame KeyTime="00:00:00.5"
+            <SplineDoubleKeyFrame KeyTime="00:00:00.3"
                                   Value="0" />
         </DoubleAnimationUsingKeyFrames>
         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)">
             <SplineDoubleKeyFrame KeyTime="00:00:00"
                                   Value="0" />
-            <SplineDoubleKeyFrame KeyTime="00:00:00.5"
+            <SplineDoubleKeyFrame KeyTime="00:00:00.3"
                                   Value="200" />
         </DoubleAnimationUsingKeyFrames>
     </Storyboard>
@@ -1990,8 +1990,6 @@
                 Value="Stretch" />
         <Setter Property="VerticalContentAlignment"
                 Value="Stretch" />
-        <!--<Setter Property="Visibility"
-                Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=Visibility}" />-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:FaderContentControl">
@@ -2006,7 +2004,7 @@
                                                                        Storyboard.TargetName="root">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00"
                                                                   Value="0" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:01.2"
+                                            <SplineDoubleKeyFrame KeyTime="00:00:0.6"
                                                                   Value="1" />
                                         </DoubleAnimationUsingKeyFrames>
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
@@ -2014,7 +2012,7 @@
                                                                        Storyboard.TargetName="root">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00"
                                                                   Value="120" />
-                                            <EasingDoubleKeyFrame KeyTime="00:00:01.5"
+                                            <EasingDoubleKeyFrame KeyTime="00:00:00.7"
                                                                   Value="0">
                                                 <EasingDoubleKeyFrame.EasingFunction>
                                                     <CubicEase EasingMode="EaseOut" />
@@ -2030,7 +2028,7 @@
                                                                        Storyboard.TargetName="root">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00"
                                                                   Value="1" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:01.200"
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.4"
                                                                   Value="0" />
                                         </DoubleAnimationUsingKeyFrames>
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
@@ -2038,7 +2036,7 @@
                                                                        Storyboard.TargetName="root">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00"
                                                                   Value="0" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:01.400"
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.5"
                                                                   Value="120" />
                                         </DoubleAnimationUsingKeyFrames>
                                     </Storyboard>
@@ -2050,7 +2048,7 @@
                                                                        Storyboard.TargetName="root">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00"
                                                                   Value="0" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:01.2"
+                                            <SplineDoubleKeyFrame KeyTime="00:00:01"
                                                                   Value="1" />
                                         </DoubleAnimationUsingKeyFrames>
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
@@ -2058,7 +2056,7 @@
                                                                        Storyboard.TargetName="root">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00"
                                                                   Value="150" />
-                                            <EasingDoubleKeyFrame KeyTime="00:00:01.5"
+                                            <EasingDoubleKeyFrame KeyTime="00:00:01"
                                                                   Value="0">
                                                 <EasingDoubleKeyFrame.EasingFunction>
                                                     <CubicEase EasingMode="EaseOut" />
@@ -2074,7 +2072,7 @@
                                                                        Storyboard.TargetName="root">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00"
                                                                   Value="1" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:01.200"
+                                            <SplineDoubleKeyFrame KeyTime="00:00:01"
                                                                   Value="0" />
                                         </DoubleAnimationUsingKeyFrames>
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
@@ -2082,7 +2080,7 @@
                                                                        Storyboard.TargetName="root">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00"
                                                                   Value="0" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:01.400"
+                                            <SplineDoubleKeyFrame KeyTime="00:00:01"
                                                                   Value="120" />
                                         </DoubleAnimationUsingKeyFrames>
                                     </Storyboard>
@@ -2095,8 +2093,16 @@
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           Margin="{TemplateBinding Padding}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          x:Name="mainArea" />
-                        <Rectangle x:Name="paintArea" />
+                                          x:Name="mainArea">
+                            <ContentPresenter.RenderTransform>
+                                <TranslateTransform />
+                            </ContentPresenter.RenderTransform>
+                        </ContentPresenter>
+                        <Rectangle x:Name="paintArea">
+                            <Rectangle.RenderTransform>
+                                <TranslateTransform />
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
                         <Grid.RenderTransform>
                             <TranslateTransform />
                         </Grid.RenderTransform>
@@ -2106,7 +2112,6 @@
         </Setter>
     </Style>
     <Style TargetType="controls:FaderLabel">
-
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:FaderLabel">

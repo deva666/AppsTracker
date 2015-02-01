@@ -190,7 +190,6 @@ namespace AppsTracker.Pages.ViewModels
                 if (value != null)
                 {
                     _topAppsList.Reload();
-                    //_topWindowsList.Reset();
                 }
             }
         }
@@ -308,7 +307,6 @@ namespace AppsTracker.Pages.ViewModels
             var topApps = TopAppsOverall;
             if (TopAppsList.Result == null || topApps == null)
                 return null;
-           // System.Windows.Forms.MessageBox.Show(topApps.AppName);
 
             var days = TopAppsList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
             return _chartService.GetLogTopWindows(Globals.SelectedUserID, topApps.AppName, days);
@@ -550,14 +548,5 @@ namespace AppsTracker.Pages.ViewModels
 
         #endregion
 
-        #region Override Methods
-
-        protected override void Disposing()
-        {
-            this._selectedApplication = null;
-            base.Disposing();
-        }
-
-        #endregion
     }
 }

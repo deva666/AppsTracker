@@ -60,10 +60,10 @@
                        FontSize="12"
                        Text="{Binding AppVersion, StringFormat=Version: {0}}"
                        Foreground="{DynamicResource HighlightBrush}" />
-            <TextBlock Margin="20,0,20,10"
+            <!--<TextBlock Margin="20,0,20,10"
                        FontSize="12"
                        Text="{Binding License}"
-                       Foreground="{DynamicResource HighlightBrush}" />
+                       Foreground="{DynamicResource HighlightBrush}" />-->
             <TextBlock
                 Margin="20,0,20,10"
                 FontSize="12"

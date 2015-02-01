@@ -496,11 +496,11 @@
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDailyWindowSeriesb__3cLog">
             <summary>Sets the shim of ChartService.&lt;GetDailyWindowSeries&gt;b__3c(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayInfob__120Usage">
-            <summary>Sets the shim of ChartService.&lt;GetDayInfo&gt;b__120(Usage l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayInfob__119Usage">
+            <summary>Sets the shim of ChartService.&lt;GetDayInfo&gt;b__119(Usage l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayInfob__121Usage">
-            <summary>Sets the shim of ChartService.&lt;GetDayInfo&gt;b__121(Usage l)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayInfob__11aUsage">
+            <summary>Sets the shim of ChartService.&lt;GetDayInfo&gt;b__11a(Usage l)</summary>
         </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetDayTopAppsb__54Log">
             <summary>Sets the shim of ChartService.&lt;GetDayTopApps&gt;b__54(Log l)</summary>
@@ -583,8 +583,11 @@
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetSingleMostUsedAppb__adLog">
             <summary>Sets the shim of ChartService.&lt;GetSingleMostUsedApp&gt;b__ad(Log l)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetUsageSeriesb__112UsageTypeSeries">
-            <summary>Sets the shim of ChartService.&lt;GetUsageSeries&gt;b__112(UsageTypeSeries c)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetUsageSeriesb__109Usage">
+            <summary>Sets the shim of ChartService.&lt;GetUsageSeries&gt;b__109(Usage u)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimChartService._GetUsageSeriesb__10eUsageTypeSeries">
+            <summary>Sets the shim of ChartService.&lt;GetUsageSeries&gt;b__10e(UsageTypeSeries c)</summary>
         </member>
         <member name="T:AppsTracker.DAL.Service.Fakes.ShimChartService.AllInstances">
             <summary>Define shims for all instances members</summary>

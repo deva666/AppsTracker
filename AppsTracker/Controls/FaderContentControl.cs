@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -58,7 +53,6 @@ namespace AppsTracker.Controls
             this.Unloaded += FaderContentControl_Unloaded;
             this.IsVisibleChanged += FaderContentControl_IsVisibleChanged;
             InitStoryBoards(FadeVertically);
-            this.RenderTransform = new TranslateTransform();
         }
 
         private void InitStoryBoards(bool fadeVertical)
@@ -67,13 +61,13 @@ namespace AppsTracker.Controls
             fadeOut = fadeVertical ? FindResource("fadeOutVertical") as Storyboard : FindResource("fadeOut") as Storyboard;
         }
 
-        private Brush CreateBrushFromVisual(Visual v)
+        private Brush CreateBrushFromVisual(Visual visual)
         {
-            if (v == null)
+            if (visual == null)
                 throw new ArgumentNullException("visual");
             var target = new RenderTargetBitmap((int)this.ActualWidth, (int)this.ActualHeight,
                                                 96, 96, PixelFormats.Pbgra32);
-            target.Render(v);
+            target.Render(visual);
             var brush = new ImageBrush(target);
             brush.Freeze();
             return brush;
@@ -103,11 +97,14 @@ namespace AppsTracker.Controls
                 paintArea.Fill = CreateBrushFromVisual(mainArea);
                 paintArea.Visibility = System.Windows.Visibility.Visible;
                 mainArea.Visibility = System.Windows.Visibility.Collapsed;
-                paintArea.RenderTransform = new TranslateTransform();
-                mainArea.RenderTransform = new TranslateTransform();
                 Storyboard fadeOutClone = fadeOut.Clone();
                 Storyboard fadeInClone = fadeIn.Clone();
-                fadeOutClone.Completed += (s, e) => { fadeInClone.Begin(mainArea); paintArea.Visibility = System.Windows.Visibility.Collapsed; mainArea.Visibility = System.Windows.Visibility.Visible; };
+                fadeOutClone.Completed += (s, e) =>
+                {
+                    fadeInClone.Begin(mainArea);
+                    paintArea.Visibility = System.Windows.Visibility.Collapsed; 
+                    mainArea.Visibility = System.Windows.Visibility.Visible;
+                };
                 fadeOutClone.Begin(paintArea);
             }
 
@@ -117,37 +114,52 @@ namespace AppsTracker.Controls
 
         public override void OnApplyTemplate()
         {
-            if (FadeVertically) VisualStateManager.GoToState(this, "AfterLoadedVertical", true);
-            else VisualStateManager.GoToState(this, "AfterLoaded", true);
+            if (FadeVertically)
+                VisualStateManager.GoToState(this, "AfterLoadedVertical", true);
+            else
+                VisualStateManager.GoToState(this, "AfterLoaded", true);
+
             base.OnApplyTemplate();
+
             paintArea = Template.FindName("paintArea", this) as Shape;
             mainArea = Template.FindName("mainArea", this) as ContentPresenter;
+
+            paintArea.RenderTransform = new TranslateTransform();
+            mainArea.RenderTransform = new TranslateTransform();
         }
 
         void FaderContentControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (FadeVertically)
             {
-                if (this.IsVisible) VisualStateManager.GoToState(this, "AfterLoadedVertical", true);
-                else VisualStateManager.GoToState(this, "AfterUnLoaded", true);
+                if (this.IsVisible)
+                    VisualStateManager.GoToState(this, "AfterLoadedVertical", true);
+                else
+                    VisualStateManager.GoToState(this, "AfterUnLoaded", true);
             }
             else
             {
-                if (this.IsVisible) VisualStateManager.GoToState(this, "AfterLoaded", true);
-                else VisualStateManager.GoToState(this, "AfterUnLoaded", true);
+                if (this.IsVisible)
+                    VisualStateManager.GoToState(this, "AfterLoaded", true);
+                else
+                    VisualStateManager.GoToState(this, "AfterUnLoaded", true);
             }
         }
 
         void FaderContentControl_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (FadeVertically) VisualStateManager.GoToState(this, "AfterUnLoadedVertical", true);
-            else VisualStateManager.GoToState(this, "AfterUnLoaded", true);
+            if (FadeVertically)
+                VisualStateManager.GoToState(this, "AfterUnLoadedVertical", true);
+            else
+                VisualStateManager.GoToState(this, "AfterUnLoaded", true);
         }
 
         void FaderContentControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (FadeVertically) VisualStateManager.GoToState(this, "AfterLoadedVertical", true);
-            else VisualStateManager.GoToState(this, "AfterLoaded", true);
+            if (FadeVertically)
+                VisualStateManager.GoToState(this, "AfterLoadedVertical", true);
+            else
+                VisualStateManager.GoToState(this, "AfterLoaded", true);
         }
     }
 
