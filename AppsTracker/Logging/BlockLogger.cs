@@ -15,13 +15,13 @@ using AppsTracker.Models.Proxy;
 
 namespace AppsTracker.Logging
 {
-    internal sealed class BlockLogger : IComponent
+    internal sealed class AppBlockLogger : IComponent
     {
         bool _isLoggingEnabled;
 
         LazyInit<AppBlocker> _appBlocker;
 
-        public BlockLogger()
+        public AppBlockLogger()
         {
             Init();
         }

@@ -2,11 +2,6 @@
 
 namespace AppsTracker.MVVM
 {
-    /// <summary>
-    /// Provides loosely-coupled messaging between
-    /// various colleagues.  All references to objects
-    /// are stored weakly, to prevent memory leaks.
-    /// </summary>
     public class Mediator : IMediator
     {
         private static readonly Lazy<Mediator> _lazy = new Lazy<Mediator>(() => new Mediator());
@@ -33,12 +28,6 @@ namespace AppsTracker.MVVM
             _parameterInvocationList.AddAction(message, callback.Target, callback.Method, typeof(T));
         }
 
-        /// <summary>
-        /// Notify all registered parties that a specific message was broadcasted
-        /// </summary>
-        /// <typeparam name="T">The Type of parameter to be passed</typeparam>
-        /// <param name="message">The message to broadcast</param>
-        /// <param name="parameter">The parameter to pass together with the message</param>
         public void NotifyColleagues<T>(string message, T parameter)
         {
             var actions = _parameterInvocationList.GetActions(message);
@@ -47,11 +36,6 @@ namespace AppsTracker.MVVM
                 actions.ForEach(action => ((Action<T>)action).Invoke(parameter));
         }
 
-        /// <summary>
-        /// Notify all registered parties that a specific message was broadcasted
-        /// </summary>
-        /// <typeparam name="T">The Type of parameter to be passed</typeparam>
-        /// <param name="message">The message to broadcast</param>
         public void NotifyColleagues(string message)
         {
             var actions = _invocationList.GetActions(message);

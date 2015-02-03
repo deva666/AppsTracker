@@ -243,7 +243,7 @@ namespace AppsTracker.Logging
                 return;
             log.Screenshots.Add(screenshot);
 
-            await dbSizeAsync.ConfigureAwait(true); 
+            await dbSizeAsync.ConfigureAwait(true);
         }
 
 
@@ -268,12 +268,13 @@ namespace AppsTracker.Logging
         {
             _keyboardHook.Enabled = (_settings.EnableKeylogger && _settings.LoggingEnabled);
             _screenshotTimer.Enabled = (_settings.TakeScreenshots && _settings.LoggingEnabled);
-            _windowCheckTimer.Enabled = _settings.LoggingEnabled;
 
             if ((_settings.TakeScreenshots && _settings.LoggingEnabled) && _settings.TimerInterval != _screenshotTimer.Component.Interval)
                 _screenshotTimer.Component.Interval = _settings.TimerInterval;
 
-            _isLoggingEnabled = _winHook.Enabled = _settings.LoggingEnabled;
+            _isLoggingEnabled =
+                _winHook.Enabled =
+                    _windowCheckTimer.Enabled = _settings.LoggingEnabled;
         }
 
         private void StopLogging()

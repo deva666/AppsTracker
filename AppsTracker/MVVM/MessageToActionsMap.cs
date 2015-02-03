@@ -4,21 +4,10 @@ using System.Reflection;
 
 namespace AppsTracker.MVVM
 {
-	/// <summary>
-	/// This class is an implementation detail of the Mediator class.
-	/// This will store all actions to be invoked
-	/// </summary>
 	internal class MessageToActionsMap
 	{
 		readonly Dictionary<string, List<WeakAction>> map = new Dictionary<string, List<WeakAction>>();
 
-		/// <summary>
-		/// Adds an action to the list
-		/// </summary>
-		/// <param name="message">The message to register to </param>
-		/// <param name="target">The target object to invoke</param>
-		/// <param name="method">The method in the target object to invoke</param>
-		/// <param name="actionType">The Type of the action</param>
 		internal void AddAction(string message, object target, MethodInfo method, Type actionType)		
 		{
 			if (message == null)
@@ -36,11 +25,6 @@ namespace AppsTracker.MVVM
 			}
 		}
 
-		/// <summary>
-		/// Gets the list of actions to be invoked for the specified message
-		/// </summary>
-		/// <param name="message">The message to get the actions for</param>
-		/// <returns>Returns a list of actions that are registered to the specified message</returns>
 		internal List<Delegate> GetActions(string message)
 		{
 			if (message == null)
@@ -63,7 +47,6 @@ namespace AppsTracker.MVVM
 						actions.Add(weakAction.CreateAction());
 				}
 
-				//delete the list from the hash if it is now empty
 				if (weakActions.Count == 0)
 					map.Remove(message);
 			}

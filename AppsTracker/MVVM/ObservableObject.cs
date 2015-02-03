@@ -22,18 +22,6 @@ namespace AppsTracker.MVVM
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected virtual bool ThrowExceptionOnInvalidProperty { get; private set; }
-
-        [Conditional("DEBUG")]
-        [DebuggerStepThrough]
-        public virtual void VerifyPropertyName(string propertyName)
-        {
-            if (TypeDescriptor.GetProperties(this)[propertyName] == null)
-            {
-                if (this.ThrowExceptionOnInvalidProperty) throw new Exception("Invalid property name: " + propertyName);
-            }
-        }
-
         protected void ClearPropertyChangedEventHandlers()
         {
             if (PropertyChanged != null)

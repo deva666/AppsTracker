@@ -55,30 +55,5 @@ namespace AppsTracker.MVVM
         }
 
         #endregion
-    }
-
-    public class DelegateCommand<T> : ICommand where T : System.Windows.FrameworkElement
-    {
-        Action<T> _action;
-
-        public DelegateCommand(Action<T> action)
-        {
-            _action = action;
-        }
-        #region ICommand Members
-
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public event EventHandler CanExecuteChanged;
-
-        public void Execute(object parameter)
-        {
-            _action(parameter as T);
-        }
-
-        #endregion
-    }
+    }  
 }

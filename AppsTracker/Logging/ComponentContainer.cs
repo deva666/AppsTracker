@@ -25,7 +25,7 @@ namespace AppsTracker.Logging
         {
             _components.Add(new WindowLogger(settings));
             _components.Add(new UsageLogger(settings));
-            _components.Add(new BlockLogger());
+            _components.Add(new AppBlockLogger());
             _components.Add(new EmailService(settings));
             _components.Add(new LogCleaner(settings));
         }
