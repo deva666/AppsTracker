@@ -724,7 +724,7 @@ namespace AppsTracker.DAL.Service
                     collection.Add(series);
                 }
 
-                return collection.OrderBy(c => c.Date);
+                return collection.OrderBy(c => c.DateInstance);
             }
         }
 
