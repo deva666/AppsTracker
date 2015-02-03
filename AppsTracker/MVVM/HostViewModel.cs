@@ -6,68 +6,85 @@
  */
 #endregion
 
-using System;
-using System.Collections;
-using System.Windows.Input;
-
 using AppsTracker.Common.Utils;
+using System;
+using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace AppsTracker.MVVM
 {
-    internal abstract class HostViewModel : ViewModelBase
-    {
-        private Hashtable _childrenSet = new Hashtable();
+   internal abstract class HostViewModel : ViewModelBase
+   {
+      private Dictionary<object, ViewModelConnector> _childrenMap = new Dictionary<object, ViewModelConnector>();
 
-        protected ViewModelBase _selectedChild;
+      protected ViewModelBase _selectedChild;
 
-        protected ICommand _changePageCommand;
+      protected ICommand _changePageCommand;
 
-        public ViewModelBase SelectedChild
-        {
-            get
-            {
-                return _selectedChild;
-            }
-            set
-            {
-                if (_selectedChild != null && _selectedChild.Title == value.Title)
-                    return;
-                if (_selectedChild != null)
-                    _selectedChild.Dispose();
-                _selectedChild = value;
-                PropertyChanging("SelectedChild");
-            }
-        }
+      public ViewModelBase SelectedChild
+      {
+         get
+         {
+            return _selectedChild;
+         }
+         set
+         {
+            if (_selectedChild != null && _selectedChild.Title == value.Title)
+               return;
 
-        public virtual ICommand ChangePageCommand
-        {
-            get
-            {
-                return _changePageCommand ?? (_changePageCommand = new DelegateCommand(ChangePage));
-            }
-        }
+            _selectedChild = value;
+            PropertyChanging("SelectedChild");
+         }
+      }
 
-        protected virtual void ChangePage(object parameter)
-        {
-            SelectedChild = Resolve(parameter);
-        }
+      public virtual ICommand ChangePageCommand
+      {
+         get
+         {
+            return _changePageCommand ?? (_changePageCommand = new DelegateCommand(ChangePage));
+         }
+      }
 
-        protected void Register<T>(Func<T> getter) where T : ViewModelBase
-        {
-            Ensure.NotNull(getter);
-            Ensure.Condition<InvalidOperationException>(_childrenSet.ContainsKey(typeof(T)) == false, string.Format("Type {0} is already bound!", typeof(T)));
+      protected virtual void ChangePage(object parameter)
+      {
+         SelectedChild = Resolve(parameter);
+      }
 
-            _childrenSet.Add(typeof(T), getter);
-        }
+      protected void Register<T>(Func<T> getter) where T : ViewModelBase
+      {
+         Ensure.NotNull(getter);
+         Ensure.Condition<InvalidOperationException>(_childrenMap.ContainsKey(typeof(T)) == false, string.Format("Type {0} is already bound!", typeof(T)));
 
-        protected ViewModelBase Resolve(object type)
-        {
-            Ensure.NotNull(type);
-            Ensure.Condition<InvalidOperationException>(_childrenSet.ContainsKey(type) == true, string.Format("Can't resolve {0} type!", type));
+         var connector = new ViewModelConnector(getter);
+         _childrenMap.Add(typeof(T), connector);
+      }
 
-            var getter = _childrenSet[type];
-            var res = (Func<ViewModelBase>)getter;
-            return res();
-        }
-    }
+      protected ViewModelBase Resolve(object type)
+      {
+         Ensure.NotNull(type);
+         Ensure.Condition<InvalidOperationException>(_childrenMap.ContainsKey(type) == true, string.Format("Can't resolve {0} type!", type));
+
+         var connector = _childrenMap[type];
+         ViewModelBase viewModel = null;
+         connector.Refrence.TryGetTarget(out viewModel);
+         if (viewModel == null)
+         {
+            viewModel = connector.Getter();
+            connector.Refrence.SetTarget(viewModel);
+         }
+         return viewModel;
+      }
+
+      private class ViewModelConnector
+      {
+         public WeakReference<ViewModelBase> Refrence { get; private set; }
+         public Func<ViewModelBase> Getter { get; private set; }
+
+         public ViewModelConnector(Func<ViewModelBase> getter)
+         {
+            Refrence = new WeakReference<ViewModelBase>(null);
+            Getter = getter;
+         }
+      }
+   }
 }
