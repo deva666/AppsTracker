@@ -50,6 +50,11 @@ namespace AppsTracker.ViewModels
             get { return "DAY VIEW"; }
         }
 
+        public string DayOfWeek
+        {
+            get { return _selectedDate.DayOfWeek.ToString(); }
+        }
+
         public DateTime SelectedDate
         {
             get
@@ -60,6 +65,7 @@ namespace AppsTracker.ViewModels
             {
                 _selectedDate = value;
                 PropertyChanging("SelectedDate");
+                PropertyChanging("DayOfWeek");
                 ReloadContent();
             }
         }
@@ -210,7 +216,7 @@ namespace AppsTracker.ViewModels
         {
             var tuple = _chartService.GetDayInfo(Globals.SelectedUserID, _selectedDate);
 
-            return string.Format("Day start: {0}   -   Day end: {1} \t\t Total duration: {2}", tuple.Item1, tuple.Item2, tuple.Item3);
+            return string.Format("Day start: {0}   -   Day end: {1} \t Total duration: {2}", tuple.Item1, tuple.Item2, tuple.Item3);
         }
 
         private IEnumerable<DailyUsageTypeSeries> GetChartContent()

@@ -770,23 +770,26 @@ namespace AppsTracker.DAL.Service
 
             foreach (var usage in usages)
             {
-                if (usage.UsageEnd.Date == usage.UsageStart.Date)
-                    tempUsages.Add(usage);
-
-                var startDaysInYear = GetDaysInYear(usage.UsageStart.Year);
-                var dayBegin = (startDaysInYear * usage.UsageStart.Year) + usage.UsageStart.DayOfYear - startDaysInYear;
-
-                var endDaysInYear = GetDaysInYear(usage.UsageEnd.Year);
-                var dayEnd = (endDaysInYear * usage.UsageEnd.Year) + usage.UsageEnd.DayOfYear - endDaysInYear;
-
-                for (int i = 0; i <= dayEnd - dayBegin; i++)
+                if (usage.IsCurrent == false && usage.UsageEnd.Date == usage.UsageStart.Date)
                 {
-                    Usage tempUsage = new Usage(usage);
-                    tempUsage.UsageStart = usage.GetDisplayedStart(usage.UsageStart.Date.AddDays(i));
-                    tempUsage.UsageEnd = usage.GetDisplayedEnd(usage.UsageEnd.Date.AddDays(i));
-                    tempUsages.Add(tempUsage);
+                    tempUsages.Add(usage);
                 }
+                else
+                {
+                    var startDaysInYear = GetDaysInYear(usage.UsageStart.Year);
+                    var dayBegin = (startDaysInYear * usage.UsageStart.Year) + usage.UsageStart.DayOfYear - startDaysInYear;
 
+                    var endDaysInYear = GetDaysInYear(usage.UsageEnd.Year);
+                    var dayEnd = (endDaysInYear * usage.UsageEnd.Year) + usage.UsageEnd.DayOfYear - endDaysInYear;
+
+                    for (int i = 0; i <= dayEnd - dayBegin; i++)
+                    {
+                        Usage tempUsage = new Usage(usage);
+                        tempUsage.UsageStart = usage.GetDisplayedStart(usage.UsageStart.Date.AddDays(i));
+                        tempUsage.UsageEnd = usage.GetDisplayedEnd(usage.UsageEnd.Date.AddDays(i));
+                        tempUsages.Add(tempUsage);
+                    }
+                }
             }
 
             return tempUsages;

@@ -217,7 +217,12 @@
 
                 <Label Style="{DynamicResource LabelStyle}"
                        FontSize="15"
-                       Margin="35,0,0,0"
+                       Margin="40,0,0,0"
+                       Content="{Binding DayOfWeek}" />
+                
+                <Label Style="{DynamicResource LabelStyle}"
+                       FontSize="15"
+                       Margin="5,0,0,0"
                        Content="{Binding Duration.Result}" />
 
             </StackPanel>
