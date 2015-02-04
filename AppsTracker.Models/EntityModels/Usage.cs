@@ -76,7 +76,7 @@ namespace AppsTracker.Models.EntityModels
          if (IsCurrent && day == DateTime.Now.Date)
             return DateTime.Now;
 
-         if ((IsCurrent && UsageStart.Date < day && day < DateTime.Now.Date))
+         if ((IsCurrent && UsageStart.Date <= day && day < DateTime.Now.Date))
             return UsageEnd.Date.Date == day ? UsageEnd : day.AddDays(1).Date;
 
          if (UsageStart.Date <= day && UsageEnd.Date >= day)

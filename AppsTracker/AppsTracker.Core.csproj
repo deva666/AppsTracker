@@ -266,6 +266,7 @@
     <Compile Include="Utils\SettingsAttribute.cs" />
     <Compile Include="Utils\SettingsBase.cs" />
     <Compile Include="Utils\SettingsQueue.cs" />
+    <Compile Include="Utils\SettingsRootNodeName.cs" />
     <Compile Include="Utils\Validation.cs" />
     <Compile Include="Utils\ValueConverters.cs" />
     <Compile Include="Utils\WinAPI.cs" />

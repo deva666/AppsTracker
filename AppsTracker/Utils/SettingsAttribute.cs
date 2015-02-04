@@ -6,21 +6,20 @@ using System.Threading.Tasks;
 
 namespace AppsTracker.Utils
 {
-    [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
-    sealed class SettingsAttribute : Attribute
-    {
-        private readonly string propertyName;
+   [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
+   sealed class SettingsAttribute : Attribute
+   {
 
-        public SettingsAttribute(string propertyName)
-        {
-            this.propertyName = propertyName;
-        }
+      public SettingsAttribute(string propertyName, object defaultValue = null)
+      {
+         PropertyName = propertyName;
+         DefaultValue = defaultValue;
+      }
 
-        public string PropertyName
-        {
-            get { return propertyName; }
-        }
+      public string PropertyName { get; private set; }
+
+      public Object DefaultValue { get; private set; }
 
 
-    }
+   }
 }
