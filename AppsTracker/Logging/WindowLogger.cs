@@ -160,7 +160,7 @@ namespace AppsTracker.Logging
 
         private void WindowChanged(object sender, WinHookArgs e)
         {
-            if (e.AppInfo == null || string.IsNullOrEmpty(e.AppInfo.ProcessName) || _isLoggingEnabled == false)
+            if (_isLoggingEnabled == false)
                 return;
 
             NewLogArrived(e.WindowTitle, e.AppInfo);
@@ -168,7 +168,7 @@ namespace AppsTracker.Logging
 
         private void NewLogArrived(string windowTitle, IAppInfo appInfo)
         {
-            if (appInfo == null)
+            if (appInfo == null || (appInfo != null && string.IsNullOrEmpty(appInfo.ProcessName)))
             {
                 SaveOldLog();
                 return;
