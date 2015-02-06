@@ -22,7 +22,12 @@
                      Color="#F7F7F7" />
     <SolidColorBrush x:Key="DarkAccent"
                      Color="#2B2B2B" />
-    <LinearGradientBrush x:Key="WindowBackgroundBrush"
+
+    <Color x:Key="WindowBackgroundColor">#EBEBEB</Color>
+    <SolidColorBrush x:Key="WindowBackgroundBrush"
+                     Color="{StaticResource WindowBackgroundColor}" />
+
+    <!--<LinearGradientBrush x:Key="WindowBackgroundBrush"
                          EndPoint="0.5,1"
                          StartPoint="0.5,0"
                          SpreadMethod="Reflect">
@@ -30,7 +35,7 @@
                       Offset="0" />
         <GradientStop Color="#F5F5F5"
                       Offset="1" />
-    </LinearGradientBrush>
+    </LinearGradientBrush>-->
 
     <SolidColorBrush x:Key="ChildWindowBackgroungBrush"
                      Color="#BABABA" />

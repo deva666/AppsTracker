@@ -365,23 +365,42 @@ namespace AppsTracker
 
         public void ChangeTheme()
         {
-            Application.Current.Resources.MergedDictionaries.Clear();
+            ResourceDictionary newDictionary;
+            var oldDictionary = Application.Current.Resources.MergedDictionaries.FirstOrDefault(d => d.Contains("WindowBackgroundColor"));
 
             if (_uzerSetting.LightTheme)
             {
                 if (_uzerSetting.LoggingEnabled)
-                    Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("/Themes/RunningLight.xaml", UriKind.Relative) });
+                    newDictionary = new ResourceDictionary() { Source = new Uri("/Themes/RunningLight.xaml", UriKind.Relative) };
                 else
-                    Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("/Themes/StoppedLight.xaml", UriKind.Relative) });
+                    newDictionary = new ResourceDictionary() { Source = new Uri("/Themes/StoppedLight.xaml", UriKind.Relative) };
             }
             else
             {
                 if (_uzerSetting.LoggingEnabled)
-                    Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("/Themes/Running.xaml", UriKind.Relative) });
+                    newDictionary = new ResourceDictionary() { Source = new Uri("/Themes/Running.xaml", UriKind.Relative) };
                 else
-                    Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("/Themes/Stopped.xaml", UriKind.Relative) });
+                    newDictionary = new ResourceDictionary() { Source = new Uri("/Themes/Stopped.xaml", UriKind.Relative) };
             }
 
+            if (MainWindow == null || oldDictionary == null)
+                return;
+
+            ColorAnimation animation = new ColorAnimation();
+            animation.From = (System.Windows.Media.Color)oldDictionary["WindowBackgroundColor"];
+            animation.To = (System.Windows.Media.Color)newDictionary["WindowBackgroundColor"];
+            animation.Duration = new Duration(TimeSpan.FromSeconds(0.4d));
+
+            Storyboard.SetTarget(animation, this.MainWindow);
+            Storyboard.SetTargetProperty(animation, new PropertyPath("Background.Color"));
+
+            Application.Current.Resources.MergedDictionaries.Remove(oldDictionary);
+            Application.Current.Resources.MergedDictionaries.Add(newDictionary);
+
+            Storyboard storyboard = new Storyboard();
+            storyboard.Children.Add(animation);
+            storyboard.Begin();
+   
         }
 
         private void SetWindowDimensions()

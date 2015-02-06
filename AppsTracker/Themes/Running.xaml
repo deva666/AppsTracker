@@ -47,7 +47,10 @@
                      Color="#515151" />
 
 
-    <LinearGradientBrush x:Key="WindowBackgroundBrush"
+    <Color x:Key="WindowBackgroundColor">#242424</Color>
+    <SolidColorBrush x:Key="WindowBackgroundBrush"
+                     Color="{StaticResource WindowBackgroundColor}" />
+    <!--<LinearGradientBrush x:Key="WindowBackgroundBrush"
                          EndPoint="0.5,1"
                          StartPoint="0.5,0"
                          SpreadMethod="Reflect">
@@ -55,7 +58,7 @@
                       Offset="1" />
         <GradientStop Color="#FF2C2C2C"
                       Offset="1" />
-    </LinearGradientBrush>
+    </LinearGradientBrush>-->
     <SolidColorBrush x:Key="2ndBackgroundBrush"
                      Color="#2E2E2E" />
     <SolidColorBrush x:Key="ChildWindowBackgroungBrush"

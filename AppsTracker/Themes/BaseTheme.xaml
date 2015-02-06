@@ -1982,7 +1982,7 @@
                                   Value="200" />
         </DoubleAnimationUsingKeyFrames>
     </Storyboard>
-
+    
     <Style TargetType="controls:FaderContentControl">
         <Setter Property="Foreground"
                 Value="{DynamicResource WindowForegroundBrush}" />
@@ -3568,7 +3568,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
     </Style>
 
 </ResourceDictionary>

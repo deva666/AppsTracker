@@ -35,6 +35,13 @@
         <local:ConvertLoggingVisibiltyStop x:Key="convertLoggingStop" />
         <local:ConvertTrialDates x:Key="convertTrialDates" />
 
+        <Storyboard x:Key="themeChangeAnimation">
+            <ColorAnimation AutoReverse="False"
+                            Duration="00:00:01"
+                            Storyboard.TargetProperty="(Window.Background).(SolidColorBrush.Color)"
+                            To="{DynamicResource WindowBackgroundColor}" />
+        </Storyboard>
+
         <DataTemplate DataType="{x:Type viewModels:DataHostViewModel}">
             <views:DataHostView />
         </DataTemplate>

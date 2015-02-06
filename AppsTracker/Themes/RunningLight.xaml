@@ -47,7 +47,11 @@
     <SolidColorBrush x:Key="ButtonTextDisabled"
                      Color="#a1a1a1" />
 
-    <LinearGradientBrush x:Key="WindowBackgroundBrush"
+    <Color x:Key="WindowBackgroundColor">#EBEBEB</Color>
+    <SolidColorBrush x:Key="WindowBackgroundBrush"
+                     Color="{StaticResource WindowBackgroundColor}" />
+
+    <!--<LinearGradientBrush x:Key="WindowBackgroundBrush"
                          EndPoint="0.5,1"
                          StartPoint="0.5,0"
                          SpreadMethod="Reflect">
@@ -55,7 +59,7 @@
                       Offset="0" />
         <GradientStop Color="#F5F5F5"
                       Offset="1" />
-    </LinearGradientBrush>
+    </LinearGradientBrush>-->
 
     <SolidColorBrush x:Key="ChildWindowBackgroungBrush"
                      Color="#BABABA" />
