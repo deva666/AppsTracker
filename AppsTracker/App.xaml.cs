@@ -13,16 +13,16 @@ using System.Data.Entity;
 using System.Diagnostics;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
+using System.Reflection;
+using System.Runtime;
 using System.Security.AccessControl;
 using System.Windows;
 using System.Windows.Media.Animation;
-
 using AppsTracker.Controls;
 using AppsTracker.DAL;
 using AppsTracker.DAL.Service;
 using AppsTracker.Logging;
 using AppsTracker.Models.EntityModels;
-
 using Microsoft.Win32;
 
 
@@ -61,6 +61,9 @@ namespace AppsTracker
 
         public App(ReadOnlyCollection<string> args)
         {
+            ProfileOptimization.SetProfileRoot(Assembly.GetEntryAssembly().Location);
+            ProfileOptimization.StartProfile("StartupProfile");
+
             InitializeComponent();
 
             ServiceFactory.Register<IAppsService>(() => new AppsService());
