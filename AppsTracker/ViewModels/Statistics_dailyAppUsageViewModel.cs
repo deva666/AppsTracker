@@ -8,7 +8,7 @@
 
 using System;
 using System.Collections.Generic;
-
+using System.ComponentModel.Composition;
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.ChartModels;
 using AppsTracker.MVVM;
@@ -18,10 +18,10 @@ namespace AppsTracker.Pages.ViewModels
     internal sealed class Statistics_dailyAppUsageViewModel : ViewModelBase, ICommunicator
     {
         #region Fields
+        
+        private IChartService _chartService;
 
         private AsyncProperty<IEnumerable<DailyUsedAppsSeries>> _dailyUsedAppsList;
-
-        private IChartService _service;
 
         #endregion
 
@@ -58,8 +58,8 @@ namespace AppsTracker.Pages.ViewModels
         #endregion
 
         public Statistics_dailyAppUsageViewModel()
-        {
-            _service = ServiceFactory.Get<IChartService>();
+        {            
+            _chartService = ServiceFactory.Get<IChartService>();
 
             _dailyUsedAppsList = new AsyncProperty<IEnumerable<DailyUsedAppsSeries>>(GetContent, this);
 
@@ -68,7 +68,7 @@ namespace AppsTracker.Pages.ViewModels
 
         private IEnumerable<DailyUsedAppsSeries> GetContent()
         {
-            return _service.GetAppsUsageSeries(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
+            return _chartService.GetAppsUsageSeries(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
         }
     }
 }

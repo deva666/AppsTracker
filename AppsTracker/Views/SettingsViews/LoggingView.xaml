@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="AppsTracker.Pages.Views.SettingsViews.LoggingView"
+﻿<UserControl x:Class="AppsTracker.Views.SettingsViews.LoggingView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -35,6 +35,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
 
             </Grid.RowDefinitions>
             <Label Style="{DynamicResource LabelStyle}"
@@ -56,13 +57,13 @@
                       Grid.Column="1"
                       VerticalAlignment="Center"
                       HorizontalAlignment="Center"
-                      IsChecked="{Binding UserSettings.DeleteOldLogs, UpdateSourceTrigger=PropertyChanged}"
+                      IsChecked="{Binding Settings.DeleteOldLogs, UpdateSourceTrigger=PropertyChanged}"
                       Name="cbOldLogs"
                       Margin="20,0,0,0" />
 
 
             <controls:FaderContentControl Grid.Row="2"
-                                          FaderVisibility="{Binding UserSettings.DeleteOldLogs}">
+                                          FaderVisibility="{Binding Settings.DeleteOldLogs}">
                 <Label Style="{DynamicResource LabelStyle}"
                        HorizontalAlignment="Left"
                        Grid.Row="2"
@@ -70,9 +71,9 @@
             </controls:FaderContentControl>
             <controls:FaderContentControl Grid.Row="2"
                                           Grid.Column="1"
-                                          FaderVisibility="{Binding UserSettings.DeleteOldLogs}">
+                                          FaderVisibility="{Binding Settings.DeleteOldLogs}">
                 <Button ContentStringFormat="{}{0} days"
-                        Content="{Binding UserSettings.OldLogDeleteDays}"
+                        Content="{Binding Settings.OldLogDeleteDays}"
                         HorizontalAlignment="Center"
                         Name="lblOldLogs"
                         Margin="20,0,0,0">
@@ -100,7 +101,7 @@
             <CheckBox Name="cbKeyLogger"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"
-                      IsChecked="{Binding Path=UserSettings.EnableKeylogger, Mode=TwoWay}"
+                      IsChecked="{Binding Path=Settings.EnableKeylogger, Mode=TwoWay}"
                       Grid.Row="4"
                       Grid.Column="1" />
 
@@ -128,13 +129,13 @@
                    Margin="0,10,0,10" />
             <CheckBox HorizontalAlignment="Center"
                       VerticalAlignment="Center"
-                      IsChecked="{Binding UserSettings.EnableIdle, Mode=TwoWay}"
+                      IsChecked="{Binding Settings.EnableIdle, Mode=TwoWay}"
                       Grid.Row="7"
                       Grid.Column="1"
                       x:Name="cbIdle" />
             <controls:FaderContentControl Grid.Row="8"
                                           Grid.Column="0"
-                                          FaderVisibility="{Binding UserSettings.EnableIdle}">
+                                          FaderVisibility="{Binding Settings.EnableIdle}">
                 <Label Style="{DynamicResource LabelStyle}"
                        Content="Start idle after being inactive for:"
                        HorizontalAlignment="Left"
@@ -143,9 +144,9 @@
 
             <controls:FaderContentControl Grid.Row="8"
                                           Grid.Column="1"
-                                          FaderVisibility="{Binding UserSettings.EnableIdle}">
+                                          FaderVisibility="{Binding Settings.EnableIdle}">
 
-                <Button Content="{Binding UserSettings.IdleInterval,Converter={StaticResource convertIdleTimer}}"
+                <Button Content="{Binding Settings.IdleTimer,Converter={StaticResource convertIdleTimer}}"
                         HorizontalAlignment="Center"
                         Margin="0,10,0,10"
                         x:Name="btnIdleTimer">
@@ -156,6 +157,15 @@
                     </Button.InputBindings>
                 </Button>
             </controls:FaderContentControl>
+            
+            <Label Style="{DynamicResource SelectableLabelStyle}"
+                   Content="Save Changes"
+                   Grid.Row="9">
+                <Label.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding SaveChangesCommand}" />
+                </Label.InputBindings>
+            </Label>
 
             <Popup PopupAnimation="Slide"
                    StaysOpen="True"

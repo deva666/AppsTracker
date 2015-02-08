@@ -1911,14 +1911,14 @@
                                        Storyboard.TargetProperty="(UIElement.Opacity)">
             <SplineDoubleKeyFrame KeyTime="00:00:00"
                                   Value="0" />
-            <SplineDoubleKeyFrame KeyTime="00:00:00.7"
+            <SplineDoubleKeyFrame KeyTime="00:00:00.4"
                                   Value="1" />
         </DoubleAnimationUsingKeyFrames>
         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)">
             <SplineDoubleKeyFrame KeyTime="00:00:00"
-                                  Value="150" />
-            <EasingDoubleKeyFrame KeyTime="00:00:00.75"
+                                  Value="100" />
+            <EasingDoubleKeyFrame KeyTime="00:00:00.35"
                                   Value="0">
                 <EasingDoubleKeyFrame.EasingFunction>
                     <CubicEase EasingMode="EaseOut" />
@@ -1932,16 +1932,16 @@
                                        Storyboard.TargetProperty="(UIElement.Opacity)">
             <SplineDoubleKeyFrame KeyTime="00:00:00"
                                   Value="1" />
-            <SplineDoubleKeyFrame KeyTime="00:00:00.3"
+            <SplineDoubleKeyFrame KeyTime="00:00:00.2"
                                   Value="0" />
         </DoubleAnimationUsingKeyFrames>
-        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+        <!--<DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)">
             <SplineDoubleKeyFrame KeyTime="00:00:00"
                                   Value="0" />
             <SplineDoubleKeyFrame KeyTime="00:00:00.3"
                                   Value="220" />
-        </DoubleAnimationUsingKeyFrames>
+        </DoubleAnimationUsingKeyFrames>-->
     </Storyboard>
 
 

@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Reflection;
 
 using AppsTracker.Hooks;
+using AppsTracker.DAL.Service;
 
 namespace AppsTracker.Logging
 {
@@ -30,6 +31,8 @@ namespace AppsTracker.Logging
         public event EventHandler IdleEntered;
         public event EventHandler IdleStoped;
 
+        ISettingsService _settingsService;
+
         public bool Enabled
         {
             get
@@ -44,6 +47,7 @@ namespace AppsTracker.Logging
 
         public IdleMonitor()
         {
+            _settingsService = ServiceFactory.Get<ISettingsService>();
             _idleTimer = new Timer(CheckIdleState, null, 1 * 60 * 1000, 1000);
         }
 
@@ -99,7 +103,7 @@ namespace AppsTracker.Logging
 
             IdleTimeInfo idleInfo = IdleTimeWatcher.GetIdleTimeInfo();
 
-            if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(App.UzerSetting.IdleInterval))
+            if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(_settingsService.Settings.IdleTimer))
             {
                 _idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
                 _idleEntered = true;

@@ -16,13 +16,14 @@ using System.Collections.ObjectModel;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.Models.ChartModels;
 using AppsTracker.Models.Utils;
+using System.ComponentModel.Composition;
 
 namespace AppsTracker.DAL.Service
 {
+    [Export(typeof(IChartService))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class ChartService : IChartService
     {
-        private object @parallelLock = new object();
-
         private IEnumerable<Log> _cachedLogs = null;
 
         private string _cachedLogsForApp;

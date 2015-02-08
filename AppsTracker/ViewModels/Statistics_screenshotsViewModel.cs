@@ -8,8 +8,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Windows.Input;
-
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.ChartModels;
 using AppsTracker.MVVM;
@@ -19,6 +19,8 @@ namespace AppsTracker.Pages.ViewModels
     internal sealed class Statistics_screenshotsViewModel : ViewModelBase, ICommunicator
     {
         #region Fields
+        
+        private IChartService _chartService;
 
         private ICommand _returnFromDetailedViewCommand;
 
@@ -27,8 +29,6 @@ namespace AppsTracker.Pages.ViewModels
         private AsyncProperty<IEnumerable<ScreenshotModel>> _screenshotList;
 
         private AsyncProperty<IEnumerable<DailyScreenshotModel>> _dailyScreenshotsList;
-
-        private IChartService _service;
 
         #endregion
 
@@ -95,8 +95,8 @@ namespace AppsTracker.Pages.ViewModels
         #endregion
 
         public Statistics_screenshotsViewModel()
-        {           
-            _service = ServiceFactory.Get<IChartService>();
+        {            
+            _chartService = ServiceFactory.Get<IChartService>();
 
             _screenshotList = new AsyncProperty<IEnumerable<ScreenshotModel>>(GetContent, this);
             _dailyScreenshotsList = new AsyncProperty<IEnumerable<DailyScreenshotModel>>(GetSubContent, this);
@@ -112,7 +112,7 @@ namespace AppsTracker.Pages.ViewModels
 
         private IEnumerable<ScreenshotModel> GetContent()
         {
-            return _service.GetScreenshots(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
+            return _chartService.GetScreenshots(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
         }
 
         private IEnumerable<DailyScreenshotModel> GetSubContent()
@@ -121,7 +121,7 @@ namespace AppsTracker.Pages.ViewModels
             if (model == null)
                 return null;
 
-            return _service.GetScreenshotsByApp(Globals.SelectedUserID, model.AppName, Globals.Date1, Globals.Date2);
+            return _chartService.GetScreenshotsByApp(Globals.SelectedUserID, model.AppName, Globals.Date1, Globals.Date2);
         }
 
         private void ReturnFromDetailedView()

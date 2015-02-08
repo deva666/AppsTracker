@@ -364,7 +364,7 @@ namespace AppsTracker
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             ViewModelBase child = (ViewModelBase)value;
-            if (child.Title == (string)parameter)
+            if (string.Equals(child.Title.ToUpper(), ((string)parameter).ToUpper()))
                 return SelectedLabelStyle;
             else
                 return SelectableLabelStyle;

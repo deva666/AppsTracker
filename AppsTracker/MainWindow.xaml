@@ -11,10 +11,6 @@
         Icon="Resources/AppsTrackerIcon.ico"
         MinHeight="400"
         MinWidth="600"
-        Width="{Binding UserSettings.MainWindowWidth, Mode=TwoWay}"
-        Height="{Binding UserSettings.MainWindowHeight, Mode=TwoWay}"
-        Left="{Binding UserSettings.MainWindowLeft, Mode=TwoWay}"
-        Top="{Binding UserSettings.MainWindowTop, Mode=TwoWay}"
         ResizeMode="CanResizeWithGrip"
         MouseLeftButtonDown="Window_MouseLeftButtonDown_1"
         Closing="Window_Closing">

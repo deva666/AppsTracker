@@ -40,7 +40,8 @@ namespace AppsTracker.Logging
         DateTime _dateLast;
         System.Timers.Timer _timer;
 
-        IAppsService _service;
+        IAppsService _appsService;
+        ISettingsService _settingsService;
 
 
         #endregion
@@ -151,10 +152,11 @@ namespace AppsTracker.Logging
 
         public EmailHelper()
         {
-            _service = ServiceFactory.Get<IAppsService>();
+            _appsService = ServiceFactory.Get<IAppsService>();
+            _settingsService = ServiceFactory.Get<ISettingsService>();
 
             _timer = new System.Timers.Timer();
-            _timer.Interval = _interval = App.UzerSetting.EmailInterval;
+            _timer.Interval = _interval = _settingsService.Settings.EmailInterval;
             _timer.AutoReset = true;
             _timer.Elapsed += timer_Elapsed;
             _timer.Start();
@@ -295,7 +297,7 @@ namespace AppsTracker.Logging
         private Task<Usage> GetCurrentLoginAsync()
         {
             string usageType = UsageTypes.Login.ToString();
-            return Task<Usage>.Run(() => _service.GetFiltered<Usage>(u => u.UsageType.UType == usageType
+            return Task<Usage>.Run(() => _appsService.GetFiltered<Usage>(u => u.UsageType.UType == usageType
                                                 && u.IsCurrent)
                                                 .OrderByDescending(u => u.UsageStart)
                                                 .First());
@@ -306,7 +308,7 @@ namespace AppsTracker.Logging
             _dateNow = DateTime.Now;
             _dateLast = DateTime.Now.AddMilliseconds(-(Interval));
 
-            return Task<IEnumerable<IGrouping<string, Log>>>.Run(() => _service.GetFiltered<Log>(l => l.Window.Application.User.UserID == Globals.UserID
+            return Task<IEnumerable<IGrouping<string, Log>>>.Run(() => _appsService.GetFiltered<Log>(l => l.Window.Application.User.UserID == Globals.UserID
                                                                     && l.DateCreated >= _dateLast
                                                                     && l.DateCreated <= _dateNow
                                                                     , l => l.Window.Application

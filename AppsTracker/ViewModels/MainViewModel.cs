@@ -8,8 +8,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Windows.Input;
-
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.MVVM;
@@ -19,6 +19,9 @@ namespace AppsTracker.ViewModels
     internal sealed class MainViewModel : HostViewModel, ICommunicator
     {
         #region Fields
+
+        private IAppsService _appsService;
+        private ISettingsService _settingsService;
 
         private bool _isPopupCalendarOpen = false;
         private bool _isPopupUsersOpen = false;
@@ -35,8 +38,6 @@ namespace AppsTracker.ViewModels
         private ICommand _changeLoggingStatusCommand;
         private ICommand _thisWeekCommand;
         private ICommand _thisMonthCommand;
-
-        private IAppsService _service;
 
         #endregion
 
@@ -154,11 +155,11 @@ namespace AppsTracker.ViewModels
             }
         }
 
-        public SettingsProxy UserSettings
+        public Setting UserSettings
         {
             get
             {
-                return App.UzerSetting;
+                return _settingsService.Settings;
             }
         }
 
@@ -246,7 +247,8 @@ namespace AppsTracker.ViewModels
 
         public MainViewModel()
         {
-            _service = ServiceFactory.Get<IAppsService>();
+            _appsService = ServiceFactory.Get<IAppsService>();
+            _settingsService = ServiceFactory.Get<ISettingsService>();
 
             Register<DataHostViewModel>(() => new DataHostViewModel());
             Register<StatisticsHostViewModel>(() => new StatisticsHostViewModel());
@@ -259,7 +261,7 @@ namespace AppsTracker.ViewModels
 
         private void GetUsers()
         {
-            _uzerCollection = _service.GetFiltered<Uzer>(u => u.UserID >= 0);
+            _uzerCollection = _appsService.GetFiltered<Uzer>(u => u.UserID >= 0);
         }
 
         #region Command Methods
@@ -272,8 +274,9 @@ namespace AppsTracker.ViewModels
 
         private void ChangeLoggingStatus()
         {
-            UserSettings.LoggingEnabled = !UserSettings.LoggingEnabled;
-            (App.Current as App).ChangeTheme();
+            var settings = UserSettings;
+            settings.LoggingEnabled = !settings.LoggingEnabled;
+            _settingsService.SaveChanges(settings);
         }
 
         private void OpenPopup(object parameter)

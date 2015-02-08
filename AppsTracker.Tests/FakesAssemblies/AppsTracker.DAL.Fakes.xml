@@ -691,6 +691,90 @@
         <member name="T:AppsTracker.DAL.Service.Fakes.ShimServiceFactory.AllInstances">
             <summary>Define shims for all instances members</summary>
         </member>
+        <member name="T:AppsTracker.DAL.Service.Fakes.ShimSettingsService">
+            <summary>Shim type of AppsTracker.DAL.Service.SettingsService</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSettingsService.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSettingsService.#ctor(AppsTracker.DAL.Service.SettingsService)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSettingsService.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSettingsService.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSettingsService.Bind(AppsTracker.DAL.Service.IBaseService)">
+            <summary>Binds the members of the interface to the shim.</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSettingsService.Bind(AppsTracker.DAL.Service.ISettingsService)">
+            <summary>Binds the members of the interface to the shim.</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSettingsService.Bind(System.ComponentModel.INotifyPropertyChanged)">
+            <summary>Binds the members of the interface to the shim.</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.Constructor">
+            <summary>Sets the shim of SettingsService.SettingsService()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.CreateSettingsAndUsageTypes">
+            <summary>Sets the shim of SettingsService.CreateSettingsAndUsageTypes()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.InstanceGet">
+            <summary>Sets the shim of SettingsService.get_Instance()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.NotifyPropertyChanged">
+            <summary>Sets the shim of SettingsService.NotifyPropertyChanged()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.PropertyChangedAddPropertyChangedEventHandler">
+            <summary>Sets the shim of SettingsService.add_PropertyChanged(PropertyChangedEventHandler value)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.PropertyChangedRemovePropertyChangedEventHandler">
+            <summary>Sets the shim of SettingsService.remove_PropertyChanged(PropertyChangedEventHandler value)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.SaveChangesAsyncSetting">
+            <summary>Sets the shim of SettingsService.SaveChangesAsync(Setting settings)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.SaveChangesSetting">
+            <summary>Sets the shim of SettingsService.SaveChanges(Setting settings)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.SettingsGet">
+            <summary>Sets the shim of SettingsService.get_Settings()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.StaticConstructor">
+            <summary>Sets the shim of SettingsService.SettingsService()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService._cctorb__7">
+            <summary>Sets the shim of SettingsService.&lt;.cctor&gt;b__7()</summary>
+        </member>
+        <member name="T:AppsTracker.DAL.Service.Fakes.ShimSettingsService.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.AllInstances.CreateSettingsAndUsageTypes">
+            <summary>Sets the shim of SettingsService.CreateSettingsAndUsageTypes()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.AllInstances.NotifyPropertyChanged">
+            <summary>Sets the shim of SettingsService.NotifyPropertyChanged()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.AllInstances.PropertyChangedAddPropertyChangedEventHandler">
+            <summary>Sets the shim of SettingsService.add_PropertyChanged(PropertyChangedEventHandler value)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.AllInstances.PropertyChangedRemovePropertyChangedEventHandler">
+            <summary>Sets the shim of SettingsService.remove_PropertyChanged(PropertyChangedEventHandler value)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.AllInstances.SaveChangesAsyncSetting">
+            <summary>Sets the shim of SettingsService.SaveChangesAsync(Setting settings)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.AllInstances.SaveChangesSetting">
+            <summary>Sets the shim of SettingsService.SaveChanges(Setting settings)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.AllInstances.SettingsGet">
+            <summary>Sets the shim of SettingsService.get_Settings()</summary>
+        </member>
         <member name="T:AppsTracker.DAL.Service.Fakes.StubChartService">
             <summary>Stub type of AppsTracker.DAL.Service.ChartService</summary>
         </member>
@@ -852,6 +936,30 @@
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIChartService.global::System#IDisposable#Dispose">
             <summary>Sets the stub of IDisposable.Dispose()</summary>
+        </member>
+        <member name="T:AppsTracker.DAL.Service.Fakes.StubISettingsService">
+            <summary>Stub type of AppsTracker.DAL.Service.ISettingsService</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.StubISettingsService.#ctor">
+            <summary>Initializes a new instance of type StubISettingsService</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.StubISettingsService.atdal::AppsTracker#DAL#Service#ISettingsService#SaveChanges(AppsTracker.Models.EntityModels.Setting)">
+            <summary>Sets the stub of ISettingsService.SaveChanges(Setting settings)</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.StubISettingsService.atdal::AppsTracker#DAL#Service#ISettingsService#SaveChangesAsync(AppsTracker.Models.EntityModels.Setting)">
+            <summary>Sets the stub of ISettingsService.SaveChangesAsync(Setting settings)</summary>
+        </member>
+        <member name="F:AppsTracker.DAL.Service.Fakes.StubISettingsService.SaveChangesAsyncSetting">
+            <summary>Sets the stub of ISettingsService.SaveChangesAsync(Setting settings)</summary>
+        </member>
+        <member name="F:AppsTracker.DAL.Service.Fakes.StubISettingsService.SaveChangesSetting">
+            <summary>Sets the stub of ISettingsService.SaveChanges(Setting settings)</summary>
+        </member>
+        <member name="F:AppsTracker.DAL.Service.Fakes.StubISettingsService.SettingsGet">
+            <summary>Sets the stub of ISettingsService.get_Settings()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.StubISettingsService.atdal::AppsTracker#DAL#Service#ISettingsService#Settings">
+            <summary>Sets the stub of ISettingsService.get_Settings()</summary>
         </member>
     </members>
 </doc>

@@ -13,11 +13,15 @@ namespace AppsTracker.Controls
 {
     public class TrayIcon : IDisposable
     {
-        NotifyIcon notifyIcon;
-        ContextMenuStrip iconMenu;
-        ToolStripMenuItem menuItemShowApp;
-        ToolStripMenuItem menuItemExit;
+        private NotifyIcon notifyIcon;
+        private ContextMenuStrip iconMenu;
+        private ToolStripMenuItem menuItemShowApp;
+        private ToolStripMenuItem menuItemExit;
 
+        public ToolStripMenuItem ShowApp
+        {
+            get { return menuItemShowApp; }
+        }
         public bool IsVisible
         {
             get { return notifyIcon.Visible; }
@@ -42,7 +46,6 @@ namespace AppsTracker.Controls
             #region Event Handlers
 
             menuItemExit.Click += (s, e) => { (App.Current as App).FinishAndExit(); };
-            menuItemShowApp.Click += (s, e) => { (App.Current as App).CreateOrShowMainWindow(); };
 
             #endregion
         }

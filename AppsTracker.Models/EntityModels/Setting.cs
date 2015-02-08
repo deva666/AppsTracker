@@ -66,6 +66,8 @@ namespace AppsTracker.Models.EntityModels
             set { this.EmailInterval = (double)value; }
         }
 
+
+
         public Setting() { }
 
         public Setting(bool first)
@@ -131,6 +133,10 @@ namespace AppsTracker.Models.EntityModels
             }
         }
 
+        public Setting Clone()
+        {
+            return (Setting)this.MemberwiseClone();
+        }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

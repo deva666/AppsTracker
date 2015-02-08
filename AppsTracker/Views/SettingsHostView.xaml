@@ -6,6 +6,7 @@
              xmlns:controls="clr-namespace:AppsTracker.Controls"
              xmlns:viewModels="clr-namespace:AppsTracker.ViewModels"
              xmlns:views="clr-namespace:AppsTracker.Views"
+             xmlns:settingsViews="clr-namespace:AppsTracker.Views.SettingsViews"
              xmlns:local="clr-namespace:AppsTracker"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -20,15 +21,106 @@
             <Label Style="{DynamicResource LBNavLabelStyle}"
                    Content="{Binding Title}" />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModels:Settings_generalViewModel}">
-            <views:Settings_generalView />
+        <DataTemplate DataType="{x:Type viewModels:SettingsGeneralViewModel}">
+            <settingsViews:GeneralView />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModels:Settings_licenseViewModel}">
-            <views:Settings_licenseView />
+        <DataTemplate DataType="{x:Type viewModels:SettingsLoggingViewModel}">
+            <settingsViews:LoggingView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:SettingsScreenshotsViewModel}">
+            <settingsViews:ScreenshotsView />
         </DataTemplate>
     </UserControl.Resources>
- 
-    <Grid Name="rootLayout">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Vertical"
+                    Margin="20,25,30,20">
+            <Label Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=GENERAL}"
+                   Content="GENERAL"
+                   FontSize="11"
+                   Margin="15,5,15,0"
+                   HorizontalAlignment="Left">
+                <Label.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding ChangePageCommand}"
+                                  CommandParameter="{x:Type viewModels:SettingsGeneralViewModel}" />
+                </Label.InputBindings>
+            </Label>
+
+            <Label Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=LOGGING}"
+                   Content="LOGGING"
+                   FontSize="11"
+                   Margin="15,5,15,0"
+                   HorizontalAlignment="Left">
+                <Label.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding ChangePageCommand}"
+                                  CommandParameter="{x:Type viewModels:SettingsLoggingViewModel}" />
+                </Label.InputBindings>
+            </Label>
+            <Label Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=SCREENSHOTS}"
+                   Content="SCREENSHOTS"
+                   FontSize="11"
+                   Margin="15,5,15,0"
+                   HorizontalAlignment="Left">
+                <Label.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding ChangePageCommand}"
+                                  CommandParameter="{x:Type viewModels:SettingsScreenshotsViewModel}" />
+                </Label.InputBindings>
+            </Label>
+
+            <Label Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=APPS}"
+                   Content="BLOCKED APPS"
+                   FontSize="11"
+                   Margin="15,5,15,0"
+                   HorizontalAlignment="Left" />
+
+            <!--<RadioButton Name="rbMasterPswd"
+                         Margin="15,5,15,0"
+                         IsChecked="False"
+                         HorizontalAlignment="Left"
+                         GroupName="menu">
+                <RadioButton.Template>
+                    <ControlTemplate>
+                        <Label Style="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Converter={StaticResource convertStyle}}"
+                               Content="MASTER PASSWORD"
+                               FontSize="11" />
+                    </ControlTemplate>
+                </RadioButton.Template>
+            </RadioButton>-->
+            <!--<RadioButton Name="rbEmails"
+                         Margin="15,5,15,0"
+                         IsChecked="False"
+                         HorizontalAlignment="Left"
+                         GroupName="menu">
+                <RadioButton.Template>
+                    <ControlTemplate>
+                        <Label Style="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Converter={StaticResource convertStyle}}"
+                               Content="EMAIL REPORTS"
+                               FontSize="11" />
+                    </ControlTemplate>
+                </RadioButton.Template>
+            </RadioButton>-->
+        </StackPanel>
+        <Separator HorizontalAlignment="Right"
+                   Margin="0,20,0,20"
+                   Background="DarkGray">
+            <Separator.LayoutTransform>
+                <RotateTransform Angle="90" />
+            </Separator.LayoutTransform>
+        </Separator>
+        <controls:FaderContentControl Grid.Column="1"
+                                      Content="{Binding SelectedChild}"
+                                      Margin="15"/>
+
+    </Grid>
+    <!--<Grid Name="rootLayout">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
@@ -51,15 +143,6 @@
                     </MouseBinding>
                 </Label.InputBindings>
             </Label>
-            <!--<Label Content="LICENCE"
-                   Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=LICENCE}">
-                <Label.InputBindings>
-                    <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding ChangePageCommand}"
-                                  CommandParameter="{x:Type viewModels:Settings_licenseViewModel}">
-                    </MouseBinding>
-                </Label.InputBindings>
-            </Label>-->
         </StackPanel>
         
         <controls:FaderContentControl Content="{Binding SelectedChild}"
@@ -69,5 +152,5 @@
                                       Grid.ColumnSpan="5"
                                       Margin="15"/>
 
-    </Grid>
+    </Grid>-->
 </UserControl>

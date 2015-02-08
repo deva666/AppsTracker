@@ -8,8 +8,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Windows.Input;
-
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.ChartModels;
 using AppsTracker.MVVM;
@@ -19,7 +19,9 @@ namespace AppsTracker.Pages.ViewModels
     internal sealed class Statistics_usersViewModel : ViewModelBase, ICommunicator
     {
         #region Fields
-
+        
+        private IChartService _chartService;
+        
         private AllUsersModel _allUsersModel;
 
         private AsyncProperty<IEnumerable<AllUsersModel>> _allUsersList;
@@ -27,8 +29,6 @@ namespace AppsTracker.Pages.ViewModels
         private AsyncProperty<IEnumerable<UsageTypeSeries>> _dailyLogins;
 
         private ICommand _returnFromDetailedViewCommand;
-
-        private IChartService _service;
 
         #endregion
 
@@ -81,13 +81,7 @@ namespace AppsTracker.Pages.ViewModels
                 return _dailyLogins;
             }
         }
-        public SettingsProxy UserSettings
-        {
-            get
-            {
-                return App.UzerSetting;
-            }
-        }
+
         public ICommand ReturnFromDetailedViewCommand
         {
             get
@@ -104,8 +98,8 @@ namespace AppsTracker.Pages.ViewModels
         #endregion
 
         public Statistics_usersViewModel()
-        {
-            _service = ServiceFactory.Get<IChartService>();
+        {            
+            _chartService = ServiceFactory.Get<IChartService>();
 
             _allUsersList = new AsyncProperty<IEnumerable<AllUsersModel>>(GetContent, this);
             _dailyLogins = new AsyncProperty<IEnumerable<UsageTypeSeries>>(GetSubContent, this);
@@ -123,7 +117,7 @@ namespace AppsTracker.Pages.ViewModels
 
         private IEnumerable<AllUsersModel> GetContent()
         {
-            return _service.GetAllUsers(Globals.Date1, Globals.Date2);
+            return _chartService.GetAllUsers(Globals.Date1, Globals.Date2);
         }
 
         private IEnumerable<UsageTypeSeries> GetSubContent()
@@ -132,7 +126,7 @@ namespace AppsTracker.Pages.ViewModels
             if (model == null)
                 return null;
 
-            return _service.GetUsageSeries(model.Username, Globals.Date1, Globals.Date2);
+            return _chartService.GetUsageSeries(model.Username, Globals.Date1, Globals.Date2);
         }
 
         #endregion

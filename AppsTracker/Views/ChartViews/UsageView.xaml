@@ -36,7 +36,6 @@
             <chart:StackedColumnChart ChartTitle="Computer usage"
                                       ChartSubTitle="Total logged time per day (hours)"
                                       Style="{StaticResource MinimalChartStyle}"
-                                      MinHeight="{Binding UserSettings.MainWindowHeight, Converter={StaticResource convertWidth}}"
                                       BorderBrush="{DynamicResource WindowBorderBrush}"
                                       SeriesSource="{Binding DailyLogins.Result}"
                                       BorderThickness="1"

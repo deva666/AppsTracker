@@ -88,11 +88,11 @@ namespace AppsTracker.Controls
 
         private void CreateLicence(string username, string license)
         {
-            string serialized = username + Environment.NewLine + license;
-            App.UzerSetting.Username = username;
-            App.UzerSetting.Licence = true;
-            this.DialogResult = true;
-            ScaleUnloaded();
+            //string serialized = username + Environment.NewLine + license;
+            //App.UzerSetting.Username = username;
+            //App.UzerSetting.Licence = true;
+            //this.DialogResult = true;
+            //ScaleUnloaded();
         }
 
         private void lblOK_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

@@ -7,8 +7,10 @@
 #endregion
 
 using System;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace AppsTracker.MVVM
 {

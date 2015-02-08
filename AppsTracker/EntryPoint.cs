@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using AppsTracker.Controls;
 using AppsTracker.DAL;
+using AppsTracker.DAL.Service;
 using AppsTracker.Utils;
 using Microsoft.VisualBasic.ApplicationServices;
 
@@ -84,24 +85,22 @@ namespace AppsTracker
 #endif
         }
 
-       private static void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
+        private static void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
         {
             var app = App.Current as App;
             try
             {
                 Exception ex = e.ExceptionObject as Exception;
                 AppsTracker.Exceptions.FileLogger.Log(ex);
-                if (App.UzerSetting != null)
+
+                if (ServiceFactory.Get<ISettingsService>().Settings.Stealth == false)
                 {
-                    if (!App.UzerSetting.Stealth)
+                    System.Windows.Application.Current.Dispatcher.Invoke(new Action(() =>
                     {
-                        System.Windows.Application.Current.Dispatcher.Invoke(new Action(() =>
-                        {
-                            MessageWindow messageWindow = new MessageWindow("Ooops, this is awkward ... something went wrong." +
-                                Environment.NewLine + "The app needs to close." + Environment.NewLine + "Error: " + ex.Message);
-                            messageWindow.ShowDialog();
-                        }));
-                    }
+                        MessageWindow messageWindow = new MessageWindow("Ooops, this is awkward ... something went wrong." +
+                            Environment.NewLine + "The app needs to close." + Environment.NewLine + "Error: " + ex.Message);
+                        messageWindow.ShowDialog();
+                    }));
                 }
             }
             finally
@@ -111,16 +110,16 @@ namespace AppsTracker
             }
         }
 
-       private static void RunApp(ReadOnlyCollection<String> eventArgs)
-       {
-           if (eventArgs.Count == 0)
-           {
-               System.Windows.SplashScreen splashScreen = new System.Windows.SplashScreen("resources/appstrackersplashresized.png");
-               splashScreen.Show(true);
-           }
-           App app = new App(eventArgs);
-           app.Run();
-       }
+        private static void RunApp(ReadOnlyCollection<String> eventArgs)
+        {
+            if (eventArgs.Count == 0)
+            {
+                System.Windows.SplashScreen splashScreen = new System.Windows.SplashScreen("resources/appstrackersplashresized.png");
+                splashScreen.Show(true);
+            }
+            App app = new App(eventArgs);
+            app.Run();
+        }
 
         public class SingleInstanceManager : WindowsFormsApplicationBase
         {

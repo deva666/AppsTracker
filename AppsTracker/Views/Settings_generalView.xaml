@@ -155,10 +155,10 @@
                     </Separator.LayoutTransform>
                 </Separator>
 
-                <controls:FaderContentControl Grid.Column="1"
+                <!--<controls:FaderContentControl Grid.Column="1"
                                               FaderVisibility="{Binding ElementName=rbGeneral, Path=IsChecked}"
                                               Margin="20">
-                    <views:GeneralView />
+                    --><!--<views:GeneralView />--><!--
                 </controls:FaderContentControl>
 
                 <controls:FaderContentControl Grid.Column="1"
@@ -188,7 +188,7 @@
                                               FaderVisibility="{Binding ElementName=rbScreenshots, Path=IsChecked}"
                                               Margin="20">
                     <views:ScreenshotsView  />
-                </controls:FaderContentControl>
+                </controls:FaderContentControl>-->
           
 
             </Grid>

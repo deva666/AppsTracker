@@ -2,8 +2,8 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-
 using AppsTracker.Controls;
+using AppsTracker.DAL.Service;
 using AppsTracker.Logging;
 using AppsTracker.Models.Proxy;
 
@@ -12,10 +12,12 @@ namespace AppsTracker
 {
     public partial class PasswordWindow : Window
     {
+        ISettingsService _settingService;
 
         public PasswordWindow()
         {
             InitializeComponent();
+            _settingService = ServiceFactory.Get<ISettingsService>();
             SetKeylogger(false);
             this.Closing += (s, e) => SetKeylogger(true);
         }
@@ -68,13 +70,13 @@ namespace AppsTracker
 
         private void SetKeylogger(bool enabled)
         {
-            if (App.UzerSetting.LoggingEnabled && App.UzerSetting.EnableKeylogger)
-                App.Container.SetKeyboardHookEnabled(enabled);
+            //if (App.UzerSetting.LoggingEnabled && App.UzerSetting.EnableKeylogger)
+            //    App.Container.SetKeyboardHookEnabled(enabled);
         }
 
         private void CheckPassword()
         {
-            if (Encryption.Encrypt.GetEncryptedString(pbPassword.Password) == App.UzerSetting.WindowOpen)
+            if (Encryption.Encrypt.GetEncryptedString(pbPassword.Password) == _settingService.Settings.WindowOpen)
             {
                 this.DialogResult = true;
                 FadeUnloaded();

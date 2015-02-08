@@ -49,8 +49,6 @@ namespace AppsTracker.Controls
 
         public FaderContentControl()
         {
-            this.Loaded += FaderContentControl_Loaded;
-            this.Unloaded += FaderContentControl_Unloaded;
             this.IsVisibleChanged += FaderContentControl_IsVisibleChanged;
             InitStoryBoards(FadeVertically);
         }
@@ -109,16 +107,10 @@ namespace AppsTracker.Controls
             }
 
             base.OnContentChanged(oldContent, newContent);
-
         }
 
         public override void OnApplyTemplate()
-        {
-            if (FadeVertically)
-                VisualStateManager.GoToState(this, "AfterLoadedVertical", true);
-            else
-                VisualStateManager.GoToState(this, "AfterLoaded", true);
-
+        {         
             base.OnApplyTemplate();
 
             paintArea = Template.FindName("paintArea", this) as Shape;
@@ -145,25 +137,5 @@ namespace AppsTracker.Controls
                     VisualStateManager.GoToState(this, "AfterUnLoaded", true);
             }
         }
-
-        void FaderContentControl_Unloaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            if (FadeVertically)
-                VisualStateManager.GoToState(this, "AfterUnLoadedVertical", true);
-            else
-                VisualStateManager.GoToState(this, "AfterUnLoaded", true);
-        }
-
-        void FaderContentControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            if (FadeVertically)
-                VisualStateManager.GoToState(this, "AfterLoadedVertical", true);
-            else
-                VisualStateManager.GoToState(this, "AfterLoaded", true);
-        }
     }
-
-
-
-
 }

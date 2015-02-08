@@ -4,7 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:AppsTracker.Controls"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
-             x:Class="AppsTracker.Pages.Views.SettingsViews.GeneralView"
+             x:Class="AppsTracker.Views.SettingsViews.GeneralView"
              xmlns:local="clr-namespace:AppsTracker"
              mc:Ignorable="d"
              d:DesignHeight="300"
@@ -16,6 +16,7 @@
                   HorizontalScrollBarVisibility="Auto">
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -56,7 +57,7 @@
                       Grid.Column="1"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"
-                      IsChecked="{Binding UserSettings.RunAtStartup, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                      IsChecked="{Binding Settings.RunAtStartup, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                       Margin="30,20,0,0">
                 <CheckBox.InputBindings>
                     <MouseBinding Gesture="LeftClick"
@@ -69,7 +70,7 @@
                    Grid.Row="3"
                    HorizontalAlignment="Left"
                    Margin="0,0,0,0" />
-            <CheckBox IsChecked="{Binding UserSettings.Stealth, Mode=TwoWay}"
+            <CheckBox IsChecked="{Binding Settings.Stealth, Mode=TwoWay}"
                       Grid.Row="3"
                       Grid.Column="1"
                       HorizontalAlignment="Center"
@@ -93,7 +94,7 @@
             <ComboBox Grid.Row="5"
                       Grid.Column="1"
                       IsSynchronizedWithCurrentItem="False"
-                      SelectedValue="{Binding UserSettings.LightTheme, Converter={StaticResource convertBoolToThemeString}, Mode=OneWay}"
+                      SelectedValue="{Binding Settings.LightTheme, Converter={StaticResource convertBoolToThemeString}, Mode=OneWay}"
                       SelectedValuePath="Content">
                 <ComboBoxItem Foreground="{DynamicResource HighlightBrush}">Light
                     <ComboBoxItem.InputBindings>
@@ -110,6 +111,15 @@
                     </ComboBoxItem.InputBindings>
                 </ComboBoxItem>
             </ComboBox>
+
+            <Label Style="{DynamicResource SelectableLabelStyle}"
+                   Content="Save Changes"
+                   Grid.Row="6">
+                <Label.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding SaveChangesCommand}" />
+                </Label.InputBindings>
+            </Label>
 
         </Grid>
     </ScrollViewer>

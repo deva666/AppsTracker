@@ -143,6 +143,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -175,6 +176,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controllers\AppearanceController.cs" />
+    <Compile Include="Controllers\ApplicationController.cs" />
+    <Compile Include="Controllers\IAppearanceController.cs" />
+    <Compile Include="Controllers\IApplicationController.cs" />
+    <Compile Include="Controllers\ILoggingController.cs" />
+    <Compile Include="Controllers\LoggingController.cs" />
     <Compile Include="Controls\Adorners.cs" />
     <Compile Include="Controls\ArrowLeft.xaml.cs">
       <DependentUpon>ArrowLeft.xaml</DependentUpon>
@@ -244,7 +251,6 @@
     <Compile Include="Logging\LogCleaner.cs" />
     <Compile Include="Logging\Helpers\AppBlocker.cs" />
     <Compile Include="Logging\BlockLogger.cs" />
-    <Compile Include="Logging\ComponentContainer.cs" />
     <Compile Include="Logging\Helpers\LogCleanerHelper.cs" />
     <Compile Include="Logging\Helpers\IdleMonitor.cs" />
     <Compile Include="Logging\Helpers\IdleTimeWatcher.cs" />
@@ -258,6 +264,7 @@
     <Compile Include="MVVM\ICommunicator.cs" />
     <Compile Include="MVVM\IMediator.cs" />
     <Compile Include="MVVM\IWorker.cs" />
+    <Compile Include="MVVM\SettingsBaseViewModel.cs" />
     <Compile Include="Utils\ConnectionConfig.cs" />
     <Compile Include="Utils\ExtensionMethods.cs" />
     <Compile Include="Utils\Globals.cs" />
@@ -265,7 +272,6 @@
     <Compile Include="Utils\LocalSettings.cs" />
     <Compile Include="Utils\SettingsAttribute.cs" />
     <Compile Include="Utils\SettingsBase.cs" />
-    <Compile Include="Utils\SettingsQueue.cs" />
     <Compile Include="Utils\SettingsRootNodeName.cs" />
     <Compile Include="Utils\Validation.cs" />
     <Compile Include="Utils\ValueConverters.cs" />
@@ -273,6 +279,9 @@
     <Compile Include="ViewModels\DataHostViewModel.cs" />
     <Compile Include="ViewModels\Data_dayViewModel.cs" />
     <Compile Include="ViewModels\ScreenshotViewerViewModel.cs" />
+    <Compile Include="ViewModels\SettingsGeneralViewModel.cs" />
+    <Compile Include="ViewModels\SettingsLoggingViewModel.cs" />
+    <Compile Include="ViewModels\SettingsScreenshotsViewModel.cs" />
     <Compile Include="ViewModels\StatisticsHostViewModel.cs" />
     <Compile Include="ViewModels\Statistics_appUsageViewModel.cs" />
     <Compile Include="ViewModels\Statistics_dailyAppUsageViewModel.cs" />
@@ -324,7 +333,6 @@
     <Compile Include="Controls\TrayIcon.cs" />
     <Compile Include="Controls\WPFHelper.cs" />
     <Compile Include="EntryPoint.cs" />
-    <Compile Include="Models\UzerSetting.cs" />
     <Compile Include="ViewModels\AboutWindowViewModel.cs" />
     <Compile Include="Logging\Helpers\EmailHelper.cs" />
     <Compile Include="MVVM\DelegateCommand.cs" />

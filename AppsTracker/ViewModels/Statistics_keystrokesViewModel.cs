@@ -8,8 +8,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Windows.Input;
-
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.ChartModels;
 using AppsTracker.MVVM;
@@ -19,6 +19,8 @@ namespace AppsTracker.Pages.ViewModels
     internal sealed class Statistics_keystrokesViewModel : ViewModelBase, ICommunicator
     {
         #region Fields
+        
+        private IChartService _chartService;
 
         private ICommand _returnFromDetailedViewCommand;
 
@@ -27,8 +29,6 @@ namespace AppsTracker.Pages.ViewModels
         private AsyncProperty<IEnumerable<KeystrokeModel>> _keystrokeList;
 
         private AsyncProperty<IEnumerable<DailyKeystrokeModel>> _dailyKeystrokesList;
-
-        private IChartService _service;
 
         #endregion
 
@@ -94,8 +94,8 @@ namespace AppsTracker.Pages.ViewModels
         #endregion
 
         public Statistics_keystrokesViewModel()
-        {
-            _service = ServiceFactory.Get<IChartService>();
+        {            
+            _chartService = ServiceFactory.Get<IChartService>();
 
             _keystrokeList = new AsyncProperty<IEnumerable<KeystrokeModel>>(GetContent, this);
             _dailyKeystrokesList = new AsyncProperty<IEnumerable<DailyKeystrokeModel>>(GetSubContent, this);
@@ -111,7 +111,7 @@ namespace AppsTracker.Pages.ViewModels
 
         private IEnumerable<KeystrokeModel> GetContent()
         {
-            return _service.GetKeystrokes(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
+            return _chartService.GetKeystrokes(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
         }
 
         IEnumerable<DailyKeystrokeModel> GetSubContent()
@@ -120,7 +120,7 @@ namespace AppsTracker.Pages.ViewModels
             if (model == null)
                 return null;
 
-            return _service.GetKeystrokesByApp(Globals.SelectedUserID, model.AppName, Globals.Date1, Globals.Date2);
+            return _chartService.GetKeystrokesByApp(Globals.SelectedUserID, model.AppName, Globals.Date1, Globals.Date2);
         }
 
         private void ReturnFromDetailedView()

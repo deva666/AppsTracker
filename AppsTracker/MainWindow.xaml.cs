@@ -92,8 +92,6 @@ namespace AppsTracker
 
         private void MaximizeButton_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
         {
-            App.UzerSetting.MainWindowLeft = this.Left;
-            App.UzerSetting.MainWindowTop = this.Top;
             WindowState = System.Windows.WindowState.Maximized;
         }
 
@@ -109,7 +107,6 @@ namespace AppsTracker
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            //Globals.IsWindowOpen = false;
         }
 
         #endregion

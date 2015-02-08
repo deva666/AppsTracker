@@ -73,6 +73,7 @@
       <HintPath>..\packages\EntityFramework.SqlServerCompact.6.1.1\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -102,7 +103,9 @@
     <Compile Include="Service\IAppsService.cs" />
     <Compile Include="Service\IBaseService.cs" />
     <Compile Include="Service\IChartService.cs" />
+    <Compile Include="Service\ISettingsService.cs" />
     <Compile Include="Service\ServiceFactory.cs" />
+    <Compile Include="Service\SettingsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

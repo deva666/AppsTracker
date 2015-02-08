@@ -10,11 +10,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.ChartModels;
 using AppsTracker.Models.EntityModels;
@@ -25,6 +25,9 @@ namespace AppsTracker.Pages.ViewModels
     internal class Data_logsViewModel : ViewModelBase, ICommunicator
     {
         #region Fields
+        
+        IAppsService _appsService;
+        IChartService _chartService;
 
         bool _chartVisible;
 
@@ -52,9 +55,6 @@ namespace AppsTracker.Pages.ViewModels
         ICommand _addDaysCommand1;
         ICommand _addDaysCommand2;
         ICommand _changeDaysCommand;
-
-        IAppsService _appsService;
-        IChartService _chartService;
 
         #endregion
 

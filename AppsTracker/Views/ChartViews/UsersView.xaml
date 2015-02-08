@@ -25,7 +25,6 @@
                                             ChartSubTitle="Total logged time in hours (select item to view details)"
                                             Style="{StaticResource MinimalChartStyle}"
                                             SelectedItem="{Binding AllUsersModel, Mode=TwoWay}"
-                                            MinHeight="{Binding UserSettings.MainWindowHeight, Converter={StaticResource convertWidth}}"
                                             BorderBrush="{DynamicResource WindowBorderBrush}"
                                             BorderThickness="1"
                                             Margin="10,10,10,20"

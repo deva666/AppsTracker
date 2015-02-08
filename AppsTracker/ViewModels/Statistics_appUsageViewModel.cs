@@ -8,8 +8,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Windows.Input;
-
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.ChartModels;
 using AppsTracker.MVVM;
@@ -20,6 +20,8 @@ namespace AppsTracker.Pages.ViewModels
     internal sealed class Statistics_appUsageViewModel : ViewModelBase, ICommunicator
     {
         #region Fields
+        
+        private IChartService _chartService;
 
         private MostUsedAppModel _mostUsedAppModel;
 
@@ -28,8 +30,6 @@ namespace AppsTracker.Pages.ViewModels
         private AsyncProperty<IEnumerable<DailyAppModel>> _dailyAppList;
 
         private ICommand _returnFromDetailedViewCommand;
-
-        private IChartService _service;
 
         #endregion
 
@@ -99,8 +99,8 @@ namespace AppsTracker.Pages.ViewModels
         }
 
         public Statistics_appUsageViewModel()
-        {
-            _service = ServiceFactory.Get<IChartService>();
+        {            
+            _chartService = ServiceFactory.Get<IChartService>();
 
             _mostUsedAppsList = new AsyncProperty<IEnumerable<MostUsedAppModel>>(GetContent, this);
             _dailyAppList = new AsyncProperty<IEnumerable<DailyAppModel>>(GetSubContent, this);
@@ -115,7 +115,7 @@ namespace AppsTracker.Pages.ViewModels
         }
         private IEnumerable<MostUsedAppModel> GetContent()
         {
-            return _service.GetMostUsedApps(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
+            return _chartService.GetMostUsedApps(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
         }
 
         private IEnumerable<DailyAppModel> GetSubContent()
@@ -124,7 +124,7 @@ namespace AppsTracker.Pages.ViewModels
             if (model == null)
                 return null;
 
-            return _service.GetSingleMostUsedApp(Globals.SelectedUserID, model.AppName, Globals.Date1, Globals.Date2);
+            return _chartService.GetSingleMostUsedApp(Globals.SelectedUserID, model.AppName, Globals.Date1, Globals.Date2);
         }
     }
 }

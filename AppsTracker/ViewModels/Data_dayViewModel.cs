@@ -8,9 +8,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
-
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.ChartModels;
 using AppsTracker.MVVM;
@@ -173,10 +173,11 @@ namespace AppsTracker.ViewModels
 
         public Data_dayViewModel()
         {
-            Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadContent));
             _appsService = ServiceFactory.Get<IAppsService>();
             _chartService = ServiceFactory.Get<IChartService>();
 
+            Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadContent));
+ 
             _dayViewModelList = new AsyncProperty<IEnumerable<DayViewModel>>(GetDayViewInfo, this);
             _topAppsList = new AsyncProperty<IEnumerable<TopAppsModel>>(GetTopAppsSingle, this);
             _chartList = new AsyncProperty<IEnumerable<DailyUsageTypeSeries>>(GetChartContent, this);

@@ -2704,6 +2704,9 @@
         <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimSetting.Behavior">
             <summary>Assigns the behavior for all methods of the shimmed type</summary>
         </member>
+        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimSetting.Clone">
+            <summary>Sets the shim of Setting.Clone()</summary>
+        </member>
         <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimSetting.Constructor">
             <summary>Sets the shim of Setting.Setting()</summary>
         </member>
@@ -2970,6 +2973,9 @@
         </member>
         <member name="T:AppsTracker.Models.EntityModels.Fakes.ShimSetting.AllInstances">
             <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimSetting.AllInstances.Clone">
+            <summary>Sets the shim of Setting.Clone()</summary>
         </member>
         <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimSetting.AllInstances.CreateScreenshotFolder">
             <summary>Sets the shim of Setting.CreateScreenshotFolder()</summary>

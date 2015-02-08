@@ -10,12 +10,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
 using AppsTracker.Controls;
 using AppsTracker.DAL;
 using AppsTracker.DAL.Service;
@@ -28,6 +28,9 @@ namespace AppsTracker.Pages.ViewModels
     {
         #region Fields
 
+        private IAppsService _appsService;
+        private ISettingsService _settingsService;
+
         private string _infoContent;
 
         private DateTime _selectedDate;
@@ -37,8 +40,6 @@ namespace AppsTracker.Pages.ViewModels
         private ICommand _deleteSelectedScreenshotsCommand;
         private ICommand _openScreenshotViewerCommand;
         private ICommand _saveScreenshotCommand;
-
-        private IAppsService _service;
 
         #endregion
 
@@ -135,7 +136,9 @@ namespace AppsTracker.Pages.ViewModels
 
         public Data_screenshotsViewModel()
         {
-            _service = ServiceFactory.Get<IAppsService>();
+            _appsService = ServiceFactory.Get<IAppsService>();
+            _settingsService = ServiceFactory.Get<ISettingsService>();
+
             _logList = new AsyncProperty<IEnumerable<Log>>(GetContent, this);
 
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(_logList.Reload));
@@ -146,7 +149,7 @@ namespace AppsTracker.Pages.ViewModels
 
         private IEnumerable<Log> GetContent()
         {
-            return _service.GetFiltered<Log>(l => l.Screenshots.Count > 0
+            return _appsService.GetFiltered<Log>(l => l.Screenshots.Count > 0
                                                 && l.DateCreated >= Globals.Date1
                                                 && l.DateCreated <= Globals.Date2
                                                 && l.Window.Application.UserID == Globals.SelectedUserID
@@ -238,8 +241,8 @@ namespace AppsTracker.Pages.ViewModels
                 path.Append(screenshot.GetHashCode());
                 path.Append(".jpg");
                 string folderPath;
-                if (Directory.Exists(App.UzerSetting.DefaultScreenshotSavePath))
-                    folderPath = Path.Combine(App.UzerSetting.DefaultScreenshotSavePath, Screenshots.CorrectPath(path.ToString()));
+                if (Directory.Exists(_settingsService.Settings.DefaultScreenshotSavePath))
+                    folderPath = Path.Combine(_settingsService.Settings.DefaultScreenshotSavePath, Screenshots.CorrectPath(path.ToString()));
                 else
                     folderPath = Screenshots.CorrectPath(path.ToString());
                 Screenshots.SaveScreenshotToFileAsync(screenshot, folderPath);
