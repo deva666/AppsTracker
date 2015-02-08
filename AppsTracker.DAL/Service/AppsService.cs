@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
@@ -17,8 +16,6 @@ using AppsTracker.Models.EntityModels;
 
 namespace AppsTracker.DAL.Service
 {
-    [Export(typeof(IAppsService))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class AppsService : IAppsService
     {
         public IEnumerable<T> GetFiltered<T>(Expression<Func<T, bool>> filter) where T : class

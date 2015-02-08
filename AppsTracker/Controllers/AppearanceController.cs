@@ -1,9 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2014
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Animation;
 
@@ -76,8 +81,8 @@ namespace AppsTracker.Controllers
             Storyboard.SetTarget(animation, App.Current.MainWindow);
             Storyboard.SetTargetProperty(animation, new PropertyPath("Background.Color"));
 
-            Application.Current.Resources.MergedDictionaries.Remove(oldDictionary);
             Application.Current.Resources.MergedDictionaries.Add(newDictionary);
+            Application.Current.Resources.MergedDictionaries.Remove(oldDictionary);
 
             Storyboard storyboard = new Storyboard();
             storyboard.Children.Add(animation);

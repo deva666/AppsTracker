@@ -65,7 +65,7 @@ namespace AppsTracker
             return screenshot;
         }
 
-        public static void SaveScreenshotToFileAsync(Screenshot screenshot, string path)
+        public static void SaveScreenshotToFile(Screenshot screenshot, string path)
         {
             if (screenshot == null || screenshot.Screensht == null)
                 throw new ArgumentNullException("Screenshot");

@@ -20,6 +20,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -86,10 +87,20 @@
                                   />
                 </Button.InputBindings>
             </Button>
+            
+            <Label Style="{DynamicResource SelectableLabelStyle}"
+                   Grid.Row="4"
+                   Content="Save changes"
+                   Margin="10,30,0,10">
+                <Label.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding SaveChangesCommand}" />
+                </Label.InputBindings>
+            </Label>
           
             <Button Content="Start screenshot cleaner"
                     HorizontalAlignment="Left"
-                    Grid.Row="6"
+                    Grid.Row="5"
                     Grid.Column="0"
                     Margin="10,30,0,10">
                 <Button.InputBindings>
@@ -97,6 +108,8 @@
                                   Command="{Binding RunDBCleanerCommand}" />
                 </Button.InputBindings>
             </Button>
+            
+            
             <Popup PopupAnimation="Slide"
                    StaysOpen="True"
                    PlacementTarget="{Binding ElementName=tbInterval}"

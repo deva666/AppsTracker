@@ -8,20 +8,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Data.Entity;
-using System.Collections.ObjectModel;
-
-using AppsTracker.Models.EntityModels;
 using AppsTracker.Models.ChartModels;
+using AppsTracker.Models.EntityModels;
 using AppsTracker.Models.Utils;
-using System.ComponentModel.Composition;
 
 namespace AppsTracker.DAL.Service
 {
-    [Export(typeof(IChartService))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class ChartService : IChartService
     {
         private IEnumerable<Log> _cachedLogs = null;
@@ -690,7 +686,7 @@ namespace AppsTracker.DAL.Service
                                                       && usageIDs.Contains(u.SelfUsageID.Value)
                                                       && u.UsageType.UType == usageStopped)
                                                       .ToList();
-                    
+
                     var day = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day);
 
                     UsageTypeSeries series = new UsageTypeSeries()

@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.EntityModels;
 using AppsTracker.MVVM;
@@ -18,7 +17,7 @@ namespace AppsTracker.Pages.ViewModels
     internal sealed class Data_keystrokesViewModel : ViewModelBase, ICommunicator
     {
         #region Fields
-        
+
         private IAppsService _appsService;
 
         private AsyncProperty<IEnumerable<Log>> _logList;

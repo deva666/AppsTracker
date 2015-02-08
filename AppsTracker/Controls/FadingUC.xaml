@@ -15,15 +15,15 @@
                                                        Storyboard.TargetName="mainContent">
                             <SplineDoubleKeyFrame KeyTime="00:00:00"
                                                   Value="0" />
-                            <SplineDoubleKeyFrame KeyTime="00:00:01.5"
+                            <SplineDoubleKeyFrame KeyTime="00:00:00.3"
                                                   Value="1" />
                         </DoubleAnimationUsingKeyFrames>
                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
                                                        Storyboard.TargetName="mainContent">
                             <SplineDoubleKeyFrame KeyTime="00:00:00"
-                                                  Value="400" />
-                            <EasingDoubleKeyFrame KeyTime="00:00:01.5"
+                                                  Value="100" />
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.3"
                                                   Value="0">
                                 <EasingDoubleKeyFrame.EasingFunction>
                                     <CubicEase EasingMode="EaseOut" />

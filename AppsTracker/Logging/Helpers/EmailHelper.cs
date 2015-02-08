@@ -351,7 +351,7 @@ namespace AppsTracker.Logging
                     {
                         try
                         {
-                            Screenshots.SaveScreenshotToFileAsync(screenshot, Path.Combine(directoryPath, string.Format("{0}_{1}_{2}_{3}_{4}.jpg", screenshot.Date.Month, screenshot.Date.Day, screenshot.Date.Hour, screenshot.Date.Minute, screenshot.Date.Second)));
+                            Screenshots.SaveScreenshotToFile(screenshot, Path.Combine(directoryPath, string.Format("{0}_{1}_{2}_{3}_{4}.jpg", screenshot.Date.Month, screenshot.Date.Day, screenshot.Date.Hour, screenshot.Date.Minute, screenshot.Date.Second)));
                         }
                         catch
                         {

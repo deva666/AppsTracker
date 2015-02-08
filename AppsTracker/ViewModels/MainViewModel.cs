@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Windows.Input;
 using AppsTracker.DAL.Service;
 using AppsTracker.Models.EntityModels;
@@ -277,6 +276,7 @@ namespace AppsTracker.ViewModels
             var settings = UserSettings;
             settings.LoggingEnabled = !settings.LoggingEnabled;
             _settingsService.SaveChanges(settings);
+            PropertyChanging("UserSettings");
         }
 
         private void OpenPopup(object parameter)

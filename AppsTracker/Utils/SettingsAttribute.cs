@@ -10,13 +10,15 @@ namespace AppsTracker.Utils
    sealed class SettingsAttribute : Attribute
    {
 
-      public SettingsAttribute(string propertyName, object defaultValue = null)
+      public SettingsAttribute(string propertyName, Type propertyType,  object defaultValue = null)
       {
          PropertyName = propertyName;
          DefaultValue = defaultValue;
       }
 
       public string PropertyName { get; private set; }
+
+      public Type PropertyType { get; private set; }
 
       public Object DefaultValue { get; private set; }
 

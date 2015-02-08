@@ -245,7 +245,7 @@ namespace AppsTracker.Pages.ViewModels
                     folderPath = Path.Combine(_settingsService.Settings.DefaultScreenshotSavePath, Screenshots.CorrectPath(path.ToString()));
                 else
                     folderPath = Screenshots.CorrectPath(path.ToString());
-                Screenshots.SaveScreenshotToFileAsync(screenshot, folderPath);
+                Screenshots.SaveScreenshotToFile(screenshot, folderPath);
             });
         }
     }
