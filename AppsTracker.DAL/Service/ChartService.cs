@@ -773,17 +773,38 @@ namespace AppsTracker.DAL.Service
             }
             else if (usage.IsCurrent == true)
             {
-               //add logic
+               var startDaysInYear = GetDaysInYear(usage.UsageStart.Year);
+               var dayBegin = (startDaysInYear * usage.UsageStart.Year)
+                              + usage.UsageStart.DayOfYear - startDaysInYear;
+
+               var endDaysInYear = GetDaysInYear(DateTime.Now.Year);
+               var dayEnd = (endDaysInYear * DateTime.Now.Year)
+                           + DateTime.Now.DayOfYear - endDaysInYear;
+
+               var span = dayEnd - dayBegin;
+
+               for (int i = 0; i <= span; i++)
+               {
+                  Usage tempUsage = new Usage(usage);
+                  tempUsage.UsageStart = usage.GetDisplayedStart(usage.UsageStart.Date.AddDays(i));
+                  tempUsage.UsageEnd = i == span ? DateTime.Now
+                     : usage.GetDisplayedEnd(usage.UsageEnd.Date.AddDays(i + 1));
+                  tempUsages.Add(tempUsage);
+               }
             }
             else
             {
                var startDaysInYear = GetDaysInYear(usage.UsageStart.Year);
-               var dayBegin = (startDaysInYear * usage.UsageStart.Year) + usage.UsageStart.DayOfYear - startDaysInYear;
+               var dayBegin = (startDaysInYear * usage.UsageStart.Year) 
+                  + usage.UsageStart.DayOfYear - startDaysInYear;
 
                var endDaysInYear = GetDaysInYear(usage.UsageEnd.Year);
-               var dayEnd = (endDaysInYear * usage.UsageEnd.Year) + usage.UsageEnd.DayOfYear - endDaysInYear;
+               var dayEnd = (endDaysInYear * usage.UsageEnd.Year) 
+                  + usage.UsageEnd.DayOfYear - endDaysInYear;
 
-               for (int i = 0; i <= dayEnd - dayBegin; i++)
+               var span = dayEnd - dayBegin;
+
+               for (int i = 0; i <= span; i++)
                {
                   Usage tempUsage = new Usage(usage);
                   tempUsage.UsageStart = usage.GetDisplayedStart(usage.UsageStart.Date.AddDays(i));
