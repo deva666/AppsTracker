@@ -12,12 +12,12 @@ namespace AppsTracker
 {
     public partial class PasswordWindow : Window
     {
-        ISettingsService _settingService;
+        ISqlSettingsService _settingService;
 
         public PasswordWindow()
         {
             InitializeComponent();
-            _settingService = ServiceFactory.Get<ISettingsService>();
+            _settingService = ServiceFactory.Get<ISqlSettingsService>();
             SetKeylogger(false);
             this.Closing += (s, e) => SetKeylogger(true);
         }

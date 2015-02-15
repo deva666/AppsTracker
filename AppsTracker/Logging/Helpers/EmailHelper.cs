@@ -41,7 +41,7 @@ namespace AppsTracker.Logging
         System.Timers.Timer _timer;
 
         IAppsService _appsService;
-        ISettingsService _settingsService;
+        ISqlSettingsService _settingsService;
 
 
         #endregion
@@ -153,7 +153,7 @@ namespace AppsTracker.Logging
         public EmailHelper()
         {
             _appsService = ServiceFactory.Get<IAppsService>();
-            _settingsService = ServiceFactory.Get<ISettingsService>();
+            _settingsService = ServiceFactory.Get<ISqlSettingsService>();
 
             _timer = new System.Timers.Timer();
             _timer.Interval = _interval = _settingsService.Settings.EmailInterval;

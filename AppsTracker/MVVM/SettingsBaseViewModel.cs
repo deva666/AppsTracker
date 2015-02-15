@@ -13,7 +13,7 @@ namespace AppsTracker.MVVM
 {
     internal abstract class SettingsBaseViewModel : ViewModelBase
     {
-        private ISettingsService _settingsService;
+        private ISqlSettingsService _settingsService;
 
         private Setting _settings;
         public Setting Settings
@@ -39,7 +39,7 @@ namespace AppsTracker.MVVM
         }
         public SettingsBaseViewModel()
         {
-            _settingsService = ServiceFactory.Get<ISettingsService>();
+            _settingsService = ServiceFactory.Get<ISqlSettingsService>();
             Settings = _settingsService.Settings;
         }
 

@@ -1,0 +1,127 @@
+﻿using System;
+using System.IO;
+using System.Xml.Linq;
+using AppsTracker.Models.XmlSettings;
+
+namespace AppsTracker.DAL.Service
+{
+    public sealed class XmlSettingsService : IXmlSettingsService
+    {
+        private const string SETTINGS_FILE_NAME = "settings.xml";
+        private readonly string settingsPath = Path.Combine(Environment.GetFolderPath
+            (Environment.SpecialFolder.CommonApplicationData), "AppService");
+
+        private static readonly Lazy<XmlSettingsService> instance =
+            new Lazy<XmlSettingsService>(() => new XmlSettingsService());
+        public static XmlSettingsService Instance { get { return instance.Value; } }
+
+        public LogsViewSettings LogsViewSettings { get; private set; }
+        public KeylogsViewSettings KeylogsViewSettings { get; private set; }
+        public ScreenshotsViewSettings ScreenshotsViewSettings { get; private set; }
+        public DaysViewSettings DaysViewSettings { get; private set; }
+
+        private XmlSettingsService() { }
+
+        public void Initialize()
+        {
+            ConstructSettings();
+
+            if (File.Exists(Path.Combine(settingsPath, SETTINGS_FILE_NAME)) == false)
+                return;
+
+            var xml = XDocument.Load(Path.Combine(settingsPath, SETTINGS_FILE_NAME));
+            var root = xml.Element("root");
+
+            TrySetLogsViewSettings(root);
+            TrySetKeylogsViewValues(root);
+            TrySetScreenshotsViewValues(root);
+            TrySetDaysViewSettings(root);
+        }
+
+        private void ConstructSettings()
+        {
+            LogsViewSettings = new LogsViewSettings();
+            KeylogsViewSettings = new KeylogsViewSettings();
+            ScreenshotsViewSettings = new ScreenshotsViewSettings();
+            DaysViewSettings = new DaysViewSettings();
+        }
+
+        private void TrySetLogsViewSettings(XElement root)
+        {
+            var node = root.Element(LogsViewSettings.GetType().Name);
+            if (node == null)
+                return;
+
+            try
+            {
+                LogsViewSettings.SetValues(node);
+            }
+            catch
+            {
+                LogsViewSettings = new LogsViewSettings();
+            }
+        }
+
+        private void TrySetKeylogsViewValues(XElement root)
+        {
+            var node = root.Element(KeylogsViewSettings.GetType().Name);
+            if (node == null)
+                return;
+
+            try
+            {
+                KeylogsViewSettings.SetValues(node);
+            }
+            catch
+            {
+                KeylogsViewSettings = new KeylogsViewSettings();
+            }
+        }
+
+        private void TrySetScreenshotsViewValues(XElement root)
+        {
+            var node = root.Element(ScreenshotsViewSettings.GetType().Name);
+            if (node == null)
+                return;
+
+            try
+            {
+                ScreenshotsViewSettings.SetValues(node);
+            }
+            catch
+            {
+                ScreenshotsViewSettings = new ScreenshotsViewSettings();
+            }
+        }
+
+        private void TrySetDaysViewSettings(XElement root)
+        {
+            var node = root.Element(DaysViewSettings.GetType().Name);
+            if (node == null)
+                return;
+
+            try
+            {
+                DaysViewSettings.SetValues(node);
+            }
+            catch
+            {
+                DaysViewSettings = new DaysViewSettings();
+            }
+        }
+
+        public void ShutDown()
+        {
+            if (Directory.Exists(settingsPath) == false)
+                Directory.CreateDirectory(settingsPath);
+
+            var xml = new XElement("root");
+            xml.Add(LogsViewSettings.GetXML());
+            xml.Add(KeylogsViewSettings.GetXML());
+            xml.Add(ScreenshotsViewSettings.GetXML());
+            xml.Add(DaysViewSettings.GetXML());
+
+            xml.Save(Path.Combine(settingsPath, SETTINGS_FILE_NAME), SaveOptions.None);
+        }
+    }
+}

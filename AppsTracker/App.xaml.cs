@@ -76,7 +76,8 @@ namespace AppsTracker
 
         private void RegisterServiceFactory()
         {
-            ServiceFactory.Register<ISettingsService>(() => SettingsService.Instance);
+            ServiceFactory.Register<ISqlSettingsService>(() => SqlSettingsService.Instance);
+            ServiceFactory.Register<IXmlSettingsService>(() => XmlSettingsService.Instance);
             ServiceFactory.Register<IAppsService>(() => new AppsService());
             ServiceFactory.Register<IChartService>(() => new ChartService());
         }
@@ -97,7 +98,7 @@ namespace AppsTracker
             try
             {
                 AppsTracker.Exceptions.FileLogger.Log(e.Exception);
-                if (ServiceFactory.Get<ISettingsService>().Settings.Stealth == false)
+                if (ServiceFactory.Get<ISqlSettingsService>().Settings.Stealth == false)
                 {
                     MessageWindow messageWindow = new MessageWindow("Ooops, this is awkward ... something went wrong." +
                            Environment.NewLine + "The app needs to close." + Environment.NewLine + "Error: " + e.Exception.Message);

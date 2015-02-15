@@ -5755,5 +5755,269 @@
         <member name="P:AppsTracker.Models.Utils.Fakes.StubObservableObject.InstanceObserver">
             <summary>Gets or sets the instance observer.</summary>
         </member>
+        <member name="T:AppsTracker.Models.XmlSettings.Fakes.ShimDaysViewSettings">
+            <summary>Shim type of AppsTracker.Models.XmlSettings.DaysViewSettings</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimDaysViewSettings.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimDaysViewSettings.#ctor(AppsTracker.Models.XmlSettings.DaysViewSettings)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimDaysViewSettings.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimDaysViewSettings.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimDaysViewSettings.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimDaysViewSettings.Constructor">
+            <summary>Sets the shim of DaysViewSettings.DaysViewSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimDaysViewSettings.SeparatorPositionGet">
+            <summary>Sets the shim of DaysViewSettings.get_SeparatorPosition()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimDaysViewSettings.SeparatorPositionSetDouble">
+            <summary>Sets the shim of DaysViewSettings.set_SeparatorPosition(Double value)</summary>
+        </member>
+        <member name="T:AppsTracker.Models.XmlSettings.Fakes.ShimDaysViewSettings.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimDaysViewSettings.AllInstances.SeparatorPositionGet">
+            <summary>Sets the shim of DaysViewSettings.get_SeparatorPosition()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimDaysViewSettings.AllInstances.SeparatorPositionSetDouble">
+            <summary>Sets the shim of DaysViewSettings.set_SeparatorPosition(Double value)</summary>
+        </member>
+        <member name="T:AppsTracker.Models.XmlSettings.Fakes.ShimKeylogsViewSettings">
+            <summary>Shim type of AppsTracker.Models.XmlSettings.KeylogsViewSettings</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimKeylogsViewSettings.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimKeylogsViewSettings.#ctor(AppsTracker.Models.XmlSettings.KeylogsViewSettings)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimKeylogsViewSettings.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimKeylogsViewSettings.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimKeylogsViewSettings.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimKeylogsViewSettings.Constructor">
+            <summary>Sets the shim of KeylogsViewSettings.KeylogsViewSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimKeylogsViewSettings.SeparatorPositionGet">
+            <summary>Sets the shim of KeylogsViewSettings.get_SeparatorPosition()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimKeylogsViewSettings.SeparatorPositionSetDouble">
+            <summary>Sets the shim of KeylogsViewSettings.set_SeparatorPosition(Double value)</summary>
+        </member>
+        <member name="T:AppsTracker.Models.XmlSettings.Fakes.ShimKeylogsViewSettings.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimKeylogsViewSettings.AllInstances.SeparatorPositionGet">
+            <summary>Sets the shim of KeylogsViewSettings.get_SeparatorPosition()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimKeylogsViewSettings.AllInstances.SeparatorPositionSetDouble">
+            <summary>Sets the shim of KeylogsViewSettings.set_SeparatorPosition(Double value)</summary>
+        </member>
+        <member name="T:AppsTracker.Models.XmlSettings.Fakes.ShimLogsViewSettings">
+            <summary>Shim type of AppsTracker.Models.XmlSettings.LogsViewSettings</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimLogsViewSettings.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimLogsViewSettings.#ctor(AppsTracker.Models.XmlSettings.LogsViewSettings)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimLogsViewSettings.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimLogsViewSettings.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimLogsViewSettings.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimLogsViewSettings.Constructor">
+            <summary>Sets the shim of LogsViewSettings.LogsViewSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimLogsViewSettings.HorizontalSeparatorPositionGet">
+            <summary>Sets the shim of LogsViewSettings.get_HorizontalSeparatorPosition()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimLogsViewSettings.HorizontalSeparatorPositionSetDouble">
+            <summary>Sets the shim of LogsViewSettings.set_HorizontalSeparatorPosition(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimLogsViewSettings.VerticalSeparatorPositionGet">
+            <summary>Sets the shim of LogsViewSettings.get_VerticalSeparatorPosition()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimLogsViewSettings.VerticalSeparatorPositionSetDouble">
+            <summary>Sets the shim of LogsViewSettings.set_VerticalSeparatorPosition(Double value)</summary>
+        </member>
+        <member name="T:AppsTracker.Models.XmlSettings.Fakes.ShimLogsViewSettings.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimLogsViewSettings.AllInstances.HorizontalSeparatorPositionGet">
+            <summary>Sets the shim of LogsViewSettings.get_HorizontalSeparatorPosition()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimLogsViewSettings.AllInstances.HorizontalSeparatorPositionSetDouble">
+            <summary>Sets the shim of LogsViewSettings.set_HorizontalSeparatorPosition(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimLogsViewSettings.AllInstances.VerticalSeparatorPositionGet">
+            <summary>Sets the shim of LogsViewSettings.get_VerticalSeparatorPosition()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimLogsViewSettings.AllInstances.VerticalSeparatorPositionSetDouble">
+            <summary>Sets the shim of LogsViewSettings.set_VerticalSeparatorPosition(Double value)</summary>
+        </member>
+        <member name="T:AppsTracker.Models.XmlSettings.Fakes.ShimScreenshotsViewSettings">
+            <summary>Shim type of AppsTracker.Models.XmlSettings.ScreenshotsViewSettings</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimScreenshotsViewSettings.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimScreenshotsViewSettings.#ctor(AppsTracker.Models.XmlSettings.ScreenshotsViewSettings)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimScreenshotsViewSettings.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimScreenshotsViewSettings.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimScreenshotsViewSettings.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimScreenshotsViewSettings.Constructor">
+            <summary>Sets the shim of ScreenshotsViewSettings.ScreenshotsViewSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimScreenshotsViewSettings.SeparatorPositionGet">
+            <summary>Sets the shim of ScreenshotsViewSettings.get_SeparatorPosition()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimScreenshotsViewSettings.SeparatorPositionSetDouble">
+            <summary>Sets the shim of ScreenshotsViewSettings.set_SeparatorPosition(Double value)</summary>
+        </member>
+        <member name="T:AppsTracker.Models.XmlSettings.Fakes.ShimScreenshotsViewSettings.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimScreenshotsViewSettings.AllInstances.SeparatorPositionGet">
+            <summary>Sets the shim of ScreenshotsViewSettings.get_SeparatorPosition()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimScreenshotsViewSettings.AllInstances.SeparatorPositionSetDouble">
+            <summary>Sets the shim of ScreenshotsViewSettings.set_SeparatorPosition(Double value)</summary>
+        </member>
+        <member name="T:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsBase">
+            <summary>Shim type of AppsTracker.Models.XmlSettings.SettingsBase</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsBase.#ctor(AppsTracker.Models.XmlSettings.SettingsBase)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsBase.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsBase.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsBase.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsBase.Constructor">
+            <summary>Sets the shim of SettingsBase.SettingsBase()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsBase.GetNodeValuePropertyInfoXElement">
+            <summary>Sets the shim of SettingsBase.GetNodeValue(PropertyInfo property, XElement node)</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsBase.GetSettingsProperties">
+            <summary>Sets the shim of SettingsBase.GetSettingsProperties()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsBase.GetXML">
+            <summary>Sets the shim of SettingsBase.GetXML()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsBase.SetValuesXElement">
+            <summary>Sets the shim of SettingsBase.SetValues(XElement xml)</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsBase._GetSettingsPropertiesb__0PropertyInfo">
+            <summary>Sets the shim of SettingsBase.&lt;GetSettingsProperties&gt;b__0(PropertyInfo p)</summary>
+        </member>
+        <member name="T:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsBase.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsBase.AllInstances.GetNodeValuePropertyInfoXElement">
+            <summary>Sets the shim of SettingsBase.GetNodeValue(PropertyInfo property, XElement node)</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsBase.AllInstances.GetSettingsProperties">
+            <summary>Sets the shim of SettingsBase.GetSettingsProperties()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsBase.AllInstances.GetXML">
+            <summary>Sets the shim of SettingsBase.GetXML()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsBase.AllInstances.SetValuesXElement">
+            <summary>Sets the shim of SettingsBase.SetValues(XElement xml)</summary>
+        </member>
+        <member name="T:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsNodeAttribute">
+            <summary>Shim type of AppsTracker.Models.XmlSettings.SettingsNodeAttribute</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsNodeAttribute.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsNodeAttribute.#ctor(AppsTracker.Models.XmlSettings.SettingsNodeAttribute)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsNodeAttribute.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsNodeAttribute.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsNodeAttribute.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsNodeAttribute.ConstructorObject">
+            <summary>Sets the shim of SettingsNodeAttribute.SettingsNodeAttribute(Object nodeDefaultValue)</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsNodeAttribute.DefaultValueGet">
+            <summary>Sets the shim of SettingsNodeAttribute.get_DefaultValue()</summary>
+        </member>
+        <member name="T:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsNodeAttribute.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.ShimSettingsNodeAttribute.AllInstances.DefaultValueGet">
+            <summary>Sets the shim of SettingsNodeAttribute.get_DefaultValue()</summary>
+        </member>
+        <member name="T:AppsTracker.Models.XmlSettings.Fakes.StubSettingsBase">
+            <summary>Stub type of AppsTracker.Models.XmlSettings.SettingsBase</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.StubSettingsBase.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.StubSettingsBase.GetXML">
+            <summary>Sets the stub of SettingsBase.GetXML()</summary>
+        </member>
+        <member name="F:AppsTracker.Models.XmlSettings.Fakes.StubSettingsBase.GetXML01">
+            <summary>Sets the stub of SettingsBase.GetXML()</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.StubSettingsBase.InitializeStub">
+            <summary>Initializes a new instance of type StubSettingsBase</summary>
+        </member>
+        <member name="M:AppsTracker.Models.XmlSettings.Fakes.StubSettingsBase.SetValues(System.Xml.Linq.XElement)">
+            <summary>Sets the stub of SettingsBase.SetValues(XElement xml)</summary>
+        </member>
+        <member name="F:AppsTracker.Models.XmlSettings.Fakes.StubSettingsBase.SetValuesXElement">
+            <summary>Sets the stub of SettingsBase.SetValues(XElement xml)</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.StubSettingsBase.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.StubSettingsBase.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:AppsTracker.Models.XmlSettings.Fakes.StubSettingsBase.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
     </members>
 </doc>

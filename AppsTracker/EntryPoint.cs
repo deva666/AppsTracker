@@ -93,7 +93,7 @@ namespace AppsTracker
                 Exception ex = e.ExceptionObject as Exception;
                 AppsTracker.Exceptions.FileLogger.Log(ex);
 
-                if (ServiceFactory.Get<ISettingsService>().Settings.Stealth == false)
+                if (ServiceFactory.Get<ISqlSettingsService>().Settings.Stealth == false)
                 {
                     System.Windows.Application.Current.Dispatcher.Invoke(new Action(() =>
                     {

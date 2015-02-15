@@ -29,7 +29,7 @@ namespace AppsTracker.Pages.ViewModels
         #region Fields
 
         private IAppsService _appsService;
-        private ISettingsService _settingsService;
+        private ISqlSettingsService _settingsService;
 
         private string _infoContent;
 
@@ -137,7 +137,7 @@ namespace AppsTracker.Pages.ViewModels
         public Data_screenshotsViewModel()
         {
             _appsService = ServiceFactory.Get<IAppsService>();
-            _settingsService = ServiceFactory.Get<ISettingsService>();
+            _settingsService = ServiceFactory.Get<ISqlSettingsService>();
 
             _logList = new AsyncProperty<IEnumerable<Log>>(GetContent, this);
 

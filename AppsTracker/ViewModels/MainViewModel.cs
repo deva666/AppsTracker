@@ -20,7 +20,7 @@ namespace AppsTracker.ViewModels
         #region Fields
 
         private IAppsService _appsService;
-        private ISettingsService _settingsService;
+        private ISqlSettingsService _settingsService;
 
         private bool _isPopupCalendarOpen = false;
         private bool _isPopupUsersOpen = false;
@@ -247,7 +247,7 @@ namespace AppsTracker.ViewModels
         public MainViewModel()
         {
             _appsService = ServiceFactory.Get<IAppsService>();
-            _settingsService = ServiceFactory.Get<ISettingsService>();
+            _settingsService = ServiceFactory.Get<ISqlSettingsService>();
 
             Register<DataHostViewModel>(() => new DataHostViewModel());
             Register<StatisticsHostViewModel>(() => new StatisticsHostViewModel());

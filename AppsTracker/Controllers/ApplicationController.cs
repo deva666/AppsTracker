@@ -22,7 +22,8 @@ namespace AppsTracker.Controllers
         private IAppearanceController _appearanceController;
         private ILoggingController _loggingController;
 
-        private ISettingsService _settingsService;
+        private ISqlSettingsService _settingsService;
+        private IXmlSettingsService _xmlSettingsService;
 
         private TrayIcon _trayIcon;
         private Window _mainWindow;
@@ -36,7 +37,9 @@ namespace AppsTracker.Controllers
 
         public void Initialize(bool autoStart)
         {
-            _settingsService = ServiceFactory.Get<ISettingsService>();
+            _settingsService = ServiceFactory.Get<ISqlSettingsService>();
+            _xmlSettingsService = ServiceFactory.Get<IXmlSettingsService>();
+            _xmlSettingsService.Initialize();
             PropertyChangedEventManager.AddHandler(_settingsService, OnSettingsChanged, "Settings");
 
             _appearanceController.Initialize(_settingsService.Settings);
@@ -227,9 +230,14 @@ ShowEULAWindow();
 
         public void ShutDown()
         {
+            _xmlSettingsService.ShutDown();
             _loggingController.Dispose();
             CloseMainWindow();
-            if (_trayIcon != null) { _trayIcon.Dispose(); _trayIcon = null; }
+            if (_trayIcon != null)
+            {
+                _trayIcon.Dispose();
+                _trayIcon = null;
+            }
         }
 
     }

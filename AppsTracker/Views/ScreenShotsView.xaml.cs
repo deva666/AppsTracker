@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AppsTracker.DAL.Service;
 using AppsTracker.Pages.ViewModels;
 
 namespace AppsTracker.Pages.Views
@@ -18,22 +19,24 @@ namespace AppsTracker.Pages.Views
 
     public partial class ScreenShotsView : UserControl
     {
+        private readonly IXmlSettingsService xmlService;
         public ScreenShotsView()
         {
             InitializeComponent();
+            xmlService = ServiceFactory.Get<IXmlSettingsService>();
+            var height = xmlService.ScreenshotsViewSettings.SeparatorPosition;
+            if (height != default(double))
+                rootLayout.RowDefinitions[0].Height = new GridLength(height);
         }
 
         private void Thumb_DragDelta_1(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             if ((rootLayout.RowDefinitions[0].ActualHeight + e.VerticalChange) >= 0)
             {
-                rootLayout.RowDefinitions[0].Height = new GridLength(rootLayout.RowDefinitions[0].ActualHeight + e.VerticalChange);
+                var height = rootLayout.RowDefinitions[0].ActualHeight + e.VerticalChange;
+                rootLayout.RowDefinitions[0].Height = new GridLength(height);
+                xmlService.ScreenshotsViewSettings.SeparatorPosition = height;
             }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            mainContentHolder.ScrollIntoView(mainContentHolder.SelectedItem);
         }
     }
 }

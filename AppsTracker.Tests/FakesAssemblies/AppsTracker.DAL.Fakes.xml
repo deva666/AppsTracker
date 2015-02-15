@@ -691,89 +691,218 @@
         <member name="T:AppsTracker.DAL.Service.Fakes.ShimServiceFactory.AllInstances">
             <summary>Define shims for all instances members</summary>
         </member>
-        <member name="T:AppsTracker.DAL.Service.Fakes.ShimSettingsService">
-            <summary>Shim type of AppsTracker.DAL.Service.SettingsService</summary>
+        <member name="T:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService">
+            <summary>Shim type of AppsTracker.DAL.Service.SqlSettingsService</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSettingsService.#ctor">
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.#ctor">
             <summary>Initializes a new shim instance</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSettingsService.#ctor(AppsTracker.DAL.Service.SettingsService)">
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.#ctor(AppsTracker.DAL.Service.SqlSettingsService)">
             <summary>Initializes a new shim for the given instance</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSettingsService.BehaveAsCurrent">
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.BehaveAsCurrent">
             <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSettingsService.BehaveAsNotImplemented">
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.BehaveAsNotImplemented">
             <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSettingsService.Bind(AppsTracker.DAL.Service.IBaseService)">
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.Bind(AppsTracker.DAL.Service.IBaseService)">
             <summary>Binds the members of the interface to the shim.</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSettingsService.Bind(AppsTracker.DAL.Service.ISettingsService)">
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.Bind(AppsTracker.DAL.Service.ISqlSettingsService)">
             <summary>Binds the members of the interface to the shim.</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSettingsService.Bind(System.ComponentModel.INotifyPropertyChanged)">
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.Bind(System.ComponentModel.INotifyPropertyChanged)">
             <summary>Binds the members of the interface to the shim.</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.Behavior">
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.Behavior">
             <summary>Assigns the behavior for all methods of the shimmed type</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.Constructor">
-            <summary>Sets the shim of SettingsService.SettingsService()</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.Constructor">
+            <summary>Sets the shim of SqlSettingsService.SqlSettingsService()</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.CreateSettingsAndUsageTypes">
-            <summary>Sets the shim of SettingsService.CreateSettingsAndUsageTypes()</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.CreateSettingsAndUsageTypes">
+            <summary>Sets the shim of SqlSettingsService.CreateSettingsAndUsageTypes()</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.InstanceGet">
-            <summary>Sets the shim of SettingsService.get_Instance()</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.InstanceGet">
+            <summary>Sets the shim of SqlSettingsService.get_Instance()</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.NotifyPropertyChanged">
-            <summary>Sets the shim of SettingsService.NotifyPropertyChanged()</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.NotifyPropertyChanged">
+            <summary>Sets the shim of SqlSettingsService.NotifyPropertyChanged()</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.PropertyChangedAddPropertyChangedEventHandler">
-            <summary>Sets the shim of SettingsService.add_PropertyChanged(PropertyChangedEventHandler value)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.PropertyChangedAddPropertyChangedEventHandler">
+            <summary>Sets the shim of SqlSettingsService.add_PropertyChanged(PropertyChangedEventHandler value)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.PropertyChangedRemovePropertyChangedEventHandler">
-            <summary>Sets the shim of SettingsService.remove_PropertyChanged(PropertyChangedEventHandler value)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.PropertyChangedRemovePropertyChangedEventHandler">
+            <summary>Sets the shim of SqlSettingsService.remove_PropertyChanged(PropertyChangedEventHandler value)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.SaveChangesAsyncSetting">
-            <summary>Sets the shim of SettingsService.SaveChangesAsync(Setting settings)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.SaveChangesAsyncSetting">
+            <summary>Sets the shim of SqlSettingsService.SaveChangesAsync(Setting settings)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.SaveChangesSetting">
-            <summary>Sets the shim of SettingsService.SaveChanges(Setting settings)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.SaveChangesSetting">
+            <summary>Sets the shim of SqlSettingsService.SaveChanges(Setting settings)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.SettingsGet">
-            <summary>Sets the shim of SettingsService.get_Settings()</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.SettingsGet">
+            <summary>Sets the shim of SqlSettingsService.get_Settings()</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.StaticConstructor">
-            <summary>Sets the shim of SettingsService.SettingsService()</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.StaticConstructor">
+            <summary>Sets the shim of SqlSettingsService.SqlSettingsService()</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService._cctorb__7">
-            <summary>Sets the shim of SettingsService.&lt;.cctor&gt;b__7()</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService._cctorb__7">
+            <summary>Sets the shim of SqlSettingsService.&lt;.cctor&gt;b__7()</summary>
         </member>
-        <member name="T:AppsTracker.DAL.Service.Fakes.ShimSettingsService.AllInstances">
+        <member name="T:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.AllInstances">
             <summary>Define shims for all instances members</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.AllInstances.CreateSettingsAndUsageTypes">
-            <summary>Sets the shim of SettingsService.CreateSettingsAndUsageTypes()</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.AllInstances.CreateSettingsAndUsageTypes">
+            <summary>Sets the shim of SqlSettingsService.CreateSettingsAndUsageTypes()</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.AllInstances.NotifyPropertyChanged">
-            <summary>Sets the shim of SettingsService.NotifyPropertyChanged()</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.AllInstances.NotifyPropertyChanged">
+            <summary>Sets the shim of SqlSettingsService.NotifyPropertyChanged()</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.AllInstances.PropertyChangedAddPropertyChangedEventHandler">
-            <summary>Sets the shim of SettingsService.add_PropertyChanged(PropertyChangedEventHandler value)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.AllInstances.PropertyChangedAddPropertyChangedEventHandler">
+            <summary>Sets the shim of SqlSettingsService.add_PropertyChanged(PropertyChangedEventHandler value)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.AllInstances.PropertyChangedRemovePropertyChangedEventHandler">
-            <summary>Sets the shim of SettingsService.remove_PropertyChanged(PropertyChangedEventHandler value)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.AllInstances.PropertyChangedRemovePropertyChangedEventHandler">
+            <summary>Sets the shim of SqlSettingsService.remove_PropertyChanged(PropertyChangedEventHandler value)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.AllInstances.SaveChangesAsyncSetting">
-            <summary>Sets the shim of SettingsService.SaveChangesAsync(Setting settings)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.AllInstances.SaveChangesAsyncSetting">
+            <summary>Sets the shim of SqlSettingsService.SaveChangesAsync(Setting settings)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.AllInstances.SaveChangesSetting">
-            <summary>Sets the shim of SettingsService.SaveChanges(Setting settings)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.AllInstances.SaveChangesSetting">
+            <summary>Sets the shim of SqlSettingsService.SaveChanges(Setting settings)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSettingsService.AllInstances.SettingsGet">
-            <summary>Sets the shim of SettingsService.get_Settings()</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimSqlSettingsService.AllInstances.SettingsGet">
+            <summary>Sets the shim of SqlSettingsService.get_Settings()</summary>
+        </member>
+        <member name="T:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService">
+            <summary>Shim type of AppsTracker.DAL.Service.XmlSettingsService</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.#ctor(AppsTracker.DAL.Service.XmlSettingsService)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.Bind(AppsTracker.DAL.Service.IBaseService)">
+            <summary>Binds the members of the interface to the shim.</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.Bind(AppsTracker.DAL.Service.IXmlSettingsService)">
+            <summary>Binds the members of the interface to the shim.</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.ConstructSettings">
+            <summary>Sets the shim of XmlSettingsService.ConstructSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.Constructor">
+            <summary>Sets the shim of XmlSettingsService.XmlSettingsService()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.DaysViewSettingsGet">
+            <summary>Sets the shim of XmlSettingsService.get_DaysViewSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.DaysViewSettingsSetDaysViewSettings">
+            <summary>Sets the shim of XmlSettingsService.set_DaysViewSettings(DaysViewSettings value)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.Initialize">
+            <summary>Sets the shim of XmlSettingsService.Initialize()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.InstanceGet">
+            <summary>Sets the shim of XmlSettingsService.get_Instance()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.KeylogsViewSettingsGet">
+            <summary>Sets the shim of XmlSettingsService.get_KeylogsViewSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.KeylogsViewSettingsSetKeylogsViewSettings">
+            <summary>Sets the shim of XmlSettingsService.set_KeylogsViewSettings(KeylogsViewSettings value)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.LogsViewSettingsGet">
+            <summary>Sets the shim of XmlSettingsService.get_LogsViewSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.LogsViewSettingsSetLogsViewSettings">
+            <summary>Sets the shim of XmlSettingsService.set_LogsViewSettings(LogsViewSettings value)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.ScreenshotsViewSettingsGet">
+            <summary>Sets the shim of XmlSettingsService.get_ScreenshotsViewSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.ScreenshotsViewSettingsSetScreenshotsViewSettings">
+            <summary>Sets the shim of XmlSettingsService.set_ScreenshotsViewSettings(ScreenshotsViewSettings value)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.ShutDown">
+            <summary>Sets the shim of XmlSettingsService.ShutDown()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.StaticConstructor">
+            <summary>Sets the shim of XmlSettingsService.XmlSettingsService()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.TrySetDaysViewSettingsXElement">
+            <summary>Sets the shim of XmlSettingsService.TrySetDaysViewSettings(XElement root)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.TrySetKeylogsViewValuesXElement">
+            <summary>Sets the shim of XmlSettingsService.TrySetKeylogsViewValues(XElement root)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.TrySetLogsViewSettingsXElement">
+            <summary>Sets the shim of XmlSettingsService.TrySetLogsViewSettings(XElement root)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.TrySetScreenshotsViewValuesXElement">
+            <summary>Sets the shim of XmlSettingsService.TrySetScreenshotsViewValues(XElement root)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService._cctorb__0">
+            <summary>Sets the shim of XmlSettingsService.&lt;.cctor&gt;b__0()</summary>
+        </member>
+        <member name="T:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.AllInstances.ConstructSettings">
+            <summary>Sets the shim of XmlSettingsService.ConstructSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.AllInstances.DaysViewSettingsGet">
+            <summary>Sets the shim of XmlSettingsService.get_DaysViewSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.AllInstances.DaysViewSettingsSetDaysViewSettings">
+            <summary>Sets the shim of XmlSettingsService.set_DaysViewSettings(DaysViewSettings value)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.AllInstances.Initialize">
+            <summary>Sets the shim of XmlSettingsService.Initialize()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.AllInstances.KeylogsViewSettingsGet">
+            <summary>Sets the shim of XmlSettingsService.get_KeylogsViewSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.AllInstances.KeylogsViewSettingsSetKeylogsViewSettings">
+            <summary>Sets the shim of XmlSettingsService.set_KeylogsViewSettings(KeylogsViewSettings value)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.AllInstances.LogsViewSettingsGet">
+            <summary>Sets the shim of XmlSettingsService.get_LogsViewSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.AllInstances.LogsViewSettingsSetLogsViewSettings">
+            <summary>Sets the shim of XmlSettingsService.set_LogsViewSettings(LogsViewSettings value)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.AllInstances.ScreenshotsViewSettingsGet">
+            <summary>Sets the shim of XmlSettingsService.get_ScreenshotsViewSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.AllInstances.ScreenshotsViewSettingsSetScreenshotsViewSettings">
+            <summary>Sets the shim of XmlSettingsService.set_ScreenshotsViewSettings(ScreenshotsViewSettings value)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.AllInstances.ShutDown">
+            <summary>Sets the shim of XmlSettingsService.ShutDown()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.AllInstances.TrySetDaysViewSettingsXElement">
+            <summary>Sets the shim of XmlSettingsService.TrySetDaysViewSettings(XElement root)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.AllInstances.TrySetKeylogsViewValuesXElement">
+            <summary>Sets the shim of XmlSettingsService.TrySetKeylogsViewValues(XElement root)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.AllInstances.TrySetLogsViewSettingsXElement">
+            <summary>Sets the shim of XmlSettingsService.TrySetLogsViewSettings(XElement root)</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimXmlSettingsService.AllInstances.TrySetScreenshotsViewValuesXElement">
+            <summary>Sets the shim of XmlSettingsService.TrySetScreenshotsViewValues(XElement root)</summary>
         </member>
         <member name="T:AppsTracker.DAL.Service.Fakes.StubChartService">
             <summary>Stub type of AppsTracker.DAL.Service.ChartService</summary>
@@ -937,29 +1066,71 @@
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIChartService.global::System#IDisposable#Dispose">
             <summary>Sets the stub of IDisposable.Dispose()</summary>
         </member>
-        <member name="T:AppsTracker.DAL.Service.Fakes.StubISettingsService">
-            <summary>Stub type of AppsTracker.DAL.Service.ISettingsService</summary>
+        <member name="T:AppsTracker.DAL.Service.Fakes.StubISqlSettingsService">
+            <summary>Stub type of AppsTracker.DAL.Service.ISqlSettingsService</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubISettingsService.#ctor">
-            <summary>Initializes a new instance of type StubISettingsService</summary>
+        <member name="M:AppsTracker.DAL.Service.Fakes.StubISqlSettingsService.#ctor">
+            <summary>Initializes a new instance of type StubISqlSettingsService</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubISettingsService.atdal::AppsTracker#DAL#Service#ISettingsService#SaveChanges(AppsTracker.Models.EntityModels.Setting)">
-            <summary>Sets the stub of ISettingsService.SaveChanges(Setting settings)</summary>
+        <member name="M:AppsTracker.DAL.Service.Fakes.StubISqlSettingsService.atdal::AppsTracker#DAL#Service#ISqlSettingsService#SaveChanges(AppsTracker.Models.EntityModels.Setting)">
+            <summary>Sets the stub of ISqlSettingsService.SaveChanges(Setting settings)</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubISettingsService.atdal::AppsTracker#DAL#Service#ISettingsService#SaveChangesAsync(AppsTracker.Models.EntityModels.Setting)">
-            <summary>Sets the stub of ISettingsService.SaveChangesAsync(Setting settings)</summary>
+        <member name="M:AppsTracker.DAL.Service.Fakes.StubISqlSettingsService.atdal::AppsTracker#DAL#Service#ISqlSettingsService#SaveChangesAsync(AppsTracker.Models.EntityModels.Setting)">
+            <summary>Sets the stub of ISqlSettingsService.SaveChangesAsync(Setting settings)</summary>
         </member>
-        <member name="F:AppsTracker.DAL.Service.Fakes.StubISettingsService.SaveChangesAsyncSetting">
-            <summary>Sets the stub of ISettingsService.SaveChangesAsync(Setting settings)</summary>
+        <member name="F:AppsTracker.DAL.Service.Fakes.StubISqlSettingsService.SaveChangesAsyncSetting">
+            <summary>Sets the stub of ISqlSettingsService.SaveChangesAsync(Setting settings)</summary>
         </member>
-        <member name="F:AppsTracker.DAL.Service.Fakes.StubISettingsService.SaveChangesSetting">
-            <summary>Sets the stub of ISettingsService.SaveChanges(Setting settings)</summary>
+        <member name="F:AppsTracker.DAL.Service.Fakes.StubISqlSettingsService.SaveChangesSetting">
+            <summary>Sets the stub of ISqlSettingsService.SaveChanges(Setting settings)</summary>
         </member>
-        <member name="F:AppsTracker.DAL.Service.Fakes.StubISettingsService.SettingsGet">
-            <summary>Sets the stub of ISettingsService.get_Settings()</summary>
+        <member name="F:AppsTracker.DAL.Service.Fakes.StubISqlSettingsService.SettingsGet">
+            <summary>Sets the stub of ISqlSettingsService.get_Settings()</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.StubISettingsService.atdal::AppsTracker#DAL#Service#ISettingsService#Settings">
-            <summary>Sets the stub of ISettingsService.get_Settings()</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.StubISqlSettingsService.atdal::AppsTracker#DAL#Service#ISqlSettingsService#Settings">
+            <summary>Sets the stub of ISqlSettingsService.get_Settings()</summary>
+        </member>
+        <member name="T:AppsTracker.DAL.Service.Fakes.StubIXmlSettingsService">
+            <summary>Stub type of AppsTracker.DAL.Service.IXmlSettingsService</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.StubIXmlSettingsService.#ctor">
+            <summary>Initializes a new instance of type StubIXmlSettingsService</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.StubIXmlSettingsService.atdal::AppsTracker#DAL#Service#IXmlSettingsService#Initialize">
+            <summary>Sets the stub of IXmlSettingsService.Initialize()</summary>
+        </member>
+        <member name="M:AppsTracker.DAL.Service.Fakes.StubIXmlSettingsService.atdal::AppsTracker#DAL#Service#IXmlSettingsService#ShutDown">
+            <summary>Sets the stub of IXmlSettingsService.ShutDown()</summary>
+        </member>
+        <member name="F:AppsTracker.DAL.Service.Fakes.StubIXmlSettingsService.DaysViewSettingsGet">
+            <summary>Sets the stub of IXmlSettingsService.get_DaysViewSettings()</summary>
+        </member>
+        <member name="F:AppsTracker.DAL.Service.Fakes.StubIXmlSettingsService.Initialize">
+            <summary>Sets the stub of IXmlSettingsService.Initialize()</summary>
+        </member>
+        <member name="F:AppsTracker.DAL.Service.Fakes.StubIXmlSettingsService.KeylogsViewSettingsGet">
+            <summary>Sets the stub of IXmlSettingsService.get_KeylogsViewSettings()</summary>
+        </member>
+        <member name="F:AppsTracker.DAL.Service.Fakes.StubIXmlSettingsService.LogsViewSettingsGet">
+            <summary>Sets the stub of IXmlSettingsService.get_LogsViewSettings()</summary>
+        </member>
+        <member name="F:AppsTracker.DAL.Service.Fakes.StubIXmlSettingsService.ScreenshotsViewSettingsGet">
+            <summary>Sets the stub of IXmlSettingsService.get_ScreenshotsViewSettings()</summary>
+        </member>
+        <member name="F:AppsTracker.DAL.Service.Fakes.StubIXmlSettingsService.ShutDown">
+            <summary>Sets the stub of IXmlSettingsService.ShutDown()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.StubIXmlSettingsService.atdal::AppsTracker#DAL#Service#IXmlSettingsService#DaysViewSettings">
+            <summary>Sets the stub of IXmlSettingsService.get_DaysViewSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.StubIXmlSettingsService.atdal::AppsTracker#DAL#Service#IXmlSettingsService#KeylogsViewSettings">
+            <summary>Sets the stub of IXmlSettingsService.get_KeylogsViewSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.StubIXmlSettingsService.atdal::AppsTracker#DAL#Service#IXmlSettingsService#LogsViewSettings">
+            <summary>Sets the stub of IXmlSettingsService.get_LogsViewSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.DAL.Service.Fakes.StubIXmlSettingsService.atdal::AppsTracker#DAL#Service#IXmlSettingsService#ScreenshotsViewSettings">
+            <summary>Sets the stub of IXmlSettingsService.get_ScreenshotsViewSettings()</summary>
         </member>
     </members>
 </doc>

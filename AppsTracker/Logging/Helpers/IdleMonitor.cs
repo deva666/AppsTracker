@@ -31,7 +31,7 @@ namespace AppsTracker.Logging
         public event EventHandler IdleEntered;
         public event EventHandler IdleStoped;
 
-        ISettingsService _settingsService;
+        ISqlSettingsService _settingsService;
 
         public bool Enabled
         {
@@ -47,7 +47,7 @@ namespace AppsTracker.Logging
 
         public IdleMonitor()
         {
-            _settingsService = ServiceFactory.Get<ISettingsService>();
+            _settingsService = ServiceFactory.Get<ISqlSettingsService>();
             _idleTimer = new Timer(CheckIdleState, null, 1 * 60 * 1000, 1000);
         }
 
