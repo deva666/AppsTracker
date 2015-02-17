@@ -13,11 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AppsTracker.Pages.Views.SettingsViews
+namespace AppsTracker.Views.SettingsViews
 {
-    /// <summary>
-    /// Interaction logic for MasterPasswordView.xaml
-    /// </summary>
     public partial class MasterPasswordView : UserControl
     {
         public MasterPasswordView()

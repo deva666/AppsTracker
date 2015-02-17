@@ -30,6 +30,9 @@
         <DataTemplate DataType="{x:Type viewModels:SettingsScreenshotsViewModel}">
             <settingsViews:ScreenshotsView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:SettingsPasswordViewModel}">
+            <settingsViews:MasterPasswordView />
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>
@@ -72,6 +75,18 @@
                     <MouseBinding Gesture="LeftClick"
                                   Command="{Binding ChangePageCommand}"
                                   CommandParameter="{x:Type viewModels:SettingsScreenshotsViewModel}" />
+                </Label.InputBindings>
+            </Label>
+
+            <Label Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=MASTER PASSWORD}"
+                   Content="MASTER PASSWORD"
+                   FontSize="11"
+                   Margin="15,5,15,0"
+                   HorizontalAlignment="Left">
+                <Label.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding ChangePageCommand}"
+                                  CommandParameter="{x:Type viewModels:SettingsPasswordViewModel}" />
                 </Label.InputBindings>
             </Label>
 

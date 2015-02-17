@@ -22,6 +22,7 @@ namespace AppsTracker.ViewModels
             Register<SettingsGeneralViewModel>(() => new SettingsGeneralViewModel());
             Register<SettingsLoggingViewModel>(() => new SettingsLoggingViewModel());
             Register<SettingsScreenshotsViewModel>(() => new SettingsScreenshotsViewModel());
+            Register<SettingsPasswordViewModel>(() => new SettingsPasswordViewModel());
 
             SelectedChild = Resolve(typeof(SettingsGeneralViewModel));
         }

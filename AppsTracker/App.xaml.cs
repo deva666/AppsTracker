@@ -62,7 +62,7 @@ namespace AppsTracker
             Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline)
                                                                 , new PropertyMetadata() { DefaultValue = 40 });
 
-            RegisterServiceFactory();
+            RegisterServices();
 
             var container = GetCompositionContainer();
 
@@ -74,7 +74,7 @@ namespace AppsTracker
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
         }
 
-        private void RegisterServiceFactory()
+        private void RegisterServices()
         {
             ServiceFactory.Register<ISqlSettingsService>(() => SqlSettingsService.Instance);
             ServiceFactory.Register<IXmlSettingsService>(() => XmlSettingsService.Instance);

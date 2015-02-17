@@ -112,14 +112,15 @@
                 </ComboBoxItem>
             </ComboBox>
 
-            <Label Style="{DynamicResource SelectableLabelStyle}"
-                   Content="Save Changes"
-                   Grid.Row="6">
-                <Label.InputBindings>
+            <Button Content="Save Changes"
+                    Grid.Row="6"
+                    Margin="0,30,0,0"
+                    Width="100">
+                <Button.InputBindings>
                     <MouseBinding Gesture="LeftClick"
                                   Command="{Binding SaveChangesCommand}" />
-                </Label.InputBindings>
-            </Label>
+                </Button.InputBindings>
+            </Button>
 
         </Grid>
     </ScrollViewer>

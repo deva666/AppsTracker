@@ -88,21 +88,22 @@
                 </Button.InputBindings>
             </Button>
             
-            <Label Style="{DynamicResource SelectableLabelStyle}"
-                   Grid.Row="4"
+            <Button 
+                   Grid.Row="5"
                    Content="Save changes"
-                   Margin="10,30,0,10">
-                <Label.InputBindings>
+                   Margin="0,20,0,0"
+                Width="100">
+                <Button.InputBindings>
                     <MouseBinding Gesture="LeftClick"
                                   Command="{Binding SaveChangesCommand}" />
-                </Label.InputBindings>
-            </Label>
+                </Button.InputBindings>
+            </Button>
           
             <Button Content="Start screenshot cleaner"
                     HorizontalAlignment="Left"
-                    Grid.Row="5"
+                    Grid.Row="4"
                     Grid.Column="0"
-                    Margin="10,30,0,10">
+                    Margin="0,30,0,0">
                 <Button.InputBindings>
                     <MouseBinding Gesture="LeftClick"
                                   Command="{Binding RunDBCleanerCommand}" />

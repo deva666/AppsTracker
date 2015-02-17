@@ -50,7 +50,7 @@ namespace AppsTracker.Controllers
 ShowEULAWindow();
 
 #endif
-            MatchSettingsAndRegistry();
+            ReadSettingsFromRegistry();
 
             if (autoStart == false)
                 CreateOrShowMainWindow();
@@ -87,7 +87,7 @@ ShowEULAWindow();
             }
         }
 
-        private void MatchSettingsAndRegistry()
+        private void ReadSettingsFromRegistry()
         {
             bool? exists = RegistryEntryExists();
             if (exists == null && _settingsService.Settings.RunAtStartup)
@@ -147,6 +147,7 @@ ShowEULAWindow();
                     if (!_mainWindow.IsLoaded)
                     {
                         _mainWindow = new MainWindow();
+                        LoadWindowPosition();
                         _mainWindow.Show();
                     }
                     else

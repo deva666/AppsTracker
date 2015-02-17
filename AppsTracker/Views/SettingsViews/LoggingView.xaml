@@ -59,7 +59,7 @@
                       HorizontalAlignment="Center"
                       IsChecked="{Binding Settings.DeleteOldLogs, UpdateSourceTrigger=PropertyChanged}"
                       Name="cbOldLogs"
-                      Margin="20,0,0,0" />
+                       />
 
 
             <controls:FaderContentControl Grid.Row="2"
@@ -76,7 +76,7 @@
                         Content="{Binding Settings.OldLogDeleteDays}"
                         HorizontalAlignment="Center"
                         Name="lblOldLogs"
-                        Margin="20,0,0,0">
+                        >
                     <Button.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ShowPopupCommand}"
@@ -157,15 +157,16 @@
                     </Button.InputBindings>
                 </Button>
             </controls:FaderContentControl>
-            
-            <Label Style="{DynamicResource SelectableLabelStyle}"
-                   Content="Save Changes"
-                   Grid.Row="9">
-                <Label.InputBindings>
+
+            <Button Content="Save Changes"
+                    Grid.Row="9"
+                    Width="100"
+                    Margin="0,30,0,0">
+                <Button.InputBindings>
                     <MouseBinding Gesture="LeftClick"
                                   Command="{Binding SaveChangesCommand}" />
-                </Label.InputBindings>
-            </Label>
+                </Button.InputBindings>
+            </Button>
 
             <Popup PopupAnimation="Slide"
                    StaysOpen="True"

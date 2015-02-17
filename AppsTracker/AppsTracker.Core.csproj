@@ -242,7 +242,7 @@
       <DependentUpon>ScreenshotViewerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ScrollingContentControl.cs" />
-    <Compile Include="Exceptions\ILogger.cs" />
+    <Compile Include="ErrorLogging\ILogger.cs" />
     <Compile Include="Hooks\EventArgs\KeyboardHookArgs.cs" />
     <Compile Include="Hooks\EventArgs\MouseHookArgs.cs" />
     <Compile Include="Hooks\EventArgs\WinEventArgs.cs" />
@@ -277,6 +277,7 @@
     <Compile Include="ViewModels\ScreenshotViewerViewModel.cs" />
     <Compile Include="ViewModels\SettingsGeneralViewModel.cs" />
     <Compile Include="ViewModels\SettingsLoggingViewModel.cs" />
+    <Compile Include="ViewModels\SettingsPasswordViewModel.cs" />
     <Compile Include="ViewModels\SettingsScreenshotsViewModel.cs" />
     <Compile Include="ViewModels\StatisticsHostViewModel.cs" />
     <Compile Include="ViewModels\Statistics_appUsageViewModel.cs" />
@@ -338,7 +339,7 @@
     <Compile Include="MVVM\MessageToActionsMap.cs" />
     <Compile Include="MVVM\ObservableObject.cs" />
     <Compile Include="MVVM\ViewModelBase.cs" />
-    <Compile Include="Exceptions\Logger.cs" />
+    <Compile Include="ErrorLogging\Logger.cs" />
     <Compile Include="Hooks\MouseHook.cs" />
     <Compile Include="MVVM\WeakAction.cs" />
     <Compile Include="ViewModels\Data_logsViewModel.cs" />
