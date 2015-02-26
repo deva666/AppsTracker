@@ -260,6 +260,7 @@
     <Compile Include="Logging\UsageLogger.cs" />
     <Compile Include="Logging\WindowLogger.cs" />
     <Compile Include="MVVM\AsyncProperty.cs" />
+    <Compile Include="MVVM\DelegateCommandAsync.cs" />
     <Compile Include="MVVM\HostViewModel.cs" />
     <Compile Include="MVVM\ICommunicator.cs" />
     <Compile Include="MVVM\IMediator.cs" />
