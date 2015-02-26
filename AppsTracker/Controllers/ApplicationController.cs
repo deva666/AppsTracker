@@ -102,7 +102,7 @@ ShowEULAWindow();
         {
             try
             {
-                RegistryKey rk = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
                 if (rk.GetValue("app service") == null)
                     return false;
                 return true;

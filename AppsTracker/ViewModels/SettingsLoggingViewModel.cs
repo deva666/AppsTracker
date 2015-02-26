@@ -78,7 +78,7 @@ namespace AppsTracker.ViewModels
             if (int.TryParse(interval, out intOut))
             {
                 this.Settings.IdleTimer = intOut * 60 * 1000;
-                PropertyChanging("Settings");
+                SettingsChanging();
             }
             PopupIdleTimerIsOpen = false;
         }
@@ -91,7 +91,7 @@ namespace AppsTracker.ViewModels
                 short days;
                 short.TryParse(daysString, out days);
                 this.Settings.OldLogDeleteDays = days;
-                PropertyChanging("Settings");
+                SettingsChanging();
             }
             PopupOldLogsIsOpen = false;
         }

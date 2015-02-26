@@ -57,7 +57,7 @@
                       Grid.Column="1"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"
-                      IsChecked="{Binding Settings.RunAtStartup, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                      IsChecked="{Binding Settings.RunAtStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Margin="30,20,0,0">
                 <CheckBox.InputBindings>
                     <MouseBinding Gesture="LeftClick"

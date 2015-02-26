@@ -55,7 +55,7 @@ namespace AppsTracker.ViewModels
         {
             try
             {
-                RegistryKey rk = Registry.LocalMachine.OpenSubKey
+                RegistryKey rk = Registry.CurrentUser.OpenSubKey
                     ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
                 if (!Settings.RunAtStartup)
                 {
@@ -74,6 +74,7 @@ namespace AppsTracker.ViewModels
                                         + "Right click on the app or shortcut and select 'Run as Adminstrator'.");
                 messageWindow.ShowDialog();
             }
+            SettingsChanging();
         }
 
         private void ChangeTheme(object parameter)

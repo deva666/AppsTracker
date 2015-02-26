@@ -34,7 +34,7 @@ namespace AppsTracker.MVVM
         {
             get
             {
-                return _saveChangesCommand ?? (_saveChangesCommand = new DelegateCommand(SaveChanges));
+                return _saveChangesCommand ?? (_saveChangesCommand = new DelegateCommandAsync(SaveChangesAsync));
             }
         }
         public SettingsBaseViewModel()
@@ -46,6 +46,11 @@ namespace AppsTracker.MVVM
         private void SaveChanges()
         {
             _settingsService.SaveChanges(_settings);
+        }
+
+        private async Task SaveChangesAsync()
+        {
+           await _settingsService.SaveChangesAsync(_settings);
         }
 
         protected void SettingsChanging()
