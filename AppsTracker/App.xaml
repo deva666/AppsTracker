@@ -925,6 +925,22 @@
                 </Setter>
             </Style>
 
+            <Storyboard x:Key="BorderColorShow">
+                <ColorAnimation     Storyboard.TargetProperty="BorderBrush.Color"
+                                    From="Transparent"
+                                    To="{DynamicResource WindowBorderColor}"
+                                    Duration="0:0:0.35" />
+
+            </Storyboard>
+            <Storyboard x:Key="BorderColorHide">
+                <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color"
+                                From="{DynamicResource WindowBorderColor}"
+                                To="Transparent"
+                                Duration="0:0:0.35" />
+
+            </Storyboard>
+
+
             <Style TargetType="ListBoxItem"
                    x:Key="ListBoxImageStyle">
                 <Setter Property="Background"
@@ -932,21 +948,16 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate>
-                            <Border BorderBrush="{DynamicResource WindowBorderBrush}"
+                            <Border BorderBrush="Transparent"
                                     BorderThickness="2"
                                     Margin="5"
                                     RenderTransformOrigin="0.5,0.5">
-                                <Border.RenderTransform>
-                                    <ScaleTransform />
-                                </Border.RenderTransform>
                                 <Border.Triggers>
                                     <EventTrigger RoutedEvent="Border.MouseEnter">
-                                        <BeginStoryboard Storyboard="{StaticResource imgScaleX+}" />
-                                        <BeginStoryboard Storyboard="{StaticResource imgScaleY+}" />
+                                        <BeginStoryboard Storyboard="{StaticResource BorderColorShow}" />
                                     </EventTrigger>
                                     <EventTrigger RoutedEvent="Border.MouseLeave">
-                                        <BeginStoryboard Storyboard="{StaticResource imgScaleX-}" />
-                                        <BeginStoryboard Storyboard="{StaticResource imgScaleY-}" />
+                                        <BeginStoryboard Storyboard="{StaticResource BorderColorHide}" />
                                     </EventTrigger>
                                 </Border.Triggers>
                                 <ToggleButton x:Name="tbImage"
@@ -954,15 +965,19 @@
                                               ScrollViewer.HorizontalScrollBarVisibility="Auto">
                                     <ToggleButton.Template>
                                         <ControlTemplate>
-                                            <Image Source="{Binding Path=Screensht}"
-                                                   MaxHeight="100"
-                                                   MaxWidth="175"
-                                                   Stretch="Uniform"
-                                                   RenderTransformOrigin="0.5,0.5">
-                                                <Image.RenderTransform>
-                                                    <ScaleTransform />
-                                                </Image.RenderTransform>
-                                            </Image>
+                                            <Grid>
+                                                <Image Source="{Binding Path=Screensht}"
+                                                       MaxHeight="100"
+                                                       MaxWidth="175"
+                                                       Stretch="Uniform"
+                                                       RenderTransformOrigin="0.5,0.5">
+                                                </Image>
+                                                <CheckBox HorizontalAlignment="Left"
+                                                          VerticalAlignment="Top"
+                                                          Height="20"
+                                                          Width="20"
+                                                          IsChecked="{Binding IsSelected}" />
+                                            </Grid>
                                         </ControlTemplate>
                                     </ToggleButton.Template>
                                     <Popup StaysOpen="False"
@@ -999,18 +1014,6 @@
                                                     <Label Style="{DynamicResource SelectedLabelStyle}"
                                                            Content="{Binding Width}"
                                                            DockPanel.Dock="Left" />
-                                                    <!--<Label Style="{DynamicResource SelectedLabelStyle}"
-                                                   Content="File Name:"
-                                                   DockPanel.Dock="Left" />
-                                            <Label Style="{DynamicResource SelectedLabelStyle}"
-                                                   Content="{Binding FileName}"
-                                                   DockPanel.Dock="Left" />
-                                            <Label Style="{DynamicResource SelectedLabelStyle}"
-                                                   Content="File Size:"
-                                                   DockPanel.Dock="Left" />
-                                            <Label Style="{DynamicResource SelectedLabelStyle}"
-                                                   Content="{Binding FileSize}"
-                                                   DockPanel.Dock="Left" />-->
                                                     <controls:closeBtn HorizontalAlignment="Right"
                                                                        VerticalAlignment="Top"
                                                                        Grid.Row="0"
@@ -1036,11 +1039,17 @@
                                         </Border>
                                     </Popup>
                                 </ToggleButton>
-
                             </Border>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver"
+                             Value="True">
+                        <Setter Property="Cursor"
+                                Value="Hand" />
+                    </Trigger>
+                </Style.Triggers>
             </Style>
 
 
@@ -1492,7 +1501,7 @@
                 <Setter Property="HorizontalContentAlignment"
                         Value="Stretch" />
                 <Setter Property="VerticalContentAlignment"
-                        Value="Stretch" />              
+                        Value="Stretch" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="controls:FaderContentControl">
@@ -1914,7 +1923,7 @@
 
 
             </Style>
-         
+
             <Storyboard x:Key="ElementFadeIn">
                 <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                Storyboard.TargetProperty="(FrameworkElement.Opacity)">

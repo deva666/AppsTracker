@@ -66,7 +66,8 @@ namespace AppsTracker.Models.EntityModels
             set { this.EmailInterval = (double)value; }
         }
 
-
+        [NotMapped]
+        public bool IsSelected { get; set; }
 
         public Setting() { }
 

@@ -88,5 +88,26 @@ namespace AppsTracker.DAL.Service
             }
 
         }
+
+        public int DeleteScreenshots(IEnumerable<Log> logs)
+        {
+            var count = logs.Select(l => l.Screenshots).Count();
+            using (var context = new AppsEntities())
+            {
+                foreach (var log in logs)
+                {
+                    foreach (var screenshot in log.Screenshots.ToList())
+                    {
+                        if (!context.Screenshots.Local.Any(s => s.ScreenshotID == screenshot.ScreenshotID))
+                        {
+                            context.Screenshots.Attach(screenshot);
+                        }
+                        context.Screenshots.Remove(screenshot);
+                    }
+                }
+                context.SaveChanges();
+            }
+            return count;
+        }
     }
 }

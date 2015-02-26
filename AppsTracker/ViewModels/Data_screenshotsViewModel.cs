@@ -169,30 +169,14 @@ namespace AppsTracker.Pages.ViewModels
 
         }
 
-        //this should be moved to service
         private void DeleteSelectedScreenshots(object parameter)
         {
             ObservableCollection<object> parameterCollection = parameter as ObservableCollection<object>;
             if (parameterCollection != null)
             {
-                var logsList = parameterCollection.Cast<Log>().Where(l => l.Screenshots.Count > 0).ToList();
-                var count = logsList.Select(l => l.Screenshots).Count();
-                using (var context = new AppsEntities())
-                {
-                    foreach (var log in logsList)
-                    {
-                        foreach (var screenshot in log.Screenshots.ToList())
-                        {
-                            if (!context.Screenshots.Local.Any(s => s.ScreenshotID == screenshot.ScreenshotID))
-                            {
-                                context.Screenshots.Attach(screenshot);
-                            }
-                            context.Screenshots.Remove(screenshot);
-                        }
-                    }
-                    context.SaveChanges();
-                }
-                if (count > 0)
+                var logs = parameterCollection.Cast<Log>().Where(l => l.Screenshots.Count > 0).ToList();
+                var deletedCount = _appsService.DeleteScreenshots(logs);
+                if(deletedCount > 0)
                     InfoContent = "Screenshots deleted";
                 _logList.Reload();
             }
