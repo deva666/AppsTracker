@@ -99,7 +99,7 @@
       <Project>{cc8b5831-53c4-46da-97db-18c75ed7d929}</Project>
       <Name>AppsTracker.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppsTracker\AppsTracker.Core.csproj">
+    <ProjectReference Include="..\AppsTracker\AppsTracker.csproj">
       <Project>{ed886551-a8b3-492d-acec-fe2df0b484f7}</Project>
       <Name>AppsTracker.Core</Name>
     </ProjectReference>
