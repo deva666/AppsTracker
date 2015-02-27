@@ -44,11 +44,11 @@ namespace AppsTracker.Logging
 
             _settings = settings;
 
-            Init();
-            Configure();
+            InitComponents();
+            ConfigureComponents();
         }
 
-        private void Init()
+        private void InitComponents()
         {
             Mediator.Register(MediatorMessages.STOP_LOGGING, new Action(StopLogging));
             Mediator.Register(MediatorMessages.RESUME_LOGGING, new Action(ResumeLogging));
@@ -73,6 +73,19 @@ namespace AppsTracker.Logging
                                                                         , t => t.Change(500, 500)
                                                                         , t => t.Dispose());
 
+        }
+
+        private void ConfigureComponents()
+        {
+           _keyboardHook.Enabled = (_settings.EnableKeylogger && _settings.LoggingEnabled);
+           _screenshotTimer.Enabled = (_settings.TakeScreenshots && _settings.LoggingEnabled);
+
+           if ((_settings.TakeScreenshots && _settings.LoggingEnabled) && _settings.TimerInterval != _screenshotTimer.Component.Interval)
+              _screenshotTimer.Component.Interval = _settings.TimerInterval;
+
+           _isLoggingEnabled =
+               _winHook.Enabled =
+                   _windowCheckTimer.Enabled = _settings.LoggingEnabled;
         }
 
         private async void ScreenshotTick(object sender, System.Timers.ElapsedEventArgs e)
@@ -261,21 +274,10 @@ namespace AppsTracker.Logging
         public void SettingsChanged(ISettings settings)
         {
             _settings = settings;
-            Configure();
+            ConfigureComponents();
         }
 
-        private void Configure()
-        {
-            _keyboardHook.Enabled = (_settings.EnableKeylogger && _settings.LoggingEnabled);
-            _screenshotTimer.Enabled = (_settings.TakeScreenshots && _settings.LoggingEnabled);
 
-            if ((_settings.TakeScreenshots && _settings.LoggingEnabled) && _settings.TimerInterval != _screenshotTimer.Component.Interval)
-                _screenshotTimer.Component.Interval = _settings.TimerInterval;
-
-            _isLoggingEnabled =
-                _winHook.Enabled =
-                    _windowCheckTimer.Enabled = _settings.LoggingEnabled;
-        }
 
         private void StopLogging()
         {
