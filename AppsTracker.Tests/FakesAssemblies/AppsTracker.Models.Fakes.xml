@@ -2836,6 +2836,12 @@
         <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimSetting.IsMasterPasswordSetSetBoolean">
             <summary>Sets the shim of Setting.set_IsMasterPasswordSet(Boolean value)</summary>
         </member>
+        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimSetting.IsSelectedGet">
+            <summary>Sets the shim of Setting.get_IsSelected()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimSetting.IsSelectedSetBoolean">
+            <summary>Sets the shim of Setting.set_IsSelected(Boolean value)</summary>
+        </member>
         <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimSetting.LastExecutedDateGet">
             <summary>Sets the shim of Setting.get_LastExecutedDate()</summary>
         </member>
@@ -3099,6 +3105,12 @@
         </member>
         <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimSetting.AllInstances.IsMasterPasswordSetSetBoolean">
             <summary>Sets the shim of Setting.set_IsMasterPasswordSet(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimSetting.AllInstances.IsSelectedGet">
+            <summary>Sets the shim of Setting.get_IsSelected()</summary>
+        </member>
+        <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimSetting.AllInstances.IsSelectedSetBoolean">
+            <summary>Sets the shim of Setting.set_IsSelected(Boolean value)</summary>
         </member>
         <member name="P:AppsTracker.Models.EntityModels.Fakes.ShimSetting.AllInstances.LastExecutedDateGet">
             <summary>Sets the shim of Setting.get_LastExecutedDate()</summary>

@@ -33,5 +33,11 @@ namespace AppsTracker.Tests.Fakes.Service
             System.Threading.Thread.Sleep(500);
             return new List<AppsToBlock>();
         }
+
+
+        public int DeleteScreenshots(IEnumerable<Log> logs)
+        {
+            return 1;
+        }
     }
 }
