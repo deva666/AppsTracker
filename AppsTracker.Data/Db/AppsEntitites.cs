@@ -10,31 +10,19 @@ using System;
 using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using AppsTracker.Data.Models;
 
-using AppsTracker.Models.EntityModels;
-
-namespace AppsTracker.DAL
+namespace AppsTracker.Data.Db
 {
     public class AppsEntities : DbContext
     {
-        private static string _connectionString = GetConnectionString();
+        private static string _connectionString = DbConnectionFactory.ConnectionString;
 
         public static string ConnectionString { get { return _connectionString; } }
-
-        private static string GetConnectionString()
-        {
-            var connections = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).ConnectionStrings.ConnectionStrings["AppsEntities"];
-            if (connections != null)
-                return connections.ConnectionString;
-            else
-                throw new ApplicationException("Connection string not found");
-        }
 
         public AppsEntities()
             : base(_connectionString)
         {
-            this.Configuration.LazyLoadingEnabled = false;
-            this.Configuration.ProxyCreationEnabled = false;
 #if DEBUG
             Database.Log = FlushSql;
 #endif
@@ -48,19 +36,39 @@ namespace AppsTracker.DAL
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
+            modelBuilder.Entity<Aplication>().
+                HasMany(a => a.Categories)
+                .WithMany(c => c.Applications)
+                .Map(m =>
+                {
+                    m.MapLeftKey("ApplicationID");
+                    m.MapRightKey("AppCategoryID");
+                    m.ToTable("ApplicationCategories");
+                });
+
+            modelBuilder.Entity<Aplication>().
+                HasMany(a => a.Warnings)
+                .WithMany(w => w.Applications)
+                .Map(m =>
+                {
+                    m.MapLeftKey("ApplicationID");
+                    m.MapRightKey("AppWarningID");
+                    m.ToTable("ApplicationWarnings");
+                });
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Aplication> Applications { get; set; }
-        public DbSet<AppsToBlock> AppsToBlocks { get; set; }
+        public DbSet<AppCategory> AppCategories { get; set; }
+        public DbSet<AppWarning> AppWarnings { get; set; }
         public DbSet<BlockedApp> BlockedApps { get; set; }
-        public DbSet<FileLog> FileLogs { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<Screenshot> Screenshots { get; set; }
         public DbSet<Setting> Settings { get; set; }
         public DbSet<Uzer> Users { get; set; }
         public DbSet<Window> Windows { get; set; }
         public DbSet<Usage> Usages { get; set; }
-        public DbSet<UsageType> UsageTypes { get; set; }
+        //public DbSet<UsageType> UsageTypes { get; set; }
     }
 }

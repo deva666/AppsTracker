@@ -8,7 +8,7 @@
 
 using System.Data.Entity;
 
-namespace AppsTracker.DAL
+namespace AppsTracker.Data.Db
 {
     public class AppsDataBaseInitializer : IDatabaseInitializer<AppsEntities>
     {

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTracker", "AppsTracker\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D24EB643-F203-4500-9CBE-4B50EB3361B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTracker.Data", "AppsTracker.DAL\AppsTracker.Data.csproj", "{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTracker.Data", "AppsTracker.Data\AppsTracker.Data.csproj", "{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTracker.Tests", "AppsTracker.Tests\AppsTracker.Tests.csproj", "{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}"
 EndProject
