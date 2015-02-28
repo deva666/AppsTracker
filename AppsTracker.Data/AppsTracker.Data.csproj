@@ -98,7 +98,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Db\AppsDataBaseInitializer.cs" />
+    <Compile Include="Db\AppsDBInitializer.cs" />
     <Compile Include="Db\AppsDBConfiguration.cs" />
     <Compile Include="Db\AppsEntitites.cs" />
     <Compile Include="Db\DbConnectionFactory.cs" />

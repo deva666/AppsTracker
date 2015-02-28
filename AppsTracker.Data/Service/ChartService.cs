@@ -177,9 +177,9 @@ namespace AppsTracker.Data.Service
 
                 Parallel.Invoke(() =>
                 {
-                    using (var newContext = new AppsEntities())
+                    using (var logsContext = new AppsEntities())
                     {
-                        logs = newContext.Logs.Where(l => l.Window.Application.User.UserID == userID
+                        logs = logsContext.Logs.Where(l => l.Window.Application.User.UserID == userID
                                    && l.DateCreated >= dateFrom
                                    && l.DateCreated <= dateTo)
                                  .Include(l => l.Window.Application)
@@ -188,9 +188,9 @@ namespace AppsTracker.Data.Service
 
                 }, () =>
                 {
-                    using (var newContext = new AppsEntities())
+                    using (var usagesContext = new AppsEntities())
                     {
-                        usages = newContext.Usages.Where(u => u.User.UserID == userID
+                        usages = usagesContext.Usages.Where(u => u.User.UserID == userID
                                          && u.UsageStart >= dateFrom
                                          && u.UsageEnd <= dateTo
                                          && u.UsageType.ToString() != ignore).ToList();
@@ -293,11 +293,6 @@ namespace AppsTracker.Data.Service
                 DateTime nextDay = fromDay.AddDays(1d);
                 DateTime today = DateTime.Now.Date;
 
-                string usageLogin = UsageTypes.Login.ToString();
-                string usageIdle = UsageTypes.Idle.ToString();
-                string usageLocked = UsageTypes.Locked.ToString();
-                string usageStopped = UsageTypes.Stopped.ToString();
-
                 List<Usage> logins;
                 List<Usage> idles = null;
                 List<Usage> lockeds = null;
@@ -307,7 +302,7 @@ namespace AppsTracker.Data.Service
                                                 && ((u.UsageStart >= fromDay && u.UsageStart <= nextDay)
                                                         || (u.IsCurrent && u.UsageStart < fromDay && today >= fromDay)
                                                         || (u.IsCurrent == false && u.UsageStart <= fromDay && u.UsageEnd >= fromDay))
-                                                && u.UsageType.ToString() == usageLogin)
+                                                && u.UsageType == UsageTypes.Login)
                                       .ToList();
 
                 var usageIDs = logins.Select(u => u.UsageID);
@@ -318,7 +313,7 @@ namespace AppsTracker.Data.Service
                     {
                         idles = newContext.Usages.Where(u => u.SelfUsageID.HasValue
                                                                 && usageIDs.Contains(u.SelfUsageID.Value)
-                                                                && u.UsageType.ToString() == usageIdle)
+                                                                && u.UsageType == UsageTypes.Idle)
                                                         .ToList();
                     }
 
@@ -328,7 +323,7 @@ namespace AppsTracker.Data.Service
                     {
                         lockeds = newContext.Usages.Where(u => u.SelfUsageID.HasValue
                                                                    && usageIDs.Contains(u.SelfUsageID.Value)
-                                                                   && u.UsageType.ToString() == usageLocked)
+                                                                   && u.UsageType == UsageTypes.Locked)
                                                           .ToList();
                     }
 
@@ -338,7 +333,7 @@ namespace AppsTracker.Data.Service
                     {
                         stoppeds = newContext.Usages.Where(u => u.SelfUsageID.HasValue
                                                                    && usageIDs.Contains(u.SelfUsageID.Value)
-                                                                   && u.UsageType.ToString() == usageStopped)
+                                                                   && u.UsageType == UsageTypes.Stopped)
                                            .ToList();
                     }
 
@@ -362,7 +357,7 @@ namespace AppsTracker.Data.Service
 
                     idleTime = tempIdles.Sum(l => l.GetDisplayedTicks(fromDay));
                     if (idleTime > 0)
-                        observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(idleTime).TotalHours, 2), UsageType = usageIdle });
+                        observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(idleTime).TotalHours, 2), UsageType = "Idle" });
 
                     lockedTime = tempLockeds.Sum(l => l.GetDisplayedTicks(fromDay));
                     if (lockedTime > 0)
@@ -392,7 +387,7 @@ namespace AppsTracker.Data.Service
 
                     idleTimeTotal = idles.Sum(l => l.GetDisplayedTicks(fromDay));
                     if (idleTimeTotal > 0)
-                        observableTotal.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(idleTimeTotal).TotalHours, 2), UsageType = usageIdle });
+                        observableTotal.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(idleTimeTotal).TotalHours, 2), UsageType = "Idle" });
 
                     lockedTimeTotal = lockeds.Sum(l => l.GetDisplayedTicks(fromDay));
                     if (lockedTimeTotal > 0)
@@ -620,10 +615,9 @@ namespace AppsTracker.Data.Service
         {
             using (var context = new AppsEntities())
             {
-                string loginType = UsageTypes.Login.ToString();
                 var logins = context.Usages.Where(u => u.UsageStart >= dateFrom
                                                      && u.UsageStart <= dateTo
-                                                     && u.UsageType.ToString() == loginType)
+                                                     && u.UsageType == UsageTypes.Login)
                                        .Include(u => u.User)
                                        .ToList();
 
@@ -640,11 +634,6 @@ namespace AppsTracker.Data.Service
         {
             using (var context = new AppsEntities())
             {
-                string usageLogin = UsageTypes.Login.ToString();
-                string usageIdle = UsageTypes.Idle.ToString();
-                string usageLocked = UsageTypes.Locked.ToString();
-                string usageStopped = UsageTypes.Stopped.ToString();
-
                 IEnumerable<Usage> idles;
                 IEnumerable<Usage> lockeds;
                 IEnumerable<Usage> stoppeds;
@@ -654,7 +643,7 @@ namespace AppsTracker.Data.Service
                 var tempLogins = context.Usages.Where(u => u.User.Name == username
                                                      && u.UsageStart >= dateFrom
                                                      && u.UsageStart <= dateTo
-                                                     && u.UsageType.ToString() == usageLogin)
+                                                     && u.UsageType == UsageTypes.Login)
                                          .ToList();
 
                 var logins = BreakUsagesByDay(tempLogins);
@@ -673,17 +662,17 @@ namespace AppsTracker.Data.Service
 
                     idles = context.Usages.Where(u => u.SelfUsageID.HasValue
                                             && usageIDs.Contains(u.SelfUsageID.Value)
-                                            && u.UsageType.ToString() == usageIdle)
+                                            && u.UsageType == UsageTypes.Idle)
                                             .ToList();
 
                     lockeds = context.Usages.Where(u => u.SelfUsageID.HasValue
                                                       && usageIDs.Contains(u.SelfUsageID.Value)
-                                                      && u.UsageType.ToString() == usageLocked)
+                                                      && u.UsageType == UsageTypes.Locked)
                                                       .ToList();
 
                     stoppeds = context.Usages.Where(u => u.SelfUsageID.HasValue
                                                       && usageIDs.Contains(u.SelfUsageID.Value)
-                                                      && u.UsageType.ToString() == usageStopped)
+                                                      && u.UsageType == UsageTypes.Stopped)
                                                       .ToList();
 
                     var day = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day);
@@ -703,7 +692,7 @@ namespace AppsTracker.Data.Service
 
                     idleTime = idles.Sum(l => l.GetDisplayedTicks(day));
                     if (idleTime > 0)
-                        observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(idleTime).TotalHours, 2), UsageType = usageIdle });
+                        observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(idleTime).TotalHours, 2), UsageType = "Idle" });
 
                     lockedTime = lockeds.Sum(l => l.GetDisplayedTicks(day));
                     if (lockedTime > 0)
@@ -732,14 +721,12 @@ namespace AppsTracker.Data.Service
                 DateTime nextDay = fromDay.AddDays(1d);
                 DateTime today = DateTime.Now.Date;
 
-                string loginType = UsageTypes.Login.ToString();
-
                 var logins = context.Usages.Where(u => u.User.UserID == userID
                                                      && ((u.UsageStart >= fromDay
                                                      && u.UsageStart <= nextDay)
                                                         || (u.IsCurrent && u.UsageStart < fromDay && today >= fromDay)
                                                         || (u.IsCurrent == false && u.UsageStart <= fromDay && u.UsageEnd >= fromDay))
-                                                     && u.UsageType.ToString() == loginType)
+                                                     && u.UsageType == UsageTypes.Login)
                                             .ToList();
 
                 var loginBegin = logins.OrderBy(l => l.UsageStart).FirstOrDefault();
@@ -748,15 +735,38 @@ namespace AppsTracker.Data.Service
 
                 string dayBegin = loginBegin == null ? "N/A" : loginBegin.GetDisplayedStart(fromDay).ToShortTimeString();
                 string dayEnd = (loginEnd == null || loginEnd.IsCurrent) ? "N/A" : loginEnd.GetDisplayedEnd(fromDay).ToShortTimeString();
-                string duration = "N/A";
 
-                if (loginBegin != null && loginEnd != null)
-                {
-                    var span = new TimeSpan(loginEnd.GetDisplayedEnd(fromDay).Ticks - loginBegin.GetDisplayedStart(fromDay).Ticks);
-                    duration = span.Days > 0 ? string.Format("{0:D2}:{1:D2}:{2:D2}", span.Days, span.Hours, span.Minutes) : string.Format("{0:D2}:{1:D2}", span.Hours, span.Minutes); ;
-                }
+                var durationSpan = new TimeSpan(logins.Sum(l => l.Duration.Ticks));
+                var duration = durationSpan.Days > 0 ? string.Format("{0:D2}:{1:D2}:{2:D2}", durationSpan.Days, durationSpan.Hours, durationSpan.Minutes) : string.Format("{0:D2}:{1:D2}", durationSpan.Hours, durationSpan.Minutes); 
 
                 return new Tuple<string, string, string>(dayBegin, dayEnd, duration);
+            }
+        }
+
+        public IEnumerable<CategoryModel> GetCategoriesForDate(int userID, DateTime dateFrom)
+        {
+            using (var context = new AppsEntities())
+            {
+                DateTime dateTo = dateFrom.AddDays(1);
+                List<CategoryModel> categoryModels = new List<CategoryModel>();
+
+                var categories = context.AppCategories.Include(c => c.Applications)
+                    .Include(c => c.Applications.Select(a => a.Windows.Select(w => w.Logs)))
+                    .Where(c => c.Applications.Count > 0 &&
+                           c.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated >= dateFrom).Any() &&
+                          c.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated <= dateTo).Any());
+
+                foreach (var cat in categories)
+                {
+                    var totalDuration = cat.Applications.Sum(a => a.Duration.Ticks);
+                    categoryModels.Add(new CategoryModel()
+                    {
+                        Name = cat.Name,
+                        TotalTime = Math.Round(new TimeSpan(totalDuration).TotalHours, 2)
+                    });
+                }
+
+                return categoryModels;
             }
         }
 

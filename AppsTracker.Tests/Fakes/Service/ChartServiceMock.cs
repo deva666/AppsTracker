@@ -117,8 +117,15 @@ namespace AppsTracker.Tests.Fakes.Service
             return new Tuple<string, string, string>("", "", "");
         }
 
+        public IEnumerable<CategoryModel> GetCategoriesForDate(int userID, DateTime dateFrom)
+        {
+            System.Threading.Thread.Sleep(500);
+            return new List<CategoryModel>();
+        }
+
         public void Dispose()
         {
         }
+
     }
 }

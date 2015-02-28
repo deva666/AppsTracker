@@ -25,6 +25,12 @@ namespace AppsTracker.Data.Service
 
         public void Initialize()
         {
+            LogsViewSettings = new LogsViewSettings();
+            KeylogsViewSettings = new KeylogsViewSettings();
+            ScreenshotsViewSettings = new ScreenshotsViewSettings();
+            DaysViewSettings = new DaysViewSettings();
+            MainWindowSettings = new MainWindowSettings();
+
             if (File.Exists(Path.Combine(settingsPath, SETTINGS_FILE_NAME)) == false)
                 return;
 
@@ -40,8 +46,6 @@ namespace AppsTracker.Data.Service
 
         private void TrySetLogsViewSettings(XElement root)
         {
-            LogsViewSettings = new LogsViewSettings();
-
             var node = root.Element(LogsViewSettings.GetType().Name);
             if (node == null)
                 return;
@@ -58,8 +62,6 @@ namespace AppsTracker.Data.Service
 
         private void TrySetKeylogsViewValues(XElement root)
         {
-            KeylogsViewSettings = new KeylogsViewSettings();
-
             var node = root.Element(KeylogsViewSettings.GetType().Name);
             if (node == null)
                 return;
@@ -76,8 +78,6 @@ namespace AppsTracker.Data.Service
 
         private void TrySetScreenshotsViewValues(XElement root)
         {
-            ScreenshotsViewSettings = new ScreenshotsViewSettings();
-
             var node = root.Element(ScreenshotsViewSettings.GetType().Name);
             if (node == null)
                 return;
@@ -94,8 +94,6 @@ namespace AppsTracker.Data.Service
 
         private void TrySetDaysViewSettings(XElement root)
         {
-            DaysViewSettings = new DaysViewSettings();
-
             var node = root.Element(DaysViewSettings.GetType().Name);
             if (node == null)
                 return;
@@ -112,8 +110,6 @@ namespace AppsTracker.Data.Service
 
         private void TrySetMainWindowSettings(XElement root)
         {
-            MainWindowSettings = new MainWindowSettings();
-
             var node = root.Element(MainWindowSettings.GetType().Name);
             if (node == null)
                 return;

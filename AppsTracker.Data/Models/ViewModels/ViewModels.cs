@@ -142,4 +142,9 @@ namespace AppsTracker.Data.Models
         public List<DailyWindowDurationModel> DailyWindowCollection { get; set; }
     }
 
+    public class CategoryModel
+    {
+        public string Name { get; set; }
+        public double TotalTime { get; set; }
+    }
 }

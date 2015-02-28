@@ -329,6 +329,20 @@
                     </RadioButton.Template>
                 </RadioButton>
 
+                <RadioButton Name="rbCategories"
+                             Margin="15,5,0,10"
+                             IsChecked="False"
+                             HorizontalAlignment="Left"
+                             GroupName="menu">
+                    <RadioButton.Template>
+                        <ControlTemplate>
+                            <Label Style="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Converter={StaticResource convertStyle}}"
+                                   Content="CATEGORIES"
+                                   FontSize="11" />
+                        </ControlTemplate>
+                    </RadioButton.Template>
+                </RadioButton>
+
                 <RadioButton Name="rbLogs"
                              Margin="15,5,0,10"
                              IsChecked="False"
@@ -352,16 +366,14 @@
                 <ScrollViewer HorizontalScrollBarVisibility="Auto"
                               VerticalScrollBarVisibility="Auto">
                     <chart:StackedBarChart ChartTitle="Computer usage"
-                                              ChartSubTitle="Usage breakdown by login time"
-                                              Style="{StaticResource MinimalChartStyle}"
-                                              BorderBrush="{DynamicResource WindowBorderBrush}"
-                                              BorderThickness="1"
-                                              SeriesSource="{Binding ChartList.Result}"
-                                              Margin="5"
-                                              Width="Auto"
-                                              Height="Auto"
-                                              Grid.Row="5"
-                                              Grid.ColumnSpan="2">
+                                           ChartSubTitle="Usage breakdown by login time"
+                                           Style="{StaticResource MinimalChartStyle}"
+                                           BorderBrush="{DynamicResource WindowBorderBrush}"
+                                           BorderThickness="1"
+                                           SeriesSource="{Binding ChartList.Result}"
+                                           Margin="5"
+                                           Width="Auto"
+                                           Height="Auto">
                         <chart:StackedBarChart.SeriesTemplate>
                             <DataTemplate>
                                 <chart:ChartSeries SeriesTitle="{Binding Time}"
@@ -374,7 +386,28 @@
                 </ScrollViewer>
             </controls:FaderContentControl>
 
+            <controls:FaderContentControl Grid.Row="6"
+                                          Grid.ColumnSpan="3"
+                                          FaderVisibility="{Binding ElementName=rbCategories, Path=IsChecked}">
+                <chart:ClusteredColumnChart ChartTitle="Categories"
+                                            ChartSubTitle=""
+                                            Style="{StaticResource MinimalChartStyle}"                                                                                        
+                                            BorderBrush="{DynamicResource WindowBorderBrush}"
+                                            BorderThickness="1"
+                                            Margin="5"
+                                            Width="Auto"
+                                            Height="Auto">
 
+                    <chart:ClusteredColumnChart.Series>
+                        <chart:ChartSeries SeriesTitle="Categories"
+                                           DisplayMember="Name"
+                                           ValueMember="TotalTime"
+                                           ItemsSource="{Binding CategoryList.Result}" />
+                    </chart:ClusteredColumnChart.Series>
+
+                </chart:ClusteredColumnChart>
+            </controls:FaderContentControl>
+            
 
             <controls:FaderContentControl Grid.Row="6"
                                           Grid.ColumnSpan="3"

@@ -31,10 +31,10 @@ namespace AppsTracker.Data.Service
 
         private SqlSettingsService()
         {
-            CreateSettingsAndUsageTypes();
+            CreateSettings();
         }
 
-        private void CreateSettingsAndUsageTypes()
+        private void CreateSettings()
         {
             using (var context = new AppsEntities())
             {
@@ -48,22 +48,6 @@ namespace AppsTracker.Data.Service
                 {
                     _settings = context.Settings.FirstOrDefault();
                 }
-
-                //if (context.UsageTypes.Count() != Enum.GetValues(typeof(UsageTypes)).Length)
-                //{
-                //    bool modified = false;
-                //    foreach (var type in Enum.GetNames(typeof(UsageTypes)))
-                //    {
-                //        if (context.UsageTypes.Any(u => u.UType == type) == false)
-                //        {
-                //            modified = true;
-                //            UsageType usageType = new UsageType() { UType = type };
-                //            usageType = context.UsageTypes.Add(usageType);
-                //        }
-                //    }
-                //    if (modified)
-                //        context.SaveChanges();
-                //}
             }
         }
 

@@ -32,6 +32,7 @@ namespace AppsTracker.ViewModels
         private AsyncProperty<IEnumerable<TopWindowsModel>> _topWindowsList;
         private AsyncProperty<IEnumerable<DailyUsageTypeSeries>> _chartList;
         private AsyncProperty<string> _duration;
+        private AsyncProperty<IEnumerable<CategoryModel>> _categoryList;
 
         private ICommand _singleAppSelectionChangedCommand;
         private ICommand _singleWindowSelectionChangedCommand;
@@ -145,6 +146,14 @@ namespace AppsTracker.ViewModels
             }
         }
 
+        public AsyncProperty<IEnumerable<CategoryModel>> CategoryList
+        {
+            get
+            {
+                return _categoryList;
+            }
+        }
+
         public ICommand SingleAppSelectionChangedCommand
         {
             get
@@ -182,6 +191,7 @@ namespace AppsTracker.ViewModels
             _chartList = new AsyncProperty<IEnumerable<DailyUsageTypeSeries>>(GetChartContent, this);
             _duration = new AsyncProperty<string>(GetDayInfo, this);
             _topWindowsList = new AsyncProperty<IEnumerable<TopWindowsModel>>(GetTopWindowsSingle, this);
+            _categoryList = new AsyncProperty<IEnumerable<CategoryModel>>(GetCategories, this);
         }
 
         private void ReloadContent()
@@ -191,6 +201,7 @@ namespace AppsTracker.ViewModels
             _chartList.Reload();
             _duration.Reload();
             _topWindowsList.Reload();
+            _categoryList.Reload();
         }
 
         private IEnumerable<DayViewModel> GetDayViewInfo()
@@ -222,6 +233,11 @@ namespace AppsTracker.ViewModels
         private IEnumerable<DailyUsageTypeSeries> GetChartContent()
         {
             return _chartService.GetDailySeries(Globals.SelectedUserID, _selectedDate);
+        }
+
+        private IEnumerable<CategoryModel> GetCategories()
+        {
+            return _chartService.GetCategoriesForDate(Globals.SelectedUserID, _selectedDate);
         }
 
         #region Commmand Methods

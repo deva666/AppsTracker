@@ -32,5 +32,6 @@ namespace AppsTracker.Data.Service
         IEnumerable<AllUsersModel> GetAllUsers(DateTime dateFrom, DateTime dateTo);
         IEnumerable<UsageTypeSeries> GetUsageSeries(string username, DateTime dateFrom, DateTime dateTo);
         Tuple<string, string, string> GetDayInfo(int userID, DateTime dateFrom);
+        IEnumerable<CategoryModel> GetCategoriesForDate(int userID, DateTime dateFrom);
     }
 }
