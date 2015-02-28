@@ -73,7 +73,6 @@ ShowEULAWindow();
 
         private void ShowEULAWindow()
         {
-
             if (_settingsService.Settings.FirstRun)
             {
                 EULAWindow eulaWindow = new EULAWindow();

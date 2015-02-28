@@ -182,66 +182,68 @@
     <Compile Include="Controllers\IApplicationController.cs" />
     <Compile Include="Controllers\ILoggingController.cs" />
     <Compile Include="Controllers\LoggingController.cs" />
-    <Compile Include="Controls\Adorners.cs" />
-    <Compile Include="Controls\ArrowLeft.xaml.cs">
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Logging\LoggingStatus.cs" />
+    <Compile Include="Widgets\Adorners.cs" />
+    <Compile Include="Widgets\ArrowLeft.xaml.cs">
       <DependentUpon>ArrowLeft.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ArrowRight.xaml.cs">
+    <Compile Include="Widgets\ArrowRight.xaml.cs">
       <DependentUpon>ArrowRight.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DBCleanerWindow.xaml.cs">
+    <Compile Include="Widgets\DBCleanerWindow.xaml.cs">
       <DependentUpon>DBCleanerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Forward.xaml.cs">
+    <Compile Include="Widgets\Forward.xaml.cs">
       <DependentUpon>Forward.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ImageView.xaml.cs">
+    <Compile Include="Widgets\ImageView.xaml.cs">
       <DependentUpon>ImageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\KeystrokeViewer.xaml.cs">
+    <Compile Include="Widgets\KeystrokeViewer.xaml.cs">
       <DependentUpon>KeystrokeViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\LicenceWindow.xaml.cs">
+    <Compile Include="Widgets\LicenceWindow.xaml.cs">
       <DependentUpon>LicenceWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ModernButton.cs" />
-    <Compile Include="Controls\Next.xaml.cs">
+    <Compile Include="Widgets\ModernButton.cs" />
+    <Compile Include="Widgets\Next.xaml.cs">
       <DependentUpon>Next.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PageController.xaml.cs">
+    <Compile Include="Widgets\PageController.xaml.cs">
       <DependentUpon>PageController.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Pause.xaml.cs">
+    <Compile Include="Widgets\Pause.xaml.cs">
       <DependentUpon>Pause.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Play.xaml.cs">
+    <Compile Include="Widgets\Play.xaml.cs">
       <DependentUpon>Play.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Previous.xaml.cs">
+    <Compile Include="Widgets\Previous.xaml.cs">
       <DependentUpon>Previous.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\progressBar.xaml.cs">
+    <Compile Include="Widgets\progressBar.xaml.cs">
       <DependentUpon>progressBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PullDown.xaml.cs">
+    <Compile Include="Widgets\PullDown.xaml.cs">
       <DependentUpon>PullDown.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PullUp.xaml.cs">
+    <Compile Include="Widgets\PullUp.xaml.cs">
       <DependentUpon>PullUp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Rewind.xaml.cs">
+    <Compile Include="Widgets\Rewind.xaml.cs">
       <DependentUpon>Rewind.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ScreenshotViewer.xaml.cs">
+    <Compile Include="Widgets\ScreenshotViewer.xaml.cs">
       <DependentUpon>ScreenshotViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ScreenshotViewerOptions.xaml.cs">
+    <Compile Include="Widgets\ScreenshotViewerOptions.xaml.cs">
       <DependentUpon>ScreenshotViewerOptions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ScreenshotViewerWindow.xaml.cs">
+    <Compile Include="Widgets\ScreenshotViewerWindow.xaml.cs">
       <DependentUpon>ScreenshotViewerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ScrollingContentControl.cs" />
+    <Compile Include="Widgets\ScrollingContentControl.cs" />
     <Compile Include="ErrorLogging\ILogger.cs" />
     <Compile Include="Hooks\EventArgs\KeyboardHookArgs.cs" />
     <Compile Include="Hooks\EventArgs\MouseHookArgs.cs" />
@@ -301,35 +303,35 @@
     <Compile Include="Views\StatisticsHostView.xaml.cs">
       <DependentUpon>StatisticsHostView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\AboutWindow.xaml.cs">
+    <Compile Include="Widgets\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\BackButton.xaml.cs">
+    <Compile Include="Widgets\BackButton.xaml.cs">
       <DependentUpon>BackButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Calendar.xaml.cs">
+    <Compile Include="Widgets\Calendar.xaml.cs">
       <DependentUpon>Calendar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\EULAWindow.xaml.cs">
+    <Compile Include="Widgets\EULAWindow.xaml.cs">
       <DependentUpon>EULAWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FaderContentControl.cs" />
-    <Compile Include="Controls\FaderLabel.cs" />
-    <Compile Include="Controls\FadingUC.xaml.cs">
+    <Compile Include="Widgets\FaderContentControl.cs" />
+    <Compile Include="Widgets\FaderLabel.cs" />
+    <Compile Include="Widgets\FadingUC.xaml.cs">
       <DependentUpon>FadingUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FilterableListView.cs" />
-    <Compile Include="Controls\MessageWindow.xaml.cs">
+    <Compile Include="Widgets\FilterableListView.cs" />
+    <Compile Include="Widgets\MessageWindow.xaml.cs">
       <DependentUpon>MessageWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PBAssistant.cs" />
-    <Compile Include="Controls\PersonIcon.xaml.cs">
+    <Compile Include="Widgets\PBAssistant.cs" />
+    <Compile Include="Widgets\PersonIcon.xaml.cs">
       <DependentUpon>PersonIcon.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SortableGridViewColumn.cs" />
-    <Compile Include="Controls\SortableListView.cs" />
-    <Compile Include="Controls\TrayIcon.cs" />
-    <Compile Include="Controls\WPFHelper.cs" />
+    <Compile Include="Widgets\SortableGridViewColumn.cs" />
+    <Compile Include="Widgets\SortableListView.cs" />
+    <Compile Include="Widgets\TrayIcon.cs" />
+    <Compile Include="Widgets\WPFHelper.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="ViewModels\AboutWindowViewModel.cs" />
     <Compile Include="Logging\Helpers\EmailHelper.cs" />
@@ -418,7 +420,7 @@
     <Compile Include="Views\Settings_licenseView.xaml.cs">
       <DependentUpon>Settings_licenseView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PasswordWindow.xaml.cs">
+    <Compile Include="Widgets\PasswordWindow.xaml.cs">
       <DependentUpon>PasswordWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -429,111 +431,111 @@
     <Compile Include="Screenshots\Screenshots.cs" />
     <Compile Include="Encryption\Encrypt.cs" />
     <Compile Include="Hooks\WinHook.cs" />
-    <Page Include="Controls\AboutWindow.xaml">
+    <Page Include="Widgets\AboutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ArrowLeft.xaml">
+    <Page Include="Widgets\ArrowLeft.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ArrowRight.xaml">
+    <Page Include="Widgets\ArrowRight.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\BackButton.xaml">
+    <Page Include="Widgets\BackButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Calendar.xaml">
+    <Page Include="Widgets\Calendar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\closeBtn.xaml">
+    <Page Include="Widgets\closeBtn.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\DBCleanerWindow.xaml">
+    <Page Include="Widgets\DBCleanerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\EULAWindow.xaml">
+    <Page Include="Widgets\EULAWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\FadingUC.xaml">
+    <Page Include="Widgets\FadingUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Forward.xaml">
+    <Page Include="Widgets\Forward.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ImageView.xaml">
+    <Page Include="Widgets\ImageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\KeystrokeViewer.xaml">
+    <Page Include="Widgets\KeystrokeViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\LicenceWindow.xaml">
+    <Page Include="Widgets\LicenceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\MessageWindow.xaml">
+    <Page Include="Widgets\MessageWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Next.xaml">
+    <Page Include="Widgets\Next.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\PageController.xaml">
+    <Page Include="Widgets\PageController.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Pause.xaml">
+    <Page Include="Widgets\Pause.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\PersonIcon.xaml">
+    <Page Include="Widgets\PersonIcon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Play.xaml">
+    <Page Include="Widgets\Play.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Previous.xaml">
+    <Page Include="Widgets\Previous.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\progressBar.xaml">
+    <Page Include="Widgets\progressBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\PullDown.xaml">
+    <Page Include="Widgets\PullDown.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\PullUp.xaml">
+    <Page Include="Widgets\PullUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Rewind.xaml">
+    <Page Include="Widgets\Rewind.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ScreenshotViewer.xaml">
+    <Page Include="Widgets\ScreenshotViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ScreenshotViewerOptions.xaml">
+    <Page Include="Widgets\ScreenshotViewerOptions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ScreenshotViewerWindow.xaml">
+    <Page Include="Widgets\ScreenshotViewerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -545,7 +547,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\closeBtn.xaml.cs">
+    <Compile Include="Widgets\closeBtn.xaml.cs">
       <DependentUpon>closeBtn.xaml</DependentUpon>
     </Compile>
     <Compile Include="Hooks\KeyboardHook.cs" />
@@ -669,7 +671,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\PasswordWindow.xaml">
+    <Page Include="Widgets\PasswordWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -37,7 +37,7 @@ namespace AppsTracker.DAL.Service
             }
         }
 
-        public IList<AppsToBlock> AddToBlockedList(List<Aplication> apps, string blockUsername, int loadUserID)
+        public IList<AppsToBlock> AddToBlockedList(IEnumerable<Aplication> apps, string blockUsername, int loadUserID)
         {
             Ensure.NotNull(apps, "apps");
             Ensure.NotNull(blockUsername, "blockUsername");

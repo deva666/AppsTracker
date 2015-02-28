@@ -400,7 +400,7 @@ namespace AppsTracker
 
         #region imported methods
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass"), DllImport("user32.dll", CharSet = CharSet.Auto)]
         internal static extern bool GetWindowRect(IntPtr hWnd, ref RECT rect);
 
 

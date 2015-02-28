@@ -16,7 +16,7 @@ namespace AppsTracker.DAL.Service
 {
     public interface IAppsService : IBaseService
     {
-        IList<AppsToBlock> AddToBlockedList(List<Aplication> apps, string blockUsername, int loadUserID);
+        IList<AppsToBlock> AddToBlockedList(IEnumerable<Aplication> apps, string blockUsername, int loadUserID);
         IEnumerable<T> GetFiltered<T>(Expression<Func<T, bool>> filter) where T : class;
         IEnumerable<T> GetFiltered<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class;
         int DeleteScreenshots(IEnumerable<Log> logs);

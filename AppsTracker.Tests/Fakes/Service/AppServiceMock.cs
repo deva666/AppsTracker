@@ -28,7 +28,7 @@ namespace AppsTracker.Tests.Fakes.Service
             return new List<T>();
         }
 
-        public IList<AppsToBlock> AddToBlockedList(List<Aplication> apps, string username, int userID)
+        public IList<AppsToBlock> AddToBlockedList(IEnumerable<Aplication> apps, string username, int userID)
         {
             System.Threading.Thread.Sleep(500);
             return new List<AppsToBlock>();

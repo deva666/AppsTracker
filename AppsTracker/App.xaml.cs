@@ -22,18 +22,6 @@ using AppsTracker.DAL.Service;
 
 namespace AppsTracker
 {
-    #region Enums
-
-    public enum LoggingStatus : byte
-    {
-        [Description("Logging in progress ...")]
-        Running,
-        [Description("Logging stopped")]
-        Stopped
-    }
-
-    #endregion
-
     public partial class App : Application, IDisposable
     {
         private IApplicationController _applicationController;

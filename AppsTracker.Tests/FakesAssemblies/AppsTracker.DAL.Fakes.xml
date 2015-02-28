@@ -355,8 +355,8 @@
         <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.GetFilteredOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],System.Collections.Generic.IEnumerable{``0}})">
             <summary>Sets the shim of AppsService.GetFiltered(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.AddToBlockedListListOfAplicationStringInt32">
-            <summary>Sets the shim of AppsService.AddToBlockedList(List`1&lt;Aplication&gt; apps, String blockUsername, Int32 loadUserID)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.AddToBlockedListIEnumerableOfAplicationStringInt32">
+            <summary>Sets the shim of AppsService.AddToBlockedList(IEnumerable`1&lt;Aplication&gt; apps, String blockUsername, Int32 loadUserID)</summary>
         </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.Behavior">
             <summary>Assigns the behavior for all methods of the shimmed type</summary>
@@ -379,8 +379,8 @@
         <member name="M:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.GetFilteredOf1ExpressionOfFuncOfM0BooleanExpressionOfFuncOfM0ObjectArray``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{AppsTracker.DAL.Service.AppsService,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[],System.Collections.Generic.IEnumerable{``0}})">
             <summary>Sets the shim of AppsService.GetFiltered(Expression`1&lt;Func`2&lt;!!0,Boolean&gt;&gt; filter, Expression`1&lt;Func`2&lt;!!0,Object&gt;&gt;[] navigations)</summary>
         </member>
-        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.AddToBlockedListListOfAplicationStringInt32">
-            <summary>Sets the shim of AppsService.AddToBlockedList(List`1&lt;Aplication&gt; apps, String blockUsername, Int32 loadUserID)</summary>
+        <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.AddToBlockedListIEnumerableOfAplicationStringInt32">
+            <summary>Sets the shim of AppsService.AddToBlockedList(IEnumerable`1&lt;Aplication&gt; apps, String blockUsername, Int32 loadUserID)</summary>
         </member>
         <member name="P:AppsTracker.DAL.Service.Fakes.ShimAppsService.AllInstances.DeleteScreenshotsIEnumerableOfLog">
             <summary>Sets the shim of AppsService.DeleteScreenshots(IEnumerable`1&lt;Log&gt; logs)</summary>
@@ -937,11 +937,11 @@
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.#ctor">
             <summary>Initializes a new instance of type StubIAppsService</summary>
         </member>
-        <member name="F:AppsTracker.DAL.Service.Fakes.StubIAppsService.AddToBlockedListListOfAplicationStringInt32">
-            <summary>Sets the stub of IAppsService.AddToBlockedList(List`1&lt;Aplication&gt; apps, String blockUsername, Int32 loadUserID)</summary>
+        <member name="F:AppsTracker.DAL.Service.Fakes.StubIAppsService.AddToBlockedListIEnumerableOfAplicationStringInt32">
+            <summary>Sets the stub of IAppsService.AddToBlockedList(IEnumerable`1&lt;Aplication&gt; apps, String blockUsername, Int32 loadUserID)</summary>
         </member>
-        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#AddToBlockedList(System.Collections.Generic.List{AppsTracker.Models.EntityModels.Aplication},System.String,System.Int32)">
-            <summary>Sets the stub of IAppsService.AddToBlockedList(List`1&lt;Aplication&gt; apps, String blockUsername, Int32 loadUserID)</summary>
+        <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#AddToBlockedList(System.Collections.Generic.IEnumerable{AppsTracker.Models.EntityModels.Aplication},System.String,System.Int32)">
+            <summary>Sets the stub of IAppsService.AddToBlockedList(IEnumerable`1&lt;Aplication&gt; apps, String blockUsername, Int32 loadUserID)</summary>
         </member>
         <member name="M:AppsTracker.DAL.Service.Fakes.StubIAppsService.atdal::AppsTracker#DAL#Service#IAppsService#DeleteScreenshots(System.Collections.Generic.IEnumerable{AppsTracker.Models.EntityModels.Log})">
             <summary>Sets the stub of IAppsService.DeleteScreenshots(IEnumerable`1&lt;Log&gt; logs)</summary>
