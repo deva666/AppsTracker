@@ -19,12 +19,13 @@ namespace AppsTracker.ViewModels
 
         public SettingsHostViewModel()
         {
-            Register<SettingsGeneralViewModel>(() => new SettingsGeneralViewModel());
-            Register<SettingsLoggingViewModel>(() => new SettingsLoggingViewModel());
-            Register<SettingsScreenshotsViewModel>(() => new SettingsScreenshotsViewModel());
-            Register<SettingsPasswordViewModel>(() => new SettingsPasswordViewModel());
+            RegisterChild<SettingsGeneralViewModel>(() => new SettingsGeneralViewModel());
+            RegisterChild<SettingsLoggingViewModel>(() => new SettingsLoggingViewModel());
+            RegisterChild<SettingsScreenshotsViewModel>(() => new SettingsScreenshotsViewModel());
+            RegisterChild<SettingsPasswordViewModel>(() => new SettingsPasswordViewModel());
+            RegisterChild<SettingsAppCategoriesViewModel>(() => new SettingsAppCategoriesViewModel());
 
-            SelectedChild = Resolve(typeof(SettingsGeneralViewModel));
+            SelectedChild = GetChild(typeof(SettingsGeneralViewModel));
         }
     }
 }

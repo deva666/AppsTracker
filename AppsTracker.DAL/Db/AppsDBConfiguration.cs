@@ -10,7 +10,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.SqlServerCompact;
 
-namespace AppsTracker.DAL
+namespace AppsTracker.Data.Db
 {
     class AppsDBConfiguration : DbConfiguration
     {

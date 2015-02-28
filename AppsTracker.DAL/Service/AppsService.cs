@@ -11,13 +11,21 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using AppsTracker.Common.Utils;
-using AppsTracker.Models.EntityModels;
+using AppsTracker.Data.Db;
+using AppsTracker.Data.Models;
 
-namespace AppsTracker.DAL.Service
+namespace AppsTracker.Data.Service
 {
     public sealed class AppsService : IAppsService
     {
+        public IEnumerable<T> Get<T>() where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                return context.Set<T>().AsNoTracking().ToList();
+            }
+        }
+
         public IEnumerable<T> GetFiltered<T>(Expression<Func<T, bool>> filter) where T : class
         {
             using (var context = new AppsEntities())
@@ -35,58 +43,6 @@ namespace AppsTracker.DAL.Service
                     query = query.Include(nav);
                 return query.AsNoTracking().Where(filter).ToList();
             }
-        }
-
-        public IList<AppsToBlock> AddToBlockedList(IEnumerable<Aplication> apps, string blockUsername, int loadUserID)
-        {
-            Ensure.NotNull(apps, "apps");
-            Ensure.NotNull(blockUsername, "blockUsername");
-
-            using (var context = new AppsEntities())
-            {
-                if (blockUsername.ToUpper() == "ALL USERS")
-                {
-                    foreach (var user in context.Users)
-                    {
-                        foreach (var app in apps)
-                        {
-                            if (app.Description.ToUpper() != "APPS TRACKER" || !string.IsNullOrEmpty(app.WinName))
-                            {
-                                if (!context.AppsToBlocks.Any(a => a.ApplicationID == app.ApplicationID
-                                                            && a.UserID == user.UserID))
-                                {
-                                    AppsToBlock appToBlock = new AppsToBlock(user, app);
-                                    context.AppsToBlocks.Add(appToBlock);
-                                }
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    var uzer = context.Users.FirstOrDefault(u => u.Name == blockUsername);
-                    foreach (var app in apps)
-                    {
-                        if (app.Description.ToUpper() != "APPS TRACKER" || !string.IsNullOrEmpty(app.WinName))
-                        {
-                            if (!context.AppsToBlocks.Any(a => a.ApplicationID == app.ApplicationID
-                                                            && a.UserID == uzer.UserID))
-                            {
-                                AppsToBlock appToBlock = new AppsToBlock(uzer, app);
-                                context.AppsToBlocks.Add(appToBlock);
-                            }
-                        }
-                    }
-                }
-
-                context.SaveChanges();
-
-                var notifyList = context.AppsToBlocks.Where(a => a.UserID == loadUserID)
-                                                .Include(a => a.Application)
-                                                .ToList();
-                return notifyList;
-            }
-
         }
 
         public int DeleteScreenshots(IEnumerable<Log> logs)
@@ -108,6 +64,15 @@ namespace AppsTracker.DAL.Service
                 context.SaveChanges();
             }
             return count;
+        }
+
+        public Aplication GetApp(int userID, string appName)
+        {
+            using (var context = new AppsEntities())
+            {
+                return context.Applications.FirstOrDefault(a => a.UserID == userID
+                    && a.Name == appName);
+            }
         }
     }
 }

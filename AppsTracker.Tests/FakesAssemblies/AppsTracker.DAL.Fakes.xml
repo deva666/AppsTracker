@@ -1147,5 +1147,2498 @@
         <member name="P:AppsTracker.DAL.Service.Fakes.StubIXmlSettingsService.atdal::AppsTracker#DAL#Service#IXmlSettingsService#ScreenshotsViewSettings">
             <summary>Sets the stub of IXmlSettingsService.get_ScreenshotsViewSettings()</summary>
         </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimAplication">
+            <summary>Shim type of AppsTracker.Data.Models.Aplication</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimAplication.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimAplication.#ctor(AppsTracker.Data.Models.Aplication)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimAplication.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimAplication.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.ApplicationIDGet">
+            <summary>Sets the shim of Aplication.get_ApplicationID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.ApplicationIDSetInt32">
+            <summary>Sets the shim of Aplication.set_ApplicationID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AppsToBlocksGet">
+            <summary>Sets the shim of Aplication.get_AppsToBlocks()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AppsToBlocksSetICollectionOfAppsToBlock">
+            <summary>Sets the shim of Aplication.set_AppsToBlocks(ICollection`1&lt;AppsToBlock&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.BlockedAppsGet">
+            <summary>Sets the shim of Aplication.get_BlockedApps()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.BlockedAppsSetICollectionOfBlockedApp">
+            <summary>Sets the shim of Aplication.set_BlockedApps(ICollection`1&lt;BlockedApp&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.CompanyGet">
+            <summary>Sets the shim of Aplication.get_Company()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.CompanySetString">
+            <summary>Sets the shim of Aplication.set_Company(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.Constructor">
+            <summary>Sets the shim of Aplication.Aplication()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.ConstructorStringStringStringStringStringString">
+            <summary>Sets the shim of Aplication.Aplication(String name, String fileName, String version, String description, String company, String realName)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.DescriptionGet">
+            <summary>Sets the shim of Aplication.get_Description()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.DescriptionSetString">
+            <summary>Sets the shim of Aplication.set_Description(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.DurationGet">
+            <summary>Sets the shim of Aplication.get_Duration()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.FileNameGet">
+            <summary>Sets the shim of Aplication.get_FileName()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.FileNameSetString">
+            <summary>Sets the shim of Aplication.set_FileName(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.GetAppDuration">
+            <summary>Sets the shim of Aplication.GetAppDuration()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.GetHashCode">
+            <summary>Sets the shim of Aplication.GetHashCode()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.NameGet">
+            <summary>Sets the shim of Aplication.get_Name()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.NameSetString">
+            <summary>Sets the shim of Aplication.set_Name(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.UserGet">
+            <summary>Sets the shim of Aplication.get_User()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.UserIDGet">
+            <summary>Sets the shim of Aplication.get_UserID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.UserIDSetInt32">
+            <summary>Sets the shim of Aplication.set_UserID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.UserSetUzer">
+            <summary>Sets the shim of Aplication.set_User(Uzer value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.VersionGet">
+            <summary>Sets the shim of Aplication.get_Version()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.VersionSetString">
+            <summary>Sets the shim of Aplication.set_Version(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.WinNameGet">
+            <summary>Sets the shim of Aplication.get_WinName()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.WinNameSetString">
+            <summary>Sets the shim of Aplication.set_WinName(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.WindowsGet">
+            <summary>Sets the shim of Aplication.get_Windows()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.WindowsSetICollectionOfWindow">
+            <summary>Sets the shim of Aplication.set_Windows(ICollection`1&lt;Window&gt; value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.ApplicationIDGet">
+            <summary>Sets the shim of Aplication.get_ApplicationID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.ApplicationIDSetInt32">
+            <summary>Sets the shim of Aplication.set_ApplicationID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.AppsToBlocksGet">
+            <summary>Sets the shim of Aplication.get_AppsToBlocks()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.AppsToBlocksSetICollectionOfAppsToBlock">
+            <summary>Sets the shim of Aplication.set_AppsToBlocks(ICollection`1&lt;AppsToBlock&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.BlockedAppsGet">
+            <summary>Sets the shim of Aplication.get_BlockedApps()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.BlockedAppsSetICollectionOfBlockedApp">
+            <summary>Sets the shim of Aplication.set_BlockedApps(ICollection`1&lt;BlockedApp&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.CompanyGet">
+            <summary>Sets the shim of Aplication.get_Company()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.CompanySetString">
+            <summary>Sets the shim of Aplication.set_Company(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.DescriptionGet">
+            <summary>Sets the shim of Aplication.get_Description()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.DescriptionSetString">
+            <summary>Sets the shim of Aplication.set_Description(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.DurationGet">
+            <summary>Sets the shim of Aplication.get_Duration()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.FileNameGet">
+            <summary>Sets the shim of Aplication.get_FileName()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.FileNameSetString">
+            <summary>Sets the shim of Aplication.set_FileName(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.GetAppDuration">
+            <summary>Sets the shim of Aplication.GetAppDuration()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.GetHashCode01">
+            <summary>Sets the shim of Aplication.GetHashCode()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.NameGet">
+            <summary>Sets the shim of Aplication.get_Name()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.NameSetString">
+            <summary>Sets the shim of Aplication.set_Name(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.UserGet">
+            <summary>Sets the shim of Aplication.get_User()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.UserIDGet">
+            <summary>Sets the shim of Aplication.get_UserID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.UserIDSetInt32">
+            <summary>Sets the shim of Aplication.set_UserID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.UserSetUzer">
+            <summary>Sets the shim of Aplication.set_User(Uzer value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.VersionGet">
+            <summary>Sets the shim of Aplication.get_Version()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.VersionSetString">
+            <summary>Sets the shim of Aplication.set_Version(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.WinNameGet">
+            <summary>Sets the shim of Aplication.get_WinName()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.WinNameSetString">
+            <summary>Sets the shim of Aplication.set_WinName(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.WindowsGet">
+            <summary>Sets the shim of Aplication.get_Windows()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAplication.AllInstances.WindowsSetICollectionOfWindow">
+            <summary>Sets the shim of Aplication.set_Windows(ICollection`1&lt;Window&gt; value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimAppsToBlock">
+            <summary>Shim type of AppsTracker.Data.Models.AppsToBlock</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.#ctor(AppsTracker.Data.Models.AppsToBlock)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.ApplicationGet">
+            <summary>Sets the shim of AppsToBlock.get_Application()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.ApplicationIDGet">
+            <summary>Sets the shim of AppsToBlock.get_ApplicationID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.ApplicationIDSetInt32">
+            <summary>Sets the shim of AppsToBlock.set_ApplicationID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.ApplicationSetAplication">
+            <summary>Sets the shim of AppsToBlock.set_Application(Aplication value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AppsToBlockIDGet">
+            <summary>Sets the shim of AppsToBlock.get_AppsToBlockID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AppsToBlockIDSetInt32">
+            <summary>Sets the shim of AppsToBlock.set_AppsToBlockID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.Constructor">
+            <summary>Sets the shim of AppsToBlock.AppsToBlock()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.ConstructorUzerAplication">
+            <summary>Sets the shim of AppsToBlock.AppsToBlock(Uzer uzer, Aplication aplication)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.FridayGet">
+            <summary>Sets the shim of AppsToBlock.get_Friday()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.FridaySetBoolean">
+            <summary>Sets the shim of AppsToBlock.set_Friday(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.MapProxyValuesAppsToBlockProxy">
+            <summary>Sets the shim of AppsToBlock.MapProxyValues(AppsToBlockProxy proxy)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.MondayGet">
+            <summary>Sets the shim of AppsToBlock.get_Monday()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.MondaySetBoolean">
+            <summary>Sets the shim of AppsToBlock.set_Monday(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.SaturdayGet">
+            <summary>Sets the shim of AppsToBlock.get_Saturday()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.SaturdaySetBoolean">
+            <summary>Sets the shim of AppsToBlock.set_Saturday(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.SundayGet">
+            <summary>Sets the shim of AppsToBlock.get_Sunday()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.SundaySetBoolean">
+            <summary>Sets the shim of AppsToBlock.set_Sunday(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.ThursdayGet">
+            <summary>Sets the shim of AppsToBlock.get_Thursday()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.ThursdaySetBoolean">
+            <summary>Sets the shim of AppsToBlock.set_Thursday(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.TimeMaxGet">
+            <summary>Sets the shim of AppsToBlock.get_TimeMax()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.TimeMaxSetInt64">
+            <summary>Sets the shim of AppsToBlock.set_TimeMax(Int64 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.TimeMinGet">
+            <summary>Sets the shim of AppsToBlock.get_TimeMin()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.TimeMinSetInt64">
+            <summary>Sets the shim of AppsToBlock.set_TimeMin(Int64 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.TuesdayGet">
+            <summary>Sets the shim of AppsToBlock.get_Tuesday()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.TuesdaySetBoolean">
+            <summary>Sets the shim of AppsToBlock.set_Tuesday(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.UserGet">
+            <summary>Sets the shim of AppsToBlock.get_User()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.UserIDGet">
+            <summary>Sets the shim of AppsToBlock.get_UserID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.UserIDSetInt32">
+            <summary>Sets the shim of AppsToBlock.set_UserID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.UserSetUzer">
+            <summary>Sets the shim of AppsToBlock.set_User(Uzer value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.WednesdayGet">
+            <summary>Sets the shim of AppsToBlock.get_Wednesday()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.WednesdaySetBoolean">
+            <summary>Sets the shim of AppsToBlock.set_Wednesday(Boolean value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.ApplicationGet">
+            <summary>Sets the shim of AppsToBlock.get_Application()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.ApplicationIDGet">
+            <summary>Sets the shim of AppsToBlock.get_ApplicationID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.ApplicationIDSetInt32">
+            <summary>Sets the shim of AppsToBlock.set_ApplicationID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.ApplicationSetAplication">
+            <summary>Sets the shim of AppsToBlock.set_Application(Aplication value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.AppsToBlockIDGet">
+            <summary>Sets the shim of AppsToBlock.get_AppsToBlockID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.AppsToBlockIDSetInt32">
+            <summary>Sets the shim of AppsToBlock.set_AppsToBlockID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.FridayGet">
+            <summary>Sets the shim of AppsToBlock.get_Friday()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.FridaySetBoolean">
+            <summary>Sets the shim of AppsToBlock.set_Friday(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.MapProxyValuesAppsToBlockProxy">
+            <summary>Sets the shim of AppsToBlock.MapProxyValues(AppsToBlockProxy proxy)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.MondayGet">
+            <summary>Sets the shim of AppsToBlock.get_Monday()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.MondaySetBoolean">
+            <summary>Sets the shim of AppsToBlock.set_Monday(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.SaturdayGet">
+            <summary>Sets the shim of AppsToBlock.get_Saturday()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.SaturdaySetBoolean">
+            <summary>Sets the shim of AppsToBlock.set_Saturday(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.SundayGet">
+            <summary>Sets the shim of AppsToBlock.get_Sunday()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.SundaySetBoolean">
+            <summary>Sets the shim of AppsToBlock.set_Sunday(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.ThursdayGet">
+            <summary>Sets the shim of AppsToBlock.get_Thursday()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.ThursdaySetBoolean">
+            <summary>Sets the shim of AppsToBlock.set_Thursday(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.TimeMaxGet">
+            <summary>Sets the shim of AppsToBlock.get_TimeMax()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.TimeMaxSetInt64">
+            <summary>Sets the shim of AppsToBlock.set_TimeMax(Int64 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.TimeMinGet">
+            <summary>Sets the shim of AppsToBlock.get_TimeMin()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.TimeMinSetInt64">
+            <summary>Sets the shim of AppsToBlock.set_TimeMin(Int64 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.TuesdayGet">
+            <summary>Sets the shim of AppsToBlock.get_Tuesday()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.TuesdaySetBoolean">
+            <summary>Sets the shim of AppsToBlock.set_Tuesday(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.UserGet">
+            <summary>Sets the shim of AppsToBlock.get_User()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.UserIDGet">
+            <summary>Sets the shim of AppsToBlock.get_UserID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.UserIDSetInt32">
+            <summary>Sets the shim of AppsToBlock.set_UserID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.UserSetUzer">
+            <summary>Sets the shim of AppsToBlock.set_User(Uzer value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.WednesdayGet">
+            <summary>Sets the shim of AppsToBlock.get_Wednesday()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimAppsToBlock.AllInstances.WednesdaySetBoolean">
+            <summary>Sets the shim of AppsToBlock.set_Wednesday(Boolean value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimBlockedApp">
+            <summary>Shim type of AppsTracker.Data.Models.BlockedApp</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimBlockedApp.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimBlockedApp.#ctor(AppsTracker.Data.Models.BlockedApp)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimBlockedApp.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimBlockedApp.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.ApplicationGet">
+            <summary>Sets the shim of BlockedApp.get_Application()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.ApplicationIDGet">
+            <summary>Sets the shim of BlockedApp.get_ApplicationID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.ApplicationIDSetInt32">
+            <summary>Sets the shim of BlockedApp.set_ApplicationID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.ApplicationSetAplication">
+            <summary>Sets the shim of BlockedApp.set_Application(Aplication value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.BlockedAppIDGet">
+            <summary>Sets the shim of BlockedApp.get_BlockedAppID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.BlockedAppIDSetInt32">
+            <summary>Sets the shim of BlockedApp.set_BlockedAppID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.Constructor">
+            <summary>Sets the shim of BlockedApp.BlockedApp()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.ConstructorInt32Int32">
+            <summary>Sets the shim of BlockedApp.BlockedApp(Int32 userID, Int32 appID)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.DateGet">
+            <summary>Sets the shim of BlockedApp.get_Date()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.DateSetDateTime">
+            <summary>Sets the shim of BlockedApp.set_Date(DateTime value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.UserGet">
+            <summary>Sets the shim of BlockedApp.get_User()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.UserIDGet">
+            <summary>Sets the shim of BlockedApp.get_UserID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.UserIDSetInt32">
+            <summary>Sets the shim of BlockedApp.set_UserID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.UserSetUzer">
+            <summary>Sets the shim of BlockedApp.set_User(Uzer value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimBlockedApp.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.AllInstances.ApplicationGet">
+            <summary>Sets the shim of BlockedApp.get_Application()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.AllInstances.ApplicationIDGet">
+            <summary>Sets the shim of BlockedApp.get_ApplicationID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.AllInstances.ApplicationIDSetInt32">
+            <summary>Sets the shim of BlockedApp.set_ApplicationID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.AllInstances.ApplicationSetAplication">
+            <summary>Sets the shim of BlockedApp.set_Application(Aplication value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.AllInstances.BlockedAppIDGet">
+            <summary>Sets the shim of BlockedApp.get_BlockedAppID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.AllInstances.BlockedAppIDSetInt32">
+            <summary>Sets the shim of BlockedApp.set_BlockedAppID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.AllInstances.DateGet">
+            <summary>Sets the shim of BlockedApp.get_Date()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.AllInstances.DateSetDateTime">
+            <summary>Sets the shim of BlockedApp.set_Date(DateTime value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.AllInstances.UserGet">
+            <summary>Sets the shim of BlockedApp.get_User()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.AllInstances.UserIDGet">
+            <summary>Sets the shim of BlockedApp.get_UserID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.AllInstances.UserIDSetInt32">
+            <summary>Sets the shim of BlockedApp.set_UserID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimBlockedApp.AllInstances.UserSetUzer">
+            <summary>Sets the shim of BlockedApp.set_User(Uzer value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimLog">
+            <summary>Shim type of AppsTracker.Data.Models.Log</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimLog.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimLog.#ctor(AppsTracker.Data.Models.Log)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimLog.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimLog.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimLog.Bind(System.ComponentModel.INotifyPropertyChanged)">
+            <summary>Binds the members of the interface to the shim.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AppNameGet">
+            <summary>Sets the shim of Log.get_AppName()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AppendKeyLogRawString">
+            <summary>Sets the shim of Log.AppendKeyLogRaw(String keyName)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AppendKeyLogString">
+            <summary>Sets the shim of Log.AppendKeyLog(String str)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AppendNewKeyLogLine">
+            <summary>Sets the shim of Log.AppendNewKeyLogLine()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AppendSpace">
+            <summary>Sets the shim of Log.AppendSpace()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AppendTab">
+            <summary>Sets the shim of Log.AppendTab()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.Constructor">
+            <summary>Sets the shim of Log.Log()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.ConstructorInt32">
+            <summary>Sets the shim of Log.Log(Int32 windowID)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.ConstructorInt32Int32">
+            <summary>Sets the shim of Log.Log(Int32 windowID, Int32 usageID)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.ConstructorWindowInt32">
+            <summary>Sets the shim of Log.Log(Window window, Int32 usageID)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.DateCreatedGet">
+            <summary>Sets the shim of Log.get_DateCreated()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.DateCreatedSetDateTime">
+            <summary>Sets the shim of Log.set_DateCreated(DateTime value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.DateEndedGet">
+            <summary>Sets the shim of Log.get_DateEnded()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.DateEndedSetDateTime">
+            <summary>Sets the shim of Log.set_DateEnded(DateTime value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.DurationGet">
+            <summary>Sets the shim of Log.get_Duration()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.Finish">
+            <summary>Sets the shim of Log.Finish()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.FinishedGet">
+            <summary>Sets the shim of Log.get_Finished()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.IsSelectedGet">
+            <summary>Sets the shim of Log.get_IsSelected()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.IsSelectedSetBoolean">
+            <summary>Sets the shim of Log.set_IsSelected(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.KeystrokesGet">
+            <summary>Sets the shim of Log.get_Keystrokes()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.KeystrokesRawGet">
+            <summary>Sets the shim of Log.get_KeystrokesRaw()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.KeystrokesRawSetString">
+            <summary>Sets the shim of Log.set_KeystrokesRaw(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.KeystrokesSetString">
+            <summary>Sets the shim of Log.set_Keystrokes(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.LogIDGet">
+            <summary>Sets the shim of Log.get_LogID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.LogIDSetInt32">
+            <summary>Sets the shim of Log.set_LogID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.PropertyChangedAddPropertyChangedEventHandler">
+            <summary>Sets the shim of Log.add_PropertyChanged(PropertyChangedEventHandler value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.PropertyChangedRemovePropertyChangedEventHandler">
+            <summary>Sets the shim of Log.remove_PropertyChanged(PropertyChangedEventHandler value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.RemoveLastKeyLogItem">
+            <summary>Sets the shim of Log.RemoveLastKeyLogItem()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.ScreenshotsGet">
+            <summary>Sets the shim of Log.get_Screenshots()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.ScreenshotsSetICollectionOfScreenshot">
+            <summary>Sets the shim of Log.set_Screenshots(ICollection`1&lt;Screenshot&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.StringBuilderGet">
+            <summary>Sets the shim of Log.get_StringBuilder()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.StringBuilderRawGet">
+            <summary>Sets the shim of Log.get_StringBuilderRaw()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.UsageGet">
+            <summary>Sets the shim of Log.get_Usage()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.UsageIDGet">
+            <summary>Sets the shim of Log.get_UsageID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.UsageIDSetInt32">
+            <summary>Sets the shim of Log.set_UsageID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.UsageSetUsage">
+            <summary>Sets the shim of Log.set_Usage(Usage value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.UserIDGet">
+            <summary>Sets the shim of Log.get_UserID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.WindowGet">
+            <summary>Sets the shim of Log.get_Window()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.WindowIDGet">
+            <summary>Sets the shim of Log.get_WindowID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.WindowIDSetInt32">
+            <summary>Sets the shim of Log.set_WindowID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.WindowSetWindow">
+            <summary>Sets the shim of Log.set_Window(Window value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.WindowTitleGet">
+            <summary>Sets the shim of Log.get_WindowTitle()</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.AppNameGet">
+            <summary>Sets the shim of Log.get_AppName()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.AppendKeyLogRawString">
+            <summary>Sets the shim of Log.AppendKeyLogRaw(String keyName)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.AppendKeyLogString">
+            <summary>Sets the shim of Log.AppendKeyLog(String str)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.AppendNewKeyLogLine">
+            <summary>Sets the shim of Log.AppendNewKeyLogLine()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.AppendSpace">
+            <summary>Sets the shim of Log.AppendSpace()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.AppendTab">
+            <summary>Sets the shim of Log.AppendTab()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.DateCreatedGet">
+            <summary>Sets the shim of Log.get_DateCreated()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.DateCreatedSetDateTime">
+            <summary>Sets the shim of Log.set_DateCreated(DateTime value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.DateEndedGet">
+            <summary>Sets the shim of Log.get_DateEnded()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.DateEndedSetDateTime">
+            <summary>Sets the shim of Log.set_DateEnded(DateTime value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.DurationGet">
+            <summary>Sets the shim of Log.get_Duration()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.Finish">
+            <summary>Sets the shim of Log.Finish()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.FinishedGet">
+            <summary>Sets the shim of Log.get_Finished()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.IsSelectedGet">
+            <summary>Sets the shim of Log.get_IsSelected()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.IsSelectedSetBoolean">
+            <summary>Sets the shim of Log.set_IsSelected(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.KeystrokesGet">
+            <summary>Sets the shim of Log.get_Keystrokes()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.KeystrokesRawGet">
+            <summary>Sets the shim of Log.get_KeystrokesRaw()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.KeystrokesRawSetString">
+            <summary>Sets the shim of Log.set_KeystrokesRaw(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.KeystrokesSetString">
+            <summary>Sets the shim of Log.set_Keystrokes(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.LogIDGet">
+            <summary>Sets the shim of Log.get_LogID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.LogIDSetInt32">
+            <summary>Sets the shim of Log.set_LogID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.PropertyChangedAddPropertyChangedEventHandler">
+            <summary>Sets the shim of Log.add_PropertyChanged(PropertyChangedEventHandler value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.PropertyChangedRemovePropertyChangedEventHandler">
+            <summary>Sets the shim of Log.remove_PropertyChanged(PropertyChangedEventHandler value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.RemoveLastKeyLogItem">
+            <summary>Sets the shim of Log.RemoveLastKeyLogItem()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.ScreenshotsGet">
+            <summary>Sets the shim of Log.get_Screenshots()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.ScreenshotsSetICollectionOfScreenshot">
+            <summary>Sets the shim of Log.set_Screenshots(ICollection`1&lt;Screenshot&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.StringBuilderGet">
+            <summary>Sets the shim of Log.get_StringBuilder()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.StringBuilderRawGet">
+            <summary>Sets the shim of Log.get_StringBuilderRaw()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.UsageGet">
+            <summary>Sets the shim of Log.get_Usage()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.UsageIDGet">
+            <summary>Sets the shim of Log.get_UsageID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.UsageIDSetInt32">
+            <summary>Sets the shim of Log.set_UsageID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.UsageSetUsage">
+            <summary>Sets the shim of Log.set_Usage(Usage value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.UserIDGet">
+            <summary>Sets the shim of Log.get_UserID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.WindowGet">
+            <summary>Sets the shim of Log.get_Window()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.WindowIDGet">
+            <summary>Sets the shim of Log.get_WindowID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.WindowIDSetInt32">
+            <summary>Sets the shim of Log.set_WindowID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.WindowSetWindow">
+            <summary>Sets the shim of Log.set_Window(Window value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimLog.AllInstances.WindowTitleGet">
+            <summary>Sets the shim of Log.get_WindowTitle()</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimScreenshot">
+            <summary>Shim type of AppsTracker.Data.Models.Screenshot</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimScreenshot.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimScreenshot.#ctor(AppsTracker.Data.Models.Screenshot)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimScreenshot.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimScreenshot.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimScreenshot.Bind(System.ComponentModel.INotifyPropertyChanged)">
+            <summary>Binds the members of the interface to the shim.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AppNameGet">
+            <summary>Sets the shim of Screenshot.get_AppName()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.Constructor">
+            <summary>Sets the shim of Screenshot.Screenshot()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.ConstructorSizeImage">
+            <summary>Sets the shim of Screenshot.Screenshot(Size size, Image image)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.DateGet">
+            <summary>Sets the shim of Screenshot.get_Date()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.DateSetDateTime">
+            <summary>Sets the shim of Screenshot.set_Date(DateTime value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.GetByteArrayFromImageImage">
+            <summary>Sets the shim of Screenshot.GetByteArrayFromImage(Image imageIn)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.GetPopupSize">
+            <summary>Sets the shim of Screenshot.GetPopupSize()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.HeightGet">
+            <summary>Sets the shim of Screenshot.get_Height()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.HeightSetInt32">
+            <summary>Sets the shim of Screenshot.set_Height(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.IsOpenGet">
+            <summary>Sets the shim of Screenshot.get_IsOpen()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.IsOpenSetBoolean">
+            <summary>Sets the shim of Screenshot.set_IsOpen(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.LogGet">
+            <summary>Sets the shim of Screenshot.get_Log()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.LogIDGet">
+            <summary>Sets the shim of Screenshot.get_LogID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.LogIDSetInt32">
+            <summary>Sets the shim of Screenshot.set_LogID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.LogSetLog">
+            <summary>Sets the shim of Screenshot.set_Log(Log value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.PopupHeightGet">
+            <summary>Sets the shim of Screenshot.get_PopupHeight()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.PopupHeightSetDouble">
+            <summary>Sets the shim of Screenshot.set_PopupHeight(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.PopupWidthGet">
+            <summary>Sets the shim of Screenshot.get_PopupWidth()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.PopupWidthSetDouble">
+            <summary>Sets the shim of Screenshot.set_PopupWidth(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.PropertyChangedAddPropertyChangedEventHandler">
+            <summary>Sets the shim of Screenshot.add_PropertyChanged(PropertyChangedEventHandler value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.PropertyChangedRemovePropertyChangedEventHandler">
+            <summary>Sets the shim of Screenshot.remove_PropertyChanged(PropertyChangedEventHandler value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.ScreenshotIDGet">
+            <summary>Sets the shim of Screenshot.get_ScreenshotID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.ScreenshotIDSetInt32">
+            <summary>Sets the shim of Screenshot.set_ScreenshotID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.ScreenshtGet">
+            <summary>Sets the shim of Screenshot.get_Screensht()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.ScreenshtSetByteArray">
+            <summary>Sets the shim of Screenshot.set_Screensht(Byte[] value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.ShowHide">
+            <summary>Sets the shim of Screenshot.ShowHide()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.ShowHideCommandGet">
+            <summary>Sets the shim of Screenshot.get_ShowHideCommand()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.UserIDGet">
+            <summary>Sets the shim of Screenshot.get_UserID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.WidthGet">
+            <summary>Sets the shim of Screenshot.get_Width()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.WidthSetInt32">
+            <summary>Sets the shim of Screenshot.set_Width(Int32 value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.AppNameGet">
+            <summary>Sets the shim of Screenshot.get_AppName()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.DateGet">
+            <summary>Sets the shim of Screenshot.get_Date()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.DateSetDateTime">
+            <summary>Sets the shim of Screenshot.set_Date(DateTime value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.GetByteArrayFromImageImage">
+            <summary>Sets the shim of Screenshot.GetByteArrayFromImage(Image imageIn)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.GetPopupSize">
+            <summary>Sets the shim of Screenshot.GetPopupSize()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.HeightGet">
+            <summary>Sets the shim of Screenshot.get_Height()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.HeightSetInt32">
+            <summary>Sets the shim of Screenshot.set_Height(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.IsOpenGet">
+            <summary>Sets the shim of Screenshot.get_IsOpen()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.IsOpenSetBoolean">
+            <summary>Sets the shim of Screenshot.set_IsOpen(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.LogGet">
+            <summary>Sets the shim of Screenshot.get_Log()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.LogIDGet">
+            <summary>Sets the shim of Screenshot.get_LogID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.LogIDSetInt32">
+            <summary>Sets the shim of Screenshot.set_LogID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.LogSetLog">
+            <summary>Sets the shim of Screenshot.set_Log(Log value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.PopupHeightGet">
+            <summary>Sets the shim of Screenshot.get_PopupHeight()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.PopupHeightSetDouble">
+            <summary>Sets the shim of Screenshot.set_PopupHeight(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.PopupWidthGet">
+            <summary>Sets the shim of Screenshot.get_PopupWidth()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.PopupWidthSetDouble">
+            <summary>Sets the shim of Screenshot.set_PopupWidth(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.PropertyChangedAddPropertyChangedEventHandler">
+            <summary>Sets the shim of Screenshot.add_PropertyChanged(PropertyChangedEventHandler value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.PropertyChangedRemovePropertyChangedEventHandler">
+            <summary>Sets the shim of Screenshot.remove_PropertyChanged(PropertyChangedEventHandler value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.ScreenshotIDGet">
+            <summary>Sets the shim of Screenshot.get_ScreenshotID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.ScreenshotIDSetInt32">
+            <summary>Sets the shim of Screenshot.set_ScreenshotID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.ScreenshtGet">
+            <summary>Sets the shim of Screenshot.get_Screensht()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.ScreenshtSetByteArray">
+            <summary>Sets the shim of Screenshot.set_Screensht(Byte[] value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.ShowHide">
+            <summary>Sets the shim of Screenshot.ShowHide()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.ShowHideCommandGet">
+            <summary>Sets the shim of Screenshot.get_ShowHideCommand()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.UserIDGet">
+            <summary>Sets the shim of Screenshot.get_UserID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.WidthGet">
+            <summary>Sets the shim of Screenshot.get_Width()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimScreenshot.AllInstances.WidthSetInt32">
+            <summary>Sets the shim of Screenshot.set_Width(Int32 value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimSetting">
+            <summary>Shim type of AppsTracker.Data.Models.Setting</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimSetting.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimSetting.#ctor(AppsTracker.Data.Models.Setting)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimSetting.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimSetting.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimSetting.Bind(AppsTracker.Models.Proxy.ISettings)">
+            <summary>Binds the members of the interface to the shim.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.Clone">
+            <summary>Sets the shim of Setting.Clone()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.Constructor">
+            <summary>Sets the shim of Setting.Setting()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.ConstructorBoolean">
+            <summary>Sets the shim of Setting.Setting(Boolean first)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.CreateScreenshotFolder">
+            <summary>Sets the shim of Setting.CreateScreenshotFolder()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.DefaultScreenshotSavePathGet">
+            <summary>Sets the shim of Setting.get_DefaultScreenshotSavePath()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.DefaultScreenshotSavePathSetString">
+            <summary>Sets the shim of Setting.set_DefaultScreenshotSavePath(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.DeleteOldLogsGet">
+            <summary>Sets the shim of Setting.get_DeleteOldLogs()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.DeleteOldLogsSetBoolean">
+            <summary>Sets the shim of Setting.set_DeleteOldLogs(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailFromGet">
+            <summary>Sets the shim of Setting.get_EmailFrom()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailFromSetString">
+            <summary>Sets the shim of Setting.set_EmailFrom(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailIntervalEnumGet">
+            <summary>Sets the shim of Setting.get_EmailIntervalEnum()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailIntervalEnumSetEmailInterval">
+            <summary>Sets the shim of Setting.set_EmailIntervalEnum(EmailInterval value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailIntervalGet">
+            <summary>Sets the shim of Setting.get_EmailInterval()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailIntervalSetDouble">
+            <summary>Sets the shim of Setting.set_EmailInterval(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailSSLGet">
+            <summary>Sets the shim of Setting.get_EmailSSL()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailSSLSetBoolean">
+            <summary>Sets the shim of Setting.set_EmailSSL(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailSmtpHostGet">
+            <summary>Sets the shim of Setting.get_EmailSmtpHost()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailSmtpHostSetString">
+            <summary>Sets the shim of Setting.set_EmailSmtpHost(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailSmtpPasswordGet">
+            <summary>Sets the shim of Setting.get_EmailSmtpPassword()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailSmtpPasswordSetString">
+            <summary>Sets the shim of Setting.set_EmailSmtpPassword(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailSmtpPortGet">
+            <summary>Sets the shim of Setting.get_EmailSmtpPort()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailSmtpPortSetInt32">
+            <summary>Sets the shim of Setting.set_EmailSmtpPort(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailSmtpUsernameGet">
+            <summary>Sets the shim of Setting.get_EmailSmtpUsername()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailSmtpUsernameSetString">
+            <summary>Sets the shim of Setting.set_EmailSmtpUsername(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailToGet">
+            <summary>Sets the shim of Setting.get_EmailTo()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EmailToSetString">
+            <summary>Sets the shim of Setting.set_EmailTo(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EnableEmailReportsGet">
+            <summary>Sets the shim of Setting.get_EnableEmailReports()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EnableEmailReportsSetBoolean">
+            <summary>Sets the shim of Setting.set_EnableEmailReports(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EnableFileWatcherGet">
+            <summary>Sets the shim of Setting.get_EnableFileWatcher()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EnableFileWatcherSetBoolean">
+            <summary>Sets the shim of Setting.set_EnableFileWatcher(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EnableIdleGet">
+            <summary>Sets the shim of Setting.get_EnableIdle()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EnableIdleSetBoolean">
+            <summary>Sets the shim of Setting.set_EnableIdle(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EnableKeyloggerGet">
+            <summary>Sets the shim of Setting.get_EnableKeylogger()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.EnableKeyloggerSetBoolean">
+            <summary>Sets the shim of Setting.set_EnableKeylogger(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.FileWatcherPathGet">
+            <summary>Sets the shim of Setting.get_FileWatcherPath()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.FileWatcherPathSetString">
+            <summary>Sets the shim of Setting.set_FileWatcherPath(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.FileWatcherSubdirectoriesGet">
+            <summary>Sets the shim of Setting.get_FileWatcherSubdirectories()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.FileWatcherSubdirectoriesSetBoolean">
+            <summary>Sets the shim of Setting.set_FileWatcherSubdirectories(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.FirstRunGet">
+            <summary>Sets the shim of Setting.get_FirstRun()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.FirstRunSetBoolean">
+            <summary>Sets the shim of Setting.set_FirstRun(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.IdleTimerGet">
+            <summary>Sets the shim of Setting.get_IdleTimer()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.IdleTimerSetInt64">
+            <summary>Sets the shim of Setting.set_IdleTimer(Int64 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.IsMasterPasswordSetGet">
+            <summary>Sets the shim of Setting.get_IsMasterPasswordSet()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.IsMasterPasswordSetSetBoolean">
+            <summary>Sets the shim of Setting.set_IsMasterPasswordSet(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.IsSelectedGet">
+            <summary>Sets the shim of Setting.get_IsSelected()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.IsSelectedSetBoolean">
+            <summary>Sets the shim of Setting.set_IsSelected(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.LastExecutedDateGet">
+            <summary>Sets the shim of Setting.get_LastExecutedDate()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.LastExecutedDateSetNullableOfDateTime">
+            <summary>Sets the shim of Setting.set_LastExecutedDate(Nullable`1&lt;DateTime&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.LicenceGet">
+            <summary>Sets the shim of Setting.get_Licence()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.LicenceSetBoolean">
+            <summary>Sets the shim of Setting.set_Licence(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.LightThemeGet">
+            <summary>Sets the shim of Setting.get_LightTheme()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.LightThemeSetBoolean">
+            <summary>Sets the shim of Setting.set_LightTheme(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.LoggingEnabledGet">
+            <summary>Sets the shim of Setting.get_LoggingEnabled()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.LoggingEnabledSetBoolean">
+            <summary>Sets the shim of Setting.set_LoggingEnabled(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.MainWindowHeightGet">
+            <summary>Sets the shim of Setting.get_MainWindowHeight()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.MainWindowHeightSetDouble">
+            <summary>Sets the shim of Setting.set_MainWindowHeight(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.MainWindowLeftGet">
+            <summary>Sets the shim of Setting.get_MainWindowLeft()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.MainWindowLeftSetDouble">
+            <summary>Sets the shim of Setting.set_MainWindowLeft(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.MainWindowTopGet">
+            <summary>Sets the shim of Setting.get_MainWindowTop()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.MainWindowTopSetDouble">
+            <summary>Sets the shim of Setting.set_MainWindowTop(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.MainWindowWidthGet">
+            <summary>Sets the shim of Setting.get_MainWindowWidth()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.MainWindowWidthSetDouble">
+            <summary>Sets the shim of Setting.set_MainWindowWidth(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.OldLogDeleteDaysGet">
+            <summary>Sets the shim of Setting.get_OldLogDeleteDays()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.OldLogDeleteDaysSetInt16">
+            <summary>Sets the shim of Setting.set_OldLogDeleteDays(Int16 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.RunAtStartupGet">
+            <summary>Sets the shim of Setting.get_RunAtStartup()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.RunAtStartupSetBoolean">
+            <summary>Sets the shim of Setting.set_RunAtStartup(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.ScreenshotIntervalGet">
+            <summary>Sets the shim of Setting.get_ScreenshotInterval()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.ScreenshotIntervalSetScreenShotInterval">
+            <summary>Sets the shim of Setting.set_ScreenshotInterval(ScreenShotInterval value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.ScreenshotWindowHeightGet">
+            <summary>Sets the shim of Setting.get_ScreenshotWindowHeight()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.ScreenshotWindowHeightSetDouble">
+            <summary>Sets the shim of Setting.set_ScreenshotWindowHeight(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.ScreenshotWindowLeftGet">
+            <summary>Sets the shim of Setting.get_ScreenshotWindowLeft()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.ScreenshotWindowLeftSetDouble">
+            <summary>Sets the shim of Setting.set_ScreenshotWindowLeft(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.ScreenshotWindowTopGet">
+            <summary>Sets the shim of Setting.get_ScreenshotWindowTop()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.ScreenshotWindowTopSetDouble">
+            <summary>Sets the shim of Setting.set_ScreenshotWindowTop(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.ScreenshotWindowWidthGet">
+            <summary>Sets the shim of Setting.get_ScreenshotWindowWidth()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.ScreenshotWindowWidthSetDouble">
+            <summary>Sets the shim of Setting.set_ScreenshotWindowWidth(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.SetInitialSettings">
+            <summary>Sets the shim of Setting.SetInitialSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.SettingsIDGet">
+            <summary>Sets the shim of Setting.get_SettingsID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.SettingsIDSetInt32">
+            <summary>Sets the shim of Setting.set_SettingsID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.StealthGet">
+            <summary>Sets the shim of Setting.get_Stealth()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.StealthSetBoolean">
+            <summary>Sets the shim of Setting.set_Stealth(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.TakeScreenshotsGet">
+            <summary>Sets the shim of Setting.get_TakeScreenshots()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.TakeScreenshotsSetBoolean">
+            <summary>Sets the shim of Setting.set_TakeScreenshots(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.TimerIntervalGet">
+            <summary>Sets the shim of Setting.get_TimerInterval()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.TimerIntervalSetDouble">
+            <summary>Sets the shim of Setting.set_TimerInterval(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.TrialStartDateGet">
+            <summary>Sets the shim of Setting.get_TrialStartDate()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.TrialStartDateSetDateTime">
+            <summary>Sets the shim of Setting.set_TrialStartDate(DateTime value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.UsernameGet">
+            <summary>Sets the shim of Setting.get_Username()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.UsernameSetString">
+            <summary>Sets the shim of Setting.set_Username(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.WindowOpenGet">
+            <summary>Sets the shim of Setting.get_WindowOpen()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.WindowOpenSetString">
+            <summary>Sets the shim of Setting.set_WindowOpen(String value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.Clone">
+            <summary>Sets the shim of Setting.Clone()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.CreateScreenshotFolder">
+            <summary>Sets the shim of Setting.CreateScreenshotFolder()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.DefaultScreenshotSavePathGet">
+            <summary>Sets the shim of Setting.get_DefaultScreenshotSavePath()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.DefaultScreenshotSavePathSetString">
+            <summary>Sets the shim of Setting.set_DefaultScreenshotSavePath(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.DeleteOldLogsGet">
+            <summary>Sets the shim of Setting.get_DeleteOldLogs()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.DeleteOldLogsSetBoolean">
+            <summary>Sets the shim of Setting.set_DeleteOldLogs(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailFromGet">
+            <summary>Sets the shim of Setting.get_EmailFrom()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailFromSetString">
+            <summary>Sets the shim of Setting.set_EmailFrom(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailIntervalEnumGet">
+            <summary>Sets the shim of Setting.get_EmailIntervalEnum()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailIntervalEnumSetEmailInterval">
+            <summary>Sets the shim of Setting.set_EmailIntervalEnum(EmailInterval value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailIntervalGet">
+            <summary>Sets the shim of Setting.get_EmailInterval()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailIntervalSetDouble">
+            <summary>Sets the shim of Setting.set_EmailInterval(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailSSLGet">
+            <summary>Sets the shim of Setting.get_EmailSSL()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailSSLSetBoolean">
+            <summary>Sets the shim of Setting.set_EmailSSL(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailSmtpHostGet">
+            <summary>Sets the shim of Setting.get_EmailSmtpHost()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailSmtpHostSetString">
+            <summary>Sets the shim of Setting.set_EmailSmtpHost(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailSmtpPasswordGet">
+            <summary>Sets the shim of Setting.get_EmailSmtpPassword()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailSmtpPasswordSetString">
+            <summary>Sets the shim of Setting.set_EmailSmtpPassword(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailSmtpPortGet">
+            <summary>Sets the shim of Setting.get_EmailSmtpPort()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailSmtpPortSetInt32">
+            <summary>Sets the shim of Setting.set_EmailSmtpPort(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailSmtpUsernameGet">
+            <summary>Sets the shim of Setting.get_EmailSmtpUsername()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailSmtpUsernameSetString">
+            <summary>Sets the shim of Setting.set_EmailSmtpUsername(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailToGet">
+            <summary>Sets the shim of Setting.get_EmailTo()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EmailToSetString">
+            <summary>Sets the shim of Setting.set_EmailTo(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EnableEmailReportsGet">
+            <summary>Sets the shim of Setting.get_EnableEmailReports()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EnableEmailReportsSetBoolean">
+            <summary>Sets the shim of Setting.set_EnableEmailReports(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EnableFileWatcherGet">
+            <summary>Sets the shim of Setting.get_EnableFileWatcher()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EnableFileWatcherSetBoolean">
+            <summary>Sets the shim of Setting.set_EnableFileWatcher(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EnableIdleGet">
+            <summary>Sets the shim of Setting.get_EnableIdle()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EnableIdleSetBoolean">
+            <summary>Sets the shim of Setting.set_EnableIdle(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EnableKeyloggerGet">
+            <summary>Sets the shim of Setting.get_EnableKeylogger()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.EnableKeyloggerSetBoolean">
+            <summary>Sets the shim of Setting.set_EnableKeylogger(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.FileWatcherPathGet">
+            <summary>Sets the shim of Setting.get_FileWatcherPath()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.FileWatcherPathSetString">
+            <summary>Sets the shim of Setting.set_FileWatcherPath(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.FileWatcherSubdirectoriesGet">
+            <summary>Sets the shim of Setting.get_FileWatcherSubdirectories()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.FileWatcherSubdirectoriesSetBoolean">
+            <summary>Sets the shim of Setting.set_FileWatcherSubdirectories(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.FirstRunGet">
+            <summary>Sets the shim of Setting.get_FirstRun()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.FirstRunSetBoolean">
+            <summary>Sets the shim of Setting.set_FirstRun(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.IdleTimerGet">
+            <summary>Sets the shim of Setting.get_IdleTimer()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.IdleTimerSetInt64">
+            <summary>Sets the shim of Setting.set_IdleTimer(Int64 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.IsMasterPasswordSetGet">
+            <summary>Sets the shim of Setting.get_IsMasterPasswordSet()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.IsMasterPasswordSetSetBoolean">
+            <summary>Sets the shim of Setting.set_IsMasterPasswordSet(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.IsSelectedGet">
+            <summary>Sets the shim of Setting.get_IsSelected()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.IsSelectedSetBoolean">
+            <summary>Sets the shim of Setting.set_IsSelected(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.LastExecutedDateGet">
+            <summary>Sets the shim of Setting.get_LastExecutedDate()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.LastExecutedDateSetNullableOfDateTime">
+            <summary>Sets the shim of Setting.set_LastExecutedDate(Nullable`1&lt;DateTime&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.LicenceGet">
+            <summary>Sets the shim of Setting.get_Licence()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.LicenceSetBoolean">
+            <summary>Sets the shim of Setting.set_Licence(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.LightThemeGet">
+            <summary>Sets the shim of Setting.get_LightTheme()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.LightThemeSetBoolean">
+            <summary>Sets the shim of Setting.set_LightTheme(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.LoggingEnabledGet">
+            <summary>Sets the shim of Setting.get_LoggingEnabled()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.LoggingEnabledSetBoolean">
+            <summary>Sets the shim of Setting.set_LoggingEnabled(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.MainWindowHeightGet">
+            <summary>Sets the shim of Setting.get_MainWindowHeight()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.MainWindowHeightSetDouble">
+            <summary>Sets the shim of Setting.set_MainWindowHeight(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.MainWindowLeftGet">
+            <summary>Sets the shim of Setting.get_MainWindowLeft()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.MainWindowLeftSetDouble">
+            <summary>Sets the shim of Setting.set_MainWindowLeft(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.MainWindowTopGet">
+            <summary>Sets the shim of Setting.get_MainWindowTop()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.MainWindowTopSetDouble">
+            <summary>Sets the shim of Setting.set_MainWindowTop(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.MainWindowWidthGet">
+            <summary>Sets the shim of Setting.get_MainWindowWidth()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.MainWindowWidthSetDouble">
+            <summary>Sets the shim of Setting.set_MainWindowWidth(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.OldLogDeleteDaysGet">
+            <summary>Sets the shim of Setting.get_OldLogDeleteDays()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.OldLogDeleteDaysSetInt16">
+            <summary>Sets the shim of Setting.set_OldLogDeleteDays(Int16 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.RunAtStartupGet">
+            <summary>Sets the shim of Setting.get_RunAtStartup()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.RunAtStartupSetBoolean">
+            <summary>Sets the shim of Setting.set_RunAtStartup(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.ScreenshotIntervalGet">
+            <summary>Sets the shim of Setting.get_ScreenshotInterval()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.ScreenshotIntervalSetScreenShotInterval">
+            <summary>Sets the shim of Setting.set_ScreenshotInterval(ScreenShotInterval value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.ScreenshotWindowHeightGet">
+            <summary>Sets the shim of Setting.get_ScreenshotWindowHeight()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.ScreenshotWindowHeightSetDouble">
+            <summary>Sets the shim of Setting.set_ScreenshotWindowHeight(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.ScreenshotWindowLeftGet">
+            <summary>Sets the shim of Setting.get_ScreenshotWindowLeft()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.ScreenshotWindowLeftSetDouble">
+            <summary>Sets the shim of Setting.set_ScreenshotWindowLeft(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.ScreenshotWindowTopGet">
+            <summary>Sets the shim of Setting.get_ScreenshotWindowTop()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.ScreenshotWindowTopSetDouble">
+            <summary>Sets the shim of Setting.set_ScreenshotWindowTop(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.ScreenshotWindowWidthGet">
+            <summary>Sets the shim of Setting.get_ScreenshotWindowWidth()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.ScreenshotWindowWidthSetDouble">
+            <summary>Sets the shim of Setting.set_ScreenshotWindowWidth(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.SetInitialSettings">
+            <summary>Sets the shim of Setting.SetInitialSettings()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.SettingsIDGet">
+            <summary>Sets the shim of Setting.get_SettingsID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.SettingsIDSetInt32">
+            <summary>Sets the shim of Setting.set_SettingsID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.StealthGet">
+            <summary>Sets the shim of Setting.get_Stealth()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.StealthSetBoolean">
+            <summary>Sets the shim of Setting.set_Stealth(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.TakeScreenshotsGet">
+            <summary>Sets the shim of Setting.get_TakeScreenshots()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.TakeScreenshotsSetBoolean">
+            <summary>Sets the shim of Setting.set_TakeScreenshots(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.TimerIntervalGet">
+            <summary>Sets the shim of Setting.get_TimerInterval()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.TimerIntervalSetDouble">
+            <summary>Sets the shim of Setting.set_TimerInterval(Double value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.TrialStartDateGet">
+            <summary>Sets the shim of Setting.get_TrialStartDate()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.TrialStartDateSetDateTime">
+            <summary>Sets the shim of Setting.set_TrialStartDate(DateTime value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.UsernameGet">
+            <summary>Sets the shim of Setting.get_Username()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.UsernameSetString">
+            <summary>Sets the shim of Setting.set_Username(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.WindowOpenGet">
+            <summary>Sets the shim of Setting.get_WindowOpen()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimSetting.AllInstances.WindowOpenSetString">
+            <summary>Sets the shim of Setting.set_WindowOpen(String value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimUsage">
+            <summary>Shim type of AppsTracker.Data.Models.Usage</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimUsage.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimUsage.#ctor(AppsTracker.Data.Models.Usage)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimUsage.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimUsage.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.Constructor">
+            <summary>Sets the shim of Usage.Usage()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.ConstructorInt32">
+            <summary>Sets the shim of Usage.Usage(Int32 userID)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.ConstructorInt32Int32">
+            <summary>Sets the shim of Usage.Usage(Int32 userID, Int32 usageTypeID)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.ConstructorUsage">
+            <summary>Sets the shim of Usage.Usage(Usage usage)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.DurationGet">
+            <summary>Sets the shim of Usage.get_Duration()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.GetDisplayedEndDateTime">
+            <summary>Sets the shim of Usage.GetDisplayedEnd(DateTime day)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.GetDisplayedStartDateTime">
+            <summary>Sets the shim of Usage.GetDisplayedStart(DateTime day)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.GetDisplayedTicksDateTime">
+            <summary>Sets the shim of Usage.GetDisplayedTicks(DateTime day)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.IsCurrentGet">
+            <summary>Sets the shim of Usage.get_IsCurrent()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.IsCurrentSetBoolean">
+            <summary>Sets the shim of Usage.set_IsCurrent(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.IsSelectedGet">
+            <summary>Sets the shim of Usage.get_IsSelected()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.IsSelectedSetBoolean">
+            <summary>Sets the shim of Usage.set_IsSelected(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.LogsGet">
+            <summary>Sets the shim of Usage.get_Logs()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.LogsSetICollectionOfLog">
+            <summary>Sets the shim of Usage.set_Logs(ICollection`1&lt;Log&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.SelfUsageGet">
+            <summary>Sets the shim of Usage.get_SelfUsage()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.SelfUsageIDGet">
+            <summary>Sets the shim of Usage.get_SelfUsageID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.SelfUsageIDSetNullableOfInt32">
+            <summary>Sets the shim of Usage.set_SelfUsageID(Nullable`1&lt;Int32&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.SelfUsageSetICollectionOfUsage">
+            <summary>Sets the shim of Usage.set_SelfUsage(ICollection`1&lt;Usage&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.SelfUsagesGet">
+            <summary>Sets the shim of Usage.get_SelfUsages()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.SelfUsagesSetICollectionOfUsage">
+            <summary>Sets the shim of Usage.set_SelfUsages(ICollection`1&lt;Usage&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.UsageEndGet">
+            <summary>Sets the shim of Usage.get_UsageEnd()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.UsageEndSetDateTime">
+            <summary>Sets the shim of Usage.set_UsageEnd(DateTime value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.UsageIDGet">
+            <summary>Sets the shim of Usage.get_UsageID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.UsageIDSetInt32">
+            <summary>Sets the shim of Usage.set_UsageID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.UsageStartGet">
+            <summary>Sets the shim of Usage.get_UsageStart()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.UsageStartSetDateTime">
+            <summary>Sets the shim of Usage.set_UsageStart(DateTime value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.UsageTypeGet">
+            <summary>Sets the shim of Usage.get_UsageType()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.UsageTypeIDGet">
+            <summary>Sets the shim of Usage.get_UsageTypeID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.UsageTypeIDSetInt32">
+            <summary>Sets the shim of Usage.set_UsageTypeID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.UsageTypeSetUsageType">
+            <summary>Sets the shim of Usage.set_UsageType(UsageType value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.UserGet">
+            <summary>Sets the shim of Usage.get_User()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.UserIDGet">
+            <summary>Sets the shim of Usage.get_UserID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.UserIDSetInt32">
+            <summary>Sets the shim of Usage.set_UserID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.UserSetUzer">
+            <summary>Sets the shim of Usage.set_User(Uzer value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.DurationGet">
+            <summary>Sets the shim of Usage.get_Duration()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.GetDisplayedEndDateTime">
+            <summary>Sets the shim of Usage.GetDisplayedEnd(DateTime day)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.GetDisplayedStartDateTime">
+            <summary>Sets the shim of Usage.GetDisplayedStart(DateTime day)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.GetDisplayedTicksDateTime">
+            <summary>Sets the shim of Usage.GetDisplayedTicks(DateTime day)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.IsCurrentGet">
+            <summary>Sets the shim of Usage.get_IsCurrent()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.IsCurrentSetBoolean">
+            <summary>Sets the shim of Usage.set_IsCurrent(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.IsSelectedGet">
+            <summary>Sets the shim of Usage.get_IsSelected()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.IsSelectedSetBoolean">
+            <summary>Sets the shim of Usage.set_IsSelected(Boolean value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.LogsGet">
+            <summary>Sets the shim of Usage.get_Logs()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.LogsSetICollectionOfLog">
+            <summary>Sets the shim of Usage.set_Logs(ICollection`1&lt;Log&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.SelfUsageGet">
+            <summary>Sets the shim of Usage.get_SelfUsage()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.SelfUsageIDGet">
+            <summary>Sets the shim of Usage.get_SelfUsageID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.SelfUsageIDSetNullableOfInt32">
+            <summary>Sets the shim of Usage.set_SelfUsageID(Nullable`1&lt;Int32&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.SelfUsageSetICollectionOfUsage">
+            <summary>Sets the shim of Usage.set_SelfUsage(ICollection`1&lt;Usage&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.SelfUsagesGet">
+            <summary>Sets the shim of Usage.get_SelfUsages()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.SelfUsagesSetICollectionOfUsage">
+            <summary>Sets the shim of Usage.set_SelfUsages(ICollection`1&lt;Usage&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.UsageEndGet">
+            <summary>Sets the shim of Usage.get_UsageEnd()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.UsageEndSetDateTime">
+            <summary>Sets the shim of Usage.set_UsageEnd(DateTime value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.UsageIDGet">
+            <summary>Sets the shim of Usage.get_UsageID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.UsageIDSetInt32">
+            <summary>Sets the shim of Usage.set_UsageID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.UsageStartGet">
+            <summary>Sets the shim of Usage.get_UsageStart()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.UsageStartSetDateTime">
+            <summary>Sets the shim of Usage.set_UsageStart(DateTime value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.UsageTypeGet">
+            <summary>Sets the shim of Usage.get_UsageType()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.UsageTypeIDGet">
+            <summary>Sets the shim of Usage.get_UsageTypeID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.UsageTypeIDSetInt32">
+            <summary>Sets the shim of Usage.set_UsageTypeID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.UsageTypeSetUsageType">
+            <summary>Sets the shim of Usage.set_UsageType(UsageType value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.UserGet">
+            <summary>Sets the shim of Usage.get_User()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.UserIDGet">
+            <summary>Sets the shim of Usage.get_UserID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.UserIDSetInt32">
+            <summary>Sets the shim of Usage.set_UserID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsage.AllInstances.UserSetUzer">
+            <summary>Sets the shim of Usage.set_User(Uzer value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimUsageType">
+            <summary>Shim type of AppsTracker.Data.Models.UsageType</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimUsageType.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimUsageType.#ctor(AppsTracker.Data.Models.UsageType)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimUsageType.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimUsageType.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsageType.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsageType.Constructor">
+            <summary>Sets the shim of UsageType.UsageType()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsageType.UTypeGet">
+            <summary>Sets the shim of UsageType.get_UType()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsageType.UTypeSetString">
+            <summary>Sets the shim of UsageType.set_UType(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsageType.UsageTypeIDGet">
+            <summary>Sets the shim of UsageType.get_UsageTypeID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsageType.UsageTypeIDSetInt32">
+            <summary>Sets the shim of UsageType.set_UsageTypeID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsageType.UsagesGet">
+            <summary>Sets the shim of UsageType.get_Usages()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsageType.UsagesSetICollectionOfUsage">
+            <summary>Sets the shim of UsageType.set_Usages(ICollection`1&lt;Usage&gt; value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimUsageType.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsageType.AllInstances.UTypeGet">
+            <summary>Sets the shim of UsageType.get_UType()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsageType.AllInstances.UTypeSetString">
+            <summary>Sets the shim of UsageType.set_UType(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsageType.AllInstances.UsageTypeIDGet">
+            <summary>Sets the shim of UsageType.get_UsageTypeID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsageType.AllInstances.UsageTypeIDSetInt32">
+            <summary>Sets the shim of UsageType.set_UsageTypeID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsageType.AllInstances.UsagesGet">
+            <summary>Sets the shim of UsageType.get_Usages()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUsageType.AllInstances.UsagesSetICollectionOfUsage">
+            <summary>Sets the shim of UsageType.set_Usages(ICollection`1&lt;Usage&gt; value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimUzer">
+            <summary>Shim type of AppsTracker.Data.Models.Uzer</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimUzer.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimUzer.#ctor(AppsTracker.Data.Models.Uzer)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimUzer.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimUzer.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.ApplicationsGet">
+            <summary>Sets the shim of Uzer.get_Applications()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.ApplicationsSetICollectionOfAplication">
+            <summary>Sets the shim of Uzer.set_Applications(ICollection`1&lt;Aplication&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.AppsToBlocksGet">
+            <summary>Sets the shim of Uzer.get_AppsToBlocks()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.AppsToBlocksSetICollectionOfAppsToBlock">
+            <summary>Sets the shim of Uzer.set_AppsToBlocks(ICollection`1&lt;AppsToBlock&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.BlockedAppsGet">
+            <summary>Sets the shim of Uzer.get_BlockedApps()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.BlockedAppsSetICollectionOfBlockedApp">
+            <summary>Sets the shim of Uzer.set_BlockedApps(ICollection`1&lt;BlockedApp&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.Constructor">
+            <summary>Sets the shim of Uzer.Uzer()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.NameGet">
+            <summary>Sets the shim of Uzer.get_Name()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.NameSetString">
+            <summary>Sets the shim of Uzer.set_Name(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.UsagesGet">
+            <summary>Sets the shim of Uzer.get_Usages()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.UsagesSetICollectionOfUsage">
+            <summary>Sets the shim of Uzer.set_Usages(ICollection`1&lt;Usage&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.UserIDGet">
+            <summary>Sets the shim of Uzer.get_UserID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.UserIDSetInt32">
+            <summary>Sets the shim of Uzer.set_UserID(Int32 value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimUzer.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.AllInstances.ApplicationsGet">
+            <summary>Sets the shim of Uzer.get_Applications()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.AllInstances.ApplicationsSetICollectionOfAplication">
+            <summary>Sets the shim of Uzer.set_Applications(ICollection`1&lt;Aplication&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.AllInstances.AppsToBlocksGet">
+            <summary>Sets the shim of Uzer.get_AppsToBlocks()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.AllInstances.AppsToBlocksSetICollectionOfAppsToBlock">
+            <summary>Sets the shim of Uzer.set_AppsToBlocks(ICollection`1&lt;AppsToBlock&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.AllInstances.BlockedAppsGet">
+            <summary>Sets the shim of Uzer.get_BlockedApps()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.AllInstances.BlockedAppsSetICollectionOfBlockedApp">
+            <summary>Sets the shim of Uzer.set_BlockedApps(ICollection`1&lt;BlockedApp&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.AllInstances.NameGet">
+            <summary>Sets the shim of Uzer.get_Name()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.AllInstances.NameSetString">
+            <summary>Sets the shim of Uzer.set_Name(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.AllInstances.UsagesGet">
+            <summary>Sets the shim of Uzer.get_Usages()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.AllInstances.UsagesSetICollectionOfUsage">
+            <summary>Sets the shim of Uzer.set_Usages(ICollection`1&lt;Usage&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.AllInstances.UserIDGet">
+            <summary>Sets the shim of Uzer.get_UserID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimUzer.AllInstances.UserIDSetInt32">
+            <summary>Sets the shim of Uzer.set_UserID(Int32 value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimWindow">
+            <summary>Shim type of AppsTracker.Data.Models.Window</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimWindow.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimWindow.#ctor(AppsTracker.Data.Models.Window)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimWindow.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.ShimWindow.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.ApplicationGet">
+            <summary>Sets the shim of Window.get_Application()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.ApplicationIDGet">
+            <summary>Sets the shim of Window.get_ApplicationID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.ApplicationIDSetInt32">
+            <summary>Sets the shim of Window.set_ApplicationID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.ApplicationSetAplication">
+            <summary>Sets the shim of Window.set_Application(Aplication value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.Constructor">
+            <summary>Sets the shim of Window.Window()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.ConstructorString">
+            <summary>Sets the shim of Window.Window(String title)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.DurationGet">
+            <summary>Sets the shim of Window.get_Duration()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.GetWindowDuration">
+            <summary>Sets the shim of Window.GetWindowDuration()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.LogsGet">
+            <summary>Sets the shim of Window.get_Logs()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.LogsSetICollectionOfLog">
+            <summary>Sets the shim of Window.set_Logs(ICollection`1&lt;Log&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.TitleGet">
+            <summary>Sets the shim of Window.get_Title()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.TitleSetString">
+            <summary>Sets the shim of Window.set_Title(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.WindowIDGet">
+            <summary>Sets the shim of Window.get_WindowID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.WindowIDSetInt32">
+            <summary>Sets the shim of Window.set_WindowID(Int32 value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.ShimWindow.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.AllInstances.ApplicationGet">
+            <summary>Sets the shim of Window.get_Application()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.AllInstances.ApplicationIDGet">
+            <summary>Sets the shim of Window.get_ApplicationID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.AllInstances.ApplicationIDSetInt32">
+            <summary>Sets the shim of Window.set_ApplicationID(Int32 value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.AllInstances.ApplicationSetAplication">
+            <summary>Sets the shim of Window.set_Application(Aplication value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.AllInstances.DurationGet">
+            <summary>Sets the shim of Window.get_Duration()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.AllInstances.GetWindowDuration">
+            <summary>Sets the shim of Window.GetWindowDuration()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.AllInstances.LogsGet">
+            <summary>Sets the shim of Window.get_Logs()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.AllInstances.LogsSetICollectionOfLog">
+            <summary>Sets the shim of Window.set_Logs(ICollection`1&lt;Log&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.AllInstances.TitleGet">
+            <summary>Sets the shim of Window.get_Title()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.AllInstances.TitleSetString">
+            <summary>Sets the shim of Window.set_Title(String value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.AllInstances.WindowIDGet">
+            <summary>Sets the shim of Window.get_WindowID()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.ShimWindow.AllInstances.WindowIDSetInt32">
+            <summary>Sets the shim of Window.set_WindowID(Int32 value)</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.StubAplication">
+            <summary>Stub type of AppsTracker.Data.Models.Aplication</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubAplication.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubAplication.#ctor(System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubAplication.AppsToBlocksGet">
+            <summary>Sets the stub of Aplication.get_AppsToBlocks()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubAplication.AppsToBlocksSetICollectionOfAppsToBlock">
+            <summary>Sets the stub of Aplication.set_AppsToBlocks(ICollection`1&lt;AppsToBlock&gt; value)</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubAplication.AttachBackingFieldToAppsToBlocks">
+            <summary>Attaches delegates to emulate StubAplication.AppsToBlocks as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubAplication.AttachBackingFieldToBlockedApps">
+            <summary>Attaches delegates to emulate StubAplication.BlockedApps as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubAplication.AttachBackingFieldToUser">
+            <summary>Attaches delegates to emulate StubAplication.User as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubAplication.AttachBackingFieldToWindows">
+            <summary>Attaches delegates to emulate StubAplication.Windows as a property with a backing field.</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubAplication.BlockedAppsGet">
+            <summary>Sets the stub of Aplication.get_BlockedApps()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubAplication.BlockedAppsSetICollectionOfBlockedApp">
+            <summary>Sets the stub of Aplication.set_BlockedApps(ICollection`1&lt;BlockedApp&gt; value)</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubAplication.GetHashCode">
+            <summary>Sets the stub of Aplication.GetHashCode()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubAplication.GetHashCode01">
+            <summary>Sets the stub of Aplication.GetHashCode()</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubAplication.InitializeStub">
+            <summary>Initializes a new instance of type StubAplication</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubAplication.UserGet">
+            <summary>Sets the stub of Aplication.get_User()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubAplication.UserSetUzer">
+            <summary>Sets the stub of Aplication.set_User(Uzer value)</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubAplication.WindowsGet">
+            <summary>Sets the stub of Aplication.get_Windows()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubAplication.WindowsSetICollectionOfWindow">
+            <summary>Sets the stub of Aplication.set_Windows(ICollection`1&lt;Window&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubAplication.AppsToBlocks">
+            <summary>Sets the stub of Aplication.get_AppsToBlocks()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubAplication.BlockedApps">
+            <summary>Sets the stub of Aplication.get_BlockedApps()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubAplication.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubAplication.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubAplication.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubAplication.User">
+            <summary>Sets the stub of Aplication.get_User()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubAplication.Windows">
+            <summary>Sets the stub of Aplication.get_Windows()</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.StubAppsToBlock">
+            <summary>Stub type of AppsTracker.Data.Models.AppsToBlock</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubAppsToBlock.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubAppsToBlock.#ctor(AppsTracker.Data.Models.Uzer,AppsTracker.Data.Models.Aplication)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubAppsToBlock.ApplicationGet">
+            <summary>Sets the stub of AppsToBlock.get_Application()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubAppsToBlock.ApplicationSetAplication">
+            <summary>Sets the stub of AppsToBlock.set_Application(Aplication value)</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubAppsToBlock.AttachBackingFieldToApplication">
+            <summary>Attaches delegates to emulate StubAppsToBlock.Application as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubAppsToBlock.AttachBackingFieldToUser">
+            <summary>Attaches delegates to emulate StubAppsToBlock.User as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubAppsToBlock.InitializeStub">
+            <summary>Initializes a new instance of type StubAppsToBlock</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubAppsToBlock.UserGet">
+            <summary>Sets the stub of AppsToBlock.get_User()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubAppsToBlock.UserSetUzer">
+            <summary>Sets the stub of AppsToBlock.set_User(Uzer value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubAppsToBlock.Application">
+            <summary>Sets the stub of AppsToBlock.get_Application()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubAppsToBlock.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubAppsToBlock.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubAppsToBlock.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubAppsToBlock.User">
+            <summary>Sets the stub of AppsToBlock.get_User()</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.StubBlockedApp">
+            <summary>Stub type of AppsTracker.Data.Models.BlockedApp</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubBlockedApp.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubBlockedApp.#ctor(System.Int32,System.Int32)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubBlockedApp.ApplicationGet">
+            <summary>Sets the stub of BlockedApp.get_Application()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubBlockedApp.ApplicationSetAplication">
+            <summary>Sets the stub of BlockedApp.set_Application(Aplication value)</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubBlockedApp.AttachBackingFieldToApplication">
+            <summary>Attaches delegates to emulate StubBlockedApp.Application as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubBlockedApp.AttachBackingFieldToUser">
+            <summary>Attaches delegates to emulate StubBlockedApp.User as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubBlockedApp.InitializeStub">
+            <summary>Initializes a new instance of type StubBlockedApp</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubBlockedApp.UserGet">
+            <summary>Sets the stub of BlockedApp.get_User()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubBlockedApp.UserSetUzer">
+            <summary>Sets the stub of BlockedApp.set_User(Uzer value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubBlockedApp.Application">
+            <summary>Sets the stub of BlockedApp.get_Application()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubBlockedApp.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubBlockedApp.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubBlockedApp.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubBlockedApp.User">
+            <summary>Sets the stub of BlockedApp.get_User()</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.StubLog">
+            <summary>Stub type of AppsTracker.Data.Models.Log</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubLog.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubLog.#ctor(System.Int32)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubLog.#ctor(AppsTracker.Data.Models.Window,System.Int32)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubLog.#ctor(System.Int32,System.Int32)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubLog.AttachBackingFieldToScreenshots">
+            <summary>Attaches delegates to emulate StubLog.Screenshots as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubLog.AttachBackingFieldToUsage">
+            <summary>Attaches delegates to emulate StubLog.Usage as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubLog.AttachBackingFieldToWindow">
+            <summary>Attaches delegates to emulate StubLog.Window as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubLog.InitializeStub">
+            <summary>Initializes a new instance of type StubLog</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubLog.ScreenshotsGet">
+            <summary>Sets the stub of Log.get_Screenshots()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubLog.ScreenshotsSetICollectionOfScreenshot">
+            <summary>Sets the stub of Log.set_Screenshots(ICollection`1&lt;Screenshot&gt; value)</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubLog.UsageGet">
+            <summary>Sets the stub of Log.get_Usage()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubLog.UsageSetUsage">
+            <summary>Sets the stub of Log.set_Usage(Usage value)</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubLog.WindowGet">
+            <summary>Sets the stub of Log.get_Window()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubLog.WindowSetWindow">
+            <summary>Sets the stub of Log.set_Window(Window value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubLog.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubLog.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubLog.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubLog.Screenshots">
+            <summary>Sets the stub of Log.get_Screenshots()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubLog.Usage">
+            <summary>Sets the stub of Log.get_Usage()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubLog.Window">
+            <summary>Sets the stub of Log.get_Window()</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.StubScreenshot">
+            <summary>Stub type of AppsTracker.Data.Models.Screenshot</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubScreenshot.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubScreenshot.#ctor(System.Drawing.Size,System.Drawing.Image)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubScreenshot.AttachBackingFieldToLog">
+            <summary>Attaches delegates to emulate StubScreenshot.Log as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubScreenshot.InitializeStub">
+            <summary>Initializes a new instance of type StubScreenshot</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubScreenshot.LogGet">
+            <summary>Sets the stub of Screenshot.get_Log()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubScreenshot.LogSetLog">
+            <summary>Sets the stub of Screenshot.set_Log(Log value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubScreenshot.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubScreenshot.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubScreenshot.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubScreenshot.Log">
+            <summary>Sets the stub of Screenshot.get_Log()</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.StubSetting">
+            <summary>Stub type of AppsTracker.Data.Models.Setting</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubSetting.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubSetting.#ctor(System.Boolean)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubSetting.InitializeStub">
+            <summary>Initializes a new instance of type StubSetting</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubSetting.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubSetting.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubSetting.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.StubUsage">
+            <summary>Stub type of AppsTracker.Data.Models.Usage</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUsage.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUsage.#ctor(System.Int32)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUsage.#ctor(AppsTracker.Data.Models.Usage)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUsage.#ctor(System.Int32,System.Int32)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUsage.AttachBackingFieldToLogs">
+            <summary>Attaches delegates to emulate StubUsage.Logs as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUsage.AttachBackingFieldToSelfUsage">
+            <summary>Attaches delegates to emulate StubUsage.SelfUsage as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUsage.AttachBackingFieldToSelfUsages">
+            <summary>Attaches delegates to emulate StubUsage.SelfUsages as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUsage.AttachBackingFieldToUsageType">
+            <summary>Attaches delegates to emulate StubUsage.UsageType as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUsage.AttachBackingFieldToUser">
+            <summary>Attaches delegates to emulate StubUsage.User as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUsage.InitializeStub">
+            <summary>Initializes a new instance of type StubUsage</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUsage.LogsGet">
+            <summary>Sets the stub of Usage.get_Logs()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUsage.LogsSetICollectionOfLog">
+            <summary>Sets the stub of Usage.set_Logs(ICollection`1&lt;Log&gt; value)</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUsage.SelfUsageGet">
+            <summary>Sets the stub of Usage.get_SelfUsage()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUsage.SelfUsageSetICollectionOfUsage">
+            <summary>Sets the stub of Usage.set_SelfUsage(ICollection`1&lt;Usage&gt; value)</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUsage.SelfUsagesGet">
+            <summary>Sets the stub of Usage.get_SelfUsages()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUsage.SelfUsagesSetICollectionOfUsage">
+            <summary>Sets the stub of Usage.set_SelfUsages(ICollection`1&lt;Usage&gt; value)</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUsage.UsageTypeGet">
+            <summary>Sets the stub of Usage.get_UsageType()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUsage.UsageTypeSetUsageType">
+            <summary>Sets the stub of Usage.set_UsageType(UsageType value)</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUsage.UserGet">
+            <summary>Sets the stub of Usage.get_User()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUsage.UserSetUzer">
+            <summary>Sets the stub of Usage.set_User(Uzer value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUsage.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUsage.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUsage.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUsage.Logs">
+            <summary>Sets the stub of Usage.get_Logs()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUsage.SelfUsage">
+            <summary>Sets the stub of Usage.get_SelfUsage()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUsage.SelfUsages">
+            <summary>Sets the stub of Usage.get_SelfUsages()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUsage.UsageType">
+            <summary>Sets the stub of Usage.get_UsageType()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUsage.User">
+            <summary>Sets the stub of Usage.get_User()</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.StubUsageType">
+            <summary>Stub type of AppsTracker.Data.Models.UsageType</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUsageType.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUsageType.AttachBackingFieldToUsages">
+            <summary>Attaches delegates to emulate StubUsageType.Usages as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUsageType.InitializeStub">
+            <summary>Initializes a new instance of type StubUsageType</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUsageType.UsagesGet">
+            <summary>Sets the stub of UsageType.get_Usages()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUsageType.UsagesSetICollectionOfUsage">
+            <summary>Sets the stub of UsageType.set_Usages(ICollection`1&lt;Usage&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUsageType.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUsageType.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUsageType.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUsageType.Usages">
+            <summary>Sets the stub of UsageType.get_Usages()</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.StubUzer">
+            <summary>Stub type of AppsTracker.Data.Models.Uzer</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUzer.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUzer.ApplicationsGet">
+            <summary>Sets the stub of Uzer.get_Applications()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUzer.ApplicationsSetICollectionOfAplication">
+            <summary>Sets the stub of Uzer.set_Applications(ICollection`1&lt;Aplication&gt; value)</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUzer.AppsToBlocksGet">
+            <summary>Sets the stub of Uzer.get_AppsToBlocks()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUzer.AppsToBlocksSetICollectionOfAppsToBlock">
+            <summary>Sets the stub of Uzer.set_AppsToBlocks(ICollection`1&lt;AppsToBlock&gt; value)</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUzer.AttachBackingFieldToApplications">
+            <summary>Attaches delegates to emulate StubUzer.Applications as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUzer.AttachBackingFieldToAppsToBlocks">
+            <summary>Attaches delegates to emulate StubUzer.AppsToBlocks as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUzer.AttachBackingFieldToBlockedApps">
+            <summary>Attaches delegates to emulate StubUzer.BlockedApps as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUzer.AttachBackingFieldToUsages">
+            <summary>Attaches delegates to emulate StubUzer.Usages as a property with a backing field.</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUzer.BlockedAppsGet">
+            <summary>Sets the stub of Uzer.get_BlockedApps()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUzer.BlockedAppsSetICollectionOfBlockedApp">
+            <summary>Sets the stub of Uzer.set_BlockedApps(ICollection`1&lt;BlockedApp&gt; value)</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubUzer.InitializeStub">
+            <summary>Initializes a new instance of type StubUzer</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUzer.UsagesGet">
+            <summary>Sets the stub of Uzer.get_Usages()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubUzer.UsagesSetICollectionOfUsage">
+            <summary>Sets the stub of Uzer.set_Usages(ICollection`1&lt;Usage&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUzer.Applications">
+            <summary>Sets the stub of Uzer.get_Applications()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUzer.AppsToBlocks">
+            <summary>Sets the stub of Uzer.get_AppsToBlocks()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUzer.BlockedApps">
+            <summary>Sets the stub of Uzer.get_BlockedApps()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUzer.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUzer.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUzer.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubUzer.Usages">
+            <summary>Sets the stub of Uzer.get_Usages()</summary>
+        </member>
+        <member name="T:AppsTracker.Data.Models.Fakes.StubWindow">
+            <summary>Stub type of AppsTracker.Data.Models.Window</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubWindow.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubWindow.#ctor(System.String)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubWindow.ApplicationGet">
+            <summary>Sets the stub of Window.get_Application()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubWindow.ApplicationSetAplication">
+            <summary>Sets the stub of Window.set_Application(Aplication value)</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubWindow.AttachBackingFieldToApplication">
+            <summary>Attaches delegates to emulate StubWindow.Application as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubWindow.AttachBackingFieldToLogs">
+            <summary>Attaches delegates to emulate StubWindow.Logs as a property with a backing field.</summary>
+        </member>
+        <member name="M:AppsTracker.Data.Models.Fakes.StubWindow.InitializeStub">
+            <summary>Initializes a new instance of type StubWindow</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubWindow.LogsGet">
+            <summary>Sets the stub of Window.get_Logs()</summary>
+        </member>
+        <member name="F:AppsTracker.Data.Models.Fakes.StubWindow.LogsSetICollectionOfLog">
+            <summary>Sets the stub of Window.set_Logs(ICollection`1&lt;Log&gt; value)</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubWindow.Application">
+            <summary>Sets the stub of Window.get_Application()</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubWindow.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubWindow.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubWindow.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="P:AppsTracker.Data.Models.Fakes.StubWindow.Logs">
+            <summary>Sets the stub of Window.get_Logs()</summary>
+        </member>
     </members>
 </doc>

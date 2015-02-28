@@ -8,37 +8,39 @@
 
 using System;
 using System.Collections;
-
+using System.Collections.Generic;
 using AppsTracker.Common.Utils;
 
-namespace AppsTracker.DAL.Service
+namespace AppsTracker.Data.Service
 {
     public sealed class ServiceFactory
     {
-        private static readonly Hashtable _hashTable = new Hashtable();
+        private static readonly Dictionary<Type, Func<IBaseService>> serviceMap = new Dictionary<Type, Func<IBaseService>>();
 
         private ServiceFactory() { }
 
         public static void Register<T>(Func<T> getter) where T : class, IBaseService
         {
             Ensure.NotNull(getter);
-            Ensure.Condition<InvalidOperationException>(_hashTable.ContainsKey(typeof(T)) == false, string.Format("{0} is already inserted", typeof(T)));
+            if (serviceMap.ContainsKey(typeof(T)))
+                return;
 
-            _hashTable.Add(typeof(T), getter);
+            serviceMap.Add(typeof(T), getter);
         }
 
         public static T Get<T>() where T : class, IBaseService
         {
-            Ensure.Condition<InvalidOperationException>(_hashTable.ContainsKey(typeof(T)), string.Format("Can't resolve {0}", typeof(T)));
+            Func<IBaseService> getter;
+            var success = serviceMap.TryGetValue(typeof(T), out getter);
+            if (success == false)
+                throw new InvalidOperationException(string.Format("Can't resolve {0}", typeof(T)));
 
-            var getter = _hashTable[typeof(T)];
-            Func<T> res = (Func<T>)getter;
-            return res();
+            return (T)getter();
         }
 
         public static bool ContainsKey<T>() where T : class, IBaseService
         {
-            return _hashTable.ContainsKey(typeof(T));
+            return serviceMap.ContainsKey(typeof(T)); 
         }
     }
 }

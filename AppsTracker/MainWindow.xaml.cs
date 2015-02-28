@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using AppsTracker.ViewModels;
-using AppsTracker.DAL;
+using AppsTracker.Data;
 
 namespace AppsTracker
 {

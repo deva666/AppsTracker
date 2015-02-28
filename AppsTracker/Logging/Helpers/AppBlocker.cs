@@ -12,8 +12,7 @@ using System.Diagnostics;
 using System.Management;
 using System.Threading.Tasks;
 
-using AppsTracker.Models.EntityModels;
-using AppsTracker.Models.Proxy;
+using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 
 namespace AppsTracker.Logging
@@ -24,7 +23,7 @@ namespace AppsTracker.Logging
 
         ManagementEventWatcher _managementEventWatcher;
 
-        IEnumerable<AppsToBlock> _appsToBlockList;
+        //IEnumerable<AppsToBlock> _appsToBlockList;
 
         #endregion
 
@@ -32,18 +31,18 @@ namespace AppsTracker.Logging
 
         public event EventHandler<AppBlockerEventArgs> AppBlocked;
 
-        public IEnumerable<AppsToBlock> AppsToBlockList
-        {
-            get
-            {
-                return _appsToBlockList;
-            }
-            set
-            {
-                _appsToBlockList = value;
-                BlockAsync();
-            }
-        }
+        //public IEnumerable<AppsToBlock> AppsToBlockList
+        //{
+        //    get
+        //    {
+        //        return _appsToBlockList;
+        //    }
+        //    set
+        //    {
+        //        _appsToBlockList = value;
+        //        BlockAsync();
+        //    }
+        //}
 
         #endregion
 
@@ -51,7 +50,7 @@ namespace AppsTracker.Logging
 
         public AppBlocker()
         {
-            Mediator.Register(MediatorMessages.AppsToBlockChanged, new Action<IList<AppsToBlock>>(RefreshAppsToBlock));
+            //Mediator.Register(MediatorMessages.AppsToBlockChanged, new Action<IList<AppsToBlock>>(RefreshAppsToBlock));
             WqlEventQuery query = new WqlEventQuery("__InstanceCreationEvent", new TimeSpan(0, 0, 1), "TargetInstance isa \"Win32_Process\"");
             _managementEventWatcher = new ManagementEventWatcher();
             _managementEventWatcher.Query = query;
@@ -60,11 +59,11 @@ namespace AppsTracker.Logging
             _managementEventWatcher.EventArrived += processStartEvent_EventArrived;
         }
 
-        public AppBlocker(IEnumerable<AppsToBlock> collection)
-            : this()
-        {
-            _appsToBlockList = collection;
-        }
+        //public AppBlocker(IEnumerable<AppsToBlock> collection)
+        //    : this()
+        //{
+        //    _appsToBlockList = collection;
+        //}
 
         #endregion
 
@@ -74,11 +73,11 @@ namespace AppsTracker.Logging
             _managementEventWatcher.EventArrived -= processStartEvent_EventArrived;
         }
 
-        public void RefreshAppsToBlock(IList<AppsToBlock> appsToBlockList)
-        {
-            _appsToBlockList = appsToBlockList;
-            BlockAsync();
-        }
+        //public void RefreshAppsToBlock(IList<AppsToBlock> appsToBlockList)
+        //{
+        //    _appsToBlockList = appsToBlockList;
+        //    BlockAsync();
+        //}
 
         #region Event Handlers
 
@@ -92,25 +91,25 @@ namespace AppsTracker.Logging
         #region Class Methods
         private void Block()
         {
-            try
-            {
-                foreach (var blockedApp in _appsToBlockList)
-                {
-                    if (!IsProcessKilled(blockedApp))
-                        continue;
-                    Process[] processCollection = Process.GetProcessesByName(blockedApp.Application.WinName);
-                    if (processCollection.Length > 0)
-                    {
-                        foreach (var process in processCollection)
-                            process.Kill();
+            //try
+            //{
+            //    foreach (var blockedApp in _appsToBlockList)
+            //    {
+            //        if (!IsProcessKilled(blockedApp))
+            //            continue;
+            //        Process[] processCollection = Process.GetProcessesByName(blockedApp.Application.WinName);
+            //        if (processCollection.Length > 0)
+            //        {
+            //            foreach (var process in processCollection)
+            //                process.Kill();
 
-                        AppBlocked.InvokeSafely<AppBlockerEventArgs>(this, new AppBlockerEventArgs(blockedApp.Application));
-                    }
-                }
-            }
-            catch
-            {
-            }
+            //            AppBlocked.InvokeSafely<AppBlockerEventArgs>(this, new AppBlockerEventArgs(blockedApp.Application));
+            //        }
+            //    }
+            //}
+            //catch
+            //{
+            //}
         }
 
         private Task BlockAsync()
@@ -118,42 +117,42 @@ namespace AppsTracker.Logging
             return Task.Run(new Action(Block));
         }
 
-        private bool IsProcessKilled(AppsToBlock appsToBlock)
+        private bool IsProcessKilled()
         {
-            DayOfWeek today = DateTime.Now.DayOfWeek;
-            switch (today)
-            {
-                case DayOfWeek.Friday:
-                    if (appsToBlock.Friday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
-                        return false;
-                    break;
-                case DayOfWeek.Monday:
-                    if (appsToBlock.Monday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
-                        return false;
-                    break;
-                case DayOfWeek.Saturday:
-                    if (appsToBlock.Saturday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
-                        return false;
-                    break;
-                case DayOfWeek.Sunday:
-                    if (appsToBlock.Sunday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
-                        return false;
-                    break;
-                case DayOfWeek.Thursday:
-                    if (appsToBlock.Thursday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
-                        return false;
-                    break;
-                case DayOfWeek.Tuesday:
-                    if (appsToBlock.Tuesday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
-                        return false;
-                    break;
-                case DayOfWeek.Wednesday:
-                    if (appsToBlock.Wednesday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
-                        return false;
-                    break;
-                default:
-                    break;
-            }
+            //DayOfWeek today = DateTime.Now.DayOfWeek;
+            //switch (today)
+            //{
+            //    case DayOfWeek.Friday:
+            //        if (appsToBlock.Friday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
+            //            return false;
+            //        break;
+            //    case DayOfWeek.Monday:
+            //        if (appsToBlock.Monday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
+            //            return false;
+            //        break;
+            //    case DayOfWeek.Saturday:
+            //        if (appsToBlock.Saturday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
+            //            return false;
+            //        break;
+            //    case DayOfWeek.Sunday:
+            //        if (appsToBlock.Sunday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
+            //            return false;
+            //        break;
+            //    case DayOfWeek.Thursday:
+            //        if (appsToBlock.Thursday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
+            //            return false;
+            //        break;
+            //    case DayOfWeek.Tuesday:
+            //        if (appsToBlock.Tuesday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
+            //            return false;
+            //        break;
+            //    case DayOfWeek.Wednesday:
+            //        if (appsToBlock.Wednesday && (DateTime.Now.TimeOfDay >= new TimeSpan(appsToBlock.TimeMin) && DateTime.Now.TimeOfDay <= new TimeSpan(appsToBlock.TimeMax)))
+            //            return false;
+            //        break;
+            //    default:
+            //        break;
+            //}
 
             return true;
         }
@@ -184,7 +183,7 @@ namespace AppsTracker.Logging
             Dispose(true);
         }
 
-        public void SettingsChanged(ISettings settings)
+        public void SettingsChanged(Setting settings)
         {
 
         }

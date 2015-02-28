@@ -8,9 +8,8 @@
 
 using System;
 using System.Collections.Generic;
-
-using AppsTracker.DAL.Service;
-using AppsTracker.Models.EntityModels;
+using AppsTracker.Data.Models;
+using AppsTracker.Data.Service;
 
 namespace AppsTracker.Tests.Fakes.Service
 {
@@ -27,13 +26,6 @@ namespace AppsTracker.Tests.Fakes.Service
             System.Threading.Thread.Sleep(500);
             return new List<T>();
         }
-
-        public IList<AppsToBlock> AddToBlockedList(IEnumerable<Aplication> apps, string username, int userID)
-        {
-            System.Threading.Thread.Sleep(500);
-            return new List<AppsToBlock>();
-        }
-
 
         public int DeleteScreenshots(IEnumerable<Log> logs)
         {

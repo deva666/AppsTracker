@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:AppsTracker"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
-             xmlns:logging="clr-namespace:AppsTracker.Models.EntityModels;assembly=AppsTracker.Models"
+             xmlns:logging="clr-namespace:AppsTracker.Data.Models;assembly=AppsTracker.Data"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="300">

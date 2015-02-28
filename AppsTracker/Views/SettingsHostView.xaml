@@ -33,6 +33,9 @@
         <DataTemplate DataType="{x:Type viewModels:SettingsPasswordViewModel}">
             <settingsViews:MasterPasswordView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:SettingsAppCategoriesViewModel}">
+            <settingsViews:AppCategoriesView />
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>
@@ -87,6 +90,18 @@
                     <MouseBinding Gesture="LeftClick"
                                   Command="{Binding ChangePageCommand}"
                                   CommandParameter="{x:Type viewModels:SettingsPasswordViewModel}" />
+                </Label.InputBindings>
+            </Label>
+
+            <Label Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=APP CATEGORIES}"
+                   Content="APP CATEGORIES"
+                   FontSize="11"
+                   Margin="15,5,15,0"
+                   HorizontalAlignment="Left">
+                <Label.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding ChangePageCommand}"
+                                  CommandParameter="{x:Type viewModels:SettingsAppCategoriesViewModel}" />
                 </Label.InputBindings>
             </Label>
 

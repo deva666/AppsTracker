@@ -10,8 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Windows.Input;
-using AppsTracker.DAL.Service;
-using AppsTracker.Models.ChartModels;
+using AppsTracker.Data.Service;
+using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 
 

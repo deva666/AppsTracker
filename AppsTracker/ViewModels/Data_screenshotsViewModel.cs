@@ -17,9 +17,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.Controls;
-using AppsTracker.DAL;
-using AppsTracker.DAL.Service;
-using AppsTracker.Models.EntityModels;
+using AppsTracker.Data;
+using AppsTracker.Data.Service;
+using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 
 namespace AppsTracker.Pages.ViewModels

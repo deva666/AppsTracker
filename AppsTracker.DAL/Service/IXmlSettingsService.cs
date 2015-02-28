@@ -1,6 +1,6 @@
-﻿using AppsTracker.Models.XmlSettings;
+﻿using AppsTracker.Data.XmlSettings;
 
-namespace AppsTracker.DAL.Service
+namespace AppsTracker.Data.Service
 {
     public interface IXmlSettingsService : IBaseService
     {
@@ -8,6 +8,7 @@ namespace AppsTracker.DAL.Service
         KeylogsViewSettings KeylogsViewSettings { get; }
         ScreenshotsViewSettings ScreenshotsViewSettings { get; }
         DaysViewSettings DaysViewSettings { get; }
+        MainWindowSettings MainWindowSettings { get; }
         void Initialize();
         void ShutDown();
     }

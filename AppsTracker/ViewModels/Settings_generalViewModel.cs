@@ -21,7 +21,7 @@
 //using AppsTracker.Controls;
 //using AppsTracker.DAL;
 //using AppsTracker.Encryption;
-//using AppsTracker.Models.EntityModels;
+//using AppsTracker.Data.Models;
 //using AppsTracker.Models.Proxy;
 //using AppsTracker.MVVM;
 

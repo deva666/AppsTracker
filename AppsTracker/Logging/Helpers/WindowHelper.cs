@@ -9,8 +9,7 @@
 using System;
 using System.Diagnostics;
 using System.Text;
-
-using AppsTracker.Models.Proxy;
+using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Logging
 {

@@ -11,8 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-using AppsTracker.Models.Proxy;
+using AppsTracker.Data.Models;
 
 namespace AppsTracker.Logging
 {
@@ -20,13 +19,13 @@ namespace AppsTracker.Logging
     {
         LazyInit<LogCleanerHelper> _cleaner;
 
-        public LogCleaner(ISettings settings)
+        public LogCleaner(Setting settings)
         {
             _cleaner = new LazyInit<LogCleanerHelper>(() => new LogCleanerHelper(settings.OldLogDeleteDays));
             _cleaner.Enabled = settings.DeleteOldLogs;
         }
 
-        public void SettingsChanged(ISettings settings)
+        public void SettingsChanged(Setting settings)
         {
             _cleaner.Enabled = settings.DeleteOldLogs;
             if (_cleaner.Enabled)

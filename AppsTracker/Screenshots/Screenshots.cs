@@ -13,7 +13,7 @@ using System.IO;
 using System.Linq;
 
 using AppsTracker.Controls;
-using AppsTracker.Models.EntityModels;
+using AppsTracker.Data.Models;
 
 namespace AppsTracker
 {

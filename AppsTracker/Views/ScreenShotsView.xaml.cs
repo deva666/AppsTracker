@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using AppsTracker.DAL.Service;
+using AppsTracker.Data.Service;
 using AppsTracker.Pages.ViewModels;
 
 namespace AppsTracker.Pages.Views

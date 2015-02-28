@@ -9,7 +9,7 @@
 
 using System;
 
-using AppsTracker.DAL.Service;
+using AppsTracker.Data.Service;
 using AppsTracker.Tests.Fakes.Service;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

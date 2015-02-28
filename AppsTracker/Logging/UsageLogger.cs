@@ -11,9 +11,9 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading;
 using AppsTracker.Common.Utils;
-using AppsTracker.DAL;
-using AppsTracker.Models.EntityModels;
-using AppsTracker.Models.Proxy;
+using AppsTracker.Data;
+using AppsTracker.Data.Db;
+using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 
 namespace AppsTracker.Logging
@@ -29,9 +29,9 @@ namespace AppsTracker.Logging
 
         private LazyInit<IdleMonitor> _idleMonitor;
 
-        private ISettings _settings;
+        private Setting _settings;
 
-        public UsageLogger(ISettings settings)
+        public UsageLogger(Setting settings)
         {
             Ensure.NotNull(settings);
 
@@ -82,9 +82,9 @@ namespace AppsTracker.Logging
             {
                 string loginUsage = UsageTypes.Login.ToString();
 
-                if (context.Usages.Where(u => u.IsCurrent && u.UsageType.UType == loginUsage).Count() > 0)
+                if (context.Usages.Where(u => u.IsCurrent && u.UsageType.ToString() == loginUsage).Count() > 0)
                 {
-                    var failedSaveUsage = context.Usages.Where(u => u.IsCurrent && u.UsageType.UType == loginUsage).ToList();
+                    var failedSaveUsage = context.Usages.Where(u => u.IsCurrent && u.UsageType.ToString() == loginUsage).ToList();
                     foreach (var usage in failedSaveUsage)
                     {
                         var lastLog = context.Logs.Where(l => l.UsageID == usage.UsageID).OrderByDescending(l => l.DateCreated).FirstOrDefault();
@@ -106,7 +106,7 @@ namespace AppsTracker.Logging
                     }
                 }
 
-                var login = new Usage() { UserID = userID, UsageEnd = DateTime.Now, UsageTypeID = context.UsageTypes.First(u => u.UType == loginUsage).UsageTypeID, IsCurrent = true };
+                var login = new Usage() { UserID = userID, UsageEnd = DateTime.Now, UsageType = UsageTypes.Login, IsCurrent = true };
 
                 context.Usages.Add(login);
                 context.SaveChanges();
@@ -139,7 +139,7 @@ namespace AppsTracker.Logging
                 return;
 
             _currentUsageIdle.UsageEnd = DateTime.Now;
-            AddUsage(UsageTypes.Idle.ToString(), _currentUsageIdle);
+            AddUsage(UsageTypes.Idle, _currentUsageIdle);
             _currentUsageIdle = null;
         }
 
@@ -185,9 +185,8 @@ namespace AppsTracker.Logging
                 _currentUsageLocked = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
                 if (_currentUsageIdle != null)
                 {
-                    string usageType = UsageTypes.Idle.ToString();
                     _currentUsageIdle.UsageEnd = DateTime.Now;
-                    AddUsage(usageType, _currentUsageIdle);
+                    AddUsage(UsageTypes.Idle, _currentUsageIdle);
                     _currentUsageIdle = null;
                 }
                 _idleMonitor.Enabled = false;
@@ -197,20 +196,18 @@ namespace AppsTracker.Logging
                 _idleMonitor.Enabled = _settings.LoggingEnabled && _settings.EnableIdle;
                 if (_currentUsageLocked != null)
                 {
-                    string usageType = UsageTypes.Locked.ToString();
                     _currentUsageLocked.UsageEnd = DateTime.Now;
-                    AddUsage(usageType, _currentUsageLocked);
+                    AddUsage(UsageTypes.Locked, _currentUsageLocked);
                     _currentUsageLocked = null;
                 }
             }
         }
 
-        private void AddUsage(string usagetype, Usage usage)
+        private void AddUsage(UsageTypes usagetype, Usage usage)
         {
             using (var context = new AppsEntities())
             {
-                var typeID = context.UsageTypes.First(t => t.UType == usagetype).UsageTypeID;
-                usage.UsageTypeID = typeID;
+                usage.UsageType = usagetype;
                 context.Usages.Add(usage);
                 context.SaveChanges();
             }
@@ -229,7 +226,7 @@ namespace AppsTracker.Logging
             }
         }
 
-        public void SettingsChanged(ISettings settings)
+        public void SettingsChanged(Setting settings)
         {
             _settings = settings;
             Configure();
@@ -248,7 +245,7 @@ namespace AppsTracker.Logging
             if (_currentUsageStopped != null)
             {
                 _currentUsageStopped.UsageEnd = DateTime.Now;
-                AddUsage(UsageTypes.Stopped.ToString(), _currentUsageStopped);
+                AddUsage(UsageTypes.Stopped, _currentUsageStopped);
                 _currentUsageStopped = null;
             }
         }

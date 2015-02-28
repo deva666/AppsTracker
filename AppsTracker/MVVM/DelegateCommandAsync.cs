@@ -25,7 +25,7 @@ namespace AppsTracker.MVVM
             return true;
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged { add { } remove { } }
 
         public async void Execute(object parameter)
         {

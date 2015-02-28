@@ -18,7 +18,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-using AppsTracker.Models.EntityModels;
+using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 
 namespace AppsTracker
@@ -124,28 +124,30 @@ namespace AppsTracker
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            EmailInterval interval = (EmailInterval)value;
-            return GetEnumDescription(interval);
+            //EmailInterval interval = (EmailInterval)value;
+            //return GetEnumDescription(interval);
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            switch ((string)value)
-            {
-                case "5 min":
-                    return EmailInterval.FiveMinute;
-                case "10 min":
-                    return EmailInterval.TenMinute;
-                case "30 min":
-                    return EmailInterval.ThirtyMinute;
-                case "1 hr":
-                    return EmailInterval.OneHour;
-                case "2 hr":
-                    return EmailInterval.TwoHour;
-                default:
-                    return EmailInterval.FiveMinute;
+            return null;
+            //switch ((string)value)
+            //{
+            //    case "5 min":
+            //        return EmailInterval.FiveMinute;
+            //    case "10 min":
+            //        return EmailInterval.TenMinute;
+            //    case "30 min":
+            //        return EmailInterval.ThirtyMinute;
+            //    case "1 hr":
+            //        return EmailInterval.OneHour;
+            //    case "2 hr":
+            //        return EmailInterval.TwoHour;
+            //    default:
+            //        return EmailInterval.FiveMinute;
 
-            }
+            //}
         }
 
         private string GetEnumDescription(Enum enumObj)
@@ -1041,7 +1043,7 @@ namespace AppsTracker
             }
             else
             {
-                var selectedItems = collection.Cast<AppsTracker.Models.ChartModels.TopWindowsModel>();
+                var selectedItems = collection.Cast<TopWindowsModel>();
                 long totalDuration = 0;
                 foreach (var window in selectedItems)
                 {

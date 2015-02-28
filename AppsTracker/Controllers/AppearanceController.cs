@@ -11,6 +11,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.Animation;
+using AppsTracker.Data.Models;
 
 namespace AppsTracker.Controllers
 {
@@ -20,7 +21,7 @@ namespace AppsTracker.Controllers
         private bool _lightTheme;
         private bool _loggingEnabled;
 
-        public void Initialize(Models.EntityModels.Setting settings)
+        public void Initialize(Setting settings)
         {
             _lightTheme = settings.LightTheme;
             _loggingEnabled = settings.LoggingEnabled;
@@ -28,7 +29,7 @@ namespace AppsTracker.Controllers
             ApplyTheme();
         }
 
-        public void SettingsChanging(Models.EntityModels.Setting settings)
+        public void SettingsChanging(Setting settings)
         {
             bool isThemeChanging = false;
             if (_lightTheme != settings.LightTheme)

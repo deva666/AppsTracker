@@ -1,19 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 using AppsTracker.Pages.ViewModels;
 
 namespace AppsTracker.Controls
@@ -27,9 +17,9 @@ namespace AppsTracker.Controls
             this.WindowState = System.Windows.WindowState.Maximized;
             this.Loaded += (s, e) => ScaleLoaded();
             this.Closing += (s, e) => { viewModel.Dispose(); viewModel = null; };
-        }     
+        }
 
-        public ScreenshotViewerWindow(IEnumerable<AppsTracker.Models.EntityModels.Screenshot> screenshotCollection)
+        public ScreenshotViewerWindow(IEnumerable<AppsTracker.Data.Models.Screenshot> screenshotCollection)
             : this()
         {
             viewModel = new ScreenshotViewerViewModel(screenshotCollection);
@@ -44,7 +34,7 @@ namespace AppsTracker.Controls
             ScaleUnloaded();
         }
 
-       
+
         #region Animations
         private void ScaleLoaded()
         {
@@ -89,7 +79,7 @@ namespace AppsTracker.Controls
         #endregion
 
         #region Event Handlers
-      
+
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -132,7 +122,7 @@ namespace AppsTracker.Controls
             //timer.Stop();
             //timer.Start();
         }
-        
+
         #endregion
 
 

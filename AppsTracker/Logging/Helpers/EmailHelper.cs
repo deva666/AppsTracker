@@ -17,8 +17,8 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Web.UI;
 
-using AppsTracker.DAL.Service;
-using AppsTracker.Models.EntityModels;
+using AppsTracker.Data.Service;
+using AppsTracker.Data.Models;
 
 namespace AppsTracker.Logging
 {
@@ -156,7 +156,7 @@ namespace AppsTracker.Logging
             _settingsService = ServiceFactory.Get<ISqlSettingsService>();
 
             _timer = new System.Timers.Timer();
-            _timer.Interval = _interval = _settingsService.Settings.EmailInterval;
+            _timer.Interval = _interval = 100000000;
             _timer.AutoReset = true;
             _timer.Elapsed += timer_Elapsed;
             _timer.Start();
@@ -297,7 +297,7 @@ namespace AppsTracker.Logging
         private Task<Usage> GetCurrentLoginAsync()
         {
             string usageType = UsageTypes.Login.ToString();
-            return Task<Usage>.Run(() => _appsService.GetFiltered<Usage>(u => u.UsageType.UType == usageType
+            return Task<Usage>.Run(() => _appsService.GetFiltered<Usage>(u => u.UsageType.ToString() == usageType
                                                 && u.IsCurrent)
                                                 .OrderByDescending(u => u.UsageStart)
                                                 .First());

@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.Controllers;
-using AppsTracker.DAL.Service;
-using AppsTracker.Models.EntityModels;
+using AppsTracker.Data.Service;
+using AppsTracker.Data.Models;
 
 namespace AppsTracker.MVVM
 {

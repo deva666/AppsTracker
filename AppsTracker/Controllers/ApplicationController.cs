@@ -11,7 +11,7 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Windows;
 using AppsTracker.Controls;
-using AppsTracker.DAL.Service;
+using AppsTracker.Data.Service;
 using Microsoft.Win32;
 
 namespace AppsTracker.Controllers
@@ -173,11 +173,11 @@ ShowEULAWindow();
 
         private void LoadWindowPosition()
         {
-            var settings = _settingsService.Settings;
-            _mainWindow.Left = settings.MainWindowLeft;
-            _mainWindow.Top = settings.MainWindowTop;
-            _mainWindow.Width = settings.MainWindowWidth;
-            _mainWindow.Height = settings.MainWindowHeight;
+            var mainWindowSettings = _xmlSettingsService.MainWindowSettings;
+            _mainWindow.Left = mainWindowSettings.Left;
+            _mainWindow.Top = mainWindowSettings.Top;
+            _mainWindow.Width = mainWindowSettings.Width;
+            _mainWindow.Height = mainWindowSettings.Height;
         }
 
         private void CloseMainWindow()
@@ -192,12 +192,10 @@ ShowEULAWindow();
 
         private void SaveWindowPosition()
         {
-            var settings = _settingsService.Settings;
-            settings.MainWindowHeight = _mainWindow.Height;
-            settings.MainWindowWidth = _mainWindow.Width;
-            settings.MainWindowLeft = _mainWindow.Left;
-            settings.MainWindowTop = _mainWindow.Top;
-            _settingsService.SaveChanges(settings);
+            _xmlSettingsService.MainWindowSettings.Height = _mainWindow.Height;
+            _xmlSettingsService.MainWindowSettings.Width = _mainWindow.Width;
+            _xmlSettingsService.MainWindowSettings.Left = _mainWindow.Left;
+            _xmlSettingsService.MainWindowSettings.Top = _mainWindow.Top;
         }
 
         private void SetInitialWindowDimensions()
@@ -220,19 +218,17 @@ ShowEULAWindow();
             settings.TakeScreenshots = false;
             await _settingsService.SaveChangesAsync(settings);
 
-            if (!settings.Stealth)
-            {
-                MessageWindow msgWindow = new MessageWindow("Database size has reached the maximum allowed value" + Environment.NewLine + "Please run the screenshot cleaner from the settings menu to continue capturing screenshots.", false);
-                msgWindow.ShowDialog();
-            }
+            MessageWindow msgWindow = new MessageWindow("Database size has reached the maximum allowed value" + Environment.NewLine + "Please run the screenshot cleaner from the settings menu to continue capturing screenshots.", false);
+            msgWindow.ShowDialog();
+
             Globals.DBCleaningRequired -= Globals_DBCleaningRequired;
         }
 
         public void ShutDown()
         {
+            CloseMainWindow();
             _xmlSettingsService.ShutDown();
             _loggingController.Dispose();
-            CloseMainWindow();
             if (_trayIcon != null)
             {
                 _trayIcon.Dispose();

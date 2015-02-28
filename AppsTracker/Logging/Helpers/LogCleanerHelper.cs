@@ -14,7 +14,8 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 
 using AppsTracker.Common.Utils;
-using AppsTracker.DAL;
+using AppsTracker.Data;
+using AppsTracker.Data.Db;
 
 namespace AppsTracker.Logging
 {

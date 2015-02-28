@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Linq;
-using AppsTracker.Models.XmlSettings;
+using AppsTracker.Data.XmlSettings;
 
-namespace AppsTracker.DAL.Service
+namespace AppsTracker.Data.Service
 {
     public sealed class XmlSettingsService : IXmlSettingsService
     {
@@ -19,13 +19,12 @@ namespace AppsTracker.DAL.Service
         public KeylogsViewSettings KeylogsViewSettings { get; private set; }
         public ScreenshotsViewSettings ScreenshotsViewSettings { get; private set; }
         public DaysViewSettings DaysViewSettings { get; private set; }
+        public MainWindowSettings MainWindowSettings { get; private set; }
 
         private XmlSettingsService() { }
 
         public void Initialize()
         {
-            ConstructSettings();
-
             if (File.Exists(Path.Combine(settingsPath, SETTINGS_FILE_NAME)) == false)
                 return;
 
@@ -36,18 +35,13 @@ namespace AppsTracker.DAL.Service
             TrySetKeylogsViewValues(root);
             TrySetScreenshotsViewValues(root);
             TrySetDaysViewSettings(root);
-        }
-
-        private void ConstructSettings()
-        {
-            LogsViewSettings = new LogsViewSettings();
-            KeylogsViewSettings = new KeylogsViewSettings();
-            ScreenshotsViewSettings = new ScreenshotsViewSettings();
-            DaysViewSettings = new DaysViewSettings();
+            TrySetMainWindowSettings(root);
         }
 
         private void TrySetLogsViewSettings(XElement root)
         {
+            LogsViewSettings = new LogsViewSettings();
+
             var node = root.Element(LogsViewSettings.GetType().Name);
             if (node == null)
                 return;
@@ -64,6 +58,8 @@ namespace AppsTracker.DAL.Service
 
         private void TrySetKeylogsViewValues(XElement root)
         {
+            KeylogsViewSettings = new KeylogsViewSettings();
+
             var node = root.Element(KeylogsViewSettings.GetType().Name);
             if (node == null)
                 return;
@@ -80,6 +76,8 @@ namespace AppsTracker.DAL.Service
 
         private void TrySetScreenshotsViewValues(XElement root)
         {
+            ScreenshotsViewSettings = new ScreenshotsViewSettings();
+
             var node = root.Element(ScreenshotsViewSettings.GetType().Name);
             if (node == null)
                 return;
@@ -96,6 +94,8 @@ namespace AppsTracker.DAL.Service
 
         private void TrySetDaysViewSettings(XElement root)
         {
+            DaysViewSettings = new DaysViewSettings();
+
             var node = root.Element(DaysViewSettings.GetType().Name);
             if (node == null)
                 return;
@@ -110,6 +110,24 @@ namespace AppsTracker.DAL.Service
             }
         }
 
+        private void TrySetMainWindowSettings(XElement root)
+        {
+            MainWindowSettings = new MainWindowSettings();
+
+            var node = root.Element(MainWindowSettings.GetType().Name);
+            if (node == null)
+                return;
+
+            try
+            {
+                MainWindowSettings.SetValues(node);
+            }
+            catch
+            {
+                MainWindowSettings = new MainWindowSettings();
+            }
+        }
+
         public void ShutDown()
         {
             if (Directory.Exists(settingsPath) == false)
@@ -120,6 +138,7 @@ namespace AppsTracker.DAL.Service
             xml.Add(KeylogsViewSettings.GetXML());
             xml.Add(ScreenshotsViewSettings.GetXML());
             xml.Add(DaysViewSettings.GetXML());
+            xml.Add(MainWindowSettings.GetXML());
 
             xml.Save(Path.Combine(settingsPath, SETTINGS_FILE_NAME), SaveOptions.None);
         }

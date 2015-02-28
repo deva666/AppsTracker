@@ -7,19 +7,15 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
-
-using AppsTracker.Hooks;
-using AppsTracker.Models.Proxy;
-using AppsTracker.DAL.Service;
-using AppsTracker.Models.EntityModels;
-using AppsTracker.MVVM;
 using AppsTracker.Common.Utils;
-using AppsTracker.DAL;
+using AppsTracker.Data.Db;
+using AppsTracker.Data.Models;
+using AppsTracker.Data.Utils;
+using AppsTracker.Hooks;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.Logging
 {
@@ -36,9 +32,9 @@ namespace AppsTracker.Logging
         private LazyInit<IHook<KeyboardHookArgs>> _keyboardHook;
         private LazyInit<System.Threading.Timer> _windowCheckTimer;
 
-        private ISettings _settings;
+        private Setting _settings;
 
-        public WindowLogger(ISettings settings)
+        public WindowLogger(Setting settings)
         {
             Ensure.NotNull(settings);
 
@@ -77,15 +73,15 @@ namespace AppsTracker.Logging
 
         private void ConfigureComponents()
         {
-           _keyboardHook.Enabled = (_settings.EnableKeylogger && _settings.LoggingEnabled);
-           _screenshotTimer.Enabled = (_settings.TakeScreenshots && _settings.LoggingEnabled);
+            _keyboardHook.Enabled = (_settings.EnableKeylogger && _settings.LoggingEnabled);
+            _screenshotTimer.Enabled = (_settings.TakeScreenshots && _settings.LoggingEnabled);
 
-           if ((_settings.TakeScreenshots && _settings.LoggingEnabled) && _settings.TimerInterval != _screenshotTimer.Component.Interval)
-              _screenshotTimer.Component.Interval = _settings.TimerInterval;
+            if ((_settings.TakeScreenshots && _settings.LoggingEnabled) && _settings.TimerInterval != _screenshotTimer.Component.Interval)
+                _screenshotTimer.Component.Interval = _settings.TimerInterval;
 
-           _isLoggingEnabled =
-               _winHook.Enabled =
-                   _windowCheckTimer.Enabled = _settings.LoggingEnabled;
+            _isLoggingEnabled =
+                _winHook.Enabled =
+                    _windowCheckTimer.Enabled = _settings.LoggingEnabled;
         }
 
         private async void ScreenshotTick(object sender, System.Timers.ElapsedEventArgs e)
@@ -259,8 +255,6 @@ namespace AppsTracker.Logging
             await dbSizeAsync.ConfigureAwait(true);
         }
 
-
-
         private void NewAppAdded(IAppInfo appInfo)
         {
             using (var context = new AppsEntities())
@@ -271,7 +265,7 @@ namespace AppsTracker.Logging
             }
         }
 
-        public void SettingsChanged(ISettings settings)
+        public void SettingsChanged(Setting settings)
         {
             _settings = settings;
             ConfigureComponents();

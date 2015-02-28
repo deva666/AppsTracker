@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using AppsTracker.DAL.Service;
+using AppsTracker.Data.Service;
 using AppsTracker.Pages.ViewModels;
 using AppsTracker.Tests.Fakes.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

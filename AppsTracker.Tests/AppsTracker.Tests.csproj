@@ -91,17 +91,13 @@
       <Project>{0c42bfba-8444-4789-bd3f-65f84ccd94ed}</Project>
       <Name>AppsTracker.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppsTracker.DAL\AppsTracker.DAL.csproj">
+    <ProjectReference Include="..\AppsTracker.DAL\AppsTracker.Data.csproj">
       <Project>{dfff3918-1c83-4acd-9fa3-87cba98db030}</Project>
-      <Name>AppsTracker.DAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AppsTracker.Models\AppsTracker.Models.csproj">
-      <Project>{cc8b5831-53c4-46da-97db-18c75ed7d929}</Project>
-      <Name>AppsTracker.Models</Name>
+      <Name>AppsTracker.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppsTracker\AppsTracker.csproj">
       <Project>{ed886551-a8b3-492d-acec-fe2df0b484f7}</Project>
-      <Name>AppsTracker.Core</Name>
+      <Name>AppsTracker</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

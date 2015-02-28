@@ -9,14 +9,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using AppsTracker.Data.Models;
 
-using AppsTracker.Models.EntityModels;
-
-namespace AppsTracker.DAL.Service
+namespace AppsTracker.Data.Service
 {
     public interface IAppsService : IBaseService
     {
-        IList<AppsToBlock> AddToBlockedList(IEnumerable<Aplication> apps, string blockUsername, int loadUserID);
+        IEnumerable<T> Get<T>() where T : class;
         IEnumerable<T> GetFiltered<T>(Expression<Func<T, bool>> filter) where T : class;
         IEnumerable<T> GetFiltered<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class;
         int DeleteScreenshots(IEnumerable<Log> logs);

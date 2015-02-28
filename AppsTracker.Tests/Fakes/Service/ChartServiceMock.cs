@@ -8,9 +8,8 @@
 
 using System;
 using System.Collections.Generic;
-
-using AppsTracker.DAL.Service;
-using AppsTracker.Models.ChartModels;
+using AppsTracker.Data.Models;
+using AppsTracker.Data.Service;
 
 namespace AppsTracker.Tests.Fakes.Service
 {

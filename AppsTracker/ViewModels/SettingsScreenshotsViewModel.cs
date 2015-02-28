@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using AppsTracker.Controls;
-using AppsTracker.Models.EntityModels;
+using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels

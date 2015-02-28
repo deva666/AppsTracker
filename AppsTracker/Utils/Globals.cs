@@ -10,9 +10,9 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-
-using AppsTracker.DAL;
-using AppsTracker.Models.EntityModels;
+using AppsTracker.Data;
+using AppsTracker.Data.Db;
+using AppsTracker.Data.Models;
 
 namespace AppsTracker
 {

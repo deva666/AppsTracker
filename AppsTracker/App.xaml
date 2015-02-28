@@ -2190,6 +2190,78 @@
                 </Setter>
 
             </Style>
+
+            <DataTemplate x:Key="AppListBoxItemTemplate">
+                <Label Style="{DynamicResource LBLabelStyle}"
+                       Content="{Binding Path=Name}"
+                       FontSize="11">
+                    <Label.RenderTransform>
+                        <TranslateTransform />
+                    </Label.RenderTransform>
+                    <Label.Triggers>
+                        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                            <BeginStoryboard Storyboard="{StaticResource ElementFadeIn}" />
+                        </EventTrigger>
+                    </Label.Triggers>
+                    <Label.ToolTip>
+                        <ToolTip Style="{DynamicResource ToolTipStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Label Style="{DynamicResource LabelStyle}"
+                                       Grid.Row="0"
+                                       Grid.Column="0"
+                                       HorizontalAlignment="Left"
+                                       Content="Company:" />
+                                <Label Style="{DynamicResource LabelStyle}"
+                                       Grid.Row="0"
+                                       Grid.Column="1"
+                                       Content="{Binding Path=Company, Mode=OneWay}" />
+
+                                <Label Style="{DynamicResource LabelStyle}"
+                                       Grid.Row="1"
+                                       Grid.Column="0"
+                                       HorizontalAlignment="Left"
+                                       Content="Version:" />
+                                <Label Style="{DynamicResource LabelStyle}"
+                                       Grid.Row="1"
+                                       Grid.Column="1"
+                                       Content="{Binding Path=Version, Mode=OneWay}" />
+
+                                <Label Style="{DynamicResource LabelStyle}"
+                                       Grid.Row="2"
+                                       Grid.Column="0"
+                                       HorizontalAlignment="Left"
+                                       Content="Description:" />
+                                <Label Style="{DynamicResource LabelStyle}"
+                                       Grid.Row="2"
+                                       Grid.Column="1"
+                                       Content="{Binding Path=Description, Mode=OneWay}" />
+
+                                <Label Style="{DynamicResource LabelStyle}"
+                                       Grid.Row="3"
+                                       Grid.Column="0"
+                                       HorizontalAlignment="Left"
+                                       Content="File name:" />
+                                <Label Style="{DynamicResource LabelStyle}"
+                                       Grid.Row="3"
+                                       Grid.Column="1"
+                                       Content="{Binding Path=FileName, Mode=OneWay}" />
+                            </Grid>
+                        </ToolTip>
+                    </Label.ToolTip>
+                </Label>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>    

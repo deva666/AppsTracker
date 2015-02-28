@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using AppsTracker.DAL.Service;
+using AppsTracker.Data.Service;
 
 namespace AppsTracker.Pages.Views
 {

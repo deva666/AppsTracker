@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using AppsTracker.DAL.Service;
+using AppsTracker.Data.Service;
 
 namespace AppsTracker.Views
 {

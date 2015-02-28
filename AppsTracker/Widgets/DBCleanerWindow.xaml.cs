@@ -14,7 +14,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 
-using AppsTracker.DAL;
+using AppsTracker.Data;
+using AppsTracker.Data.Db;
 
 
 namespace AppsTracker.Controls

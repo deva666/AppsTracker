@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AppsTracker.Models.EntityModels;
+using AppsTracker.Data.Models;
 
-namespace AppsTracker.DAL.Service
+namespace AppsTracker.Data.Service
 {
     public interface ISqlSettingsService : IBaseService, INotifyPropertyChanged
     {

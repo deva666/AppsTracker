@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppsTracker.Data.Models;
 using AppsTracker.Logging;
 
 namespace AppsTracker.Controllers
@@ -14,7 +15,7 @@ namespace AppsTracker.Controllers
 
         IList<IComponent> _components = new List<IComponent>();
 
-        public void Initialize(Models.EntityModels.Setting settings)
+        public void Initialize(Setting settings)
         {
             _components.Add(new WindowLogger(settings));
             _components.Add(new UsageLogger(settings));
@@ -34,7 +35,7 @@ namespace AppsTracker.Controllers
             Parallel.ForEach<IComponent>(_components, action);
         }
 
-        public void SettingsChanging(Models.EntityModels.Setting settings)
+        public void SettingsChanging(Setting settings)
         {
             foreach (var comp in _components)
                 comp.SettingsChanged(settings);

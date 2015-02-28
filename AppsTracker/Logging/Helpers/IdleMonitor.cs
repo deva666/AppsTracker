@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 using System.Reflection;
 
 using AppsTracker.Hooks;
-using AppsTracker.DAL.Service;
+using AppsTracker.Data.Service;
 
 namespace AppsTracker.Logging
 {

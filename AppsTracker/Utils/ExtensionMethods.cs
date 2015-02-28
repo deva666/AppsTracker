@@ -11,7 +11,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading;
 using System.Windows.Threading;
-using AppsTracker.Models.EntityModels;
+using AppsTracker.Data.Models;
 
 namespace AppsTracker
 {
@@ -54,14 +54,7 @@ namespace AppsTracker
             }
         }
 
-        public static bool ItemExists(this DbSet<AppsToBlock> appsToBlock, Uzer uzer, Aplication aplication)
-        {
-            return (from a in appsToBlock
-                    where a.UserID == uzer.UserID
-                    && a.ApplicationID == aplication.ApplicationID
-                    select a).Count() > 0;
-        }
-
+    
         public static void Reset(this DispatcherTimer timer)
         {
             timer.Stop();
@@ -108,43 +101,6 @@ namespace AppsTracker
                 default:
                     return 0;
             }
-        }
-
-        public static double CovertToDouble(this EmailInterval interval)
-        {
-            switch (interval)
-            {
-                case EmailInterval.FiveMinute:
-                    return 5 * Constants.SECONDS_IN_MINUTE * Constants.MILISECONDS_IN_SECOND;
-                case EmailInterval.TenMinute:
-                    return 10 * Constants.SECONDS_IN_MINUTE * Constants.MILISECONDS_IN_SECOND;
-                case EmailInterval.ThirtyMinute:
-                    return 30 * Constants.SECONDS_IN_MINUTE * Constants.MILISECONDS_IN_SECOND;
-                case EmailInterval.OneHour:
-                    return 60 * Constants.SECONDS_IN_MINUTE * Constants.MILISECONDS_IN_SECOND;
-                case EmailInterval.TwoHour:
-                    return 120 * Constants.SECONDS_IN_MINUTE * Constants.MILISECONDS_IN_SECOND;
-                default:
-                    return 0;
-            }
-        }
-
-        public static EmailInterval ConvertToEmailInterval(this double miliseconds)
-        {
-
-            if (miliseconds == 5 * Constants.SECONDS_IN_MINUTE * Constants.MILISECONDS_IN_SECOND)
-                return EmailInterval.FiveMinute;
-            else if (miliseconds == 10 * Constants.SECONDS_IN_MINUTE * Constants.MILISECONDS_IN_SECOND)
-                return EmailInterval.TenMinute;
-            else if (miliseconds == 30 * Constants.SECONDS_IN_MINUTE * Constants.MILISECONDS_IN_SECOND)
-                return EmailInterval.ThirtyMinute;
-            else if (miliseconds == 60 * Constants.SECONDS_IN_MINUTE * Constants.MILISECONDS_IN_SECOND)
-                return EmailInterval.OneHour;
-            else if (miliseconds == 120 * Constants.SECONDS_IN_MINUTE * Constants.MILISECONDS_IN_SECOND)
-                return EmailInterval.TwoHour;
-
-            return EmailInterval.OneHour;
-
         }
 
         public static ScreenShotInterval ConvertToScreenshotInterval(this double miliseconds)

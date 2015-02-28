@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using System.Linq;
 
-using AppsTracker.Models.EntityModels;
+using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 
 

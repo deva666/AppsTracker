@@ -8,10 +8,9 @@
 
 using System;
 using System.Linq;
-
-using AppsTracker.DAL;
-using AppsTracker.Models.EntityModels;
-using AppsTracker.Models.Proxy;
+using AppsTracker.Data;
+using AppsTracker.Data.Db;
+using AppsTracker.Data.Models;
 
 namespace AppsTracker.Logging
 {
@@ -28,25 +27,22 @@ namespace AppsTracker.Logging
 
         private void Init()
         {
-            _appBlocker = new LazyInit<AppBlocker>(() => new AppBlocker()
-                                                        , a => a.AppBlocked += AppBlocked
-                                                        , a => a.AppBlocked -= AppBlocked);
+            _appBlocker = new LazyInit<AppBlocker>(() => new AppBlocker());
+                                                        //, a => a.AppBlocked += AppBlocked
+                                                        //, a => a.AppBlocked -= AppBlocked);
             var enabled = IsServiceEnabled();
 
             _appBlocker.Enabled = enabled;
         }
 
-        public void SettingsChanged(ISettings settings)
+        public void SettingsChanged(Setting settings)
         {
 
         }
 
         private bool IsServiceEnabled()
         {
-            using (var context = new AppsEntities())
-            {
-                return context.AppsToBlocks.Any(a => a.UserID == Globals.UserID);
-            }
+            return false;
         }
 
         private void AppBlocked(object sender, AppBlockerEventArgs args)

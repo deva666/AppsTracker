@@ -9,8 +9,8 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using AppsTracker.DAL.Service;
-using AppsTracker.Models.EntityModels;
+using AppsTracker.Data.Service;
+using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
@@ -249,11 +249,11 @@ namespace AppsTracker.ViewModels
             _appsService = ServiceFactory.Get<IAppsService>();
             _settingsService = ServiceFactory.Get<ISqlSettingsService>();
 
-            Register<DataHostViewModel>(() => new DataHostViewModel());
-            Register<StatisticsHostViewModel>(() => new StatisticsHostViewModel());
-            Register<SettingsHostViewModel>(() => new SettingsHostViewModel());
+            RegisterChild<DataHostViewModel>(() => new DataHostViewModel());
+            RegisterChild<StatisticsHostViewModel>(() => new StatisticsHostViewModel());
+            RegisterChild<SettingsHostViewModel>(() => new SettingsHostViewModel());
 
-            SelectedChild = Resolve(typeof(DataHostViewModel));
+            SelectedChild = GetChild(typeof(DataHostViewModel));
         }
 
         #endregion

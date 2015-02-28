@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using AppsTracker.Controls;
-using AppsTracker.DAL;
+using AppsTracker.Data;
 using AppsTracker.Encryption;
 using AppsTracker.MVVM;
 

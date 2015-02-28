@@ -8,8 +8,8 @@
 
 using System;
 using System.Collections.Generic;
-using AppsTracker.DAL.Service;
-using AppsTracker.Models.EntityModels;
+using AppsTracker.Data.Service;
+using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 using AppsTracker.Tests.Fakes.Service;
 using AppsTracker.ViewModels;

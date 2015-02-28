@@ -9,9 +9,9 @@
 using System;
 using System.Collections.Generic;
 
-using AppsTracker.Models.ChartModels;
+using AppsTracker.Data.Models;
 
-namespace AppsTracker.DAL.Service
+namespace AppsTracker.Data.Service
 {
     public interface IChartService : IBaseService, IDisposable
     {

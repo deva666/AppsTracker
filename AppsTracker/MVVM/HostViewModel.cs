@@ -47,10 +47,10 @@ namespace AppsTracker.MVVM
 
         protected virtual void ChangePage(object parameter)
         {
-            SelectedChild = Resolve((Type)parameter);
+            SelectedChild = GetChild((Type)parameter);
         }
 
-        protected void Register<T>(Func<T> getter) where T : ViewModelBase
+        protected void RegisterChild<T>(Func<T> getter) where T : ViewModelBase
         {
             if (_childrenMap.ContainsKey(typeof(T)))
                 return;
@@ -60,7 +60,7 @@ namespace AppsTracker.MVVM
             _childrenMap.Add(typeof(T), resolver);
         }
 
-        protected ViewModelBase Resolve(Type type)
+        protected ViewModelBase GetChild(Type type)
         {
             Ensure.NotNull(type);
             Ensure.Condition<InvalidOperationException>(_childrenMap.ContainsKey(type) == true, string.Format("Can't resolve {0} type!", type));

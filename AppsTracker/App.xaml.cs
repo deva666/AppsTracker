@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
@@ -17,16 +16,14 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using AppsTracker.Controllers;
 using AppsTracker.Controls;
-using AppsTracker.DAL.Service;
+using AppsTracker.Data.Service;
 
 
 namespace AppsTracker
 {
-    public partial class App : Application, IDisposable
+    public partial class App : Application
     {
-        private IApplicationController _applicationController;
-
-        private bool _disposed;
+        private IApplicationController applicationController;
 
         private AggregateCatalog catalog;
 
@@ -54,8 +51,8 @@ namespace AppsTracker
 
             var container = GetCompositionContainer();
 
-            _applicationController = container.GetExportedValue<IApplicationController>();
-            _applicationController.Initialize(autostart);
+            applicationController = container.GetExportedValue<IApplicationController>();
+            applicationController.Initialize(autostart);
 
             this.SessionEnding += (s, e) => FinishAndExit();
 
@@ -86,12 +83,9 @@ namespace AppsTracker
             try
             {
                 AppsTracker.Exceptions.FileLogger.Log(e.Exception);
-                if (ServiceFactory.Get<ISqlSettingsService>().Settings.Stealth == false)
-                {
-                    MessageWindow messageWindow = new MessageWindow("Ooops, this is awkward ... something went wrong." +
-                           Environment.NewLine + "The app needs to close." + Environment.NewLine + "Error: " + e.Exception.Message);
-                    messageWindow.ShowDialog();
-                }
+                MessageWindow messageWindow = new MessageWindow("Ooops, this is awkward ... something went wrong." +
+                       Environment.NewLine + "The app needs to close." + Environment.NewLine + "Error: " + e.Exception.Message);
+                messageWindow.ShowDialog();
             }
             finally
             {
@@ -101,27 +95,9 @@ namespace AppsTracker
 
         internal void FinishAndExit()
         {
-            _applicationController.ShutDown();
+            applicationController.ShutDown();
             Application.Current.Shutdown();
         }
-
-        #region IDisposable Members
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                this.DispatcherUnhandledException -= App_DispatcherUnhandledException;
-                _disposed = true;
-            }
-        }
-
-        #endregion
 
         public App() { }
     }

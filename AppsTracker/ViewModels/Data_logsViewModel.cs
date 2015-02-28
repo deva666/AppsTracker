@@ -14,9 +14,8 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using AppsTracker.DAL.Service;
-using AppsTracker.Models.ChartModels;
-using AppsTracker.Models.EntityModels;
+using AppsTracker.Data.Service;
+using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 
 namespace AppsTracker.Pages.ViewModels
@@ -371,21 +370,7 @@ namespace AppsTracker.Pages.ViewModels
 
         private void AddAplicationToBlockedList(object parameter)
         {
-            Dictionary<string, ObservableCollection<object>> processesDict = parameter as Dictionary<string, ObservableCollection<object>>;
-            if (processesDict != null)
-            {
-                string username = processesDict.Keys.ElementAtOrDefault(0);
-                if (processesDict.ContainsKey(username))
-                {
-                    ObservableCollection<object> objectCollection = processesDict[username];
-                    List<Aplication> appList = objectCollection.Select(o => o as Aplication).ToList();
-                    if (appList != null)
-                    {
-                        var notifyList = _appsService.AddToBlockedList(appList, username, Globals.UserID);
-                        Mediator.NotifyColleagues<IList<AppsToBlock>>(MediatorMessages.AppsToBlockChanged, notifyList);
-                    }
-                }
-            }
+           
 
         }
 

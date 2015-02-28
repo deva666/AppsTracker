@@ -7,14 +7,13 @@
 #endregion
 
 using System;
-
-using AppsTracker.Models.Proxy;
+using AppsTracker.Data.Models;
 
 namespace AppsTracker.Logging
 {
     interface IComponent : IDisposable
     {
-        void SettingsChanged(ISettings settings);
+        void SettingsChanged(Setting settings);
         void SetComponentEnabled(bool enabled);
     }
 }

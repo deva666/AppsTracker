@@ -7,7 +7,7 @@
 #endregion
 
 
-namespace AppsTracker.DAL.Service
+namespace AppsTracker.Data.Service
 {
     public interface IBaseService
     {

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using AppsTracker.Models.EntityModels;
+using AppsTracker.Data.Db;
+using AppsTracker.Data.Models;
 
-namespace AppsTracker.DAL.Service
+namespace AppsTracker.Data.Service
 {
     public sealed class SqlSettingsService : ISqlSettingsService
     {
@@ -48,21 +49,21 @@ namespace AppsTracker.DAL.Service
                     _settings = context.Settings.FirstOrDefault();
                 }
 
-                if (context.UsageTypes.Count() != Enum.GetValues(typeof(UsageTypes)).Length)
-                {
-                    bool modified = false;
-                    foreach (var type in Enum.GetNames(typeof(UsageTypes)))
-                    {
-                        if (context.UsageTypes.Any(u => u.UType == type) == false)
-                        {
-                            modified = true;
-                            UsageType usageType = new UsageType() { UType = type };
-                            usageType = context.UsageTypes.Add(usageType);
-                        }
-                    }
-                    if (modified)
-                        context.SaveChanges();
-                }
+                //if (context.UsageTypes.Count() != Enum.GetValues(typeof(UsageTypes)).Length)
+                //{
+                //    bool modified = false;
+                //    foreach (var type in Enum.GetNames(typeof(UsageTypes)))
+                //    {
+                //        if (context.UsageTypes.Any(u => u.UType == type) == false)
+                //        {
+                //            modified = true;
+                //            UsageType usageType = new UsageType() { UType = type };
+                //            usageType = context.UsageTypes.Add(usageType);
+                //        }
+                //    }
+                //    if (modified)
+                //        context.SaveChanges();
+                //}
             }
         }
 

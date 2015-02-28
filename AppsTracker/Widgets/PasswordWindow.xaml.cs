@@ -3,10 +3,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using AppsTracker.Controls;
-using AppsTracker.DAL.Service;
+using AppsTracker.Data.Service;
 using AppsTracker.Logging;
-using AppsTracker.Models.Proxy;
-
 
 namespace AppsTracker
 {

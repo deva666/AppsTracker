@@ -6,9 +6,10 @@
  */
 #endregion
 
-using AppsTracker.Models.ChartModels;
-using AppsTracker.Models.EntityModels;
-using AppsTracker.Models.Utils;
+using AppsTracker.Data.Models;
+using AppsTracker.Data.Utils;
+using AppsTracker.Data.Db;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,7 +17,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AppsTracker.DAL.Service
+namespace AppsTracker.Data.Service
 {
     public class ChartService : IChartService
     {
@@ -192,9 +193,7 @@ namespace AppsTracker.DAL.Service
                         usages = newContext.Usages.Where(u => u.User.UserID == userID
                                          && u.UsageStart >= dateFrom
                                          && u.UsageEnd <= dateTo
-                                         && u.UsageType.UType != ignore)
-                                .Include(u => u.UsageType)
-                                .ToList();
+                                         && u.UsageType.ToString() != ignore).ToList();
                     }
                 }
               );
@@ -213,7 +212,7 @@ namespace AppsTracker.DAL.Service
                                                                    DateCreated = u.UsageStart.ToString("HH:mm:ss"),
                                                                    DateEnded = u.UsageEnd.ToString("HH:mm:ss"),
                                                                    Duration = u.Duration.Ticks,
-                                                                   Name = ((UsageTypes)Enum.Parse(typeof(UsageTypes), u.UsageType.UType)).ToExtendedString(),
+                                                                   Name = u.UsageType.ToExtendedString(),
                                                                    Title = "*********",
                                                                    IsRequested = true
                                                                });
@@ -308,8 +307,7 @@ namespace AppsTracker.DAL.Service
                                                 && ((u.UsageStart >= fromDay && u.UsageStart <= nextDay)
                                                         || (u.IsCurrent && u.UsageStart < fromDay && today >= fromDay)
                                                         || (u.IsCurrent == false && u.UsageStart <= fromDay && u.UsageEnd >= fromDay))
-                                                && u.UsageType.UType == usageLogin)
-                                      .Include(u => u.UsageType)
+                                                && u.UsageType.ToString() == usageLogin)
                                       .ToList();
 
                 var usageIDs = logins.Select(u => u.UsageID);
@@ -320,8 +318,7 @@ namespace AppsTracker.DAL.Service
                     {
                         idles = newContext.Usages.Where(u => u.SelfUsageID.HasValue
                                                                 && usageIDs.Contains(u.SelfUsageID.Value)
-                                                                && u.UsageType.UType == usageIdle)
-                                                        .Include(u => u.UsageType)
+                                                                && u.UsageType.ToString() == usageIdle)
                                                         .ToList();
                     }
 
@@ -331,8 +328,7 @@ namespace AppsTracker.DAL.Service
                     {
                         lockeds = newContext.Usages.Where(u => u.SelfUsageID.HasValue
                                                                    && usageIDs.Contains(u.SelfUsageID.Value)
-                                                                   && u.UsageType.UType == usageLocked)
-                                                          .Include(u => u.UsageType)
+                                                                   && u.UsageType.ToString() == usageLocked)
                                                           .ToList();
                     }
 
@@ -342,8 +338,7 @@ namespace AppsTracker.DAL.Service
                     {
                         stoppeds = newContext.Usages.Where(u => u.SelfUsageID.HasValue
                                                                    && usageIDs.Contains(u.SelfUsageID.Value)
-                                                                   && u.UsageType.UType == usageStopped)
-                                           .Include(u => u.UsageType)
+                                                                   && u.UsageType.ToString() == usageStopped)
                                            .ToList();
                     }
 
@@ -628,7 +623,7 @@ namespace AppsTracker.DAL.Service
                 string loginType = UsageTypes.Login.ToString();
                 var logins = context.Usages.Where(u => u.UsageStart >= dateFrom
                                                      && u.UsageStart <= dateTo
-                                                     && u.UsageType.UType == loginType)
+                                                     && u.UsageType.ToString() == loginType)
                                        .Include(u => u.User)
                                        .ToList();
 
@@ -659,7 +654,7 @@ namespace AppsTracker.DAL.Service
                 var tempLogins = context.Usages.Where(u => u.User.Name == username
                                                      && u.UsageStart >= dateFrom
                                                      && u.UsageStart <= dateTo
-                                                     && u.UsageType.UType == usageLogin)
+                                                     && u.UsageType.ToString() == usageLogin)
                                          .ToList();
 
                 var logins = BreakUsagesByDay(tempLogins);
@@ -678,17 +673,17 @@ namespace AppsTracker.DAL.Service
 
                     idles = context.Usages.Where(u => u.SelfUsageID.HasValue
                                             && usageIDs.Contains(u.SelfUsageID.Value)
-                                            && u.UsageType.UType == usageIdle)
+                                            && u.UsageType.ToString() == usageIdle)
                                             .ToList();
 
                     lockeds = context.Usages.Where(u => u.SelfUsageID.HasValue
                                                       && usageIDs.Contains(u.SelfUsageID.Value)
-                                                      && u.UsageType.UType == usageLocked)
+                                                      && u.UsageType.ToString() == usageLocked)
                                                       .ToList();
 
                     stoppeds = context.Usages.Where(u => u.SelfUsageID.HasValue
                                                       && usageIDs.Contains(u.SelfUsageID.Value)
-                                                      && u.UsageType.UType == usageStopped)
+                                                      && u.UsageType.ToString() == usageStopped)
                                                       .ToList();
 
                     var day = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day);
@@ -744,7 +739,7 @@ namespace AppsTracker.DAL.Service
                                                      && u.UsageStart <= nextDay)
                                                         || (u.IsCurrent && u.UsageStart < fromDay && today >= fromDay)
                                                         || (u.IsCurrent == false && u.UsageStart <= fromDay && u.UsageEnd >= fromDay))
-                                                     && u.UsageType.UType == loginType)
+                                                     && u.UsageType.ToString() == loginType)
                                             .ToList();
 
                 var loginBegin = logins.OrderBy(l => l.UsageStart).FirstOrDefault();
