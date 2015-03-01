@@ -177,27 +177,26 @@ namespace AppsTracker.Logging
 
         private void NewLogArrived(string windowTitle, IAppInfo appInfo)
         {
+            SaveCurrentLog();
+
             if (appInfo == null || (appInfo != null && string.IsNullOrEmpty(appInfo.ProcessName)))
-            {
-                SaveOldLog();
                 return;
-            }
 
             bool newApp;
-            SaveOldLog();
             _currentLog = CreateNewLog(windowTitle, Globals.UsageID, Globals.UserID, appInfo, out newApp);
             _currentWindowTitle = windowTitle;
             if (newApp)
                 NewAppAdded(appInfo);
         }
-        private void SaveOldLog()
+
+        private void SaveCurrentLog()
         {
             if (_currentLog != null)
             {
                 _currentLog.Finish();
                 using (var context = new AppsEntities())
                 {
-                    context.Entry<Log>(_currentLog).State = System.Data.Entity.EntityState.Added;
+                    context.Entry<Log>(_currentLog).State = System.Data.Entity.EntityState.Modified;
                     context.SaveChanges();
                 }
                 _currentLog = null;
@@ -216,11 +215,11 @@ namespace AppsTracker.Logging
                 if (app == null)
                 {
                     app = new Aplication(appInfo.ProcessName,
-                                                    appInfo.ProcessFileName,
-                                                    appInfo.ProcessVersion,
-                                                    appInfo.ProcessDescription,
-                                                    appInfo.ProcessCompany,
-                                                    appInfo.ProcessRealName) { UserID = userID };
+                                         appInfo.ProcessFileName,
+                                         appInfo.ProcessVersion,
+                                         appInfo.ProcessDescription,
+                                         appInfo.ProcessCompany,
+                                         appInfo.ProcessRealName) { UserID = userID };
                     context.Applications.Add(app);
 
                     newApp = true;
@@ -235,9 +234,11 @@ namespace AppsTracker.Logging
                     context.Windows.Add(window);
                 }
 
+                var log = new Log(window, usageID);
+                context.Logs.Add(log);
                 context.SaveChanges();
 
-                return new Log(window.WindowID, usageID);
+                return log;
             }
         }
 
@@ -276,7 +277,7 @@ namespace AppsTracker.Logging
         private void StopLogging()
         {
             _isLoggingEnabled = false;
-            SaveOldLog();
+            SaveCurrentLog();
             _currentLog = null;
         }
 

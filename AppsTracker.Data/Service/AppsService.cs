@@ -74,5 +74,16 @@ namespace AppsTracker.Data.Service
                     && a.Name == appName);
             }
         }
+
+        public int DeleteOldScreenshots(int daysBackwards)
+        {
+            using (var context = new AppsEntities())
+            {
+                DateTime dateTreshold = DateTime.Now.AddDays(-1d * daysBackwards);
+                var oldScreenshots = context.Screenshots.Where(s => s.Date < dateTreshold).ToList();
+                context.Screenshots.RemoveRange(oldScreenshots);
+                return context.SaveChanges();
+            }
+        }
     }
 }

@@ -18,8 +18,6 @@ namespace AppsTracker.Hooks
 
     public sealed class WinHook : IHook<WinHookArgs>
     {
-        #region Fields
-
         private const uint WINEVENT_OUTOFCONTEXT = 0;
         private const uint EVENT_SYSTEM_FOREGROUND = 3;
 
@@ -31,10 +29,6 @@ namespace AppsTracker.Hooks
         private WinHookCallBack _winHookCallBack;
 
         private IntPtr _hookID = IntPtr.Zero;
-
-        #endregion
-
-        #region Constructor
 
         public WinHook()
         {
@@ -51,11 +45,6 @@ namespace AppsTracker.Hooks
             Debug.Assert(_hookID != IntPtr.Zero, "Failed to set WinHook");
         }
 
-
-        #endregion
-
-        #region ClassMethods
-
         private Process GetProcessFromHandle(IntPtr hWnd)
         {
             uint processID = 0;
@@ -69,10 +58,6 @@ namespace AppsTracker.Hooks
             return null;
         }
 
-        #endregion
-
-        #region CallBackMethod
-
         private void WinHookCallback(IntPtr hWinEventHook, uint eventType, IntPtr hWnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
             if (!_isHookEnabled || hWnd == IntPtr.Zero)
@@ -85,8 +70,6 @@ namespace AppsTracker.Hooks
             IAppInfo appInfo = AppInfo.GetAppInfo(process);
             HookProc.InvokeSafely<WinHookArgs>(this, new WinHookArgs(title, appInfo));
         }
-
-        #endregion
 
         #region IDisposable Members
         ~WinHook()

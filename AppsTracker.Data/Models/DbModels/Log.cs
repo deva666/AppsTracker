@@ -89,13 +89,13 @@ namespace AppsTracker.Data.Models
         public Log()
         {
             this.Screenshots = new HashSet<Screenshot>();
+            this.DateCreated = this.DateEnded = DateTime.Now;
         }
 
         public Log(int windowID)
             : this()
         {
             this.WindowID = windowID;
-            this.DateCreated = DateTime.Now;
         }
 
         public Log(int windowID, int usageID)
@@ -105,6 +105,7 @@ namespace AppsTracker.Data.Models
         }
 
         public Log(Window window, int usageID)
+            : this()
         {
             this.Window = window;
             this.UsageID = usageID;

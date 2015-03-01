@@ -59,7 +59,7 @@ namespace AppsTracker.Data.Models
 
         private void SetInitialSettings()
         {
-            this.EnableKeylogger = true;
+            this.EnableKeylogger = false;
             this.IsMasterPasswordSet = false;
             this.LightTheme = true;
             this.LoggingEnabled = true;
@@ -72,13 +72,13 @@ namespace AppsTracker.Data.Models
             this.EnableIdle = true;
             this.IdleTimer = 2 * 60 * 1000;
             this.FirstRun = true;
-            if (CreateScreenshotFolder())
+            if (ScreenshotFolderCreated())
                 this.DefaultScreenshotSavePath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Screenshots");
             else
                 this.DefaultScreenshotSavePath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         }
 
-        private bool CreateScreenshotFolder()
+        private bool ScreenshotFolderCreated()
         {
             try
             {
