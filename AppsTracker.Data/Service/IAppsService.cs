@@ -16,6 +16,7 @@ namespace AppsTracker.Data.Service
     public interface IAppsService : IBaseService
     {
         IEnumerable<T> Get<T>() where T : class;
+        IEnumerable<T> Get<T>(params Expression<Func<T, object>>[] navigations) where T : class;
         IEnumerable<T> GetFiltered<T>(Expression<Func<T, bool>> filter) where T : class;
         IEnumerable<T> GetFiltered<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class;
         int DeleteScreenshots(IEnumerable<Log> logs);

@@ -21,6 +21,8 @@ namespace AppsTracker.Logging
 {
     internal sealed class WindowLogger : IComponent, ICommunicator
     {
+        private readonly object _lock = new object();
+
         private bool _isLoggingEnabled;
 
         private string _currentWindowTitle;
@@ -106,65 +108,68 @@ namespace AppsTracker.Logging
             if (_isLoggingEnabled == false || _currentLog == null)
                 return;
 
-            if (e.KeyCode == 8)
-                _currentLog.RemoveLastKeyLogItem();
-            else if (e.KeyCode == 0x0D)
-                _currentLog.AppendNewKeyLogLine();
-            else
-                _currentLog.AppendKeyLog(e.String);
+            lock (_lock)
+            {
+                if (e.KeyCode == 8)
+                    _currentLog.RemoveLastKeyLogItem();
+                else if (e.KeyCode == 0x0D)
+                    _currentLog.AppendNewKeyLogLine();
+                else
+                    _currentLog.AppendKeyLog(e.String);
 
-            if (e.KeyCode == 8) _currentLog.AppendKeyLogRaw("Backspace"); //  backspace
-            else if (e.KeyCode == 9) _currentLog.AppendKeyLogRaw("Tab"); //  tab
-            else if (e.KeyCode == 13) _currentLog.AppendKeyLogRaw("Enter"); //  enter
-            else if (e.KeyCode == 16) _currentLog.AppendKeyLogRaw("Shift"); //  shift
-            else if (e.KeyCode == 17) _currentLog.AppendKeyLogRaw("Ctrl"); //  ctrl
-            else if (e.KeyCode == 18) _currentLog.AppendKeyLogRaw("Alt"); //  alt
-            else if (e.KeyCode == 19) _currentLog.AppendKeyLogRaw("Pause"); //  pause/break
-            else if (e.KeyCode == 20) _currentLog.AppendKeyLogRaw("Caps lock"); //  caps lock
-            else if (e.KeyCode == 27) _currentLog.AppendKeyLogRaw("Escape"); //  escape
-            else if (e.KeyCode == 33) _currentLog.AppendKeyLogRaw("Page up"); // page up, to avoid displaying alternate character and confusing people
-            else if (e.KeyCode == 34) _currentLog.AppendKeyLogRaw("Page down"); // page down
-            else if (e.KeyCode == 35) _currentLog.AppendKeyLogRaw("End"); // end
-            else if (e.KeyCode == 36) _currentLog.AppendKeyLogRaw("Home"); // home
-            else if (e.KeyCode == 37) _currentLog.AppendKeyLogRaw("Left arrow"); // left arrow
-            else if (e.KeyCode == 38) _currentLog.AppendKeyLogRaw("Up arrow"); // up arrow
-            else if (e.KeyCode == 39) _currentLog.AppendKeyLogRaw("Right arrow"); // right arrow
-            else if (e.KeyCode == 40) _currentLog.AppendKeyLogRaw("Down arrow"); // down arrow
-            else if (e.KeyCode == 45) _currentLog.AppendKeyLogRaw("Insert"); // insert
-            else if (e.KeyCode == 46) _currentLog.AppendKeyLogRaw("Delete"); // delete
-            else if (e.KeyCode == 91) _currentLog.AppendKeyLogRaw("Left window"); // left window
-            else if (e.KeyCode == 92) _currentLog.AppendKeyLogRaw("Right window"); // right window
-            else if (e.KeyCode == 93) _currentLog.AppendKeyLogRaw("Select key"); // select key
-            else if (e.KeyCode == 96) _currentLog.AppendKeyLogRaw("Numpad 0"); // numpad 0
-            else if (e.KeyCode == 97) _currentLog.AppendKeyLogRaw("Numpad 1"); // numpad 1
-            else if (e.KeyCode == 98) _currentLog.AppendKeyLogRaw("Numpad 2"); // numpad 2
-            else if (e.KeyCode == 99) _currentLog.AppendKeyLogRaw("Numpad 3"); // numpad 3
-            else if (e.KeyCode == 100) _currentLog.AppendKeyLogRaw("Numpad 4"); // numpad 4
-            else if (e.KeyCode == 101) _currentLog.AppendKeyLogRaw("Numpad 5"); // numpad 5
-            else if (e.KeyCode == 102) _currentLog.AppendKeyLogRaw("Numpad 6"); // numpad 6
-            else if (e.KeyCode == 103) _currentLog.AppendKeyLogRaw("Numpad 7"); // numpad 7
-            else if (e.KeyCode == 104) _currentLog.AppendKeyLogRaw("Numpad 8"); // numpad 8
-            else if (e.KeyCode == 105) _currentLog.AppendKeyLogRaw("Numpad 9"); // numpad 9
-            else if (e.KeyCode == 106) _currentLog.AppendKeyLogRaw("Multiply"); // multiply
-            else if (e.KeyCode == 107) _currentLog.AppendKeyLogRaw("Add"); // add
-            else if (e.KeyCode == 109) _currentLog.AppendKeyLogRaw("Subtract"); // subtract
-            else if (e.KeyCode == 110) _currentLog.AppendKeyLogRaw("Decimal point"); // decimal point
-            else if (e.KeyCode == 111) _currentLog.AppendKeyLogRaw("Divide"); // divide
-            else if (e.KeyCode == 112) _currentLog.AppendKeyLogRaw("F1"); // F1
-            else if (e.KeyCode == 113) _currentLog.AppendKeyLogRaw("F2"); // F2
-            else if (e.KeyCode == 114) _currentLog.AppendKeyLogRaw("F3"); // F3
-            else if (e.KeyCode == 115) _currentLog.AppendKeyLogRaw("F4"); // F4
-            else if (e.KeyCode == 116) _currentLog.AppendKeyLogRaw("F5"); // F5
-            else if (e.KeyCode == 117) _currentLog.AppendKeyLogRaw("F6"); // F6
-            else if (e.KeyCode == 118) _currentLog.AppendKeyLogRaw("F7"); // F7
-            else if (e.KeyCode == 119) _currentLog.AppendKeyLogRaw("F8"); // F8
-            else if (e.KeyCode == 120) _currentLog.AppendKeyLogRaw("F9"); // F9
-            else if (e.KeyCode == 121) _currentLog.AppendKeyLogRaw("F10"); // F10
-            else if (e.KeyCode == 122) _currentLog.AppendKeyLogRaw("F11"); // F11
-            else if (e.KeyCode == 123) _currentLog.AppendKeyLogRaw("F12"); // F12
-            else if (e.KeyCode == 144) _currentLog.AppendKeyLogRaw("Num lock"); // num lock
-            else if (e.KeyCode == 145) _currentLog.AppendKeyLogRaw("Scroll lock"); // scroll lock
-            else _currentLog.AppendKeyLogRaw(e.KeyName);
+                if (e.KeyCode == 8) _currentLog.AppendKeyLogRaw("Backspace"); //  backspace
+                else if (e.KeyCode == 9) _currentLog.AppendKeyLogRaw("Tab"); //  tab
+                else if (e.KeyCode == 13) _currentLog.AppendKeyLogRaw("Enter"); //  enter
+                else if (e.KeyCode == 16) _currentLog.AppendKeyLogRaw("Shift"); //  shift
+                else if (e.KeyCode == 17) _currentLog.AppendKeyLogRaw("Ctrl"); //  ctrl
+                else if (e.KeyCode == 18) _currentLog.AppendKeyLogRaw("Alt"); //  alt
+                else if (e.KeyCode == 19) _currentLog.AppendKeyLogRaw("Pause"); //  pause/break
+                else if (e.KeyCode == 20) _currentLog.AppendKeyLogRaw("Caps lock"); //  caps lock
+                else if (e.KeyCode == 27) _currentLog.AppendKeyLogRaw("Escape"); //  escape
+                else if (e.KeyCode == 33) _currentLog.AppendKeyLogRaw("Page up"); // page up, to avoid displaying alternate character and confusing people
+                else if (e.KeyCode == 34) _currentLog.AppendKeyLogRaw("Page down"); // page down
+                else if (e.KeyCode == 35) _currentLog.AppendKeyLogRaw("End"); // end
+                else if (e.KeyCode == 36) _currentLog.AppendKeyLogRaw("Home"); // home
+                else if (e.KeyCode == 37) _currentLog.AppendKeyLogRaw("Left arrow"); // left arrow
+                else if (e.KeyCode == 38) _currentLog.AppendKeyLogRaw("Up arrow"); // up arrow
+                else if (e.KeyCode == 39) _currentLog.AppendKeyLogRaw("Right arrow"); // right arrow
+                else if (e.KeyCode == 40) _currentLog.AppendKeyLogRaw("Down arrow"); // down arrow
+                else if (e.KeyCode == 45) _currentLog.AppendKeyLogRaw("Insert"); // insert
+                else if (e.KeyCode == 46) _currentLog.AppendKeyLogRaw("Delete"); // delete
+                else if (e.KeyCode == 91) _currentLog.AppendKeyLogRaw("Left window"); // left window
+                else if (e.KeyCode == 92) _currentLog.AppendKeyLogRaw("Right window"); // right window
+                else if (e.KeyCode == 93) _currentLog.AppendKeyLogRaw("Select key"); // select key
+                else if (e.KeyCode == 96) _currentLog.AppendKeyLogRaw("Numpad 0"); // numpad 0
+                else if (e.KeyCode == 97) _currentLog.AppendKeyLogRaw("Numpad 1"); // numpad 1
+                else if (e.KeyCode == 98) _currentLog.AppendKeyLogRaw("Numpad 2"); // numpad 2
+                else if (e.KeyCode == 99) _currentLog.AppendKeyLogRaw("Numpad 3"); // numpad 3
+                else if (e.KeyCode == 100) _currentLog.AppendKeyLogRaw("Numpad 4"); // numpad 4
+                else if (e.KeyCode == 101) _currentLog.AppendKeyLogRaw("Numpad 5"); // numpad 5
+                else if (e.KeyCode == 102) _currentLog.AppendKeyLogRaw("Numpad 6"); // numpad 6
+                else if (e.KeyCode == 103) _currentLog.AppendKeyLogRaw("Numpad 7"); // numpad 7
+                else if (e.KeyCode == 104) _currentLog.AppendKeyLogRaw("Numpad 8"); // numpad 8
+                else if (e.KeyCode == 105) _currentLog.AppendKeyLogRaw("Numpad 9"); // numpad 9
+                else if (e.KeyCode == 106) _currentLog.AppendKeyLogRaw("Multiply"); // multiply
+                else if (e.KeyCode == 107) _currentLog.AppendKeyLogRaw("Add"); // add
+                else if (e.KeyCode == 109) _currentLog.AppendKeyLogRaw("Subtract"); // subtract
+                else if (e.KeyCode == 110) _currentLog.AppendKeyLogRaw("Decimal point"); // decimal point
+                else if (e.KeyCode == 111) _currentLog.AppendKeyLogRaw("Divide"); // divide
+                else if (e.KeyCode == 112) _currentLog.AppendKeyLogRaw("F1"); // F1
+                else if (e.KeyCode == 113) _currentLog.AppendKeyLogRaw("F2"); // F2
+                else if (e.KeyCode == 114) _currentLog.AppendKeyLogRaw("F3"); // F3
+                else if (e.KeyCode == 115) _currentLog.AppendKeyLogRaw("F4"); // F4
+                else if (e.KeyCode == 116) _currentLog.AppendKeyLogRaw("F5"); // F5
+                else if (e.KeyCode == 117) _currentLog.AppendKeyLogRaw("F6"); // F6
+                else if (e.KeyCode == 118) _currentLog.AppendKeyLogRaw("F7"); // F7
+                else if (e.KeyCode == 119) _currentLog.AppendKeyLogRaw("F8"); // F8
+                else if (e.KeyCode == 120) _currentLog.AppendKeyLogRaw("F9"); // F9
+                else if (e.KeyCode == 121) _currentLog.AppendKeyLogRaw("F10"); // F10
+                else if (e.KeyCode == 122) _currentLog.AppendKeyLogRaw("F11"); // F11
+                else if (e.KeyCode == 123) _currentLog.AppendKeyLogRaw("F12"); // F12
+                else if (e.KeyCode == 144) _currentLog.AppendKeyLogRaw("Num lock"); // num lock
+                else if (e.KeyCode == 145) _currentLog.AppendKeyLogRaw("Scroll lock"); // scroll lock
+                else _currentLog.AppendKeyLogRaw(e.KeyName);
+            }
         }
 
         private void WindowChanged(object sender, WinHookArgs e)
@@ -177,33 +182,41 @@ namespace AppsTracker.Logging
 
         private void NewLogArrived(string windowTitle, IAppInfo appInfo)
         {
+            bool newApp = false;
+
             SaveCurrentLog();
 
             if (appInfo == null || (appInfo != null && string.IsNullOrEmpty(appInfo.ProcessName)))
                 return;
 
-            bool newApp;
-            _currentLog = CreateNewLog(windowTitle, Globals.UsageID, Globals.UserID, appInfo, out newApp);
+            CreateNewLog(windowTitle, Globals.UsageID, Globals.UserID, appInfo, out newApp);
             _currentWindowTitle = windowTitle;
+
             if (newApp)
                 NewAppAdded(appInfo);
         }
 
         private void SaveCurrentLog()
         {
-            if (_currentLog != null)
+            if (_currentLog == null)
+                return;
+
+            Log tempLog;
+            lock (_lock)
             {
-                _currentLog.Finish();
-                using (var context = new AppsEntities())
-                {
-                    context.Entry<Log>(_currentLog).State = System.Data.Entity.EntityState.Modified;
-                    context.SaveChanges();
-                }
+                tempLog = _currentLog;
                 _currentLog = null;
+            }
+
+            tempLog.Finish();
+            using (var context = new AppsEntities())
+            {
+                context.Entry<Log>(tempLog).State = System.Data.Entity.EntityState.Modified;
+                context.SaveChanges();
             }
         }
 
-        private Log CreateNewLog(string windowTitle, int usageID, int userID, IAppInfo appInfo, out bool newApp)
+        private void CreateNewLog(string windowTitle, int usageID, int userID, IAppInfo appInfo, out bool newApp)
         {
             using (var context = new AppsEntities())
             {
@@ -238,7 +251,8 @@ namespace AppsTracker.Logging
                 context.Logs.Add(log);
                 context.SaveChanges();
 
-                return log;
+                lock(_lock)
+                    _currentLog = log;
             }
         }
 
@@ -246,12 +260,19 @@ namespace AppsTracker.Logging
         {
             var dbSizeAsync = Globals.GetDBSizeAsync(); //check the DB size, this methods fires an event if near the maximum allowed size
 
-            Log log = _currentLog;
             Screenshot screenshot = Screenshots.GetScreenshot();
+            lock (_lock)
+            {
+                if (screenshot == null || _currentLog == null)
+                    return;
 
-            if (screenshot == null || log == null)
-                return;
-            log.Screenshots.Add(screenshot);
+                screenshot.LogID = _currentLog.LogID;
+            }
+            using (var context = new AppsEntities())
+            {
+                context.Screenshots.Add(screenshot);
+                context.SaveChanges();
+            }
 
             await dbSizeAsync.ConfigureAwait(true);
         }
@@ -272,13 +293,10 @@ namespace AppsTracker.Logging
             ConfigureComponents();
         }
 
-
-
         private void StopLogging()
         {
             _isLoggingEnabled = false;
             SaveCurrentLog();
-            _currentLog = null;
         }
 
         private void ResumeLogging()

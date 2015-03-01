@@ -196,6 +196,14 @@
     <Compile Include="Widgets\ArrowRight.xaml.cs">
       <DependentUpon>ArrowRight.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Widgets\Behavior\FrameworkElementAdorner.cs" />
+    <Compile Include="Widgets\Behavior\FrameworkElementDragBehavior.cs" />
+    <Compile Include="Widgets\Behavior\FrameworkElementDropBehavior.cs" />
+    <Compile Include="Widgets\Behavior\IDragable.cs" />
+    <Compile Include="Widgets\Behavior\IDropable.cs" />
+    <Compile Include="Widgets\Behavior\ListBoxAdorner.cs" />
+    <Compile Include="Widgets\Behavior\ListBoxAdornerManager.cs" />
+    <Compile Include="Widgets\Behavior\ListBoxDropBehavior.cs" />
     <Compile Include="Widgets\DBCleanerWindow.xaml.cs">
       <DependentUpon>DBCleanerWindow.xaml</DependentUpon>
     </Compile>
@@ -335,6 +343,7 @@
     <Compile Include="Widgets\SortableGridViewColumn.cs" />
     <Compile Include="Widgets\SortableListView.cs" />
     <Compile Include="Widgets\TrayIcon.cs" />
+    <Compile Include="Widgets\UIHelper.cs" />
     <Compile Include="Widgets\WPFHelper.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="ViewModels\AboutWindowViewModel.cs" />

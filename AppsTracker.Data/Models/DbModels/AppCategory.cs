@@ -6,6 +6,9 @@ namespace AppsTracker.Data.Models
 {
     public class AppCategory
     {
+        [NotMapped]
+        public bool IsSelected { get; set; }
+
         public AppCategory()
         {
             this.Applications = new HashSet<Aplication>();

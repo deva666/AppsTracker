@@ -26,6 +26,17 @@ namespace AppsTracker.Data.Service
             }
         }
 
+        public IEnumerable<T> Get<T>(params Expression<Func<T, object>>[] navigations) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                var query = context.Set<T>().AsQueryable();
+                foreach (var nav in navigations)
+                    query = query.Include(nav);
+                return query.AsNoTracking().ToList();
+            }
+        }
+
         public IEnumerable<T> GetFiltered<T>(Expression<Func<T, bool>> filter) where T : class
         {
             using (var context = new AppsEntities())

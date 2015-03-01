@@ -107,7 +107,7 @@ namespace AppsTracker.ViewModels
 
         private ObservableCollection<AppCategory> GetCategories()
         {
-            var cats = appsService.Get<AppCategory>();
+            var cats = appsService.Get<AppCategory>(c=>c.Applications);
             return new ObservableCollection<AppCategory>(cats);
         }
 

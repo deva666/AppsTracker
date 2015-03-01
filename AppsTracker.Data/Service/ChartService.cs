@@ -737,7 +737,7 @@ namespace AppsTracker.Data.Service
                 string dayEnd = (loginEnd == null || loginEnd.IsCurrent) ? "N/A" : loginEnd.GetDisplayedEnd(fromDay).ToShortTimeString();
 
                 var durationSpan = new TimeSpan(logins.Sum(l => l.Duration.Ticks));
-                var duration = durationSpan.Days > 0 ? string.Format("{0:D2}:{1:D2}:{2:D2}", durationSpan.Days, durationSpan.Hours, durationSpan.Minutes) : string.Format("{0:D2}:{1:D2}", durationSpan.Hours, durationSpan.Minutes); 
+                var duration = durationSpan.Days > 0 ? string.Format("{0:D2}:{1:D2}:{2:D2}", durationSpan.Days, durationSpan.Hours, durationSpan.Minutes) : string.Format("{0:D2}:{1:D2}", durationSpan.Hours, durationSpan.Minutes);
 
                 return new Tuple<string, string, string>(dayBegin, dayEnd, duration);
             }
@@ -758,7 +758,7 @@ namespace AppsTracker.Data.Service
 
                 foreach (var cat in categories)
                 {
-                    var totalDuration = cat.Applications.Sum(a => a.Duration.Ticks);
+                    var totalDuration = cat.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated >= dateFrom && l.DateCreated <= dateTo).Sum(l => l.Duration);
                     categoryModels.Add(new CategoryModel()
                     {
                         Name = cat.Name,

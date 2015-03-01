@@ -64,24 +64,51 @@
                    HorizontalAlignment="Center"
                    Content="Categories" />
 
-            <ListBox Name="lbCategories"
+            <TreeView Grid.Row="1"
+                      Margin="10"
+                      ItemsSource="{Binding Categories}"
+                      Background="Transparent"
+                      BorderThickness="0"
+                      ItemContainerStyle="{StaticResource TreeViewItemStyle}">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Applications}">
+                        <Label Style="{DynamicResource LabelStyle}"
+                               Content="{Binding Name}"/>
+                        
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+                
+            </TreeView>
+            <!--<ListBox Name="lbCategories"
                      Grid.Row="1"
                      Margin="10"
                      BorderThickness="0"
                      Background="Transparent"
                      Foreground="{DynamicResource WindowForegroundBrush}"
-                     ItemsSource="{Binding Categories, UpdateSourceTrigger=PropertyChanged}"
-                     SelectedItem="{Binding SelectedApplication, Mode=TwoWay}"
+                     ItemsSource="{Binding Categories, UpdateSourceTrigger=PropertyChanged}"                     
                      ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
-                     SelectionMode="Single"
+                     SelectionMode="Single"                     
                      AllowDrop="True">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Label Style="{DynamicResource LabelStyle}"
-                               Content="{Binding Name}" />
+                        <StackPanel Orientation="Vertical">
+                            <Label Style="{DynamicResource LabelStyle}"
+                                   Content="{Binding Name}" />
+                            <ListBox Margin="45,0,0,0"
+                                     BorderThickness="0"
+                                     Background="Transparent"
+                                     Foreground="{DynamicResource WindowForegroundBrush}"
+                                     ItemsSource="{Binding Applications, UpdateSourceTrigger=PropertyChanged}"
+                                     SelectedItem="{Binding SelectedApplication, Mode=TwoWay}"
+                                     ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
+                                     SelectionMode="Single"
+                                     ItemTemplate="{StaticResource AppListBoxItemTemplate}"
+                                     AllowDrop="True">
+                            </ListBox>
+                        </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
-            </ListBox>
+            </ListBox>-->
             <Button Content="Create new category"
                     Name="btnNewCategory"
                     Grid.Row="2"

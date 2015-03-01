@@ -100,7 +100,7 @@ namespace AppsTracker
         {
             try
             {
-                FileInfo file = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "apps.sdf"));
+                FileInfo file = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "appsdb.sdf"));
                 decimal size = Math.Round((decimal)file.Length / 1048576, 2);
                 if (size >= 3900m)
                 {

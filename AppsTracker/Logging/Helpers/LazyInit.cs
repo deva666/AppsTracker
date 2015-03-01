@@ -13,7 +13,7 @@ namespace AppsTracker.Logging
     internal sealed class LazyInit<T> : IDisposable where T : class,IDisposable
     {
         private bool _enabled = false;
-        private object @lock = new object();
+        private readonly object @lock = new object();
 
         public bool Enabled
         {
@@ -83,18 +83,16 @@ namespace AppsTracker.Logging
 
         private void DisposeComponent()
         {
-            if (_component != null)
+            lock (@lock)
             {
-                lock (@lock)
+                if (_component != null)
                 {
-                    if (_component != null)
-                    {
-                        if (_onDispose != null)
-                            _onDispose(_component);
-                        _component.Dispose();
-                        _component = null;
-                    }
+                    if (_onDispose != null)
+                        _onDispose(_component);
+                    _component.Dispose();
+                    _component = null;
                 }
+
             }
         }
     }

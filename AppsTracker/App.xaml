@@ -287,6 +287,26 @@
                 </Style.Triggers>
             </Style>
 
+            <Style x:Key="TreeViewItemStyle"
+                   TargetType="TreeViewItem">
+                <Setter Property="SnapsToDevicePixels"
+                        Value="true" />
+                <Setter Property="OverridesDefaultStyle"
+                        Value="False" />
+                <Setter Property="IsSelected"
+                        Value="{Binding IsSelected, Mode=TwoWay}" />
+              
+                <Style.Triggers>
+                    <Trigger Property="IsSelected"
+                             Value="True">
+                        <Setter Property="Background"
+                                Value="{DynamicResource 2ndBackgroundBrush}" />
+                        <Setter Property="Foreground"
+                                Value="{DynamicResource HighlightBrush}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
             <Style x:Key="GVLabelStyle"
                    BasedOn="{StaticResource LabelStyle}"
                    TargetType="Label">
