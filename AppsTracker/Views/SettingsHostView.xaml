@@ -105,39 +105,12 @@
                 </Label.InputBindings>
             </Label>
 
-            <Label Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=APPS}"
-                   Content="BLOCKED APPS"
-                   FontSize="11"
-                   Margin="15,5,15,0"
-                   HorizontalAlignment="Left" />
-
-            <!--<RadioButton Name="rbMasterPswd"
-                         Margin="15,5,15,0"
-                         IsChecked="False"
-                         HorizontalAlignment="Left"
-                         GroupName="menu">
-                <RadioButton.Template>
-                    <ControlTemplate>
-                        <Label Style="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Converter={StaticResource convertStyle}}"
-                               Content="MASTER PASSWORD"
-                               FontSize="11" />
-                    </ControlTemplate>
-                </RadioButton.Template>
-            </RadioButton>-->
-            <!--<RadioButton Name="rbEmails"
-                         Margin="15,5,15,0"
-                         IsChecked="False"
-                         HorizontalAlignment="Left"
-                         GroupName="menu">
-                <RadioButton.Template>
-                    <ControlTemplate>
-                        <Label Style="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Converter={StaticResource convertStyle}}"
-                               Content="EMAIL REPORTS"
-                               FontSize="11" />
-                    </ControlTemplate>
-                </RadioButton.Template>
-            </RadioButton>-->
-        </StackPanel>
+         <Label Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=APPS}"
+                Content="BLOCKED APPS"
+                FontSize="11"
+                Margin="15,5,15,0"
+                HorizontalAlignment="Left" />
+      </StackPanel>
         <Separator HorizontalAlignment="Right"
                    Margin="0,20,0,20"
                    Background="DarkGray">
@@ -150,37 +123,5 @@
                                       Margin="15"/>
 
     </Grid>
-    <!--<Grid Name="rootLayout">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal"
-                    Grid.ColumnSpan="5"
-                    Grid.Row="0"
-                    Margin="25,0,0,0">
-            <Label Content="APP SETTINGS"
-                   Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=APP SETTINGS}">
-                <Label.InputBindings>
-                    <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding ChangePageCommand}"
-                                  CommandParameter="{x:Type viewModels:Settings_generalViewModel}">
-                    </MouseBinding>
-                </Label.InputBindings>
-            </Label>
-        </StackPanel>
-        
-        <controls:FaderContentControl Content="{Binding SelectedChild}"
-                                      Grid.Column="0"
-                                      Grid.Row="1"
-                                      Grid.RowSpan="7"
-                                      Grid.ColumnSpan="5"
-                                      Margin="15"/>
-
-    </Grid>-->
 </UserControl>

@@ -116,8 +116,8 @@ namespace AppsTracker.Controls
             paintArea = Template.FindName("paintArea", this) as Shape;
             mainArea = Template.FindName("mainArea", this) as ContentPresenter;
 
-            paintArea.RenderTransform = new TranslateTransform();
-            mainArea.RenderTransform = new TranslateTransform();
+            //paintArea.RenderTransform = new TranslateTransform();
+            //mainArea.RenderTransform = new TranslateTransform();
         }
 
         void FaderContentControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

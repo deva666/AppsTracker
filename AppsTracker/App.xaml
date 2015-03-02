@@ -1619,14 +1619,22 @@
                                         </VisualState>
                                     </VisualStateGroup>
                                 </VisualStateManager.VisualStateGroups>
-                                <ContentPresenter Cursor="{TemplateBinding Cursor}"
-                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                  Content="{TemplateBinding Content}"
-                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  Margin="{TemplateBinding Padding}"
-                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                  x:Name="mainArea" />
-                                <Rectangle x:Name="paintArea" />
+                        <ContentPresenter Cursor="{TemplateBinding Cursor}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Content="{TemplateBinding Content}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          x:Name="mainArea">
+                           <ContentPresenter.RenderTransform>
+                              <TranslateTransform />
+                           </ContentPresenter.RenderTransform>
+                        </ContentPresenter>
+                        <Rectangle x:Name="paintArea">
+                           <Rectangle.RenderTransform>
+                              <TranslateTransform />
+                           </Rectangle.RenderTransform>
+                        </Rectangle>
                                 <Grid.RenderTransform>
                                     <TranslateTransform />
                                 </Grid.RenderTransform>
