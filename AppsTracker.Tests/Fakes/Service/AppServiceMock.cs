@@ -31,5 +31,17 @@ namespace AppsTracker.Tests.Fakes.Service
         {
             return 1;
         }
+
+        public IEnumerable<T> Get<T>() where T : class
+        {
+           System.Threading.Thread.Sleep(500);
+           return new List<T>();
+        }
+
+        public IEnumerable<T> Get<T>(params System.Linq.Expressions.Expression<Func<T, object>>[] navigations) where T : class
+        {
+           System.Threading.Thread.Sleep(500);
+           return new List<T>();
+        }
     }
 }
