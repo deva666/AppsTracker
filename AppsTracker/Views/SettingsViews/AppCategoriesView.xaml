@@ -5,199 +5,203 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:AppsTracker.Controls"
              xmlns:converters="clr-namespace:AppsTracker"
+             xmlns:behaviors="clr-namespace:AppsTracker.Widgets.Utils"
              mc:Ignorable="d"
              d:DesignHeight="800"
              d:DesignWidth="800">
-    <UserControl.Resources>
-        <converters:ConvertSelectedIndexToBool x:Key="selectedIndexConverter" />
-    </UserControl.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="450" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="200" />
-        </Grid.ColumnDefinitions>
+   <UserControl.Resources>
+      <converters:ConvertSelectedIndexToBool x:Key="selectedIndexConverter" />
+   </UserControl.Resources>
+   <Grid>
+      <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="450" />
+         <ColumnDefinition Width="Auto" />
+         <ColumnDefinition Width="200" />
+      </Grid.ColumnDefinitions>
 
-        <ScrollViewer Grid.Column="2"
-                      VerticalScrollBarVisibility="Auto">
-            <Grid Margin="20,0,0,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Label Style="{DynamicResource LabelStyle}"
-                       HorizontalAlignment="Center"
-                       Content="Unassigned Apps" />
+      <ScrollViewer Grid.Column="2"
+                    VerticalScrollBarVisibility="Auto">
+         <Grid Margin="20,0,0,0">
+            <Grid.RowDefinitions>
+               <RowDefinition Height="Auto" />
+               <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Style="{DynamicResource LabelStyle}"
+                   HorizontalAlignment="Center"
+                   Content="Unassigned Apps" />
 
-                <ListBox Name="lbApps"
-                         Grid.Column="0"
-                         Grid.Row="1"
-                         Margin="10"
-                         BorderThickness="0"
-                         Height="500"
-                         Background="Transparent"
-                         Foreground="{DynamicResource WindowForegroundBrush}"
-                         ItemsSource="{Binding Applications}"
-                         SelectedItem="{Binding UnassignedSelectedApp, Mode=TwoWay}"
-                         ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
-                         SelectionMode="Single"
-                         ItemTemplate="{StaticResource AppListBoxItemTemplate}">
-                </ListBox>
-            </Grid>
-        </ScrollViewer>
-        <ScrollViewer Grid.Column="1"
-                       VerticalScrollBarVisibility="Auto">
-            <Grid VerticalAlignment="Top"
-                  Grid.Column="1"
-                  Margin="10,50,10,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Label  Grid.Row="0"
-                        Content="add to category"
-                        Style="{DynamicResource SelectableLabelStyle}">
-                    <Label.InputBindings>
-                        <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding AssignAppCommand}" />
-                    </Label.InputBindings>
-                </Label>
+            <ListBox Name="lbApps"
+                     Grid.Column="0"
+                     Grid.Row="1"
+                     Margin="10"
+                     BorderThickness="0"
+                     Height="500"
+                     Background="Transparent"
+                     Foreground="{DynamicResource WindowForegroundBrush}"
+                     ItemsSource="{Binding Applications}"
+                     SelectedItem="{Binding UnassignedSelectedApp, Mode=TwoWay}"
+                     ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
+                     SelectionMode="Single"
+                     ItemTemplate="{StaticResource AppListBoxItemTemplate}">
+            </ListBox>
+         </Grid>
+      </ScrollViewer>
+      <ScrollViewer Grid.Column="1"
+                    VerticalScrollBarVisibility="Auto">
+         <Grid VerticalAlignment="Top"
+               Grid.Column="1"
+               Margin="10,50,10,0">
+            <Grid.RowDefinitions>
+               <RowDefinition Height="Auto" />
+               <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label  Grid.Row="0"
+                    Content="add to category"
+                    Style="{DynamicResource SelectableLabelStyle}">
+               <Label.InputBindings>
+                  <MouseBinding Gesture="LeftClick"
+                                Command="{Binding AssignAppCommand}" />
+               </Label.InputBindings>
+            </Label>
 
-                <Label  Grid.Row="1"
-                        Content="remove from category"
-                        Style="{DynamicResource SelectableLabelStyle}">
-                    <Label.InputBindings>
-                        <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding RemoveAppCommand}" />
-                    </Label.InputBindings>
-                </Label>
-            </Grid>
-        </ScrollViewer>
-        <ScrollViewer Grid.Column="0"
-                      VerticalScrollBarVisibility="Auto">
-            <Grid  Grid.Column="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Label Style="{DynamicResource LabelStyle}"
-                       HorizontalAlignment="Center"
-                       Content="Categories" />
-                <ListBox Name="lbCategories"
-                         Grid.Row="1"
-                         Margin="10"
-                         BorderThickness="0"
-                         Background="Transparent"
-                         Foreground="{DynamicResource WindowForegroundBrush}"
-                         ItemsSource="{Binding Categories, UpdateSourceTrigger=PropertyChanged}"
-                         ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
-                         SelectedItem="{Binding SelectedCategory}"
-                         SelectionMode="Single">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Vertical">
-                                <Label Style="{DynamicResource LBLabelStyle}"
-                                       Content="{Binding Name}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <Label Grid.Column="1"
-                       Style="{DynamicResource LabelStyle}"
-                       Content="Apps in selected category" />
-                <ListBox Grid.Row="1"
-                         Grid.Column="1"
-                         BorderThickness="0"
-                         Margin="10,10,0,20"
-                         Background="Transparent"
-                         Foreground="{DynamicResource WindowForegroundBrush}"
-                         ItemsSource="{Binding ElementName=lbCategories, Path=SelectedItem.ObservableApplications, UpdateSourceTrigger=PropertyChanged}"
-                         SelectedItem="{Binding AssignedSelectedApp, Mode=TwoWay}"
-                         ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
-                         SelectionMode="Single"
-                         ItemTemplate="{StaticResource AppListBoxItemTemplate}">
+            <Label  Grid.Row="1"
+                    Content="remove from category"
+                    Style="{DynamicResource SelectableLabelStyle}">
+               <Label.InputBindings>
+                  <MouseBinding Gesture="LeftClick"
+                                Command="{Binding RemoveAppCommand}" />
+               </Label.InputBindings>
+            </Label>
+         </Grid>
+      </ScrollViewer>
+      <ScrollViewer Grid.Column="0"
+                    VerticalScrollBarVisibility="Auto">
+         <Grid  Grid.Column="0">
+            <Grid.ColumnDefinitions>
+               <ColumnDefinition />
+               <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+               <RowDefinition Height="Auto" />
+               <RowDefinition Height="Auto" />
+               <RowDefinition Height="Auto" />
+               <RowDefinition Height="Auto" />
+               <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Style="{DynamicResource LabelStyle}"
+                   HorizontalAlignment="Center"
+                   Content="Categories" />
+            <ListBox Name="lbCategories"
+                     Grid.Row="1"
+                     Margin="10"
+                     BorderThickness="0"
+                     Background="Transparent"
+                     Foreground="{DynamicResource WindowForegroundBrush}"
+                     ItemsSource="{Binding Categories, UpdateSourceTrigger=PropertyChanged}"
+                     ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
+                     SelectedItem="{Binding SelectedCategory}"
+                     SelectionMode="Single">
+               <ListBox.ItemTemplate>
+                  <DataTemplate>
+                     <StackPanel Orientation="Vertical">
+                        <Label Style="{DynamicResource LBLabelStyle}"
+                               Content="{Binding Name}" />
+                     </StackPanel>
+                  </DataTemplate>
+               </ListBox.ItemTemplate>
+            </ListBox>
+            <Label Grid.Column="1"
+                   Style="{DynamicResource LabelStyle}"
+                   Content="Apps in selected category" />
+            <ListBox Grid.Row="1"
+                     Grid.Column="1"
+                     BorderThickness="0"
+                     Margin="10,10,0,20"
+                     Background="Transparent"
+                     Foreground="{DynamicResource WindowForegroundBrush}"
+                     ItemsSource="{Binding ElementName=lbCategories, Path=SelectedItem.ObservableApplications, UpdateSourceTrigger=PropertyChanged}"
+                     SelectedItem="{Binding AssignedSelectedApp, Mode=TwoWay}"
+                     ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
+                     SelectionMode="Single"
+                     ItemTemplate="{StaticResource AppListBoxItemTemplate}">
 
-                </ListBox>
-                <Button Content="Create new category"
-                        Name="btnNewCategory"
-                        Grid.Row="2"
-                        Width="140">
-                    <Button.InputBindings>
-                        <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding ShowNewCategoryCommand}"
-                                      CommandParameter="True" />
-                    </Button.InputBindings>
-                </Button>
-                <Button Content="Delete selected category"
-                        Grid.Row="3"
-                        Width="160"
-                        Margin="0,15,0,0">
-                    <Button.InputBindings>
-                        <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding DeleteCategoryCommand}"
-                                       />
-                    </Button.InputBindings>
-                </Button>
-                <Button Content="Save changes"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Width="120">
-                    <Button.InputBindings>
-                        <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding SaveChangesCommand}"
-                                      CommandParameter="True" />
-                    </Button.InputBindings>
-                </Button>
-                <Popup IsOpen="{Binding IsNewCategoryOpen}"
-                       StaysOpen="True"
-                       Placement="Bottom"
-                       PlacementTarget="{Binding ElementName=btnNewCategory}"
-                       Style="{DynamicResource PopupStyle}">
-                    <Border Style="{DynamicResource ThemeBorderStyle}"
-                            Padding="30">
-                        <Grid FocusManager.FocusedElement="{Binding ElementName=txtNewCategory}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Label Style="{DynamicResource LabelStyle}"
-                                   Content="Category name:" />
-                            <TextBox Name="txtNewCategory"
-                                     Grid.Row="1"
-                                     Margin="10" 
-                                     Width="150"
-                                     Background="{DynamicResource WindowBackgroundBrush}"
-                                     />
-                            <StackPanel Orientation="Horizontal"
-                                        Grid.Row="2">
-                                <Button Content="Save">
-                                    <Button.InputBindings>
-                                        <MouseBinding Gesture="LeftClick"
-                                                      Command="{Binding AddNewCategoryCommand}"
-                                                      CommandParameter="{Binding ElementName=txtNewCategory,Path=Text}" />
-                                    </Button.InputBindings>
-                                </Button>
-                                <Button Content="Cancel"
-                                        Margin="10,0,0,0">
-                                    <Button.InputBindings>
-                                        <MouseBinding Gesture="LeftClick"
-                                                      Command="{Binding ShowNewCategoryCommand}"
-                                                      CommandParameter="False" />
-                                    </Button.InputBindings>
-                                </Button>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                </Popup>
-            </Grid>
-        </ScrollViewer>
+            </ListBox>
+            <Button Content="Create new category"
+                    Name="btnNewCategory"
+                    Grid.Row="2"
+                    Width="140"
+                    Margin="0,50,0,0">
+               <Button.InputBindings>
+                  <MouseBinding Gesture="LeftClick"
+                                Command="{Binding ShowNewCategoryCommand}"
+                                CommandParameter="True" />
+               </Button.InputBindings>
+            </Button>
+            <Button Content="Delete selected category"
+                    Grid.Row="3"
+                    Width="160"
+                    Margin="0,15,0,0"
+                    IsEnabled="{Binding ElementName=lbCategories, Path=SelectedIndex, Converter={StaticResource selectedIndexConverter}}">
+               <Button.InputBindings>
+                  <MouseBinding Gesture="LeftClick"
+                                Command="{Binding DeleteCategoryCommand}" />
+               </Button.InputBindings>
+            </Button>
+            <Button Content="Save changes"
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Margin="0,30,0,0"
+                    Width="120">
+               <Button.InputBindings>
+                  <MouseBinding Gesture="LeftClick"
+                                Command="{Binding SaveChangesCommand}"
+                                CommandParameter="True" />
+               </Button.InputBindings>
+            </Button>
+            <Popup IsOpen="{Binding IsNewCategoryOpen}"
+                   StaysOpen="True"
+                   Placement="Bottom"
+                   PlacementTarget="{Binding ElementName=btnNewCategory}"
+                   Style="{DynamicResource PopupStyle}">
+               <Border Style="{DynamicResource ThemeBorderStyle}"
+                       Padding="30">
+                  <Grid FocusManager.FocusedElement="{Binding ElementName=txtNewCategory}"
+                        behaviors:KeyboardFocus.On="{Binding ElementName=txtNewCategory}">
+                     <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                     </Grid.RowDefinitions>
+                     <Label Style="{DynamicResource LabelStyle}"
+                            Content="Category name:" />
+                     <TextBox Name="txtNewCategory"
+                              Grid.Row="1"
+                              Margin="10"
+                              Width="150"
+                              Background="{DynamicResource WindowBackgroundBrush}" />
+                     <StackPanel Orientation="Horizontal"
+                                 Grid.Row="2">
+                        <Button Content="Save">
+                           <Button.InputBindings>
+                              <MouseBinding Gesture="LeftClick"
+                                            Command="{Binding AddNewCategoryCommand}"
+                                            CommandParameter="{Binding ElementName=txtNewCategory,Path=Text}" />
+                           </Button.InputBindings>
+                        </Button>
+                        <Button Content="Cancel"
+                                Margin="10,0,0,0">
+                           <Button.InputBindings>
+                              <MouseBinding Gesture="LeftClick"
+                                            Command="{Binding ShowNewCategoryCommand}"
+                                            CommandParameter="False" />
+                           </Button.InputBindings>
+                        </Button>
+                     </StackPanel>
+                  </Grid>
+               </Border>
+            </Popup>
+         </Grid>
+      </ScrollViewer>
 
-    </Grid>
+   </Grid>
 </UserControl>

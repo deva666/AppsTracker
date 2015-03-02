@@ -146,10 +146,10 @@ namespace AppsTracker.ViewModels
         private void LoadContent()
         {
             Categories = GetCategories();
-            var allApps = GetApps();
+            var unassignedApps = GetApps();
             var assignedApps = Categories.SelectMany(c => c.Applications);
-            allApps.RemoveAll(a => assignedApps.Any(app => app.ApplicationID == a.ApplicationID));
-            Applications = new ObservableCollection<Aplication>(allApps);
+            unassignedApps.RemoveAll(a => assignedApps.Any(app => app.ApplicationID == a.ApplicationID));
+            Applications = new ObservableCollection<Aplication>(unassignedApps);
         }
 
         private List<Aplication> GetApps()
