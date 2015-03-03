@@ -58,11 +58,23 @@
                 <Setter Property="Control.Foreground"
                         Value="{DynamicResource WindowForegroundBrush}" />
                 <Style.Triggers>
-                    <Trigger Property="Control.IsMouseOver"
-                             Value="True">
-                        <Setter Property="Control.Foreground"
-                                Value="{DynamicResource HighlightBrush}" />
-                    </Trigger>
+               <MultiTrigger>
+                  <MultiTrigger.Conditions>
+                     <Condition Property="Control.IsMouseOver"
+                                Value="True" />
+                     <Condition Property="Control.IsEnabled"
+                                Value="True" />
+                  </MultiTrigger.Conditions>
+                  <MultiTrigger.Setters>
+                     <Setter Property="Control.Foreground"
+                             Value="{DynamicResource HighlightBrush}" />
+                  </MultiTrigger.Setters>
+               </MultiTrigger>
+                    <Trigger Property="Control.IsEnabled"
+                             Value="False">
+                  <Setter Property="Control.Foreground"
+                          Value="{DynamicResource ButtonTextDisabled}" />
+               </Trigger>
                 </Style.Triggers>
             </Style>
 
