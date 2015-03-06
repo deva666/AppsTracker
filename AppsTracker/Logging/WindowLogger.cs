@@ -100,7 +100,7 @@ namespace AppsTracker.Logging
                 return;
 
             if (_currentWindowTitle != WindowHelper.GetActiveWindowName())
-                NewLogArrived(WindowHelper.GetActiveWindowName(), WindowHelper.GetActiveWindowAppInfo());
+                OnWindowChange(WindowHelper.GetActiveWindowName(), WindowHelper.GetActiveWindowAppInfo());
         }
 
         private void KeyPressed(object sender, KeyboardHookArgs e)
@@ -126,10 +126,10 @@ namespace AppsTracker.Logging
             if (_isLoggingEnabled == false)
                 return;
 
-            NewLogArrived(e.WindowTitle, e.AppInfo);
+            OnWindowChange(e.WindowTitle, e.AppInfo);
         }
 
-        private void NewLogArrived(string windowTitle, IAppInfo appInfo)
+        private void OnWindowChange(string windowTitle, IAppInfo appInfo)
         {
             bool newApp = false;
 
