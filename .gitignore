@@ -154,3 +154,6 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+=======
+AppsTracker.Data/Db/DbConnectionFactory.cs
+

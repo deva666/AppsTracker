@@ -11,6 +11,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace AppsTracker.MVVM
 {
@@ -37,6 +38,14 @@ namespace AppsTracker.MVVM
                     PropertyChanging("Working");
                 }
             }
+        }
+
+        protected void SetPropertyValue<T>(ref T target, T value, [CallerMemberName] string caller = null)
+        {
+            if (object.Equals(target, value))
+                return;
+            target = value;
+            PropertyChanging(caller);
         }
 
         public void Dispose()

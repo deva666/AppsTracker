@@ -52,7 +52,7 @@ namespace AppsTracker.Hooks
             {
                 WinAPI.GetWindowThreadProcessId(hWnd, out processID);
                 if (processID != 0)
-                    return System.Diagnostics.Process.GetProcessById(Convert.ToInt32(processID));
+                    return System.Diagnostics.Process.GetProcessById(checked((int)processID));
 
             }
             return null;

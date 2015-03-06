@@ -1161,6 +1161,22 @@ namespace AppsTracker
         #endregion
     }
 
+    public class MultiSelectedIndexBooleanConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            int firstIndex = (int)values[0];
+            int secondIndex = (int)values[1];
+            if (firstIndex < 0 || secondIndex < 0)
+                return false;
+            return true;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 
 

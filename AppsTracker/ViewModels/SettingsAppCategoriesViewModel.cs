@@ -27,33 +27,28 @@ namespace AppsTracker.ViewModels
         public bool IsNewCategoryOpen
         {
             get { return isNewCategoryOpen; }
-            set
-            {
-                isNewCategoryOpen = value;
-                PropertyChanging("IsNewCategoryOpen");
-            }
+            set { SetPropertyValue(ref isNewCategoryOpen, value); }
         }
 
         private ObservableCollection<Aplication> applications;
         public ObservableCollection<Aplication> Applications
         {
             get { return applications; }
-            set
-            {
-                applications = value;
-                PropertyChanging("Applications");
-            }
+            set { SetPropertyValue(ref applications, value); }
         }
 
         private ObservableCollection<AppCategory> categories;
         public ObservableCollection<AppCategory> Categories
         {
             get { return categories; }
-            set
-            {
-                categories = value;
-                PropertyChanging("Categories");
-            }
+            set { SetPropertyValue(ref categories, value); }
+        }
+
+        private string newCategoryName;
+        public string NewCategoryName
+        {
+            get { return newCategoryName; }
+            set { SetPropertyValue(ref newCategoryName, value); }
         }
 
         public Aplication UnassignedSelectedApp { get; set; }
@@ -133,6 +128,7 @@ namespace AppsTracker.ViewModels
             var category = new AppCategory() { Name = categoryName, ObservableApplications = new ObservableCollection<Aplication>() };
             Categories.Add(category);
             IsNewCategoryOpen = false;
+            NewCategoryName = string.Empty;
         }
 
         public SettingsAppCategoriesViewModel()
@@ -203,7 +199,7 @@ namespace AppsTracker.ViewModels
         {
             foreach (var cat in _categoriesToDelete)
             {
-                _context.Entry(cat).State = EntityState.Deleted;    
+                _context.Entry(cat).State = EntityState.Deleted;
             }
 
             foreach (var cat in Categories)

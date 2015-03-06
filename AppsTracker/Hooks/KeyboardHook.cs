@@ -20,31 +20,25 @@ namespace AppsTracker.Hooks
 
     internal sealed class KeyBoardHook : IHook<KeyboardHookArgs>
     {
-        #region Fields
+        private const int WH_KEYBOARD_LL = 13;
+        private const int WM_KEYDOWN = 0x0100;
+        private const int WM_KEYUP = 0x0101;
+        private const int WM_SYSKEYDOWN = 0x0104;
+        private const int WM_SYSKEYUP = 0x0105;
+        private const int VK_SHIFT = 0x10;
+        private const int VK_CONTROL = 0x11;
+        private const int VK_MENU = 0x12;
+        private const int VK_CAPITAL = 0x14;
 
-        const int WH_KEYBOARD_LL = 13;
-        const int WM_KEYDOWN = 0x0100;
-        const int WM_KEYUP = 0x0101;
-        const int WM_SYSKEYDOWN = 0x0104;
-        const int WM_SYSKEYUP = 0x0105;
-        const int VK_SHIFT = 0x10;
-        const int VK_CONTROL = 0x11;
-        const int VK_MENU = 0x12;
-        const int VK_CAPITAL = 0x14;
-
-        bool _keyLoggerEnabled = true;
-        bool _isDisposed;
+        private bool _keyLoggerEnabled = true;
+        private bool _isDisposed;
 
         public event EventHandler<KeyboardHookArgs> HookProc;
 
-        KeyboardHookCallback _hookCallBack;
-        IntPtr _hookID = IntPtr.Zero;
+        private KeyboardHookCallback _hookCallBack;
+        private IntPtr _hookID = IntPtr.Zero;
 
-        KeyboardMap _keyboardMap = new KeyboardMap();
-
-        #endregion
-
-        #region Constructors
+        private readonly KeyboardMap _keyboardMap = new KeyboardMap();
 
         public KeyBoardHook()
         {
@@ -72,9 +66,6 @@ namespace AppsTracker.Hooks
             _keyLoggerEnabled = enable;
         }
 
-        #endregion
-
-        #region HookCallBack
 
         private IntPtr HookCallback(int code, IntPtr wParam, IntPtr lParam)
         {
@@ -106,8 +97,6 @@ namespace AppsTracker.Hooks
             }
             return WinAPI.CallNextHookEx(_hookID, code, wParam, lParam);
         }
-
-        #endregion
 
         #region IDisposable Members
 
