@@ -390,7 +390,7 @@
                                           Grid.ColumnSpan="3"
                                           FaderVisibility="{Binding ElementName=rbCategories, Path=IsChecked}">
                 <chart:ClusteredColumnChart ChartTitle="Categories"
-                                            ChartSubTitle=""
+                                            ChartSubTitle="Time in hours"
                                             Style="{StaticResource MinimalChartStyle}"                                                                                        
                                             BorderBrush="{DynamicResource WindowBorderBrush}"
                                             BorderThickness="1"
@@ -399,7 +399,7 @@
                                             Height="Auto">
 
                     <chart:ClusteredColumnChart.Series>
-                        <chart:ChartSeries SeriesTitle="Categories"
+                        <chart:ChartSeries SeriesTitle="Category"
                                            DisplayMember="Name"
                                            ValueMember="TotalTime"
                                            ItemsSource="{Binding CategoryList.Result}" />

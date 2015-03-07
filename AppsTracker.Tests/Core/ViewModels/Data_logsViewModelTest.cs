@@ -12,8 +12,8 @@ namespace AppsTracker.Tests.Core.ViewModels
         [TestInitialize]
         public void Init()
         {
-            if (ServiceFactory.ContainsKey<IAppsService>() == false)
-                ServiceFactory.Register<IAppsService>(() => new AppsServiceMock());
+            if (ServiceFactory.ContainsKey<IDataService>() == false)
+                ServiceFactory.Register<IDataService>(() => new AppsServiceMock());
             if (ServiceFactory.ContainsKey<IChartService>() == false)
                 ServiceFactory.Register<IChartService>(() => new ChartServiceMock());
         }

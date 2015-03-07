@@ -25,7 +25,7 @@ namespace AppsTracker.Logging
 
         private bool _isLoggingEnabled;
 
-        private string _currentWindowTitle;
+        private string _activeWindowTitle;
 
         private Log _currentLog;
 
@@ -39,8 +39,10 @@ namespace AppsTracker.Logging
         public WindowLogger(Setting settings)
         {
             Ensure.NotNull(settings);
-
             _settings = settings;
+
+            Mediator.Register(MediatorMessages.STOP_LOGGING, new Action(StopLogging));
+            Mediator.Register(MediatorMessages.RESUME_LOGGING, new Action(ResumeLogging));
 
             InitComponents();
             ConfigureComponents();
@@ -48,9 +50,6 @@ namespace AppsTracker.Logging
 
         private void InitComponents()
         {
-            Mediator.Register(MediatorMessages.STOP_LOGGING, new Action(StopLogging));
-            Mediator.Register(MediatorMessages.RESUME_LOGGING, new Action(ResumeLogging));
-
             _winHook = new LazyInit<IHook<WinHookArgs>>(() => new WinHook(),
                                                                 w => w.HookProc += WindowChanged,
                                                                 w => w.HookProc -= WindowChanged);
@@ -99,7 +98,7 @@ namespace AppsTracker.Logging
             if (_isLoggingEnabled == false)
                 return;
 
-            if (_currentWindowTitle != WindowHelper.GetActiveWindowName())
+            if (_activeWindowTitle != WindowHelper.GetActiveWindowName())
                 OnWindowChange(WindowHelper.GetActiveWindowName(), WindowHelper.GetActiveWindowAppInfo());
         }
 
@@ -131,15 +130,14 @@ namespace AppsTracker.Logging
 
         private void OnWindowChange(string windowTitle, IAppInfo appInfo)
         {
-            bool newApp = false;
-
             SaveCurrentLog();
 
             if (appInfo == null || (appInfo != null && string.IsNullOrEmpty(appInfo.ProcessName)))
                 return;
 
+            bool newApp = false;
             CreateNewLog(windowTitle, Globals.UsageID, Globals.UserID, appInfo, out newApp);
-            _currentWindowTitle = windowTitle;
+            _activeWindowTitle = windowTitle;
 
             if (newApp)
                 NewAppAdded(appInfo);
@@ -205,9 +203,19 @@ namespace AppsTracker.Logging
             }
         }
 
+        private void NewAppAdded(IAppInfo appInfo)
+        {
+            using (var context = new AppsEntities())
+            {
+                var name = !string.IsNullOrEmpty(appInfo.ProcessName) ? appInfo.ProcessName.Truncate(250) : !string.IsNullOrEmpty(appInfo.ProcessRealName) ? appInfo.ProcessRealName.Truncate(250) : appInfo.ProcessFileName.Truncate(250);
+                var newApp = context.Applications.First(a => a.Name == name);
+                Mediator.NotifyColleagues(MediatorMessages.ApplicationAdded, newApp);
+            }
+        }
+
         private async Task AddScreenshot()
         {
-            var dbSizeAsync = Globals.GetDBSizeAsync(); //check the DB size, this methods fires an event if near the maximum allowed size
+            var dbSizeAsync = Globals.GetDBSizeAsync(); 
 
             Screenshot screenshot = Screenshots.GetScreenshot();
             lock (_lock)
@@ -224,16 +232,6 @@ namespace AppsTracker.Logging
             }
 
             await dbSizeAsync.ConfigureAwait(true);
-        }
-
-        private void NewAppAdded(IAppInfo appInfo)
-        {
-            using (var context = new AppsEntities())
-            {
-                var name = !string.IsNullOrEmpty(appInfo.ProcessName) ? appInfo.ProcessName.Truncate(250) : !string.IsNullOrEmpty(appInfo.ProcessRealName) ? appInfo.ProcessRealName.Truncate(250) : appInfo.ProcessFileName.Truncate(250);
-                var newApp = context.Applications.First(a => a.Name == name);
-                Mediator.NotifyColleagues(MediatorMessages.ApplicationAdded, newApp);
-            }
         }
 
         public void SettingsChanged(Setting settings)

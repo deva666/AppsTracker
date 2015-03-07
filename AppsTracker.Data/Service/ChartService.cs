@@ -66,7 +66,7 @@ namespace AppsTracker.Data.Service
                               .Select(g => new TopAppsModel
                                    {
                                        AppName = g.Key.name,
-                                       Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString() + ", " + new DateTime(g.Key.year, g.Key.month, g.Key.day).DayOfWeek.ToString(),
+                                       Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString() + " " + new DateTime(g.Key.year, g.Key.month, g.Key.day).DayOfWeek.ToString(),
                                        DateTime = new DateTime(g.Key.year, g.Key.month, g.Key.day),
                                        Usage = g.Sum(l => l.Duration) / totalDuration.First(t => t.Date == new DateTime(g.Key.year, g.Key.month, g.Key.day)).Duration,
                                        Duration = g.Sum(l => l.Duration)

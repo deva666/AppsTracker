@@ -196,8 +196,8 @@
                                       FaderVisibility="{Binding ChartVisible}">
             <ScrollViewer HorizontalScrollBarVisibility="Auto"
                           VerticalScrollBarVisibility="Auto">
-                <chart:StackedColumnChart ChartTitle="Window usage"
-                                          ChartSubTitle="Usage on selected dates (minutes)"
+                <chart:StackedColumnChart ChartTitle="Window time"
+                                          ChartSubTitle="Time on selected dates (minutes)"
                                           Style="{StaticResource MinimalChartStyle}"
                                           BorderBrush="{DynamicResource WindowBorderBrush}"
                                           BorderThickness="1"

@@ -65,7 +65,7 @@
                 </CheckBox.InputBindings>
             </CheckBox>
 
-            <Label Style="{DynamicResource LabelStyle}"
+            <!--<Label Style="{DynamicResource LabelStyle}"
                    Content="Stealth mode:"
                    Grid.Row="3"
                    HorizontalAlignment="Left"
@@ -84,7 +84,7 @@
                    HorizontalAlignment="Left"
                    FontFamily="Tahoma"
                    FontSize="11"
-                   Margin="0,0,0,5" />
+                   Margin="0,0,0,5" />-->
 
             <Label Style="{DynamicResource LabelStyle}"
                    Content="Theme:"

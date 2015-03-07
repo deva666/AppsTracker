@@ -38,7 +38,7 @@ namespace AppsTracker.ViewModels
         private ICommand _singleWindowSelectionChangedCommand;
         private ICommand _addDaysCommand;
 
-        private IAppsService _appsService;
+        private IDataService _dataService;
         private IChartService _chartService;
 
         #endregion
@@ -181,7 +181,7 @@ namespace AppsTracker.ViewModels
 
         public Data_dayViewModel()
         {
-            _appsService = ServiceFactory.Get<IAppsService>();
+            _dataService = ServiceFactory.Get<IDataService>();
             _chartService = ServiceFactory.Get<IChartService>();
 
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadContent));

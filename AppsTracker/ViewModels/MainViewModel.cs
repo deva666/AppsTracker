@@ -19,7 +19,7 @@ namespace AppsTracker.ViewModels
     {
         #region Fields
 
-        private IAppsService _appsService;
+        private IDataService _dataService;
         private ISqlSettingsService _settingsService;
 
         private bool _isPopupCalendarOpen = false;
@@ -246,7 +246,7 @@ namespace AppsTracker.ViewModels
 
         public MainViewModel()
         {
-            _appsService = ServiceFactory.Get<IAppsService>();
+            _dataService = ServiceFactory.Get<IDataService>();
             _settingsService = ServiceFactory.Get<ISqlSettingsService>();
 
             RegisterChild<DataHostViewModel>(() => new DataHostViewModel());
@@ -260,7 +260,7 @@ namespace AppsTracker.ViewModels
 
         private void GetUsers()
         {
-            _uzerCollection = _appsService.GetFiltered<Uzer>(u => u.UserID >= 0);
+            _uzerCollection = _dataService.GetFiltered<Uzer>(u => u.UserID >= 0);
         }
 
         #region Command Methods

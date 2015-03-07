@@ -24,7 +24,7 @@ namespace AppsTracker.Pages.ViewModels
     {
         #region Fields
 
-        IAppsService _appsService;
+        IDataService _dataService;
         IChartService _chartService;
 
         bool _chartVisible;
@@ -261,7 +261,7 @@ namespace AppsTracker.Pages.ViewModels
 
         public Data_logsViewModel()
         {
-            _appsService = ServiceFactory.Get<IAppsService>();
+            _dataService = ServiceFactory.Get<IDataService>();
             _chartService = ServiceFactory.Get<IChartService>();
 
             _aplicationList = new AsyncProperty<IEnumerable<Aplication>>(GetContent, this);
@@ -284,7 +284,7 @@ namespace AppsTracker.Pages.ViewModels
 
         private IEnumerable<Aplication> GetContent()
         {
-            return _appsService.GetFiltered<Aplication>(a => a.User.UserID == Globals.SelectedUserID
+            return _dataService.GetFiltered<Aplication>(a => a.User.UserID == Globals.SelectedUserID
                                                                 && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= Globals.Date1).Any()
                                                                 && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= Globals.Date2).Any())
                                                            .ToList()
@@ -438,7 +438,7 @@ namespace AppsTracker.Pages.ViewModels
             MenuItem menuItem = new MenuItem();
             menuItem.Header = "All users";
             _allUsersList.Add(menuItem);
-            var users = _appsService.GetFiltered<Uzer>(u => u.Name != null);
+            var users = _dataService.GetFiltered<Uzer>(u => u.Name != null);
 
             foreach (var user in users)
             {

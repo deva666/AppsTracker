@@ -18,7 +18,7 @@ namespace AppsTracker.Pages.ViewModels
     {
         #region Fields
 
-        private IAppsService _appsService;
+        private IDataService _dataService;
 
         private AsyncProperty<IEnumerable<Log>> _logList;
 
@@ -51,7 +51,7 @@ namespace AppsTracker.Pages.ViewModels
 
         public Data_keystrokesViewModel()
         {
-            _appsService = ServiceFactory.Get<IAppsService>();
+            _dataService = ServiceFactory.Get<IDataService>();
 
             _logList = new AsyncProperty<IEnumerable<Log>>(GetContent, this);
 
@@ -60,7 +60,7 @@ namespace AppsTracker.Pages.ViewModels
 
         private IEnumerable<Log> GetContent()
         {
-            return _appsService.GetFiltered<Log>(l => l.KeystrokesRaw != null
+            return _dataService.GetFiltered<Log>(l => l.KeystrokesRaw != null
                                                 && l.DateCreated >= Globals.Date1
                                                 && l.DateCreated <= Globals.Date2
                                                 && l.Window.Application.UserID == Globals.SelectedUserID

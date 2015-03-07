@@ -28,7 +28,7 @@ namespace AppsTracker.Pages.ViewModels
     {
         #region Fields
 
-        private IAppsService _appsService;
+        private IDataService _dataService;
         private ISqlSettingsService _settingsService;
 
         private string _infoContent;
@@ -136,7 +136,7 @@ namespace AppsTracker.Pages.ViewModels
 
         public Data_screenshotsViewModel()
         {
-            _appsService = ServiceFactory.Get<IAppsService>();
+            _dataService = ServiceFactory.Get<IDataService>();
             _settingsService = ServiceFactory.Get<ISqlSettingsService>();
 
             _logList = new AsyncProperty<IEnumerable<Log>>(GetContent, this);
@@ -149,7 +149,7 @@ namespace AppsTracker.Pages.ViewModels
 
         private IEnumerable<Log> GetContent()
         {
-            return _appsService.GetFiltered<Log>(l => l.Screenshots.Count > 0
+            return _dataService.GetFiltered<Log>(l => l.Screenshots.Count > 0
                                                 && l.DateCreated >= Globals.Date1
                                                 && l.DateCreated <= Globals.Date2
                                                 && l.Window.Application.UserID == Globals.SelectedUserID
@@ -175,7 +175,7 @@ namespace AppsTracker.Pages.ViewModels
             if (parameterCollection != null)
             {
                 var logs = parameterCollection.Cast<Log>().Where(l => l.Screenshots.Count > 0).ToList();
-                var deletedCount = _appsService.DeleteScreenshots(logs);
+                var deletedCount = _dataService.DeleteScreenshots(logs);
                 if(deletedCount > 0)
                     InfoContent = "Screenshots deleted";
                 _logList.Reload();

@@ -165,7 +165,7 @@ namespace AppsTracker.Logging
                     break;
                 case Microsoft.Win32.PowerModes.Suspend:
                     //Looks like the Session Switch event is fired immediately after the computer is being put to sleep,
-                    //If it's going to sleep, than don't log this as computer locked
+                    //If it's going to sleep, then don't log this as computer locked
                     _isLoggingEnabled = false;
                     Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;
                     Mediator.NotifyColleagues(MediatorMessages.STOP_LOGGING);

@@ -76,7 +76,7 @@
                         Grid.Row="0"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
-                <Label Style="{DynamicResource headerStyle}"
+                <Label Style="{DynamicResource LabelStyle}"
                        FontSize="16"
                        Content="Apps">
                     <Label.InputBindings>
@@ -127,7 +127,7 @@
                                           Grid.Row="0"
                                           Visibility="{Binding ElementName=lbProcesses,Path=SelectedIndex,Converter={StaticResource convertIntToVisBack}}">
 
-                <Label Style="{DynamicResource headerStyle}"
+                <Label Style="{DynamicResource LabelStyle}"
                        Grid.Column="1"
                        Grid.ColumnSpan="3"
                        Grid.Row="0"

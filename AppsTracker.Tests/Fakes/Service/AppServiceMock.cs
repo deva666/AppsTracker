@@ -13,7 +13,7 @@ using AppsTracker.Data.Service;
 
 namespace AppsTracker.Tests.Fakes.Service
 {
-    public class AppsServiceMock : IAppsService
+    public class AppsServiceMock : IDataService
     {
         public IEnumerable<T> GetFiltered<T>(System.Linq.Expressions.Expression<Func<T, bool>> filter) where T : class
         {

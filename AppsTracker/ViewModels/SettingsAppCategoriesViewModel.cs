@@ -14,9 +14,8 @@ namespace AppsTracker.ViewModels
 {
     internal sealed class SettingsAppCategoriesViewModel : ViewModelBase
     {
-        //private readonly IAppsService appsService;
-        private readonly AppsTracker.Data.Db.AppsEntities _context;
-        private readonly List<AppCategory> _categoriesToDelete = new List<AppCategory>();
+        private readonly ICategoriesService categoriesService;
+        private readonly List<AppCategory> categoriesToDelete = new List<AppCategory>();
 
         public override string Title
         {
@@ -28,6 +27,13 @@ namespace AppsTracker.ViewModels
         {
             get { return isNewCategoryOpen; }
             set { SetPropertyValue(ref isNewCategoryOpen, value); }
+        }
+
+        private string newCategoryName;
+        public string NewCategoryName
+        {
+            get { return newCategoryName; }
+            set { SetPropertyValue(ref newCategoryName, value); }
         }
 
         private ObservableCollection<Aplication> applications;
@@ -44,13 +50,6 @@ namespace AppsTracker.ViewModels
             set { SetPropertyValue(ref categories, value); }
         }
 
-        private string newCategoryName;
-        public string NewCategoryName
-        {
-            get { return newCategoryName; }
-            set { SetPropertyValue(ref newCategoryName, value); }
-        }
-
         public Aplication UnassignedSelectedApp { get; set; }
         public Aplication AssignedSelectedApp { get; set; }
         public AppCategory SelectedCategory { get; set; }
@@ -58,55 +57,37 @@ namespace AppsTracker.ViewModels
         private ICommand addNewCategoryCommand;
         public ICommand AddNewCategoryCommand
         {
-            get
-            {
-                return addNewCategoryCommand ?? (addNewCategoryCommand = new DelegateCommand(AddNewCategory));
-            }
+            get { return addNewCategoryCommand ?? (addNewCategoryCommand = new DelegateCommand(AddNewCategory)); }
         }
 
         private ICommand showNewCategoryCommand;
         public ICommand ShowNewCategoryCommand
         {
-            get
-            {
-                return showNewCategoryCommand ?? (showNewCategoryCommand = new DelegateCommand(ShowNewCategory));
-            }
+            get { return showNewCategoryCommand ?? (showNewCategoryCommand = new DelegateCommand(ShowNewCategory)); }
         }
 
         private ICommand saveChangesCommand;
         public ICommand SaveChangesCommand
         {
-            get
-            {
-                return saveChangesCommand ?? (saveChangesCommand = new DelegateCommand(SaveChanges));
-            }
+            get { return saveChangesCommand ?? (saveChangesCommand = new DelegateCommand(SaveChanges)); }
         }
 
         private ICommand assignAppCommand;
         public ICommand AssignAppCommand
         {
-            get
-            {
-                return assignAppCommand ?? (assignAppCommand = new DelegateCommand(AssignApp));
-            }
+            get { return assignAppCommand ?? (assignAppCommand = new DelegateCommand(AssignApp)); }
         }
 
         private ICommand removeAppCommand;
         public ICommand RemoveAppCommand
         {
-            get
-            {
-                return removeAppCommand ?? (removeAppCommand = new DelegateCommand(RemoveApp));
-            }
+            get { return removeAppCommand ?? (removeAppCommand = new DelegateCommand(RemoveApp)); }
         }
 
         private ICommand deleteCategoryCommand;
         public ICommand DeleteCategoryCommand
         {
-            get
-            {
-                return deleteCategoryCommand ?? (deleteCategoryCommand = new DelegateCommand(DeleteCategory));
-            }
+            get { return deleteCategoryCommand ?? (deleteCategoryCommand = new DelegateCommand(DeleteCategory)); }
         }
 
         private void ShowNewCategory(object parameter)
@@ -128,13 +109,12 @@ namespace AppsTracker.ViewModels
             var category = new AppCategory() { Name = categoryName, ObservableApplications = new ObservableCollection<Aplication>() };
             Categories.Add(category);
             IsNewCategoryOpen = false;
-            NewCategoryName = string.Empty;
+            NewCategoryName = null;
         }
 
         public SettingsAppCategoriesViewModel()
         {
-            //appsService = ServiceFactory.Get<IAppsService>();
-            _context = new Data.Db.AppsEntities();
+            categoriesService = ServiceFactory.Get<ICategoriesService>();
             LoadContent();
             Mediator.Instance.Register<Aplication>(MediatorMessages.ApplicationAdded, AppAdded);
         }
@@ -150,18 +130,12 @@ namespace AppsTracker.ViewModels
 
         private List<Aplication> GetApps()
         {
-            var apps = _context.Applications;
-            return apps.ToList();
+            return categoriesService.GetApps();
         }
 
         private ObservableCollection<AppCategory> GetCategories()
         {
-            var categories = _context.AppCategories.Include(c => c.Applications);
-            foreach (var cat in categories)
-            {
-                cat.ObservableApplications = new ObservableCollection<Aplication>(cat.Applications);
-            }
-            return new ObservableCollection<AppCategory>(categories);
+            return categoriesService.GetCategories();
         }
 
         private void AssignApp()
@@ -186,7 +160,7 @@ namespace AppsTracker.ViewModels
         {
             if (SelectedCategory == null)
                 return;
-            _categoriesToDelete.Add(SelectedCategory);
+            categoriesToDelete.Add(SelectedCategory);
             Categories.Remove(SelectedCategory);
         }
 
@@ -197,22 +171,7 @@ namespace AppsTracker.ViewModels
 
         private void SaveChanges()
         {
-            foreach (var cat in _categoriesToDelete)
-            {
-                _context.Entry(cat).State = EntityState.Deleted;
-            }
-
-            foreach (var cat in Categories)
-            {
-                if (cat.AppCategoryID == default(int))
-                    _context.Entry(cat).State = System.Data.Entity.EntityState.Added;
-                else
-                    _context.Entry(cat).State = System.Data.Entity.EntityState.Modified;
-
-                SetApplications(cat);
-            }
-
-            _context.SaveChanges();
+            categoriesService.SaveChanges(categoriesToDelete, Categories);
         }
 
         private void SetApplications(AppCategory cat)
@@ -224,11 +183,11 @@ namespace AppsTracker.ViewModels
             }
         }
 
-        protected override void Disposing()
+        //Finalizer is used instead of Dispose becouse Host View Models store all references to child view models as weak refrences and we don't know when the GC is going to kick in and free the resurce 
+        ~SettingsAppCategoriesViewModel()
         {
-            _context.Dispose();
-            Console.WriteLine("DISPOSED CONTEXT");
-            base.Disposing();
+            categoriesService.Dispose();
         }
+
     }
 }

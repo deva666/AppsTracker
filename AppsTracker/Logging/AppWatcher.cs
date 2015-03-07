@@ -2,27 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.Entity;
 using System.Threading.Tasks;
+using AppsTracker.Data.Db;
+using AppsTracker.Data.Models;
 
 namespace AppsTracker.Logging
 {
-    internal sealed class AppWatcher : IComponent
+    internal sealed class AppWatcher
     {
-
-
-        public void SettingsChanged(Data.Models.Setting settings)
+        public void AppChanged(Aplication app)
         {
-            throw new NotImplementedException();
+            using (var context = new AppsEntities())
+            {
+                var warnings = context.AppWarnings.Where(w => w.Applications.Any(a => a.ApplicationID == app.ApplicationID));
+                var periods = warnings.Select(w => w.Period);
+                var warn = warnings.FirstOrDefault();
+
+                var limitReached = new TimeSpan(warn.Limit).Milliseconds - new TimeSpan(GetTodayDuration(app)).Milliseconds;
+                System.Threading.Timer timer = new System.Threading.Timer((s) => { }, null, limitReached, -1);
+                
+            }
         }
 
-        public void SetComponentEnabled(bool enabled)
+        private long GetTodayDuration(Aplication app)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
+            using (var context = new AppsEntities())
+            {
+                var loadedApp = context.Applications.Include(a => a.Windows.Select(w => w.Logs)).First(a => a.ApplicationID == app.ApplicationID);
+                return loadedApp.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= DateTime.Now.Date).Sum(l => l.Duration);
+            }
         }
     }
 }

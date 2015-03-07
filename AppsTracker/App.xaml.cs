@@ -63,8 +63,9 @@ namespace AppsTracker
         {
             ServiceFactory.Register<ISqlSettingsService>(() => SqlSettingsService.Instance);
             ServiceFactory.Register<IXmlSettingsService>(() => XmlSettingsService.Instance);
-            ServiceFactory.Register<IAppsService>(() => new AppsService());
+            ServiceFactory.Register<IDataService>(() => new DataService());
             ServiceFactory.Register<IChartService>(() => new ChartService());
+            ServiceFactory.Register<ICategoriesService>(() => new CategoriesService());
         }
 
         private CompositionContainer GetCompositionContainer()

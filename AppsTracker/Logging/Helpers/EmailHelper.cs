@@ -40,7 +40,7 @@ namespace AppsTracker.Logging
         DateTime _dateLast;
         System.Timers.Timer _timer;
 
-        IAppsService _appsService;
+        IDataService _dataService;
         ISqlSettingsService _settingsService;
 
 
@@ -152,7 +152,7 @@ namespace AppsTracker.Logging
 
         public EmailHelper()
         {
-            _appsService = ServiceFactory.Get<IAppsService>();
+            _dataService = ServiceFactory.Get<IDataService>();
             _settingsService = ServiceFactory.Get<ISqlSettingsService>();
 
             _timer = new System.Timers.Timer();
@@ -297,7 +297,7 @@ namespace AppsTracker.Logging
         private Task<Usage> GetCurrentLoginAsync()
         {
             string usageType = UsageTypes.Login.ToString();
-            return Task<Usage>.Run(() => _appsService.GetFiltered<Usage>(u => u.UsageType.ToString() == usageType
+            return Task<Usage>.Run(() => _dataService.GetFiltered<Usage>(u => u.UsageType.ToString() == usageType
                                                 && u.IsCurrent)
                                                 .OrderByDescending(u => u.UsageStart)
                                                 .First());
@@ -308,7 +308,7 @@ namespace AppsTracker.Logging
             _dateNow = DateTime.Now;
             _dateLast = DateTime.Now.AddMilliseconds(-(Interval));
 
-            return Task<IEnumerable<IGrouping<string, Log>>>.Run(() => _appsService.GetFiltered<Log>(l => l.Window.Application.User.UserID == Globals.UserID
+            return Task<IEnumerable<IGrouping<string, Log>>>.Run(() => _dataService.GetFiltered<Log>(l => l.Window.Application.User.UserID == Globals.UserID
                                                                     && l.DateCreated >= _dateLast
                                                                     && l.DateCreated <= _dateNow
                                                                     , l => l.Window.Application
