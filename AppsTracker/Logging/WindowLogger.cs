@@ -7,12 +7,14 @@
 #endregion
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
+using AppsTracker.Data.Service;
 using AppsTracker.Data.Utils;
 using AppsTracker.Hooks;
 using AppsTracker.MVVM;
@@ -21,25 +23,29 @@ namespace AppsTracker.Logging
 {
     internal sealed class WindowLogger : IComponent, ICommunicator
     {
-        private readonly object _lock = new object();
+        private readonly object @lock = new object();
 
-        private bool _isLoggingEnabled;
+        private bool isLoggingEnabled;
 
-        private string _activeWindowTitle;
+        private string activeWindowTitle;
 
-        private Log _currentLog;
+        private readonly ILoggingService loggingService;
 
-        private LazyInit<Timer> _screenshotTimer;
-        private LazyInit<IHook<WinHookArgs>> _winHook;
-        private LazyInit<IHook<KeyboardHookArgs>> _keyboardHook;
-        private LazyInit<System.Threading.Timer> _windowCheckTimer;
+        private Log currentLog;
 
-        private Setting _settings;
+        private LazyInit<Timer> screenshotTimer;
+        private LazyInit<IHook<WinHookArgs>> winHook;
+        private LazyInit<IHook<KeyboardHookArgs>> keyboardHook;
+        private LazyInit<System.Threading.Timer> windowCheckTimer;
+
+        private Setting settings;
 
         public WindowLogger(Setting settings)
         {
             Ensure.NotNull(settings);
-            _settings = settings;
+            this.settings = settings;
+
+            loggingService = ServiceFactory.Get<ILoggingService>();
 
             Mediator.Register(MediatorMessages.STOP_LOGGING, new Action(StopLogging));
             Mediator.Register(MediatorMessages.RESUME_LOGGING, new Action(ResumeLogging));
@@ -50,23 +56,23 @@ namespace AppsTracker.Logging
 
         private void InitComponents()
         {
-            _winHook = new LazyInit<IHook<WinHookArgs>>(() => new WinHook(),
+            winHook = new LazyInit<IHook<WinHookArgs>>(() => new WinHook(),
                                                                 w => w.HookProc += WindowChanged,
                                                                 w => w.HookProc -= WindowChanged);
 
-            _keyboardHook = new LazyInit<IHook<KeyboardHookArgs>>(() => new KeyBoardHook(),
+            keyboardHook = new LazyInit<IHook<KeyboardHookArgs>>(() => new KeyBoardHook(),
                                                                          k => k.HookProc += KeyPressed,
                                                                          k => k.HookProc -= KeyPressed);
 
-            _screenshotTimer = new LazyInit<Timer>(() => new Timer()
+            screenshotTimer = new LazyInit<Timer>(() => new Timer()
                                                              {
                                                                  AutoReset = true,
-                                                                 Interval = _settings.TimerInterval
+                                                                 Interval = settings.TimerInterval
                                                              },
                                                              t => { t.Enabled = true; t.Elapsed += ScreenshotTick; },
                                                              t => { t.Enabled = false; t.Elapsed -= ScreenshotTick; });
 
-            _windowCheckTimer = new LazyInit<System.Threading.Timer>(() => new System.Threading.Timer(s => App.Current.Dispatcher.Invoke(CheckWindowTitle))
+            windowCheckTimer = new LazyInit<System.Threading.Timer>(() => new System.Threading.Timer(s => App.Current.Dispatcher.Invoke(CheckWindowTitle))
                                                                         , t => t.Change(500, 500)
                                                                         , t => t.Dispose());
 
@@ -74,20 +80,20 @@ namespace AppsTracker.Logging
 
         private void ConfigureComponents()
         {
-            _keyboardHook.Enabled = (_settings.EnableKeylogger && _settings.LoggingEnabled);
-            _screenshotTimer.Enabled = (_settings.TakeScreenshots && _settings.LoggingEnabled);
+            keyboardHook.Enabled = (settings.EnableKeylogger && settings.LoggingEnabled);
+            screenshotTimer.Enabled = (settings.TakeScreenshots && settings.LoggingEnabled);
 
-            if ((_settings.TakeScreenshots && _settings.LoggingEnabled) && _settings.TimerInterval != _screenshotTimer.Component.Interval)
-                _screenshotTimer.Component.Interval = _settings.TimerInterval;
+            if ((settings.TakeScreenshots && settings.LoggingEnabled) && settings.TimerInterval != screenshotTimer.Component.Interval)
+                screenshotTimer.Component.Interval = settings.TimerInterval;
 
-            _isLoggingEnabled =
-                _winHook.Enabled =
-                    _windowCheckTimer.Enabled = _settings.LoggingEnabled;
+            isLoggingEnabled =
+                winHook.Enabled =
+                    windowCheckTimer.Enabled = settings.LoggingEnabled;
         }
 
         private async void ScreenshotTick(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (_isLoggingEnabled == false)
+            if (isLoggingEnabled == false)
                 return;
 
             await AddScreenshot();
@@ -95,34 +101,34 @@ namespace AppsTracker.Logging
 
         private void CheckWindowTitle()
         {
-            if (_isLoggingEnabled == false)
+            if (isLoggingEnabled == false)
                 return;
 
-            if (_activeWindowTitle != WindowHelper.GetActiveWindowName())
+            if (activeWindowTitle != WindowHelper.GetActiveWindowName())
                 OnWindowChange(WindowHelper.GetActiveWindowName(), WindowHelper.GetActiveWindowAppInfo());
         }
 
         private void KeyPressed(object sender, KeyboardHookArgs e)
         {
-            if (_isLoggingEnabled == false || _currentLog == null)
+            if (isLoggingEnabled == false || currentLog == null)
                 return;
 
-            lock (_lock)
+            lock (@lock)
             {
                 if (e.KeyCode == 8)
-                    _currentLog.RemoveLastKeyLogItem();
+                    currentLog.RemoveLastKeyLogItem();
                 else if (e.KeyCode == 0x0D)
-                    _currentLog.AppendNewKeyLogLine();
+                    currentLog.AppendNewKeyLogLine();
                 else
-                    _currentLog.AppendKeyLog(e.KeyText);
+                    currentLog.AppendKeyLog(e.KeyText);
 
-                _currentLog.AppendKeyLogRaw(e.KeyTextRaw);
+                currentLog.AppendKeyLogRaw(e.KeyTextRaw);
             }
         }
 
         private void WindowChanged(object sender, WinHookArgs e)
         {
-            if (_isLoggingEnabled == false)
+            if (isLoggingEnabled == false)
                 return;
 
             OnWindowChange(e.WindowTitle, e.AppInfo);
@@ -137,7 +143,7 @@ namespace AppsTracker.Logging
 
             bool newApp = false;
             CreateNewLog(windowTitle, Globals.UsageID, Globals.UserID, appInfo, out newApp);
-            _activeWindowTitle = windowTitle;
+            activeWindowTitle = windowTitle;
 
             if (newApp)
                 NewAppAdded(appInfo);
@@ -145,110 +151,65 @@ namespace AppsTracker.Logging
 
         private void SaveCurrentLog()
         {
-            if (_currentLog == null)
+            if (currentLog == null)
                 return;
 
             Log tempLog;
-            lock (_lock)
+            lock (@lock)
             {
-                tempLog = _currentLog;
-                _currentLog = null;
+                tempLog = currentLog;
+                currentLog = null;
             }
 
             tempLog.Finish();
-            using (var context = new AppsEntities())
-            {
-                context.Entry<Log>(tempLog).State = System.Data.Entity.EntityState.Modified;
-                context.SaveChanges();
-            }
+            loggingService.SaveModifiedLogAsync(tempLog);
         }
 
         private void CreateNewLog(string windowTitle, int usageID, int userID, IAppInfo appInfo, out bool newApp)
         {
-            using (var context = new AppsEntities())
+            lock (@lock)
             {
-                newApp = false;
-                string appName = (!string.IsNullOrEmpty(appInfo.ProcessName) ? appInfo.ProcessName : !string.IsNullOrEmpty(appInfo.ProcessRealName) ? appInfo.ProcessRealName : appInfo.ProcessFileName);
-                Aplication app = context.Applications.FirstOrDefault(a => a.UserID == userID
-                                                        && a.Name == appName);
-
-                if (app == null)
-                {
-                    app = new Aplication(appInfo.ProcessName,
-                                         appInfo.ProcessFileName,
-                                         appInfo.ProcessVersion,
-                                         appInfo.ProcessDescription,
-                                         appInfo.ProcessCompany,
-                                         appInfo.ProcessRealName) { UserID = userID };
-                    context.Applications.Add(app);
-
-                    newApp = true;
-                }
-
-                Window window = context.Windows.FirstOrDefault(w => w.Title == windowTitle
-                                                     && w.Application.ApplicationID == app.ApplicationID);
-
-                if (window == null)
-                {
-                    window = new Window(windowTitle) { Application = app };
-                    context.Windows.Add(window);
-                }
-
-                var log = new Log(window, usageID);
-                context.Logs.Add(log);
-                context.SaveChanges();
-
-                lock (_lock)
-                    _currentLog = log;
+                currentLog = loggingService.CreateNewLog(windowTitle, usageID, userID, appInfo, out newApp);
             }
         }
 
         private void NewAppAdded(IAppInfo appInfo)
         {
-            using (var context = new AppsEntities())
-            {
-                var name = !string.IsNullOrEmpty(appInfo.ProcessName) ? appInfo.ProcessName.Truncate(250) : !string.IsNullOrEmpty(appInfo.ProcessRealName) ? appInfo.ProcessRealName.Truncate(250) : appInfo.ProcessFileName.Truncate(250);
-                var newApp = context.Applications.First(a => a.Name == name);
-                Mediator.NotifyColleagues(MediatorMessages.ApplicationAdded, newApp);
-            }
+            var newApp = loggingService.GetApp(appInfo);
+            Mediator.NotifyColleagues(MediatorMessages.ApplicationAdded, newApp);
         }
 
         private async Task AddScreenshot()
         {
-            var dbSizeAsync = Globals.GetDBSizeAsync(); 
+            var dbSizeAsync = Globals.GetDBSizeAsync();
 
             Screenshot screenshot = Screenshots.GetScreenshot();
-            lock (_lock)
+            lock (@lock)
             {
-                if (screenshot == null || _currentLog == null)
+                if (screenshot == null || currentLog == null)
                     return;
 
-                screenshot.LogID = _currentLog.LogID;
-            }
-            using (var context = new AppsEntities())
-            {
-                context.Screenshots.Add(screenshot);
-                context.SaveChanges();
+                screenshot.LogID = currentLog.LogID;
             }
 
-            await dbSizeAsync.ConfigureAwait(true);
+            await Task.WhenAll(loggingService.SaveNewScreenshotAsync(screenshot), dbSizeAsync);
         }
 
         public void SettingsChanged(Setting settings)
         {
-            _settings = settings;
+            this.settings = settings;
             ConfigureComponents();
         }
 
         private void StopLogging()
         {
-            _isLoggingEnabled = false;
+            isLoggingEnabled = false;
             SaveCurrentLog();
         }
 
         private void ResumeLogging()
         {
-            _isLoggingEnabled = true;
+            isLoggingEnabled = true;
         }
 
         public IMediator Mediator
@@ -256,28 +217,28 @@ namespace AppsTracker.Logging
             get { return MVVM.Mediator.Instance; }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", Justification = "Setting enabled to false calls Dispose", MessageId = "_keyboardHook"),
-        System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", Justification = "Setting enabled to false calls Dispose", MessageId = "_screenshotTimer"),
-        System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", Justification = "Setting enabled to false calls Dispose", MessageId = "_winHook"),
-        System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", Justification = "Setting enabled to false calls Dispose", MessageId = "_windowCheckTimer")]
+        [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", Justification = "Setting enabled to false calls Dispose", MessageId = "_keyboardHook"),
+        SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", Justification = "Setting enabled to false calls Dispose", MessageId = "_screenshotTimer"),
+        SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", Justification = "Setting enabled to false calls Dispose", MessageId = "_winHook"),
+        SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", Justification = "Setting enabled to false calls Dispose", MessageId = "_windowCheckTimer")]
         public void Dispose()
         {
-            _keyboardHook.Enabled =
-                _screenshotTimer.Enabled =
-                    _windowCheckTimer.Enabled =
-                        _winHook.Enabled = false;
+            keyboardHook.Enabled =
+                screenshotTimer.Enabled =
+                    windowCheckTimer.Enabled =
+                        winHook.Enabled = false;
 
             StopLogging();
         }
 
         public void SetComponentEnabled(bool enabled)
         {
-            _isLoggingEnabled = enabled;
+            isLoggingEnabled = enabled;
         }
 
         public void SetKeyboardHookEnabled(bool enabled)
         {
-            _keyboardHook.CallOn(k => k.EnableHook(enabled));
+            keyboardHook.CallOn(k => k.EnableHook(enabled));
         }
     }
 }

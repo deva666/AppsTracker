@@ -14,28 +14,33 @@ using AppsTracker.Common.Utils;
 using AppsTracker.Data;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
+using AppsTracker.Data.Service;
 using AppsTracker.MVVM;
 
 namespace AppsTracker.Logging
 {
     internal sealed class UsageLogger : IComponent, ICommunicator
     {
-        private bool _isLoggingEnabled;
+        private bool isLoggingEnabled;
 
-        private Usage _currentUsageLocked;
-        private Usage _currentUsageIdle;
-        private Usage _currentUsageLogin;
-        private Usage _currentUsageStopped;
+        private readonly ILoggingService loggingService;
 
-        private LazyInit<IdleMonitor> _idleMonitor;
+        private Usage currentUsageLocked;
+        private Usage currentUsageIdle;
+        private Usage currentUsageLogin;
+        private Usage currentUsageStopped;
 
-        private Setting _settings;
+        private LazyInit<IdleMonitor> idleMonitor;
+
+        private Setting settings;
 
         public UsageLogger(Setting settings)
         {
             Ensure.NotNull(settings);
 
-            _settings = settings;
+            loggingService = ServiceFactory.Get<ILoggingService>();
+
+            this.settings = settings;
 
             Init();
             Configure();
@@ -45,7 +50,7 @@ namespace AppsTracker.Logging
         {
             InitLogin();
 
-            _idleMonitor = new LazyInit<IdleMonitor>(() => new IdleMonitor(),
+            idleMonitor = new LazyInit<IdleMonitor>(() => new IdleMonitor(),
                                                             m =>
                                                             {
                                                                 m.IdleEntered += IdleEntered;
@@ -63,92 +68,46 @@ namespace AppsTracker.Logging
 
         private void Configure()
         {
-            _idleMonitor.Enabled = _settings.EnableIdle && _settings.LoggingEnabled;
-            _isLoggingEnabled = _settings.LoggingEnabled;
+            idleMonitor.Enabled = settings.EnableIdle && settings.LoggingEnabled;
+            isLoggingEnabled = settings.LoggingEnabled;
             CheckStoppedUsage();
         }
 
         private void InitLogin()
         {
-            var user = InitUzer(Environment.UserName);
-            _currentUsageLogin = LoginUser(user.UserID);
+            var user = GetUzer(Environment.UserName);
+            currentUsageLogin = LoginUser(user.UserID);
 
-            Globals.Initialize(user, _currentUsageLogin.UsageID);
+            Globals.Initialize(user, currentUsageLogin.UsageID);
         }
 
         private Usage LoginUser(int userID)
         {
-            using (var context = new AppsEntities())
-            {
-                string loginUsage = UsageTypes.Login.ToString();
-
-                if (context.Usages.Where(u => u.IsCurrent && u.UsageType.ToString() == loginUsage).Count() > 0)
-                {
-                    var failedSaveUsage = context.Usages.Where(u => u.IsCurrent && u.UsageType.ToString() == loginUsage).ToList();
-                    foreach (var usage in failedSaveUsage)
-                    {
-                        var lastLog = context.Logs.Where(l => l.UsageID == usage.UsageID).OrderByDescending(l => l.DateCreated).FirstOrDefault();
-                        var lastUsage = context.Usages.Where(u => u.SelfUsageID == usage.UsageID).OrderByDescending(u => u.UsageEnd).FirstOrDefault();
-
-                        DateTime lastLogDate = DateTime.MinValue;
-                        DateTime lastUsageDate = DateTime.MinValue;
-
-                        if (lastLog != null)
-                            lastLogDate = lastLog.DateEnded;
-
-                        if (lastUsage != null)
-                            lastUsageDate = lastUsage.UsageEnd;
-
-
-                        usage.UsageEnd = lastLogDate == lastUsageDate ? usage.UsageEnd : lastUsageDate > lastLogDate ? lastUsageDate : lastLogDate;
-                        usage.IsCurrent = false;
-                        context.Entry(usage).State = EntityState.Modified;
-                    }
-                }
-
-                var login = new Usage() { UserID = userID, UsageEnd = DateTime.Now, UsageType = UsageTypes.Login, IsCurrent = true };
-
-                context.Usages.Add(login);
-                context.SaveChanges();
-
-                return login;
-            }
+            return loggingService.LoginUser(userID);
         }
                
-        private Uzer InitUzer(string userName)
+        private Uzer GetUzer(string userName)
         {
-            using (var context = new AppsEntities())
-            {
-                Uzer user = context.Users.FirstOrDefault(u => u.Name == userName);
-
-                if (user == null)
-                {
-                    user = new Uzer() { Name = userName };
-                    context.Users.Add(user);
-                    context.SaveChanges();
-                }
-
-                return user;
-            }
+            return loggingService.GetUzer(userName);
         }
 
         private void IdleStopped(object sender, EventArgs e)
         {
             Mediator.NotifyColleagues(MediatorMessages.RESUME_LOGGING);
-            if (_currentUsageIdle == null)
+            if (currentUsageIdle == null)
                 return;
 
-            _currentUsageIdle.UsageEnd = DateTime.Now;
-            AddUsage(UsageTypes.Idle, _currentUsageIdle);
-            _currentUsageIdle = null;
+            currentUsageIdle.UsageEnd = DateTime.Now;
+            AddUsage(UsageTypes.Idle, currentUsageIdle);
+            currentUsageIdle = null;
         }
 
         private void IdleEntered(object sender, EventArgs e)
         {
-            if (_isLoggingEnabled == false)
+            if (isLoggingEnabled == false)
                 return;
 
-            _currentUsageIdle = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
+            currentUsageIdle = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
             Mediator.NotifyColleagues(MediatorMessages.STOP_LOGGING);
         }
         private void PowerModeChanged(object sender, Microsoft.Win32.PowerModeChangedEventArgs e)
@@ -166,7 +125,7 @@ namespace AppsTracker.Logging
                 case Microsoft.Win32.PowerModes.Suspend:
                     //Looks like the Session Switch event is fired immediately after the computer is being put to sleep,
                     //If it's going to sleep, then don't log this as computer locked
-                    _isLoggingEnabled = false;
+                    isLoggingEnabled = false;
                     Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;
                     Mediator.NotifyColleagues(MediatorMessages.STOP_LOGGING);
                     Finish();
@@ -177,40 +136,35 @@ namespace AppsTracker.Logging
 
         private void SessionSwitch(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
         {
-            if (_isLoggingEnabled == false)
+            if (isLoggingEnabled == false)
                 return;
 
             if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionLock)
             {
-                _currentUsageLocked = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
-                if (_currentUsageIdle != null)
+                currentUsageLocked = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
+                if (currentUsageIdle != null)
                 {
-                    _currentUsageIdle.UsageEnd = DateTime.Now;
-                    AddUsage(UsageTypes.Idle, _currentUsageIdle);
-                    _currentUsageIdle = null;
+                    currentUsageIdle.UsageEnd = DateTime.Now;
+                    AddUsage(UsageTypes.Idle, currentUsageIdle);
+                    currentUsageIdle = null;
                 }
-                _idleMonitor.Enabled = false;
+                idleMonitor.Enabled = false;
             }
             else if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionUnlock)
             {
-                _idleMonitor.Enabled = _settings.LoggingEnabled && _settings.EnableIdle;
-                if (_currentUsageLocked != null)
+                idleMonitor.Enabled = settings.LoggingEnabled && settings.EnableIdle;
+                if (currentUsageLocked != null)
                 {
-                    _currentUsageLocked.UsageEnd = DateTime.Now;
-                    AddUsage(UsageTypes.Locked, _currentUsageLocked);
-                    _currentUsageLocked = null;
+                    currentUsageLocked.UsageEnd = DateTime.Now;
+                    AddUsage(UsageTypes.Locked, currentUsageLocked);
+                    currentUsageLocked = null;
                 }
             }
         }
 
         private void AddUsage(UsageTypes usagetype, Usage usage)
         {
-            using (var context = new AppsEntities())
-            {
-                usage.UsageType = usagetype;
-                context.Usages.Add(usage);
-                context.SaveChanges();
-            }
+            loggingService.SaveNewUsageAsync(usagetype, usage);
         }
 
         private void SaveUsage(Usage usage)
@@ -219,49 +173,45 @@ namespace AppsTracker.Logging
                 return;
 
             usage.UsageEnd = DateTime.Now;
-            using (var context = new AppsEntities())
-            {
-                context.Entry<Usage>(usage).State = EntityState.Modified;
-                context.SaveChanges();
-            }
+            loggingService.SaveModifiedUsageAsync(usage);
         }
 
         public void SettingsChanged(Setting settings)
         {
-            _settings = settings;
+            this.settings = settings;
             Configure();
         }
 
         private void CheckStoppedUsage()
         {
-            if (_isLoggingEnabled == false && _currentUsageStopped == null)
-                _currentUsageStopped = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
-            else if (_isLoggingEnabled && _currentUsageStopped != null)
+            if (isLoggingEnabled == false && currentUsageStopped == null)
+                currentUsageStopped = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
+            else if (isLoggingEnabled && currentUsageStopped != null)
                 SaveStoppedUsage();
         }
 
         private void SaveStoppedUsage()
         {
-            if (_currentUsageStopped != null)
+            if (currentUsageStopped != null)
             {
-                _currentUsageStopped.UsageEnd = DateTime.Now;
-                AddUsage(UsageTypes.Stopped, _currentUsageStopped);
-                _currentUsageStopped = null;
+                currentUsageStopped.UsageEnd = DateTime.Now;
+                AddUsage(UsageTypes.Stopped, currentUsageStopped);
+                currentUsageStopped = null;
             }
         }
 
         private void Finish()
         {
-            _currentUsageLogin.IsCurrent = false;
-            SaveUsage(_currentUsageIdle);
-            SaveUsage(_currentUsageLocked);
-            SaveUsage(_currentUsageLogin);
+            currentUsageLogin.IsCurrent = false;
+            SaveUsage(currentUsageIdle);
+            SaveUsage(currentUsageLocked);
+            SaveUsage(currentUsageLogin);
             SaveStoppedUsage();
         }
 
         public void Dispose()
         {
-            _idleMonitor.Enabled = false;
+            idleMonitor.Enabled = false;
             Finish();
             Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;
             Microsoft.Win32.SystemEvents.PowerModeChanged -= PowerModeChanged;
@@ -274,7 +224,7 @@ namespace AppsTracker.Logging
 
         public void SetComponentEnabled(bool enabled)
         {
-            _isLoggingEnabled = enabled;
+            isLoggingEnabled = enabled;
         }
 
     }

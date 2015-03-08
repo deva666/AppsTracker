@@ -64,6 +64,7 @@ namespace AppsTracker
             ServiceFactory.Register<ISqlSettingsService>(() => SqlSettingsService.Instance);
             ServiceFactory.Register<IXmlSettingsService>(() => XmlSettingsService.Instance);
             ServiceFactory.Register<IDataService>(() => new DataService());
+            ServiceFactory.Register<ILoggingService>(() => new LoggingService());
             ServiceFactory.Register<IChartService>(() => new ChartService());
             ServiceFactory.Register<ICategoriesService>(() => new CategoriesService());
         }

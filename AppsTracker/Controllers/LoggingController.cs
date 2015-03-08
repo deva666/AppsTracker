@@ -20,7 +20,6 @@ namespace AppsTracker.Controllers
             _components.Add(new WindowLogger(settings));
             _components.Add(new UsageLogger(settings));
             _components.Add(new AppBlockLogger());
-            _components.Add(new EmailService(settings));
             _components.Add(new LogCleaner(settings));
         }
 

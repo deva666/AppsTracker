@@ -11,7 +11,7 @@ using System.Text;
 
 namespace AppsTracker.Encryption
 {
-    class Encrypt
+    internal static class Encrypt
     {
 
         private static byte[] GetHashSHA2(string inputString)

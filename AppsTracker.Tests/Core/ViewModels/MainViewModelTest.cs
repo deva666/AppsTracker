@@ -18,7 +18,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace AppsTracker.Tests.Core.ViewModels
 {
     [TestClass]
-    public class MainViewModelTest
+    public class MainViewModelTest : TestBase
     {
         private bool _refreshCallbackCalled = false;
         private MainViewModel _mainVM;
@@ -26,10 +26,7 @@ namespace AppsTracker.Tests.Core.ViewModels
         [TestInitialize]
         public void Init()
         {
-            if (!ServiceFactory.ContainsKey<IDataService>())
-                ServiceFactory.Register<IDataService>(() => new AppsServiceMock());
-            if (!ServiceFactory.ContainsKey<IChartService>())
-                ServiceFactory.Register<IChartService>(() => new ChartServiceMock());
+            base.Initialize();
 
             _mainVM = new MainViewModel();
 

@@ -12,7 +12,7 @@ using System.Data.Entity.SqlServerCompact;
 
 namespace AppsTracker.Data.Db
 {
-    class AppsDBConfiguration : DbConfiguration
+    internal sealed class AppsDBConfiguration : DbConfiguration
     {
         public AppsDBConfiguration()
         {

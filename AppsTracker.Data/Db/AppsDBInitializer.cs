@@ -10,7 +10,7 @@ using System.Data.Entity;
 
 namespace AppsTracker.Data.Db
 {
-    public class AppsDBInitializer : IDatabaseInitializer<AppsEntities>
+    internal sealed class AppsDBInitializer : IDatabaseInitializer<AppsEntities>
     {
         public AppsDBInitializer()
         {

@@ -25,8 +25,6 @@ namespace AppsTracker.Hooks
 
     internal sealed class MouseHook : IHook<MouseHookArgs>
     {
-        #region Fields
-
         bool _isDisposed;
         bool _isHookEnabled = true;
 
@@ -45,18 +43,10 @@ namespace AppsTracker.Hooks
 
         IntPtr _hookID = IntPtr.Zero;
 
-        #endregion
-
-        #region Constructor
-
         public MouseHook()
         {
             SetHook();
         }
-
-        #endregion
-
-        #region HookCallBack
 
         IntPtr MouseHookCallback(int code, IntPtr wParam, IntPtr lParam)
         {
@@ -69,8 +59,6 @@ namespace AppsTracker.Hooks
 
             return WinAPI.CallNextHookEx(_hookID, code, wParam, lParam);
         }
-
-        #endregion
 
         #region IDisposable Members
 

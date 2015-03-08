@@ -1417,14 +1417,14 @@
                                                Storyboard.TargetProperty="(UIElement.Opacity)">
                     <SplineDoubleKeyFrame KeyTime="00:00:00"
                                           Value="0" />
-                    <SplineDoubleKeyFrame KeyTime="00:00:01.5"
+                    <SplineDoubleKeyFrame KeyTime="00:00:00.75"
                                           Value="1" />
                 </DoubleAnimationUsingKeyFrames>
                 <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)">
                     <SplineDoubleKeyFrame KeyTime="00:00:00"
-                                          Value="1200" />
-                    <EasingDoubleKeyFrame KeyTime="00:00:01.5"
+                                          Value="300" />
+                    <EasingDoubleKeyFrame KeyTime="00:00:00.75"
                                           Value="0">
                         <EasingDoubleKeyFrame.EasingFunction>
                             <CubicEase EasingMode="EaseOut" />
@@ -1438,15 +1438,15 @@
                                                Storyboard.TargetProperty="(UIElement.Opacity)">
                     <SplineDoubleKeyFrame KeyTime="00:00:00"
                                           Value="1" />
-                    <SplineDoubleKeyFrame KeyTime="00:00:01.5"
+                    <SplineDoubleKeyFrame KeyTime="00:00:00.75"
                                           Value="0" />
                 </DoubleAnimationUsingKeyFrames>
                 <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)">
                     <SplineDoubleKeyFrame KeyTime="00:00:00"
                                           Value="0" />
-                    <SplineDoubleKeyFrame KeyTime="00:00:01.5"
-                                          Value="-1200" />
+                    <SplineDoubleKeyFrame KeyTime="00:00:00.75"
+                                          Value="-300" />
                 </DoubleAnimationUsingKeyFrames>
             </Storyboard>
 

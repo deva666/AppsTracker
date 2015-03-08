@@ -13,44 +13,45 @@ namespace AppsTracker.MVVM
 {
     internal abstract class SettingsBaseViewModel : ViewModelBase
     {
-        private ISqlSettingsService _settingsService;
+        private const string SETTINGS_SAVED_MSG = "settings saved";
 
-        private Setting _settings;
+        private ISqlSettingsService settingsService;
+
+        private string infoMessage;
+        public string InfoMessage
+        {
+            get { return infoMessage; }
+            set { SetPropertyValue(ref infoMessage, value); }
+        }        
+
+        private Setting settings;
         public Setting Settings
         {
-            get
-            {
-                return _settings;
-            }
-            set
-            {
-                _settings = value;
-                PropertyChanging("Settings");
-            }
+            get { return settings; }
+            set { SetPropertyValue(ref settings, value); }
         }
 
-        private ICommand _saveChangesCommand;
+        private ICommand saveChangesCommand;
         public ICommand SaveChangesCommand
         {
-            get
-            {
-                return _saveChangesCommand ?? (_saveChangesCommand = new DelegateCommandAsync(SaveChangesAsync));
-            }
+            get { return saveChangesCommand ?? (saveChangesCommand = new DelegateCommandAsync(SaveChangesAsync)); }
         }
         public SettingsBaseViewModel()
         {
-            _settingsService = ServiceFactory.Get<ISqlSettingsService>();
-            Settings = _settingsService.Settings;
+            settingsService = ServiceFactory.Get<ISqlSettingsService>();
+            Settings = settingsService.Settings;
         }
 
         private void SaveChanges()
         {
-            _settingsService.SaveChanges(_settings);
+            settingsService.SaveChanges(settings);
+            InfoMessage = SETTINGS_SAVED_MSG;
         }
 
         private async Task SaveChangesAsync()
         {
-           await _settingsService.SaveChangesAsync(_settings);
+            await settingsService.SaveChangesAsync(settings);
+            InfoMessage = SETTINGS_SAVED_MSG;
         }
 
         protected void SettingsChanging()

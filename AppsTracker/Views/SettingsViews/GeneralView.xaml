@@ -22,8 +22,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -65,33 +63,12 @@
                 </CheckBox.InputBindings>
             </CheckBox>
 
-            <!--<Label Style="{DynamicResource LabelStyle}"
-                   Content="Stealth mode:"
-                   Grid.Row="3"
-                   HorizontalAlignment="Left"
-                   Margin="0,0,0,0" />
-            <CheckBox IsChecked="{Binding Settings.Stealth, Mode=TwoWay}"
-                      Grid.Row="3"
-                      Grid.Column="1"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      Margin="30,0,0,0" />
-            <Label Style="{DynamicResource LabelStyle}"
-                   Grid.Row="4"
-                   Grid.ColumnSpan="3"
-                   Content="Stealth mode hides the tray icon and the main app window.  Main window can be opened again by running the app executable or shortcut."
-                   Foreground="{DynamicResource WindowForegroundBrush}"
-                   HorizontalAlignment="Left"
-                   FontFamily="Tahoma"
-                   FontSize="11"
-                   Margin="0,0,0,5" />-->
-
             <Label Style="{DynamicResource LabelStyle}"
                    Content="Theme:"
-                   Grid.Row="5"
+                   Grid.Row="3"
                    HorizontalAlignment="Left"
                    Margin="0,10,0,0" />
-            <ComboBox Grid.Row="5"
+            <ComboBox Grid.Row="3"
                       Grid.Column="1"
                       IsSynchronizedWithCurrentItem="False"
                       SelectedValue="{Binding Settings.LightTheme, Converter={StaticResource convertBoolToThemeString}, Mode=OneWay}"
@@ -113,7 +90,7 @@
             </ComboBox>
 
             <Button Content="Save Changes"
-                    Grid.Row="6"
+                    Grid.Row="4"
                     Margin="0,30,0,0"
                     Width="100">
                 <Button.InputBindings>
@@ -122,6 +99,11 @@
                 </Button.InputBindings>
             </Button>
 
+            <controls:ScrollingContentControl Grid.Row="5"
+                                              Margin="0,30,0,0"
+                                              InfoContent="{Binding InfoMessage}">
+                <Label Style="{DynamicResource LabelStyle}" />
+            </controls:ScrollingContentControl>
         </Grid>
     </ScrollViewer>
 </UserControl>

@@ -117,6 +117,8 @@
     <Compile Include="Models\ViewModels\UsageModels.cs" />
     <Compile Include="Service\CategoriesService.cs" />
     <Compile Include="Service\ICategoriesService.cs" />
+    <Compile Include="Service\ILoggingService.cs" />
+    <Compile Include="Service\LoggingService.cs" />
     <Compile Include="Utils\DelegateCommand.cs" />
     <Compile Include="XmlSettings\DaysViewSettings.cs" />
     <Compile Include="XmlSettings\KeylogsViewSettings.cs" />

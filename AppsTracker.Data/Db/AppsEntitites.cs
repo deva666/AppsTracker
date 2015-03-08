@@ -14,7 +14,7 @@ using AppsTracker.Data.Models;
 
 namespace AppsTracker.Data.Db
 {
-    public class AppsEntities : DbContext
+    public sealed class AppsEntities : DbContext
     {
         private static string _connectionString = DbConnectionFactory.ConnectionString;
 
@@ -69,6 +69,5 @@ namespace AppsTracker.Data.Db
         public DbSet<Uzer> Users { get; set; }
         public DbSet<Window> Windows { get; set; }
         public DbSet<Usage> Usages { get; set; }
-        //public DbSet<UsageType> UsageTypes { get; set; }
     }
 }

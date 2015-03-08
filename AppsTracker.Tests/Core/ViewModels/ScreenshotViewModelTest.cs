@@ -15,15 +15,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace AppsTracker.Tests.Core.ViewModels
 {
     [TestClass]
-    public class ScreenshotViewModelTest
+    public class ScreenshotViewModelTest : TestBase
     {
         private volatile bool _loaded = false;
 
         [TestInitialize]
         public void Init()
         {
-            if (!ServiceFactory.ContainsKey<IDataService>())
-                ServiceFactory.Register<IDataService>(() => new AppsServiceMock());
+            base.Initialize();
         }
 
         [TestMethod]

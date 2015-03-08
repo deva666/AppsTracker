@@ -11,20 +11,19 @@ namespace AppsTracker.Data.Service
 {
     public sealed class SqlSettingsService : ISqlSettingsService
     {
-        private static Lazy<SqlSettingsService> _instance = new Lazy<SqlSettingsService>(() => new SqlSettingsService());
+        private static Lazy<SqlSettingsService> instance = new Lazy<SqlSettingsService>(() => new SqlSettingsService());
 
         public static SqlSettingsService Instance
         {
-            get { return _instance.Value; }
+            get { return instance.Value; }
         }
 
-        private Setting _settings;
+        private Setting settings;
         public Setting Settings
         {
             get
             {
-                var temp = _settings;
-                var clone = temp.Clone();
+                var clone = settings.Clone();
                 return clone;
             }
         }
@@ -40,13 +39,13 @@ namespace AppsTracker.Data.Service
             {
                 if (context.Settings.Count() == 0)
                 {
-                    _settings = new Setting(true);
-                    context.Settings.Add(_settings);
+                    settings = new Setting(true);
+                    context.Settings.Add(settings);
                     context.SaveChanges();
                 }
                 else
                 {
-                    _settings = context.Settings.FirstOrDefault();
+                    settings = context.Settings.FirstOrDefault();
                 }
             }
         }
@@ -58,7 +57,7 @@ namespace AppsTracker.Data.Service
                 context.Entry<Setting>(settings).State = System.Data.Entity.EntityState.Modified;
                 context.SaveChanges();
             }
-            _settings = settings;
+            this.settings = settings;
 
             NotifyPropertyChanged();
         }
@@ -70,7 +69,7 @@ namespace AppsTracker.Data.Service
                 context.Entry<Setting>(settings).State = System.Data.Entity.EntityState.Modified;
                 await context.SaveChangesAsync();
             }
-            _settings = settings;
+            this.settings = settings;
 
             NotifyPropertyChanged();
         }

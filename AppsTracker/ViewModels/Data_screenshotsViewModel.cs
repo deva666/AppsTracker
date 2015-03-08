@@ -26,8 +26,6 @@ namespace AppsTracker.Pages.ViewModels
 {
     internal sealed class Data_screenshotsViewModel : ViewModelBase, ICommunicator
     {
-        #region Fields
-
         private IDataService _dataService;
         private ISqlSettingsService _settingsService;
 
@@ -41,9 +39,6 @@ namespace AppsTracker.Pages.ViewModels
         private ICommand _openScreenshotViewerCommand;
         private ICommand _saveScreenshotCommand;
 
-        #endregion
-
-        #region Properties
         public override string Title
         {
             get
@@ -130,9 +125,6 @@ namespace AppsTracker.Pages.ViewModels
         {
             get { return MVVM.Mediator.Instance; }
         }
-        #endregion
-
-        #region Constructor
 
         public Data_screenshotsViewModel()
         {
@@ -144,8 +136,6 @@ namespace AppsTracker.Pages.ViewModels
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(_logList.Reload));
             SelectedDate = DateTime.Today;
         }
-
-        #endregion
 
         private IEnumerable<Log> GetContent()
         {
