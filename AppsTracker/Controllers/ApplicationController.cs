@@ -19,31 +19,31 @@ namespace AppsTracker.Controllers
     [Export(typeof(IApplicationController))]
     internal sealed class ApplicationController : IApplicationController
     {
-        private IAppearanceController _appearanceController;
-        private ILoggingController _loggingController;
+        private readonly IAppearanceController appearanceController;
+        private readonly ILoggingController loggingController;
 
-        private ISqlSettingsService _settingsService;
-        private IXmlSettingsService _xmlSettingsService;
+        private ISqlSettingsService settingsService;
+        private IXmlSettingsService xmlSettingsService;
 
-        private TrayIcon _trayIcon;
-        private Window _mainWindow;
+        private TrayIcon trayIcon;
+        private Window mainWindow;
 
         [ImportingConstructor]
         public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController)
         {
-            _appearanceController = appearanceController;
-            _loggingController = loggingController;
+            this.appearanceController = appearanceController;
+            this.loggingController = loggingController;
         }
 
         public void Initialize(bool autoStart)
         {
-            _settingsService = ServiceFactory.Get<ISqlSettingsService>();
-            _xmlSettingsService = ServiceFactory.Get<IXmlSettingsService>();
-            _xmlSettingsService.Initialize();
-            PropertyChangedEventManager.AddHandler(_settingsService, OnSettingsChanged, "Settings");
+            settingsService = ServiceFactory.Get<ISqlSettingsService>();
+            xmlSettingsService = ServiceFactory.Get<IXmlSettingsService>();
+            xmlSettingsService.Initialize();
+            PropertyChangedEventManager.AddHandler(settingsService, OnSettingsChanged, "Settings");
 
-            _appearanceController.Initialize(_settingsService.Settings);
-            _loggingController.Initialize(_settingsService.Settings);
+            appearanceController.Initialize(settingsService.Settings);
+            loggingController.Initialize(settingsService.Settings);
 
 #if PORTABLE_SYMBOL
 
@@ -67,13 +67,13 @@ ShowEULAWindow();
 
         private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
         {
-            _loggingController.SettingsChanging(_settingsService.Settings);
-            _appearanceController.SettingsChanging(_settingsService.Settings);
+            loggingController.SettingsChanging(settingsService.Settings);
+            appearanceController.SettingsChanging(settingsService.Settings);
         }
 
         private void ShowEULAWindow()
         {
-            if (_settingsService.Settings.FirstRun)
+            if (settingsService.Settings.FirstRun)
             {
                 EULAWindow eulaWindow = new EULAWindow();
                 var dialogResult = eulaWindow.ShowDialog();
@@ -89,12 +89,12 @@ ShowEULAWindow();
         private void ReadSettingsFromRegistry()
         {
             bool? exists = RegistryEntryExists();
-            if (exists == null && _settingsService.Settings.RunAtStartup)
-                _settingsService.Settings.RunAtStartup = false;
-            else if (exists.HasValue && exists.Value && !_settingsService.Settings.RunAtStartup)
-                _settingsService.Settings.RunAtStartup = true;
-            else if (exists.HasValue && !exists.Value && _settingsService.Settings.RunAtStartup)
-                _settingsService.Settings.RunAtStartup = false;
+            if (exists == null && settingsService.Settings.RunAtStartup)
+                settingsService.Settings.RunAtStartup = false;
+            else if (exists.HasValue && exists.Value && !settingsService.Settings.RunAtStartup)
+                settingsService.Settings.RunAtStartup = true;
+            else if (exists.HasValue && !exists.Value && settingsService.Settings.RunAtStartup)
+                settingsService.Settings.RunAtStartup = false;
         }
 
         private bool? RegistryEntryExists()
@@ -114,50 +114,50 @@ ShowEULAWindow();
 
         private void FirstRunWindowSetup()
         {
-            if (_settingsService.Settings.FirstRun)
+            if (settingsService.Settings.FirstRun)
             {
                 SetInitialWindowDimensions();
-                var settings = _settingsService.Settings;
+                var settings = settingsService.Settings;
                 settings.FirstRun = false;
-                _settingsService.SaveChanges(settings);
+                settingsService.SaveChanges(settings);
             }
         }
 
         private void ShowTrayIcon()
         {
-            if (_trayIcon == null)
-                _trayIcon = new Controls.TrayIcon();
-            _trayIcon.ShowApp.Click += (s, e) => CreateOrShowMainWindow();
-            _trayIcon.IsVisible = true;
+            if (trayIcon == null)
+                trayIcon = new Controls.TrayIcon();
+            trayIcon.ShowApp.Click += (s, e) => CreateOrShowMainWindow();
+            trayIcon.IsVisible = true;
         }
 
         private void CreateOrShowMainWindow()
         {
             if (CheckPassword())
             {
-                if (_mainWindow == null)
+                if (mainWindow == null)
                 {
-                    _mainWindow = new AppsTracker.MainWindow();
+                    mainWindow = new AppsTracker.MainWindow();
                     LoadWindowPosition();
-                    _mainWindow.Show();
+                    mainWindow.Show();
                 }
                 else
                 {
-                    if (!_mainWindow.IsLoaded)
+                    if (!mainWindow.IsLoaded)
                     {
-                        _mainWindow = new MainWindow();
+                        mainWindow = new MainWindow();
                         LoadWindowPosition();
-                        _mainWindow.Show();
+                        mainWindow.Show();
                     }
                     else
-                        _mainWindow.Activate();
+                        mainWindow.Activate();
                 }
             }
         }
 
         private bool CheckPassword()
         {
-            if (_settingsService.Settings.IsMasterPasswordSet)
+            if (settingsService.Settings.IsMasterPasswordSet)
             {
                 PasswordWindow passwordWindow = new PasswordWindow();
                 bool? dialog = passwordWindow.ShowDialog();
@@ -173,29 +173,29 @@ ShowEULAWindow();
 
         private void LoadWindowPosition()
         {
-            var mainWindowSettings = _xmlSettingsService.MainWindowSettings;
-            _mainWindow.Left = mainWindowSettings.Left;
-            _mainWindow.Top = mainWindowSettings.Top;
-            _mainWindow.Width = mainWindowSettings.Width;
-            _mainWindow.Height = mainWindowSettings.Height;
+            var mainWindowSettings = xmlSettingsService.MainWindowSettings;
+            mainWindow.Left = mainWindowSettings.Left;
+            mainWindow.Top = mainWindowSettings.Top;
+            mainWindow.Width = mainWindowSettings.Width;
+            mainWindow.Height = mainWindowSettings.Height;
         }
 
         private void CloseMainWindow()
         {
-            if (_mainWindow != null)
+            if (mainWindow != null)
             {
                 SaveWindowPosition();
-                _mainWindow.Close();
-                _mainWindow = null;
+                mainWindow.Close();
+                mainWindow = null;
             }
         }
 
         private void SaveWindowPosition()
         {
-            _xmlSettingsService.MainWindowSettings.Height = _mainWindow.Height;
-            _xmlSettingsService.MainWindowSettings.Width = _mainWindow.Width;
-            _xmlSettingsService.MainWindowSettings.Left = _mainWindow.Left;
-            _xmlSettingsService.MainWindowSettings.Top = _mainWindow.Top;
+            xmlSettingsService.MainWindowSettings.Height = mainWindow.Height;
+            xmlSettingsService.MainWindowSettings.Width = mainWindow.Width;
+            xmlSettingsService.MainWindowSettings.Left = mainWindow.Left;
+            xmlSettingsService.MainWindowSettings.Top = mainWindow.Top;
         }
 
         private void SetInitialWindowDimensions()
@@ -206,17 +206,17 @@ ShowEULAWindow();
             top = bound.Top + 50d;
             width = bound.Width - 100d;
             height = bound.Height - 100d;
-            _mainWindow.Left = left;
-            _mainWindow.Top = top;
-            _mainWindow.Width = width;
-            _mainWindow.Height = height;
+            mainWindow.Left = left;
+            mainWindow.Top = top;
+            mainWindow.Width = width;
+            mainWindow.Height = height;
         }
 
         private async void Globals_DBCleaningRequired(object sender, EventArgs e)
         {
-            var settings = _settingsService.Settings;
+            var settings = settingsService.Settings;
             settings.TakeScreenshots = false;
-            await _settingsService.SaveChangesAsync(settings);
+            await settingsService.SaveChangesAsync(settings);
 
             MessageWindow msgWindow = new MessageWindow("Database size has reached the maximum allowed value" + Environment.NewLine + "Please run the screenshot cleaner from the settings menu to continue capturing screenshots.", false);
             msgWindow.ShowDialog();
@@ -227,12 +227,12 @@ ShowEULAWindow();
         public void ShutDown()
         {
             CloseMainWindow();
-            _xmlSettingsService.ShutDown();
-            _loggingController.Dispose();
-            if (_trayIcon != null)
+            xmlSettingsService.ShutDown();
+            loggingController.Dispose();
+            if (trayIcon != null)
             {
-                _trayIcon.Dispose();
-                _trayIcon = null;
+                trayIcon.Dispose();
+                trayIcon = null;
             }
         }
 

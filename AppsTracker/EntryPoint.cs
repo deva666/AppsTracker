@@ -35,7 +35,7 @@ namespace AppsTracker
             try
             {
                 Exception ex = e.ExceptionObject as Exception;
-                AppsTracker.Exceptions.FileLogger.Log(ex);
+                FileLogger.Instance.Log(ex);
 
                 System.Windows.Application.Current.Dispatcher.Invoke(new Action(() =>
                 {

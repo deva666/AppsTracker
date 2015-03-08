@@ -4,11 +4,18 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace AppsTracker.Exceptions
+namespace AppsTracker
 {
-    public class FileLogger
+    public class FileLogger : ILogger
     {
-        public static void Log(System.Exception ex)
+        private static readonly Lazy<FileLogger> instance = new Lazy<FileLogger>(() => new FileLogger());
+        public static FileLogger Instance { get { return instance.Value; } }
+        private FileLogger()
+        {
+
+        }
+
+        public void Log(System.Exception ex)
         {
             if (ex == null)
                 throw new ArgumentNullException();

@@ -18,13 +18,13 @@ namespace AppsTracker.Controllers
     [Export(typeof(IAppearanceController))]
     internal sealed class AppearanceController : IAppearanceController
     {
-        private bool _lightTheme;
-        private bool _loggingEnabled;
+        private bool lightTheme;
+        private bool loggingEnabled;
 
         public void Initialize(Setting settings)
         {
-            _lightTheme = settings.LightTheme;
-            _loggingEnabled = settings.LoggingEnabled;
+            lightTheme = settings.LightTheme;
+            loggingEnabled = settings.LoggingEnabled;
             Application.Current.Resources.MergedDictionaries.Clear();
             ApplyTheme();
         }
@@ -32,15 +32,15 @@ namespace AppsTracker.Controllers
         public void SettingsChanging(Setting settings)
         {
             bool isThemeChanging = false;
-            if (_lightTheme != settings.LightTheme)
+            if (lightTheme != settings.LightTheme)
             {
-                _lightTheme = settings.LightTheme;
+                lightTheme = settings.LightTheme;
                 isThemeChanging = true;
             }
 
-            if (_loggingEnabled != settings.LoggingEnabled)
+            if (loggingEnabled != settings.LoggingEnabled)
             {
-                _loggingEnabled = settings.LoggingEnabled;
+                loggingEnabled = settings.LoggingEnabled;
                 isThemeChanging = true;
             }
 
@@ -53,16 +53,16 @@ namespace AppsTracker.Controllers
             ResourceDictionary newDictionary;
             var oldDictionary = Application.Current.Resources.MergedDictionaries.FirstOrDefault(d => d.Contains("WindowBackgroundColor"));
 
-            if (_lightTheme)
+            if (lightTheme)
             {
-                if (_loggingEnabled)
+                if (loggingEnabled)
                     newDictionary = new ResourceDictionary() { Source = new Uri("/Themes/RunningLight.xaml", UriKind.Relative) };
                 else
                     newDictionary = new ResourceDictionary() { Source = new Uri("/Themes/StoppedLight.xaml", UriKind.Relative) };
             }
             else
             {
-                if (_loggingEnabled)
+                if (loggingEnabled)
                     newDictionary = new ResourceDictionary() { Source = new Uri("/Themes/Running.xaml", UriKind.Relative) };
                 else
                     newDictionary = new ResourceDictionary() { Source = new Uri("/Themes/Stopped.xaml", UriKind.Relative) };
@@ -74,6 +74,11 @@ namespace AppsTracker.Controllers
                 return;
             }
 
+            AnimateThemeChange(newDictionary, oldDictionary);
+        }
+
+        private void AnimateThemeChange(ResourceDictionary newDictionary, ResourceDictionary oldDictionary)
+        {
             ColorAnimation animation = new ColorAnimation();
             animation.From = (System.Windows.Media.Color)oldDictionary["WindowBackgroundColor"];
             animation.To = (System.Windows.Media.Color)newDictionary["WindowBackgroundColor"];
@@ -88,7 +93,6 @@ namespace AppsTracker.Controllers
             Storyboard storyboard = new Storyboard();
             storyboard.Children.Add(animation);
             storyboard.Begin();
-
         }
     }
 }

@@ -13,43 +13,43 @@ namespace AppsTracker.Controllers
     internal sealed class LoggingController : ILoggingController
     {
 
-        IList<IComponent> _components = new List<IComponent>();
+        private readonly IList<IComponent> components = new List<IComponent>();
 
         public void Initialize(Setting settings)
         {
-            _components.Add(new WindowLogger(settings));
-            _components.Add(new UsageLogger(settings));
-            _components.Add(new AppBlockLogger());
-            _components.Add(new LogCleaner(settings));
+            components.Add(new WindowLogger(settings));
+            components.Add(new UsageLogger(settings));
+            components.Add(new AppBlockLogger());
+            components.Add(new LogCleaner(settings));
         }
 
         private void OnAll(Action<IComponent> action)
         {
-            foreach (var comp in _components)
+            foreach (var comp in components)
                 action(comp);
         }
 
         private void OnAllParallel(Action<IComponent> action)
         {
-            Parallel.ForEach<IComponent>(_components, action);
+            Parallel.ForEach<IComponent>(components, action);
         }
 
         public void SettingsChanging(Setting settings)
         {
-            foreach (var comp in _components)
+            foreach (var comp in components)
                 comp.SettingsChanged(settings);
         }
 
         public void ToggleKeyboardHook(bool enabled)
         {
-            var windowLogger = _components.FirstOrDefault(c => c.GetType() == typeof(WindowLogger)) as WindowLogger;
+            var windowLogger = components.FirstOrDefault(c => c.GetType() == typeof(WindowLogger)) as WindowLogger;
             if (windowLogger != null)
                 windowLogger.SetKeyboardHookEnabled(enabled);
         }
 
         public void Dispose()
         {
-            OnAll(l => l.Dispose());    
+            OnAll(l => l.Dispose());
         }
     }
 }

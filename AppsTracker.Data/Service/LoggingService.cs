@@ -158,5 +158,14 @@ namespace AppsTracker.Data.Service
                 await context.SaveChangesAsync();
             }
         }
+
+        public DateTime GetFirstDate(int userID)
+        {
+            using (var context = new AppsEntities())
+            {
+                return context.Usages.Count(u => u.UserID == userID) == 0 ? DateTime.Now.Date
+                    : context.Usages.Where(u => u.UserID == userID).Select(u => u.UsageStart).Min();
+            }
+        }
     }
 }

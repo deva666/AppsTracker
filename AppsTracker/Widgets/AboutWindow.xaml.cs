@@ -82,7 +82,7 @@ namespace AppsTracker.Controls
             }
             catch (Exception ex)
             {
-                Exceptions.FileLogger.Log(ex);
+                FileLogger.Instance.Log(ex);
             }
         }
 
@@ -95,7 +95,7 @@ namespace AppsTracker.Controls
             catch (Exception ex)
             {
 
-                Exceptions.FileLogger.Log(ex);
+                FileLogger.Instance.Log(ex);
             }
         }
     }

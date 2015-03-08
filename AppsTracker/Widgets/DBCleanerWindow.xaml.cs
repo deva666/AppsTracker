@@ -7,15 +7,13 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 
-using AppsTracker.Data;
-using AppsTracker.Data.Db;
+using AppsTracker.Data.Service;
 
 
 namespace AppsTracker.Controls
@@ -81,7 +79,7 @@ namespace AppsTracker.Controls
             int days;
             if (!int.TryParse(tbDays.Text, out days))
                 return;
-                        
+
             overlayGrd.Visibility = System.Windows.Visibility.Visible;
             int count = await Task<int>.Run(() => DeleteOldScreenshots(days));
             overlayGrd.Visibility = System.Windows.Visibility.Collapsed;
@@ -98,13 +96,7 @@ namespace AppsTracker.Controls
 
         private int DeleteOldScreenshots(int days)
         {
-            using (var context = new AppsEntities())
-            {
-                DateTime dateTreshold = DateTime.Now.AddDays(-1d * days);
-                var oldScreenshots = context.Screenshots.Where(s => s.Date < dateTreshold).ToList();
-                context.Screenshots.RemoveRange(oldScreenshots);
-                return context.SaveChanges();
-            }
+            return ServiceFactory.Get<IDataService>().DeleteOldScreenshots(days);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace AppsTracker.Tests.Fakes.Service
             return new List<T>();
         }
 
-        public int DeleteScreenshots(IEnumerable<Log> logs)
+        public int DeleteScreenshotsInLogs(IEnumerable<Log> logs)
         {
             return 1;
         }
@@ -42,6 +42,17 @@ namespace AppsTracker.Tests.Fakes.Service
         {
            System.Threading.Thread.Sleep(500);
            return new List<T>();
+        }
+
+
+        public int DeleteOldScreenshots(int daysBackwards)
+        {
+            return 0;
+        }
+
+        public void DeleteOldLogs(int daysTreshold)
+        {
+            
         }
     }
 }

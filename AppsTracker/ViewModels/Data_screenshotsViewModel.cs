@@ -165,7 +165,7 @@ namespace AppsTracker.Pages.ViewModels
             if (parameterCollection != null)
             {
                 var logs = parameterCollection.Cast<Log>().Where(l => l.Screenshots.Count > 0).ToList();
-                var deletedCount = _dataService.DeleteScreenshots(logs);
+                var deletedCount = _dataService.DeleteScreenshotsInLogs(logs);
                 if(deletedCount > 0)
                     InfoContent = "Screenshots deleted";
                 _logList.Reload();

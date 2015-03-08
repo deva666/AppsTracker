@@ -84,7 +84,7 @@ namespace AppsTracker
         {
             try
             {
-                AppsTracker.Exceptions.FileLogger.Log(e.Exception);
+                FileLogger.Instance.Log(e.Exception);
                 MessageWindow messageWindow = new MessageWindow("Ooops, this is awkward ... something went wrong." +
                        Environment.NewLine + "The app needs to close." + Environment.NewLine + "Error: " + e.Exception.Message);
                 messageWindow.ShowDialog();

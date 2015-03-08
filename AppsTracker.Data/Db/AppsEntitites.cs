@@ -14,7 +14,7 @@ using AppsTracker.Data.Models;
 
 namespace AppsTracker.Data.Db
 {
-    public sealed class AppsEntities : DbContext
+    internal sealed class AppsEntities : DbContext
     {
         private static string _connectionString = DbConnectionFactory.ConnectionString;
 

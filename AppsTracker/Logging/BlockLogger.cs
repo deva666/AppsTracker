@@ -50,16 +50,16 @@ namespace AppsTracker.Logging
             if (_isLoggingEnabled == false)
                 return;
 
-            using (var context = new AppsEntities())
-            {
-                context.BlockedApps.Add(new BlockedApp()
-                {
-                    Date = DateTime.Now,
-                    ApplicationID = args.Aplication.ApplicationID,
-                    UserID = Globals.UserID
-                });
-                context.SaveChanges();
-            }
+            //using (var context = new AppsEntities())
+            //{
+            //    context.BlockedApps.Add(new BlockedApp()
+            //    {
+            //        Date = DateTime.Now,
+            //        ApplicationID = args.Aplication.ApplicationID,
+            //        UserID = Globals.UserID
+            //    });
+            //    context.SaveChanges();
+            //}
         }
 
         public void Dispose()

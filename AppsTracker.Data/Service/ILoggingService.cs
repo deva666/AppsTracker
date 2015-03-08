@@ -14,5 +14,6 @@ namespace AppsTracker.Data.Service
         Uzer GetUzer(string userName);
         Task SaveNewUsageAsync(UsageTypes usagetype, Usage usage);
         Task SaveModifiedUsageAsync(Usage usage);
+        DateTime GetFirstDate(int userID);
     }
 }

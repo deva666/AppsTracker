@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using AppsTracker.Data;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
+using AppsTracker.Data.Service;
 
 namespace AppsTracker
 {
@@ -79,11 +80,7 @@ namespace AppsTracker
 
         private static DateTime GetFirstDate()
         {
-            using (var context = new AppsEntities())
-            {
-                return context.Usages.Count(u => u.UserID == SelectedUserID) == 0 ? DateTime.Now.Date
-                    : context.Usages.Where(u => u.UserID == SelectedUserID).Select(u => u.UsageStart).Min();
-            }
+            return ServiceFactory.Get<ILoggingService>().GetFirstDate(SelectedUserID);
         }
 
         public static void ChangeUser(Uzer uzer)
@@ -113,7 +110,7 @@ namespace AppsTracker
             }
             catch (Exception ex)
             {
-                Exceptions.FileLogger.Log(ex);
+                FileLogger.Instance.Log(ex);
                 return -1;
             }
         }
