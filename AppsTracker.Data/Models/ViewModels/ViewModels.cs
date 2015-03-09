@@ -15,134 +15,114 @@ namespace AppsTracker.Data.Models
 {
     public class MostUsedAppModel
     {
-        string _appName;
-        double _duration;
-
-        public string AppName { get { return _appName; } set { _appName = value; } }
-        public double Duration { get { return _duration; } set { _duration = value; } }
+        public string AppName { get; set; }
+        public double Duration { get; set; }
     }
 
     public class AllUsersModel
     {
-        string _username;
-        double _loggedInTime;
-
-        public string Username { get { return _username; } set { _username = value; } }
-        public double LoggedInTime { get { return _loggedInTime; } set { _loggedInTime = value; } }
+        public string Username { get; set; }
+        public double LoggedInTime { get; set; }
     }
 
-    public class BlockedAppModel
+    public struct BlockedAppModel
     {
-        string _appName;
-        int _count;
-        public string AppName { get { return _appName; } set { _appName = value; } }
-        public int Count { get { return _count; } set { _count = value; } }
+        public string AppName { get; set; }
+        public int Count { get; set; }
     }
 
     public class KeystrokeModel
     {
-        string _appName;
-        int _count;
-
-        public string AppName { get { return _appName; } set { _appName = value; } }
-        public int Count { get { return _count; } set { _count = value; } }
+        public string AppName { get; set; }
+        public int Count { get; set; }
     }
 
     public class ScreenshotModel
     {
-        string _appName;
-        int _count;
-
-        public string AppName { get { return _appName; } set { _appName = value; } }
-        public int Count { get { return _count; } set { _count = value; } }
+        public string AppName { get; set; }
+        public int Count { get; set; }
     }
 
-    public class UsageModel
+    public struct UsageModel
     {
-        string _date;
-        double _count;
-
-        public string Date { get { return _date; } set { _date = value; } }
-        public double Count { get { return _count; } set { _count = value; } }
+        public string Date { get; set; }
+        public double Count { get; set; }
     }
 
-    public class DailyUsedAppsSeries
+    public struct DailyUsedAppsSeries
     {
         public string Date { get; set; }
         public List<MostUsedAppModel> DailyUsedAppsCollection { get; set; }
     }
 
-    public class UsageTypeModel
+    public struct UsageTypeModel
     {
         public string UsageType { get; set; }
         public double Time { get; set; }
     }
 
-    public class UsageTypeSeries
+    public struct UsageTypeSeries
     {
         public string Date { get; set; }
         public DateTime DateInstance { get; set; }
         public ObservableCollection<UsageTypeModel> DailyUsageTypeCollection { get; set; }
     }
 
-    public class DailyUsageTypeSeries
+    public struct DailyUsageTypeSeries
     {
         public string Time { get; set; }
         public ObservableCollection<UsageTypeModel> DailyUsageTypeCollection { get; set; }
     }
 
-    public class DailyTopWindowSeries
+    public struct DailyTopWindowSeries
     {
         public string Date { get; set; }
         public ObservableCollection<TopWindowsModel> DailyUsageTypeCollection { get; set; }
     }
 
-    public class DailyBlockedAppModel
+    public struct DailyBlockedAppModel
     {
         public string Date { get; set; }
         public int Count { get; set; }
     }
 
-    public class DailyAppModel
+    public struct DailyAppModel
     {
-        string _date;
-        double _duration;
-
-        public string Date { get { return _date; } set { _date = value; } }
-        public double Duration { get { return _duration; } set { _duration = value; } }
+        public string Date { get; set; }
+        public double Duration { get; set; }
     }
 
-    public class DailyKeystrokeModel
+    public struct DailyKeystrokeModel
     {
         public string Date { get; set; }
         public int Count { get; set; }
     }
 
-    public class DailyScreenshotModel
+    public struct DailyScreenshotModel
     {
         public string Date { get; set; }
         public int Count { get; set; }
     }
 
-    public class FilewatcherModel
+    public struct FilewatcherModel
     {
         public string Event { get; set; }
         public int Count { get; set; }
     }
 
-    public class DailyWindowDurationModel
+    public struct DailyWindowDurationModel
     {
         public double Duration { get; set; }
         public string Title { get; set; }
     }
 
-    public class DailyWindowSeries
+    public struct DailyWindowSeries
     {
         public string Date { get; set; }
         public List<DailyWindowDurationModel> DailyWindowCollection { get; set; }
     }
 
-    public class CategoryModel
+    public struct CategoryModel
     {
         public string Name { get; set; }
         public double TotalTime { get; set; }

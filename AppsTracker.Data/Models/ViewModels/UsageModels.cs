@@ -10,7 +10,7 @@ using System;
 
 namespace AppsTracker.Data.Models
 {
-    public abstract class Selectable
+    public abstract class SelectableBase
     {
         protected bool _isSelected;
         public bool IsSelected
@@ -34,7 +34,8 @@ namespace AppsTracker.Data.Models
         }
         public event EventHandler IsSelectedChanging;
     }
-    public abstract class TopModel : Selectable
+
+    public abstract class TopModel : SelectableBase
     {
         public double Usage { get; set; }
         public long Duration { get; set; }
@@ -52,7 +53,6 @@ namespace AppsTracker.Data.Models
     public class TopWindowsModel : TopModel
     {
         public string Title { get; set; }
-
     }
 
     public class DayViewModel

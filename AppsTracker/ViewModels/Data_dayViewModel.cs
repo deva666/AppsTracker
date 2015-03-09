@@ -18,32 +18,26 @@ namespace AppsTracker.ViewModels
 {
     internal sealed class Data_dayViewModel : ViewModelBase, ICommunicator
     {
-        #region Fields
+        private DateTime selectedDate = DateTime.Today;
 
-        private DateTime _selectedDate = DateTime.Today;
+        private string singleAppDuration;
+        private string singleWindowDuration;
 
-        private string _singleAppDuration;
-        private string _singleWindowDuration;
+        private TopAppsModel topAppsSingle;
 
-        private TopAppsModel _topAppsSingle;
+        private readonly AsyncProperty<IEnumerable<TopAppsModel>> topAppsList;
+        private readonly AsyncProperty<IEnumerable<DayViewModel>> dayViewModelList;
+        private readonly AsyncProperty<IEnumerable<TopWindowsModel>> topWindowsList;
+        private readonly AsyncProperty<IEnumerable<DailyUsageTypeSeries>> chartList;
+        private readonly AsyncProperty<string> duration;
+        private readonly AsyncProperty<IEnumerable<CategoryModel>> categoryList;
 
-        private AsyncProperty<IEnumerable<TopAppsModel>> _topAppsList;
-        private AsyncProperty<IEnumerable<DayViewModel>> _dayViewModelList;
-        private AsyncProperty<IEnumerable<TopWindowsModel>> _topWindowsList;
-        private AsyncProperty<IEnumerable<DailyUsageTypeSeries>> _chartList;
-        private AsyncProperty<string> _duration;
-        private AsyncProperty<IEnumerable<CategoryModel>> _categoryList;
+        private ICommand singleAppSelectionChangedCommand;
+        private ICommand singleWindowSelectionChangedCommand;
+        private ICommand addDaysCommand;
 
-        private ICommand _singleAppSelectionChangedCommand;
-        private ICommand _singleWindowSelectionChangedCommand;
-        private ICommand _addDaysCommand;
-
-        private IDataService _dataService;
-        private IChartService _chartService;
-
-        #endregion
-
-        #region Properties
+        private readonly IDataService dataService;
+        private readonly IChartService chartService;
 
         public override string Title
         {
@@ -52,18 +46,15 @@ namespace AppsTracker.ViewModels
 
         public string DayOfWeek
         {
-            get { return _selectedDate.DayOfWeek.ToString(); }
+            get { return selectedDate.DayOfWeek.ToString(); }
         }
 
         public DateTime SelectedDate
         {
-            get
-            {
-                return _selectedDate;
-            }
+            get { return selectedDate; }
             set
             {
-                _selectedDate = value;
+                selectedDate = value;
                 PropertyChanging("SelectedDate");
                 PropertyChanging("DayOfWeek");
                 ReloadContent();
@@ -72,201 +63,169 @@ namespace AppsTracker.ViewModels
 
         public string SingleAppDuration
         {
-            get
-            {
-                return _singleAppDuration;
-            }
-            set
-            {
-                _singleAppDuration = value;
-                PropertyChanging("SingleAppDuration");
-            }
+            get { return singleAppDuration; }
+            set { SetPropertyValue(ref singleAppDuration, value); }
         }
+
         public string SingleWindowDuration
         {
-            get
-            {
-                return _singleWindowDuration;
-            }
-            set
-            {
-                _singleWindowDuration = value;
-                PropertyChanging("SingleWindowDuration");
-            }
+            get { return singleWindowDuration; }
+            set { SetPropertyValue(ref singleWindowDuration, value); }
         }
-        public AsyncProperty<string> Duration
-        {
-            get
-            {
-                return _duration;
-            }
-        }
+
         public TopAppsModel TopAppsSingle
         {
-            get
-            {
-                return _topAppsSingle;
-            }
+            get { return topAppsSingle; }
             set
             {
-                _topAppsSingle = value;
+                topAppsSingle = value;
                 SingleWindowDuration = string.Empty;
                 if (value != null)
-                    _topWindowsList.Reload();
+                    topWindowsList.Reload();
                 PropertyChanging("TopAppsSingle");
             }
         }
 
+        public AsyncProperty<string> Duration
+        {
+            get { return duration; }
+        }
+
         public AsyncProperty<IEnumerable<TopAppsModel>> TopAppsList
         {
-            get
-            {
-                return _topAppsList;
-            }
+            get { return topAppsList; }
         }
+
         public AsyncProperty<IEnumerable<DayViewModel>> DayViewModelList
         {
-            get
-            {
-                return _dayViewModelList;
-            }
+            get { return dayViewModelList; }
         }
+
         public AsyncProperty<IEnumerable<TopWindowsModel>> TopWindowsList
         {
-            get
-            {
-                return _topWindowsList;
-            }
+            get { return topWindowsList; }
         }
+
         public AsyncProperty<IEnumerable<DailyUsageTypeSeries>> ChartList
         {
-            get
-            {
-                return _chartList;
-            }
+            get { return chartList; }
         }
 
         public AsyncProperty<IEnumerable<CategoryModel>> CategoryList
         {
-            get
-            {
-                return _categoryList;
-            }
+            get { return categoryList; }
         }
 
         public ICommand SingleAppSelectionChangedCommand
         {
-            get
-            {
-                return _singleAppSelectionChangedCommand == null ? _singleAppSelectionChangedCommand = new DelegateCommand(SingleAppSelectionChanged) : _singleAppSelectionChangedCommand;
-            }
+            get { return singleAppSelectionChangedCommand ?? (singleAppSelectionChangedCommand = new DelegateCommand(SingleAppSelectionChanged)); }
         }
+
         public ICommand SingleWindowSelectionChangedCommand
         {
-            get
-            {
-                return _singleWindowSelectionChangedCommand == null ? _singleWindowSelectionChangedCommand = new DelegateCommand(SingleWindowSelectionChanged) : _singleWindowSelectionChangedCommand;
-            }
+            get { return singleWindowSelectionChangedCommand ?? (singleWindowSelectionChangedCommand = new DelegateCommand(SingleWindowSelectionChanged)); }
         }
+
         public ICommand AddDaysCommand
         {
-            get { return _addDaysCommand == null ? _addDaysCommand = new DelegateCommand(AddDays) : _addDaysCommand; }
+            get { return addDaysCommand ?? (addDaysCommand = new DelegateCommand(AddDays)); }
         }
 
         public IMediator Mediator
         {
             get { return MVVM.Mediator.Instance; }
         }
-        #endregion
 
         public Data_dayViewModel()
         {
-            _dataService = ServiceFactory.Get<IDataService>();
-            _chartService = ServiceFactory.Get<IChartService>();
+            dataService = ServiceFactory.Get<IDataService>();
+            chartService = ServiceFactory.Get<IChartService>();
 
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadContent));
 
-            _dayViewModelList = new AsyncProperty<IEnumerable<DayViewModel>>(GetDayViewInfo, this);
-            _topAppsList = new AsyncProperty<IEnumerable<TopAppsModel>>(GetTopAppsSingle, this);
-            _chartList = new AsyncProperty<IEnumerable<DailyUsageTypeSeries>>(GetChartContent, this);
-            _duration = new AsyncProperty<string>(GetDayInfo, this);
-            _topWindowsList = new AsyncProperty<IEnumerable<TopWindowsModel>>(GetTopWindowsSingle, this);
-            _categoryList = new AsyncProperty<IEnumerable<CategoryModel>>(GetCategories, this);
+            dayViewModelList = new AsyncProperty<IEnumerable<DayViewModel>>(GetDayViewInfo, this);
+            topAppsList = new AsyncProperty<IEnumerable<TopAppsModel>>(GetTopAppsSingle, this);
+            chartList = new AsyncProperty<IEnumerable<DailyUsageTypeSeries>>(GetChartContent, this);
+            duration = new AsyncProperty<string>(GetDayInfo, this);
+            topWindowsList = new AsyncProperty<IEnumerable<TopWindowsModel>>(GetTopWindowsSingle, this);
+            categoryList = new AsyncProperty<IEnumerable<CategoryModel>>(GetCategories, this);
         }
 
         private void ReloadContent()
         {
-            _dayViewModelList.Reload();
-            _topAppsList.Reload();
-            _chartList.Reload();
-            _duration.Reload();
-            _topWindowsList.Reload();
-            _categoryList.Reload();
+            dayViewModelList.Reload();
+            topAppsList.Reload();
+            chartList.Reload();
+            duration.Reload();
+            topWindowsList.Reload();
+            categoryList.Reload();
         }
 
         private IEnumerable<DayViewModel> GetDayViewInfo()
         {
-            return _chartService.GetDayView(Globals.SelectedUserID, _selectedDate);
+            return chartService.GetDayView(Globals.SelectedUserID, selectedDate);
         }
 
         private IEnumerable<TopAppsModel> GetTopAppsSingle()
         {
-            return _chartService.GetDayTopApps(Globals.SelectedUserID, _selectedDate);
+            return chartService.GetDayTopApps(Globals.SelectedUserID, selectedDate);
         }
 
         private IEnumerable<TopWindowsModel> GetTopWindowsSingle()
         {
-            var model = _topAppsSingle;
+            var model = topAppsSingle;
             if (model == null)
                 return null;
 
-            return _chartService.GetDayTopWindows(Globals.SelectedUserID, model.AppName, _selectedDate);
+            return chartService.GetDayTopWindows(Globals.SelectedUserID, model.AppName, selectedDate);
         }
 
         private string GetDayInfo()
         {
-            var tuple = _chartService.GetDayInfo(Globals.SelectedUserID, _selectedDate);
+            var tuple = chartService.GetDayInfo(Globals.SelectedUserID, selectedDate);
 
             return string.Format("Day start: {0}   -   Day end: {1} \t Total duration: {2}", tuple.Item1, tuple.Item2, tuple.Item3);
         }
 
         private IEnumerable<DailyUsageTypeSeries> GetChartContent()
         {
-            return _chartService.GetDailySeries(Globals.SelectedUserID, _selectedDate);
+            return chartService.GetDailySeries(Globals.SelectedUserID, selectedDate);
         }
 
         private IEnumerable<CategoryModel> GetCategories()
         {
-            return _chartService.GetCategoriesForDate(Globals.SelectedUserID, _selectedDate);
+            return chartService.GetCategoriesForDate(Globals.SelectedUserID, selectedDate);
         }
-
-        #region Commmand Methods
 
         private void SingleAppSelectionChanged()
         {
-            var topApps = _topAppsList.Result;
+            var topApps = topAppsList.Result;
             if (topApps == null)
                 return;
+
             long ticks = 0;
             var selected = topApps.Where(t => t.IsSelected);
             foreach (var app in selected)
                 ticks += app.Duration;
             if (ticks == 0)
                 return;
+
             TimeSpan timeSpan = new TimeSpan(ticks);
             SingleAppDuration = string.Format("Selected: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
         }
         private void SingleWindowSelectionChanged()
         {
-            var topWindows = _topWindowsList.Result;
+            var topWindows = topWindowsList.Result;
             if (topWindows == null)
                 return;
+
             long ticks = 0;
             var selected = topWindows.Where(t => t.IsSelected);
             foreach (var window in selected)
                 ticks += window.Duration;
             if (ticks == 0)
                 return;
+
             TimeSpan timeSpan = new TimeSpan(ticks);
             SingleWindowDuration = string.Format("Selected: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
         }
@@ -289,8 +248,5 @@ namespace AppsTracker.ViewModels
                     break;
             }
         }
-
-        #endregion
-
     }
 }

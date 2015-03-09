@@ -512,7 +512,7 @@ namespace AppsTracker.Data.Service
         {
             using (var context = new AppsEntities())
             {
-                List<DailyUsedAppsSeries> dailyUsedAppsSeriesTemp = new List<DailyUsedAppsSeries>();
+                List<DailyUsedAppsSeries> dailyUsedAppsSeries = new List<DailyUsedAppsSeries>();
 
                 var logs = context.Logs.Include(l => l.Window.Application)
                                     .Include(l => l.Window.Application.User)
@@ -543,26 +543,24 @@ namespace AppsTracker.Data.Service
                 {
                     if (app.Duration > 0)
                     {
-                        if (!dailyUsedAppsSeriesTemp.Exists(d => d.Date == app.Date.ToShortDateString()))
+                        if (!dailyUsedAppsSeries.Exists(d => d.Date == app.Date.ToShortDateString()))
                         {
                             dailyUsedAppsCollection = new List<MostUsedAppModel>();
                             dailyUsedAppsCollection.Add(new MostUsedAppModel() { AppName = app.AppName, Duration = Math.Round(new TimeSpan(app.Duration).TotalHours, 1) });
-                            dailyUsedAppsSeriesTemp.Add(new DailyUsedAppsSeries() { Date = app.Date.ToShortDateString(), DailyUsedAppsCollection = dailyUsedAppsCollection });
+                            dailyUsedAppsSeries.Add(new DailyUsedAppsSeries() { Date = app.Date.ToShortDateString(), DailyUsedAppsCollection = dailyUsedAppsCollection });
                         }
                         else
                         {
-                            dailyUsedAppsSeriesTemp.First(d => d.Date == app.Date.ToShortDateString())
+                            dailyUsedAppsSeries.First(d => d.Date == app.Date.ToShortDateString())
                                 .DailyUsedAppsCollection.Add(new MostUsedAppModel() { AppName = app.AppName, Duration = Math.Round(new TimeSpan(app.Duration).TotalHours, 1) });
                         }
                     }
                 }
 
+                foreach (var item in dailyUsedAppsSeries)
+                    item.DailyUsedAppsCollection.Sort((x, y) => x.Duration.CompareTo(y.Duration)); // = item.DailyUsedAppsCollection.OrderBy(d => d.Duration).ToList();
 
-                foreach (var item in dailyUsedAppsSeriesTemp)
-                    item.DailyUsedAppsCollection = item.DailyUsedAppsCollection.OrderBy(d => d.Duration).ToList();
-
-
-                return dailyUsedAppsSeriesTemp;
+                return dailyUsedAppsSeries;
             }
         }
 
