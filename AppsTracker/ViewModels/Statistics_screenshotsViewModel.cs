@@ -6,85 +6,56 @@
  */
 #endregion
 
+using AppsTracker.Data.Models;
+using AppsTracker.Data.Service;
+using AppsTracker.MVVM;
+
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Windows.Input;
-using AppsTracker.Data.Service;
-using AppsTracker.Data.Models;
-using AppsTracker.MVVM;
 
 namespace AppsTracker.Pages.ViewModels
 {
     internal sealed class Statistics_screenshotsViewModel : ViewModelBase, ICommunicator
     {
-        #region Fields
-        
-        private IChartService _chartService;
-
-        private ICommand _returnFromDetailedViewCommand;
-
-        private ScreenshotModel _screenshotModel;
-
-        private AsyncProperty<IEnumerable<ScreenshotModel>> _screenshotList;
-
-        private AsyncProperty<IEnumerable<DailyScreenshotModel>> _dailyScreenshotsList;
-
-        #endregion
-
-        #region Properties
+        private readonly IChartService chartService;
 
         public override string Title
         {
-            get
-            {
-                return "SCREENSHOTS";
-            }
+            get { return "SCREENSHOTS"; }
         }
 
-        public object SelectedItem
-        {
-            get;
-            set;
-        }
+        public object SelectedItem { get; set; }
 
+        private ICommand returnFromDetailedViewCommand;
         public ICommand ReturnFromDetailedViewCommand
         {
-            get
-            {
-                return _returnFromDetailedViewCommand == null ? _returnFromDetailedViewCommand = new DelegateCommand(ReturnFromDetailedView) : _returnFromDetailedViewCommand;
-            }
+            get { return returnFromDetailedViewCommand ?? (returnFromDetailedViewCommand = new DelegateCommand(ReturnFromDetailedView)); }
         }
 
+        private ScreenshotModel screenshotModel;
         public ScreenshotModel ScreenshotModel
         {
-            get
-            {
-                return _screenshotModel;
-            }
+            get { return screenshotModel; }
             set
             {
-                _screenshotModel = value;
+                screenshotModel = value;
                 PropertyChanging("ScreenshotModel");
-                if (_screenshotModel != null)
-                    _dailyScreenshotsList.Reload();
+                if (screenshotModel != null)
+                    dailyScreenshotsList.Reload();
             }
         }
 
+        private readonly AsyncProperty<IEnumerable<ScreenshotModel>> screenshotList;
         public AsyncProperty<IEnumerable<ScreenshotModel>> ScreenshotList
         {
-            get
-            {
-                return _screenshotList;
-            }
+            get { return screenshotList; }
         }
 
+        private readonly AsyncProperty<IEnumerable<DailyScreenshotModel>> dailyScreenshotsList;
         public AsyncProperty<IEnumerable<DailyScreenshotModel>> DailyScreenshotsList
         {
-            get
-            {
-                return _dailyScreenshotsList;
-            }
+            get { return dailyScreenshotsList; }
         }
 
         public IMediator Mediator
@@ -92,27 +63,26 @@ namespace AppsTracker.Pages.ViewModels
             get { return MVVM.Mediator.Instance; }
         }
 
-        #endregion
 
         public Statistics_screenshotsViewModel()
-        {            
-            _chartService = ServiceFactory.Get<IChartService>();
+        {
+            chartService = ServiceFactory.Get<IChartService>();
 
-            _screenshotList = new AsyncProperty<IEnumerable<ScreenshotModel>>(GetContent, this);
-            _dailyScreenshotsList = new AsyncProperty<IEnumerable<DailyScreenshotModel>>(GetSubContent, this);
+            screenshotList = new AsyncProperty<IEnumerable<ScreenshotModel>>(GetContent, this);
+            dailyScreenshotsList = new AsyncProperty<IEnumerable<DailyScreenshotModel>>(GetSubContent, this);
 
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadAll));
         }
 
         public void ReloadAll()
         {
-            _screenshotList.Reload();
-            _dailyScreenshotsList.Reload();
+            screenshotList.Reload();
+            dailyScreenshotsList.Reload();
         }
 
         private IEnumerable<ScreenshotModel> GetContent()
         {
-            return _chartService.GetScreenshots(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
+            return chartService.GetScreenshots(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
         }
 
         private IEnumerable<DailyScreenshotModel> GetSubContent()
@@ -121,7 +91,7 @@ namespace AppsTracker.Pages.ViewModels
             if (model == null)
                 return null;
 
-            return _chartService.GetScreenshotsByApp(Globals.SelectedUserID, model.AppName, Globals.Date1, Globals.Date2);
+            return chartService.GetScreenshotsByApp(Globals.SelectedUserID, model.AppName, Globals.Date1, Globals.Date2);
         }
 
         private void ReturnFromDetailedView()
