@@ -8,156 +8,89 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using AppsTracker.Data.Service;
 using AppsTracker.Data.Models;
+using AppsTracker.Data.Service;
 using AppsTracker.MVVM;
 
-namespace AppsTracker.Pages.ViewModels
+namespace AppsTracker.ViewModels
 {
     internal class Data_logsViewModel : ViewModelBase, ICommunicator
     {
-        #region Fields
+        private readonly IDataService dataService;
+        private readonly IChartService chartService;
 
-        IDataService _dataService;
-        IChartService _chartService;
+        private readonly AsyncProperty<IEnumerable<Aplication>> aplicationList;
+        private readonly AsyncProperty<IEnumerable<TopAppsModel>> topAppsList;
+        private readonly AsyncProperty<IEnumerable<TopWindowsModel>> topWindowsList;
+        private readonly AsyncProperty<IEnumerable<DailyWindowSeries>> chartList;
 
-        bool _chartVisible;
+        Aplication selectedApplication;
 
-        string _overallAppDuration;
-        string _overallWindowDuration;
+        TopAppsModel topAppsOverall;
 
-        DateTime _date1;
-        DateTime _date2;
+        List<MenuItem> allUsersList;
 
-        AsyncProperty<IEnumerable<Aplication>> _aplicationList;
-        AsyncProperty<IEnumerable<TopAppsModel>> _topAppsList;
-        AsyncProperty<IEnumerable<TopWindowsModel>> _topWindowsList;
-        AsyncProperty<IEnumerable<DailyWindowSeries>> _chartList;
+        ICommand addProcessToBlockedListCommand;
+        ICommand overallAppSelectionChangedCommand;
+        ICommand overallWindowSelectionChangedCommand;
 
-        Aplication _selectedApplication;
-
-        TopAppsModel _topAppsOverall;
-
-        List<MenuItem> _allUsersList;
-
-        ICommand _sortViewCommand;
-        ICommand _addProcessToBlockedListCommand;
-        ICommand _overallAppSelectionChangedCommand;
-        ICommand _overallWindowSelectionChangedCommand;
-        ICommand _addDaysCommand1;
-        ICommand _addDaysCommand2;
-        ICommand _changeDaysCommand;
-
-        #endregion
-
-        #region Properties
-
-        public bool ChartVisible
+        private bool isChartVisible;
+        public bool IsChartVisible
         {
-            get
-            {
-                return _chartVisible;
-            }
-            set
-            {
-                _chartVisible = value;
-                PropertyChanging("ChartVisible");
-            }
+            get { return isChartVisible; }
+            set { SetPropertyValue(ref isChartVisible, value); }
         }
+
         public override string Title
         {
-            get
-            {
-                return "APPS";
-            }
-        }
-        public string OverallAppDuration
-        {
-            get
-            {
-                return _overallAppDuration;
-            }
-            set
-            {
-                _overallAppDuration = value;
-                PropertyChanging("OverallAppDuration");
-            }
-        }
-        public string OverallWindowDuration
-        {
-            get
-            {
-                return _overallWindowDuration;
-            }
-            set
-            {
-                _overallWindowDuration = value;
-                PropertyChanging("OverallWindowDuration");
-            }
+            get { return "APPS"; }
         }
 
-        public DateTime Date1
+        private string selectedAppsDuration;
+        public string SelectedAppsDuration
         {
-            get
-            {
-                return _date1;
-            }
-            set
-            {
-                _date1 = value;
-                PropertyChanging("Date1");
-                if (SelectedApplication != null)
-                    _topAppsList.Reload();
+            get { return selectedAppsDuration; }
+            set { SetPropertyValue(ref selectedAppsDuration, value); }
+        }
 
-            }
-        }
-        public DateTime Date2
+        private string selectedWindowsDuration;
+        public string SelectedWindowsDuration
         {
-            get
-            {
-                return _date2;
-            }
-            set
-            {
-                _date2 = value;
-                PropertyChanging("Date2");
-                if (SelectedApplication != null)
-                    _topAppsList.Reload();
-            }
-        }
+            get { return selectedWindowsDuration; }
+            set { SetPropertyValue(ref selectedWindowsDuration, value); }
+        }   
 
         public AsyncProperty<IEnumerable<Aplication>> AplicationList
         {
             get
             {
-                return _aplicationList;
+                return aplicationList;
             }
         }
         public AsyncProperty<IEnumerable<TopAppsModel>> TopAppsList
         {
             get
             {
-                return _topAppsList;
+                return topAppsList;
             }
         }
         public AsyncProperty<IEnumerable<TopWindowsModel>> TopWindowsList
         {
             get
             {
-                return _topWindowsList;
+                return topWindowsList;
             }
         }
         public AsyncProperty<IEnumerable<DailyWindowSeries>> ChartList
         {
             get
             {
-                return _chartList;
+                return chartList;
             }
         }
 
@@ -165,29 +98,29 @@ namespace AppsTracker.Pages.ViewModels
         {
             get
             {
-                return _topAppsOverall;
+                return topAppsOverall;
             }
             set
             {
-                _topAppsOverall = value;
+                topAppsOverall = value;
                 PropertyChanging("TopAppsOverall");
-                OverallWindowDuration = string.Empty;
+                SelectedWindowsDuration = string.Empty;
             }
         }
         public Aplication SelectedApplication
         {
             get
             {
-                return _selectedApplication;
+                return selectedApplication;
             }
             set
             {
-                _selectedApplication = value;
+                selectedApplication = value;
                 PropertyChanging("SelectedApplication");
-                ChartVisible = false;
+                IsChartVisible = false;
                 if (value != null)
                 {
-                    _topAppsList.Reload();
+                    topAppsList.Reload();
                 }
             }
         }
@@ -197,22 +130,15 @@ namespace AppsTracker.Pages.ViewModels
             get
             {
                 GetAllUsers();
-                return _allUsersList;
+                return allUsersList;
             }
         }
 
-        public ICommand SortViewCommand
-        {
-            get
-            {
-                return _sortViewCommand == null ? _sortViewCommand = new DelegateCommand(SortViewProcesses) : _sortViewCommand;
-            }
-        }
         public ICommand AddProcessToBlockedListCommand
         {
             get
             {
-                return _addProcessToBlockedListCommand == null ? _addProcessToBlockedListCommand = new DelegateCommand(AddAplicationToBlockedList) : _addProcessToBlockedListCommand;
+                return addProcessToBlockedListCommand == null ? addProcessToBlockedListCommand = new DelegateCommand(AddAplicationToBlockedList) : addProcessToBlockedListCommand;
             }
         }
 
@@ -220,71 +146,46 @@ namespace AppsTracker.Pages.ViewModels
         {
             get
             {
-                return _overallAppSelectionChangedCommand == null ? _overallAppSelectionChangedCommand = new DelegateCommand(OverallAppSelectionChanged) : _overallAppSelectionChangedCommand;
+                return overallAppSelectionChangedCommand == null ? overallAppSelectionChangedCommand = new DelegateCommand(OverallAppSelectionChanged) : overallAppSelectionChangedCommand;
             }
         }
         public ICommand OverallWindowSelectionChangedCommand
         {
             get
             {
-                return _overallWindowSelectionChangedCommand == null ? _overallWindowSelectionChangedCommand = new DelegateCommand(OverallWindowSelectionChanged) : _overallWindowSelectionChangedCommand;
+                return overallWindowSelectionChangedCommand == null ? overallWindowSelectionChangedCommand = new DelegateCommand(OverallWindowSelectionChanged) : overallWindowSelectionChangedCommand;
             }
         }
-        public ICommand AddDaysCommand1
-        {
-            get
-            {
-                return _addDaysCommand1 == null ? _addDaysCommand1 = new DelegateCommand(AddDays1) : _addDaysCommand1;
-            }
-        }
-        public ICommand AddDaysCommand2
-        {
-            get
-            {
-                return _addDaysCommand2 == null ? _addDaysCommand2 = new DelegateCommand(AddDays2) : _addDaysCommand2;
-            }
-        }
-        public ICommand ChangeDaysCommand
-        {
-            get
-            {
-                return _changeDaysCommand == null ? _changeDaysCommand = new DelegateCommand(ChangeDays) : _changeDaysCommand;
-            }
-        }
-
+     
         public IMediator Mediator
         {
             get { return MVVM.Mediator.Instance; }
         }
 
-        #endregion
-
         public Data_logsViewModel()
         {
-            _dataService = ServiceFactory.Get<IDataService>();
-            _chartService = ServiceFactory.Get<IChartService>();
+            dataService = ServiceFactory.Get<IDataService>();
+            chartService = ServiceFactory.Get<IChartService>();
 
-            _aplicationList = new AsyncProperty<IEnumerable<Aplication>>(GetContent, this);
-            _topAppsList = new AsyncProperty<IEnumerable<TopAppsModel>>(GetTopApps, this);
-            _topWindowsList = new AsyncProperty<IEnumerable<TopWindowsModel>>(GetTopWindows, this);
-            _chartList = new AsyncProperty<IEnumerable<DailyWindowSeries>>(GetChartContent, this);
+            aplicationList = new AsyncProperty<IEnumerable<Aplication>>(GetContent, this);
+            topAppsList = new AsyncProperty<IEnumerable<TopAppsModel>>(GetTopApps, this);
+            topWindowsList = new AsyncProperty<IEnumerable<TopWindowsModel>>(GetTopWindows, this);
+            chartList = new AsyncProperty<IEnumerable<DailyWindowSeries>>(GetChartContent, this);
 
 
             Mediator.Register(MediatorMessages.ApplicationAdded, new Action<Aplication>(ApplicationAdded));
-            Mediator.Register(MediatorMessages.RefreshLogs, new Action(_aplicationList.Reload));
+            Mediator.Register(MediatorMessages.RefreshLogs, new Action(aplicationList.Reload));
         }
-
-        #region Loader Methods
 
         private void LoadAppsOverall()
         {
-            _topAppsList.Reload();
-            ChartVisible = false;
+            topAppsList.Reload();
+            IsChartVisible = false;
         }
 
         private IEnumerable<Aplication> GetContent()
         {
-            return _dataService.GetFiltered<Aplication>(a => a.User.UserID == Globals.SelectedUserID
+            return dataService.GetFiltered<Aplication>(a => a.User.UserID == Globals.SelectedUserID
                                                                 && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= Globals.Date1).Any()
                                                                 && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= Globals.Date2).Any())
                                                            .ToList()
@@ -297,7 +198,7 @@ namespace AppsTracker.Pages.ViewModels
             if (app == null)
                 return null;
 
-            return _chartService.GetLogTopApps(Globals.SelectedUserID, app.ApplicationID, app.Name, Globals.Date1, Globals.Date2);
+            return chartService.GetLogTopApps(Globals.SelectedUserID, app.ApplicationID, app.Name, Globals.Date1, Globals.Date2);
         }
 
         private IEnumerable<TopWindowsModel> GetTopWindows()
@@ -307,7 +208,7 @@ namespace AppsTracker.Pages.ViewModels
                 return null;
 
             var days = TopAppsList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
-            return _chartService.GetLogTopWindows(Globals.SelectedUserID, topApps.AppName, days);
+            return chartService.GetLogTopWindows(Globals.SelectedUserID, topApps.AppName, days);
         }
 
         private IEnumerable<DailyWindowSeries> GetChartContent()
@@ -320,63 +221,28 @@ namespace AppsTracker.Pages.ViewModels
             var selectedWindows = TopWindowsList.Result.Where(w => w.IsSelected).Select(w => w.Title).ToList();
             var days = TopAppsList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
 
-            return _chartService.GetDailyWindowSeries(Globals.SelectedUserID, topApps.AppName, selectedWindows, days);
+            return chartService.GetDailyWindowSeries(Globals.SelectedUserID, topApps.AppName, selectedWindows, days);
         }
 
-        #endregion
-
-        #region Mediator Methods
 
         private void ApplicationAdded(Aplication app)
         {
-            _aplicationList.Reload();
+            aplicationList.Reload();
 
-            _chartList.Reset();
-            _topAppsList.Reset();
-            _topWindowsList.Reset();
+            chartList.Reset();
+            topAppsList.Reset();
+            topWindowsList.Reset();
         }
-
-        #endregion
-
-        #region Command Methods
-
-        private void SortViewProcesses(object parameter)
-        {
-            if (AplicationList == null)
-                return;
-            string propertyName = parameter as string;
-            ICollectionView view;
-            switch (propertyName)
-            {
-                case "Name":
-                    view = CollectionViewSource.GetDefaultView(AplicationList);
-                    break;
-                default:
-                    view = null;
-                    break;
-            }
-
-            if (view != null)
-            {
-                view.SortDescriptions.Clear();
-
-                if (view.SortDescriptions.Count > 0 && view.SortDescriptions[0].PropertyName == propertyName && view.SortDescriptions[0].Direction == ListSortDirection.Ascending)
-                    view.SortDescriptions.Add(new SortDescription(propertyName, ListSortDirection.Descending));
-                else
-                    view.SortDescriptions.Add(new SortDescription(propertyName, ListSortDirection.Ascending));
-
-            }
-        }
-
+    
         private void AddAplicationToBlockedList(object parameter)
         {
-           
+
 
         }
 
         private void OverallAppSelectionChanged()
         {
-            ChartVisible = false;
+            IsChartVisible = false;
 
             if (TopAppsList.Result == null)
                 return;
@@ -386,7 +252,7 @@ namespace AppsTracker.Pages.ViewModels
 
             if (filteredApps.Count() == 0)
             {
-                _topWindowsList.Reset();
+                topWindowsList.Reset();
                 return;
             }
 
@@ -397,139 +263,56 @@ namespace AppsTracker.Pages.ViewModels
                 return;
 
             TimeSpan timeSpan = new TimeSpan(ticks);
-            OverallAppDuration = string.Format("Selected: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
-            _topWindowsList.Reload();
+            SelectedAppsDuration = string.Format("Selected: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+            topWindowsList.Reload();
         }
+
         private void OverallWindowSelectionChanged()
         {
-            if (_topWindowsList.Result == null)
+            if (topWindowsList.Result == null)
             {
                 ChartList.Reset();
-                ChartVisible = false;
+                IsChartVisible = false;
                 return;
             }
 
-            if (_topWindowsList.Result.Where(w => w.IsSelected).Count() == 0)
+            if (topWindowsList.Result.Where(w => w.IsSelected).Count() == 0)
             {
-                ChartVisible = false;
+                IsChartVisible = false;
                 return;
             }
 
-            ChartVisible = true;
+            IsChartVisible = true;
             long ticks = 0;
 
-            foreach (var window in _topWindowsList.Result.Where(w => w.IsSelected))
+            foreach (var window in topWindowsList.Result.Where(w => w.IsSelected))
                 ticks += window.Duration;
 
             if (ticks == 0)
                 return;
 
             TimeSpan timeSpan = new TimeSpan(ticks);
-            OverallWindowDuration = string.Format("Selected: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+            SelectedWindowsDuration = string.Format("Selected: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
 
-            _chartList.Reload();
+            chartList.Reload();
         }
 
         private void GetAllUsers()
         {
-            if (_allUsersList == null)
-                _allUsersList = new List<MenuItem>();
+            if (allUsersList == null)
+                allUsersList = new List<MenuItem>();
 
             MenuItem menuItem = new MenuItem();
             menuItem.Header = "All users";
-            _allUsersList.Add(menuItem);
-            var users = _dataService.GetFiltered<Uzer>(u => u.Name != null);
+            allUsersList.Add(menuItem);
+            var users = dataService.GetFiltered<Uzer>(u => u.Name != null);
 
             foreach (var user in users)
             {
                 menuItem = new MenuItem();
                 menuItem.Header = user.Name;
-                _allUsersList.Add(menuItem);
+                allUsersList.Add(menuItem);
             }
-        }
-
-        private void AddDays1(object parameter)
-        {
-            string stringParameter = parameter as string;
-            if (stringParameter == null)
-                return;
-            switch (stringParameter)
-            {
-                case "+":
-                    Date1 = Date1.AddDays(1d);
-                    break;
-                case "-":
-                    Date1 = Date1.AddDays(-1d);
-                    break;
-                default:
-                    Date1 = DateTime.Today;
-                    break;
-            }
-        }
-
-        private void AddDays2(object parameter)
-        {
-            string stringParameter = parameter as string;
-            if (stringParameter == null)
-                return;
-            switch (stringParameter)
-            {
-                case "+":
-                    Date2 = Date2.AddDays(1d);
-                    break;
-                case "-":
-                    Date2 = Date2.AddDays(-1d);
-                    break;
-                default:
-                    Date2 = DateTime.Today;
-                    break;
-            }
-        }
-
-        private void ChangeDays(object parameter)
-        {
-            string stringParameter = parameter as string;
-            if (stringParameter == null)
-                return;
-            switch (stringParameter)
-            {
-                case "Today":
-                    _date1 = DateTime.Now.Date;
-                    _date2 = Date1.AddHours(23.99d);
-                    PropertyChanging("Date1");
-                    PropertyChanging("Date2");
-                    _topAppsList.Reload();
-                    break;
-                case "This week":
-                    {
-                        DateTime now = DateTime.Today;
-                        int delta = DayOfWeek.Monday - now.DayOfWeek;
-                        if (delta > 0)
-                            delta -= 7;
-                        _date1 = now.AddDays(delta);
-                        _date2 = Date1.AddDays(6);
-                        PropertyChanging("Date1");
-                        PropertyChanging("Date2");
-                        LoadAppsOverall();
-                    }
-                    break;
-                case "This month":
-                    {
-                        DateTime now = DateTime.Now;
-                        _date1 = new DateTime(now.Year, now.Month, 1);
-                        int lastDay = DateTime.DaysInMonth(now.Year, now.Month);
-                        _date2 = new DateTime(now.Year, now.Month, lastDay);
-                        PropertyChanging("Date1");
-                        PropertyChanging("Date2");
-                        LoadAppsOverall();
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        #endregion
-
+        }      
     }
 }

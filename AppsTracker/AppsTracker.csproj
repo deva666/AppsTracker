@@ -350,7 +350,7 @@
     <Compile Include="Hooks\MouseHook.cs" />
     <Compile Include="MVVM\WeakAction.cs" />
     <Compile Include="ViewModels\Data_logsViewModel.cs" />
-    <Compile Include="ViewModels\Data_keystrokesViewModel.cs" />
+    <Compile Include="ViewModels\KeystrokesViewModel.cs" />
     <Compile Include="ViewModels\Data_screenshotsViewModel.cs" />
     <Compile Include="ViewModels\SettingsHostViewModel.cs" />
     <Compile Include="ViewModels\Settings_generalViewModel.cs" />
@@ -397,8 +397,8 @@
     <Compile Include="Views\KeylogsView.xaml.cs">
       <DependentUpon>KeylogsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ScreenShotsView.xaml.cs">
-      <DependentUpon>ScreenShotsView.xaml</DependentUpon>
+    <Compile Include="Views\ScreenshotsView.xaml.cs">
+      <DependentUpon>ScreenshotsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsViews\BlockedAppsView.xaml.cs">
       <DependentUpon>BlockedAppsView.xaml</DependentUpon>
@@ -635,7 +635,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ScreenShotsView.xaml">
+    <Page Include="Views\ScreenshotsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

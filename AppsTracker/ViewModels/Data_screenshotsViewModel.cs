@@ -10,136 +10,86 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.Controls;
-using AppsTracker.Data;
-using AppsTracker.Data.Service;
 using AppsTracker.Data.Models;
+using AppsTracker.Data.Service;
 using AppsTracker.MVVM;
 
-namespace AppsTracker.Pages.ViewModels
+namespace AppsTracker.ViewModels
 {
-    internal sealed class Data_screenshotsViewModel : ViewModelBase, ICommunicator
+    internal sealed class ScreenshotsViewModel : ViewModelBase, ICommunicator
     {
-        private IDataService _dataService;
-        private ISqlSettingsService _settingsService;
-
-        private string _infoContent;
-
-        private DateTime _selectedDate;
-
-        private AsyncProperty<IEnumerable<Log>> _logList;
-
-        private ICommand _deleteSelectedScreenshotsCommand;
-        private ICommand _openScreenshotViewerCommand;
-        private ICommand _saveScreenshotCommand;
+        private readonly IDataService dataService;
+        private readonly ISqlSettingsService settingsService;
 
         public override string Title
         {
-            get
-            {
-                return "SCREENSHOTS";
-            }
-        }
-        public bool IsContentLoaded
-        {
-            get;
-            private set;
-        }
-        public string InfoContent
-        {
-            get
-            {
-                return _infoContent;
-            }
-            set
-            {
-                _infoContent = value;
-                PropertyChanging("InfoContent");
-            }
-        }
-        public DateTime SelectedDate
-        {
-            get
-            {
-                return _selectedDate;
-            }
-            set
-            {
-                _selectedDate = value;
-                PropertyChanging("SelectedDate");
-            }
-        }
-        public Log SelectedItem { get; set; }
-        public Log SelectedLog
-        {
-            get;
-            set;
-        }
-        public AsyncProperty<IEnumerable<Log>> LogList
-        {
-            get
-            {
-                return _logList;
-            }
-            set
-            {
-                _logList = value;
-                PropertyChanging("LogList");
-            }
+            get { return "SCREENSHOTS"; }
         }
 
+        private string infoContent;
+        public string InfoContent
+        {
+            get { return infoContent; }
+            set { SetPropertyValue(ref infoContent, value); }
+        }
+
+        private DateTime selectedDate;
+        public DateTime SelectedDate
+        {
+            get { return selectedDate; }
+            set { SetPropertyValue(ref selectedDate, value); }
+        }
+
+        private readonly AsyncProperty<IEnumerable<Log>> logList;
+        public AsyncProperty<IEnumerable<Log>> LogList
+        {
+            get { return logList; }
+        }
+
+        private ICommand deleteSelectedScreenshotsCommand;
         public ICommand DeleteSelectedScreenshotsCommand
         {
-            get
-            {
-                if (_deleteSelectedScreenshotsCommand == null)
-                    _deleteSelectedScreenshotsCommand = new DelegateCommand(DeleteSelectedScreenshots);
-                return _deleteSelectedScreenshotsCommand;
-            }
+            get { return deleteSelectedScreenshotsCommand ?? (deleteSelectedScreenshotsCommand = new DelegateCommand(DeleteSelectedScreenshots)); }
         }
+
+        private ICommand openScreenshotViewerCommand;
         public ICommand OpenScreenshotViewerCommand
         {
-            get
-            {
-                if (_openScreenshotViewerCommand == null)
-                    _openScreenshotViewerCommand = new DelegateCommand(OpenScreenshotViewer);
-                return _openScreenshotViewerCommand;
-            }
+            get { return openScreenshotViewerCommand ?? (openScreenshotViewerCommand = new DelegateCommand(OpenScreenshotViewer)); }
         }
+
+        private ICommand saveScreenshotCommand;
         public ICommand SaveScreenshotCommand
         {
-            get
-            {
-                if (_saveScreenshotCommand == null)
-                    _saveScreenshotCommand = new DelegateCommand(SaveScreenshot);
-                return _saveScreenshotCommand;
-            }
+            get { return saveScreenshotCommand ?? (saveScreenshotCommand = new DelegateCommand(SaveScreenshot)); }
         }
+
         public IMediator Mediator
         {
             get { return MVVM.Mediator.Instance; }
         }
 
-        public Data_screenshotsViewModel()
+
+        public ScreenshotsViewModel()
         {
-            _dataService = ServiceFactory.Get<IDataService>();
-            _settingsService = ServiceFactory.Get<ISqlSettingsService>();
+            dataService = ServiceFactory.Get<IDataService>();
+            settingsService = ServiceFactory.Get<ISqlSettingsService>();
 
-            _logList = new AsyncProperty<IEnumerable<Log>>(GetContent, this);
+            logList = new AsyncProperty<IEnumerable<Log>>(GetContent, this);
 
-            Mediator.Register(MediatorMessages.RefreshLogs, new Action(_logList.Reload));
+            Mediator.Register(MediatorMessages.RefreshLogs, new Action(logList.Reload));
             SelectedDate = DateTime.Today;
         }
 
         private IEnumerable<Log> GetContent()
         {
-            return _dataService.GetFiltered<Log>(l => l.Screenshots.Count > 0
+            return dataService.GetFiltered<Log>(l => l.Screenshots.Count > 0
                                                 && l.DateCreated >= Globals.Date1
                                                 && l.DateCreated <= Globals.Date2
                                                 && l.Window.Application.UserID == Globals.SelectedUserID
@@ -165,10 +115,10 @@ namespace AppsTracker.Pages.ViewModels
             if (parameterCollection != null)
             {
                 var logs = parameterCollection.Cast<Log>().Where(l => l.Screenshots.Count > 0).ToList();
-                var deletedCount = _dataService.DeleteScreenshotsInLogs(logs);
-                if(deletedCount > 0)
+                var deletedCount = dataService.DeleteScreenshotsInLogs(logs);
+                if (deletedCount > 0)
                     InfoContent = "Screenshots deleted";
-                _logList.Reload();
+                logList.Reload();
             }
         }
 
@@ -215,8 +165,8 @@ namespace AppsTracker.Pages.ViewModels
                 path.Append(screenshot.GetHashCode());
                 path.Append(".jpg");
                 string folderPath;
-                if (Directory.Exists(_settingsService.Settings.DefaultScreenshotSavePath))
-                    folderPath = Path.Combine(_settingsService.Settings.DefaultScreenshotSavePath, Screenshots.CorrectPath(path.ToString()));
+                if (Directory.Exists(settingsService.Settings.DefaultScreenshotSavePath))
+                    folderPath = Path.Combine(settingsService.Settings.DefaultScreenshotSavePath, Screenshots.CorrectPath(path.ToString()));
                 else
                     folderPath = Screenshots.CorrectPath(path.ToString());
                 Screenshots.SaveScreenshotToFile(screenshot, folderPath);

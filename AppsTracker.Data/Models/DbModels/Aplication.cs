@@ -57,6 +57,12 @@ namespace AppsTracker.Data.Models
         }
 
 
+        public Aplication(IAppInfo appInfo) 
+            : this(appInfo.Name, appInfo.FileName, appInfo.Version, appInfo.Description, appInfo.Company, appInfo.FullName)
+        {
+
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ApplicationID { get; set; }

@@ -138,7 +138,7 @@ namespace AppsTracker.Logging
         {
             SaveCurrentLog();
 
-            if (appInfo == null || (appInfo != null && string.IsNullOrEmpty(appInfo.ProcessName)))
+            if (appInfo == null || (appInfo != null && string.IsNullOrEmpty(appInfo.Name)))
                 return;
 
             bool newApp = false;

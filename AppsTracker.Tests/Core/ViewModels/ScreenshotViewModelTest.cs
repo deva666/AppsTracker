@@ -6,10 +6,7 @@
  */
 #endregion
 
-using AppsTracker.Data.Service;
-using AppsTracker.Pages.ViewModels;
-using AppsTracker.Tests.Fakes.Service;
-
+using AppsTracker.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AppsTracker.Tests.Core.ViewModels
@@ -28,7 +25,7 @@ namespace AppsTracker.Tests.Core.ViewModels
         [TestMethod]
         public void TestScreenshotLoader()
         {
-            var vm = new Data_screenshotsViewModel();
+            var vm = new ScreenshotsViewModel();
             vm.LogList.PropertyChanged += LogList_PropertyChanged;
             var r = vm.LogList.Result;
 

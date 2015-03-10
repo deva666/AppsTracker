@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="AppsTracker.Pages.Views.ScreenShotsView"
+﻿<UserControl x:Class="AppsTracker.Views.ScreenshotsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -26,13 +26,13 @@
                       Command="{Binding DeleteSelectedScreenshotsCommand}"
                       CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}" />
         </ContextMenu>
-        
+
         <ContextMenu x:Key="sMenu">
             <MenuItem Header="Save screenshot to file"
                       Command="{Binding SaveScreenshotCommand}"
                       CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}" />
         </ContextMenu>
-        
+
         <DataTemplate x:Key="appTemplate">
             <Label Style="{DynamicResource GVLabelStyle}"
                    Content="{Binding Window.Application.Name}">
@@ -119,10 +119,10 @@
                     <TranslateTransform />
                 </Label.RenderTransform>
                 <Label.Triggers>
-                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
                         <BeginStoryboard Storyboard="{StaticResource ElementFadeIn}" />
                     </EventTrigger>
-            </Label.Triggers>
+                </Label.Triggers>
             </Label>
         </DataTemplate>
         <DataTemplate x:Key="dateTemplate">
@@ -132,150 +132,147 @@
                     <TranslateTransform />
                 </Label.RenderTransform>
                 <Label.Triggers>
-                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
                         <BeginStoryboard Storyboard="{StaticResource ElementFadeIn}" />
                     </EventTrigger>
-            </Label.Triggers>
+                </Label.Triggers>
             </Label>
         </DataTemplate>
     </UserControl.Resources>
 
-            <Grid Name="rootLayout">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="2*" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-         
-                <controls:progressBar Visibility="{Binding Working, Converter={StaticResource convertVisibility}}"
-                                      Grid.RowSpan="2"
-                                      Grid.ColumnSpan="5" />
-                <controls:FilterableListView Background="Transparent"
-                                             x:Name="mainContentHolder"
+    <Grid Name="rootLayout">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <controls:progressBar Visibility="{Binding Working, Converter={StaticResource convertVisibility}}"
+                              Grid.RowSpan="2"
+                              Grid.ColumnSpan="5" />
+        <controls:FilterableListView Background="Transparent"
+                                     x:Name="mainContentHolder"
                                      ItemsSource="{Binding LogList.Result, Mode=OneWay}"
-                                             BorderBrush="{x:Null}"
-                                             BorderThickness="0"
-                                             ItemContainerStyle="{DynamicResource ListViewItemStyle}"
-                                             Margin="10,0,10,0"
-                                             FilterType="{StaticResource logData}"
-                                             VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                             VirtualizingStackPanel.IsVirtualizing="True"
-                                             VirtualizingStackPanel.IsVirtualizingWhenGrouping="True"
-                                             VirtualizingStackPanel.ScrollUnit="Item"
-                                             VirtualizingStackPanel.CacheLengthUnit="Page"
-                                             ContextMenu="{StaticResource cMenu}"
-                                             SelectionMode="Extended"
-                                             >
+                                     BorderBrush="{x:Null}"
+                                     BorderThickness="0"
+                                     ItemContainerStyle="{DynamicResource ListViewItemStyle}"
+                                     Margin="10,0,10,0"
+                                     FilterType="{StaticResource logData}"
+                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                     VirtualizingStackPanel.IsVirtualizing="True"
+                                     VirtualizingStackPanel.IsVirtualizingWhenGrouping="True"
+                                     VirtualizingStackPanel.ScrollUnit="Item"
+                                     VirtualizingStackPanel.CacheLengthUnit="Page"
+                                     ContextMenu="{StaticResource cMenu}"
+                                     SelectionMode="Extended">
 
-                    <controls:FilterableListView.View>
+            <controls:FilterableListView.View>
                 <GridView ColumnHeaderContainerStyle="{DynamicResource HeaderStyle}">
-                            <controls:SortableGridViewColumn Header="App"
-                                                             CellTemplate="{StaticResource appTemplate}"
-                                                             SortPropertyName="AppName"
-                                                             />
-                            <controls:SortableGridViewColumn Header="Window"
-                                                             CellTemplate="{StaticResource wndTemplate}"
-                                                             SortPropertyName="WindowTitle" />
-                            <controls:SortableGridViewColumn Header="Date"
-                                                             CellTemplate="{StaticResource dateTemplate}"
-                                                             SortPropertyName="DateCreated" />
+                    <controls:SortableGridViewColumn Header="App"
+                                                     CellTemplate="{StaticResource appTemplate}"
+                                                     SortPropertyName="AppName" />
+                    <controls:SortableGridViewColumn Header="Window"
+                                                     CellTemplate="{StaticResource wndTemplate}"
+                                                     SortPropertyName="WindowTitle" />
+                    <controls:SortableGridViewColumn Header="Date"
+                                                     CellTemplate="{StaticResource dateTemplate}"
+                                                     SortPropertyName="DateCreated" />
 
-                        </GridView>
-                    </controls:FilterableListView.View>
-                </controls:FilterableListView >
+                </GridView>
+            </controls:FilterableListView.View>
+        </controls:FilterableListView >
 
-                <Label Style="{DynamicResource LabelStyle}"
-                       Content="{Binding ElementName=mainContentHolder, Path=Items.Count}"
-                       ContentStringFormat=" {0} items"
-                       Grid.Row="1"
-                       HorizontalAlignment="Right"
-                       Margin="0,0,20,0" />
+        <Label Style="{DynamicResource LabelStyle}"
+               Content="{Binding ElementName=mainContentHolder, Path=Items.Count}"
+               ContentStringFormat=" {0} items"
+               Grid.Row="1"
+               HorizontalAlignment="Right"
+               Margin="0,0,20,0" />
 
-                <controls:ScrollingContentControl Grid.Row="1"
-                                                  HorizontalAlignment="Center"
-                                                  InfoContent="{Binding InfoContent, Mode=TwoWay}">
-                    <Label Style="{DynamicResource LabelStyle}"
-                           />
-                </controls:ScrollingContentControl>
-                
-                <controls:FaderContentControl  FaderVisibility="{Binding ElementName=mainContentHolder, Path=SelectedIndex
+        <controls:ScrollingContentControl Grid.Row="1"
+                                          HorizontalAlignment="Center"
+                                          InfoContent="{Binding InfoContent, Mode=TwoWay}">
+            <Label Style="{DynamicResource LabelStyle}" />
+        </controls:ScrollingContentControl>
+
+        <controls:FaderContentControl  FaderVisibility="{Binding ElementName=mainContentHolder, Path=SelectedIndex
                                                ,Converter={StaticResource convertSelectedIndexToBool}}"
-                                               Margin="10,0,220,0"
-                                               Grid.Row="1"
-                                               HorizontalAlignment="Right">
-                    <ToggleButton>
-                        <ToggleButton.Template>
-                            <ControlTemplate>
-                                <Label Content="Start Slideshow"
-                                       Style="{DynamicResource SelectableLabelStyle}">
-                                    <Label.ToolTip>
-                                        <ToolTip Style="{DynamicResource ToolTipStyle}">
-                                            Start slideshow with selected logs in new Window
-                                        </ToolTip>
-                                    </Label.ToolTip>
-                                    <Label.InputBindings>
-                                        <MouseBinding Gesture="LeftClick"
-                                                      Command="{Binding OpenScreenshotViewerCommand}"
-                                                      CommandParameter="{Binding ElementName=mainContentHolder, Path=SelectedItems}" />
-                                    </Label.InputBindings>
-                                </Label>
-                            </ControlTemplate>
-                        </ToggleButton.Template>
-                    </ToggleButton>
-                </controls:FaderContentControl>
-                <Thumb Grid.Row="2"
-                       Background="Transparent"
-                       DragDelta="Thumb_DragDelta_1"
-                       Margin="10,0,10,0">
-                    <Thumb.Template>
-                        <ControlTemplate>
-                            <Grid Cursor="SizeNS"
-                                  Background="{DynamicResource WindowBorderBrush}"
-                                  Margin="0"
-                                  Height="20">
-                                <Grid.Effect>
-                                    <DropShadowEffect />
-                                </Grid.Effect>
+                                       Margin="10,0,220,0"
+                                       Grid.Row="1"
+                                       HorizontalAlignment="Right">
+            <ToggleButton>
+                <ToggleButton.Template>
+                    <ControlTemplate>
+                        <Label Content="Start Slideshow"
+                               Style="{DynamicResource SelectableLabelStyle}">
+                            <Label.ToolTip>
+                                <ToolTip Style="{DynamicResource ToolTipStyle}">
+                                    Start slideshow with selected logs in new Window
+                                </ToolTip>
+                            </Label.ToolTip>
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding OpenScreenshotViewerCommand}"
+                                              CommandParameter="{Binding ElementName=mainContentHolder, Path=SelectedItems}" />
+                            </Label.InputBindings>
+                        </Label>
+                    </ControlTemplate>
+                </ToggleButton.Template>
+            </ToggleButton>
+        </controls:FaderContentControl>
+        <Thumb Grid.Row="2"
+               Background="Transparent"
+               DragDelta="Thumb_DragDelta_1"
+               Margin="10,0,10,0">
+            <Thumb.Template>
+                <ControlTemplate>
+                    <Grid Cursor="SizeNS"
+                          Background="{DynamicResource WindowBorderBrush}"
+                          Margin="0"
+                          Height="20">
+                        <Grid.Effect>
+                            <DropShadowEffect />
+                        </Grid.Effect>
 
-                            </Grid>
-                        </ControlTemplate>
-                    </Thumb.Template>
+                    </Grid>
+                </ControlTemplate>
+            </Thumb.Template>
 
-                </Thumb>
-                <Label Style="{DynamicResource LabelStyle}"
-                       Content="Screenshots"
-                       Foreground="White"
-                       Grid.Row="2"
-                       Margin="0"
-                       FontSize="16"
-                       IsHitTestVisible="False" />
+        </Thumb>
+        <Label Style="{DynamicResource LabelStyle}"
+               Content="Screenshots"
+               Foreground="White"
+               Grid.Row="2"
+               Margin="0"
+               FontSize="16"
+               IsHitTestVisible="False" />
 
-                <controls:FaderContentControl FadeVertically="True"
-                                              Visibility="{Binding ElementName=mainContentHolder, Path=SelectedIndex, Converter={StaticResource convertIntToVisBack}}"
-                                              Grid.Row="3"
-                                              ClipToBounds="True">
+        <controls:FaderContentControl FadeVertically="True"
+                                      Visibility="{Binding ElementName=mainContentHolder, Path=SelectedIndex, Converter={StaticResource convertIntToVisBack}}"
+                                      Grid.Row="3"
+                                      ClipToBounds="True">
 
-                    <ListBox Name="lbScreenShots"
-                             Background="Transparent"
-                             ItemsSource="{Binding Path=SelectedItem.Screenshots, ElementName=mainContentHolder, Mode=OneWay}"
-                             ItemContainerStyle="{DynamicResource ListBoxImageStyle}"
-                             Margin="5"
-                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             BorderThickness="0"
-                             VirtualizingStackPanel.VirtualizationMode="Recycling"
-                             VirtualizingStackPanel.IsVirtualizing="True">
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel HorizontalAlignment="Left"
-                                           Margin="10,5,10,5"
-                                           Orientation="Horizontal"
-                                           VerticalAlignment="Top" />
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
+            <ListBox Name="lbScreenShots"
+                     Background="Transparent"
+                     ItemsSource="{Binding Path=SelectedItem.Screenshots, ElementName=mainContentHolder, Mode=OneWay}"
+                     ItemContainerStyle="{DynamicResource ListBoxImageStyle}"
+                     Margin="5"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     BorderThickness="0"
+                     VirtualizingStackPanel.VirtualizationMode="Recycling"
+                     VirtualizingStackPanel.IsVirtualizing="True">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel HorizontalAlignment="Left"
+                                   Margin="10,5,10,5"
+                                   Orientation="Horizontal"
+                                   VerticalAlignment="Top" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
 
-                    </ListBox>
-                </controls:FaderContentControl>
-            </Grid>
+            </ListBox>
+        </controls:FaderContentControl>
+    </Grid>
 
 </UserControl>

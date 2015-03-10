@@ -7,7 +7,6 @@
 #endregion
 
 using AppsTracker.MVVM;
-using AppsTracker.Pages.ViewModels;
 
 namespace AppsTracker.ViewModels
 {
@@ -15,17 +14,14 @@ namespace AppsTracker.ViewModels
     {
         public override string Title
         {
-            get
-            {
-                return "data";
-            }
+            get { return "data"; }
         }
 
         public DataHostViewModel()
         {
             this.RegisterChild<Data_logsViewModel>(() => new Data_logsViewModel());
-            this.RegisterChild<Data_keystrokesViewModel>(() => new Data_keystrokesViewModel());
-            this.RegisterChild<Data_screenshotsViewModel>(() => new Data_screenshotsViewModel());
+            this.RegisterChild<KeystrokesViewModel>(() => new KeystrokesViewModel());
+            this.RegisterChild<ScreenshotsViewModel>(() => new ScreenshotsViewModel());
             this.RegisterChild<Data_dayViewModel>(() => new Data_dayViewModel());
 
             this.SelectedChild = GetChild(typeof(Data_logsViewModel));

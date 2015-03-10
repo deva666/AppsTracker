@@ -24,16 +24,16 @@
                    Content="{Binding Title}" />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModels:Data_logsViewModel}">
-            <views:Data_logsView />
+        <DataTemplate DataType="{x:Type vModels:Data_logsViewModel}">
+            <v:Data_logsView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModels:Data_keystrokesViewModel}">
-            <views:KeylogsView />
+        <DataTemplate DataType="{x:Type vModels:KeystrokesViewModel}">
+            <v:KeylogsView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModels:Data_screenshotsViewModel}">
-            <views:ScreenShotsView />
+        <DataTemplate DataType="{x:Type vModels:ScreenshotsViewModel}">
+            <v:ScreenshotsView/>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type vModels:Data_dayViewModel}">
@@ -56,7 +56,7 @@
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="{x:Type viewModels:Data_logsViewModel}">
+                                      CommandParameter="{x:Type vModels:Data_logsViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>
@@ -65,7 +65,7 @@
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="{x:Type viewModels:Data_keystrokesViewModel}">
+                                      CommandParameter="{x:Type vModels:KeystrokesViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>
@@ -74,7 +74,7 @@
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="{x:Type viewModels:Data_screenshotsViewModel}">
+                                      CommandParameter="{x:Type vModels:ScreenshotsViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>

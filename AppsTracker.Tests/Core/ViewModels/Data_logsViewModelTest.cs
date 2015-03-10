@@ -1,7 +1,5 @@
 ﻿using System.Threading.Tasks;
-using AppsTracker.Data.Service;
-using AppsTracker.Pages.ViewModels;
-using AppsTracker.Tests.Fakes.Service;
+using AppsTracker.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AppsTracker.Tests.Core.ViewModels

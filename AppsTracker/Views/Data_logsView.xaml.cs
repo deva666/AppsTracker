@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using AppsTracker.Data.Service;
 
-namespace AppsTracker.Pages.Views
+namespace AppsTracker.Views
 {
     public partial class Data_logsView : UserControl
     {

@@ -13,12 +13,12 @@ namespace AppsTracker.Data.Utils
 {
     public class AppInfo : IAppInfo
     {
-        public string ProcessName { get; private set; }
-        public string ProcessVersion { get; private set; }
-        public string ProcessCompany { get; private set; }
-        public string ProcessDescription { get; private set; }
-        public string ProcessFileName { get; private set; }
-        public string ProcessRealName { get; private set; }
+        public string Name { get; private set; }
+        public string Version { get; private set; }
+        public string Company { get; private set; }
+        public string Description { get; private set; }
+        public string FileName { get; private set; }
+        public string FullName { get; private set; }
 
         private AppInfo() { }
 
@@ -33,30 +33,30 @@ namespace AppsTracker.Data.Utils
             {
                 if (process.MainModule.FileVersionInfo.CompanyName != null && process.MainModule.FileVersionInfo.CompanyName.ToLower().Contains("microsoft"))
                 {
-                    appInfo.ProcessVersion = process.MainModule.FileVersionInfo.ProductVersion ?? "";
-                    appInfo.ProcessCompany = process.MainModule.FileVersionInfo.CompanyName ?? "";
-                    appInfo.ProcessFileName = process.MainModule.FileVersionInfo.FileName ?? "";
+                    appInfo.Version = process.MainModule.FileVersionInfo.ProductVersion ?? "";
+                    appInfo.Company = process.MainModule.FileVersionInfo.CompanyName ?? "";
+                    appInfo.FileName = process.MainModule.FileVersionInfo.FileName ?? "";
                     if (string.IsNullOrEmpty(process.MainModule.FileVersionInfo.FileDescription))
                     {
-                        appInfo.ProcessName = process.MainModule.FileVersionInfo.ProductName ?? "";
-                        appInfo.ProcessDescription = process.MainModule.FileVersionInfo.FileDescription ?? "";
+                        appInfo.Name = process.MainModule.FileVersionInfo.ProductName ?? "";
+                        appInfo.Description = process.MainModule.FileVersionInfo.FileDescription ?? "";
                     }
                     else
                     {
-                        appInfo.ProcessName = process.MainModule.FileVersionInfo.FileDescription ?? "";
-                        appInfo.ProcessDescription = process.MainModule.FileVersionInfo.ProductName ?? "";
+                        appInfo.Name = process.MainModule.FileVersionInfo.FileDescription ?? "";
+                        appInfo.Description = process.MainModule.FileVersionInfo.ProductName ?? "";
                     }
 
-                    appInfo.ProcessRealName = process.ProcessName ?? "";
+                    appInfo.FullName = process.ProcessName ?? "";
                 }
                 else
                 {
-                    appInfo.ProcessVersion = process.MainModule.FileVersionInfo.ProductVersion ?? "";
-                    appInfo.ProcessCompany = process.MainModule.FileVersionInfo.CompanyName ?? "";
-                    appInfo.ProcessFileName = process.MainModule.FileVersionInfo.FileName ?? "";
-                    appInfo.ProcessName = process.MainModule.FileVersionInfo.ProductName ?? "";
-                    appInfo.ProcessDescription = process.MainModule.FileVersionInfo.FileDescription ?? "";
-                    appInfo.ProcessRealName = process.ProcessName ?? "";
+                    appInfo.Version = process.MainModule.FileVersionInfo.ProductVersion ?? "";
+                    appInfo.Company = process.MainModule.FileVersionInfo.CompanyName ?? "";
+                    appInfo.FileName = process.MainModule.FileVersionInfo.FileName ?? "";
+                    appInfo.Name = process.MainModule.FileVersionInfo.ProductName ?? "";
+                    appInfo.Description = process.MainModule.FileVersionInfo.FileDescription ?? "";
+                    appInfo.FullName = process.ProcessName ?? "";
                 }
             }
             catch (InvalidOperationException)
@@ -67,12 +67,12 @@ namespace AppsTracker.Data.Utils
             {
                 try
                 {
-                    appInfo.ProcessVersion = "";
-                    appInfo.ProcessCompany = "";
-                    appInfo.ProcessFileName = "";
-                    appInfo.ProcessName = process.ProcessName;
-                    appInfo.ProcessDescription = "";
-                    appInfo.ProcessRealName = "";
+                    appInfo.Version = "";
+                    appInfo.Company = "";
+                    appInfo.FileName = "";
+                    appInfo.Name = process.ProcessName;
+                    appInfo.Description = "";
+                    appInfo.FullName = "";
                 }
                 catch (Exception)
                 {

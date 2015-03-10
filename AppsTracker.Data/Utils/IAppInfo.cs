@@ -11,11 +11,11 @@ namespace AppsTracker.Data.Utils
 {
     public interface IAppInfo
     {
-        string ProcessName { get; }
-        string ProcessVersion { get; }
-        string ProcessCompany { get; }
-        string ProcessDescription { get; }
-        string ProcessFileName { get; }
-        string ProcessRealName { get; }
+        string Name { get; }
+        string Version { get; }
+        string Company { get; }
+        string Description { get; }
+        string FileName { get; }
+        string FullName { get; }
     }
 }

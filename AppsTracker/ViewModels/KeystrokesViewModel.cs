@@ -12,9 +12,9 @@ using AppsTracker.Data.Service;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 
-namespace AppsTracker.Pages.ViewModels
+namespace AppsTracker.ViewModels
 {
-    internal sealed class Data_keystrokesViewModel : ViewModelBase, ICommunicator
+    internal sealed class KeystrokesViewModel : ViewModelBase, ICommunicator
     {
         #region Fields
 
@@ -49,7 +49,7 @@ namespace AppsTracker.Pages.ViewModels
 
         #endregion
 
-        public Data_keystrokesViewModel()
+        public KeystrokesViewModel()
         {
             _dataService = ServiceFactory.Get<IDataService>();
 

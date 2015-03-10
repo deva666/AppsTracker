@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Utils;
@@ -36,18 +35,13 @@ namespace AppsTracker.Data.Service
             using (var context = new AppsEntities())
             {
                 newApp = false;
-                string appName = (!string.IsNullOrEmpty(appInfo.ProcessName) ? appInfo.ProcessName : !string.IsNullOrEmpty(appInfo.ProcessRealName) ? appInfo.ProcessRealName : appInfo.ProcessFileName);
+                string appName = (!string.IsNullOrEmpty(appInfo.Name) ? appInfo.Name : !string.IsNullOrEmpty(appInfo.FullName) ? appInfo.FullName : appInfo.FileName);
                 Aplication app = context.Applications.FirstOrDefault(a => a.UserID == userID
                                                         && a.Name == appName);
 
                 if (app == null)
                 {
-                    app = new Aplication(appInfo.ProcessName,
-                                         appInfo.ProcessFileName,
-                                         appInfo.ProcessVersion,
-                                         appInfo.ProcessDescription,
-                                         appInfo.ProcessCompany,
-                                         appInfo.ProcessRealName) { UserID = userID };
+                    app = new Aplication(appInfo) { UserID = userID };
                     context.Applications.Add(app);
 
                     newApp = true;
@@ -74,7 +68,7 @@ namespace AppsTracker.Data.Service
         {
             using (var context = new AppsEntities())
             {
-                var name = !string.IsNullOrEmpty(appInfo.ProcessName) ? appInfo.ProcessName.Truncate(250) : !string.IsNullOrEmpty(appInfo.ProcessRealName) ? appInfo.ProcessRealName.Truncate(250) : appInfo.ProcessFileName.Truncate(250);
+                var name = !string.IsNullOrEmpty(appInfo.Name) ? appInfo.Name.Truncate(250) : !string.IsNullOrEmpty(appInfo.FullName) ? appInfo.FullName.Truncate(250) : appInfo.FileName.Truncate(250);
                 var app = context.Applications.First(a => a.Name == name);
                 return app;
             }

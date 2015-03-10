@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using AppsTracker.Data.Service;
 
-namespace AppsTracker.Pages.Views
+namespace AppsTracker.Views
 {
     public partial class KeylogsView : UserControl
     {

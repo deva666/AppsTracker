@@ -213,6 +213,7 @@ namespace AppsTracker.ViewModels
             TimeSpan timeSpan = new TimeSpan(ticks);
             SingleAppDuration = string.Format("Selected: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
         }
+
         private void SingleWindowSelectionChanged()
         {
             var topWindows = topWindowsList.Result;
