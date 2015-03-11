@@ -19,12 +19,12 @@ namespace AppsTracker.ViewModels
 
         public DataHostViewModel()
         {
-            this.RegisterChild<Data_logsViewModel>(() => new Data_logsViewModel());
+            this.RegisterChild<AppDetailsViewModel>(() => new AppDetailsViewModel());
             this.RegisterChild<KeystrokesViewModel>(() => new KeystrokesViewModel());
             this.RegisterChild<ScreenshotsViewModel>(() => new ScreenshotsViewModel());
             this.RegisterChild<Data_dayViewModel>(() => new Data_dayViewModel());
 
-            this.SelectedChild = GetChild(typeof(Data_logsViewModel));
+            this.SelectedChild = GetChild(typeof(AppDetailsViewModel));
         }
 
         protected override void Disposing()

@@ -5,11 +5,11 @@ using AppsTracker.Data.Service;
 
 namespace AppsTracker.Views
 {
-    public partial class Data_logsView : UserControl
+    public partial class AppDetailsView : UserControl
     {
         private readonly IXmlSettingsService xmlService;
 
-        public Data_logsView()
+        public AppDetailsView()
         {
             InitializeComponent();
             xmlService = ServiceFactory.Get<IXmlSettingsService>();

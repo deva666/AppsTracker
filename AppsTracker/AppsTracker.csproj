@@ -349,7 +349,7 @@
     <Compile Include="ErrorLogging\Logger.cs" />
     <Compile Include="Hooks\MouseHook.cs" />
     <Compile Include="MVVM\WeakAction.cs" />
-    <Compile Include="ViewModels\Data_logsViewModel.cs" />
+    <Compile Include="ViewModels\AppDetailsViewModel.cs" />
     <Compile Include="ViewModels\KeystrokesViewModel.cs" />
     <Compile Include="ViewModels\Data_screenshotsViewModel.cs" />
     <Compile Include="ViewModels\SettingsHostViewModel.cs" />
@@ -391,8 +391,8 @@
     <Compile Include="Views\ChartViews\UsersView.xaml.cs">
       <DependentUpon>UsersView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Data_logsView.xaml.cs">
-      <DependentUpon>Data_logsView.xaml</DependentUpon>
+    <Compile Include="Views\AppDetailsView.xaml.cs">
+      <DependentUpon>AppDetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\KeylogsView.xaml.cs">
       <DependentUpon>KeylogsView.xaml</DependentUpon>
@@ -627,7 +627,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Data_logsView.xaml">
+    <Page Include="Views\AppDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

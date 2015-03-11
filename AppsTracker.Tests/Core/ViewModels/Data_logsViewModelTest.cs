@@ -16,7 +16,7 @@ namespace AppsTracker.Tests.Core.ViewModels
         [TestMethod]
         public void TestLoaders()
         {
-            var vm = new Data_logsViewModel();
+            var vm = new AppDetailsViewModel();
 
             var apps = vm.AplicationList.Result;
             var topApps = vm.TopAppsList.Result;

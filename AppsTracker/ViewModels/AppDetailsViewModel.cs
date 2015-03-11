@@ -19,7 +19,7 @@ using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
-    internal class Data_logsViewModel : ViewModelBase, ICommunicator
+    internal class AppDetailsViewModel : ViewModelBase, ICommunicator
     {
         private readonly IDataService dataService;
         private readonly IChartService chartService;
@@ -29,15 +29,11 @@ namespace AppsTracker.ViewModels
         private readonly AsyncProperty<IEnumerable<TopWindowsModel>> topWindowsList;
         private readonly AsyncProperty<IEnumerable<DailyWindowSeries>> chartList;
 
-        Aplication selectedApplication;
 
         TopAppsModel topAppsOverall;
 
         List<MenuItem> allUsersList;
 
-        ICommand addProcessToBlockedListCommand;
-        ICommand overallAppSelectionChangedCommand;
-        ICommand overallWindowSelectionChangedCommand;
 
         private bool isChartVisible;
         public bool IsChartVisible
@@ -63,7 +59,7 @@ namespace AppsTracker.ViewModels
         {
             get { return selectedWindowsDuration; }
             set { SetPropertyValue(ref selectedWindowsDuration, value); }
-        }   
+        }
 
         public AsyncProperty<IEnumerable<Aplication>> AplicationList
         {
@@ -102,21 +98,18 @@ namespace AppsTracker.ViewModels
             }
             set
             {
-                topAppsOverall = value;
-                PropertyChanging("TopAppsOverall");
+                SetPropertyValue(ref topAppsOverall, value);
                 SelectedWindowsDuration = string.Empty;
             }
         }
-        public Aplication SelectedApplication
+
+        Aplication selectedApp;
+        public Aplication SelectedApp
         {
-            get
-            {
-                return selectedApplication;
-            }
+            get { return selectedApp; }
             set
             {
-                selectedApplication = value;
-                PropertyChanging("SelectedApplication");
+                SetPropertyValue(ref selectedApp, value);
                 IsChartVisible = false;
                 if (value != null)
                 {
@@ -134,35 +127,30 @@ namespace AppsTracker.ViewModels
             }
         }
 
+        ICommand addProcessToBlockedListCommand;
         public ICommand AddProcessToBlockedListCommand
         {
-            get
-            {
-                return addProcessToBlockedListCommand == null ? addProcessToBlockedListCommand = new DelegateCommand(AddAplicationToBlockedList) : addProcessToBlockedListCommand;
-            }
+            get { return addProcessToBlockedListCommand ?? (addProcessToBlockedListCommand = new DelegateCommand(AddAplicationToBlockedList)); }
         }
 
+        ICommand overallAppSelectionChangedCommand;
         public ICommand OverallAppSelectionChangedCommand
         {
-            get
-            {
-                return overallAppSelectionChangedCommand == null ? overallAppSelectionChangedCommand = new DelegateCommand(OverallAppSelectionChanged) : overallAppSelectionChangedCommand;
-            }
+            get { return overallAppSelectionChangedCommand ?? (overallAppSelectionChangedCommand = new DelegateCommand(OverallAppSelectionChanged)); }
         }
+
+        ICommand overallWindowSelectionChangedCommand;
         public ICommand OverallWindowSelectionChangedCommand
         {
-            get
-            {
-                return overallWindowSelectionChangedCommand == null ? overallWindowSelectionChangedCommand = new DelegateCommand(OverallWindowSelectionChanged) : overallWindowSelectionChangedCommand;
-            }
+            get { return overallWindowSelectionChangedCommand ?? (overallWindowSelectionChangedCommand = new DelegateCommand(OverallWindowSelectionChanged)); }
         }
-     
+
         public IMediator Mediator
         {
             get { return MVVM.Mediator.Instance; }
         }
 
-        public Data_logsViewModel()
+        public AppDetailsViewModel()
         {
             dataService = ServiceFactory.Get<IDataService>();
             chartService = ServiceFactory.Get<IChartService>();
@@ -194,7 +182,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<TopAppsModel> GetTopApps()
         {
-            var app = SelectedApplication;
+            var app = SelectedApp;
             if (app == null)
                 return null;
 
@@ -233,7 +221,7 @@ namespace AppsTracker.ViewModels
             topAppsList.Reset();
             topWindowsList.Reset();
         }
-    
+
         private void AddAplicationToBlockedList(object parameter)
         {
 
@@ -313,6 +301,6 @@ namespace AppsTracker.ViewModels
                 menuItem.Header = user.Name;
                 allUsersList.Add(menuItem);
             }
-        }      
+        }
     }
 }

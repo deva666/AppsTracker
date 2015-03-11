@@ -5,8 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:AppsTracker"
              xmlns:controls="clr-namespace:AppsTracker.Controls"
-             xmlns:vModels="clr-namespace:AppsTracker.ViewModels"
-             xmlns:viewModels="clr-namespace:AppsTracker.Pages.ViewModels"
+             xmlns:vModels="clr-namespace:AppsTracker.ViewModels"             
              xmlns:views="clr-namespace:AppsTracker.Pages.Views"
              xmlns:v="clr-namespace:AppsTracker.Views"
              mc:Ignorable="d"
@@ -24,8 +23,8 @@
                    Content="{Binding Title}" />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type vModels:Data_logsViewModel}">
-            <v:Data_logsView />
+        <DataTemplate DataType="{x:Type vModels:AppDetailsViewModel}">
+            <v:AppDetailsView/>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type vModels:KeystrokesViewModel}">
@@ -56,7 +55,7 @@
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="{x:Type vModels:Data_logsViewModel}">
+                                      CommandParameter="{x:Type vModels:AppDetailsViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>
