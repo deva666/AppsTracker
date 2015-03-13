@@ -42,20 +42,19 @@ namespace AppsTracker.Data.Models
         public bool IsRequested { get; set; }
     }
 
-    public class TopAppsModel : TopModel
+    public class AppSummary : TopModel
     {
         public string AppName { get; set; }
         public string Date { get; set; }
         public DateTime DateTime { get; set; }
-
     }
 
-    public class TopWindowsModel : TopModel
+    public class WindowSummary : TopModel
     {
         public string Title { get; set; }
     }
 
-    public class DayViewModel
+    public class LogSummary
     {
         public string Name { get; set; }
         public string Title { get; set; }

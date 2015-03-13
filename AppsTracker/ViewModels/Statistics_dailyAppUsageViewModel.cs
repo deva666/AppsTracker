@@ -68,7 +68,7 @@ namespace AppsTracker.Pages.ViewModels
 
         private IEnumerable<DailyUsedAppsSeries> GetContent()
         {
-            return _chartService.GetAppsUsageSeries(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
+            return _chartService.GetAppsUsageSeries(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
         }
     }
 }

@@ -117,7 +117,7 @@ namespace AppsTracker.Pages.ViewModels
 
         private IEnumerable<AllUsersModel> GetContent()
         {
-            return _chartService.GetAllUsers(Globals.Date1, Globals.Date2);
+            return _chartService.GetAllUsers(Globals.DateFrom, Globals.DateTo);
         }
 
         private IEnumerable<UsageTypeSeries> GetSubContent()
@@ -126,7 +126,7 @@ namespace AppsTracker.Pages.ViewModels
             if (model == null)
                 return null;
 
-            return _chartService.GetUsageSeries(model.Username, Globals.Date1, Globals.Date2);
+            return _chartService.GetUsageSeries(model.Username, Globals.DateFrom, Globals.DateTo);
         }
 
         #endregion

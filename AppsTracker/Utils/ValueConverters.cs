@@ -1043,7 +1043,7 @@ namespace AppsTracker
             }
             else
             {
-                var selectedItems = collection.Cast<TopWindowsModel>();
+                var selectedItems = collection.Cast<WindowSummary>();
                 long totalDuration = 0;
                 foreach (var window in selectedItems)
                 {

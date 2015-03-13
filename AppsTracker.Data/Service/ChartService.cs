@@ -25,7 +25,7 @@ namespace AppsTracker.Data.Service
 
         private string _cachedLogsForApp;
 
-        public IEnumerable<TopAppsModel> GetLogTopApps(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<AppSummary> GetLogTopApps(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo)
         {
             using (var context = new AppsEntities())
             {
@@ -63,7 +63,7 @@ namespace AppsTracker.Data.Service
                               } into grp
                               select grp)
                               .ToList()
-                              .Select(g => new TopAppsModel
+                              .Select(g => new AppSummary
                                    {
                                        AppName = g.Key.name,
                                        Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString() + " " + new DateTime(g.Key.year, g.Key.month, g.Key.day).DayOfWeek.ToString(),
@@ -83,7 +83,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<TopWindowsModel> GetLogTopWindows(int userID, string appName, IEnumerable<DateTime> days)
+        public IEnumerable<WindowSummary> GetLogTopWindows(int userID, string appName, IEnumerable<DateTime> days)
         {
 
             if (_cachedLogs == null || (_cachedLogs != null && string.Equals(_cachedLogsForApp, appName) == false))
@@ -99,7 +99,7 @@ namespace AppsTracker.Data.Service
 
             var result = (from l in totalFiltered
                           group l by l.Window.Title into grp
-                          select grp).Select(g => new TopWindowsModel
+                          select grp).Select(g => new WindowSummary
                           {
                               Title = g.Key,
                               Usage = (g.Sum(l => l.Duration) / totalDuration),
@@ -165,7 +165,7 @@ namespace AppsTracker.Data.Service
             return result;
         }
 
-        public IEnumerable<DayViewModel> GetDayView(int userID, DateTime dateFrom)
+        public IEnumerable<LogSummary> GetLogSummary(int userID, DateTime dateFrom)
         {
             using (var context = new AppsEntities())
             {
@@ -198,7 +198,7 @@ namespace AppsTracker.Data.Service
                 }
               );
 
-                var logModels = logs.Select(l => new DayViewModel()
+                var logModels = logs.Select(l => new LogSummary()
                                                             {
                                                                 DateCreated = l.DateCreated.ToString("HH:mm:ss"),
                                                                 DateEnded = l.DateEnded.ToString("HH:mm:ss"),
@@ -207,7 +207,7 @@ namespace AppsTracker.Data.Service
                                                                 Title = l.Window.Title
                                                             });
 
-                var usageModels = usages.Select(u => new DayViewModel()
+                var usageModels = usages.Select(u => new LogSummary()
                                                                {
                                                                    DateCreated = u.UsageStart.ToString("HH:mm:ss"),
                                                                    DateEnded = u.UsageEnd.ToString("HH:mm:ss"),
@@ -221,7 +221,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<TopAppsModel> GetDayTopApps(int userID, DateTime dateFrom)
+        public IEnumerable<AppSummary> GetAppsSummary(int userID, DateTime dateFrom)
         {
             using (var context = new AppsEntities())
             {
@@ -238,7 +238,7 @@ namespace AppsTracker.Data.Service
                 var result = (from l in logs
                               group l by l.Window.Application.Name into grp
                               select grp).ToList()
-                             .Select(g => new TopAppsModel
+                             .Select(g => new AppSummary
                              {
                                  AppName = g.Key,
                                  Date = dateFrom.ToShortDateString(),
@@ -256,7 +256,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<TopWindowsModel> GetDayTopWindows(int userID, string appName, DateTime dateFrom)
+        public IEnumerable<WindowSummary> GetWindowsSummary(int userID, string appName, DateTime dateFrom)
         {
             if (appName == null)
                 return null;
@@ -274,7 +274,7 @@ namespace AppsTracker.Data.Service
                 double totalDuration = total.Sum(l => l.Duration);
 
                 return total.GroupBy(l => l.Window.Title)
-                                      .Select(g => new TopWindowsModel
+                                      .Select(g => new WindowSummary
                                       {
                                           Title = g.Key,
                                           Usage = (g.Sum(l => l.Duration) / totalDuration),
@@ -285,7 +285,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<DailyUsageTypeSeries> GetDailySeries(int userID, DateTime dateFrom)
+        public IEnumerable<UsageByTime> GetUsageSummary(int userID, DateTime dateFrom)
         {
             using (var context = new AppsEntities())
             {
@@ -339,12 +339,12 @@ namespace AppsTracker.Data.Service
 
                 });
 
-                List<DailyUsageTypeSeries> collection = new List<DailyUsageTypeSeries>();
+                List<UsageByTime> collection = new List<UsageByTime>();
 
                 foreach (var login in logins)
                 {
-                    DailyUsageTypeSeries series = new DailyUsageTypeSeries() { Time = login.GetDisplayedStart(fromDay).ToString("HH:mm:ss") };
-                    ObservableCollection<UsageTypeModel> observableCollection = new ObservableCollection<UsageTypeModel>();
+                    UsageByTime series = new UsageByTime() { Time = login.GetDisplayedStart(fromDay).ToString("HH:mm:ss") };
+                    ObservableCollection<UsageSummary> observableCollection = new ObservableCollection<UsageSummary>();
 
                     long idleTime = 0;
                     long lockedTime = 0;
@@ -357,28 +357,28 @@ namespace AppsTracker.Data.Service
 
                     idleTime = tempIdles.Sum(l => l.GetDisplayedTicks(fromDay));
                     if (idleTime > 0)
-                        observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(idleTime).TotalHours, 2), UsageType = "Idle" });
+                        observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(idleTime).TotalHours, 2), UsageType = "Idle" });
 
                     lockedTime = tempLockeds.Sum(l => l.GetDisplayedTicks(fromDay));
                     if (lockedTime > 0)
-                        observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Computer locked" });
+                        observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Computer locked" });
 
                     stoppedTime = tempStopppeds.Sum(l => l.GetDisplayedTicks(fromDay));
                     if (stoppedTime > 0)
-                        observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Stopped logging" });
+                        observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Stopped logging" });
 
                     loginTime = login.GetDisplayedTicks(fromDay) - lockedTime - idleTime - stoppedTime;
-                    observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(loginTime).TotalHours, 2), UsageType = "Work" });
+                    observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(loginTime).TotalHours, 2), UsageType = "Work" });
 
-                    series.DailyUsageTypeCollection = observableCollection;
+                    series.UsageSummaryCollection = observableCollection;
 
                     collection.Add(series);
                 }
 
                 if (logins.Count > 1)
                 {
-                    DailyUsageTypeSeries seriesTotal = new DailyUsageTypeSeries() { Time = "TOTAL" };
-                    ObservableCollection<UsageTypeModel> observableTotal = new ObservableCollection<UsageTypeModel>();
+                    UsageByTime seriesTotal = new UsageByTime() { Time = "TOTAL" };
+                    ObservableCollection<UsageSummary> observableTotal = new ObservableCollection<UsageSummary>();
 
                     long idleTimeTotal = 0;
                     long lockedTimeTotal = 0;
@@ -387,20 +387,20 @@ namespace AppsTracker.Data.Service
 
                     idleTimeTotal = idles.Sum(l => l.GetDisplayedTicks(fromDay));
                     if (idleTimeTotal > 0)
-                        observableTotal.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(idleTimeTotal).TotalHours, 2), UsageType = "Idle" });
+                        observableTotal.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(idleTimeTotal).TotalHours, 2), UsageType = "Idle" });
 
                     lockedTimeTotal = lockeds.Sum(l => l.GetDisplayedTicks(fromDay));
                     if (lockedTimeTotal > 0)
-                        observableTotal.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTimeTotal).TotalHours, 2), UsageType = "Computer locked" });
+                        observableTotal.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(lockedTimeTotal).TotalHours, 2), UsageType = "Computer locked" });
 
                     stoppedTimeTotal = stoppeds.Sum(l => l.GetDisplayedTicks(fromDay));
                     if (stoppedTimeTotal > 0)
-                        observableTotal.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(stoppedTimeTotal).TotalHours, 2), UsageType = "Stopped logging" });
+                        observableTotal.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(stoppedTimeTotal).TotalHours, 2), UsageType = "Stopped logging" });
 
                     loginTimeTotal = logins.Sum(l => l.GetDisplayedTicks(fromDay)) - lockedTimeTotal - idleTimeTotal;
-                    observableTotal.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(loginTimeTotal).TotalHours, 2), UsageType = "Work" });
+                    observableTotal.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(loginTimeTotal).TotalHours, 2), UsageType = "Work" });
 
-                    seriesTotal.DailyUsageTypeCollection = observableTotal;
+                    seriesTotal.UsageSummaryCollection = observableTotal;
 
                     collection.Add(seriesTotal);
                 }
@@ -681,7 +681,7 @@ namespace AppsTracker.Data.Service
                         Date = day.ToShortDateString()
                     };
 
-                    ObservableCollection<UsageTypeModel> observableCollection = new ObservableCollection<UsageTypeModel>();
+                    ObservableCollection<UsageSummary> observableCollection = new ObservableCollection<UsageSummary>();
 
                     long idleTime = 0;
                     long lockedTime = 0;
@@ -690,18 +690,18 @@ namespace AppsTracker.Data.Service
 
                     idleTime = idles.Sum(l => l.GetDisplayedTicks(day));
                     if (idleTime > 0)
-                        observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(idleTime).TotalHours, 2), UsageType = "Idle" });
+                        observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(idleTime).TotalHours, 2), UsageType = "Idle" });
 
                     lockedTime = lockeds.Sum(l => l.GetDisplayedTicks(day));
                     if (lockedTime > 0)
-                        observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Computer locked" });
+                        observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Computer locked" });
 
                     stoppedTime = stoppeds.Sum(l => l.GetDisplayedTicks(day));
                     if (stoppedTime > 0)
-                        observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Stopped logging" });
+                        observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Stopped logging" });
 
                     loginTime = grp.Sum(l => l.GetDisplayedTicks(day)) - lockedTime - idleTime - stoppedTime;
-                    observableCollection.Add(new UsageTypeModel() { Time = Math.Round(new TimeSpan(loginTime).TotalHours, 2), UsageType = "Work" });
+                    observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(loginTime).TotalHours, 2), UsageType = "Work" });
 
                     series.DailyUsageTypeCollection = observableCollection;
                     collection.Add(series);
@@ -741,7 +741,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<CategoryModel> GetCategoriesForDate(int userID, DateTime dateFrom)
+        public IEnumerable<CategoryModel> GetCategories(int userID, DateTime dateFrom)
         {
             using (var context = new AppsEntities())
             {

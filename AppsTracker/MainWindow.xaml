@@ -271,12 +271,12 @@
                                 Grid.Column="0"
                                 Grid.Row="1"
                                 Margin="10"
-                                SelectedDate="{Binding Date1, Mode=TwoWay}" />
+                                SelectedDate="{Binding DateFrom, Mode=TwoWay}" />
                     <DatePicker Name="date2"
                                 Grid.Column="1"
                                 Grid.Row="1"
                                 Margin="10"
-                                SelectedDate="{Binding Date2, Mode=TwoWay}" />
+                                SelectedDate="{Binding DateTo, Mode=TwoWay}" />
                     <Label Style="{StaticResource SelectableLabelStyle}"
                            Content="This week"
                            Grid.Row="2"
@@ -453,8 +453,8 @@
                        FontSize="11">
                     <Label.Content>
                         <MultiBinding Converter="{StaticResource convertDateFilter}">
-                            <Binding Path="Date1" />
-                            <Binding Path="Date2" />
+                            <Binding Path="DateFrom" />
+                            <Binding Path="DateTo" />
                         </MultiBinding>
                     </Label.Content>
                 </Label>

@@ -35,8 +35,8 @@
             <v:ScreenshotsView/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type vModels:Data_dayViewModel}">
-            <v:Data_dayView />
+        <DataTemplate DataType="{x:Type vModels:DaySummaryViewModel}">
+            <v:DaySummaryView />
         </DataTemplate>
     </UserControl.Resources>
 
@@ -77,12 +77,12 @@
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>
-                <Label Content="DAY VIEW"
-                       Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=DAY VIEW}">
+                <Label Content="DAY SUMMARY"
+                       Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=DAY SUMMARY}">
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="{x:Type vModels:Data_dayViewModel}">
+                                      CommandParameter="{x:Type vModels:DaySummaryViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>

@@ -115,7 +115,7 @@ namespace AppsTracker.Pages.ViewModels
         }
         private IEnumerable<MostUsedAppModel> GetContent()
         {
-            return _chartService.GetMostUsedApps(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
+            return _chartService.GetMostUsedApps(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
         }
 
         private IEnumerable<DailyAppModel> GetSubContent()
@@ -124,7 +124,7 @@ namespace AppsTracker.Pages.ViewModels
             if (model == null)
                 return null;
 
-            return _chartService.GetSingleMostUsedApp(Globals.SelectedUserID, model.AppName, Globals.Date1, Globals.Date2);
+            return _chartService.GetSingleMostUsedApp(Globals.SelectedUserID, model.AppName, Globals.DateFrom, Globals.DateTo);
         }
     }
 }

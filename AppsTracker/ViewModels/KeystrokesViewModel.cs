@@ -8,46 +8,31 @@
 
 using System;
 using System.Collections.Generic;
-using AppsTracker.Data.Service;
 using AppsTracker.Data.Models;
+using AppsTracker.Data.Service;
 using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
     internal sealed class KeystrokesViewModel : ViewModelBase, ICommunicator
     {
-        #region Fields
-
-        private IDataService _dataService;
-
-        private AsyncProperty<IEnumerable<Log>> _logList;
-
-        #endregion
-
-        #region Properties
+        private readonly IDataService _dataService;
 
         public override string Title
         {
-            get
-            {
-                return "KEYSTROKES";
-            }
+            get { return "KEYSTROKES"; }
         }
 
+        private readonly AsyncProperty<IEnumerable<Log>> _logList;
         public AsyncProperty<IEnumerable<Log>> LogList
         {
-            get
-            {
-                return _logList;
-            }
+            get { return _logList; }
         }
 
         public IMediator Mediator
         {
             get { return MVVM.Mediator.Instance; }
         }
-
-        #endregion
 
         public KeystrokesViewModel()
         {
@@ -61,8 +46,8 @@ namespace AppsTracker.ViewModels
         private IEnumerable<Log> GetContent()
         {
             return _dataService.GetFiltered<Log>(l => l.KeystrokesRaw != null
-                                                && l.DateCreated >= Globals.Date1
-                                                && l.DateCreated <= Globals.Date2
+                                                && l.DateCreated >= Globals.DateFrom
+                                                && l.DateCreated <= Globals.DateTo
                                                 && l.Window.Application.UserID == Globals.SelectedUserID
                                                 , l => l.Window.Application
                                                 , l => l.Screenshots);

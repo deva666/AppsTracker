@@ -82,7 +82,7 @@ namespace AppsTracker.Pages.ViewModels
 
         private IEnumerable<ScreenshotModel> GetContent()
         {
-            return chartService.GetScreenshots(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
+            return chartService.GetScreenshots(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
         }
 
         private IEnumerable<DailyScreenshotModel> GetSubContent()
@@ -91,7 +91,7 @@ namespace AppsTracker.Pages.ViewModels
             if (model == null)
                 return null;
 
-            return chartService.GetScreenshotsByApp(Globals.SelectedUserID, model.AppName, Globals.Date1, Globals.Date2);
+            return chartService.GetScreenshotsByApp(Globals.SelectedUserID, model.AppName, Globals.DateFrom, Globals.DateTo);
         }
 
         private void ReturnFromDetailedView()

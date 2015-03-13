@@ -17,68 +17,28 @@ namespace AppsTracker.ViewModels
 {
     internal sealed class MainViewModel : HostViewModel, ICommunicator
     {
-        #region Fields
+        private readonly IDataService dataService;
+        private readonly ISqlSettingsService settingsService;
 
-        private IDataService _dataService;
-        private ISqlSettingsService _settingsService;
-
-        private bool _isPopupCalendarOpen = false;
-        private bool _isPopupUsersOpen = false;
-        private bool _isFilterApplied = false;
-
-        private string _userName;
-        private object _toSettings;
-
-        private IEnumerable<Uzer> _uzerCollection;
-
-        private ICommand _openPopupCommand;
-        private ICommand _getLogsByDateCommand;
-        private ICommand _clearFilterCommand;
-        private ICommand _changeLoggingStatusCommand;
-        private ICommand _thisWeekCommand;
-        private ICommand _thisMonthCommand;
-
-        #endregion
-
-        #region Properties
-
+        private bool isPopupCalendarOpen = false;
         public bool IsPopupCalendarOpen
         {
-            get
-            {
-                return _isPopupCalendarOpen;
-            }
-            set
-            {
-                _isPopupCalendarOpen = value;
-                PropertyChanging("IsPopupCalendarOpen");
-            }
+            get { return isPopupCalendarOpen; }
+            set { SetPropertyValue(ref isPopupCalendarOpen, value); }
         }
 
+        private bool isPopupUsersOpen = false;
         public bool IsPopupUsersOpen
         {
-            get
-            {
-                return _isPopupUsersOpen;
-            }
-            set
-            {
-                _isPopupUsersOpen = value;
-                PropertyChanging("IsPopupUsersOpen");
-            }
+            get { return isPopupUsersOpen; }
+            set { SetPropertyValue(ref isPopupUsersOpen, value); }
         }
 
+        private bool isFilterApplied = false;
         public bool IsFilterApplied
         {
-            get
-            {
-                return _isFilterApplied;
-            }
-            set
-            {
-                _isFilterApplied = value;
-                PropertyChanging("IsFilterApplied");
-            }
+            get { return isFilterApplied; }
+            set { SetPropertyValue(ref isFilterApplied, value); }
         }
 
         public override string Title
@@ -86,79 +46,58 @@ namespace AppsTracker.ViewModels
             get { return "apps tracker"; }
         }
 
+        private object toSettings;
         public object ToSettings
         {
-            get
-            {
-                return _toSettings;
-            }
-            set
-            {
-                _toSettings = value;
-                PropertyChanging("ToSettings");
-            }
+            get { return toSettings; }
+            set { SetPropertyValue(ref toSettings, value); }
         }
 
         public decimal DBSize
         {
-            get
-            {
-                return Globals.GetDBSize();
-            }
+            get { return Globals.GetDBSize(); }
         }
 
-        public DateTime Date1
+        public DateTime DateFrom
         {
-            get
-            {
-                return Globals.Date1;
-            }
+            get { return Globals.DateFrom; }
             set
             {
-                if (Globals.Date1 == value)
+                if (Globals.DateFrom == value)
                     return;
                 IsFilterApplied = true;
-                Globals.Date1 = value;
-                PropertyChanging("Date1");
+                Globals.DateFrom = value;
+                PropertyChanging("DateFrom");
                 Mediator.NotifyColleagues(MediatorMessages.RefreshLogs);
             }
         }
 
-        public DateTime Date2
+        public DateTime DateTo
         {
-            get
-            {
-                return Globals.Date2;
-            }
+            get { return Globals.DateTo; }
             set
             {
-                if (Globals.Date2 == value)
+                if (Globals.DateTo == value)
                     return;
                 IsFilterApplied = true;
-                Globals.Date2 = value;
-                PropertyChanging("Date2");
+                Globals.DateTo = value;
+                PropertyChanging("DateTo");
                 Mediator.NotifyColleagues(MediatorMessages.RefreshLogs);
             }
         }
 
+        private string userName;
         public string UserName
         {
-            get
-            {
-                return Globals.SelectedUserName;
-            }
-            set
-            {
-                _userName = value;
-                PropertyChanging("UserName");
-            }
+            get { return Globals.SelectedUserName; }
+            set { SetPropertyValue(ref userName, value); }
         }
 
         public Setting UserSettings
         {
             get
             {
-                return _settingsService.Settings;
+                return settingsService.Settings;
             }
         }
 
@@ -179,60 +118,52 @@ namespace AppsTracker.ViewModels
             }
         }
 
+        private IEnumerable<Uzer> userCollection;
         public IEnumerable<Uzer> UserCollection
         {
             get
             {
-                if (_uzerCollection == null)
+                if (userCollection == null)
                     GetUsers();
-                return _uzerCollection;
+                return userCollection;
             }
         }
 
+
+        private ICommand openPopupCommand;
         public ICommand OpenPopupCommand
         {
-            get
-            {
-                return _openPopupCommand ?? (_openPopupCommand = new DelegateCommand(OpenPopup));
-            }
+            get { return openPopupCommand ?? (openPopupCommand = new DelegateCommand(OpenPopup)); }
         }
 
+        private ICommand getLogsByDateCommand;
         public ICommand GetLogsByDateCommand
         {
-            get
-            {
-                return _getLogsByDateCommand ?? (_getLogsByDateCommand = new DelegateCommand(CloseDatesPopup));
-            }
+            get { return getLogsByDateCommand ?? (getLogsByDateCommand = new DelegateCommand(CloseDatesPopup)); }
         }
 
+        private ICommand clearFilterCommand;
         public ICommand ClearFilterCommand
         {
-            get
-            {
-                return _clearFilterCommand ?? (_clearFilterCommand = new DelegateCommand(ClearFilter));
-            }
+            get { return clearFilterCommand ?? (clearFilterCommand = new DelegateCommand(ClearFilter)); }
         }
 
+        private ICommand changeLoggingStatusCommand;
         public ICommand ChangeLoggingStatusCommand
         {
-            get
-            {
-                return _changeLoggingStatusCommand ?? (_changeLoggingStatusCommand = new DelegateCommand(ChangeLoggingStatus));
-            }
+            get { return changeLoggingStatusCommand ?? (changeLoggingStatusCommand = new DelegateCommand(ChangeLoggingStatus)); }
         }
+
+        private ICommand thisWeekCommand;
         public ICommand ThisWeekCommand
         {
-            get
-            {
-                return _thisWeekCommand ?? (_thisWeekCommand = new DelegateCommand(ThisWeek));
-            }
+            get { return thisWeekCommand ?? (thisWeekCommand = new DelegateCommand(ThisWeek)); }
         }
+
+        private ICommand thisMonthCommand;
         public ICommand ThisMonthCommand
         {
-            get
-            {
-                return _thisMonthCommand ?? (_thisMonthCommand = new DelegateCommand(ThisMonth));
-            }
+            get { return thisMonthCommand ?? (thisMonthCommand = new DelegateCommand(ThisMonth)); }
         }
 
         public IMediator Mediator
@@ -240,14 +171,11 @@ namespace AppsTracker.ViewModels
             get { return MVVM.Mediator.Instance; }
         }
 
-        #endregion
-
-        #region Constructor
 
         public MainViewModel()
         {
-            _dataService = ServiceFactory.Get<IDataService>();
-            _settingsService = ServiceFactory.Get<ISqlSettingsService>();
+            dataService = ServiceFactory.Get<IDataService>();
+            settingsService = ServiceFactory.Get<ISqlSettingsService>();
 
             RegisterChild<DataHostViewModel>(() => new DataHostViewModel());
             RegisterChild<StatisticsHostViewModel>(() => new StatisticsHostViewModel());
@@ -256,14 +184,13 @@ namespace AppsTracker.ViewModels
             SelectedChild = GetChild(typeof(DataHostViewModel));
         }
 
-        #endregion
 
         private void GetUsers()
         {
-            _uzerCollection = _dataService.GetFiltered<Uzer>(u => u.UserID >= 0);
+            userCollection = dataService.GetFiltered<Uzer>(u => u.UserID >= 0);
         }
 
-        #region Command Methods
+
 
         protected override void ChangePage(object parameter)
         {
@@ -275,8 +202,7 @@ namespace AppsTracker.ViewModels
         {
             var settings = UserSettings;
             settings.LoggingEnabled = !settings.LoggingEnabled;
-            _settingsService.SaveChanges(settings);
-            PropertyChanging("UserSettings");
+            settingsService.SaveChanges(settings);
         }
 
         private void OpenPopup(object parameter)
@@ -287,7 +213,7 @@ namespace AppsTracker.ViewModels
                 if (IsPopupUsersOpen) IsPopupUsersOpen = false;
                 else IsPopupUsersOpen = true;
             }
-            if (popup == "Calendar")
+            else if (popup == "Calendar")
             {
                 if (IsPopupCalendarOpen) IsPopupCalendarOpen = false;
                 else IsPopupCalendarOpen = true;
@@ -310,9 +236,9 @@ namespace AppsTracker.ViewModels
         private void ThisMonth()
         {
             DateTime now = DateTime.Now;
-            Date1 = new DateTime(now.Year, now.Month, 1);
+            DateFrom = new DateTime(now.Year, now.Month, 1);
             int lastDay = DateTime.DaysInMonth(now.Year, now.Month);
-            Date2 = new DateTime(now.Year, now.Month, lastDay);
+            DateTo = new DateTime(now.Year, now.Month, lastDay);
         }
         private void ThisWeek()
         {
@@ -320,11 +246,10 @@ namespace AppsTracker.ViewModels
             int delta = DayOfWeek.Monday - now.DayOfWeek;
             if (delta > 0)
                 delta -= 7;
-            Date1 = now.AddDays(delta);
-            Date2 = Date1.AddDays(6);
+            DateFrom = now.AddDays(delta);
+            DateTo = DateFrom.AddDays(6);
         }
 
-        #endregion
 
         protected override void Disposing()
         {

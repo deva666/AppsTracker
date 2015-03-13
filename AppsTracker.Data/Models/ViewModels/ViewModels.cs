@@ -55,7 +55,7 @@ namespace AppsTracker.Data.Models
         public List<MostUsedAppModel> DailyUsedAppsCollection { get; set; }
     }
 
-    public struct UsageTypeModel
+    public struct UsageSummary
     {
         public string UsageType { get; set; }
         public double Time { get; set; }
@@ -65,19 +65,19 @@ namespace AppsTracker.Data.Models
     {
         public string Date { get; set; }
         public DateTime DateInstance { get; set; }
-        public ObservableCollection<UsageTypeModel> DailyUsageTypeCollection { get; set; }
+        public ObservableCollection<UsageSummary> DailyUsageTypeCollection { get; set; }
     }
 
-    public struct DailyUsageTypeSeries
+    public struct UsageByTime
     {
         public string Time { get; set; }
-        public ObservableCollection<UsageTypeModel> DailyUsageTypeCollection { get; set; }
+        public ObservableCollection<UsageSummary> UsageSummaryCollection { get; set; }
     }
 
     public struct DailyTopWindowSeries
     {
         public string Date { get; set; }
-        public ObservableCollection<TopWindowsModel> DailyUsageTypeCollection { get; set; }
+        public ObservableCollection<WindowSummary> DailyUsageTypeCollection { get; set; }
     }
 
     public struct DailyBlockedAppModel

@@ -55,7 +55,7 @@ namespace AppsTracker.Tests.Core.ViewModels
         [TestMethod]
         public void TestChangeFirstDate()
         {
-            _mainVM.Date1 = DateTime.Now.AddDays(19);
+            _mainVM.DateFrom = DateTime.Now.AddDays(19);
             Assert.IsTrue(_mainVM.IsFilterApplied, "Date filter not set");
             Assert.IsTrue(_refreshCallbackCalled, "Set first date mediator callback failed");
             _refreshCallbackCalled = false;
@@ -64,7 +64,7 @@ namespace AppsTracker.Tests.Core.ViewModels
         [TestMethod]
         public void TestChangeSecondDate()
         {
-            _mainVM.Date2 = DateTime.Now.AddDays(24);
+            _mainVM.DateTo = DateTime.Now.AddDays(24);
             Assert.IsTrue(_mainVM.IsFilterApplied, "Date filter not set");
             Assert.IsTrue(_refreshCallbackCalled, "Set second date mediator callback failed");
             _refreshCallbackCalled = false;

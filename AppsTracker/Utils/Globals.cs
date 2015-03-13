@@ -21,8 +21,8 @@ namespace AppsTracker
     {
         private static bool _isLastDateFiltered;
 
-        private static DateTime _date1;
-        private static DateTime _date2;
+        private static DateTime _dateFrom;
+        private static DateTime _dateTo;
 
         public static bool DBSizeOperational { get; private set; }
         public static int UserID { get; private set; }
@@ -32,31 +32,31 @@ namespace AppsTracker
         public static string SelectedUserName { get; private set; }
         public static Uzer SelectedUser { get; private set; }
 
-        public static DateTime Date1
+        public static DateTime DateFrom
         {
             get
             {
-                return _date1;
+                return _dateFrom;
             }
             set
             {
-                _date1 = value;
+                _dateFrom = value;
             }
         }
 
-        public static DateTime Date2
+        public static DateTime DateTo
         {
             get
             {
                 if (_isLastDateFiltered)
-                    return _date2;
+                    return _dateTo;
                 else
                     return DateTime.Now;
             }
             set
             {
                 _isLastDateFiltered = true;
-                _date2 = value;
+                _dateTo = value;
             }
         }
 
@@ -68,13 +68,13 @@ namespace AppsTracker
             UserName = uzer.Name;
             SelectedUserID = UserID;
             SelectedUserName = UserName;
-            _date1 = GetFirstDate();
+            _dateFrom = GetFirstDate();
             UsageID = usageID;
         }
 
         public static void ClearDateFilter()
         {
-            _date1 = GetFirstDate();
+            _dateFrom = GetFirstDate();
             _isLastDateFiltered = false;
         }
 

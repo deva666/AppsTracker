@@ -15,13 +15,13 @@ namespace AppsTracker.Data.Service
 {
     public interface IChartService : IBaseService, IDisposable
     {
-        IEnumerable<TopAppsModel> GetLogTopApps(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo);
-        IEnumerable<TopWindowsModel> GetLogTopWindows(int userID, string appName, IEnumerable<DateTime> dates);
+        IEnumerable<AppSummary> GetLogTopApps(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo);
+        IEnumerable<WindowSummary> GetLogTopWindows(int userID, string appName, IEnumerable<DateTime> dates);
         IEnumerable<DailyWindowSeries> GetDailyWindowSeries(int userID, string appName, IEnumerable<string> selectedWindows, IEnumerable<DateTime> days);
-        IEnumerable<DayViewModel> GetDayView(int userID, DateTime dateFrom);
-        IEnumerable<TopAppsModel> GetDayTopApps(int userID, DateTime dateFrom);
-        IEnumerable<TopWindowsModel> GetDayTopWindows(int userID, string appName, DateTime dateFrom);
-        IEnumerable<DailyUsageTypeSeries> GetDailySeries(int userID, DateTime dateFrom);
+        IEnumerable<LogSummary> GetLogSummary(int userID, DateTime dateFrom);
+        IEnumerable<AppSummary> GetAppsSummary(int userID, DateTime dateFrom);
+        IEnumerable<WindowSummary> GetWindowsSummary(int userID, string appName, DateTime dateFrom);
+        IEnumerable<UsageByTime> GetUsageSummary(int userID, DateTime dateFrom);
         IEnumerable<MostUsedAppModel> GetMostUsedApps(int userID, DateTime dateFrom, DateTime dateTo);
         IEnumerable<DailyAppModel> GetSingleMostUsedApp(int userID, string appName, DateTime dateFrom, DateTime dateTo);
         IEnumerable<KeystrokeModel> GetKeystrokes(int userID, DateTime dateFrom, DateTime dateTo);
@@ -32,6 +32,6 @@ namespace AppsTracker.Data.Service
         IEnumerable<AllUsersModel> GetAllUsers(DateTime dateFrom, DateTime dateTo);
         IEnumerable<UsageTypeSeries> GetUsageSeries(string username, DateTime dateFrom, DateTime dateTo);
         Tuple<string, string, string> GetDayInfo(int userID, DateTime dateFrom);
-        IEnumerable<CategoryModel> GetCategoriesForDate(int userID, DateTime dateFrom);
+        IEnumerable<CategoryModel> GetCategories(int userID, DateTime dateFrom);
     }
 }

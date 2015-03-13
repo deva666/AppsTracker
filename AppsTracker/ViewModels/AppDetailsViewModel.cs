@@ -25,12 +25,12 @@ namespace AppsTracker.ViewModels
         private readonly IChartService chartService;
 
         private readonly AsyncProperty<IEnumerable<Aplication>> aplicationList;
-        private readonly AsyncProperty<IEnumerable<TopAppsModel>> topAppsList;
-        private readonly AsyncProperty<IEnumerable<TopWindowsModel>> topWindowsList;
+        private readonly AsyncProperty<IEnumerable<AppSummary>> topAppsList;
+        private readonly AsyncProperty<IEnumerable<WindowSummary>> topWindowsList;
         private readonly AsyncProperty<IEnumerable<DailyWindowSeries>> chartList;
 
 
-        TopAppsModel topAppsOverall;
+        AppSummary topAppsOverall;
 
         List<MenuItem> allUsersList;
 
@@ -68,14 +68,14 @@ namespace AppsTracker.ViewModels
                 return aplicationList;
             }
         }
-        public AsyncProperty<IEnumerable<TopAppsModel>> TopAppsList
+        public AsyncProperty<IEnumerable<AppSummary>> TopAppsList
         {
             get
             {
                 return topAppsList;
             }
         }
-        public AsyncProperty<IEnumerable<TopWindowsModel>> TopWindowsList
+        public AsyncProperty<IEnumerable<WindowSummary>> TopWindowsList
         {
             get
             {
@@ -90,7 +90,7 @@ namespace AppsTracker.ViewModels
             }
         }
 
-        public TopAppsModel TopAppsOverall
+        public AppSummary TopAppsOverall
         {
             get
             {
@@ -156,8 +156,8 @@ namespace AppsTracker.ViewModels
             chartService = ServiceFactory.Get<IChartService>();
 
             aplicationList = new AsyncProperty<IEnumerable<Aplication>>(GetContent, this);
-            topAppsList = new AsyncProperty<IEnumerable<TopAppsModel>>(GetTopApps, this);
-            topWindowsList = new AsyncProperty<IEnumerable<TopWindowsModel>>(GetTopWindows, this);
+            topAppsList = new AsyncProperty<IEnumerable<AppSummary>>(GetTopApps, this);
+            topWindowsList = new AsyncProperty<IEnumerable<WindowSummary>>(GetTopWindows, this);
             chartList = new AsyncProperty<IEnumerable<DailyWindowSeries>>(GetChartContent, this);
 
 
@@ -174,22 +174,22 @@ namespace AppsTracker.ViewModels
         private IEnumerable<Aplication> GetContent()
         {
             return dataService.GetFiltered<Aplication>(a => a.User.UserID == Globals.SelectedUserID
-                                                                && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= Globals.Date1).Any()
-                                                                && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= Globals.Date2).Any())
+                                                                && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= Globals.DateFrom).Any()
+                                                                && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= Globals.DateTo).Any())
                                                            .ToList()
                                                            .Distinct();
         }
 
-        private IEnumerable<TopAppsModel> GetTopApps()
+        private IEnumerable<AppSummary> GetTopApps()
         {
             var app = SelectedApp;
             if (app == null)
                 return null;
 
-            return chartService.GetLogTopApps(Globals.SelectedUserID, app.ApplicationID, app.Name, Globals.Date1, Globals.Date2);
+            return chartService.GetLogTopApps(Globals.SelectedUserID, app.ApplicationID, app.Name, Globals.DateFrom, Globals.DateTo);
         }
 
-        private IEnumerable<TopWindowsModel> GetTopWindows()
+        private IEnumerable<WindowSummary> GetTopWindows()
         {
             var topApps = TopAppsOverall;
             if (TopAppsList.Result == null || topApps == null)

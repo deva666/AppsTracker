@@ -111,7 +111,7 @@ namespace AppsTracker.Pages.ViewModels
 
         private IEnumerable<KeystrokeModel> GetContent()
         {
-            return _chartService.GetKeystrokes(Globals.SelectedUserID, Globals.Date1, Globals.Date2);
+            return _chartService.GetKeystrokes(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
         }
 
         IEnumerable<DailyKeystrokeModel> GetSubContent()
@@ -120,7 +120,7 @@ namespace AppsTracker.Pages.ViewModels
             if (model == null)
                 return null;
 
-            return _chartService.GetKeystrokesByApp(Globals.SelectedUserID, model.AppName, Globals.Date1, Globals.Date2);
+            return _chartService.GetKeystrokesByApp(Globals.SelectedUserID, model.AppName, Globals.DateFrom, Globals.DateTo);
         }
 
         private void ReturnFromDetailedView()

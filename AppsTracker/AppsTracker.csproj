@@ -279,7 +279,7 @@
     <Compile Include="Utils\ValueConverters.cs" />
     <Compile Include="Utils\WinAPI.cs" />
     <Compile Include="ViewModels\DataHostViewModel.cs" />
-    <Compile Include="ViewModels\Data_dayViewModel.cs" />
+    <Compile Include="ViewModels\DaySummaryViewModel.cs" />
     <Compile Include="ViewModels\ScreenshotViewerViewModel.cs" />
     <Compile Include="ViewModels\SettingsGeneralViewModel.cs" />
     <Compile Include="ViewModels\SettingsLoggingViewModel.cs" />
@@ -291,14 +291,14 @@
     <Compile Include="ViewModels\Statistics_keystrokesViewModel.cs" />
     <Compile Include="ViewModels\Statistics_screenshotsViewModel.cs" />
     <Compile Include="ViewModels\Statistics_usersViewModel.cs" />
-    <Compile Include="Views\AppDetailedView.xaml.cs">
-      <DependentUpon>AppDetailedView.xaml</DependentUpon>
+    <Compile Include="Views\AppOverView.xaml.cs">
+      <DependentUpon>AppOverView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DataHostView.xaml.cs">
       <DependentUpon>DataHostView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Data_dayView.xaml.cs">
-      <DependentUpon>Data_dayView.xaml</DependentUpon>
+    <Compile Include="Views\DaySummaryView.xaml.cs">
+      <DependentUpon>DaySummaryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsHostView.xaml.cs">
       <DependentUpon>SettingsHostView.xaml</DependentUpon>
@@ -351,7 +351,7 @@
     <Compile Include="MVVM\WeakAction.cs" />
     <Compile Include="ViewModels\AppDetailsViewModel.cs" />
     <Compile Include="ViewModels\KeystrokesViewModel.cs" />
-    <Compile Include="ViewModels\Data_screenshotsViewModel.cs" />
+    <Compile Include="ViewModels\ScreenshotsViewModel.cs" />
     <Compile Include="ViewModels\SettingsHostViewModel.cs" />
     <Compile Include="ViewModels\Settings_generalViewModel.cs" />
     <Compile Include="ViewModels\Settings_licenseViewModel.cs" />
@@ -567,7 +567,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AppDetailedView.xaml">
+    <Page Include="Views\AppOverView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -623,7 +623,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Data_dayView.xaml">
+    <Page Include="Views\DaySummaryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

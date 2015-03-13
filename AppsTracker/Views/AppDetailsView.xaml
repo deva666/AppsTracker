@@ -135,7 +135,7 @@
                                       Grid.Column="1"
                                       Grid.Row="1"
                                       Grid.ColumnSpan="3">
-            <views:AppDetailedView x:Name="AppDetailedView" />
+            <views:AppOverView x:Name="AppDetailedView" />
         </controls:FaderContentControl>
 
         <controls:progressBar Visibility="{Binding Working, Converter={StaticResource convertVisibility}}"

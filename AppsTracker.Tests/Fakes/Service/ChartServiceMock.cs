@@ -15,16 +15,16 @@ namespace AppsTracker.Tests.Fakes.Service
 {
     public class ChartServiceMock : IChartService
     {
-        public IEnumerable<TopAppsModel> GetLogTopApps(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<AppSummary> GetLogTopApps(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo)
         {
             System.Threading.Thread.Sleep(500);
-            return new List<TopAppsModel>();
+            return new List<AppSummary>();
         }
 
-        public IEnumerable<TopWindowsModel> GetLogTopWindows(int userID, string appName, IEnumerable<DateTime> dates)
+        public IEnumerable<WindowSummary> GetLogTopWindows(int userID, string appName, IEnumerable<DateTime> dates)
         {
             System.Threading.Thread.Sleep(500);
-            return new List<TopWindowsModel>();
+            return new List<WindowSummary>();
         }
 
         public IEnumerable<DailyWindowSeries> GetDailyWindowSeries(int userID, string appName, IEnumerable<string> selectedWindows, IEnumerable<DateTime> days)
@@ -33,28 +33,28 @@ namespace AppsTracker.Tests.Fakes.Service
             return new List<DailyWindowSeries>();
         }
 
-        public IEnumerable<DayViewModel> GetDayView(int userID, DateTime dateFrom)
+        public IEnumerable<LogSummary> GetLogSummary(int userID, DateTime dateFrom)
         {
             System.Threading.Thread.Sleep(500);
-            return new List<DayViewModel>();
+            return new List<LogSummary>();
         }
 
-        public IEnumerable<TopAppsModel> GetDayTopApps(int userID, DateTime dateFrom)
+        public IEnumerable<AppSummary> GetAppsSummary(int userID, DateTime dateFrom)
         {
             System.Threading.Thread.Sleep(500);
-            return new List<TopAppsModel>();
+            return new List<AppSummary>();
         }
 
-        public IEnumerable<TopWindowsModel> GetDayTopWindows(int userID, string appName, DateTime dateFrom)
+        public IEnumerable<WindowSummary> GetWindowsSummary(int userID, string appName, DateTime dateFrom)
         {
             System.Threading.Thread.Sleep(500);
-            return new List<TopWindowsModel>();
+            return new List<WindowSummary>();
         }
 
-        public IEnumerable<DailyUsageTypeSeries> GetDailySeries(int userID, DateTime dateFrom)
+        public IEnumerable<UsageByTime> GetUsageSummary(int userId , DateTime dateFrom)
         {
             System.Threading.Thread.Sleep(500);
-            return new List<DailyUsageTypeSeries>();
+            return new List<UsageByTime>();
         }
 
         public IEnumerable<MostUsedAppModel> GetMostUsedApps(int userID, DateTime dateFrom, DateTime dateTo)
@@ -117,7 +117,7 @@ namespace AppsTracker.Tests.Fakes.Service
             return new Tuple<string, string, string>("", "", "");
         }
 
-        public IEnumerable<CategoryModel> GetCategoriesForDate(int userID, DateTime dateFrom)
+        public IEnumerable<CategoryModel> GetCategories(int userID, DateTime dateFrom)
         {
             System.Threading.Thread.Sleep(500);
             return new List<CategoryModel>();

@@ -22,17 +22,10 @@ namespace AppsTracker.ViewModels
             this.RegisterChild<AppDetailsViewModel>(() => new AppDetailsViewModel());
             this.RegisterChild<KeystrokesViewModel>(() => new KeystrokesViewModel());
             this.RegisterChild<ScreenshotsViewModel>(() => new ScreenshotsViewModel());
-            this.RegisterChild<Data_dayViewModel>(() => new Data_dayViewModel());
+            this.RegisterChild<DaySummaryViewModel>(() => new DaySummaryViewModel());
 
             this.SelectedChild = GetChild(typeof(AppDetailsViewModel));
         }
 
-        protected override void Disposing()
-        {
-            if (_selectedChild != null)
-                _selectedChild.Dispose();
-            _selectedChild = null;
-            base.Disposing();
-        }
     }
 }
