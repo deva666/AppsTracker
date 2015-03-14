@@ -10,59 +10,45 @@ namespace AppsTracker.ViewModels
             get { return "Logging"; }
         }
 
-        private bool _popupidleTimerIsOpen = false;
+        private bool popupidleTimerIsOpen = false;
+
         public bool PopupIdleTimerIsOpen
         {
-            get
-            {
-                return _popupidleTimerIsOpen;
-            }
-            set
-            {
-                _popupidleTimerIsOpen = value;
-                PropertyChanging("PopupIdleTimerIsOpen");
-            }
+            get { return popupidleTimerIsOpen; }
+            set { SetPropertyValue(ref popupidleTimerIsOpen, value); }
         }
 
-        private bool _popupOldLogsIsOpen = false;
+
+        private bool popupOldLogsIsOpen = false;
+
         public bool PopupOldLogsIsOpen
         {
-            get
-            {
-                return _popupOldLogsIsOpen;
-            }
-            set
-            {
-                _popupOldLogsIsOpen = value;
-                PropertyChanging("PopupOldLogsIsOpen");
-            }
+            get { return popupOldLogsIsOpen; }
+            set { SetPropertyValue(ref popupOldLogsIsOpen, value); }
         }
 
-        private ICommand _changeIdleTimerCommand;
+
+        private ICommand changeIdleTimerCommand;
+
         public ICommand ChangeIdleTimerCommand
         {
-            get
-            {
-                return _changeIdleTimerCommand ?? (_changeIdleTimerCommand = new DelegateCommand(ChangeIdleTimer));
-            }
+            get { return changeIdleTimerCommand ?? (changeIdleTimerCommand = new DelegateCommand(ChangeIdleTimer)); }
         }
 
-        private ICommand _changeOldLogsDaysCommand;
+
+        private ICommand changeOldLogsDaysCommand;
+
         public ICommand ChangeOldLogsDaysCommand
         {
-            get
-            {
-                return _changeOldLogsDaysCommand ?? (_changeOldLogsDaysCommand = new DelegateCommand(ChangeOldLogsDays));
-            }
+            get { return changeOldLogsDaysCommand ?? (changeOldLogsDaysCommand = new DelegateCommand(ChangeOldLogsDays)); }
         }
 
-        private ICommand _showPopUpCommand;
+
+        private ICommand showPopUpCommand;
+
         public ICommand ShowPopupCommand
         {
-            get
-            {
-                return _showPopUpCommand ?? (_showPopUpCommand = new DelegateCommand(ShowPopUp));
-            }
+            get { return showPopUpCommand ?? (showPopUpCommand = new DelegateCommand(ShowPopUp)); }
         }
 
         public SettingsLoggingViewModel()
@@ -101,10 +87,10 @@ namespace AppsTracker.ViewModels
             string popup = (string)popupSource;
 
             if (popup == "OldLogs")
-                PopupOldLogsIsOpen = !_popupOldLogsIsOpen;
+                PopupOldLogsIsOpen = !popupOldLogsIsOpen;
 
             else if (popup == "IdleTimer")
-                PopupIdleTimerIsOpen = !_popupidleTimerIsOpen;
+                PopupIdleTimerIsOpen = !popupidleTimerIsOpen;
 
         }
     }

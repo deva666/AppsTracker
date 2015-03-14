@@ -16,34 +16,25 @@ namespace AppsTracker.ViewModels
         {
             get { return "GENERAL"; }
         }
-        private ICommand _showAboutWindowCommand;
+        private ICommand showAboutWindowCommand;
         public ICommand ShowAboutWindowCommand
         {
-            get
-            {
-                return _showAboutWindowCommand ?? (_showAboutWindowCommand = new DelegateCommand(ShowAboutWindow));
-            }
+            get { return showAboutWindowCommand ?? (showAboutWindowCommand = new DelegateCommand(ShowAboutWindow)); }
         }
 
-        private ICommand _setStartupCommand;
+        private ICommand setStartupCommand;
         public ICommand SetStartupCommand
         {
-            get
-            {
-                return _setStartupCommand ?? (_setStartupCommand = new DelegateCommand(SetStartup));
-            }
+            get { return setStartupCommand ?? (setStartupCommand = new DelegateCommand(SetStartup)); }
         }
 
-        private ICommand _changeThemeCommand;
+        private ICommand changeThemeCommand;
         public ICommand ChangeThemeCommand
         {
-            get
-            {
-                return _changeThemeCommand == null ? _changeThemeCommand = new DelegateCommand(ChangeTheme) : _changeThemeCommand;
-            }
+            get { return changeThemeCommand == null ? changeThemeCommand = new DelegateCommand(ChangeTheme) : changeThemeCommand; }
         }
 
-        public SettingsGeneralViewModel() : base(){}
+        public SettingsGeneralViewModel() : base() { }
 
         private void ShowAboutWindow()
         {
@@ -82,7 +73,7 @@ namespace AppsTracker.ViewModels
             if ((parameter as string) == "Light")
                 Settings.LightTheme = true;
             else if ((parameter as string) == "Dark")
-                Settings.LightTheme = false;            
+                Settings.LightTheme = false;
         }
     }
 }

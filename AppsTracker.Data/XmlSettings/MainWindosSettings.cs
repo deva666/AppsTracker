@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AppsTracker.Data.XmlSettings
 {
-    public class MainWindowSettings : SettingsBase
+    public class MainWindowSettings : XmlSettingsBase
     {
         [SettingsNode]
         public double Left { get; set; }

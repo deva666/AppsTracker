@@ -12,23 +12,23 @@ namespace AppsTracker.Logging
 {
     internal sealed class LazyInit<T> : IDisposable where T : class,IDisposable
     {
-        private bool _enabled = false;
+        private bool enabled = false;
         private readonly object @lock = new object();
 
         public bool Enabled
         {
-            get { return _enabled; }
+            get { return enabled; }
             set
             {
-                _enabled = value;
-                if (_enabled)
+                enabled = value;
+                if (enabled)
                     LazyInitValue();
                 else
                     DisposeComponent();
             }
         }
 
-        private T _component;
+        private T component;
         public T Component
         {
             get
@@ -37,26 +37,26 @@ namespace AppsTracker.Logging
             }
         }
 
-        private Func<T> _getter;
-        private Action<T> _onInit;
-        private Action<T> _onDispose;
+        private Func<T> getter;
+        private Action<T> onInit;
+        private Action<T> onDispose;
 
         public LazyInit(Func<T> getter)
         {
-            _getter = getter;
+            this.getter = getter;
         }
 
         public LazyInit(Func<T> getter, Action<T> onInit, Action<T> onDispose)
             : this(getter)
         {
-            _onInit = onInit;
-            _onDispose = onDispose;
+            this.onInit = onInit;
+            this.onDispose = onDispose;
         }
 
         public void CallOn(Action<T> action)
         {
-            if (_component != null)
-                action(_component);
+            if (component != null)
+                action(component);
         }
 
         public void Dispose()
@@ -66,31 +66,31 @@ namespace AppsTracker.Logging
 
         private T LazyInitValue()
         {
-            if (_component == null)
+            if (component == null)
             {
                 lock (@lock)
                 {
-                    if (_component == null)
+                    if (component == null)
                     {
-                        _component = _getter();
-                        if (_onInit != null)
-                            _onInit(_component);
+                        component = getter();
+                        if (onInit != null)
+                            onInit(component);
                     }
                 }
             }
-            return _component;
+            return component;
         }
 
         private void DisposeComponent()
         {
             lock (@lock)
             {
-                if (_component != null)
+                if (component != null)
                 {
-                    if (_onDispose != null)
-                        _onDispose(_component);
-                    _component.Dispose();
-                    _component = null;
+                    if (onDispose != null)
+                        onDispose(component);
+                    component.Dispose();
+                    component = null;
                 }
 
             }

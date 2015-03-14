@@ -15,7 +15,7 @@ using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 
 
-namespace AppsTracker.Pages.ViewModels
+namespace AppsTracker.ViewModels
 {
     internal sealed class Statistics_appUsageViewModel : ViewModelBase, ICommunicator
     {

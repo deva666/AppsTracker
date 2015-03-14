@@ -1105,7 +1105,7 @@ namespace AppsTracker
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             DateTime trialStart = (DateTime)value;
-            return string.Format("You are running trial version of this app. {0}Trial started on {1}{2}{3} days left.{4}To remove this limitation please upgrade to licensed version.", Environment.NewLine, trialStart.ToShortDateString(), Environment.NewLine, 15 - (DateTime.Now - trialStart).Days, Environment.NewLine);
+            return string.Format("You are running trial version of this app. {0}Trial started on {1}{2}{3} selectedDates left.{4}To remove this limitation please upgrade to licensed version.", Environment.NewLine, trialStart.ToShortDateString(), Environment.NewLine, 15 - (DateTime.Now - trialStart).Days, Environment.NewLine);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

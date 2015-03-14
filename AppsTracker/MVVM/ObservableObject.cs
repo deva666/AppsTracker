@@ -6,9 +6,8 @@
  */
 #endregion
 
-using System;
 using System.ComponentModel;
-using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace AppsTracker.MVVM
@@ -22,23 +21,14 @@ namespace AppsTracker.MVVM
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected void ClearPropertyChangedEventHandlers()
+        protected void SetPropertyValue<T>(ref T target, T value, [CallerMemberName] string caller = null)
         {
-            if (PropertyChanged != null)
-            {
-                var delegateBuffer = PropertyChanged.GetInvocationList();
-                foreach (PropertyChangedEventHandler handler in delegateBuffer)
-                {
-                    PropertyChanged -= handler;
-                }
-            }
-            this.PropertyChanged = null;
+            if (object.Equals(target, value))
+                return;
+            target = value;
+            PropertyChanging(caller);
         }
 
-        #region INotifyPropertyChanged Members
-
         public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
     }
 }

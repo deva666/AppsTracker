@@ -19,7 +19,6 @@ namespace AppsTracker.Controllers
         {
             components.Add(new WindowLogger(settings));
             components.Add(new UsageLogger(settings));
-            components.Add(new AppBlockLogger());
             components.Add(new LogCleaner(settings));
         }
 

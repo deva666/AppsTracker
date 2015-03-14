@@ -18,20 +18,20 @@ namespace AppsTracker.Tests.Core.ViewModels
         {
             var vm = new AppDetailsViewModel();
 
-            var apps = vm.AplicationList.Result;
-            var topApps = vm.TopAppsList.Result;
-            var topWindows = vm.TopWindowsList.Result;
-            var chartList = vm.ChartList.Result;
+            var apps = vm.AppList.Result;
+            var topApps = vm.AppSummaryList.Result;
+            var topWindows = vm.WindowSummaryList.Result;
+            var chartList = vm.WindowDurationList.Result;
 
             while (true)
             {
-                if (vm.AplicationList.Task.Status == TaskStatus.RanToCompletion)
+                if (vm.AppList.Task.Status == TaskStatus.RanToCompletion)
                     break;
             }
 
             System.Threading.Thread.Sleep(100);
 
-            Assert.IsNotNull(vm.AplicationList.Result, "App list not loaded");
+            Assert.IsNotNull(vm.AppList.Result, "App list not loaded");
         }
     }
 }

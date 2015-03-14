@@ -886,9 +886,9 @@
 //            string daysString = parameter as string;
 //            if (daysString != null)
 //            {
-//                short days;
-//                short.TryParse(daysString, out days);
-//                UserSettings.OldLogDeleteDays = days;
+//                short selectedDates;
+//                short.TryParse(daysString, out selectedDates);
+//                UserSettings.OldLogDeleteDays = selectedDates;
 //            }
 //            PopupOldLogsIsOpen = false;
 //        }

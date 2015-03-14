@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AppsTracker.Data.XmlSettings
 {
-    public sealed class DaysViewSettings : SettingsBase
+    public sealed class DaysViewSettings : XmlSettingsBase
     {
         [SettingsNode]
         public double SeparatorPosition { get; set; }

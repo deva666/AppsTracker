@@ -15,25 +15,21 @@ namespace AppsTracker.MVVM
 {
     internal abstract class HostViewModel : ViewModelBase
     {
-        private Dictionary<Type, ViewModelResolver> _childrenMap = new Dictionary<Type, ViewModelResolver>();
+        private Dictionary<Type, ViewModelResolver> childrenMap = new Dictionary<Type, ViewModelResolver>();
 
-        protected ViewModelBase _selectedChild;
+        protected ViewModelBase selectedChild;
 
-        protected ICommand _changePageCommand;
+        protected ICommand changePageCommand;
 
         public ViewModelBase SelectedChild
         {
-            get
-            {
-                return _selectedChild;
-            }
+            get { return selectedChild; }
             set
             {
-                if (_selectedChild != null && _selectedChild.Title == value.Title)
+                if (selectedChild != null && selectedChild.Title == value.Title)
                     return;
 
-                _selectedChild = value;
-                PropertyChanging("SelectedChild");
+                SetPropertyValue(ref selectedChild, value);
             }
         }
 
@@ -41,7 +37,7 @@ namespace AppsTracker.MVVM
         {
             get
             {
-                return _changePageCommand ?? (_changePageCommand = new DelegateCommand(ChangePage));
+                return changePageCommand ?? (changePageCommand = new DelegateCommand(ChangePage));
             }
         }
 
@@ -52,20 +48,20 @@ namespace AppsTracker.MVVM
 
         protected void RegisterChild<T>(Func<T> getter) where T : ViewModelBase
         {
-            if (_childrenMap.ContainsKey(typeof(T)))
+            if (childrenMap.ContainsKey(typeof(T)))
                 return;
             Ensure.NotNull(getter);
 
             var resolver = new ViewModelResolver(getter);
-            _childrenMap.Add(typeof(T), resolver);
+            childrenMap.Add(typeof(T), resolver);
         }
 
         protected ViewModelBase GetChild(Type type)
         {
             Ensure.NotNull(type);
-            Ensure.Condition<InvalidOperationException>(_childrenMap.ContainsKey(type) == true, string.Format("Can't resolve {0} type!", type));
+            Ensure.Condition<InvalidOperationException>(childrenMap.ContainsKey(type) == true, string.Format("Can't resolve {0} type!", type));
 
-            var resolver = _childrenMap[type];
+            var resolver = childrenMap[type];
             ViewModelBase viewModel = null;
             resolver.Reference.TryGetTarget(out viewModel);
             if (viewModel == null)

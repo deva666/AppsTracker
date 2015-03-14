@@ -7,7 +7,6 @@
 #endregion
 
 using AppsTracker.MVVM;
-using AppsTracker.Pages.ViewModels;
 
 namespace AppsTracker.ViewModels
 {

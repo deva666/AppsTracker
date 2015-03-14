@@ -15,11 +15,11 @@ namespace AppsTracker.Data.Service
 {
     public interface IChartService : IBaseService, IDisposable
     {
-        IEnumerable<AppSummary> GetLogTopApps(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo);
-        IEnumerable<WindowSummary> GetLogTopWindows(int userID, string appName, IEnumerable<DateTime> dates);
-        IEnumerable<DailyWindowSeries> GetDailyWindowSeries(int userID, string appName, IEnumerable<string> selectedWindows, IEnumerable<DateTime> days);
+        IEnumerable<AppSummary> GetAppSummary(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo);
+        IEnumerable<WindowSummary> GetWindowsSummary(int userID, string appName, IEnumerable<DateTime> dates);
+        IEnumerable<WindowDurationOverview> GetWindowDurationOverview(int userID, string appName, IEnumerable<string> selectedWindows, IEnumerable<DateTime> days);
         IEnumerable<LogSummary> GetLogSummary(int userID, DateTime dateFrom);
-        IEnumerable<AppSummary> GetAppsSummary(int userID, DateTime dateFrom);
+        IEnumerable<AppSummary> GetAllAppSummaries(int userID, DateTime dateFrom);
         IEnumerable<WindowSummary> GetWindowsSummary(int userID, string appName, DateTime dateFrom);
         IEnumerable<UsageByTime> GetUsageSummary(int userID, DateTime dateFrom);
         IEnumerable<MostUsedAppModel> GetMostUsedApps(int userID, DateTime dateFrom, DateTime dateTo);

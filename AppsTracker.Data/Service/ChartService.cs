@@ -6,16 +6,16 @@
  */
 #endregion
 
-using AppsTracker.Data.Models;
-using AppsTracker.Data.Utils;
-using AppsTracker.Data.Db;
-
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+
+using AppsTracker.Data.Db;
+using AppsTracker.Data.Models;
+using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Data.Service
 {
@@ -25,7 +25,7 @@ namespace AppsTracker.Data.Service
 
         private string _cachedLogsForApp;
 
-        public IEnumerable<AppSummary> GetLogTopApps(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<AppSummary> GetAppSummary(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo)
         {
             using (var context = new AppsEntities())
             {
@@ -83,7 +83,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<WindowSummary> GetLogTopWindows(int userID, string appName, IEnumerable<DateTime> days)
+        public IEnumerable<WindowSummary> GetWindowsSummary(int userID, string appName, IEnumerable<DateTime> days)
         {
 
             if (_cachedLogs == null || (_cachedLogs != null && string.Equals(_cachedLogsForApp, appName) == false))
@@ -123,7 +123,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<DailyWindowSeries> GetDailyWindowSeries(int userID, string appName, IEnumerable<string> selectedWindows, IEnumerable<DateTime> days)
+        public IEnumerable<WindowDurationOverview> GetWindowDurationOverview(int userID, string appName, IEnumerable<string> selectedWindows, IEnumerable<DateTime> days)
         {
 
             if (selectedWindows.Count() == 0)
@@ -138,7 +138,7 @@ namespace AppsTracker.Data.Service
 
             var totalFiltered = logs.Where(l => days.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)) && selectedWindows.Contains(l.Window.Title));
 
-            List<DailyWindowSeries> result = new List<DailyWindowSeries>();
+            List<WindowDurationOverview> result = new List<WindowDurationOverview>();
 
             var projected = from l in totalFiltered
                             group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day } into grp
@@ -148,17 +148,17 @@ namespace AppsTracker.Data.Service
             {
                 var projected2 = grp.GroupBy(g => g.Window.Title);
                 var date = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day);
-                DailyWindowSeries series = new DailyWindowSeries()
+                WindowDurationOverview series = new WindowDurationOverview()
                 {
                     Date = date.ToShortDateString() + " " + date.DayOfWeek.ToString()
                 };
-                List<DailyWindowDurationModel> modelList = new List<DailyWindowDurationModel>();
+                List<WindowDuration> modelList = new List<WindowDuration>();
                 foreach (var grp2 in projected2)
                 {
-                    DailyWindowDurationModel model = new DailyWindowDurationModel() { Title = grp2.Key, Duration = Math.Round(new TimeSpan(grp2.Sum(l => l.Duration)).TotalMinutes, 2) };
+                    WindowDuration model = new WindowDuration() { Title = grp2.Key, Duration = Math.Round(new TimeSpan(grp2.Sum(l => l.Duration)).TotalMinutes, 2) };
                     modelList.Add(model);
                 }
-                series.DailyWindowCollection = modelList;
+                series.DurationCollection = modelList;
                 result.Add(series);
             }
 
@@ -221,7 +221,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<AppSummary> GetAppsSummary(int userID, DateTime dateFrom)
+        public IEnumerable<AppSummary> GetAllAppSummaries(int userID, DateTime dateFrom)
         {
             using (var context = new AppsEntities())
             {
@@ -558,7 +558,7 @@ namespace AppsTracker.Data.Service
                 }
 
                 foreach (var item in dailyUsedAppsSeries)
-                    item.DailyUsedAppsCollection.Sort((x, y) => x.Duration.CompareTo(y.Duration)); // = item.DailyUsedAppsCollection.OrderBy(d => d.Duration).ToList();
+                    item.DailyUsedAppsCollection.Sort((x, y) => x.Duration.CompareTo(y.Duration)); 
 
                 return dailyUsedAppsSeries;
             }

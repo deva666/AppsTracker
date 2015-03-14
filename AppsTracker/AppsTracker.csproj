@@ -255,8 +255,6 @@
     <Compile Include="Hooks\EventArgs\WinEventArgs.cs" />
     <Compile Include="Hooks\IHook.cs" />
     <Compile Include="Logging\LogCleaner.cs" />
-    <Compile Include="Logging\Helpers\AppBlocker.cs" />
-    <Compile Include="Logging\BlockLogger.cs" />
     <Compile Include="Logging\Helpers\LogCleanerHelper.cs" />
     <Compile Include="Logging\Helpers\IdleMonitor.cs" />
     <Compile Include="Logging\Helpers\IdleTimeWatcher.cs" />

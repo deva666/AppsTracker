@@ -18,62 +18,55 @@ namespace AppsTracker.ViewModels
             get { return "SCREENSHOTS"; }
         }
 
-        private bool _popupIntervalIsOpen = false;
+        private bool popupIntervalIsOpen = false;
         public bool PopupIntervalIsOpen
         {
-            get
-            {
-                return _popupIntervalIsOpen;
-            }
-            set
-            {
-                _popupIntervalIsOpen = value;
-                PropertyChanging("PopupIntervalIsOpen");
-            }
+            get            {                return popupIntervalIsOpen;            }
+            set            {                SetPropertyValue(ref popupIntervalIsOpen, value);            }
         }
 
-        private ICommand _changeScreenshotsCommand;
+        private ICommand changeScreenshotsCommand;
         public ICommand ChangeScreenshotsCommand
         {
             get
             {
-                return _changeScreenshotsCommand ?? (_changeScreenshotsCommand = new DelegateCommand(ChangeScreenshots, o => Globals.DBSizeOperational));
+                return changeScreenshotsCommand ?? (changeScreenshotsCommand = new DelegateCommand(ChangeScreenshots, o => Globals.DBSizeOperational));
             }
         }
 
-        private ICommand _changeScreenshotIntervalCommand;
+        private ICommand changeScreenshotIntervalCommand;
         public ICommand ChangeScreenShotIntervalCommand
         {
             get
             {
-                return _changeScreenshotIntervalCommand ?? (_changeScreenshotIntervalCommand = new DelegateCommand(ChangeScreenshotInterval));
+                return changeScreenshotIntervalCommand ?? (changeScreenshotIntervalCommand = new DelegateCommand(ChangeScreenshotInterval));
             }
         }
 
-        private ICommand _showPopUpCommand;
+        private ICommand showPopUpCommand;
         public ICommand ShowPopupCommand
         {
             get
             {
-                return _showPopUpCommand ?? (_showPopUpCommand = new DelegateCommand(ShowPopUp));
+                return showPopUpCommand ?? (showPopUpCommand = new DelegateCommand(ShowPopUp));
             }
         }
 
-        private ICommand _showFolderBrowserDialogCommand;
+        private ICommand showFolderBrowserDialogCommand;
         public ICommand ShowFolderBrowserDialogCommand
         {
             get
             {
-                return _showFolderBrowserDialogCommand ?? (_showFolderBrowserDialogCommand = new DelegateCommand(ShowFolderBrowserDialog));
+                return showFolderBrowserDialogCommand ?? (showFolderBrowserDialogCommand = new DelegateCommand(ShowFolderBrowserDialog));
             }
         }
 
-        private ICommand _runDBCleanerCommand;
+        private ICommand runDBCleanerCommand;
         public ICommand RunDBCleanerCommand
         {
             get
             {
-                return _runDBCleanerCommand ??( _runDBCleanerCommand = new DelegateCommand(RunDBCleaner));
+                return runDBCleanerCommand ??( runDBCleanerCommand = new DelegateCommand(RunDBCleaner));
             }
         }
         private void ChangeScreenshots()
@@ -122,7 +115,7 @@ namespace AppsTracker.ViewModels
 
         private void ShowPopUp(object popupSource)
         {
-            PopupIntervalIsOpen = !_popupIntervalIsOpen;
+            PopupIntervalIsOpen = !popupIntervalIsOpen;
         }
 
         private void ShowFolderBrowserDialog(object parameter)

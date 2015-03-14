@@ -57,7 +57,7 @@ namespace AppsTracker.Data.Models
         }
 
 
-        public Aplication(IAppInfo appInfo) 
+        public Aplication(IAppInfo appInfo)
             : this(appInfo.Name, appInfo.FileName, appInfo.Version, appInfo.Description, appInfo.Company, appInfo.FullName)
         {
 
@@ -96,10 +96,5 @@ namespace AppsTracker.Data.Models
         public virtual ICollection<AppCategory> Categories { get; set; }
         public virtual ICollection<AppWarning> Warnings { get; set; }
 
-        public override int GetHashCode()
-        {
-            int hash = 31;
-            return (hash + 7) * this.ApplicationID;
-        }
     }
 }

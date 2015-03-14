@@ -14,23 +14,16 @@ namespace AppsTracker.Controls
 {
     public class ScrollingContentControl : ContentControl
     {
+        private bool isQueing = false;
 
-        #region Fields
+        private DispatcherTimer centerTimer;
 
-        bool _processing = false;
+        private Storyboard scrollIn;
+        private Storyboard scrollOut;
 
-        DispatcherTimer _centerTimer;
+        private Queue<string> requests = new Queue<string>();
 
-        Storyboard _scrollIn;
-        Storyboard _scrollOut;
-
-        Queue<string> _requests = new Queue<string>();
-
-        Label _child;
-
-        #endregion
-
-        #region Dependancy Properties
+        private Label child;
 
         public double CenterTime
         {
@@ -56,8 +49,6 @@ namespace AppsTracker.Controls
                 control.EnqueueNewInfo(e.NewValue as string);
         }
 
-        #endregion
-
         public ScrollingContentControl()
         {
             InitStoryboards();
@@ -65,43 +56,42 @@ namespace AppsTracker.Controls
             this.Visibility = System.Windows.Visibility.Collapsed;
             this.Loaded += (s, e) =>
             {
-                _child = this.Content as Label;
-                Debug.Assert(_child != null, "Failed to find child label.");
+                child = this.Content as Label;
+                Debug.Assert(child != null, "Failed to find child label.");
             };
         }
 
         private void InitStoryboards()
         {
-            _scrollIn = FindResource("scrollIn") as Storyboard;
-            _scrollOut = FindResource("scrollOut") as Storyboard;
+            scrollIn = (Storyboard)FindResource("scrollIn");
+            scrollOut = (Storyboard)FindResource("scrollOut");
         }
 
         private void EnqueueNewInfo(string info)
         {
-            _requests.Enqueue(info);
-            if (!_processing)
+            if (string.IsNullOrWhiteSpace(info))
+                return;
+            requests.Enqueue(info);
+            if (!isQueing)
                 HandleQueue();
         }
 
         private void HandleQueue()
         {
-            if (_child == null)
-                _child = this.Content as Label;
-            if (_child == null)
+            if (child == null)
                 return;
-            _processing = true;
+            isQueing = true;
 
-            if (_centerTimer == null)
-                InitTimer();
+            InitTimer();
 
-            string info = _requests.Peek();
-            _child.Content = info;
+            string info = requests.Dequeue();
+            child.Content = info;
 
-            var scrollInClone = _scrollIn.Clone();
+            var scrollInClone = scrollIn.Clone();
             scrollInClone.Completed += (s, e) =>
             {
-                _centerTimer.Tick += TimerTick;
-                _centerTimer.Start();
+                centerTimer.Tick += TimerTick;
+                centerTimer.Start();
             };
             scrollInClone.Begin(this);
             this.Visibility = System.Windows.Visibility.Visible;
@@ -109,18 +99,15 @@ namespace AppsTracker.Controls
 
         private void TimerTick(object sender, EventArgs e)
         {
+            centerTimer.Tick -= TimerTick;
+            centerTimer.Stop();
 
-            _centerTimer.Tick -= TimerTick;
-            _centerTimer.Stop();
-
-            var scrollOutClone = _scrollOut.Clone();
+            var scrollOutClone = scrollOut.Clone();
             scrollOutClone.Completed += (snd, ear) =>
             {
                 this.Visibility = System.Windows.Visibility.Collapsed;
-                if (_requests.Count > 0)
-                    _requests.Dequeue();
-                if (_requests.Count == 0)
-                    _processing = false;
+                if (requests.Count == 0)
+                    isQueing = false;
                 else
                     HandleQueue();
             };
@@ -129,16 +116,9 @@ namespace AppsTracker.Controls
 
         private void InitTimer()
         {
-            _centerTimer = new DispatcherTimer();
-            _centerTimer.Interval = TimeSpan.FromSeconds(CenterTime);
-        }
-
-        private void CheckTimeInterval()
-        {
-            if (_centerTimer == null)
-                return;
-            if (_centerTimer.Interval != TimeSpan.FromSeconds(CenterTime))
-                _centerTimer.Interval = TimeSpan.FromSeconds(CenterTime);
+            if (centerTimer == null)
+                centerTimer = new DispatcherTimer();
+            centerTimer.Interval = TimeSpan.FromSeconds(CenterTime);
         }
     }
 }

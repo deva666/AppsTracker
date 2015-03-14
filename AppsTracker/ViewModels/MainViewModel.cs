@@ -253,10 +253,10 @@ namespace AppsTracker.ViewModels
 
         protected override void Disposing()
         {
-            if (_selectedChild != null)
+            if (selectedChild != null)
             {
-                _selectedChild.Dispose();
-                _selectedChild = null;
+                selectedChild.Dispose();
+                selectedChild = null;
             }
             base.Disposing();
         }

@@ -100,16 +100,16 @@
                                    Grid.Column="0"
                                    Grid.ColumnSpan="1"
                                    Grid.Row="1"
-                                   ItemsSource="{Binding TopAppsList.Result, Mode=OneWay}"
+                                   ItemsSource="{Binding AppSummaryList.Result, Mode=OneWay}"
                                    ItemContainerStyle="{DynamicResource ListViewItemStyle}"
-                                   SelectedItem="{Binding TopAppsOverall, Mode=TwoWay}"
+                                   SelectedItem="{Binding SelectedAppSummary, Mode=TwoWay}"
                                    BorderBrush="{x:Null}"
                                    BorderThickness="0"
                                    Margin="10,20,10,10"
                                    SelectionMode="Multiple">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding OverallAppSelectionChangedCommand}" />
+                    <i:InvokeCommandAction Command="{Binding SelectedAppsChangingCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <controls:SortableListView.View>
@@ -134,7 +134,7 @@
                                     Grid.Column="1"
                                     Grid.ColumnSpan="1"
                                     Grid.Row="1"
-                                    ItemsSource="{Binding TopWindowsList.Result, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    ItemsSource="{Binding WindowSummaryList.Result, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                     ItemContainerStyle="{DynamicResource ListViewItemStyle}"
                                     BorderBrush="{x:Null}"
                                     BorderThickness="0"
@@ -142,7 +142,7 @@
                                     SelectionMode="Multiple">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding OverallWindowSelectionChangedCommand}" />
+                    <i:InvokeCommandAction Command="{Binding SelectedWindowsChangingCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <controls:SortableListView.View>
@@ -201,7 +201,7 @@
                                           Style="{StaticResource MinimalChartStyle}"
                                           BorderBrush="{DynamicResource WindowBorderBrush}"
                                           BorderThickness="1"
-                                          SeriesSource="{Binding ChartList.Result}"
+                                          SeriesSource="{Binding WindowDurationList.Result}"
                                           Margin="10"
                                           Width="Auto"
                                           Height="Auto"
@@ -212,7 +212,7 @@
                             <chart:ChartSeries SeriesTitle="{Binding Date}"
                                                DisplayMember="Title"
                                                ValueMember="Duration"
-                                               ItemsSource="{Binding DailyWindowCollection}" />
+                                               ItemsSource="{Binding DurationCollection}" />
                         </DataTemplate>
                     </chart:StackedColumnChart.SeriesTemplate>
                 </chart:StackedColumnChart>

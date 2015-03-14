@@ -1,72 +1,53 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Reflection;
+using System.Threading;
 
-using AppsTracker.Hooks;
 using AppsTracker.Data.Service;
+using AppsTracker.Hooks;
 
 namespace AppsTracker.Logging
 {
     public class IdleMonitor : IDisposable
     {
-        bool _disposed = false;
-        bool _idleEntered = false;
-        bool _hooksRemoved = true;
-        bool _enabled = true;
+        private readonly ISqlSettingsService settingsService;
 
-        Timer _idleTimer;
+        private bool disposed = false;
+        private bool idleEntered = false;
+        private bool hooksRemoved = true;
 
-        KeyboardHookCallback _keyboardCallback = null;
-        MouseHookCallback _mouseHookCallback = null;
+        private Timer idleTimer;
 
-        IntPtr _keyboardHookHandle = IntPtr.Zero;
-        IntPtr _mouseHookHandle = IntPtr.Zero;
+        private KeyboardHookCallback keyboardHookCallback = null;
+        private MouseHookCallback mouseHookCallback = null;
+
+        private IntPtr keyboardHookHandle = IntPtr.Zero;
+        private IntPtr mouseHookHandle = IntPtr.Zero;
 
         public event EventHandler IdleEntered;
         public event EventHandler IdleStoped;
 
-        ISqlSettingsService _settingsService;
-
-        public bool Enabled
-        {
-            get
-            {
-                return _enabled;
-            }
-            set
-            {
-                _enabled = value;
-            }
-        }
-
         public IdleMonitor()
         {
-            _settingsService = ServiceFactory.Get<ISqlSettingsService>();
-            _idleTimer = new Timer(CheckIdleState, null, 1 * 60 * 1000, 1000);
+            settingsService = ServiceFactory.Get<ISqlSettingsService>();
+            idleTimer = new Timer(CheckIdleState, null, 1 * 60 * 1000, 1000);
         }
 
         private void SetHooks()
         {
-            if (_keyboardHookHandle == IntPtr.Zero && _mouseHookHandle == IntPtr.Zero)
+            if (keyboardHookHandle == IntPtr.Zero && mouseHookHandle == IntPtr.Zero)
             {
-                _keyboardCallback = new KeyboardHookCallback(KeyboardHookCallback);
-                _mouseHookCallback = new MouseHookCallback(MouseHookCallback);
+                keyboardHookCallback = new KeyboardHookCallback(KeyboardHookCallback);
+                mouseHookCallback = new MouseHookCallback(MouseHookCallback);
                 using (Process process = Process.GetCurrentProcess())
                 {
                     using (ProcessModule module = process.MainModule)
                     {
-                        _keyboardHookHandle = WinAPI.SetWindowsHookEx(13, _keyboardCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
-                        _mouseHookHandle = WinAPI.SetWindowsHookEx(14, _mouseHookCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
-                        Debug.Assert(_keyboardHookHandle != IntPtr.Zero && _mouseHookHandle != IntPtr.Zero, "Setting hooks failed");
+                        keyboardHookHandle = WinAPI.SetWindowsHookEx(13, keyboardHookCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
+                        mouseHookHandle = WinAPI.SetWindowsHookEx(14, mouseHookCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
+                        Debug.Assert(keyboardHookHandle != IntPtr.Zero && mouseHookHandle != IntPtr.Zero, "Setting hooks failed");
                     }
                 }
-                _hooksRemoved = false;
+                hooksRemoved = false;
             }
         }
 
@@ -75,7 +56,7 @@ namespace AppsTracker.Logging
         {
             if (nCode >= 0)
                 ResetBase();
-            return WinAPI.CallNextHookEx(_keyboardHookHandle, nCode, wParam, lParam);
+            return WinAPI.CallNextHookEx(keyboardHookHandle, nCode, wParam, lParam);
         }
 
 
@@ -83,30 +64,30 @@ namespace AppsTracker.Logging
         {
             if (nCode >= 0)
                 ResetBase();
-            return WinAPI.CallNextHookEx(_mouseHookHandle, nCode, wParam, lParam);
+            return WinAPI.CallNextHookEx(mouseHookHandle, nCode, wParam, lParam);
         }
 
         private void ResetBase()
         {
-            if (!_idleEntered)
+            if (!idleEntered)
                 return;
-            _idleEntered = false;
+            idleEntered = false;
             RemoveHooks();
-            _idleTimer.Change(1 * 60 * 1000, 1000);
+            idleTimer.Change(1 * 60 * 1000, 1000);
             IdleStoped.InvokeSafely(this, EventArgs.Empty);
         }
 
         private void CheckIdleState(object sender)
         {
-            if (_idleEntered || !_enabled)
+            if (idleEntered)
                 return;
 
             IdleTimeInfo idleInfo = IdleTimeWatcher.GetIdleTimeInfo();
 
-            if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(_settingsService.Settings.IdleTimer))
+            if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(settingsService.Settings.IdleTimer))
             {
-                _idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-                _idleEntered = true;
+                idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+                idleEntered = true;
                 App.Current.Dispatcher.Invoke(SetHooks);
                 IdleEntered.InvokeSafely(this, EventArgs.Empty);
             }
@@ -114,14 +95,14 @@ namespace AppsTracker.Logging
 
         private void RemoveHooks()
         {
-            WinAPI.UnhookWindowsHookEx(_keyboardHookHandle);
-            WinAPI.UnhookWindowsHookEx(_mouseHookHandle);
+            WinAPI.UnhookWindowsHookEx(keyboardHookHandle);
+            WinAPI.UnhookWindowsHookEx(mouseHookHandle);
 
-            _keyboardHookHandle = IntPtr.Zero;
-            _mouseHookHandle = IntPtr.Zero;
-            _keyboardCallback = null;
-            _mouseHookCallback = null;
-            _hooksRemoved = true;
+            keyboardHookHandle = IntPtr.Zero;
+            mouseHookHandle = IntPtr.Zero;
+            keyboardHookCallback = null;
+            mouseHookCallback = null;
+            hooksRemoved = true;
         }
 
         ~IdleMonitor()
@@ -137,12 +118,12 @@ namespace AppsTracker.Logging
 
         private void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!disposed)
             {
-                _disposed = true;
+                disposed = true;
 
-                _idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-                _idleTimer.Dispose();
+                idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+                idleTimer.Dispose();
 
                 Delegate[] delegateBuffer = null;
                 if (IdleEntered != null)
@@ -165,7 +146,7 @@ namespace AppsTracker.Logging
                     IdleStoped = null;
                 }
 
-                if (!_hooksRemoved)
+                if (!hooksRemoved)
                     RemoveHooks();
             }
         }

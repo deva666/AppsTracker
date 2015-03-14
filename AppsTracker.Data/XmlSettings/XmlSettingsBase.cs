@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace AppsTracker.Data.XmlSettings
 {
-    public abstract class SettingsBase
+    public abstract class XmlSettingsBase
     {
         public virtual XElement GetXML()
         {

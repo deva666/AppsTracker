@@ -110,16 +110,16 @@ namespace AppsTracker.Data.Models
         public int Count { get; set; }
     }
 
-    public struct DailyWindowDurationModel
+    public struct WindowDuration
     {
         public double Duration { get; set; }
         public string Title { get; set; }
     }
 
-    public struct DailyWindowSeries
+    public struct WindowDurationOverview
     {
         public string Date { get; set; }
-        public List<DailyWindowDurationModel> DailyWindowCollection { get; set; }
+        public List<WindowDuration> DurationCollection { get; set; }
     }
 
     public struct CategoryModel

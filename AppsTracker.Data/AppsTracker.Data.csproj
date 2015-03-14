@@ -125,7 +125,7 @@
     <Compile Include="XmlSettings\LogsViewSettings.cs" />
     <Compile Include="XmlSettings\MainWindosSettings.cs" />
     <Compile Include="XmlSettings\ScreenshotsViewSettings.cs" />
-    <Compile Include="XmlSettings\SettingsBase.cs" />
+    <Compile Include="XmlSettings\XmlSettingsBase.cs" />
     <Compile Include="XmlSettings\SettingsNodeAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\DataService.cs" />

@@ -150,7 +150,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<AppSummary> GetAppsSummary()
         {
-            return chartService.GetAppsSummary(Globals.SelectedUserID, selectedDate);
+            return chartService.GetAllAppSummaries(Globals.SelectedUserID, selectedDate);
         }
 
         private IEnumerable<WindowSummary> GetWindowsSummary()

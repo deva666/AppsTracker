@@ -7,15 +7,9 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Data.Entity;
 
 using AppsTracker.Common.Utils;
-using AppsTracker.Data;
-using AppsTracker.Data.Db;
 using AppsTracker.Data.Service;
 
 namespace AppsTracker.Logging
@@ -55,7 +49,7 @@ namespace AppsTracker.Logging
         {
             return Task.Run(new Action(Clean));
         }
-    
+
         public void Dispose()
         {
         }

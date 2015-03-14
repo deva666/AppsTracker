@@ -14,38 +14,38 @@ namespace AppsTracker.MVVM
 {
     internal class AsyncProperty<T> : ObservableObject
     {
-        private IWorker _worker;
-        private Func<T> _getter;
+        private IWorker worker;
+        private Func<T> getter;
 
-        private Task<T> _task;
+        private Task<T> task;
 
         public Task<T> Task
         {
-            get { return _task; }
-            private set { _task = value; }
+            get { return task; }
+            private set { task = value; }
         }
 
-        private T _result;
+        private T result;
 
         public T Result
         {
             get
             {
-                if (_task == null)
+                if (task == null)
                     ScheduleWork();
-                return _task.Status == TaskStatus.RanToCompletion ? _result : default(T);
+                return task.Status == TaskStatus.RanToCompletion ? result : default(T);
             }
             private set
             {
-                _result = value;
+                result = value;
                 PropertyChanging("Result");
             }
         }
 
         public AsyncProperty(Func<T> getter, IWorker worker)
         {
-            _worker = worker;
-            _getter = getter;
+            this.worker = worker;
+            this.getter = getter;
         }
 
         public void Reset()
@@ -60,23 +60,23 @@ namespace AppsTracker.MVVM
 
         private void ScheduleWork()
         {
-            _task = Task<T>.Run(_getter);
-            ObserveTask(_task);
+            task = Task<T>.Run(getter);
+            ObserveTask(task);
         }
 
         private async void ObserveTask(Task<T> task)
         {
             try
             {
-                _worker.Working = true;
-                _result = await task.ConfigureAwait(false);
+                worker.Working = true;
+                result = await task.ConfigureAwait(false);
             }
             catch
             {
             }
             finally
             {
-                _worker.Working = false;
+                worker.Working = false;
             }
             if (task.Status == TaskStatus.RanToCompletion)
             {

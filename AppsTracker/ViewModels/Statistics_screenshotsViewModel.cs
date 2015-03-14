@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 
-namespace AppsTracker.Pages.ViewModels
+namespace AppsTracker.ViewModels
 {
     internal sealed class Statistics_screenshotsViewModel : ViewModelBase, ICommunicator
     {

@@ -14,7 +14,7 @@ using AppsTracker.Data.Service;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 
-namespace AppsTracker.Pages.ViewModels
+namespace AppsTracker.ViewModels
 {
     internal sealed class Statistics_keystrokesViewModel : ViewModelBase, ICommunicator
     {

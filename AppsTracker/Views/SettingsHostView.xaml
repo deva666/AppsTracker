@@ -105,14 +105,9 @@
                 </Label.InputBindings>
             </Label>
 
-         <Label Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=APPS}"
-                Content="BLOCKED APPS"
-                FontSize="11"
-                Margin="15,5,15,0"
-                HorizontalAlignment="Left" />
       </StackPanel>
         <Separator HorizontalAlignment="Right"
-                   Margin="0,20,0,20"
+                   Margin="0,20,20,20"
                    Background="DarkGray">
             <Separator.LayoutTransform>
                 <RotateTransform Angle="90" />

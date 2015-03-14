@@ -7,17 +7,13 @@
 #endregion
 
 using System;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace AppsTracker.MVVM
 {
     public abstract class ViewModelBase : ObservableObject, IWorker, IDisposable
     {
-        protected bool _working;
+        protected bool working;
 
         protected object @lock = new object();
 
@@ -28,24 +24,15 @@ namespace AppsTracker.MVVM
             get
             {
                 lock (@lock)
-                    return _working;
+                    return working;
             }
             set
             {
                 lock (@lock)
                 {
-                    _working = value;
-                    PropertyChanging("Working");
+                    SetPropertyValue(ref working, value);
                 }
             }
-        }
-
-        protected void SetPropertyValue<T>(ref T target, T value, [CallerMemberName] string caller = null)
-        {
-            if (object.Equals(target, value))
-                return;
-            target = value;
-            PropertyChanging(caller);
         }
 
         public void Dispose()

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using AppsTracker.Controllers;
-using AppsTracker.Data.Service;
 using AppsTracker.Data.Models;
+using AppsTracker.Data.Service;
 
 namespace AppsTracker.MVVM
 {
@@ -21,8 +15,12 @@ namespace AppsTracker.MVVM
         public string InfoMessage
         {
             get { return infoMessage; }
-            set { SetPropertyValue(ref infoMessage, value); }
-        }        
+            set
+            {
+                SetPropertyValue(ref infoMessage, string.Empty);
+                SetPropertyValue(ref infoMessage, value);
+            }
+        }
 
         private Setting settings;
         public Setting Settings

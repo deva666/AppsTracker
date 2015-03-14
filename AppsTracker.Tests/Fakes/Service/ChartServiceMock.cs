@@ -15,22 +15,22 @@ namespace AppsTracker.Tests.Fakes.Service
 {
     public class ChartServiceMock : IChartService
     {
-        public IEnumerable<AppSummary> GetLogTopApps(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<AppSummary> GetAppSummary(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo)
         {
             System.Threading.Thread.Sleep(500);
             return new List<AppSummary>();
         }
 
-        public IEnumerable<WindowSummary> GetLogTopWindows(int userID, string appName, IEnumerable<DateTime> dates)
+        public IEnumerable<WindowSummary> GetWindowsSummary(int userID, string appName, IEnumerable<DateTime> dates)
         {
             System.Threading.Thread.Sleep(500);
             return new List<WindowSummary>();
         }
 
-        public IEnumerable<DailyWindowSeries> GetDailyWindowSeries(int userID, string appName, IEnumerable<string> selectedWindows, IEnumerable<DateTime> days)
+        public IEnumerable<WindowDurationOverview> GetWindowDurationOverview(int userID, string appName, IEnumerable<string> selectedWindows, IEnumerable<DateTime> days)
         {
             System.Threading.Thread.Sleep(500);
-            return new List<DailyWindowSeries>();
+            return new List<WindowDurationOverview>();
         }
 
         public IEnumerable<LogSummary> GetLogSummary(int userID, DateTime dateFrom)
@@ -39,7 +39,7 @@ namespace AppsTracker.Tests.Fakes.Service
             return new List<LogSummary>();
         }
 
-        public IEnumerable<AppSummary> GetAppsSummary(int userID, DateTime dateFrom)
+        public IEnumerable<AppSummary> GetAllAppSummaries(int userID, DateTime dateFrom)
         {
             System.Threading.Thread.Sleep(500);
             return new List<AppSummary>();
