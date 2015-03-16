@@ -123,7 +123,7 @@
     <Compile Include="XmlSettings\DaysViewSettings.cs" />
     <Compile Include="XmlSettings\KeylogsViewSettings.cs" />
     <Compile Include="XmlSettings\LogsViewSettings.cs" />
-    <Compile Include="XmlSettings\MainWindosSettings.cs" />
+    <Compile Include="XmlSettings\MainWindowSettings.cs" />
     <Compile Include="XmlSettings\ScreenshotsViewSettings.cs" />
     <Compile Include="XmlSettings\XmlSettingsBase.cs" />
     <Compile Include="XmlSettings\SettingsNodeAttribute.cs" />

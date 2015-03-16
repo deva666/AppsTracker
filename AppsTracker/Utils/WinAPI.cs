@@ -402,10 +402,8 @@ namespace AppsTracker
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass"), DllImport("user32.dll", CharSet = CharSet.Auto)]
         internal static extern bool GetWindowRect(IntPtr hWnd, ref RECT rect);
 
-
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         internal static extern IntPtr GetForegroundWindow();
-
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         internal static extern IntPtr GetDC(IntPtr hwnd);
@@ -425,7 +423,6 @@ namespace AppsTracker
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern IntPtr SetWindowsHookEx(int idHook, KeyboardHookCallback lpfn, IntPtr hMod, uint dwThreadId);
 
-
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         internal static extern IntPtr SetWindowsHookEx(int idHook, MouseHookCallback lpfn, IntPtr hMod, uint dwThreadId);
 
@@ -437,9 +434,6 @@ namespace AppsTracker
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         internal static extern IntPtr GetModuleHandle(string lpModuleName);
-
-        //[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        //internal static extern IntPtr SetWindowsHookEx(int idHook, HookHandlerCallBack lpfn, IntPtr hMod, uint dwThreadId);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]

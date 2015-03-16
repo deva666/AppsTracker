@@ -71,7 +71,6 @@ namespace AppsTracker.Hooks
             HookProc.InvokeSafely<WinHookArgs>(this, new WinHookArgs(title, appInfo));
         }
 
-        #region IDisposable Members
         ~WinHook()
         {
             Dispose(false);
@@ -93,8 +92,6 @@ namespace AppsTracker.Hooks
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        #endregion
 
         public void EnableHook(bool enable)
         {

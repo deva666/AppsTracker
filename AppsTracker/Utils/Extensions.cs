@@ -53,7 +53,6 @@ namespace AppsTracker
                     return string.Empty;
             }
         }
-
     
         public static void Reset(this DispatcherTimer timer)
         {
