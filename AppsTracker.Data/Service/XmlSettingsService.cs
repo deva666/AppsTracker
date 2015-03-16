@@ -1,7 +1,7 @@
-﻿using System;
+﻿using AppsTracker.Data.XmlSettings;
+using System;
 using System.IO;
 using System.Xml.Linq;
-using AppsTracker.Data.XmlSettings;
 
 namespace AppsTracker.Data.Service
 {

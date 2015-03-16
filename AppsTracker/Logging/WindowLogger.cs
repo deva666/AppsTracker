@@ -6,18 +6,16 @@
  */
 #endregion
 
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Timers;
 using AppsTracker.Common.Utils;
-using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.Data.Utils;
 using AppsTracker.Hooks;
 using AppsTracker.MVVM;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
+using System.Timers;
 
 namespace AppsTracker.Logging
 {

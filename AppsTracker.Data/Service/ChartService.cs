@@ -6,16 +6,15 @@
  */
 #endregion
 
+using AppsTracker.Data.Db;
+using AppsTracker.Data.Models;
+using AppsTracker.Data.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-
-using AppsTracker.Data.Db;
-using AppsTracker.Data.Models;
-using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Data.Service
 {
@@ -558,7 +557,7 @@ namespace AppsTracker.Data.Service
                 }
 
                 foreach (var item in dailyUsedAppsSeries)
-                    item.DailyUsedAppsCollection.Sort((x, y) => x.Duration.CompareTo(y.Duration)); 
+                    item.DailyUsedAppsCollection.Sort((x, y) => x.Duration.CompareTo(y.Duration));
 
                 return dailyUsedAppsSeries;
             }

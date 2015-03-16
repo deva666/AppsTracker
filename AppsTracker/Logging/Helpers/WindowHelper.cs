@@ -6,10 +6,10 @@
  */
 #endregion
 
+using AppsTracker.Data.Utils;
 using System;
 using System.Diagnostics;
 using System.Text;
-using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Logging
 {

@@ -6,14 +6,11 @@
  */
 #endregion
 
-using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using AppsTracker.Data;
-using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace AppsTracker
 {
@@ -21,8 +18,8 @@ namespace AppsTracker
     {
         private static bool _isLastDateFiltered;
 
-        private static DateTime _dateFrom;
-        private static DateTime _dateTo;
+        private static DateTime dateFrom;
+        private static DateTime dateTo;
 
         public static bool DBSizeOperational { get; private set; }
         public static int UserID { get; private set; }
@@ -34,14 +31,8 @@ namespace AppsTracker
 
         public static DateTime DateFrom
         {
-            get
-            {
-                return _dateFrom;
-            }
-            set
-            {
-                _dateFrom = value;
-            }
+            get { return dateFrom; }
+            set { dateFrom = value; }
         }
 
         public static DateTime DateTo
@@ -49,14 +40,14 @@ namespace AppsTracker
             get
             {
                 if (_isLastDateFiltered)
-                    return _dateTo;
+                    return dateTo;
                 else
                     return DateTime.Now;
             }
             set
             {
                 _isLastDateFiltered = true;
-                _dateTo = value;
+                dateTo = value;
             }
         }
 
@@ -68,13 +59,13 @@ namespace AppsTracker
             UserName = uzer.Name;
             SelectedUserID = UserID;
             SelectedUserName = UserName;
-            _dateFrom = GetFirstDate();
+            dateFrom = GetFirstDate();
             UsageID = usageID;
         }
 
         public static void ClearDateFilter()
         {
-            _dateFrom = GetFirstDate();
+            dateFrom = GetFirstDate();
             _isLastDateFiltered = false;
         }
 
@@ -90,7 +81,7 @@ namespace AppsTracker
             SelectedUserID = uzer.UserID;
             SelectedUserName = uzer.Name;
             SelectedUser = uzer;
-            ClearDateFilter();            
+            ClearDateFilter();
         }
 
         public static decimal GetDBSize()

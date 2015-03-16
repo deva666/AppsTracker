@@ -25,8 +25,8 @@ namespace AppsTracker.Hooks
 
     internal sealed class MouseHook : IHook<MouseHookArgs>
     {
-        bool _isDisposed;
-        bool _isHookEnabled = true;
+        private bool isDisposed;
+        private bool isHookEnabled = true;
 
         internal const int WM_LBUTTONDOWN = 0x0201;
         internal const int WM_RBUTTONDOWN = 0x0204;
@@ -37,11 +37,11 @@ namespace AppsTracker.Hooks
 
         public event EventHandler<MouseHookArgs> HookProc;
 
-        WinAPI.MSLLHOOKSTRUCT _mouseStruct;
+        private WinAPI.MSLLHOOKSTRUCT mouseStruct;
 
-        MouseHookCallback _hookCallBack;
+        private MouseHookCallback hookCallBack;
 
-        IntPtr _hookID = IntPtr.Zero;
+        private IntPtr hookID = IntPtr.Zero;
 
         public MouseHook()
         {
@@ -50,17 +50,15 @@ namespace AppsTracker.Hooks
 
         IntPtr MouseHookCallback(int code, IntPtr wParam, IntPtr lParam)
         {
-            if (code < 0 || !_isHookEnabled)
+            if (code < 0 || !isHookEnabled)
                 return WinAPI.CallNextHookEx(IntPtr.Zero, code, wParam, lParam);
 
-            _mouseStruct = (WinAPI.MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(WinAPI.MSLLHOOKSTRUCT));
+            mouseStruct = (WinAPI.MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(WinAPI.MSLLHOOKSTRUCT));
 
-            HookProc.InvokeSafely<MouseHookArgs>(this, new MouseHookArgs(_mouseStruct.pt, (int)wParam));
+            HookProc.InvokeSafely<MouseHookArgs>(this, new MouseHookArgs(mouseStruct.pt, (int)wParam));
 
-            return WinAPI.CallNextHookEx(_hookID, code, wParam, lParam);
+            return WinAPI.CallNextHookEx(hookID, code, wParam, lParam);
         }
-
-        #region IDisposable Members
 
         ~MouseHook()
         {
@@ -70,9 +68,9 @@ namespace AppsTracker.Hooks
         private void Dispose(bool disposing)
         {
             System.Diagnostics.Debug.WriteLine("Disposing " + this.GetType().Name + " " + this.GetType().FullName);
-            if (_isDisposed) return;
-            WinAPI.UnhookWindowsHookEx(_hookID);
-            _isDisposed = true;
+            if (isDisposed) return;
+            WinAPI.UnhookWindowsHookEx(hookID);
+            isDisposed = true;
         }
 
         public void Dispose()
@@ -81,24 +79,22 @@ namespace AppsTracker.Hooks
             GC.SuppressFinalize(this);
         }
 
-        #endregion
-
         private void SetHook()
         {
-            _hookCallBack = new MouseHookCallback(MouseHookCallback);
+            hookCallBack = new MouseHookCallback(MouseHookCallback);
             using (Process process = Process.GetCurrentProcess())
             {
                 using (ProcessModule module = process.MainModule)
                 {
-                    _hookID = WinAPI.SetWindowsHookEx(WH_MOUSE_LL, _hookCallBack, WinAPI.GetModuleHandle(module.ModuleName), 0);
-                    Debug.Assert(_hookID != IntPtr.Zero, "Failed to set MouseHooke");
+                    hookID = WinAPI.SetWindowsHookEx(WH_MOUSE_LL, hookCallBack, WinAPI.GetModuleHandle(module.ModuleName), 0);
+                    Debug.Assert(hookID != IntPtr.Zero, "Failed to set MouseHooke");
                 }
             }
         }
 
         public void EnableHook(bool enable)
         {
-            _isHookEnabled = enable;
+            isHookEnabled = enable;
         }
     }
 }

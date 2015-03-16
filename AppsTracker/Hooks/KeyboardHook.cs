@@ -6,13 +6,12 @@
  */
 #endregion
 
+using AppsTracker.Common.Utils;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
-
-using AppsTracker.Common.Utils;
-using System.Collections.Generic;
 
 namespace AppsTracker.Hooks
 {
@@ -30,15 +29,15 @@ namespace AppsTracker.Hooks
         private const int VK_MENU = 0x12;
         private const int VK_CAPITAL = 0x14;
 
-        private bool _keyLoggerEnabled = true;
-        private bool _isDisposed;
+        private bool isHookEnabled = true;
+        private bool isDisposed;
 
         public event EventHandler<KeyboardHookArgs> HookProc;
 
-        private KeyboardHookCallback _hookCallBack;
-        private IntPtr _hookID = IntPtr.Zero;
+        private KeyboardHookCallback hookCallBack;
+        private IntPtr hookID = IntPtr.Zero;
 
-        private readonly KeyboardMap _keyboardMap = new KeyboardMap();
+        private readonly KeycodeMap keycodeMap = new KeycodeMap();
 
         public KeyBoardHook()
         {
@@ -50,27 +49,27 @@ namespace AppsTracker.Hooks
 
         private void SetHook()
         {
-            _hookCallBack = new KeyboardHookCallback(HookCallback);
+            hookCallBack = new KeyboardHookCallback(HookCallback);
             using (Process process = Process.GetCurrentProcess())
             {
                 using (ProcessModule module = process.MainModule)
                 {
-                    _hookID = WinAPI.SetWindowsHookEx(WH_KEYBOARD_LL, _hookCallBack, WinAPI.GetModuleHandle(module.ModuleName), 0);
-                    Ensure.Condition<InvalidOperationException>(_hookID != IntPtr.Zero, "Failed to set keyboardhook");
+                    hookID = WinAPI.SetWindowsHookEx(WH_KEYBOARD_LL, hookCallBack, WinAPI.GetModuleHandle(module.ModuleName), 0);
+                    Ensure.Condition<InvalidOperationException>(hookID != IntPtr.Zero, "Failed to set keyboardhook");
                 }
             }
         }
 
         public void EnableHook(bool enable)
         {
-            _keyLoggerEnabled = enable;
+            isHookEnabled = enable;
         }
 
 
         private IntPtr HookCallback(int code, IntPtr wParam, IntPtr lParam)
         {
-            if (!_keyLoggerEnabled || code < 0)
-                return WinAPI.CallNextHookEx(_hookID, code, wParam, lParam);
+            if (!isHookEnabled || code < 0)
+                return WinAPI.CallNextHookEx(hookID, code, wParam, lParam);
 
             WinAPI.KBDLLHOOKSTRUCT keybStruct = (WinAPI.KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(WinAPI.KBDLLHOOKSTRUCT));
 
@@ -90,15 +89,14 @@ namespace AppsTracker.Hooks
                                             , WinAPI.GetKeyboardLayout(0)) != -1)
                     {
                         string keyTextRaw;
-                        _keyboardMap.TryGetValue(keybStruct.vkCode, out keyTextRaw);
+                        keycodeMap.TryGetValue(keybStruct.vkCode, out keyTextRaw);
                         HookProc.InvokeSafely<KeyboardHookArgs>(this, new KeyboardHookArgs(keybStruct.vkCode, builder.ToString(), keyTextRaw));
                     }
                 }
             }
-            return WinAPI.CallNextHookEx(_hookID, code, wParam, lParam);
+            return WinAPI.CallNextHookEx(hookID, code, wParam, lParam);
         }
 
-        #region IDisposable Members
 
         ~KeyBoardHook()
         {
@@ -109,9 +107,9 @@ namespace AppsTracker.Hooks
         private void Dispose(bool disposing)
         {
             System.Diagnostics.Debug.WriteLine("Disposing " + this.GetType().Name + " " + this.GetType().FullName);
-            if (_isDisposed) return;
-            WinAPI.UnhookWindowsHookEx(_hookID);
-            _isDisposed = true;
+            if (isDisposed) return;
+            WinAPI.UnhookWindowsHookEx(hookID);
+            isDisposed = true;
         }
 
         public void Dispose()
@@ -120,11 +118,9 @@ namespace AppsTracker.Hooks
             GC.SuppressFinalize(this);
         }
 
-        #endregion
-
-        private sealed class KeyboardMap : Dictionary<int, string>
+        private sealed class KeycodeMap : Dictionary<int, string>
         {
-            public KeyboardMap()
+            public KeycodeMap()
             {
                 Add(8, "Backspace");
                 Add(9, "Tab");

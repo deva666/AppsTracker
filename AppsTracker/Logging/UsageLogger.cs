@@ -6,16 +6,11 @@
  */
 #endregion
 
-using System;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading;
 using AppsTracker.Common.Utils;
-using AppsTracker.Data;
-using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.MVVM;
+using System;
 
 namespace AppsTracker.Logging
 {
@@ -85,7 +80,7 @@ namespace AppsTracker.Logging
         {
             return loggingService.LoginUser(userID);
         }
-               
+
         private Uzer GetUzer(string userName)
         {
             return loggingService.GetUzer(userName);
@@ -123,7 +118,7 @@ namespace AppsTracker.Logging
                 case Microsoft.Win32.PowerModes.StatusChange:
                     break;
                 case Microsoft.Win32.PowerModes.Suspend:
-                    //Looks like the Session Switch event is fired immediately after the computer is being put to sleep,
+                    //Session Switch event is fired immediately after the computer is being put to sleep,
                     //If it's going to sleep, then don't log this as computer locked
                     isLoggingEnabled = false;
                     Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;

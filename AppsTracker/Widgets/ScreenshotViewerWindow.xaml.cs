@@ -1,10 +1,10 @@
-﻿using System;
+﻿using AppsTracker.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-using AppsTracker.Pages.ViewModels;
 
 namespace AppsTracker.Controls
 {
@@ -34,8 +34,6 @@ namespace AppsTracker.Controls
             ScaleUnloaded();
         }
 
-
-        #region Animations
         private void ScaleLoaded()
         {
             DoubleAnimation scaleX = new DoubleAnimation(0.3, 1.0, new Duration(TimeSpan.FromSeconds(0.5)));
@@ -76,9 +74,6 @@ namespace AppsTracker.Controls
             story.Completed += (s, e) => { this.Close(); };
             story.Begin(this);
         }
-        #endregion
-
-        #region Event Handlers
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -109,23 +104,13 @@ namespace AppsTracker.Controls
 
         private void Window_MouseMove(object sender, MouseEventArgs e)
         {
-            //if (!this.topControls.FaderVisibility)
-            //    this.topControls.FaderVisibility = true;
-            //timer.Stop();
-            //timer.Start();
+
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //if (!this.topControls.FaderVisibility)
-            //    this.topControls.FaderVisibility = true;
-            //timer.Stop();
-            //timer.Start();
+
         }
-
-        #endregion
-
-
 
     }
 }

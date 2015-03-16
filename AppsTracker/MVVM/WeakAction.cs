@@ -1,50 +1,48 @@
 ﻿using System;
 using System.Reflection;
-using System.Security;
-using System.Runtime.InteropServices;
 
 namespace AppsTracker.MVVM
 {
-	internal class WeakAction 
-	{
-		readonly MethodInfo method;
-		readonly Type delegateType;
-		readonly WeakReference weakRef;
+    internal class WeakAction
+    {
+        readonly MethodInfo method;
+        readonly Type delegateType;
+        readonly WeakReference weakRef;
 
-		internal WeakAction(object target, MethodInfo method, Type parameterType)
-		{
-			weakRef = new WeakReference(target);
+        internal WeakAction(object target, MethodInfo method, Type parameterType)
+        {
+            weakRef = new WeakReference(target);
 
-			this.method = method;
+            this.method = method;
 
-			if (parameterType == null)
-				this.delegateType = typeof(Action);
-			else
-				this.delegateType = typeof(Action<>).MakeGenericType(parameterType);
-		}
+            if (parameterType == null)
+                this.delegateType = typeof(Action);
+            else
+                this.delegateType = typeof(Action<>).MakeGenericType(parameterType);
+        }
 
-		internal Delegate CreateAction()
-		{
-			object target = weakRef.Target;
-			if (target != null)
-			{		
-				return Delegate.CreateDelegate(
-							this.delegateType,
-							weakRef.Target,
-							method);
-			}
-			else
-			{
-				return null;
-			}
-		}
+        internal Delegate CreateAction()
+        {
+            object target = weakRef.Target;
+            if (target != null)
+            {
+                return Delegate.CreateDelegate(
+                            this.delegateType,
+                            weakRef.Target,
+                            method);
+            }
+            else
+            {
+                return null;
+            }
+        }
 
-		public bool IsAlive
-		{
-			get
-			{
-				return weakRef.IsAlive;
-			}
-		}
-	}
+        public bool IsAlive
+        {
+            get
+            {
+                return weakRef.IsAlive;
+            }
+        }
+    }
 }

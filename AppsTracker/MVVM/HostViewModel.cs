@@ -6,10 +6,10 @@
  */
 #endregion
 
+using AppsTracker.Common.Utils;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using AppsTracker.Common.Utils;
 
 namespace AppsTracker.MVVM
 {

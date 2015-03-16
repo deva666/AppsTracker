@@ -6,13 +6,13 @@
  */
 #endregion
 
+using AppsTracker.Data.Db;
+using AppsTracker.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using AppsTracker.Data.Db;
-using AppsTracker.Data.Models;
 
 namespace AppsTracker.Data.Service
 {

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Input;
-using AppsTracker.Controls;
+﻿using AppsTracker.Controls;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace AppsTracker.ViewModels
 {
@@ -21,8 +16,8 @@ namespace AppsTracker.ViewModels
         private bool popupIntervalIsOpen = false;
         public bool PopupIntervalIsOpen
         {
-            get            {                return popupIntervalIsOpen;            }
-            set            {                SetPropertyValue(ref popupIntervalIsOpen, value);            }
+            get { return popupIntervalIsOpen; }
+            set { SetPropertyValue(ref popupIntervalIsOpen, value); }
         }
 
         private ICommand changeScreenshotsCommand;
@@ -66,7 +61,7 @@ namespace AppsTracker.ViewModels
         {
             get
             {
-                return runDBCleanerCommand ??( runDBCleanerCommand = new DelegateCommand(RunDBCleaner));
+                return runDBCleanerCommand ?? (runDBCleanerCommand = new DelegateCommand(RunDBCleaner));
             }
         }
         private void ChangeScreenshots()

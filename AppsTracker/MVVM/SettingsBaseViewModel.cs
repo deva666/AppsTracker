@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using System.Windows.Input;
-using AppsTracker.Data.Models;
+﻿using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace AppsTracker.MVVM
 {

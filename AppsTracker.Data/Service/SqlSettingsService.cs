@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using AppsTracker.Data.Db;
+﻿using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AppsTracker.Data.Service
 {

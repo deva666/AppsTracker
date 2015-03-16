@@ -6,10 +6,9 @@
  */
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using AppsTracker.Common.Utils;
+using System;
+using System.Collections.Generic;
 
 namespace AppsTracker.Data.Service
 {
@@ -40,7 +39,7 @@ namespace AppsTracker.Data.Service
 
         public static bool ContainsKey<T>() where T : class, IBaseService
         {
-            return serviceMap.ContainsKey(typeof(T)); 
+            return serviceMap.ContainsKey(typeof(T));
         }
     }
 }

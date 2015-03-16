@@ -6,14 +6,13 @@
  */
 #endregion
 
+using AppsTracker.Hooks;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Text;
-
-using AppsTracker.Hooks;
 
 namespace AppsTracker
 {

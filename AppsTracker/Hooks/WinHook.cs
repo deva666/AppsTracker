@@ -21,14 +21,14 @@ namespace AppsTracker.Hooks
         private const uint WINEVENT_OUTOFCONTEXT = 0;
         private const uint EVENT_SYSTEM_FOREGROUND = 3;
 
-        private bool _isDisposed;
-        private bool _isHookEnabled = true;
+        private bool isDisposed;
+        private bool isHookEnabled = true;
 
         public event EventHandler<WinHookArgs> HookProc;
 
-        private WinHookCallBack _winHookCallBack;
+        private WinHookCallBack winHookCallBack;
 
-        private IntPtr _hookID = IntPtr.Zero;
+        private IntPtr hookID = IntPtr.Zero;
 
         public WinHook()
         {
@@ -40,9 +40,9 @@ namespace AppsTracker.Hooks
 
         private void SetHook()
         {
-            _winHookCallBack = new WinHookCallBack(WinHookCallback);
-            _hookID = WinAPI.SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, _winHookCallBack, 0, 0, WINEVENT_OUTOFCONTEXT);
-            Debug.Assert(_hookID != IntPtr.Zero, "Failed to set WinHook");
+            winHookCallBack = new WinHookCallBack(WinHookCallback);
+            hookID = WinAPI.SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, winHookCallBack, 0, 0, WINEVENT_OUTOFCONTEXT);
+            Debug.Assert(hookID != IntPtr.Zero, "Failed to set WinHook");
         }
 
         private Process GetProcessFromHandle(IntPtr hWnd)
@@ -60,7 +60,7 @@ namespace AppsTracker.Hooks
 
         private void WinHookCallback(IntPtr hWinEventHook, uint eventType, IntPtr hWnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
-            if (!_isHookEnabled || hWnd == IntPtr.Zero)
+            if (!isHookEnabled || hWnd == IntPtr.Zero)
                 return;
 
             StringBuilder windowTitleBuilder = new StringBuilder(WinAPI.GetWindowTextLength(hWnd) + 1);
@@ -83,9 +83,9 @@ namespace AppsTracker.Hooks
         {
             System.Diagnostics.Debug.WriteLine("Disposing " + this.GetType().Name + " " + this.GetType().FullName);
 
-            if (_isDisposed) return;
-            WinAPI.UnhookWinEvent(_hookID);
-            _isDisposed = true;
+            if (isDisposed) return;
+            WinAPI.UnhookWinEvent(hookID);
+            isDisposed = true;
         }
 
         public void Dispose()
@@ -98,7 +98,7 @@ namespace AppsTracker.Hooks
 
         public void EnableHook(bool enable)
         {
-            _isHookEnabled = enable;
+            isHookEnabled = enable;
         }
     }
 }

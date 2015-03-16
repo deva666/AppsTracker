@@ -6,24 +6,23 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Windows.Input;
-using System.Linq;
-
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Input;
 
 
-namespace AppsTracker.Pages.ViewModels
+namespace AppsTracker.ViewModels
 {
     internal sealed class ScreenshotViewerViewModel : ViewModelBase
     {
         public event EventHandler CloseEvent;
 
-        private int _currentIndex;
-        private int _totalItemCount;
-        private IEnumerable<Screenshot> _screenshotCollection;
+        private int currentIndex;
+        private int totalItemCount;
+        private IEnumerable<Screenshot> screenshotCollection;
 
         public override string Title
         {
@@ -32,32 +31,28 @@ namespace AppsTracker.Pages.ViewModels
 
         public int CurrentIndex
         {
-            get
-            {
-                return _currentIndex;
-            }
+            get { return currentIndex; }
             set
             {
-                _currentIndex = ++value;
+                currentIndex = ++value;
                 PropertyChanging("CurrentIndex");
             }
         }
 
         public int TotalItemCount
         {
-            get
-            {
-                return _totalItemCount;
-            }
-            set
-            {
-                _totalItemCount = value;
-                PropertyChanging("TotalItemCount");
-            }
+            get { return totalItemCount; }
+            set { SetPropertyValue(ref totalItemCount, value); }
         }
 
-        public IEnumerable<Screenshot> ScreenshotCollection { get { return _screenshotCollection; } }
-        public ICommand CloseCommand { get { return new DelegateCommand(Close); } }
+        public IEnumerable<Screenshot> ScreenshotCollection
+        {
+            get { return screenshotCollection; }
+        }
+        public ICommand CloseCommand
+        {
+            get { return new DelegateCommand(Close); }
+        }
 
         public ScreenshotViewerViewModel()
         {
@@ -67,8 +62,8 @@ namespace AppsTracker.Pages.ViewModels
         public ScreenshotViewerViewModel(IEnumerable<Screenshot> screenshotCollection)
             : this()
         {
-            _screenshotCollection = screenshotCollection;
-            TotalItemCount = _screenshotCollection.Count();
+            this.screenshotCollection = screenshotCollection;
+            TotalItemCount = screenshotCollection.Count();
         }
 
         private void Close()
