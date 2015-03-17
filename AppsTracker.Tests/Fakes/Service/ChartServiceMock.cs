@@ -57,16 +57,16 @@ namespace AppsTracker.Tests.Fakes.Service
             return new List<UsageByTime>();
         }
 
-        public IEnumerable<MostUsedAppModel> GetMostUsedApps(int userID, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<AppDuration> GetAppsDuration(int userID, DateTime dateFrom, DateTime dateTo)
         {
             System.Threading.Thread.Sleep(500);
-            return new List<MostUsedAppModel>();
+            return new List<AppDuration>();
         }
 
-        public IEnumerable<DailyAppModel> GetSingleMostUsedApp(int userID, string appName, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<DailyAppDuration> GetAppDurationByDate(int userID, string appName, DateTime dateFrom, DateTime dateTo)
         {
             System.Threading.Thread.Sleep(500);
-            return new List<DailyAppModel>();
+            return new List<DailyAppDuration>();
         }
 
         public IEnumerable<KeystrokeModel> GetKeystrokes(int userID, DateTime dateFrom, DateTime dateTo)
@@ -81,10 +81,10 @@ namespace AppsTracker.Tests.Fakes.Service
             return new List<DailyKeystrokeModel>();
         }
 
-        public IEnumerable<DailyUsedAppsSeries> GetAppsUsageSeries(int userID, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<AppDurationOverview> GetAppsUsageSeries(int userID, DateTime dateFrom, DateTime dateTo)
         {
             System.Threading.Thread.Sleep(500);
-            return new List<DailyUsedAppsSeries>();
+            return new List<AppDurationOverview>();
         }
 
         public IEnumerable<ScreenshotModel> GetScreenshots(int userID, DateTime dateFrom, DateTime dateTo)

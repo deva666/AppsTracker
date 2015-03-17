@@ -17,73 +17,46 @@ using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class Statistics_appUsageViewModel : ViewModelBase, ICommunicator
+    internal sealed class AppStatsViewModel : ViewModelBase, ICommunicator
     {
-        #region Fields
-        
-        private IChartService _chartService;
 
-        private MostUsedAppModel _mostUsedAppModel;
-
-        private AsyncProperty<IEnumerable<MostUsedAppModel>> _mostUsedAppsList;
-
-        private AsyncProperty<IEnumerable<DailyAppModel>> _dailyAppList;
-
-        private ICommand _returnFromDetailedViewCommand;
-
-        #endregion
-
-        #region Properties
+        private readonly IChartService chartService;
 
         public override string Title
         {
-            get
-            {
-                return "APPS";
-            }
+            get { return "APPS"; }
         }
 
-        public MostUsedAppModel MostUsedAppModel
+        private AppDuration selectedApp;
+        public AppDuration SelectedApp
         {
-            get
-            {
-                return _mostUsedAppModel;
-            }
+            get { return selectedApp; }
             set
             {
-                _mostUsedAppModel = value;
-                PropertyChanging("MostUsedAppModel");
-                _dailyAppList.Reload();
+                SetPropertyValue(ref selectedApp, value);
+                dailyAppList.Reload();
             }
         }
 
-        public object SelectedItem
-        {
-            get;
-            set;
-        }
+        public object SelectedItem { get; set; }
 
 
-        public AsyncProperty<IEnumerable<MostUsedAppModel>> MostUsedAppsList
+        private readonly AsyncProperty<IEnumerable<AppDuration>> appsList;
+        public AsyncProperty<IEnumerable<AppDuration>> AppsList
         {
-            get
-            {
-                return _mostUsedAppsList;
-            }
+            get { return appsList; }
         }
-        public AsyncProperty<IEnumerable<DailyAppModel>> DailyAppList
+
+        private readonly AsyncProperty<IEnumerable<DailyAppDuration>> dailyAppList;
+        public AsyncProperty<IEnumerable<DailyAppDuration>> DailyAppList
         {
-            get
-            {
-                return _dailyAppList;
-            }
+            get { return dailyAppList; }
         }
+
+        private ICommand returnFromDetailedViewCommand;
         public ICommand ReturnFromDetailedViewCommand
         {
-            get
-            {
-                return _returnFromDetailedViewCommand == null ? _returnFromDetailedViewCommand = new DelegateCommand(ReturnFromDetailedView) : _returnFromDetailedViewCommand;
-            }
+            get { return returnFromDetailedViewCommand ?? (returnFromDetailedViewCommand = new DelegateCommand(ReturnFromDetailedView)); }
         }
 
         public IMediator Mediator
@@ -91,40 +64,38 @@ namespace AppsTracker.ViewModels
             get { return MVVM.Mediator.Instance; }
         }
 
-        #endregion
-
         private void ReturnFromDetailedView()
         {
-            MostUsedAppModel = null;
+            SelectedApp = null;
         }
 
-        public Statistics_appUsageViewModel()
-        {            
-            _chartService = ServiceFactory.Get<IChartService>();
+        public AppStatsViewModel()
+        {
+            chartService = ServiceFactory.Get<IChartService>();
 
-            _mostUsedAppsList = new AsyncProperty<IEnumerable<MostUsedAppModel>>(GetContent, this);
-            _dailyAppList = new AsyncProperty<IEnumerable<DailyAppModel>>(GetSubContent, this);
+            appsList = new AsyncProperty<IEnumerable<AppDuration>>(GetApps, this);
+            dailyAppList = new AsyncProperty<IEnumerable<DailyAppDuration>>(GetDailyApp, this);
 
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadAll));
         }
 
         private void ReloadAll()
         {
-            _mostUsedAppsList.Reload();
-            _dailyAppList.Reload();
+            appsList.Reload();
+            dailyAppList.Reload();
         }
-        private IEnumerable<MostUsedAppModel> GetContent()
+        private IEnumerable<AppDuration> GetApps()
         {
-            return _chartService.GetMostUsedApps(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
+            return chartService.GetAppsDuration(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
         }
 
-        private IEnumerable<DailyAppModel> GetSubContent()
+        private IEnumerable<DailyAppDuration> GetDailyApp()
         {
-            var model = _mostUsedAppModel;
-            if (model == null)
+            var app = selectedApp;
+            if (app == null)
                 return null;
 
-            return _chartService.GetSingleMostUsedApp(Globals.SelectedUserID, model.AppName, Globals.DateFrom, Globals.DateTo);
+            return chartService.GetAppDurationByDate(Globals.SelectedUserID, app.Name, Globals.DateFrom, Globals.DateTo);
         }
     }
 }

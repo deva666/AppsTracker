@@ -17,7 +17,7 @@ namespace AppsTracker.ViewModels
         public StatisticsHostViewModel()
         {
             RegisterChild<Statistics_usersViewModel>(() => new Statistics_usersViewModel());
-            RegisterChild<Statistics_appUsageViewModel>(() => new Statistics_appUsageViewModel());
+            RegisterChild<AppStatsViewModel>(() => new AppStatsViewModel());
             RegisterChild<Statistics_dailyAppUsageViewModel>(() => new Statistics_dailyAppUsageViewModel());
             RegisterChild<Statistics_keystrokesViewModel>(() => new Statistics_keystrokesViewModel());
             RegisterChild<Statistics_screenshotsViewModel>(() => new Statistics_screenshotsViewModel());

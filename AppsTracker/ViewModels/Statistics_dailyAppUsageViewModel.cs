@@ -21,7 +21,7 @@ namespace AppsTracker.ViewModels
         
         private IChartService _chartService;
 
-        private AsyncProperty<IEnumerable<DailyUsedAppsSeries>> _dailyUsedAppsList;
+        private AsyncProperty<IEnumerable<AppDurationOverview>> _dailyUsedAppsList;
 
         #endregion
 
@@ -41,7 +41,7 @@ namespace AppsTracker.ViewModels
             set;
         }
 
-        public AsyncProperty<IEnumerable<DailyUsedAppsSeries>> DailyUsedAppsList
+        public AsyncProperty<IEnumerable<AppDurationOverview>> DailyUsedAppsList
         {
             get
             {
@@ -61,12 +61,12 @@ namespace AppsTracker.ViewModels
         {            
             _chartService = ServiceFactory.Get<IChartService>();
 
-            _dailyUsedAppsList = new AsyncProperty<IEnumerable<DailyUsedAppsSeries>>(GetContent, this);
+            _dailyUsedAppsList = new AsyncProperty<IEnumerable<AppDurationOverview>>(GetContent, this);
 
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(_dailyUsedAppsList.Reload));
         }
 
-        private IEnumerable<DailyUsedAppsSeries> GetContent()
+        private IEnumerable<AppDurationOverview> GetContent()
         {
             return _chartService.GetAppsUsageSeries(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
         }

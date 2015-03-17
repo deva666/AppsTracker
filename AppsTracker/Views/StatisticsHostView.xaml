@@ -40,7 +40,7 @@
             <views:UsersView />
         </DataTemplate>
         
-        <DataTemplate DataType="{x:Type viewModels:Statistics_appUsageViewModel}">
+        <DataTemplate DataType="{x:Type viewModels:AppStatsViewModel}">
             <views:MostUsedAppsView />
         </DataTemplate>
 
@@ -93,7 +93,7 @@
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="{x:Type viewModels:Statistics_appUsageViewModel}">
+                                      CommandParameter="{x:Type viewModels:AppStatsViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>

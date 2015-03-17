@@ -22,11 +22,11 @@ namespace AppsTracker.Data.Service
         IEnumerable<AppSummary> GetAllAppSummaries(int userID, DateTime dateFrom);
         IEnumerable<WindowSummary> GetWindowsSummary(int userID, string appName, DateTime dateFrom);
         IEnumerable<UsageByTime> GetUsageSummary(int userID, DateTime dateFrom);
-        IEnumerable<MostUsedAppModel> GetMostUsedApps(int userID, DateTime dateFrom, DateTime dateTo);
-        IEnumerable<DailyAppModel> GetSingleMostUsedApp(int userID, string appName, DateTime dateFrom, DateTime dateTo);
+        IEnumerable<AppDuration> GetAppsDuration(int userID, DateTime dateFrom, DateTime dateTo);
+        IEnumerable<DailyAppDuration> GetAppDurationByDate(int userID, string appName, DateTime dateFrom, DateTime dateTo);
         IEnumerable<KeystrokeModel> GetKeystrokes(int userID, DateTime dateFrom, DateTime dateTo);
         IEnumerable<DailyKeystrokeModel> GetKeystrokesByApp(int userID, string appName, DateTime dateFrom, DateTime dateTo);
-        IEnumerable<DailyUsedAppsSeries> GetAppsUsageSeries(int userID, DateTime dateFrom, DateTime dateTo);
+        IEnumerable<AppDurationOverview> GetAppsUsageSeries(int userID, DateTime dateFrom, DateTime dateTo);
         IEnumerable<ScreenshotModel> GetScreenshots(int userID, DateTime dateFrom, DateTime dateTo);
         IEnumerable<DailyScreenshotModel> GetScreenshotsByApp(int userID, string appName, DateTime dateFrom, DateTime dateTo);
         IEnumerable<AllUsersModel> GetAllUsers(DateTime dateFrom, DateTime dateTo);

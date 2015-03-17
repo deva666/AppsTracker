@@ -12,16 +12,13 @@ namespace AppsTracker.Data.Models
 {
     public abstract class SelectableBase
     {
-        protected bool _isSelected;
+        protected bool isSelected;
         public bool IsSelected
         {
-            get
-            {
-                return _isSelected;
-            }
+            get { return isSelected; }
             set
             {
-                _isSelected = value;
+                isSelected = value;
                 SelectedChanging();
             }
         }

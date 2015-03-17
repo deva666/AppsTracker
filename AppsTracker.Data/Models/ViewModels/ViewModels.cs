@@ -13,9 +13,9 @@ using System.Collections.ObjectModel;
 
 namespace AppsTracker.Data.Models
 {
-    public class MostUsedAppModel
+    public class AppDuration
     {
-        public string AppName { get; set; }
+        public string Name { get; set; }
         public double Duration { get; set; }
     }
 
@@ -49,10 +49,10 @@ namespace AppsTracker.Data.Models
         public double Count { get; set; }
     }
 
-    public struct DailyUsedAppsSeries
+    public struct AppDurationOverview
     {
         public string Date { get; set; }
-        public List<MostUsedAppModel> DailyUsedAppsCollection { get; set; }
+        public List<AppDuration> AppCollection { get; set; }
     }
 
     public struct UsageSummary
@@ -86,7 +86,7 @@ namespace AppsTracker.Data.Models
         public int Count { get; set; }
     }
 
-    public struct DailyAppModel
+    public struct DailyAppDuration
     {
         public string Date { get; set; }
         public double Duration { get; set; }

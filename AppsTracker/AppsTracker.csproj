@@ -353,40 +353,40 @@
     <Compile Include="ViewModels\SettingsHostViewModel.cs" />
     <Compile Include="ViewModels\Settings_generalViewModel.cs" />
     <Compile Include="ViewModels\Settings_licenseViewModel.cs" />
-    <Compile Include="Views\ChartViews\AppByDayView.xaml.cs">
+    <Compile Include="Views\StatisticsViews\AppByDayView.xaml.cs">
       <DependentUpon>AppByDayView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ChartViews\BlockedAppByDayView.xaml.cs">
+    <Compile Include="Views\StatisticsViews\BlockedAppByDayView.xaml.cs">
       <DependentUpon>BlockedAppByDayView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ChartViews\BlockedAppsView.xaml.cs">
+    <Compile Include="Views\StatisticsViews\BlockedAppsView.xaml.cs">
       <DependentUpon>BlockedAppsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ChartViews\DailyAppsUsageView.xaml.cs">
+    <Compile Include="Views\StatisticsViews\DailyAppsUsageView.xaml.cs">
       <DependentUpon>DailyAppsUsageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ChartViews\FilewatcherView.xaml.cs">
+    <Compile Include="Views\StatisticsViews\FilewatcherView.xaml.cs">
       <DependentUpon>FilewatcherView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ChartViews\KeystrokesByDayView.xaml.cs">
+    <Compile Include="Views\StatisticsViews\KeystrokesByDayView.xaml.cs">
       <DependentUpon>KeystrokesByDayView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ChartViews\KeystrokesView.xaml.cs">
+    <Compile Include="Views\StatisticsViews\KeystrokesView.xaml.cs">
       <DependentUpon>KeystrokesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ChartViews\MostUsedAppsView.xaml.cs">
+    <Compile Include="Views\StatisticsViews\MostUsedAppsView.xaml.cs">
       <DependentUpon>MostUsedAppsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ChartViews\ScreenshotsByDayView.xaml.cs">
+    <Compile Include="Views\StatisticsViews\ScreenshotsByDayView.xaml.cs">
       <DependentUpon>ScreenshotsByDayView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ChartViews\ScreenshotsView.xaml.cs">
+    <Compile Include="Views\StatisticsViews\ScreenshotsView.xaml.cs">
       <DependentUpon>ScreenshotsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ChartViews\UsageView.xaml.cs">
+    <Compile Include="Views\StatisticsViews\UsageView.xaml.cs">
       <DependentUpon>UsageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ChartViews\UsersView.xaml.cs">
+    <Compile Include="Views\StatisticsViews\UsersView.xaml.cs">
       <DependentUpon>UsersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AppDetailsView.xaml.cs">
@@ -569,51 +569,51 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ChartViews\AppByDayView.xaml">
+    <Page Include="Views\StatisticsViews\AppByDayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ChartViews\BlockedAppByDayView.xaml">
+    <Page Include="Views\StatisticsViews\BlockedAppByDayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ChartViews\BlockedAppsView.xaml">
+    <Page Include="Views\StatisticsViews\BlockedAppsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ChartViews\DailyAppsUsageView.xaml">
+    <Page Include="Views\StatisticsViews\DailyAppsUsageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ChartViews\FilewatcherView.xaml">
+    <Page Include="Views\StatisticsViews\FilewatcherView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ChartViews\KeystrokesByDayView.xaml">
+    <Page Include="Views\StatisticsViews\KeystrokesByDayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ChartViews\KeystrokesView.xaml">
+    <Page Include="Views\StatisticsViews\KeystrokesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ChartViews\MostUsedAppsView.xaml">
+    <Page Include="Views\StatisticsViews\MostUsedAppsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ChartViews\ScreenshotsByDayView.xaml">
+    <Page Include="Views\StatisticsViews\ScreenshotsByDayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ChartViews\ScreenshotsView.xaml">
+    <Page Include="Views\StatisticsViews\ScreenshotsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ChartViews\UsageView.xaml">
+    <Page Include="Views\StatisticsViews\UsageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ChartViews\UsersView.xaml">
+    <Page Include="Views\StatisticsViews\UsersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
