@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="AppsTracker.Pages.Views.ChartViews.UsageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:AppsTracker"
+             xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
+             xmlns:controls="clr-namespace:AppsTracker.Controls"
+             xmlns:cViews="clr-namespace:AppsTracker.Pages.Views.ChartViews"
+             mc:Ignorable="d"
+             d:DesignHeight="300"
+             d:DesignWidth="300">
+    <UserControl.Resources>
+        <local:ConvertNullToBool x:Key="convertNullToBool" />
+        <local:ConvertNullToBoolBack x:Key="convertNullToBoolBack" />
+        <local:ConvertMainWndWidthToHalf x:Key="convertWidth" />
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <controls:BackButton Style="{DynamicResource BackBtnStyle}"
+                                 EllipseBackgroundBrush="{DynamicResource WindowBackgroundBrush}"
+                                 HorizontalAlignment="Left"
+                                 Margin="20,0,0,0"
+                                 Grid.Row="0">
+                <controls:BackButton.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding ReturnFromDetailedViewCommand}" />
+                </controls:BackButton.InputBindings>
+            </controls:BackButton>
+            <chart:StackedColumnChart ChartTitle="Computer usage"
+                                      ChartSubTitle="Total logged time per day (hours)"
+                                      Style="{StaticResource MinimalChartStyle}"
+                                      BorderBrush="{DynamicResource WindowBorderBrush}"
+                                      SeriesSource="{Binding DailyLogins.Result}"
+                                      BorderThickness="1"
+                                      Margin="10,10,10,20"
+                                      Width="Auto"
+                                      Height="Auto"
+                                      Grid.Row="1">
+
+                <chart:StackedColumnChart.SeriesTemplate>
+                    <DataTemplate>
+                        <chart:ChartSeries SeriesTitle="{Binding Date}"
+                                           DisplayMember="UsageType"
+                                           ValueMember="Time"
+                                           ItemsSource="{Binding DailyUsageTypeCollection}" />
+                    </DataTemplate>
+                </chart:StackedColumnChart.SeriesTemplate>
+
+            </chart:StackedColumnChart>
+
+        </Grid>
+    </ScrollViewer>
+</UserControl>
