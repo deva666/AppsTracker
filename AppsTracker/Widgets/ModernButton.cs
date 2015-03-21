@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace AppsTracker.Controls
+namespace AppsTracker.Views
 {
     public class ModernButton
            : Button

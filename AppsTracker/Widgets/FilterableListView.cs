@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using WPFHelper;
 
-namespace AppsTracker.Controls
+namespace AppsTracker.Views
 {
     public class FilterableListView : SortableListView
     {

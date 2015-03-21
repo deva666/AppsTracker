@@ -6,7 +6,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace AppsTracker.Controls
+namespace AppsTracker.Views
 {
     public class FaderContentControl : ContentControl
     {

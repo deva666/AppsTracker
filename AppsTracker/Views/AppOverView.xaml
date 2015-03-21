@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
-             xmlns:controls="clr-namespace:AppsTracker.Controls"
+             xmlns:controls="clr-namespace:AppsTracker.Views"
              xmlns:viewModels="clr-namespace:AppsTracker.ViewModels"
              xmlns:views="clr-namespace:AppsTracker.Views"
              xmlns:local="clr-namespace:AppsTracker"

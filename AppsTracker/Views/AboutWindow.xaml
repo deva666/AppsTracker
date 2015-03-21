@@ -1,0 +1,86 @@
+﻿<Window x:Class="AppsTracker.Views.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="About apps tracker"
+        MinHeight="100"
+        MinWidth="300"
+        Style="{StaticResource WindowStyleWithFade}"
+        SizeToContent="WidthAndHeight"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterScreen"
+        BorderBrush="{DynamicResource WindowBorderBrush}"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:viewModel="clr-namespace:AppsTracker.MVVM">
+    <Window.DataContext>
+        <viewModel:AboutWindowViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Label Style="{DynamicResource LabelStyle}"
+               Grid.Row="0"
+               HorizontalAlignment="Left"
+               Content="about apps tracker"
+               Margin="15,5,0,5"
+               FontSize="15" />
+        <Separator Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   VerticalAlignment="Bottom"
+                   Margin="10,0,10,0" />
+        <Image Grid.Row="1"
+               Source="/Apps tracker;component/Resources/AppsTrackerSplashResized.png"
+               Width="100"/>
+        <StackPanel Orientation="Vertical"
+                    Grid.Row="1"
+                    Grid.Column="1">
+            
+                <TextBlock FontSize="12"
+                       Margin="20,20,20,10"
+                       Text="{Binding AppName, StringFormat={}{0} © 2014 by Marko Devcic.}"
+                       Foreground="{DynamicResource HighlightBrush}" />
+
+            <TextBlock Margin="20,0,20,10"
+                       FontSize="12"
+                       PreviewMouseLeftButtonUp="TextBlock_MouseLeftButtonUp">
+                <Hyperlink>info@theappstracker.com</Hyperlink>
+            </TextBlock>
+            <TextBlock  Margin="20,0,20,10"
+                        FontSize="12"
+                        Text="All rights reserved"
+                        Foreground="{DynamicResource HighlightBrush}" />
+            <TextBlock Margin="20,0,20,5"
+                       FontSize="12"
+                       Text="{Binding AppVersion, StringFormat=Version: {0}}"
+                       Foreground="{DynamicResource HighlightBrush}" />
+            <!--<TextBlock Margin="20,0,20,10"
+                       FontSize="12"
+                       Text="{Binding License}"
+                       Foreground="{DynamicResource HighlightBrush}" />-->
+            <TextBlock
+                Margin="20,0,20,10"
+                FontSize="12"
+                PreviewMouseLeftButtonUp="TextBlock_PreviewMouseLeftButtonUp">
+                <Hyperlink>www.theappstracker.com</Hyperlink>
+            </TextBlock>
+
+        </StackPanel>
+
+        <Button Name="lblOK"
+                HorizontalAlignment="Right"
+                VerticalContentAlignment="Center"
+                Content="OK"
+                Margin="0,10,30,10"
+                Grid.Row="2"
+                Grid.Column="1"
+                Click="lblOK_Click" />
+
+    </Grid>
+</Window>

@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace AppsTracker.Controls
+namespace AppsTracker.Views
 {
     /// <summary>
     /// Interaction logic for MessageWindow.xaml

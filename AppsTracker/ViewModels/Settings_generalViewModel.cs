@@ -15,12 +15,12 @@
 //using System.Net.Mail;
 //using System.Threading.Tasks;
 //using System.Windows;
-//using System.Windows.Controls;
+//using System.Windows.Views;
 //using System.Windows.Input;
 
-//using AppsTracker.Controls;
+//using AppsTracker.Views;
 //using AppsTracker.DAL;
-//using AppsTracker.Encryption;
+//using AppsTracker.Hashing;
 //using AppsTracker.Data.Models;
 //using AppsTracker.Models.Proxy;
 //using AppsTracker.MVVM;
@@ -631,7 +631,7 @@
 //                {
 //                    if (IsMasterPasswordSet)
 //                    {
-//                        string currentPassword = Encrypt.GetEncryptedString(passwords[2].Password);
+//                        string currentPassword = Hash.GetEncryptedString(passwords[2].Password);
 //                        string storedPassword = App.UzerSetting.WindowOpen;
 //                        if (storedPassword == null) { IsMasterPasswordSet = false; return; }
 //                        if (currentPassword != storedPassword)
@@ -654,7 +654,7 @@
 //                    if (!string.IsNullOrEmpty(password.Trim()))
 //                    {
 //                        IsMasterPasswordSet = true;
-//                        App.UzerSetting.WindowOpen = Encrypt.GetEncryptedString(password);
+//                        App.UzerSetting.WindowOpen = Hash.GetEncryptedString(password);
 //                        MessageWindow messageWindow = new MessageWindow("Password set.");
 //                        messageWindow.ShowDialog();
 //                    }

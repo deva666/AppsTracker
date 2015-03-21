@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:controls="clr-namespace:AppsTracker.Controls"
+             xmlns:controls="clr-namespace:AppsTracker.Views"
              xmlns:local="clr-namespace:AppsTracker"
              mc:Ignorable="d"
              d:DesignHeight="3000"
@@ -86,26 +86,6 @@
             </controls:FaderContentControl>
 
             <Label Style="{DynamicResource LabelStyle}"
-                   FontFamily="Tahoma"
-                   FontSize="16"
-                   Grid.Row="3"
-                   Content="Keylogger"
-                   HorizontalAlignment="Left"
-                   Margin="0,25,0,10" />
-
-            <Label Style="{DynamicResource LabelStyle}"
-                   Content="Enable keylogger"
-                   HorizontalAlignment="Left"
-                   Grid.Row="4"
-                   Margin="0,10,0,10" />
-            <CheckBox Name="cbKeyLogger"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      IsChecked="{Binding Path=Settings.EnableKeylogger, Mode=TwoWay}"
-                      Grid.Row="4"
-                      Grid.Column="1" />
-
-            <Label Style="{DynamicResource LabelStyle}"
                    FontSize="16"
                    Grid.Row="5"
                    Content="Idle"
@@ -167,6 +147,12 @@
                                   Command="{Binding SaveChangesCommand}" />
                 </Button.InputBindings>
             </Button>
+
+            <controls:ScrollingContentControl Grid.Row="10"
+                                              Margin="0,30,0,0"
+                                              InfoContent="{Binding InfoMessage}">
+                <Label Style="{DynamicResource LabelStyle}" />
+            </controls:ScrollingContentControl>
 
             <Popup PopupAnimation="Slide"
                    StaysOpen="True"

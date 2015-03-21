@@ -1,7 +1,7 @@
 ﻿<Application x:Class="AppsTracker.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:controls="clr-namespace:AppsTracker.Controls"
+             xmlns:controls="clr-namespace:AppsTracker.Views"
              xmlns:local="clr-namespace:AppsTracker"
              xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
              xmlns:utils="clr-namespace:AppsTracker.Utils"

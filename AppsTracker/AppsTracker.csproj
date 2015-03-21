@@ -125,7 +125,7 @@
   <ItemGroup>
     <Reference Include="De.TorstenMandelkow.MetroChart, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d5b8d1bbc99c4a2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\De.TorstenMandelkow.MetroChart.dll</HintPath>
+      <HintPath>..\..\..\Projects\AppsTracker\Development\De.TorstenMandelkow.MetroChart.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -245,7 +245,7 @@
     <Compile Include="Widgets\ScreenshotViewerOptions.xaml.cs">
       <DependentUpon>ScreenshotViewerOptions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\ScreenshotViewerWindow.xaml.cs">
+    <Compile Include="Views\ScreenshotViewerWindow.xaml.cs">
       <DependentUpon>ScreenshotViewerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Widgets\ScrollingContentControl.cs" />
@@ -271,7 +271,7 @@
     <Compile Include="MVVM\IWorker.cs" />
     <Compile Include="MVVM\SettingsBaseViewModel.cs" />
     <Compile Include="Utils\Extensions.cs" />
-    <Compile Include="Utils\Globals.cs" />
+    <Compile Include="Globals.cs" />
     <Compile Include="Utils\ListViewItemScroller.cs" />
     <Compile Include="Utils\Validation.cs" />
     <Compile Include="Utils\ValueConverters.cs" />
@@ -303,7 +303,7 @@
     <Compile Include="Views\StatisticsHostView.xaml.cs">
       <DependentUpon>StatisticsHostView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\AboutWindow.xaml.cs">
+    <Compile Include="Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Widgets\BackButton.xaml.cs">
@@ -312,7 +312,7 @@
     <Compile Include="Widgets\Calendar.xaml.cs">
       <DependentUpon>Calendar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\EULAWindow.xaml.cs">
+    <Compile Include="Views\EULAWindow.xaml.cs">
       <DependentUpon>EULAWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Widgets\FaderContentControl.cs" />
@@ -393,9 +393,6 @@
     <Compile Include="Views\SettingsViews\BlockedAppsView.xaml.cs">
       <DependentUpon>BlockedAppsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\EmailReportsView.xaml.cs">
-      <DependentUpon>EmailReportsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingsViews\GeneralView.xaml.cs">
       <DependentUpon>GeneralView.xaml</DependentUpon>
     </Compile>
@@ -423,13 +420,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Screenshots\Screenshots.cs" />
-    <Compile Include="Encryption\Encrypt.cs" />
+    <Compile Include="Utils\Hash.cs" />
     <Compile Include="Hooks\WinHook.cs" />
     <Page Include="Views\SettingsViews\AppCategoriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\AboutWindow.xaml">
+    <Page Include="Views\AboutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -457,7 +454,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\EULAWindow.xaml">
+    <Page Include="Views\EULAWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -533,11 +530,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\ScreenshotViewerWindow.xaml">
+    <Page Include="Views\ScreenshotViewerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -549,7 +546,7 @@
       <DependentUpon>closeBtn.xaml</DependentUpon>
     </Compile>
     <Compile Include="Hooks\KeyboardHook.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -626,10 +623,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsViews\BlockedAppsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\EmailReportsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

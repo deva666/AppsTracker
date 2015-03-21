@@ -8,7 +8,7 @@ using System.Windows.Data;
 using System.Windows;
 using WPFHelper;
 
-namespace AppsTracker.Controls
+namespace AppsTracker.Views
 {
     public class SortableListView : ListView
     {

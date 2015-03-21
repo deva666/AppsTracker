@@ -14,7 +14,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace AppsTracker.Controls
+namespace AppsTracker.Views
 {
     public partial class LicenceWindow : Window
     {
@@ -74,7 +74,7 @@ namespace AppsTracker.Controls
             string username = tbUsername.Text;
             string license = tbLicense.Text;
             string verify = string.Format("{0} {1} {2}", username.Trim(), Constants.APP_NAME, Assembly.GetExecutingAssembly().GetName().Version.Major.ToString());
-            if (license == Encryption.Encrypt.GetEncryptedString(verify))
+            if (license == Hashing.Hash.GetEncryptedString(verify))
             {
                 CreateLicence(username, license);
             }

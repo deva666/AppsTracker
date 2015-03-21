@@ -9,7 +9,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace AppsTracker.Controls
+namespace AppsTracker.Views
 {
     public class TrayIcon : IDisposable
     {

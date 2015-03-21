@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AppsTracker.Controls
+namespace AppsTracker.Views
 {
 
     public partial class BackButton : UserControl

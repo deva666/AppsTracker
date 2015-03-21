@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using AppsTracker.Controls;
+using AppsTracker.Views;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.MVVM;

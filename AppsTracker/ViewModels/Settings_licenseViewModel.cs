@@ -10,10 +10,10 @@
 //using System.Diagnostics;
 //using System.Reflection;
 //using System.Windows;
-//using System.Windows.Controls;
+//using System.Windows.Views;
 //using System.Windows.Input;
 
-//using AppsTracker.Controls;
+//using AppsTracker.Views;
 //using AppsTracker.MVVM;
 
 
@@ -77,7 +77,7 @@
 //                string username = textboxes[0].Text;
 //                string license = textboxes[1].Text;
 //                string verify = string.Format("{0} {1} {2}", username.Trim(), Constants.APP_NAME, Assembly.GetExecutingAssembly().GetName().Version.Major.ToString());
-//                if (license == Encryption.Encrypt.GetEncryptedString(verify))
+//                if (license == Hashing.Hash.GetEncryptedString(verify))
 //                {
 //                    CreateLicence(username, license);
 //                }

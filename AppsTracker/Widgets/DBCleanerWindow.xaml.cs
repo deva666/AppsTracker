@@ -16,7 +16,7 @@ using System.Windows.Media.Animation;
 using AppsTracker.Data.Service;
 
 
-namespace AppsTracker.Controls
+namespace AppsTracker.Views
 {
     public partial class DBCleanerWindow : Window
     {

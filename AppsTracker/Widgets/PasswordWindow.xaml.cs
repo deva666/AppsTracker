@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-using AppsTracker.Controls;
+using AppsTracker.Views;
 using AppsTracker.Data.Service;
 using AppsTracker.Logging;
 
@@ -74,7 +74,7 @@ namespace AppsTracker
 
         private void CheckPassword()
         {
-            if (Encryption.Encrypt.GetEncryptedString(pbPassword.Password) == _settingService.Settings.WindowOpen)
+            if (Hashing.Hash.GetEncryptedString(pbPassword.Password) == _settingService.Settings.WindowOpen)
             {
                 this.DialogResult = true;
                 FadeUnloaded();

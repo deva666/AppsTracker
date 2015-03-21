@@ -76,7 +76,6 @@
     <Compile Include="Core\MVVM\MediatorTest.cs" />
     <Compile Include="Core\ViewModels\Data_logsViewModelTest.cs" />
     <Compile Include="Core\ViewModels\MainViewModelTest.cs" />
-    <Compile Include="Core\ViewModels\KeystrokeViewModelTest.cs" />
     <Compile Include="Core\ViewModels\ScreenshotViewModelTest.cs" />
     <Compile Include="Data\Service\ServiceFactoryTest.cs" />
     <Compile Include="Fakes\Logging\DisposableMock.cs" />
@@ -102,15 +101,6 @@
       <Project>{ed886551-a8b3-492d-acec-fe2df0b484f7}</Project>
       <Name>AppsTracker</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Fakes Include="Fakes\AppsTracker.DAL.fakes" />
-  </ItemGroup>
-  <ItemGroup>
-    <Fakes Include="Fakes\AppsTracker.Models.fakes" />
-  </ItemGroup>
-  <ItemGroup>
-    <Fakes Include="Fakes\Apps tracker.fakes" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

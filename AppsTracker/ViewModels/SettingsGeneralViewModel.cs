@@ -1,4 +1,4 @@
-﻿using AppsTracker.Controls;
+﻿using AppsTracker.Views;
 using AppsTracker.MVVM;
 using Microsoft.Win32;
 using System;

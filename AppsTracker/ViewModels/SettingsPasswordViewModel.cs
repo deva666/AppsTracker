@@ -1,5 +1,5 @@
-﻿using AppsTracker.Controls;
-using AppsTracker.Encryption;
+﻿using AppsTracker.Views;
+using AppsTracker.Hashing;
 using AppsTracker.MVVM;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -28,7 +28,7 @@ namespace AppsTracker.ViewModels
 
             if (Settings.IsMasterPasswordSet)
             {
-                string currentPassword = Encrypt.GetEncryptedString(passwords[2].Password);
+                string currentPassword = Hash.GetEncryptedString(passwords[2].Password);
                 string storedPassword = Settings.WindowOpen;
                 if (storedPassword == null)
                 {
@@ -55,7 +55,7 @@ namespace AppsTracker.ViewModels
             if (!string.IsNullOrEmpty(password.Trim()))
             {
                 Settings.IsMasterPasswordSet = true;
-                Settings.WindowOpen = Encrypt.GetEncryptedString(password);
+                Settings.WindowOpen = Hash.GetEncryptedString(password);
                 MessageWindow messageWindow = new MessageWindow("Password set.");
                 messageWindow.ShowDialog();
             }

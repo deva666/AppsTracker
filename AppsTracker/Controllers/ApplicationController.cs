@@ -10,7 +10,7 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Windows;
-using AppsTracker.Controls;
+using AppsTracker.Views;
 using AppsTracker.Data.Service;
 using Microsoft.Win32;
 
@@ -126,7 +126,7 @@ ShowEULAWindow();
         private void ShowTrayIcon()
         {
             if (trayIcon == null)
-                trayIcon = new Controls.TrayIcon();
+                trayIcon = new Views.TrayIcon();
             trayIcon.ShowApp.Click += (s, e) => CreateOrShowMainWindow();
             trayIcon.IsVisible = true;
         }

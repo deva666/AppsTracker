@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:AppsTracker"
     xmlns:shadow="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
-    xmlns:controls="clr-namespace:AppsTracker.Controls"
+    xmlns:controls="clr-namespace:AppsTracker.Views"
     xmlns:validate="clr-namespace:AppsTracker"
     mc:Ignorable="d">
     <UserControl.Resources>

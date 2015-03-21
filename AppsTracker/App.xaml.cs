@@ -15,8 +15,8 @@ using System.Runtime;
 using System.Windows;
 using System.Windows.Media.Animation;
 using AppsTracker.Controllers;
-using AppsTracker.Controls;
 using AppsTracker.Data.Service;
+using AppsTracker.Views;
 
 
 namespace AppsTracker
@@ -30,7 +30,7 @@ namespace AppsTracker
         public App(ReadOnlyCollection<string> args)
         {
             ProfileOptimization.SetProfileRoot(Assembly.GetEntryAssembly().Location);
-            ProfileOptimization.StartProfile("StartupProfile");
+            ProfileOptimization.StartProfile("AppsTrackerProfile");
 
             InitializeComponent();
 
@@ -55,7 +55,6 @@ namespace AppsTracker
             applicationController.Initialize(autostart);
 
             this.SessionEnding += (s, e) => FinishAndExit();
-
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
         }
 
