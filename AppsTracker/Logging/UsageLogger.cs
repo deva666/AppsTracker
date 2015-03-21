@@ -6,11 +6,11 @@
  */
 #endregion
 
+using System;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.MVVM;
-using System;
 
 namespace AppsTracker.Logging
 {

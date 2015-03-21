@@ -13,49 +13,8 @@
         <local:ConvertBoolToVisibility x:Key="convertVisibility" />
         <local:ConvertIntToStyle x:Key="convertStyle"
                                  ZeroStyle="{StaticResource LBLabelStyleNoSel}"
-                                 SelectableStyle="{StaticResource SelectableLabelStyle}" />
-        <!--<ContextMenu x:Key="cmProc">
-            <MenuItem Header="Block selected app for user"
-                      Name="miBlockProc"
-                      ItemsSource="{Binding AllUsersList}">
-                <MenuItem.ItemContainerStyle>
-                    <Style TargetType="{x:Type MenuItem}">
-                        <Setter Property="CommandParameter">
-                            <Setter.Value>
-                                <MultiBinding Converter="{StaticResource convertBlockedProcesses}">
-                                    <Binding Path="Header"
-                                             RelativeSource="{RelativeSource Self}" />
-                                    <Binding Path="PlacementTarget.SelectedItems"
-                                             RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}" />
-                                </MultiBinding>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Command"
-                                Value="{Binding AddProcessToBlockedListCommand}" />
-
-                    </Style>
-                </MenuItem.ItemContainerStyle>
-            </MenuItem>
-
-        </ContextMenu>
-        <ContextMenu x:Key="cmWin">
-            <MenuItem Command="ApplicationCommands.SelectAll" />
-            <MenuItem Header="Delete selected logs"
-                      Command="{Binding DeleteWindowLogCommand}"
-                      CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}" />
-        </ContextMenu>
-        <ContextMenu x:Key="cmLogs">
-            <MenuItem Command="ApplicationCommands.SelectAll" />
-            <MenuItem Header="Delete selected logs"
-                      Command="{Binding DeleteLogDataCommand}"
-                      CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}" />
-        </ContextMenu>-->
+                                 SelectableStyle="{StaticResource SelectableLabelStyle}" />     
     </UserControl.Resources>
-    <!--<UserControl.CommandBindings>
-        <CommandBinding Command="ApplicationCommands.SelectAll"
-                        Executed="CommandBinding_Executed_1" />
-    </UserControl.CommandBindings>-->
-
     <Grid Name="rootLayout">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />

@@ -16,15 +16,14 @@ namespace AppsTracker.Hooks
 {
     internal delegate void WinHookCallBack(IntPtr hWinEventHook, uint eventType, IntPtr hWnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
 
-    public sealed class WinHook : IHook<WinHookArgs>
+    public sealed class WinHook : IWindowNotifier
     {
+        public event EventHandler<WindowChangedArgs> WindowChanged;
+
         private const uint WINEVENT_OUTOFCONTEXT = 0;
         private const uint EVENT_SYSTEM_FOREGROUND = 3;
 
         private bool isDisposed;
-        private bool isHookEnabled = true;
-
-        public event EventHandler<WinHookArgs> HookProc;
 
         private WinHookCallBack winHookCallBack;
 
@@ -42,7 +41,6 @@ namespace AppsTracker.Hooks
         {
             winHookCallBack = new WinHookCallBack(WinHookCallback);
             hookID = WinAPI.SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, winHookCallBack, 0, 0, WINEVENT_OUTOFCONTEXT);
-            Debug.Assert(hookID != IntPtr.Zero, "Failed to set WinHook");
         }
 
         private Process GetProcessFromHandle(IntPtr hWnd)
@@ -60,7 +58,7 @@ namespace AppsTracker.Hooks
 
         private void WinHookCallback(IntPtr hWinEventHook, uint eventType, IntPtr hWnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
-            if (!isHookEnabled || hWnd == IntPtr.Zero)
+            if (hWnd == IntPtr.Zero)
                 return;
 
             StringBuilder windowTitleBuilder = new StringBuilder(WinAPI.GetWindowTextLength(hWnd) + 1);
@@ -68,21 +66,19 @@ namespace AppsTracker.Hooks
             var process = GetProcessFromHandle(hWnd);
             var title = string.IsNullOrEmpty(windowTitleBuilder.ToString()) ? "No Title" : windowTitleBuilder.ToString();
             IAppInfo appInfo = AppInfo.GetAppInfo(process);
-            HookProc.InvokeSafely(this, new WinHookArgs(title, appInfo));
+            WindowChanged.InvokeSafely(this, new WindowChangedArgs(title, appInfo));
         }
 
         ~WinHook()
         {
             Dispose(false);
             Debug.WriteLine("WinEvent Finalizer called");
-
         }
 
         private void Dispose(bool disposing)
         {
-            System.Diagnostics.Debug.WriteLine("Disposing " + this.GetType().Name + " " + this.GetType().FullName);
-
-            if (isDisposed) return;
+            if (isDisposed) 
+                return;
             WinAPI.UnhookWinEvent(hookID);
             isDisposed = true;
         }
@@ -93,10 +89,6 @@ namespace AppsTracker.Hooks
             GC.SuppressFinalize(this);
         }
 
-        public void EnableHook(bool enable)
-        {
-            isHookEnabled = enable;
-        }
     }
 }
 

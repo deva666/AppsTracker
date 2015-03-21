@@ -98,7 +98,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Db\AppsDBInitializer.cs" />
     <Compile Include="Db\AppsDBConfiguration.cs" />
     <Compile Include="Db\AppsEntitites.cs" />
     <Compile Include="Db\DbConnectionFactory.cs" />
@@ -119,7 +118,9 @@
     <Compile Include="Service\ICategoriesService.cs" />
     <Compile Include="Service\ILoggingService.cs" />
     <Compile Include="Service\LoggingService.cs" />
+    <Compile Include="Utils\AppInfo.cs" />
     <Compile Include="Utils\DelegateCommand.cs" />
+    <Compile Include="Utils\IAppInfo.cs" />
     <Compile Include="XmlSettings\DaysViewSettings.cs" />
     <Compile Include="XmlSettings\KeylogsViewSettings.cs" />
     <Compile Include="XmlSettings\LogsViewSettings.cs" />
@@ -138,9 +139,7 @@
     <Compile Include="Service\ServiceFactory.cs" />
     <Compile Include="Service\SqlSettingsService.cs" />
     <Compile Include="Service\XmlSettingsService.cs" />
-    <Compile Include="Utils\AppInfo.cs" />
     <Compile Include="Utils\Extensions.cs" />
-    <Compile Include="Utils\IAppInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

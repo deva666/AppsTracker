@@ -8,14 +8,14 @@ using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Hooks
 {
-    public sealed class WinHookArgs : EventArgs
+    public sealed class WindowChangedArgs : EventArgs
     {
 
         public string WindowTitle { get; private set; }
         public IAppInfo AppInfo{ get; private set; }
 
 
-        public WinHookArgs(string windowTitle, IAppInfo appInfo)
+        public WindowChangedArgs(string windowTitle, IAppInfo appInfo)
         {
             AppInfo = appInfo;
             WindowTitle = windowTitle;

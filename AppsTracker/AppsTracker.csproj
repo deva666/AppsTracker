@@ -183,6 +183,7 @@
     <Compile Include="Controllers\ILoggingController.cs" />
     <Compile Include="Controllers\LoggingController.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Hooks\IWindowNotifier.cs" />
     <Compile Include="Logging\AppWatcher.cs" />
     <Compile Include="Logging\LoggingStatus.cs" />
     <Compile Include="ViewModels\SettingsAppCategoriesViewModel.cs" />
@@ -252,8 +253,7 @@
     <Compile Include="ErrorLogging\ILogger.cs" />
     <Compile Include="Hooks\EventArgs\KeyboardHookArgs.cs" />
     <Compile Include="Hooks\EventArgs\MouseHookArgs.cs" />
-    <Compile Include="Hooks\EventArgs\WinEventArgs.cs" />
-    <Compile Include="Hooks\IHook.cs" />
+    <Compile Include="Hooks\EventArgs\WindowChangedArgs.cs" />
     <Compile Include="Logging\LogCleaner.cs" />
     <Compile Include="Logging\Helpers\LogCleanerHelper.cs" />
     <Compile Include="Logging\Helpers\IdleMonitor.cs" />

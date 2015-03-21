@@ -1,21 +1,34 @@
-﻿using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
-using AppsTracker.MVVM;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using AppsTracker.Data.Models;
+using AppsTracker.Data.Service;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
     internal sealed class SettingsAppCategoriesViewModel : ViewModelBase
     {
+        private const string SETTINGS_SAVED_MSG = "settings saved";
+
         private readonly ICategoriesService categoriesService;
         private readonly List<AppCategory> categoriesToDelete = new List<AppCategory>();
 
         public override string Title
         {
             get { return "APP CATEGORIES"; }
+        }
+
+        private string infoMessage;
+        public string InfoMessage
+        {
+            get { return infoMessage; }
+            set
+            {
+                SetPropertyValue(ref infoMessage, string.Empty);
+                SetPropertyValue(ref infoMessage, value);
+            }
         }
 
         private bool isNewCategoryOpen;
@@ -168,15 +181,7 @@ namespace AppsTracker.ViewModels
         private void SaveChanges()
         {
             categoriesService.SaveChanges(categoriesToDelete, Categories);
-        }
-
-        private void SetApplications(AppCategory cat)
-        {
-            cat.Applications.Clear();
-            foreach (var app in cat.ObservableApplications)
-            {
-                cat.Applications.Add(app);
-            }
+            InfoMessage = SETTINGS_SAVED_MSG;
         }
 
         //Finalizer is used instead of Dispose becouse Host View Models store all references to child view models as weak refrences and we don't know when the GC is going to kick in and free the resurce 

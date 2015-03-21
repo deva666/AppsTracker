@@ -23,7 +23,7 @@ namespace AppsTracker.Hooks
 
     internal delegate IntPtr MouseHookCallback(int code, IntPtr wParam, IntPtr lParam);
 
-    internal sealed class MouseHook : IHook<MouseHookArgs>
+    internal sealed class MouseHook : IDisposable
     {
         private bool isDisposed;
         private bool isHookEnabled = true;

@@ -190,8 +190,6 @@ namespace AppsTracker.ViewModels
             userCollection = dataService.GetFiltered<Uzer>(u => u.UserID >= 0);
         }
 
-
-
         protected override void ChangePage(object parameter)
         {
             ToSettings = (SelectedChild == null || SelectedChild.GetType() == (Type)parameter) ? ToSettings : SelectedChild.GetType();

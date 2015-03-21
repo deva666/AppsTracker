@@ -11,85 +11,45 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace AppsTracker.Data.Models
 {
     public class Log : INotifyPropertyChanged
     {
-        private bool _finished = false;
-        [NotMapped]
-        public bool Finished { get { return _finished; } }
-        [NotMapped]
-        public string AppName { get { return this.Window.Application.Name; } }
-        [NotMapped]
-        public string WindowTitle { get { return this.Window.Title; } }
+        private bool finished = false;
 
         [NotMapped]
         public long Duration
         {
             get
             {
-                return DateEnded.Ticks - DateCreated.Ticks;
+                return UtcDateEnded.Ticks - UtcDateCreated.Ticks;
             }
         }
 
-        bool _isSelected;
+        bool isSelected;
         [NotMapped]
         public bool IsSelected
         {
             get
             {
-                return _isSelected;
+                return isSelected;
             }
             set
             {
-                _isSelected = value;
+                isSelected = value;
                 var handler = PropertyChanged;
                 if (handler != null)
                     handler(this, new PropertyChangedEventArgs("IsSelected"));
             }
         }
 
-        [NotMapped]
-        public int UserID
-        {
-            get
-            {
-                return this.Window.Application.UserID;
-            }
-        }
-
-        private StringBuilder stringBuilder;
-
-        [NotMapped]
-        public StringBuilder StringBuilder
-        {
-            get
-            {
-                if (stringBuilder == null)
-                    stringBuilder = new StringBuilder();
-                return stringBuilder;
-            }
-        }
-
-        private StringBuilder stringBuilderRaw;
-
-        [NotMapped]
-        public StringBuilder StringBuilderRaw
-        {
-            get
-            {
-                if (stringBuilderRaw == null)
-                    stringBuilderRaw = new StringBuilder();
-                return stringBuilderRaw;
-            }
-        }
 
         public Log()
         {
             this.Screenshots = new HashSet<Screenshot>();
             this.DateCreated = this.DateEnded = DateTime.Now;
+            this.UtcDateCreated = this.UtcDateEnded = DateTime.UtcNow;
         }
 
         public Log(int windowID)
@@ -113,10 +73,11 @@ namespace AppsTracker.Data.Models
 
         public void Finish()
         {
-            if (!_finished)
+            if (!finished)
             {
-                _finished = true;
+                finished = true;
                 DateEnded = DateTime.Now;
+                UtcDateEnded = DateTime.UtcNow;
             }
         }
 
@@ -136,12 +97,18 @@ namespace AppsTracker.Data.Models
         public System.DateTime DateEnded { get; set; }
 
         [Required]
+        public System.DateTime UtcDateCreated { get; set; }
+
+        [Required]
+        public System.DateTime UtcDateEnded { get; set; }
+
+        [Required]
         public int UsageID { get; set; }
+
+        public virtual ICollection<Screenshot> Screenshots { get; set; }
 
         [ForeignKey("WindowID")]
         public virtual Window Window { get; set; }
-
-        public virtual ICollection<Screenshot> Screenshots { get; set; }
 
         [ForeignKey("UsageID")]
         public virtual Usage Usage { get; set; }

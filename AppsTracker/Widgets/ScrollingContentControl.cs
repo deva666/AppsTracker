@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -63,8 +60,8 @@ namespace AppsTracker.Views
 
         private void InitStoryboards()
         {
-            scrollIn = (Storyboard)FindResource("scrollIn");
-            scrollOut = (Storyboard)FindResource("scrollOut");
+            scrollIn = FindResource("scrollIn") as Storyboard;
+            scrollOut = FindResource("scrollOut") as Storyboard;
         }
 
         private void EnqueueNewInfo(string info)

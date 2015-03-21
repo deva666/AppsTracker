@@ -6,18 +6,18 @@
  */
 #endregion
 
-using AppsTracker.Common.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
+using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Hooks
 {
     internal delegate IntPtr KeyboardHookCallback(int code, IntPtr wParam, IntPtr lParam);
 
-    internal sealed class KeyBoardHook : IHook<KeyboardHookArgs>
+    internal sealed class KeyBoardHook : IDisposable
     {
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;

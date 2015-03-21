@@ -10,8 +10,8 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Windows;
-using AppsTracker.Views;
 using AppsTracker.Data.Service;
+using AppsTracker.Views;
 using Microsoft.Win32;
 
 namespace AppsTracker.Controllers

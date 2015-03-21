@@ -21,6 +21,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -98,7 +99,13 @@
                                   Command="{Binding SaveChangesCommand}" />
                 </Button.InputBindings>
             </Button>
-          
+
+            <controls:ScrollingContentControl Grid.Row="6"
+                                              Margin="0,30,0,0"
+                                              InfoContent="{Binding InfoMessage}">
+                <Label Style="{DynamicResource LabelStyle}" />
+            </controls:ScrollingContentControl>
+
             <Button Content="Start screenshot cleaner"
                     HorizontalAlignment="Left"
                     Grid.Row="4"

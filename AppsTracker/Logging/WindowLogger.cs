@@ -32,7 +32,7 @@ namespace AppsTracker.Logging
         private Log currentLog;
 
         private LazyInit<Timer> screenshotTimer;
-        private LazyInit<IHook<WinHookArgs>> winHook;
+        private LazyInit<IWindowNotifier> windowNotifier;
         private LazyInit<System.Threading.Timer> windowCheckTimer;
 
         private Setting settings;
@@ -53,9 +53,9 @@ namespace AppsTracker.Logging
 
         private void InitComponents()
         {
-            winHook = new LazyInit<IHook<WinHookArgs>>(() => new WinHook(),
-                                                                w => w.HookProc += WindowChanged,
-                                                                w => w.HookProc -= WindowChanged);
+            windowNotifier = new LazyInit<IWindowNotifier>(() => new WinHook(),
+                                                                w => w.WindowChanged += OnWindowChanged,
+                                                                w => w.WindowChanged -= OnWindowChanged);
 
             screenshotTimer = new LazyInit<Timer>(() => new Timer()
                                                              {
@@ -89,7 +89,7 @@ namespace AppsTracker.Logging
                 screenshotTimer.Component.Interval = settings.TimerInterval;
 
             isLoggingEnabled =
-                winHook.Enabled =
+                windowNotifier.Enabled =
                     windowCheckTimer.Enabled = settings.LoggingEnabled;
         }
 
@@ -110,7 +110,7 @@ namespace AppsTracker.Logging
                 OnWindowChange(WindowHelper.GetActiveWindowName(), WindowHelper.GetActiveWindowAppInfo());
         }
 
-        private void WindowChanged(object sender, WinHookArgs e)
+        private void OnWindowChanged(object sender, WindowChangedArgs e)
         {
             if (isLoggingEnabled == false)
                 return;
@@ -209,7 +209,7 @@ namespace AppsTracker.Logging
         {
             screenshotTimer.Enabled =
                 windowCheckTimer.Enabled =
-                    winHook.Enabled = false;
+                    windowNotifier.Enabled = false;
 
             StopLogging();
         }

@@ -1,37 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppsTracker.Data.Models
 {
-    public enum AppWarningPeriod
+    public enum WarningSpan
     {
         Day,
         Week,
         Month
     }
 
+    public enum TimeElapsedAction
+    {
+        Warn, 
+        Shutdown,
+        None
+    }
+
     public class AppWarning
     {
-        public AppWarning()
-        {
-            this.Applications = new HashSet<Aplication>();
-        }
-
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AppWarningID { get; set; }
 
         [Required]
-        public AppWarningPeriod Period { get; set; }
+        public int ApplicationID { get; set; }
+
+        [Required]
+        public WarningSpan WarningSpan { get; set; }
 
         [Required]
         public long Limit { get; set; }
 
-        public ICollection<Aplication> Applications { get; set; }
+        [Required]
+        public TimeElapsedAction TimeElapsedAction { get; set; }
+        
+        [Required]
+        [ForeignKey("ApplicationID")]
+        public virtual Aplication Application { get; set; }
     }
 }
