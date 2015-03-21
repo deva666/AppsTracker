@@ -6,15 +6,15 @@
  */
 #endregion
 
-using AppsTracker.Data.Db;
-using AppsTracker.Data.Models;
-using AppsTracker.Data.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using AppsTracker.Data.Db;
+using AppsTracker.Data.Models;
+using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Data.Service
 {
@@ -455,58 +455,6 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<KeystrokeModel> GetKeystrokes(int userID, DateTime dateFrom, DateTime dateTo)
-        {
-            using (var context = new AppsEntities())
-            {
-                var logs = context.Logs.Include(l => l.Window.Application)
-                                        .Include(l => l.Window.Application.User)
-                                        .ToList();
-
-                var filtered = logs.Where(l => l.Window.Application.User.UserID == userID
-                                                                    && l.DateCreated >= dateFrom
-                                                                    && l.DateCreated <= dateTo
-                                                                    && l.Keystrokes != null);
-                return filtered
-                        .GroupBy(l => l.Window.Application.Name)
-                        .Select(g => new KeystrokeModel()
-                        {
-                            AppName = g.Key,
-                            Count = g.Sum(l => l.Keystrokes.Length)
-                        })
-                        .OrderByDescending(k => k.Count)
-                        .ToList();
-            }
-        }
-
-        public IEnumerable<DailyKeystrokeModel> GetKeystrokesByApp(int userID, string appName, DateTime dateFrom, DateTime dateTo)
-        {
-            using (var context = new AppsEntities())
-            {
-                var logs = context.Logs.Include(l => l.Window.Application)
-                                        .Include(l => l.Window.Application.User)
-                                        .ToList();
-
-                var filtered = logs.Where(l => l.Window.Application.User.UserID == userID
-                                             && l.DateCreated >= dateFrom
-                                             && l.DateCreated <= dateTo
-                                             && l.Keystrokes != null
-                                             && l.Window.Application.Name == appName);
-
-                return filtered.GroupBy(l => new
-                                            {
-                                                year = l.DateCreated.Year,
-                                                month = l.DateCreated.Month,
-                                                day = l.DateCreated.Day
-                                            })
-                            .Select(g => new DailyKeystrokeModel()
-                            {
-                                Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
-                                Count = g.Sum(l => l.Keystrokes.Length)
-                            });
-            }
-        }
-
         public IEnumerable<AppDurationOverview> GetAppsUsageSeries(int userID, DateTime dateFrom, DateTime dateTo)
         {
             using (var context = new AppsEntities())
@@ -608,7 +556,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<AllUsersModel> GetAllUsers(DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<UserLoggedTime> GetAllUsers(DateTime dateFrom, DateTime dateTo)
         {
             using (var context = new AppsEntities())
             {
@@ -619,7 +567,7 @@ namespace AppsTracker.Data.Service
                                        .ToList();
 
                 return logins.GroupBy(u => u.User.Name)
-                                .Select(g => new AllUsersModel
+                                .Select(g => new UserLoggedTime
                                                             {
                                                                 Username = g.Key,
                                                                 LoggedInTime = Math.Round(new TimeSpan(g.Sum(l => l.Duration.Ticks)).TotalHours, 1)
@@ -627,7 +575,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<UsageTypeSeries> GetUsageSeries(string username, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<UsageOverview> GetUsageSeries(string username, DateTime dateFrom, DateTime dateTo)
         {
             using (var context = new AppsEntities())
             {
@@ -635,7 +583,7 @@ namespace AppsTracker.Data.Service
                 IEnumerable<Usage> lockeds;
                 IEnumerable<Usage> stoppeds;
 
-                List<UsageTypeSeries> collection = new List<UsageTypeSeries>();
+                List<UsageOverview> collection = new List<UsageOverview>();
 
                 var tempLogins = context.Usages.Where(u => u.User.Name == username
                                                      && u.UsageStart >= dateFrom
@@ -674,7 +622,7 @@ namespace AppsTracker.Data.Service
 
                     var day = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day);
 
-                    UsageTypeSeries series = new UsageTypeSeries()
+                    UsageOverview series = new UsageOverview()
                     {
                         DateInstance = day,
                         Date = day.ToShortDateString()
@@ -702,7 +650,7 @@ namespace AppsTracker.Data.Service
                     loginTime = grp.Sum(l => l.GetDisplayedTicks(day)) - lockedTime - idleTime - stoppedTime;
                     observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(loginTime).TotalHours, 2), UsageType = "Work" });
 
-                    series.DailyUsageTypeCollection = observableCollection;
+                    series.UsageCollection = observableCollection;
                     collection.Add(series);
                 }
 

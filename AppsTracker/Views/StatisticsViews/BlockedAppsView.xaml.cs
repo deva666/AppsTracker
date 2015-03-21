@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AppsTracker.Pages.Views.ChartViews
+namespace AppsTracker.Views.Statistics
 {
     /// <summary>
     /// Interaction logic for BlockedAppsView.xaml

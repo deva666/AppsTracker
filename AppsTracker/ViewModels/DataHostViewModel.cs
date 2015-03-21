@@ -19,12 +19,11 @@ namespace AppsTracker.ViewModels
 
         public DataHostViewModel()
         {
-            this.RegisterChild<AppDetailsViewModel>(() => new AppDetailsViewModel());
-            this.RegisterChild<KeystrokesViewModel>(() => new KeystrokesViewModel());
-            this.RegisterChild<ScreenshotsViewModel>(() => new ScreenshotsViewModel());
-            this.RegisterChild<DaySummaryViewModel>(() => new DaySummaryViewModel());
+            RegisterChild(() => new AppDetailsViewModel());
+            RegisterChild(() => new ScreenshotsViewModel());
+            RegisterChild(() => new DaySummaryViewModel());
 
-            this.SelectedChild = GetChild(typeof(AppDetailsViewModel));
+            SelectedChild = GetChild(typeof(AppDetailsViewModel));
         }
 
     }

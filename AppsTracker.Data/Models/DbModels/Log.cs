@@ -117,45 +117,7 @@ namespace AppsTracker.Data.Models
             {
                 _finished = true;
                 DateEnded = DateTime.Now;
-
-                if (stringBuilder != null)
-                    this.Keystrokes = stringBuilder.ToString();
-                if (stringBuilderRaw != null)
-                    this.KeystrokesRaw = stringBuilderRaw.ToString();
             }
-        }
-
-        public void AppendKeyLog(string str)
-        {
-            this.StringBuilder.Append(str);
-        }
-
-        public void AppendKeyLogRaw(string keyName)
-        {
-            this.StringBuilderRaw.Append(keyName);
-        }
-
-        public void RemoveLastKeyLogItem()
-        {
-            if (stringBuilder != null)
-                if (stringBuilder.Length > 0)
-                    stringBuilder.Remove(stringBuilder.Length - 1, 1);
-        }
-
-        public void AppendNewKeyLogLine()
-        {
-            this.StringBuilder.AppendLine();
-            this.StringBuilderRaw.AppendLine();
-        }
-
-        public void AppendSpace()
-        {
-            this.StringBuilderRaw.Append(" ");
-        }
-
-        public void AppendTab()
-        {
-            this.StringBuilderRaw.Append("\t");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -163,24 +125,24 @@ namespace AppsTracker.Data.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int LogID { get; set; }
+
         [Required]
         public int WindowID { get; set; }
+
         [Required]
         public System.DateTime DateCreated { get; set; }
-        [Column(TypeName = "ntext")]
-        [MaxLength]
-        public string Keystrokes { get; set; }
-        [Column(TypeName = "ntext")]
-        [MaxLength]
-        public string KeystrokesRaw { get; set; }
+
         [Required]
         public System.DateTime DateEnded { get; set; }
+
         [Required]
         public int UsageID { get; set; }
 
         [ForeignKey("WindowID")]
         public virtual Window Window { get; set; }
+
         public virtual ICollection<Screenshot> Screenshots { get; set; }
+
         [ForeignKey("UsageID")]
         public virtual Usage Usage { get; set; }
     }

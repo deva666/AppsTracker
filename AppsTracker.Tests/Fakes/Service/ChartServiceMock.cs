@@ -69,18 +69,6 @@ namespace AppsTracker.Tests.Fakes.Service
             return new List<DailyAppDuration>();
         }
 
-        public IEnumerable<KeystrokeModel> GetKeystrokes(int userID, DateTime dateFrom, DateTime dateTo)
-        {
-            System.Threading.Thread.Sleep(500);
-            return new List<KeystrokeModel>();
-        }
-
-        public IEnumerable<DailyKeystrokeModel> GetKeystrokesByApp(int userID, string appName, DateTime dateFrom, DateTime dateTo)
-        {
-            System.Threading.Thread.Sleep(500);
-            return new List<DailyKeystrokeModel>();
-        }
-
         public IEnumerable<AppDurationOverview> GetAppsUsageSeries(int userID, DateTime dateFrom, DateTime dateTo)
         {
             System.Threading.Thread.Sleep(500);
@@ -99,16 +87,16 @@ namespace AppsTracker.Tests.Fakes.Service
             return new List<DailyScreenshotModel>();
         }
 
-        public IEnumerable<AllUsersModel> GetAllUsers(DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<UserLoggedTime> GetAllUsers(DateTime dateFrom, DateTime dateTo)
         {
             System.Threading.Thread.Sleep(500);
-            return new List<AllUsersModel>();
+            return new List<UserLoggedTime>();
         }
 
-        public IEnumerable<UsageTypeSeries> GetUsageSeries(string username, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<UsageOverview> GetUsageSeries(string username, DateTime dateFrom, DateTime dateTo)
         {
             System.Threading.Thread.Sleep(500);
-            return new List<UsageTypeSeries>();
+            return new List<UsageOverview>();
         }
 
         public Tuple<string, string, string> GetDayInfo(int userID, DateTime dateFrom)

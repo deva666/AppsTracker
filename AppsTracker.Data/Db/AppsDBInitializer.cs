@@ -14,7 +14,6 @@ namespace AppsTracker.Data.Db
     {
         public AppsDBInitializer()
         {
-
         }
 
         public void InitializeDatabase(AppsEntities context)

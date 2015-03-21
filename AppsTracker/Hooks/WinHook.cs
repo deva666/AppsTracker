@@ -68,7 +68,7 @@ namespace AppsTracker.Hooks
             var process = GetProcessFromHandle(hWnd);
             var title = string.IsNullOrEmpty(windowTitleBuilder.ToString()) ? "No Title" : windowTitleBuilder.ToString();
             IAppInfo appInfo = AppInfo.GetAppInfo(process);
-            HookProc.InvokeSafely<WinHookArgs>(this, new WinHookArgs(title, appInfo));
+            HookProc.InvokeSafely(this, new WinHookArgs(title, appInfo));
         }
 
         ~WinHook()

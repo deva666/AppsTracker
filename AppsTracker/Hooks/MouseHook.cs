@@ -55,7 +55,7 @@ namespace AppsTracker.Hooks
 
             mouseStruct = (WinAPI.MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(WinAPI.MSLLHOOKSTRUCT));
 
-            HookProc.InvokeSafely<MouseHookArgs>(this, new MouseHookArgs(mouseStruct.pt, (int)wParam));
+            HookProc.InvokeSafely(this, new MouseHookArgs(mouseStruct.pt, (int)wParam));
 
             return WinAPI.CallNextHookEx(hookID, code, wParam, lParam);
         }

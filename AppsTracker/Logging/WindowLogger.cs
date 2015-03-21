@@ -6,16 +6,16 @@
  */
 #endregion
 
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
+using System.Timers;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.Data.Utils;
 using AppsTracker.Hooks;
 using AppsTracker.MVVM;
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
-using System.Timers;
 
 namespace AppsTracker.Logging
 {
@@ -33,7 +33,6 @@ namespace AppsTracker.Logging
 
         private LazyInit<Timer> screenshotTimer;
         private LazyInit<IHook<WinHookArgs>> winHook;
-        private LazyInit<IHook<KeyboardHookArgs>> keyboardHook;
         private LazyInit<System.Threading.Timer> windowCheckTimer;
 
         private Setting settings;
@@ -58,17 +57,23 @@ namespace AppsTracker.Logging
                                                                 w => w.HookProc += WindowChanged,
                                                                 w => w.HookProc -= WindowChanged);
 
-            keyboardHook = new LazyInit<IHook<KeyboardHookArgs>>(() => new KeyBoardHook(),
-                                                                         k => k.HookProc += KeyPressed,
-                                                                         k => k.HookProc -= KeyPressed);
-
             screenshotTimer = new LazyInit<Timer>(() => new Timer()
                                                              {
                                                                  AutoReset = true,
                                                                  Interval = settings.TimerInterval
                                                              },
-                                                             t => { t.Enabled = true; t.Elapsed += ScreenshotTick; },
-                                                             t => { t.Enabled = false; t.Elapsed -= ScreenshotTick; });
+                                                             onInit:
+                                                             t =>
+                                                             {
+                                                                 t.Enabled = true;
+                                                                 t.Elapsed += ScreenshotTick;
+                                                             },
+                                                             onDispose:
+                                                             t =>
+                                                             {
+                                                                 t.Enabled = false;
+                                                                 t.Elapsed -= ScreenshotTick;
+                                                             });
 
             windowCheckTimer = new LazyInit<System.Threading.Timer>(() => new System.Threading.Timer(s => App.Current.Dispatcher.Invoke(CheckWindowTitle))
                                                                         , t => t.Change(500, 500)
@@ -78,7 +83,6 @@ namespace AppsTracker.Logging
 
         private void ConfigureComponents()
         {
-            keyboardHook.Enabled = (settings.EnableKeylogger && settings.LoggingEnabled);
             screenshotTimer.Enabled = (settings.TakeScreenshots && settings.LoggingEnabled);
 
             if ((settings.TakeScreenshots && settings.LoggingEnabled) && settings.TimerInterval != screenshotTimer.Component.Interval)
@@ -104,24 +108,6 @@ namespace AppsTracker.Logging
 
             if (activeWindowTitle != WindowHelper.GetActiveWindowName())
                 OnWindowChange(WindowHelper.GetActiveWindowName(), WindowHelper.GetActiveWindowAppInfo());
-        }
-
-        private void KeyPressed(object sender, KeyboardHookArgs e)
-        {
-            if (isLoggingEnabled == false || currentLog == null)
-                return;
-
-            lock (@lock)
-            {
-                if (e.KeyCode == 8)
-                    currentLog.RemoveLastKeyLogItem();
-                else if (e.KeyCode == 0x0D)
-                    currentLog.AppendNewKeyLogLine();
-                else
-                    currentLog.AppendKeyLog(e.KeyText);
-
-                currentLog.AppendKeyLogRaw(e.KeyTextRaw);
-            }
         }
 
         private void WindowChanged(object sender, WinHookArgs e)
@@ -221,10 +207,9 @@ namespace AppsTracker.Logging
         SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", Justification = "Setting enabled to false calls Dispose", MessageId = "_windowCheckTimer")]
         public void Dispose()
         {
-            keyboardHook.Enabled =
-                screenshotTimer.Enabled =
-                    windowCheckTimer.Enabled =
-                        winHook.Enabled = false;
+            screenshotTimer.Enabled =
+                windowCheckTimer.Enabled =
+                    winHook.Enabled = false;
 
             StopLogging();
         }
@@ -232,11 +217,6 @@ namespace AppsTracker.Logging
         public void SetComponentEnabled(bool enabled)
         {
             isLoggingEnabled = enabled;
-        }
-
-        public void SetKeyboardHookEnabled(bool enabled)
-        {
-            keyboardHook.CallOn(k => k.EnableHook(enabled));
         }
     }
 }

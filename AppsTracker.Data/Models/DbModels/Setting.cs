@@ -34,7 +34,7 @@ namespace AppsTracker.Data.Models
         OneHour = 3600000
     }
 
-    public class Setting 
+    public class Setting
     {
         [NotMapped]
         public ScreenShotInterval ScreenshotInterval
@@ -42,9 +42,6 @@ namespace AppsTracker.Data.Models
             get { return ((ScreenShotInterval)Enum.Parse(typeof(ScreenShotInterval), TimerInterval.ToString())); }
             set { this.TimerInterval = (double)value; }
         }
-
-        [NotMapped]
-        public bool IsSelected { get; set; }
 
         public Setting() { }
 
@@ -59,14 +56,13 @@ namespace AppsTracker.Data.Models
 
         private void SetInitialSettings()
         {
-            this.EnableKeylogger = false;
             this.IsMasterPasswordSet = false;
-            this.LightTheme = true;
+            this.LightTheme = false;
             this.LoggingEnabled = true;
             this.DeleteOldLogs = true;
             this.OldLogDeleteDays = 15;
             this.RunAtStartup = false;
-            this.TakeScreenshots = true;
+            this.TakeScreenshots = false;
             this.TimerInterval = 2 * 60 * 1000;
             this.WindowOpen = "";
             this.EnableIdle = true;
@@ -103,9 +99,6 @@ namespace AppsTracker.Data.Models
 
         [Required]
         public bool RunAtStartup { get; set; }
-
-        [Required]
-        public bool EnableKeylogger { get; set; }
 
         [Required]
         public bool TakeScreenshots { get; set; }

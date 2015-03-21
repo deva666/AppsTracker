@@ -470,19 +470,7 @@
                     </Label.InputBindings>
                 </Label>
             </customControls:FaderContentControl>
-            <Label ContentStringFormat="Trial version. {0} days left"
-                   Style="{DynamicResource LabelStyle}"
-                   Foreground="White"
-                   FontSize="11"
-                   Margin="20,0,20,0"
-                   Visibility="{Binding UserSettings.Licence, Converter={StaticResource convertBoolToVisReverse}}"
-                   Grid.Column="6"
-                   HorizontalAlignment="Right">
-                <Label.Content>
-                    <Binding Path="UserSettings.TrialStartDate"
-                             Converter="{StaticResource convertTrialDates}" />
-                </Label.Content>
-            </Label>
+            
             <Label ContentStringFormat="DB Size: {0} MB"
                    Style="{DynamicResource LabelStyle}"
                    Foreground="White"

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:AppsTracker"
              xmlns:controls="clr-namespace:AppsTracker.Controls"
              xmlns:viewModels="clr-namespace:AppsTracker.ViewModels"
-             xmlns:views="clr-namespace:AppsTracker.Pages.Views.ChartViews"
+             xmlns:views="clr-namespace:AppsTracker.Views.Statistics"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="300">
@@ -36,22 +36,18 @@
             </Setter>
         </Style>
 
-        <DataTemplate DataType="{x:Type viewModels:Statistics_usersViewModel}">
+        <DataTemplate DataType="{x:Type viewModels:UserStatsViewModel}">
             <views:UsersView />
         </DataTemplate>
         
         <DataTemplate DataType="{x:Type viewModels:AppStatsViewModel}">
-            <views:MostUsedAppsView />
+            <views:AppStatsView />
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModels:Statistics_dailyAppUsageViewModel}">
             <views:DailyAppsUsageView />
         </DataTemplate>
-        
-        <DataTemplate DataType="{x:Type viewModels:Statistics_keystrokesViewModel}">
-            <views:KeystrokesView />
-        </DataTemplate>
-        
+                
         <DataTemplate DataType="{x:Type viewModels:Statistics_screenshotsViewModel}">
             <views:ScreenshotsView />
         </DataTemplate>
@@ -83,7 +79,7 @@
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="{x:Type viewModels:Statistics_usersViewModel}">
+                                      CommandParameter="{x:Type viewModels:UserStatsViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>
@@ -106,17 +102,7 @@
                                       CommandParameter="{x:Type viewModels:Statistics_dailyAppUsageViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
-                </Label>
-                <Label Content="KEYSTROKES"
-                       HorizontalAlignment="Left"
-                       Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=KEYSTROKES}">
-                    <Label.InputBindings>
-                        <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding ChangePageCommand}"
-                                      CommandParameter="{x:Type viewModels:Statistics_keystrokesViewModel}">
-                        </MouseBinding>
-                    </Label.InputBindings>
-                </Label>
+                </Label>               
                 <Label Content="SCREENSHOTS"
                        HorizontalAlignment="Left"
                        Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=SCREENSHOTS}">

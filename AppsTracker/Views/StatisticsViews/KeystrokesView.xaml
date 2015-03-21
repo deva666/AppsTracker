@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="AppsTracker.Pages.Views.ChartViews.KeystrokesView"
+﻿<UserControl x:Class="AppsTracker.Views.Statistics.KeystrokesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:AppsTracker"
              xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
              xmlns:controls="clr-namespace:AppsTracker.Controls"
-             xmlns:cViews="clr-namespace:AppsTracker.Pages.Views.ChartViews"
+             xmlns:cViews="clr-namespace:AppsTracker.Views.Statistics"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="300">

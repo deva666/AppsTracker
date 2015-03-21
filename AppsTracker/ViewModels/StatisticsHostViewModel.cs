@@ -16,13 +16,12 @@ namespace AppsTracker.ViewModels
 
         public StatisticsHostViewModel()
         {
-            RegisterChild<Statistics_usersViewModel>(() => new Statistics_usersViewModel());
-            RegisterChild<AppStatsViewModel>(() => new AppStatsViewModel());
-            RegisterChild<Statistics_dailyAppUsageViewModel>(() => new Statistics_dailyAppUsageViewModel());
-            RegisterChild<Statistics_keystrokesViewModel>(() => new Statistics_keystrokesViewModel());
-            RegisterChild<Statistics_screenshotsViewModel>(() => new Statistics_screenshotsViewModel());
+            RegisterChild(() => new UserStatsViewModel());
+            RegisterChild(() => new AppStatsViewModel());
+            RegisterChild(() => new Statistics_dailyAppUsageViewModel());
+            RegisterChild(() => new Statistics_screenshotsViewModel());
 
-            SelectedChild = GetChild(typeof(Statistics_usersViewModel));
+            SelectedChild = GetChild(typeof(UserStatsViewModel));
         }
     }
 }

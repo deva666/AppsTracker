@@ -39,13 +39,6 @@ namespace AppsTracker.Controllers
                 comp.SettingsChanged(settings);
         }
 
-        public void ToggleKeyboardHook(bool enabled)
-        {
-            var windowLogger = components.FirstOrDefault(c => c.GetType() == typeof(WindowLogger)) as WindowLogger;
-            if (windowLogger != null)
-                windowLogger.SetKeyboardHookEnabled(enabled);
-        }
-
         public void Dispose()
         {
             OnAll(l => l.Dispose());

@@ -284,11 +284,10 @@
     <Compile Include="ViewModels\SettingsPasswordViewModel.cs" />
     <Compile Include="ViewModels\SettingsScreenshotsViewModel.cs" />
     <Compile Include="ViewModels\StatisticsHostViewModel.cs" />
-    <Compile Include="ViewModels\Statistics_appUsageViewModel.cs" />
+    <Compile Include="ViewModels\AppStatsViewModel.cs" />
     <Compile Include="ViewModels\Statistics_dailyAppUsageViewModel.cs" />
-    <Compile Include="ViewModels\Statistics_keystrokesViewModel.cs" />
     <Compile Include="ViewModels\Statistics_screenshotsViewModel.cs" />
-    <Compile Include="ViewModels\Statistics_usersViewModel.cs" />
+    <Compile Include="ViewModels\UserStatsViewModel.cs" />
     <Compile Include="Views\AppOverView.xaml.cs">
       <DependentUpon>AppOverView.xaml</DependentUpon>
     </Compile>
@@ -348,7 +347,6 @@
     <Compile Include="Hooks\MouseHook.cs" />
     <Compile Include="MVVM\WeakAction.cs" />
     <Compile Include="ViewModels\AppDetailsViewModel.cs" />
-    <Compile Include="ViewModels\KeystrokesViewModel.cs" />
     <Compile Include="ViewModels\ScreenshotsViewModel.cs" />
     <Compile Include="ViewModels\SettingsHostViewModel.cs" />
     <Compile Include="ViewModels\Settings_generalViewModel.cs" />
@@ -371,8 +369,8 @@
     <Compile Include="Views\StatisticsViews\KeystrokesView.xaml.cs">
       <DependentUpon>KeystrokesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StatisticsViews\MostUsedAppsView.xaml.cs">
-      <DependentUpon>MostUsedAppsView.xaml</DependentUpon>
+    <Compile Include="Views\StatisticsViews\AppStatsView.xaml.cs">
+      <DependentUpon>AppStatsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StatisticsViews\ScreenshotsByDayView.xaml.cs">
       <DependentUpon>ScreenshotsByDayView.xaml</DependentUpon>
@@ -388,9 +386,6 @@
     </Compile>
     <Compile Include="Views\AppDetailsView.xaml.cs">
       <DependentUpon>AppDetailsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\KeylogsView.xaml.cs">
-      <DependentUpon>KeylogsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScreenshotsView.xaml.cs">
       <DependentUpon>ScreenshotsView.xaml</DependentUpon>
@@ -590,7 +585,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StatisticsViews\MostUsedAppsView.xaml">
+    <Page Include="Views\StatisticsViews\AppStatsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -619,10 +614,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AppDetailsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\KeylogsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

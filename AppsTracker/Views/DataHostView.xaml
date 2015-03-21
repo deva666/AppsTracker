@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:AppsTracker"
              xmlns:controls="clr-namespace:AppsTracker.Controls"
              xmlns:vModels="clr-namespace:AppsTracker.ViewModels"             
-             xmlns:views="clr-namespace:AppsTracker.Pages.Views"
              xmlns:v="clr-namespace:AppsTracker.Views"
              mc:Ignorable="d"
              d:DesignHeight="300"
@@ -25,10 +24,6 @@
 
         <DataTemplate DataType="{x:Type vModels:AppDetailsViewModel}">
             <v:AppDetailsView/>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type vModels:KeystrokesViewModel}">
-            <v:KeylogsView />
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type vModels:ScreenshotsViewModel}">
@@ -56,15 +51,6 @@
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
                                       CommandParameter="{x:Type vModels:AppDetailsViewModel}">
-                        </MouseBinding>
-                    </Label.InputBindings>
-                </Label>
-                <Label Content="KEYSTROKES"
-                       Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=KEYSTROKES}">
-                    <Label.InputBindings>
-                        <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding ChangePageCommand}"
-                                      CommandParameter="{x:Type vModels:KeystrokesViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>

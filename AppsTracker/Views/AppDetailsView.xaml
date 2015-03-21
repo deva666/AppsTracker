@@ -72,12 +72,7 @@
                     HorizontalAlignment="Center">
             <Label Style="{DynamicResource LabelStyle}"
                    FontSize="16"
-                   Content="Apps">
-                <Label.InputBindings>
-                    <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding SortViewCommand}"
-                                  CommandParameter="Name" />
-                </Label.InputBindings>
+                   Content="Apps">              
             </Label>
 
         </StackPanel>

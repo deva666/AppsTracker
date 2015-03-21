@@ -19,22 +19,10 @@ namespace AppsTracker.Data.Models
         public double Duration { get; set; }
     }
 
-    public class AllUsersModel
+    public class UserLoggedTime
     {
         public string Username { get; set; }
         public double LoggedInTime { get; set; }
-    }
-
-    public struct BlockedAppModel
-    {
-        public string AppName { get; set; }
-        public int Count { get; set; }
-    }
-
-    public class KeystrokeModel
-    {
-        public string AppName { get; set; }
-        public int Count { get; set; }
     }
 
     public class ScreenshotModel
@@ -61,11 +49,11 @@ namespace AppsTracker.Data.Models
         public double Time { get; set; }
     }
 
-    public struct UsageTypeSeries
+    public struct UsageOverview
     {
         public string Date { get; set; }
         public DateTime DateInstance { get; set; }
-        public ObservableCollection<UsageSummary> DailyUsageTypeCollection { get; set; }
+        public ObservableCollection<UsageSummary> UsageCollection { get; set; }
     }
 
     public struct UsageByTime
@@ -80,33 +68,15 @@ namespace AppsTracker.Data.Models
         public ObservableCollection<WindowSummary> DailyUsageTypeCollection { get; set; }
     }
 
-    public struct DailyBlockedAppModel
-    {
-        public string Date { get; set; }
-        public int Count { get; set; }
-    }
-
     public struct DailyAppDuration
     {
         public string Date { get; set; }
         public double Duration { get; set; }
     }
 
-    public struct DailyKeystrokeModel
-    {
-        public string Date { get; set; }
-        public int Count { get; set; }
-    }
-
     public struct DailyScreenshotModel
     {
         public string Date { get; set; }
-        public int Count { get; set; }
-    }
-
-    public struct FilewatcherModel
-    {
-        public string Event { get; set; }
         public int Count { get; set; }
     }
 

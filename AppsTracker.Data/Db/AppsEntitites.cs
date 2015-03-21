@@ -6,8 +6,6 @@
  */
 #endregion
 
-using System;
-using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using AppsTracker.Data.Models;
@@ -23,6 +21,7 @@ namespace AppsTracker.Data.Db
         public AppsEntities()
             : base(_connectionString)
         {
+            Database.SetInitializer<AppsEntities>(new DropCreateDatabaseIfModelChanges<AppsEntities>());
 #if DEBUG
             Database.Log = FlushSql;
 #endif

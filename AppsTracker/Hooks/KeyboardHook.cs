@@ -90,7 +90,7 @@ namespace AppsTracker.Hooks
                     {
                         string keyTextRaw;
                         keycodeMap.TryGetValue(keybStruct.vkCode, out keyTextRaw);
-                        HookProc.InvokeSafely<KeyboardHookArgs>(this, new KeyboardHookArgs(keybStruct.vkCode, builder.ToString(), keyTextRaw));
+                        HookProc.InvokeSafely(this, new KeyboardHookArgs(keybStruct.vkCode, builder.ToString(), keyTextRaw));
                     }
                 }
             }

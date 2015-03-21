@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="AppsTracker.Pages.Views.ChartViews.UsersView"
+﻿<UserControl x:Class="AppsTracker.Views.Statistics.UsersView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:AppsTracker"
              xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
              xmlns:controls="clr-namespace:AppsTracker.Controls"
-             xmlns:cViews="clr-namespace:AppsTracker.Pages.Views.ChartViews"
+             xmlns:cViews="clr-namespace:AppsTracker.Views.Statistics"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="300">
@@ -20,11 +20,11 @@
                   VerticalScrollBarVisibility="Auto">
         <Grid>
             <controls:FaderContentControl FadeVertically="False"
-                                          FaderVisibility="{Binding AllUsersModel, Converter={StaticResource convertNullToBoolBack}}">
+                                          FaderVisibility="{Binding SelectedUser, Converter={StaticResource convertNullToBoolBack}}">
                 <chart:ClusteredColumnChart ChartTitle="Users"
                                             ChartSubTitle="Total logged time in hours (select item to view details)"
                                             Style="{StaticResource MinimalChartStyle}"
-                                            SelectedItem="{Binding AllUsersModel, Mode=TwoWay}"
+                                            SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
                                             BorderBrush="{DynamicResource WindowBorderBrush}"
                                             BorderThickness="1"
                                             Margin="10,10,10,20"
@@ -35,13 +35,13 @@
                         <chart:ChartSeries SeriesTitle="Users"
                                            DisplayMember="Username"
                                            ValueMember="LoggedInTime"
-                                           ItemsSource="{Binding AllUsersList.Result}" />
+                                           ItemsSource="{Binding UsersList.Result}" />
                     </chart:ClusteredColumnChart.Series>
 
                 </chart:ClusteredColumnChart>
             </controls:FaderContentControl>
             <controls:progressBar Visibility="{Binding Working, Converter={StaticResource convertVisibility}}" />
-            <controls:FaderContentControl FaderVisibility="{Binding AllUsersModel, Converter={StaticResource convertNullToBool}}">
+            <controls:FaderContentControl FaderVisibility="{Binding SelectedUser, Converter={StaticResource convertNullToBool}}">
                 <cViews:UsageView />
             </controls:FaderContentControl>
         </Grid>
