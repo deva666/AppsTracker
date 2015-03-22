@@ -54,8 +54,8 @@ namespace AppsTracker.Logging
         private void InitComponents()
         {
             windowNotifier = new LazyInit<IWindowNotifier>(() => new WinHook(),
-                                                                w => w.WindowChanged += OnWindowChanged,
-                                                                w => w.WindowChanged -= OnWindowChanged);
+                                                                w => w.WindowChanged += WindowChanging,
+                                                                w => w.WindowChanged -= WindowChanging);
 
             screenshotTimer = new LazyInit<Timer>(() => new Timer()
                                                              {
@@ -110,7 +110,7 @@ namespace AppsTracker.Logging
                 OnWindowChange(WindowHelper.GetActiveWindowName(), WindowHelper.GetActiveWindowAppInfo());
         }
 
-        private void OnWindowChanged(object sender, WindowChangedArgs e)
+        private void WindowChanging(object sender, WindowChangedArgs e)
         {
             if (isLoggingEnabled == false)
                 return;

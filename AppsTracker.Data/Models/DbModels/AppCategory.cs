@@ -8,9 +8,6 @@ namespace AppsTracker.Data.Models
     public class AppCategory
     {
         [NotMapped]
-        public bool IsSelected { get; set; }
-
-        [NotMapped]
         public ObservableCollection<Aplication> ObservableApplications { get; set; }
 
         public AppCategory()

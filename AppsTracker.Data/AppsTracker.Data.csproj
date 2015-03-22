@@ -109,7 +109,6 @@
     <Compile Include="Models\DbModels\Screenshot.cs" />
     <Compile Include="Models\DbModels\Setting.cs" />
     <Compile Include="Models\DbModels\Usage.cs" />
-    <Compile Include="Models\DbModels\UsageType.cs" />
     <Compile Include="Models\DbModels\Uzer.cs" />
     <Compile Include="Models\DbModels\Window.cs" />
     <Compile Include="Models\ViewModels\ViewModels.cs" />

@@ -117,7 +117,8 @@
                                      Margin="10"
                                      Width="150"
                                      Text="{Binding NewCategoryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     Background="{DynamicResource WindowBackgroundBrush}" />
+                                     Background="{DynamicResource WindowBackgroundBrush}"
+                                     MaxLength="20"/>
                             <StackPanel Orientation="Horizontal"
                                         Grid.Row="2">
                                 <Button Content="Save">

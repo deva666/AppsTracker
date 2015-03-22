@@ -13,11 +13,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppsTracker.Data.Models
 {
+    public enum UsageTypes : byte
+    {
+        Login,
+        Idle,
+        Locked,
+        Stopped
+    }
+
    public class Usage
    {
-      [NotMapped]
-      public bool IsSelected { get; set; }
-
       [NotMapped]
       public TimeSpan Duration
       {
@@ -99,14 +104,9 @@ namespace AppsTracker.Data.Models
          return 0;
       }
 
-
-
       [Key]
       [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
       public int UsageID { get; set; }
-
-      //[Required]
-      //public int UsageTypeID { get; set; }
 
       [Required]
       public int UserID { get; set; }
@@ -124,9 +124,6 @@ namespace AppsTracker.Data.Models
       public UsageTypes UsageType { get; set; }
 
       public Nullable<int> SelfUsageID { get; set; }
-
-      //[ForeignKey("UsageTypeID")]
-      //public virtual UsageType UsageType { get; set; }
 
       [ForeignKey("UserID")]
       public virtual Uzer User { get; set; }
