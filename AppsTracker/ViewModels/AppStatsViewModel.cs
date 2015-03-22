@@ -18,7 +18,7 @@ namespace AppsTracker.ViewModels
 {
     internal sealed class AppStatsViewModel : ViewModelBase, ICommunicator
     {
-        private readonly IChartService chartService;
+        private readonly IStatsService statsService;
 
         public override string Title
         {
@@ -69,7 +69,7 @@ namespace AppsTracker.ViewModels
 
         public AppStatsViewModel()
         {
-            chartService = ServiceFactory.Get<IChartService>();
+            statsService = ServiceFactory.Get<IStatsService>();
 
             appsList = new AsyncProperty<IEnumerable<AppDuration>>(GetApps, this);
             dailyAppList = new AsyncProperty<IEnumerable<DailyAppDuration>>(GetDailyApp, this);
@@ -84,7 +84,7 @@ namespace AppsTracker.ViewModels
         }
         private IEnumerable<AppDuration> GetApps()
         {
-            return chartService.GetAppsDuration(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
+            return statsService.GetAppsDuration(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
         }
 
         private IEnumerable<DailyAppDuration> GetDailyApp()
@@ -93,7 +93,7 @@ namespace AppsTracker.ViewModels
             if (app == null)
                 return null;
 
-            return chartService.GetAppDurationByDate(Globals.SelectedUserID, app.Name, Globals.DateFrom, Globals.DateTo);
+            return statsService.GetAppDurationByDate(Globals.SelectedUserID, app.Name, Globals.DateFrom, Globals.DateTo);
         }
     }
 }

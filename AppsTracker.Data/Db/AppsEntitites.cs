@@ -46,15 +46,6 @@ namespace AppsTracker.Data.Db
                     m.ToTable("ApplicationCategories");
                 });
 
-            //modelBuilder.Entity<Aplication>().
-            //    HasMany(a => a.Warnings)
-            //    .WithMany(w => w.Applications)
-            //    .Map(m =>
-            //    {
-            //        m.MapLeftKey("ApplicationID");
-            //        m.MapRightKey("AppWarningID");
-            //        m.ToTable("ApplicationWarnings");
-            //    });
             base.OnModelCreating(modelBuilder);
         }
 

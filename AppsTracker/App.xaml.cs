@@ -6,7 +6,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
@@ -64,7 +63,7 @@ namespace AppsTracker
             ServiceFactory.Register<IXmlSettingsService>(() => XmlSettingsService.Instance);
             ServiceFactory.Register<IDataService>(() => new DataService());
             ServiceFactory.Register<ILoggingService>(() => new LoggingService());
-            ServiceFactory.Register<IChartService>(() => new ChartService());
+            ServiceFactory.Register<IStatsService>(() => new StatsService());
             ServiceFactory.Register<ICategoriesService>(() => new CategoriesService());
         }
 
@@ -84,8 +83,7 @@ namespace AppsTracker
             try
             {
                 FileLogger.Instance.Log(e.Exception);
-                MessageWindow messageWindow = new MessageWindow("Ooops, this is awkward ... something went wrong." +
-                       Environment.NewLine + "The app needs to close." + Environment.NewLine + "Error: " + e.Exception.Message);
+                MessageWindow messageWindow = new MessageWindow(e.Exception);
                 messageWindow.ShowDialog();
             }
             finally

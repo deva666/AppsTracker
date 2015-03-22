@@ -22,7 +22,7 @@
                                       SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                                       BorderBrush="{DynamicResource WindowBorderBrush}"
                                       BorderThickness="1"
-                                      SeriesSource="{Binding DailyUsedAppsList.Result}"
+                                      SeriesSource="{Binding AppsList.Result}"
                                       Margin="10,10,10,20"
                                       Width="Auto"
                                       Height="Auto">

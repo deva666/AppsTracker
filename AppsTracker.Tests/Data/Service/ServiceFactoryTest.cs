@@ -28,7 +28,7 @@ namespace AppsTracker.Tests.DAL.Service
         public void TestRegisterMethod()
         {
             Assert.IsInstanceOfType(ServiceFactory.Get<IDataService>(), typeof(AppsServiceMock), "IAppsService type don't match");
-            Assert.IsInstanceOfType(ServiceFactory.Get<IChartService>(), typeof(ChartServiceMock), "IChartService type don't match");
+            Assert.IsInstanceOfType(ServiceFactory.Get<IStatsService>(), typeof(statsServiceMock), "IStatsService type don't match");
         }      
     }
 }

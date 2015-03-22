@@ -62,12 +62,6 @@ namespace AppsTracker.Data.Models
         public ObservableCollection<UsageSummary> UsageSummaryCollection { get; set; }
     }
 
-    //public struct DailyTopWindowSeries
-    //{
-    //    public string Date { get; set; }
-    //    public ObservableCollection<WindowSummary> DailyUsageTypeCollection { get; set; }
-    //}
-
     public struct DailyAppDuration
     {
         public string Date { get; set; }

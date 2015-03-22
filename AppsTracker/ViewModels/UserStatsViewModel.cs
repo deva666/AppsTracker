@@ -17,7 +17,7 @@ namespace AppsTracker.ViewModels
 {
     internal sealed class UserStatsViewModel : ViewModelBase, ICommunicator
     {
-        private readonly IChartService chartService;
+        private readonly IStatsService statsService;
 
         public override string Title
         {
@@ -66,7 +66,7 @@ namespace AppsTracker.ViewModels
 
         public UserStatsViewModel()
         {
-            chartService = ServiceFactory.Get<IChartService>();
+            statsService = ServiceFactory.Get<IStatsService>();
 
             usersList = new AsyncProperty<IEnumerable<UserLoggedTime>>(GetContent, this);
             dailyUsageList = new AsyncProperty<IEnumerable<UsageOverview>>(GetSubContent, this);
@@ -82,7 +82,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<UserLoggedTime> GetContent()
         {
-            return chartService.GetAllUsers(Globals.DateFrom, Globals.DateTo);
+            return statsService.GetAllUsers(Globals.DateFrom, Globals.DateTo);
         }
 
         private IEnumerable<UsageOverview> GetSubContent()
@@ -91,7 +91,7 @@ namespace AppsTracker.ViewModels
             if (model == null)
                 return null;
 
-            return chartService.GetUsageSeries(model.Username, Globals.DateFrom, Globals.DateTo);
+            return statsService.GetUsageSeries(model.Username, Globals.DateFrom, Globals.DateTo);
         }
 
         private void ReturnFromDetailedView()

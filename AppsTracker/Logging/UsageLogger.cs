@@ -25,7 +25,7 @@ namespace AppsTracker.Logging
         private Usage currentUsageLogin;
         private Usage currentUsageStopped;
 
-        private LazyInit<IdleMonitor> idleMonitor;
+        private LazyInit<IIdleNotifier> idleMonitor;
 
         private Setting settings;
 
@@ -45,7 +45,7 @@ namespace AppsTracker.Logging
         {
             InitLogin();
 
-            idleMonitor = new LazyInit<IdleMonitor>(() => new IdleMonitor(),
+            idleMonitor = new LazyInit<IIdleNotifier>(() => new IdleMonitor(),
                                                             m =>
                                                             {
                                                                 m.IdleEntered += IdleEntered;
@@ -105,6 +105,7 @@ namespace AppsTracker.Logging
             currentUsageIdle = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
             Mediator.NotifyColleagues(MediatorMessages.STOP_LOGGING);
         }
+
         private void PowerModeChanged(object sender, Microsoft.Win32.PowerModeChangedEventArgs e)
         {
             switch (e.Mode)
@@ -215,11 +216,6 @@ namespace AppsTracker.Logging
         public IMediator Mediator
         {
             get { return MVVM.Mediator.Instance; }
-        }
-
-        public void SetComponentEnabled(bool enabled)
-        {
-            isLoggingEnabled = enabled;
         }
 
     }

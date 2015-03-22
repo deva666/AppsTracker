@@ -27,11 +27,6 @@ namespace AppsTracker.Logging
                 _cleaner.Component.Days = settings.OldLogDeleteDays;
         }
 
-        public void SetComponentEnabled(bool enabled)
-        {
-            _cleaner.Enabled = enabled;
-        }
-
         public void Dispose()
         {
         }

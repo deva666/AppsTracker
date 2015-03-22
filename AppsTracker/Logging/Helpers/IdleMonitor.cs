@@ -7,7 +7,7 @@ using AppsTracker.Hooks;
 
 namespace AppsTracker.Logging
 {
-    public class IdleMonitor : IDisposable
+    public class IdleMonitor : IIdleNotifier
     {
         private readonly ISqlSettingsService settingsService;
 
@@ -44,7 +44,6 @@ namespace AppsTracker.Logging
                     {
                         keyboardHookHandle = WinAPI.SetWindowsHookEx(13, keyboardHookCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
                         mouseHookHandle = WinAPI.SetWindowsHookEx(14, mouseHookCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
-                        Debug.Assert(keyboardHookHandle != IntPtr.Zero && mouseHookHandle != IntPtr.Zero, "Setting hooks failed");
                     }
                 }
                 hooksRemoved = false;
@@ -55,7 +54,7 @@ namespace AppsTracker.Logging
         private IntPtr KeyboardHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0)
-                ResetBase();
+                Reset();
             return WinAPI.CallNextHookEx(keyboardHookHandle, nCode, wParam, lParam);
         }
 
@@ -63,11 +62,11 @@ namespace AppsTracker.Logging
         private IntPtr MouseHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0)
-                ResetBase();
+                Reset();
             return WinAPI.CallNextHookEx(mouseHookHandle, nCode, wParam, lParam);
         }
 
-        private void ResetBase()
+        private void Reset()
         {
             if (!idleEntered)
                 return;

@@ -54,15 +54,6 @@
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>
-                <Label Content="SCREENSHOTS"
-                       Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=SCREENSHOTS}">
-                    <Label.InputBindings>
-                        <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding ChangePageCommand}"
-                                      CommandParameter="{x:Type vModels:ScreenshotsViewModel}">
-                        </MouseBinding>
-                    </Label.InputBindings>
-                </Label>
                 <Label Content="DAY SUMMARY"
                        Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=DAY SUMMARY}">
                     <Label.InputBindings>
@@ -72,7 +63,15 @@
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>
-
+                <Label Content="SCREENSHOTS"
+                       Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=SCREENSHOTS}">
+                    <Label.InputBindings>
+                        <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding ChangePageCommand}"
+                                      CommandParameter="{x:Type vModels:ScreenshotsViewModel}">
+                        </MouseBinding>
+                    </Label.InputBindings>
+                </Label>
             </StackPanel>
         </controls:FaderContentControl>
 

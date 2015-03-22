@@ -13,7 +13,7 @@ using AppsTracker.Data.Service;
 
 namespace AppsTracker.Tests.Fakes.Service
 {
-    public class ChartServiceMock : IChartService
+    public class statsServiceMock : IStatsService
     {
         public IEnumerable<AppSummary> GetAppSummary(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo)
         {

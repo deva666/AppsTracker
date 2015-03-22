@@ -18,7 +18,7 @@ using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Data.Service
 {
-    public class ChartService : IChartService
+    public class StatsService : IStatsService
     {
         private IEnumerable<Log> _cachedLogs = null;
 

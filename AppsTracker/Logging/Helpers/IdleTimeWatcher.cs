@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppsTracker.Logging
 {
@@ -37,7 +33,7 @@ namespace AppsTracker.Logging
         }
     }
 
-    public class IdleTimeInfo
+    public struct IdleTimeInfo
     {
         public DateTime LastInputTime { get; internal set; }
 

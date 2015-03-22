@@ -14,8 +14,8 @@ namespace AppsTracker.Tests
         {
             if (!ServiceFactory.ContainsKey<IDataService>())
                 ServiceFactory.Register<IDataService>(() => new AppsServiceMock());
-            if (!ServiceFactory.ContainsKey<IChartService>())
-                ServiceFactory.Register<IChartService>(() => new ChartServiceMock());
+            if (!ServiceFactory.ContainsKey<IStatsService>())
+                ServiceFactory.Register<IStatsService>(() => new statsServiceMock());
             if (!ServiceFactory.ContainsKey<ISqlSettingsService>())
                 ServiceFactory.Register<ISqlSettingsService>(() => new SqlSettingsServiceMock());
             if (!ServiceFactory.ContainsKey<IXmlSettingsService>())

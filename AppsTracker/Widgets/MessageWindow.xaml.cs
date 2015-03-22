@@ -1,24 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 
 namespace AppsTracker.Views
 {
-    /// <summary>
-    /// Interaction logic for MessageWindow.xaml
-    /// </summary>
     public partial class MessageWindow : Window
     {
         public MessageWindow()
@@ -51,13 +38,14 @@ namespace AppsTracker.Views
             tbMessage.Text = stringBuilder.ToString();
         }
 
-        public MessageWindow(IEnumerable< Exception> failCollection) :this()
+        public MessageWindow(IEnumerable<Exception> failCollection)
+            : this()
         {
             StringBuilder stringBuilder = new StringBuilder("Ooops, this is awkward ... something went wrong.");
             foreach (var fail in failCollection)
             {
                 stringBuilder.Append(Environment.NewLine);
-                stringBuilder.Append(fail.Message); 
+                stringBuilder.Append(fail.Message);
             }
             tbMessage.Text = stringBuilder.ToString();
         }

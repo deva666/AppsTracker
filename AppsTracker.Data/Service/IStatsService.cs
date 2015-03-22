@@ -13,7 +13,7 @@ using AppsTracker.Data.Models;
 
 namespace AppsTracker.Data.Service
 {
-    public interface IChartService : IBaseService, IDisposable
+    public interface IStatsService : IBaseService, IDisposable
     {
         IEnumerable<AppSummary> GetAppSummary(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo);
         IEnumerable<WindowSummary> GetWindowsSummary(int userID, string appName, IEnumerable<DateTime> dates);

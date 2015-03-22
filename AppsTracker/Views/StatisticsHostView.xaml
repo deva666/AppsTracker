@@ -44,11 +44,11 @@
             <views:AppStatsView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModels:Statistics_dailyAppUsageViewModel}">
+        <DataTemplate DataType="{x:Type viewModels:DailyAppUsageViewModel}">
             <views:DailyAppsUsageView />
         </DataTemplate>
                 
-        <DataTemplate DataType="{x:Type viewModels:Statistics_screenshotsViewModel}">
+        <DataTemplate DataType="{x:Type viewModels:ScreenshotsStatsViewModel}">
             <views:ScreenshotsView />
         </DataTemplate>
 
@@ -99,7 +99,7 @@
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="{x:Type viewModels:Statistics_dailyAppUsageViewModel}">
+                                      CommandParameter="{x:Type viewModels:DailyAppUsageViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>               
@@ -109,7 +109,7 @@
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ChangePageCommand}"
-                                      CommandParameter="{x:Type viewModels:Statistics_screenshotsViewModel}">
+                                      CommandParameter="{x:Type viewModels:ScreenshotsStatsViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>

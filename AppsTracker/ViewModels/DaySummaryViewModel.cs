@@ -19,7 +19,7 @@ namespace AppsTracker.ViewModels
     internal sealed class DaySummaryViewModel : ViewModelBase, ICommunicator
     {
         private readonly IDataService dataService;
-        private readonly IChartService chartService;
+        private readonly IStatsService statsService;
 
         public override string Title
         {
@@ -121,7 +121,7 @@ namespace AppsTracker.ViewModels
         public DaySummaryViewModel()
         {
             dataService = ServiceFactory.Get<IDataService>();
-            chartService = ServiceFactory.Get<IChartService>();
+            statsService = ServiceFactory.Get<IStatsService>();
 
             logsList = new AsyncProperty<IEnumerable<LogSummary>>(GetLogSummary, this);
             appsList = new AsyncProperty<IEnumerable<AppSummary>>(GetAppsSummary, this);
@@ -145,12 +145,12 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<LogSummary> GetLogSummary()
         {
-            return chartService.GetLogSummary(Globals.SelectedUserID, selectedDate);
+            return statsService.GetLogSummary(Globals.SelectedUserID, selectedDate);
         }
 
         private IEnumerable<AppSummary> GetAppsSummary()
         {
-            return chartService.GetAllAppSummaries(Globals.SelectedUserID, selectedDate);
+            return statsService.GetAllAppSummaries(Globals.SelectedUserID, selectedDate);
         }
 
         private IEnumerable<WindowSummary> GetWindowsSummary()
@@ -159,24 +159,24 @@ namespace AppsTracker.ViewModels
             if (model == null)
                 return null;
 
-            return chartService.GetWindowsSummary(Globals.SelectedUserID, model.AppName, selectedDate);
+            return statsService.GetWindowsSummary(Globals.SelectedUserID, model.AppName, selectedDate);
         }
 
         private string GetDayDuration()
         {
-            var tuple = chartService.GetDayInfo(Globals.SelectedUserID, selectedDate);
+            var tuple = statsService.GetDayInfo(Globals.SelectedUserID, selectedDate);
 
             return string.Format("Day start: {0}   -   Day end: {1} \t Total duration: {2}", tuple.Item1, tuple.Item2, tuple.Item3);
         }
 
         private IEnumerable<UsageByTime> GetUsageSummary()
         {
-            return chartService.GetUsageSummary(Globals.SelectedUserID, selectedDate);
+            return statsService.GetUsageSummary(Globals.SelectedUserID, selectedDate);
         }
 
         private IEnumerable<CategoryModel> GetCategories()
         {
-            return chartService.GetCategories(Globals.SelectedUserID, selectedDate);
+            return statsService.GetCategories(Globals.SelectedUserID, selectedDate);
         }
 
         private void SelectedWindowsChanging()

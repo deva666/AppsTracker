@@ -38,8 +38,7 @@ namespace AppsTracker
 
                 System.Windows.Application.Current.Dispatcher.Invoke(new Action(() =>
                 {
-                    MessageWindow messageWindow = new MessageWindow("Ooops, this is awkward ... something went wrong." +
-                        Environment.NewLine + "The app needs to close." + Environment.NewLine + "Error: " + ex.Message);
+                    MessageWindow messageWindow = new MessageWindow(ex);
                     messageWindow.ShowDialog();
                 }));
 

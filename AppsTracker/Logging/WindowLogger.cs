@@ -213,10 +213,5 @@ namespace AppsTracker.Logging
 
             StopLogging();
         }
-
-        public void SetComponentEnabled(bool enabled)
-        {
-            isLoggingEnabled = enabled;
-        }
     }
 }

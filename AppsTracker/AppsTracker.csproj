@@ -185,6 +185,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Hooks\IWindowNotifier.cs" />
     <Compile Include="Logging\AppWatcher.cs" />
+    <Compile Include="Logging\Helpers\IIdleNotifier.cs" />
     <Compile Include="Logging\LoggingStatus.cs" />
     <Compile Include="ViewModels\SettingsAppCategoriesViewModel.cs" />
     <Compile Include="Views\SettingsViews\AppCategoriesView.xaml.cs">
@@ -285,8 +286,8 @@
     <Compile Include="ViewModels\SettingsScreenshotsViewModel.cs" />
     <Compile Include="ViewModels\StatisticsHostViewModel.cs" />
     <Compile Include="ViewModels\AppStatsViewModel.cs" />
-    <Compile Include="ViewModels\Statistics_dailyAppUsageViewModel.cs" />
-    <Compile Include="ViewModels\Statistics_screenshotsViewModel.cs" />
+    <Compile Include="ViewModels\DailyAppUsageViewModel.cs" />
+    <Compile Include="ViewModels\ScreenshotsStatsViewModel.cs" />
     <Compile Include="ViewModels\UserStatsViewModel.cs" />
     <Compile Include="Views\AppOverView.xaml.cs">
       <DependentUpon>AppOverView.xaml</DependentUpon>
@@ -349,8 +350,6 @@
     <Compile Include="ViewModels\AppDetailsViewModel.cs" />
     <Compile Include="ViewModels\ScreenshotsViewModel.cs" />
     <Compile Include="ViewModels\SettingsHostViewModel.cs" />
-    <Compile Include="ViewModels\Settings_generalViewModel.cs" />
-    <Compile Include="ViewModels\Settings_licenseViewModel.cs" />
     <Compile Include="Views\StatisticsViews\AppByDayView.xaml.cs">
       <DependentUpon>AppByDayView.xaml</DependentUpon>
     </Compile>

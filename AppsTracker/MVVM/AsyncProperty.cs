@@ -37,8 +37,7 @@ namespace AppsTracker.MVVM
             }
             private set
             {
-                result = value;
-                PropertyChanging("Result");
+                SetPropertyValue(ref result, value);
             }
         }
 

@@ -6,19 +6,18 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Windows.Input;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.MVVM;
 
-using System;
-using System.Collections.Generic;
-using System.Windows.Input;
-
 namespace AppsTracker.ViewModels
 {
-    internal sealed class Statistics_screenshotsViewModel : ViewModelBase, ICommunicator
+    internal sealed class ScreenshotsStatsViewModel : ViewModelBase, ICommunicator
     {
-        private readonly IChartService chartService;
+        private readonly IStatsService statsService;
 
         public override string Title
         {
@@ -64,12 +63,12 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public Statistics_screenshotsViewModel()
+        public ScreenshotsStatsViewModel()
         {
-            chartService = ServiceFactory.Get<IChartService>();
+            statsService = ServiceFactory.Get<IStatsService>();
 
-            screenshotList = new AsyncProperty<IEnumerable<ScreenshotModel>>(GetContent, this);
-            dailyScreenshotsList = new AsyncProperty<IEnumerable<DailyScreenshotModel>>(GetSubContent, this);
+            screenshotList = new AsyncProperty<IEnumerable<ScreenshotModel>>(GetScreenshots, this);
+            dailyScreenshotsList = new AsyncProperty<IEnumerable<DailyScreenshotModel>>(GetDailyScreenshots, this);
 
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadAll));
         }
@@ -80,18 +79,18 @@ namespace AppsTracker.ViewModels
             dailyScreenshotsList.Reload();
         }
 
-        private IEnumerable<ScreenshotModel> GetContent()
+        private IEnumerable<ScreenshotModel> GetScreenshots()
         {
-            return chartService.GetScreenshots(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
+            return statsService.GetScreenshots(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
         }
 
-        private IEnumerable<DailyScreenshotModel> GetSubContent()
+        private IEnumerable<DailyScreenshotModel> GetDailyScreenshots()
         {
             var model = ScreenshotModel;
             if (model == null)
                 return null;
 
-            return chartService.GetScreenshotsByApp(Globals.SelectedUserID, model.AppName, Globals.DateFrom, Globals.DateTo);
+            return statsService.GetScreenshotsByApp(Globals.SelectedUserID, model.AppName, Globals.DateFrom, Globals.DateTo);
         }
 
         private void ReturnFromDetailedView()

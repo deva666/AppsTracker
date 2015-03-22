@@ -14,6 +14,5 @@ namespace AppsTracker.Logging
     interface IComponent : IDisposable
     {
         void SettingsChanged(Setting settings);
-        void SetComponentEnabled(bool enabled);
     }
 }

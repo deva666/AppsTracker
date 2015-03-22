@@ -18,8 +18,8 @@ namespace AppsTracker.ViewModels
         {
             RegisterChild(() => new UserStatsViewModel());
             RegisterChild(() => new AppStatsViewModel());
-            RegisterChild(() => new Statistics_dailyAppUsageViewModel());
-            RegisterChild(() => new Statistics_screenshotsViewModel());
+            RegisterChild(() => new DailyAppUsageViewModel());
+            RegisterChild(() => new ScreenshotsStatsViewModel());
 
             SelectedChild = GetChild(typeof(UserStatsViewModel));
         }

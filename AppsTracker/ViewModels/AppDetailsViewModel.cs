@@ -19,7 +19,7 @@ namespace AppsTracker.ViewModels
     internal class AppDetailsViewModel : ViewModelBase, ICommunicator
     {
         private readonly IDataService dataService;
-        private readonly IChartService chartService;
+        private readonly IStatsService statsService;
 
         public override string Title
         {
@@ -120,7 +120,7 @@ namespace AppsTracker.ViewModels
         public AppDetailsViewModel()
         {
             dataService = ServiceFactory.Get<IDataService>();
-            chartService = ServiceFactory.Get<IChartService>();
+            statsService = ServiceFactory.Get<IStatsService>();
 
             appList = new AsyncProperty<IEnumerable<Aplication>>(GetApps, this);
             appSummaryList = new AsyncProperty<IEnumerable<AppSummary>>(GetAppSummary, this);
@@ -153,7 +153,7 @@ namespace AppsTracker.ViewModels
             if (app == null)
                 return null;
 
-            return chartService.GetAppSummary(Globals.SelectedUserID, app.ApplicationID, app.Name, Globals.DateFrom, Globals.DateTo);
+            return statsService.GetAppSummary(Globals.SelectedUserID, app.ApplicationID, app.Name, Globals.DateFrom, Globals.DateTo);
         }
 
         private IEnumerable<WindowSummary> GetWindowSummary()
@@ -163,7 +163,7 @@ namespace AppsTracker.ViewModels
                 return null;
 
             var selectedDates = AppSummaryList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
-            return chartService.GetWindowsSummary(Globals.SelectedUserID, selectedApp.AppName, selectedDates);
+            return statsService.GetWindowsSummary(Globals.SelectedUserID, selectedApp.AppName, selectedDates);
         }
 
         private IEnumerable<WindowDurationOverview> GetWindowDuration()
@@ -176,7 +176,7 @@ namespace AppsTracker.ViewModels
             var selectedWindows = WindowSummaryList.Result.Where(w => w.IsSelected).Select(w => w.Title).ToList();
             var selectedDates = AppSummaryList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
 
-            return chartService.GetWindowDurationOverview(Globals.SelectedUserID, selectedApp.AppName, selectedWindows, selectedDates);
+            return statsService.GetWindowDurationOverview(Globals.SelectedUserID, selectedApp.AppName, selectedWindows, selectedDates);
         }
 
 
