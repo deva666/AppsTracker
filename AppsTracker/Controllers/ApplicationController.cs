@@ -137,7 +137,7 @@ ShowEULAWindow();
             {
                 if (mainWindow == null)
                 {
-                    mainWindow = new AppsTracker.MainWindow();
+                    CreateMainWindow();
                     LoadWindowPosition();
                     mainWindow.Show();
                 }
@@ -145,7 +145,7 @@ ShowEULAWindow();
                 {
                     if (!mainWindow.IsLoaded)
                     {
-                        mainWindow = new MainWindow();
+                        CreateMainWindow();
                         LoadWindowPosition();
                         mainWindow.Show();
                     }
@@ -153,6 +153,12 @@ ShowEULAWindow();
                         mainWindow.Activate();
                 }
             }
+        }
+
+        private void CreateMainWindow()
+        {
+            mainWindow = new AppsTracker.MainWindow();
+            mainWindow.Closing += (s, e) => SaveWindowPosition();
         }
 
         private bool CheckPassword()
