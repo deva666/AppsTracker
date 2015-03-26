@@ -22,9 +22,7 @@ namespace AppsTracker
 {
     public partial class App : Application
     {
-        private IApplicationController applicationController;
-
-        private AggregateCatalog catalog;
+        private readonly IApplicationController applicationController;
 
         public App(ReadOnlyCollection<string> args)
         {
@@ -69,7 +67,7 @@ namespace AppsTracker
 
         private CompositionContainer GetCompositionContainer()
         {
-            catalog = new AggregateCatalog();
+            var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
             var container = new CompositionContainer(catalog);
             var batch = new CompositionBatch();

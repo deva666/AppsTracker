@@ -18,23 +18,23 @@ namespace AppsTracker.Data.Service
 
         private ServiceFactory() { }
 
-        public static void Register<T>(Func<T> getter) where T : class, IBaseService
+        public static void Register<T>(Func<T> valueFactory) where T : class, IBaseService
         {
-            Ensure.NotNull(getter);
+            Ensure.NotNull(valueFactory);
             if (serviceMap.ContainsKey(typeof(T)))
                 return;
 
-            serviceMap.Add(typeof(T), getter);
+            serviceMap.Add(typeof(T), valueFactory);
         }
 
         public static T Get<T>() where T : class, IBaseService
         {
-            Func<IBaseService> getter;
-            var success = serviceMap.TryGetValue(typeof(T), out getter);
+            Func<IBaseService> valueFactory;
+            var success = serviceMap.TryGetValue(typeof(T), out valueFactory);
             if (success == false)
                 throw new InvalidOperationException(string.Format("Can't resolve {0}", typeof(T)));
 
-            return (T)getter();
+            return (T)valueFactory();
         }
 
         public static bool ContainsKey<T>() where T : class, IBaseService
