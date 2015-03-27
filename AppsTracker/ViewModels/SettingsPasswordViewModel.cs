@@ -1,8 +1,16 @@
-﻿using AppsTracker.Views;
-using AppsTracker.Hashing;
-using AppsTracker.MVVM;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2015
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
 using System.Windows.Controls;
 using System.Windows.Input;
+using AppsTracker.Hashing;
+using AppsTracker.MVVM;
+using AppsTracker.Views;
 
 namespace AppsTracker.ViewModels
 {

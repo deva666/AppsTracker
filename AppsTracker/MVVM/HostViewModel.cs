@@ -1,7 +1,7 @@
 ﻿#region Licence
 /*
   *  Author: Marko Devcic, madevcic@gmail.com
-  *  Copyright: Marko Devcic, 2014
+  *  Copyright: Marko Devcic, 2015
   *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
  */
 #endregion
@@ -15,11 +15,12 @@ namespace AppsTracker.MVVM
 {
     internal abstract class HostViewModel : ViewModelBase
     {
-        private Dictionary<Type, ViewModelResolver> childrenMap = new Dictionary<Type, ViewModelResolver>();
+        private readonly Dictionary<Type, ViewModelResolver> childrenMap = new Dictionary<Type, ViewModelResolver>();
 
         protected ViewModelBase selectedChild;
 
         protected ICommand changePageCommand;
+
 
         public ViewModelBase SelectedChild
         {
@@ -33,6 +34,7 @@ namespace AppsTracker.MVVM
             }
         }
 
+
         public virtual ICommand ChangePageCommand
         {
             get
@@ -41,10 +43,12 @@ namespace AppsTracker.MVVM
             }
         }
 
+
         protected virtual void ChangePage(object parameter)
         {
             SelectedChild = GetChild((Type)parameter);
         }
+
 
         protected void RegisterChild<T>(Func<T> getter) where T : ViewModelBase
         {
@@ -55,6 +59,7 @@ namespace AppsTracker.MVVM
             var resolver = new ViewModelResolver(getter);
             childrenMap.Add(typeof(T), resolver);
         }
+
 
         protected ViewModelBase GetChild(Type type)
         {
@@ -71,6 +76,7 @@ namespace AppsTracker.MVVM
             }
             return viewModel;
         }
+
 
         private class ViewModelResolver
         {

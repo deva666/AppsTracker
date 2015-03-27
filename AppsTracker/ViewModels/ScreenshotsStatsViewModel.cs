@@ -1,7 +1,7 @@
 ﻿#region Licence
 /*
   *  Author: Marko Devcic, madevcic@gmail.com
-  *  Copyright: Marko Devcic, 2014
+  *  Copyright: Marko Devcic, 2015
   *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
  */
 #endregion
@@ -81,13 +81,6 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public void ReloadAll()
-        {
-            screenshotList.Reload();
-            dailyScreenshotsList.Reload();
-        }
-
-
         private IEnumerable<ScreenshotModel> GetScreenshots()
         {
             return statsService.GetScreenshots(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
@@ -101,6 +94,12 @@ namespace AppsTracker.ViewModels
                 return null;
 
             return statsService.GetScreenshotsByApp(Globals.SelectedUserID, model.AppName, Globals.DateFrom, Globals.DateTo);
+        }
+
+        private void ReloadAll()
+        {
+            screenshotList.Reload();
+            dailyScreenshotsList.Reload();
         }
 
 

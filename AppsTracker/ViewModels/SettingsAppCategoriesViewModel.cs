@@ -1,4 +1,12 @@
-﻿using System.Collections.Generic;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2015
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;

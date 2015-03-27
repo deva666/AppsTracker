@@ -1,7 +1,15 @@
-﻿using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2015
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
 using System.Threading.Tasks;
 using System.Windows.Input;
+using AppsTracker.Data.Models;
+using AppsTracker.Data.Service;
 
 namespace AppsTracker.MVVM
 {
@@ -11,7 +19,9 @@ namespace AppsTracker.MVVM
 
         private ISqlSettingsService settingsService;
 
+        
         private string infoMessage;
+
         public string InfoMessage
         {
             get { return infoMessage; }
@@ -22,23 +32,30 @@ namespace AppsTracker.MVVM
             }
         }
 
+
         private Setting settings;
+
         public Setting Settings
         {
             get { return settings; }
             set { SetPropertyValue(ref settings, value); }
         }
 
+
         private ICommand saveChangesCommand;
+
         public ICommand SaveChangesCommand
         {
             get { return saveChangesCommand ?? (saveChangesCommand = new DelegateCommandAsync(SaveChangesAsync)); }
         }
+
+
         public SettingsBaseViewModel()
         {
             settingsService = ServiceFactory.Get<ISqlSettingsService>();
             Settings = settingsService.Settings;
         }
+
 
         private void SaveChanges()
         {
@@ -46,11 +63,13 @@ namespace AppsTracker.MVVM
             InfoMessage = SETTINGS_SAVED_MSG;
         }
 
+
         private async Task SaveChangesAsync()
         {
             await settingsService.SaveChangesAsync(settings);
             InfoMessage = SETTINGS_SAVED_MSG;
         }
+
 
         protected void SettingsChanging()
         {

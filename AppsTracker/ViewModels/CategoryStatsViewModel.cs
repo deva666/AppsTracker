@@ -1,4 +1,13 @@
-﻿using System.Collections.Generic;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2015
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
@@ -6,7 +15,7 @@ using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class CategoryStatsViewModel : ViewModelBase
+    internal sealed class CategoryStatsViewModel : ViewModelBase, ICommunicator
     {
         private readonly IStatsService statsService;
 
@@ -54,6 +63,11 @@ namespace AppsTracker.ViewModels
             get { return returnFromDetailedViewCommand ?? (returnFromDetailedViewCommand = new DelegateCommand(ReturnFromDetailedView)); }
         }
 
+        public IMediator Mediator
+        {
+            get { return MVVM.Mediator.Instance; }
+        }
+
 
         public CategoryStatsViewModel()
         {
@@ -61,6 +75,7 @@ namespace AppsTracker.ViewModels
 
             categoryList = new AsyncProperty<IEnumerable<CategoryDuration>>(GetCategories, this);
             dailyCategoryList = new AsyncProperty<IEnumerable<DailyCategoryDuration>>(GetDailyCategories, this);
+            Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadAll));
         }
 
 
@@ -78,6 +93,13 @@ namespace AppsTracker.ViewModels
 
             return statsService.GetDailyCategoryStats(Globals.SelectedUserID, category.Name, Globals.DateFrom, Globals.DateTo);
         }
+
+        private void ReloadAll()
+        {
+            categoryList.Reload();
+            dailyCategoryList.Reload();
+        }
+
 
         private void ReturnFromDetailedView()
         {
