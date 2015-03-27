@@ -17,6 +17,7 @@ namespace AppsTracker.ViewModels
             get { return "settings"; }
         }
 
+
         public SettingsHostViewModel()
         {
             RegisterChild<SettingsGeneralViewModel>(() => new SettingsGeneralViewModel());

@@ -24,10 +24,12 @@ namespace AppsTracker.ViewModels
         private int totalItemCount;
         private IEnumerable<Screenshot> screenshotCollection;
 
+
         public override string Title
         {
             get { return "Screenshots"; }
         }
+
 
         public int CurrentIndex
         {
@@ -39,32 +41,32 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         public int TotalItemCount
         {
             get { return totalItemCount; }
             set { SetPropertyValue(ref totalItemCount, value); }
         }
 
+
         public IEnumerable<Screenshot> ScreenshotCollection
         {
             get { return screenshotCollection; }
         }
+
+
         public ICommand CloseCommand
         {
             get { return new DelegateCommand(Close); }
         }
 
-        public ScreenshotViewerViewModel()
-        {
-
-        }
 
         public ScreenshotViewerViewModel(IEnumerable<Screenshot> screenshotCollection)
-            : this()
         {
             this.screenshotCollection = screenshotCollection;
             TotalItemCount = screenshotCollection.Count();
         }
+
 
         private void Close()
         {

@@ -19,20 +19,26 @@ namespace AppsTracker.ViewModels
     {
         private readonly IStatsService statsService;
 
+
         public override string Title
         {
             get { return "SCREENSHOTS"; }
         }
 
+
         public object SelectedItem { get; set; }
 
+
         private ICommand returnFromDetailedViewCommand;
+
         public ICommand ReturnFromDetailedViewCommand
         {
             get { return returnFromDetailedViewCommand ?? (returnFromDetailedViewCommand = new DelegateCommand(ReturnFromDetailedView)); }
         }
 
+
         private ScreenshotModel screenshotModel;
+
         public ScreenshotModel ScreenshotModel
         {
             get { return screenshotModel; }
@@ -45,17 +51,22 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         private readonly AsyncProperty<IEnumerable<ScreenshotModel>> screenshotList;
+
         public AsyncProperty<IEnumerable<ScreenshotModel>> ScreenshotList
         {
             get { return screenshotList; }
         }
 
+
         private readonly AsyncProperty<IEnumerable<DailyScreenshotModel>> dailyScreenshotsList;
+
         public AsyncProperty<IEnumerable<DailyScreenshotModel>> DailyScreenshotsList
         {
             get { return dailyScreenshotsList; }
         }
+
 
         public IMediator Mediator
         {
@@ -73,16 +84,19 @@ namespace AppsTracker.ViewModels
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadAll));
         }
 
+
         public void ReloadAll()
         {
             screenshotList.Reload();
             dailyScreenshotsList.Reload();
         }
 
+
         private IEnumerable<ScreenshotModel> GetScreenshots()
         {
             return statsService.GetScreenshots(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
         }
+
 
         private IEnumerable<DailyScreenshotModel> GetDailyScreenshots()
         {
@@ -92,6 +106,7 @@ namespace AppsTracker.ViewModels
 
             return statsService.GetScreenshotsByApp(Globals.SelectedUserID, model.AppName, Globals.DateFrom, Globals.DateTo);
         }
+
 
         private void ReturnFromDetailedView()
         {

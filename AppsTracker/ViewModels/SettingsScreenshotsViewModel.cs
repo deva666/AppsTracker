@@ -13,14 +13,18 @@ namespace AppsTracker.ViewModels
             get { return "SCREENSHOTS"; }
         }
 
+
         private bool popupIntervalIsOpen = false;
+
         public bool PopupIntervalIsOpen
         {
             get { return popupIntervalIsOpen; }
             set { SetPropertyValue(ref popupIntervalIsOpen, value); }
         }
 
+
         private ICommand changeScreenshotsCommand;
+
         public ICommand ChangeScreenshotsCommand
         {
             get
@@ -29,7 +33,9 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         private ICommand changeScreenshotIntervalCommand;
+
         public ICommand ChangeScreenShotIntervalCommand
         {
             get
@@ -38,7 +44,9 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         private ICommand showPopUpCommand;
+
         public ICommand ShowPopupCommand
         {
             get
@@ -47,7 +55,9 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         private ICommand showFolderBrowserDialogCommand;
+
         public ICommand ShowFolderBrowserDialogCommand
         {
             get
@@ -56,7 +66,9 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         private ICommand runDBCleanerCommand;
+
         public ICommand RunDBCleanerCommand
         {
             get
@@ -64,10 +76,13 @@ namespace AppsTracker.ViewModels
                 return runDBCleanerCommand ?? (runDBCleanerCommand = new DelegateCommand(RunDBCleaner));
             }
         }
+
+
         private void ChangeScreenshots()
         {
             Settings.TakeScreenshots = !Settings.TakeScreenshots;
         }
+
 
         private void ChangeScreenshotInterval(object sourceLabel)
         {
@@ -108,10 +123,12 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         private void ShowPopUp(object popupSource)
         {
             PopupIntervalIsOpen = !popupIntervalIsOpen;
         }
+
 
         private void ShowFolderBrowserDialog(object parameter)
         {
@@ -126,6 +143,7 @@ namespace AppsTracker.ViewModels
             Settings.DefaultScreenshotSavePath = path;
             SettingsChanging();
         }
+
 
         private void RunDBCleaner()
         {

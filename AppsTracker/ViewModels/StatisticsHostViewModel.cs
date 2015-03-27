@@ -14,6 +14,7 @@ namespace AppsTracker.ViewModels
     {
         public override string Title { get { return "statistics"; } }
 
+
         public StatisticsHostViewModel()
         {
             RegisterChild(() => new UserStatsViewModel());

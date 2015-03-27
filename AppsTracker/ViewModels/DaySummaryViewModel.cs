@@ -21,17 +21,21 @@ namespace AppsTracker.ViewModels
         private readonly IDataService dataService;
         private readonly IStatsService statsService;
 
+
         public override string Title
         {
             get { return "DAY SUMMARY"; }
         }
+
 
         public string DayOfWeek
         {
             get { return selectedDate.DayOfWeek.ToString(); }
         }
 
+
         private DateTime selectedDate = DateTime.Today;
+
         public DateTime SelectedDate
         {
             get { return selectedDate; }
@@ -44,14 +48,18 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         private string selectedWindowsDuration;
+
         public string SelectedWindowsDuration
         {
             get { return selectedWindowsDuration; }
             set { SetPropertyValue(ref selectedWindowsDuration, value); }
         }
 
+
         private AppSummary selectedApp;
+
         public AppSummary SelectedApp
         {
             get { return selectedApp; }
@@ -65,58 +73,76 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         private readonly AsyncProperty<string> dayDuration;
+
         public AsyncProperty<string> DayDuration
         {
             get { return dayDuration; }
         }
 
+
         private readonly AsyncProperty<IEnumerable<AppSummary>> appsList;
+
         public AsyncProperty<IEnumerable<AppSummary>> AppsList
         {
             get { return appsList; }
         }
 
+
         private readonly AsyncProperty<IEnumerable<LogSummary>> logsList;
+
         public AsyncProperty<IEnumerable<LogSummary>> LogsList
         {
             get { return logsList; }
         }
 
+
         private readonly AsyncProperty<IEnumerable<WindowSummary>> windowsList;
+
         public AsyncProperty<IEnumerable<WindowSummary>> WindowsList
         {
             get { return windowsList; }
         }
 
+
         private readonly AsyncProperty<IEnumerable<UsageByTime>> usageList;
+
         public AsyncProperty<IEnumerable<UsageByTime>> UsageList
         {
             get { return usageList; }
         }
 
+
         private readonly AsyncProperty<IEnumerable<CategoryModel>> categoryList;
+
         public AsyncProperty<IEnumerable<CategoryModel>> CategoryList
         {
             get { return categoryList; }
         }
 
+
         private ICommand selectedWindowsChangingCommand;
+
         public ICommand SelectedWindowsChangingCommand
         {
             get { return selectedWindowsChangingCommand ?? (selectedWindowsChangingCommand = new DelegateCommand(SelectedWindowsChanging)); }
         }
 
+
         private ICommand changeDateCommand;
+
         public ICommand ChangeDateCommand
         {
             get { return changeDateCommand ?? (changeDateCommand = new DelegateCommand(ChangeDate)); }
         }
 
+
         public IMediator Mediator
         {
             get { return MVVM.Mediator.Instance; }
         }
+
 
         public DaySummaryViewModel()
         {
@@ -133,6 +159,7 @@ namespace AppsTracker.ViewModels
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadContent));
         }
 
+
         private void ReloadContent()
         {
             logsList.Reload();
@@ -143,15 +170,18 @@ namespace AppsTracker.ViewModels
             categoryList.Reload();
         }
 
+
         private IEnumerable<LogSummary> GetLogSummary()
         {
             return statsService.GetLogSummary(Globals.SelectedUserID, selectedDate);
         }
 
+
         private IEnumerable<AppSummary> GetAppsSummary()
         {
             return statsService.GetAllAppSummaries(Globals.SelectedUserID, selectedDate);
         }
+
 
         private IEnumerable<WindowSummary> GetWindowsSummary()
         {
@@ -162,6 +192,7 @@ namespace AppsTracker.ViewModels
             return statsService.GetWindowsSummary(Globals.SelectedUserID, model.AppName, selectedDate);
         }
 
+
         private string GetDayDuration()
         {
             var tuple = statsService.GetDayInfo(Globals.SelectedUserID, selectedDate);
@@ -169,15 +200,18 @@ namespace AppsTracker.ViewModels
             return string.Format("Day start: {0}   -   Day end: {1} \t Total duration: {2}", tuple.Item1, tuple.Item2, tuple.Item3);
         }
 
+
         private IEnumerable<UsageByTime> GetUsageSummary()
         {
             return statsService.GetUsageSummary(Globals.SelectedUserID, selectedDate);
         }
 
+
         private IEnumerable<CategoryModel> GetCategories()
         {
             return statsService.GetCategories(Globals.SelectedUserID, selectedDate);
         }
+
 
         private void SelectedWindowsChanging()
         {
@@ -195,6 +229,7 @@ namespace AppsTracker.ViewModels
             TimeSpan timeSpan = new TimeSpan(ticks);
             SelectedWindowsDuration = string.Format("Selected: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
         }
+
 
         private void ChangeDate(object parameter)
         {

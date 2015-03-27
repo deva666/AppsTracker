@@ -32,43 +32,56 @@ namespace AppsTracker.ViewModels
             get { return "SCREENSHOTS"; }
         }
 
+
         private string infoContent;
+
         public string InfoContent
         {
             get { return infoContent; }
             set { SetPropertyValue(ref infoContent, value); }
         }
 
+
         private DateTime selectedDate;
+
         public DateTime SelectedDate
         {
             get { return selectedDate; }
             set { SetPropertyValue(ref selectedDate, value); }
         }
 
+
         private readonly AsyncProperty<IEnumerable<Log>> logList;
+
         public AsyncProperty<IEnumerable<Log>> LogList
         {
             get { return logList; }
         }
 
+
         private ICommand deleteSelectedScreenshotsCommand;
+
         public ICommand DeleteSelectedScreenshotsCommand
         {
             get { return deleteSelectedScreenshotsCommand ?? (deleteSelectedScreenshotsCommand = new DelegateCommand(DeleteSelectedScreenshots)); }
         }
 
+
         private ICommand openScreenshotViewerCommand;
+
         public ICommand OpenScreenshotViewerCommand
         {
             get { return openScreenshotViewerCommand ?? (openScreenshotViewerCommand = new DelegateCommand(OpenScreenshotViewer)); }
         }
 
+
         private ICommand saveScreenshotCommand;
+
         public ICommand SaveScreenshotCommand
         {
             get { return saveScreenshotCommand ?? (saveScreenshotCommand = new DelegateCommand(SaveScreenshot)); }
         }
+
 
         public IMediator Mediator
         {
@@ -87,6 +100,7 @@ namespace AppsTracker.ViewModels
             SelectedDate = DateTime.Today;
         }
 
+
         private IEnumerable<Log> GetContent()
         {
             return dataService.GetFiltered<Log>(l => l.Screenshots.Count > 0
@@ -96,6 +110,7 @@ namespace AppsTracker.ViewModels
                                                 , l => l.Screenshots
                                                 , l => l.Window.Application);
         }
+
 
         private void OpenScreenshotViewer(object parameter)
         {
@@ -108,6 +123,7 @@ namespace AppsTracker.ViewModels
             window.Show();
 
         }
+
 
         private void DeleteSelectedScreenshots(object parameter)
         {
@@ -122,6 +138,7 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         private void SaveScreenshot(object parameter)
         {
             if (parameter is ObservableCollection<object>)
@@ -130,12 +147,14 @@ namespace AppsTracker.ViewModels
                 SaveSingleScreenshot(parameter as Screenshot);
         }
 
+
         private async void SaveSingleScreenshot(Screenshot screenshot)
         {
             StringBuilder path = new StringBuilder();
             await SaveToFileAsync(path, screenshot.Log, screenshot);
             InfoContent = "Screenshot saved";
         }
+
 
         private async void SaveAllScreenshots(ObservableCollection<object> collection)
         {
@@ -153,6 +172,7 @@ namespace AppsTracker.ViewModels
             Working = false;
             InfoContent = "Screenshots saved";
         }
+
 
         private Task SaveToFileAsync(StringBuilder path, Log log, Screenshot screenshot)
         {

@@ -606,9 +606,9 @@ namespace AppsTracker.Data.Service
                     var usageIDs = grp.Select(u => u.UsageID);
 
                     idles = context.Usages.Where(u => u.SelfUsageID.HasValue
-                                            && usageIDs.Contains(u.SelfUsageID.Value)
-                                            && u.UsageType == UsageTypes.Idle)
-                                            .ToList();
+                                                      && usageIDs.Contains(u.SelfUsageID.Value)
+                                                      && u.UsageType == UsageTypes.Idle)
+                                                      .ToList();
 
                     lockeds = context.Usages.Where(u => u.SelfUsageID.HasValue
                                                       && usageIDs.Contains(u.SelfUsageID.Value)
@@ -679,7 +679,20 @@ namespace AppsTracker.Data.Service
                 var loginEnd = logins.OrderByDescending(l => l.UsageEnd).FirstOrDefault();
 
                 string dayBegin = loginBegin == null ? "N/A" : loginBegin.GetDisplayedStart(fromDay).ToShortTimeString();
-                string dayEnd = (loginEnd == null || loginEnd.IsCurrent) ? "N/A" : loginEnd.GetDisplayedEnd(fromDay).ToShortTimeString();
+                string dayEnd;
+
+                if (loginEnd == null || loginEnd.UsageEnd.Date == today)
+                {
+                    dayEnd = "N/A";
+                }
+                else if (loginEnd.UsageEnd.Date < today)
+                {
+                    dayEnd = "23:59";
+                }
+                else
+                {
+                    dayEnd = loginEnd.GetDisplayedEnd(fromDay).ToShortTimeString();
+                }
 
                 var durationSpan = new TimeSpan(logins.Sum(l => l.Duration.Ticks));
                 var duration = durationSpan.Days > 0 ? string.Format("{0:D2}:{1:D2}:{2:D2}", durationSpan.Days, durationSpan.Hours, durationSpan.Minutes) : string.Format("{0:D2}:{1:D2}", durationSpan.Hours, durationSpan.Minutes);
@@ -699,7 +712,7 @@ namespace AppsTracker.Data.Service
                     .Include(c => c.Applications.Select(a => a.Windows.Select(w => w.Logs)))
                     .Where(c => c.Applications.Count > 0 &&
                            c.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated >= dateFrom).Any() &&
-                          c.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated <= dateTo).Any());
+                           c.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated <= dateTo).Any());
 
                 foreach (var cat in categories)
                 {

@@ -19,14 +19,18 @@ namespace AppsTracker.ViewModels
     {
         private readonly IStatsService statsService;
 
+
         public override string Title
         {
             get { return "USERS"; }
         }
 
+
         public object SelectedItem { get; set; }
 
+
         private UserLoggedTime selectedUser;
+
         public UserLoggedTime SelectedUser
         {
             get { return selectedUser; }
@@ -38,25 +42,33 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         public UsageModel UsageModel { get; set; }
 
+
         private readonly AsyncProperty<IEnumerable<UserLoggedTime>> usersList;
+
         public AsyncProperty<IEnumerable<UserLoggedTime>> UsersList
         {
             get { return usersList; }
         }
 
+
         private readonly AsyncProperty<IEnumerable<UsageOverview>> dailyUsageList;
+
         public AsyncProperty<IEnumerable<UsageOverview>> DailyUsageList
         {
             get { return dailyUsageList; }
         }
 
+
         private ICommand returnFromDetailedViewCommand;
+
         public ICommand ReturnFromDetailedViewCommand
         {
             get { return returnFromDetailedViewCommand ?? (returnFromDetailedViewCommand = new DelegateCommand(ReturnFromDetailedView)); }
         }
+
 
         public IMediator Mediator
         {
@@ -74,25 +86,29 @@ namespace AppsTracker.ViewModels
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadAll));
         }
 
+
         public void ReloadAll()
         {
             usersList.Reload();
             dailyUsageList.Reload();
         }
 
+
         private IEnumerable<UserLoggedTime> GetContent()
         {
             return statsService.GetAllUsers(Globals.DateFrom, Globals.DateTo);
         }
 
+
         private IEnumerable<UsageOverview> GetSubContent()
         {
-            var model = SelectedUser;
-            if (model == null)
+            var user = SelectedUser;
+            if (user == null)
                 return null;
 
-            return statsService.GetUsageSeries(model.Username, Globals.DateFrom, Globals.DateTo);
+            return statsService.GetUsageSeries(user.Username, Globals.DateFrom, Globals.DateTo);
         }
+
 
         private void ReturnFromDetailedView()
         {

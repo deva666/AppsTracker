@@ -17,6 +17,7 @@ namespace AppsTracker.ViewModels
             get { return "data"; }
         }
 
+
         public DataHostViewModel()
         {
             RegisterChild(() => new AppDetailsViewModel());

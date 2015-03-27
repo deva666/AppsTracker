@@ -20,12 +20,15 @@ namespace AppsTracker.ViewModels
     {
         private readonly IStatsService statsService;
 
+
         public override string Title
         {
             get { return "APPS"; }
         }
 
+
         private AppDuration selectedApp;
+
         public AppDuration SelectedApp
         {
             get { return selectedApp; }
@@ -36,36 +39,45 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         public object SelectedItem { get; set; }
 
 
         private readonly AsyncProperty<IEnumerable<AppDuration>> appsList;
+
         public AsyncProperty<IEnumerable<AppDuration>> AppsList
         {
             get { return appsList; }
         }
 
+
         private readonly AsyncProperty<IEnumerable<DailyAppDuration>> dailyAppList;
+
         public AsyncProperty<IEnumerable<DailyAppDuration>> DailyAppList
         {
             get { return dailyAppList; }
         }
 
+
         private ICommand returnFromDetailedViewCommand;
+
         public ICommand ReturnFromDetailedViewCommand
         {
             get { return returnFromDetailedViewCommand ?? (returnFromDetailedViewCommand = new DelegateCommand(ReturnFromDetailedView)); }
         }
+
 
         public IMediator Mediator
         {
             get { return MVVM.Mediator.Instance; }
         }
 
+
         private void ReturnFromDetailedView()
         {
             SelectedApp = null;
         }
+
 
         public AppStatsViewModel()
         {
@@ -77,15 +89,19 @@ namespace AppsTracker.ViewModels
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadAll));
         }
 
+
         private void ReloadAll()
         {
             appsList.Reload();
             dailyAppList.Reload();
         }
+
+
         private IEnumerable<AppDuration> GetApps()
         {
             return statsService.GetAppsDuration(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
         }
+
 
         private IEnumerable<DailyAppDuration> GetDailyApp()
         {

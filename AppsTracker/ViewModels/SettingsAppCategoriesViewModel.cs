@@ -15,12 +15,15 @@ namespace AppsTracker.ViewModels
         private readonly ICategoriesService categoriesService;
         private readonly List<AppCategory> categoriesToDelete = new List<AppCategory>();
 
+
         public override string Title
         {
             get { return "APP CATEGORIES"; }
         }
 
+
         private string infoMessage;
+
         public string InfoMessage
         {
             get { return infoMessage; }
@@ -31,73 +34,99 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         private bool isNewCategoryOpen;
+
         public bool IsNewCategoryOpen
         {
             get { return isNewCategoryOpen; }
             set { SetPropertyValue(ref isNewCategoryOpen, value); }
         }
 
+
         private string newCategoryName;
+
         public string NewCategoryName
         {
             get { return newCategoryName; }
             set { SetPropertyValue(ref newCategoryName, value); }
         }
 
+
         private ObservableCollection<Aplication> applications;
+
         public ObservableCollection<Aplication> Applications
         {
             get { return applications; }
             set { SetPropertyValue(ref applications, value); }
         }
 
+
         private ObservableCollection<AppCategory> categories;
+
         public ObservableCollection<AppCategory> Categories
         {
             get { return categories; }
             set { SetPropertyValue(ref categories, value); }
         }
 
+
         public Aplication UnassignedSelectedApp { get; set; }
+
+
         public Aplication AssignedSelectedApp { get; set; }
+
+
         public AppCategory SelectedCategory { get; set; }
 
+
         private ICommand addNewCategoryCommand;
+
         public ICommand AddNewCategoryCommand
         {
             get { return addNewCategoryCommand ?? (addNewCategoryCommand = new DelegateCommand(AddNewCategory)); }
         }
 
+
         private ICommand showNewCategoryCommand;
+
         public ICommand ShowNewCategoryCommand
         {
             get { return showNewCategoryCommand ?? (showNewCategoryCommand = new DelegateCommand(ShowNewCategory)); }
         }
 
+
         private ICommand saveChangesCommand;
+
         public ICommand SaveChangesCommand
         {
             get { return saveChangesCommand ?? (saveChangesCommand = new DelegateCommand(SaveChanges)); }
         }
 
+
         private ICommand assignAppCommand;
+
         public ICommand AssignAppCommand
         {
             get { return assignAppCommand ?? (assignAppCommand = new DelegateCommand(AssignApp)); }
         }
 
+
         private ICommand removeAppCommand;
+
         public ICommand RemoveAppCommand
         {
             get { return removeAppCommand ?? (removeAppCommand = new DelegateCommand(RemoveApp)); }
         }
 
+
         private ICommand deleteCategoryCommand;
+
         public ICommand DeleteCategoryCommand
         {
             get { return deleteCategoryCommand ?? (deleteCategoryCommand = new DelegateCommand(DeleteCategory)); }
         }
+
 
         private void ShowNewCategory(object parameter)
         {
@@ -107,6 +136,7 @@ namespace AppsTracker.ViewModels
 
             IsNewCategoryOpen = open;
         }
+
 
         private void AddNewCategory(object parameter)
         {
@@ -121,12 +151,14 @@ namespace AppsTracker.ViewModels
             NewCategoryName = null;
         }
 
+
         public SettingsAppCategoriesViewModel()
         {
             categoriesService = ServiceFactory.Get<ICategoriesService>();
             LoadContent();
             Mediator.Instance.Register<Aplication>(MediatorMessages.ApplicationAdded, AppAdded);
         }
+
 
         private void LoadContent()
         {
@@ -137,15 +169,18 @@ namespace AppsTracker.ViewModels
             Applications = new ObservableCollection<Aplication>(unassignedApps);
         }
 
+
         private List<Aplication> GetApps()
         {
             return categoriesService.GetApps();
         }
 
+
         private ObservableCollection<AppCategory> GetCategories()
         {
             return categoriesService.GetCategories();
         }
+
 
         private void AssignApp()
         {
@@ -157,6 +192,7 @@ namespace AppsTracker.ViewModels
             PropertyChanging("Categories.Applications");
         }
 
+
         private void RemoveApp()
         {
             if (AssignedSelectedApp == null || SelectedCategory == null)
@@ -164,6 +200,7 @@ namespace AppsTracker.ViewModels
             Applications.Add(AssignedSelectedApp);
             SelectedCategory.ObservableApplications.Remove(AssignedSelectedApp);
         }
+
 
         private void DeleteCategory()
         {
@@ -173,16 +210,19 @@ namespace AppsTracker.ViewModels
             Categories.Remove(SelectedCategory);
         }
 
+
         private void AppAdded(Aplication app)
         {
             Applications.Add(app);
         }
+
 
         private void SaveChanges()
         {
             categoriesService.SaveChanges(categoriesToDelete, Categories);
             InfoMessage = SETTINGS_SAVED_MSG;
         }
+
 
         //Finalizer is used instead of Dispose becouse Host View Models store all references to child view models as weak refrences and we don't know when the GC is going to kick in and free the resurce 
         ~SettingsAppCategoriesViewModel()

@@ -21,57 +21,74 @@ namespace AppsTracker.ViewModels
         private readonly IDataService dataService;
         private readonly IStatsService statsService;
 
+
         public override string Title
         {
             get { return "APPS"; }
         }
 
+
         private bool isChartVisible;
+
         public bool IsChartVisible
         {
             get { return isChartVisible; }
             set { SetPropertyValue(ref isChartVisible, value); }
         }
 
+
         private string selectedAppsDuration;
+
         public string SelectedAppsDuration
         {
             get { return selectedAppsDuration; }
             set { SetPropertyValue(ref selectedAppsDuration, value); }
         }
 
+
         private string selectedWindowsDuration;
+
         public string SelectedWindowsDuration
         {
             get { return selectedWindowsDuration; }
             set { SetPropertyValue(ref selectedWindowsDuration, value); }
         }
 
+
         private readonly AsyncProperty<IEnumerable<Aplication>> appList;
+
         public AsyncProperty<IEnumerable<Aplication>> AppList
         {
             get { return appList; }
         }
 
+
         private readonly AsyncProperty<IEnumerable<AppSummary>> appSummaryList;
+
         public AsyncProperty<IEnumerable<AppSummary>> AppSummaryList
         {
             get { return appSummaryList; }
         }
 
+
         private readonly AsyncProperty<IEnumerable<WindowSummary>> windowSummaryList;
+
         public AsyncProperty<IEnumerable<WindowSummary>> WindowSummaryList
         {
             get { return windowSummaryList; }
         }
 
+
         private readonly AsyncProperty<IEnumerable<WindowDurationOverview>> windowDurationList;
+
         public AsyncProperty<IEnumerable<WindowDurationOverview>> WindowDurationList
         {
             get { return windowDurationList; }
         }
 
+
         private AppSummary selectedAppSummary;
+
         public AppSummary SelectedAppSummary
         {
             get
@@ -85,7 +102,9 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         private Aplication selectedApp;
+
         public Aplication SelectedApp
         {
             get { return selectedApp; }
@@ -100,22 +119,28 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         private ICommand selectedAppsChangingCommand;
+
         public ICommand SelectedAppsChangingCommand
         {
             get { return selectedAppsChangingCommand ?? (selectedAppsChangingCommand = new DelegateCommand(OverallAppSelectionChanged)); }
         }
 
+
         private ICommand selectedWindowsChangingCommand;
+
         public ICommand SelectedWindowsChangingCommand
         {
             get { return selectedWindowsChangingCommand ?? (selectedWindowsChangingCommand = new DelegateCommand(OverallWindowSelectionChanged)); }
         }
 
+
         public IMediator Mediator
         {
             get { return MVVM.Mediator.Instance; }
         }
+
 
         public AppDetailsViewModel()
         {
@@ -132,11 +157,13 @@ namespace AppsTracker.ViewModels
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(appList.Reload));
         }
 
+
         private void LoadAppsOverall()
         {
             appSummaryList.Reload();
             IsChartVisible = false;
         }
+
 
         private IEnumerable<Aplication> GetApps()
         {
@@ -147,6 +174,7 @@ namespace AppsTracker.ViewModels
                                                            .Distinct();
         }
 
+
         private IEnumerable<AppSummary> GetAppSummary()
         {
             var app = SelectedApp;
@@ -155,6 +183,7 @@ namespace AppsTracker.ViewModels
 
             return statsService.GetAppSummary(Globals.SelectedUserID, app.ApplicationID, app.Name, Globals.DateFrom, Globals.DateTo);
         }
+
 
         private IEnumerable<WindowSummary> GetWindowSummary()
         {
@@ -165,6 +194,7 @@ namespace AppsTracker.ViewModels
             var selectedDates = AppSummaryList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
             return statsService.GetWindowsSummary(Globals.SelectedUserID, selectedApp.AppName, selectedDates);
         }
+
 
         private IEnumerable<WindowDurationOverview> GetWindowDuration()
         {
@@ -188,6 +218,7 @@ namespace AppsTracker.ViewModels
             appSummaryList.Reset();
             windowSummaryList.Reset();
         }
+
 
         private void OverallAppSelectionChanged()
         {
@@ -215,6 +246,7 @@ namespace AppsTracker.ViewModels
             SelectedAppsDuration = string.Format("Selected: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
             windowSummaryList.Reload();
         }
+
 
         private void OverallWindowSelectionChanged()
         {

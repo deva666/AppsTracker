@@ -12,31 +12,41 @@ namespace AppsTracker.ViewModels
         {
             get { return "GENERAL"; }
         }
+
+
         private ICommand showAboutWindowCommand;
+
         public ICommand ShowAboutWindowCommand
         {
             get { return showAboutWindowCommand ?? (showAboutWindowCommand = new DelegateCommand(ShowAboutWindow)); }
         }
 
+
         private ICommand setStartupCommand;
+
         public ICommand SetStartupCommand
         {
             get { return setStartupCommand ?? (setStartupCommand = new DelegateCommand(SetStartup)); }
         }
 
+
         private ICommand changeThemeCommand;
+
         public ICommand ChangeThemeCommand
         {
             get { return changeThemeCommand == null ? changeThemeCommand = new DelegateCommand(ChangeTheme) : changeThemeCommand; }
         }
 
+
         public SettingsGeneralViewModel() : base() { }
+
 
         private void ShowAboutWindow()
         {
             AboutWindow aboutWindow = new AboutWindow();
             aboutWindow.Show();
         }
+
 
         private void SetStartup()
         {
@@ -64,6 +74,7 @@ namespace AppsTracker.ViewModels
             }
             SettingsChanging();
         }
+
 
         private void ChangeTheme(object parameter)
         {

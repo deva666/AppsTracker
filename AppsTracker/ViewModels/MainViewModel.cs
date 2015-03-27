@@ -20,43 +20,54 @@ namespace AppsTracker.ViewModels
         private readonly IDataService dataService;
         private readonly ISqlSettingsService settingsService;
 
+
         private bool isPopupCalendarOpen = false;
+
         public bool IsPopupCalendarOpen
         {
             get { return isPopupCalendarOpen; }
             set { SetPropertyValue(ref isPopupCalendarOpen, value); }
         }
 
+
         private bool isPopupUsersOpen = false;
+
         public bool IsPopupUsersOpen
         {
             get { return isPopupUsersOpen; }
             set { SetPropertyValue(ref isPopupUsersOpen, value); }
         }
 
+
         private bool isFilterApplied = false;
+
         public bool IsFilterApplied
         {
             get { return isFilterApplied; }
             set { SetPropertyValue(ref isFilterApplied, value); }
         }
 
+
         public override string Title
         {
             get { return "apps tracker"; }
         }
 
+
         private object toSettings;
+
         public object ToSettings
         {
             get { return toSettings; }
             set { SetPropertyValue(ref toSettings, value); }
         }
 
+
         public decimal DBSize
         {
             get { return Globals.GetDBSize(); }
         }
+
 
         public DateTime DateFrom
         {
@@ -72,6 +83,7 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         public DateTime DateTo
         {
             get { return Globals.DateTo; }
@@ -86,12 +98,15 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         private string userName;
+
         public string UserName
         {
             get { return Globals.SelectedUserName; }
             set { SetPropertyValue(ref userName, value); }
         }
+
 
         public Setting UserSettings
         {
@@ -100,6 +115,7 @@ namespace AppsTracker.ViewModels
                 return settingsService.Settings;
             }
         }
+
 
         public Uzer User
         {
@@ -118,7 +134,9 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         private IEnumerable<Uzer> userCollection;
+
         public IEnumerable<Uzer> UserCollection
         {
             get
@@ -131,40 +149,52 @@ namespace AppsTracker.ViewModels
 
 
         private ICommand openPopupCommand;
+
         public ICommand OpenPopupCommand
         {
             get { return openPopupCommand ?? (openPopupCommand = new DelegateCommand(OpenPopup)); }
         }
 
+
         private ICommand getLogsByDateCommand;
+
         public ICommand GetLogsByDateCommand
         {
             get { return getLogsByDateCommand ?? (getLogsByDateCommand = new DelegateCommand(CloseDatesPopup)); }
         }
 
+
         private ICommand clearFilterCommand;
+
         public ICommand ClearFilterCommand
         {
             get { return clearFilterCommand ?? (clearFilterCommand = new DelegateCommand(ClearFilter)); }
         }
 
+
         private ICommand changeLoggingStatusCommand;
+
         public ICommand ChangeLoggingStatusCommand
         {
             get { return changeLoggingStatusCommand ?? (changeLoggingStatusCommand = new DelegateCommand(ChangeLoggingStatus)); }
         }
 
+
         private ICommand thisWeekCommand;
+
         public ICommand ThisWeekCommand
         {
             get { return thisWeekCommand ?? (thisWeekCommand = new DelegateCommand(ThisWeek)); }
         }
 
+
         private ICommand thisMonthCommand;
+
         public ICommand ThisMonthCommand
         {
             get { return thisMonthCommand ?? (thisMonthCommand = new DelegateCommand(ThisMonth)); }
         }
+
 
         public IMediator Mediator
         {
@@ -190,11 +220,13 @@ namespace AppsTracker.ViewModels
             userCollection = dataService.GetFiltered<Uzer>(u => u.UserID >= 0);
         }
 
+
         protected override void ChangePage(object parameter)
         {
             ToSettings = (SelectedChild == null || SelectedChild.GetType() == (Type)parameter) ? ToSettings : SelectedChild.GetType();
             base.ChangePage(parameter);
         }
+
 
         private void ChangeLoggingStatus()
         {
@@ -202,6 +234,7 @@ namespace AppsTracker.ViewModels
             settings.LoggingEnabled = !settings.LoggingEnabled;
             settingsService.SaveChanges(settings);
         }
+
 
         private void OpenPopup(object parameter)
         {
@@ -218,6 +251,7 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
         private void ClearFilter()
         {
             IsFilterApplied = false;
@@ -231,6 +265,7 @@ namespace AppsTracker.ViewModels
                 IsPopupCalendarOpen = false;
         }
 
+
         private void ThisMonth()
         {
             DateTime now = DateTime.Now;
@@ -238,6 +273,8 @@ namespace AppsTracker.ViewModels
             int lastDay = DateTime.DaysInMonth(now.Year, now.Month);
             DateTo = new DateTime(now.Year, now.Month, lastDay);
         }
+
+
         private void ThisWeek()
         {
             DateTime now = DateTime.Today;

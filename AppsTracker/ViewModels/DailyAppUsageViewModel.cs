@@ -24,9 +24,12 @@ namespace AppsTracker.ViewModels
             get { return "DAILY APP USAGE"; }
         }
 
+
         public object SelectedItem { get; set; }
 
+
         private readonly AsyncProperty<IEnumerable<AppDurationOverview>> appsList;
+
         public AsyncProperty<IEnumerable<AppDurationOverview>> AppsList
         {
             get { return appsList; }
@@ -38,6 +41,7 @@ namespace AppsTracker.ViewModels
             get { return MVVM.Mediator.Instance; }
         }
 
+
         public DailyAppUsageViewModel()
         {
             statsService = ServiceFactory.Get<IStatsService>();
@@ -46,6 +50,7 @@ namespace AppsTracker.ViewModels
 
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(appsList.Reload));
         }
+
 
         private IEnumerable<AppDurationOverview> GetApps()
         {

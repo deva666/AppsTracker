@@ -13,11 +13,14 @@ namespace AppsTracker.ViewModels
             get { return "MASTER PASSWORD"; }
         }
 
+
         private ICommand setPasswordCommand;
+
         public ICommand SetPasswordCommand
         {
             get { return setPasswordCommand ?? (setPasswordCommand = new DelegateCommand(SetPassword)); }
         }
+
 
         private void SetPassword(object parameter)
         {

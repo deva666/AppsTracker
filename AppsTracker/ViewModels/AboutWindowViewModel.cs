@@ -14,7 +14,9 @@ namespace AppsTracker.MVVM
     internal sealed class AboutWindowViewModel : ViewModelBase
     {
         public override string Title { get { return "About"; } }
+
         public Version AppVersion { get { return Assembly.GetExecutingAssembly().GetName().Version; } }
+
         public string AppName { get { return Constants.APP_NAME; } }
     }
 }

@@ -21,7 +21,7 @@ namespace AppsTracker.Logging
 {
     internal sealed class WindowLogger : IComponent, ICommunicator
     {
-        private readonly object @lock = new object();
+        private readonly object _lock = new object();
 
         private bool isLoggingEnabled;
 
@@ -139,7 +139,7 @@ namespace AppsTracker.Logging
                 return;
 
             Log tempLog;
-            lock (@lock)
+            lock (_lock)
             {
                 tempLog = currentLog;
                 currentLog = null;
@@ -151,7 +151,7 @@ namespace AppsTracker.Logging
 
         private void CreateNewLog(string windowTitle, int usageID, int userID, IAppInfo appInfo, out bool newApp)
         {
-            lock (@lock)
+            lock (_lock)
             {
                 currentLog = loggingService.CreateNewLog(windowTitle, usageID, userID, appInfo, out newApp);
             }
@@ -168,7 +168,7 @@ namespace AppsTracker.Logging
             var dbSizeAsync = Globals.GetDBSizeAsync();
 
             Screenshot screenshot = Screenshots.GetScreenshot();
-            lock (@lock)
+            lock (_lock)
             {
                 if (screenshot == null || currentLog == null)
                     return;

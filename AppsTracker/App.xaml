@@ -1969,14 +1969,14 @@
                                                Storyboard.TargetProperty="(FrameworkElement.Opacity)">
                     <SplineDoubleKeyFrame KeyTime="00:00:00"
                                           Value="0" />
-                    <SplineDoubleKeyFrame KeyTime="00:00:00.2"
+                    <SplineDoubleKeyFrame KeyTime="00:00:00.3"
                                           Value="1" />
                 </DoubleAnimationUsingKeyFrames>
                 <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
-                                               Storyboard.TargetProperty="(FrameworkElement.RenderTransform).(TranslateTransform.Y)">
+                                               Storyboard.TargetProperty="(FrameworkElement.RenderTransform).(TranslateTransform.X)">
                     <SplineDoubleKeyFrame KeyTime="00:00:00"
-                                          Value="70" />
-                    <EasingDoubleKeyFrame KeyTime="00:00:00.35"
+                                          Value="30" />
+                    <EasingDoubleKeyFrame KeyTime="00:00:00.3"
                                           Value="0">
                         <EasingDoubleKeyFrame.EasingFunction>
                             <CubicEase EasingMode="EaseOut" />

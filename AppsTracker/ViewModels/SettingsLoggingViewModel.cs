@@ -10,6 +10,7 @@ namespace AppsTracker.ViewModels
             get { return "Logging"; }
         }
 
+
         private bool popupidleTimerIsOpen = false;
 
         public bool PopupIdleTimerIsOpen
