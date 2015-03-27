@@ -114,9 +114,9 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private readonly AsyncProperty<IEnumerable<CategoryModel>> categoryList;
+        private readonly AsyncProperty<IEnumerable<CategoryDuration>> categoryList;
 
-        public AsyncProperty<IEnumerable<CategoryModel>> CategoryList
+        public AsyncProperty<IEnumerable<CategoryDuration>> CategoryList
         {
             get { return categoryList; }
         }
@@ -153,7 +153,7 @@ namespace AppsTracker.ViewModels
             appsList = new AsyncProperty<IEnumerable<AppSummary>>(GetAppsSummary, this);
             usageList = new AsyncProperty<IEnumerable<UsageByTime>>(GetUsageSummary, this);
             windowsList = new AsyncProperty<IEnumerable<WindowSummary>>(GetWindowsSummary, this);
-            categoryList = new AsyncProperty<IEnumerable<CategoryModel>>(GetCategories, this);
+            categoryList = new AsyncProperty<IEnumerable<CategoryDuration>>(GetCategories, this);
             dayDuration = new AsyncProperty<string>(GetDayDuration, this);
 
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadContent));
@@ -207,7 +207,7 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private IEnumerable<CategoryModel> GetCategories()
+        private IEnumerable<CategoryDuration> GetCategories()
         {
             return statsService.GetCategories(Globals.SelectedUserID, selectedDate);
         }

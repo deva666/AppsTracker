@@ -187,9 +187,16 @@
     <Compile Include="Logging\AppWatcher.cs" />
     <Compile Include="Logging\Helpers\IIdleNotifier.cs" />
     <Compile Include="Logging\LoggingStatus.cs" />
+    <Compile Include="ViewModels\CategoryStatsViewModel.cs" />
     <Compile Include="ViewModels\SettingsAppCategoriesViewModel.cs" />
-    <Compile Include="Views\SettingsViews\AppCategoriesView.xaml.cs">
+    <Compile Include="Views\Settings\AppCategoriesView.xaml.cs">
       <DependentUpon>AppCategoriesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\CategoriesByDayView.xaml.cs">
+      <DependentUpon>CategoriesByDayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\CategoriesView.xaml.cs">
+      <DependentUpon>CategoriesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Widgets\Adorners.cs" />
     <Compile Include="Widgets\ArrowLeft.xaml.cs">
@@ -350,37 +357,37 @@
     <Compile Include="ViewModels\AppDetailsViewModel.cs" />
     <Compile Include="ViewModels\ScreenshotsViewModel.cs" />
     <Compile Include="ViewModels\SettingsHostViewModel.cs" />
-    <Compile Include="Views\StatisticsViews\AppByDayView.xaml.cs">
+    <Compile Include="Views\Statistics\AppByDayView.xaml.cs">
       <DependentUpon>AppByDayView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StatisticsViews\BlockedAppByDayView.xaml.cs">
+    <Compile Include="Views\Statistics\BlockedAppByDayView.xaml.cs">
       <DependentUpon>BlockedAppByDayView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StatisticsViews\BlockedAppsView.xaml.cs">
+    <Compile Include="Views\Statistics\BlockedAppsView.xaml.cs">
       <DependentUpon>BlockedAppsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StatisticsViews\DailyAppsUsageView.xaml.cs">
+    <Compile Include="Views\Statistics\DailyAppsUsageView.xaml.cs">
       <DependentUpon>DailyAppsUsageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StatisticsViews\KeystrokesByDayView.xaml.cs">
+    <Compile Include="Views\Statistics\KeystrokesByDayView.xaml.cs">
       <DependentUpon>KeystrokesByDayView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StatisticsViews\KeystrokesView.xaml.cs">
+    <Compile Include="Views\Statistics\KeystrokesView.xaml.cs">
       <DependentUpon>KeystrokesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StatisticsViews\AppStatsView.xaml.cs">
+    <Compile Include="Views\Statistics\AppStatsView.xaml.cs">
       <DependentUpon>AppStatsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StatisticsViews\ScreenshotsByDayView.xaml.cs">
+    <Compile Include="Views\Statistics\ScreenshotsByDayView.xaml.cs">
       <DependentUpon>ScreenshotsByDayView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StatisticsViews\ScreenshotsView.xaml.cs">
+    <Compile Include="Views\Statistics\ScreenshotsView.xaml.cs">
       <DependentUpon>ScreenshotsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StatisticsViews\UsageView.xaml.cs">
+    <Compile Include="Views\Statistics\UsageView.xaml.cs">
       <DependentUpon>UsageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StatisticsViews\UsersView.xaml.cs">
+    <Compile Include="Views\Statistics\UsersView.xaml.cs">
       <DependentUpon>UsersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AppDetailsView.xaml.cs">
@@ -389,19 +396,19 @@
     <Compile Include="Views\ScreenshotsView.xaml.cs">
       <DependentUpon>ScreenshotsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\BlockedAppsView.xaml.cs">
+    <Compile Include="Views\Settings\BlockedAppsView.xaml.cs">
       <DependentUpon>BlockedAppsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\GeneralView.xaml.cs">
+    <Compile Include="Views\Settings\GeneralView.xaml.cs">
       <DependentUpon>GeneralView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\LoggingView.xaml.cs">
+    <Compile Include="Views\Settings\LoggingView.xaml.cs">
       <DependentUpon>LoggingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\MasterPasswordView.xaml.cs">
+    <Compile Include="Views\Settings\MasterPasswordView.xaml.cs">
       <DependentUpon>MasterPasswordView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\ScreenshotsView.xaml.cs">
+    <Compile Include="Views\Settings\ScreenshotsView.xaml.cs">
       <DependentUpon>ScreenshotsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings_generalView.xaml.cs">
@@ -421,11 +428,19 @@
     <Compile Include="Screenshots\Screenshots.cs" />
     <Compile Include="Utils\Hash.cs" />
     <Compile Include="Hooks\WinHook.cs" />
-    <Page Include="Views\SettingsViews\AppCategoriesView.xaml">
+    <Page Include="Views\Settings\AppCategoriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\CategoriesByDayView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\CategoriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -557,47 +572,47 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\StatisticsViews\AppByDayView.xaml">
+    <Page Include="Views\Statistics\AppByDayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StatisticsViews\BlockedAppByDayView.xaml">
+    <Page Include="Views\Statistics\BlockedAppByDayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StatisticsViews\BlockedAppsView.xaml">
+    <Page Include="Views\Statistics\BlockedAppsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StatisticsViews\DailyAppsUsageView.xaml">
+    <Page Include="Views\Statistics\DailyAppsUsageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StatisticsViews\KeystrokesByDayView.xaml">
+    <Page Include="Views\Statistics\KeystrokesByDayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StatisticsViews\KeystrokesView.xaml">
+    <Page Include="Views\Statistics\KeystrokesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StatisticsViews\AppStatsView.xaml">
+    <Page Include="Views\Statistics\AppStatsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StatisticsViews\ScreenshotsByDayView.xaml">
+    <Page Include="Views\Statistics\ScreenshotsByDayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StatisticsViews\ScreenshotsView.xaml">
+    <Page Include="Views\Statistics\ScreenshotsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StatisticsViews\UsageView.xaml">
+    <Page Include="Views\Statistics\UsageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StatisticsViews\UsersView.xaml">
+    <Page Include="Views\Statistics\UsersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -621,23 +636,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsViews\BlockedAppsView.xaml">
+    <Page Include="Views\Settings\BlockedAppsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsViews\GeneralView.xaml">
+    <Page Include="Views\Settings\GeneralView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsViews\LoggingView.xaml">
+    <Page Include="Views\Settings\LoggingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsViews\MasterPasswordView.xaml">
+    <Page Include="Views\Settings\MasterPasswordView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsViews\ScreenshotsView.xaml">
+    <Page Include="Views\Settings\ScreenshotsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -11,7 +11,9 @@ namespace AppsTracker.Data.Service
     public interface ISqlSettingsService : IBaseService, INotifyPropertyChanged
     {
         Setting Settings { get; }
+       
         void SaveChanges(Setting settings);
+        
         Task SaveChangesAsync(Setting settings);
     }
 }

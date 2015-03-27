@@ -105,10 +105,10 @@ namespace AppsTracker.Tests.Fakes.Service
             return new Tuple<string, string, string>("", "", "");
         }
 
-        public IEnumerable<CategoryModel> GetCategories(int userID, DateTime dateFrom)
+        public IEnumerable<CategoryDuration> GetCategories(int userID, DateTime dateFrom)
         {
             System.Threading.Thread.Sleep(500);
-            return new List<CategoryModel>();
+            return new List<CategoryDuration>();
         }
 
         public void Dispose()

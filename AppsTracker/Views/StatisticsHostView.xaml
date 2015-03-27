@@ -52,6 +52,10 @@
             <views:ScreenshotsView />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewModels:CategoryStatsViewModel}">
+            <views:CategoriesView />
+        </DataTemplate>
+        
     </UserControl.Resources>
     <Border Style="{DynamicResource BorderStyle}">
             
@@ -102,7 +106,17 @@
                                       CommandParameter="{x:Type viewModels:DailyAppUsageViewModel}">
                         </MouseBinding>
                     </Label.InputBindings>
-                </Label>               
+                </Label>
+                <Label Content="CATEGORIES"
+                       HorizontalAlignment="Left"
+                       Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=CATEGORIES}">
+                    <Label.InputBindings>
+                        <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding ChangePageCommand}"
+                                      CommandParameter="{x:Type viewModels:CategoryStatsViewModel}">
+                        </MouseBinding>
+                    </Label.InputBindings>
+                </Label>
                 <Label Content="SCREENSHOTS"
                        HorizontalAlignment="Left"
                        Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=SCREENSHOTS}">

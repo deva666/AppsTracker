@@ -86,9 +86,15 @@ namespace AppsTracker.Data.Models
         public List<WindowDuration> DurationCollection { get; set; }
     }
 
-    public struct CategoryModel
+    public class CategoryDuration
     {
         public string Name { get; set; }
+        public double TotalTime { get; set; }
+    }
+
+    public class DailyCategoryDuration
+    {
+        public string Date { get; set; }
         public double TotalTime { get; set; }
     }
 }

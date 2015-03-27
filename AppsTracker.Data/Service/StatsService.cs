@@ -701,12 +701,12 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<CategoryModel> GetCategories(int userID, DateTime dateFrom)
+        public IEnumerable<CategoryDuration> GetCategories(int userID, DateTime dateFrom)
         {
             using (var context = new AppsEntities())
             {
                 DateTime dateTo = dateFrom.AddDays(1);
-                List<CategoryModel> categoryModels = new List<CategoryModel>();
+                List<CategoryDuration> categoryModels = new List<CategoryDuration>();
 
                 var categories = context.AppCategories.Include(c => c.Applications)
                     .Include(c => c.Applications.Select(a => a.Windows.Select(w => w.Logs)))
@@ -717,7 +717,7 @@ namespace AppsTracker.Data.Service
                 foreach (var cat in categories)
                 {
                     var totalDuration = cat.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated >= dateFrom && l.DateCreated <= dateTo).Sum(l => l.Duration);
-                    categoryModels.Add(new CategoryModel()
+                    categoryModels.Add(new CategoryDuration()
                     {
                         Name = cat.Name,
                         TotalTime = Math.Round(new TimeSpan(totalDuration).TotalHours, 2)
@@ -727,6 +727,63 @@ namespace AppsTracker.Data.Service
                 return categoryModels;
             }
         }
+
+
+        public IEnumerable<CategoryDuration> GetCategoryStats(int userId, DateTime dateFrom, DateTime dateTo)
+        {
+            using (var context = new AppsEntities())
+            {
+                List<CategoryDuration> categoryModels = new List<CategoryDuration>();
+
+                var categories = context.AppCategories.Include(c => c.Applications)
+                    .Include(c => c.Applications.Select(a => a.Windows.Select(w => w.Logs)))
+                    .Where(c => c.Applications.Count > 0 &&
+                           c.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated >= dateFrom).Any() &&
+                           c.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated <= dateTo).Any());
+
+                foreach (var cat in categories)
+                {
+                    var totalDuration = cat.Applications.SelectMany(a => a.Windows)
+                        .SelectMany(w => w.Logs)
+                        .Where(l => l.DateCreated >= dateFrom && l.DateCreated <= dateTo)
+                        .Sum(l => l.Duration);
+
+                    categoryModels.Add(new CategoryDuration()
+                    {
+                        Name = cat.Name,
+                        TotalTime = Math.Round(new TimeSpan(totalDuration).TotalHours, 2)
+                    });
+                }
+
+                return categoryModels;
+            }
+        }
+
+
+        public IEnumerable<DailyCategoryDuration> GetDailyCategoryStats(int userId, string categoryName, DateTime dateFrom, DateTime dateTo)
+        {
+            using (var context = new AppsEntities())
+            {
+                var logs = context.Logs.Where(l => l.Window.Application.Categories.Any(c => c.Name == categoryName)
+                                                && l.DateCreated >= dateFrom
+                                                && l.DateCreated <= dateTo)
+                                        .ToList();
+
+                var grouped = logs.GroupBy(l => new
+                {
+                    year = l.DateCreated.Year,
+                    month = l.DateCreated.Month,
+                    day = l.DateCreated.Day
+                });
+
+                return grouped.Select(g => new DailyCategoryDuration()
+                {
+                    Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
+                    TotalTime = Math.Round(new TimeSpan(g.Sum(l => l.Duration)).TotalHours, 2)
+                });
+            }
+        }
+
 
         private IList<Usage> BreakUsagesByDay(IEnumerable<Usage> usages)
         {

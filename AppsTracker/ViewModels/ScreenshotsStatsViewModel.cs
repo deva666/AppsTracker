@@ -26,9 +26,6 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public object SelectedItem { get; set; }
-
-
         private ICommand returnFromDetailedViewCommand;
 
         public ICommand ReturnFromDetailedViewCommand
@@ -44,8 +41,7 @@ namespace AppsTracker.ViewModels
             get { return screenshotModel; }
             set
             {
-                screenshotModel = value;
-                PropertyChanging("ScreenshotModel");
+                SetPropertyValue(ref screenshotModel, value);
                 if (screenshotModel != null)
                     dailyScreenshotsList.Reload();
             }

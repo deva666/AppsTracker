@@ -14,7 +14,6 @@
         <local:ConvertNullToBool x:Key="convertNullToBool" />
         <local:ConvertNullToBoolBack x:Key="convertNullToBoolBack" />
         <local:ConvertBoolToVisibility x:Key="convertVisibility" />
-        <local:ConvertMainWndWidthToHalf x:Key="convertWidth" />
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto"
                   VerticalScrollBarVisibility="Auto">
@@ -24,7 +23,6 @@
                                             ChartSubTitle="Total screenshots per app (select item to view details)"
                                             Style="{StaticResource MinimalChartStyle}"
                                             SelectedItem="{Binding ScreenshotModel, Mode=TwoWay}"
-                                            MinHeight="{Binding UserSettings.MainWindowHeight, Converter={StaticResource convertWidth}}"
                                             BorderBrush="{DynamicResource WindowBorderBrush}"
                                             BorderThickness="1"
                                             Margin="10,10,10,20"
