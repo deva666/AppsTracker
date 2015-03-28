@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Text;
 using AppsTracker.Data.Utils;
@@ -16,6 +17,7 @@ namespace AppsTracker.Hooks
 {
     internal delegate void WinHookCallBack(IntPtr hWinEventHook, uint eventType, IntPtr hWnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
 
+    [Export(typeof(IWindowNotifier))]
     public sealed class WinHook : IWindowNotifier
     {
         public event EventHandler<WindowChangedArgs> WindowChanged;

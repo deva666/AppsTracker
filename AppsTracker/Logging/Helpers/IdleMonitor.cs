@@ -1,12 +1,13 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Threading;
-
 using AppsTracker.Data.Service;
 using AppsTracker.Hooks;
 
 namespace AppsTracker.Logging
 {
+    [Export(typeof(IIdleNotifier))]
     public class IdleMonitor : IIdleNotifier
     {
         private readonly ISqlSettingsService settingsService;

@@ -445,7 +445,7 @@
                    Foreground="White"
                    Grid.Column="2" />
             <customControls:FaderContentControl Grid.Column="3"
-                                                FaderVisibility="{Binding IsFilterApplied}">
+                                                FaderVisibility="True">
                 <Label Margin="20,0,0,0"
                        Style="{DynamicResource LabelStyle}"
                        Foreground="White"

@@ -13,7 +13,7 @@ using AppsTracker.Data.Service;
 
 namespace AppsTracker.Tests.Fakes.Service
 {
-    public class statsServiceMock : IStatsService
+    public class StatsServiceMock : IStatsService
     {
         public IEnumerable<AppSummary> GetAppSummary(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo)
         {
@@ -115,5 +115,17 @@ namespace AppsTracker.Tests.Fakes.Service
         {
         }
 
+
+        public IEnumerable<CategoryDuration> GetCategoryStats(int userId, DateTime dateFrom, DateTime dateTo)
+        {
+            System.Threading.Thread.Sleep(500);
+            return new List<CategoryDuration>();
+        }
+
+        public IEnumerable<DailyCategoryDuration> GetDailyCategoryStats(int userId, string categoryName, DateTime dateFrom, DateTime dateTo)
+        {
+            System.Threading.Thread.Sleep(500);
+            return new List<DailyCategoryDuration>();
+        }
     }
 }

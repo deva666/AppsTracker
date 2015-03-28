@@ -7,10 +7,10 @@
 #endregion
 
 using System;
+using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using System.Timers;
-using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.Data.Utils;
@@ -19,8 +19,12 @@ using AppsTracker.MVVM;
 
 namespace AppsTracker.Logging
 {
+    [Export(typeof(IComponent))]
     internal sealed class WindowLogger : IComponent, ICommunicator
     {
+        [Import(typeof(IWindowNotifier))]
+        IWindowNotifier windowNotifierInstance;
+
         private readonly object _lock = new object();
 
         private bool isLoggingEnabled;
@@ -37,48 +41,49 @@ namespace AppsTracker.Logging
 
         private Setting settings;
 
-        public WindowLogger(Setting settings)
+        public WindowLogger()
         {
-            Ensure.NotNull(settings);
-            this.settings = settings;
-
             loggingService = ServiceFactory.Get<ILoggingService>();
-
-            Mediator.Register(MediatorMessages.STOP_LOGGING, new Action(StopLogging));
-            Mediator.Register(MediatorMessages.RESUME_LOGGING, new Action(ResumeLogging));
-
-            InitComponents();
-            ConfigureComponents();
         }
 
-        private void InitComponents()
+
+        public void InitializeComponent(Setting settings)
         {
-            windowNotifier = new LazyInit<IWindowNotifier>(() => new WinHook(),
+            this.settings = settings;
+
+            windowNotifier = new LazyInit<IWindowNotifier>(() => windowNotifierInstance,
                                                                 w => w.WindowChanged += WindowChanging,
                                                                 w => w.WindowChanged -= WindowChanging);
 
             screenshotTimer = new LazyInit<Timer>(() => new Timer()
-                                                             {
-                                                                 AutoReset = true,
-                                                                 Interval = settings.TimerInterval
-                                                             },
-                                                             onInit:
-                                                             t =>
-                                                             {
-                                                                 t.Enabled = true;
-                                                                 t.Elapsed += ScreenshotTick;
-                                                             },
-                                                             onDispose:
-                                                             t =>
-                                                             {
-                                                                 t.Enabled = false;
-                                                                 t.Elapsed -= ScreenshotTick;
-                                                             });
+                                                            {
+                                                                AutoReset = true,
+                                                                Interval = settings.TimerInterval
+                                                            },
+                                                            OnScreenshotInit,
+                                                            OnScreenshotDispose);
 
             windowCheckTimer = new LazyInit<System.Threading.Timer>(() => new System.Threading.Timer(s => App.Current.Dispatcher.Invoke(CheckWindowTitle))
                                                                         , t => t.Change(500, 500)
                                                                         , t => t.Dispose());
 
+            ConfigureComponents();
+
+            Mediator.Register(MediatorMessages.STOP_LOGGING, new Action(StopLogging));
+            Mediator.Register(MediatorMessages.RESUME_LOGGING, new Action(ResumeLogging));
+        }
+
+
+        private void OnScreenshotInit(Timer timer)
+        {
+            timer.Enabled = true;
+            timer.Elapsed += ScreenshotTick;
+        }
+
+        private void OnScreenshotDispose(Timer timer)
+        {
+            timer.Enabled = false;
+            timer.Elapsed -= ScreenshotTick;
         }
 
         private void ConfigureComponents()
@@ -213,5 +218,6 @@ namespace AppsTracker.Logging
 
             StopLogging();
         }
+
     }
 }

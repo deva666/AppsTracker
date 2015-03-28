@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.ComponentModel.Composition;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
@@ -14,8 +15,12 @@ using AppsTracker.MVVM;
 
 namespace AppsTracker.Logging
 {
+    [Export(typeof(IComponent))]
     internal sealed class UsageLogger : IComponent, ICommunicator
     {
+        [Import(typeof(IIdleNotifier))]
+        private IIdleNotifier idleNotifierInstance;
+
         private bool isLoggingEnabled;
 
         private readonly ILoggingService loggingService;
@@ -29,23 +34,19 @@ namespace AppsTracker.Logging
 
         private Setting settings;
 
-        public UsageLogger(Setting settings)
+        public UsageLogger()
         {
-            Ensure.NotNull(settings);
-
             loggingService = ServiceFactory.Get<ILoggingService>();
-
-            this.settings = settings;
-
-            Init();
-            Configure();
         }
 
-        private void Init()
+
+        public void InitializeComponent(Setting settings)
         {
+            this.settings = settings;
+
             InitLogin();
 
-            idleMonitor = new LazyInit<IIdleNotifier>(() => new IdleMonitor(),
+            idleMonitor = new LazyInit<IIdleNotifier>(() => idleNotifierInstance,
                                                             m =>
                                                             {
                                                                 m.IdleEntered += IdleEntered;
@@ -59,7 +60,10 @@ namespace AppsTracker.Logging
 
             Microsoft.Win32.SystemEvents.SessionSwitch += SessionSwitch;
             Microsoft.Win32.SystemEvents.PowerModeChanged += PowerModeChanged;
+
+            Configure();
         }
+
 
         private void Configure()
         {
@@ -97,6 +101,7 @@ namespace AppsTracker.Logging
             currentUsageIdle = null;
         }
 
+
         private void IdleEntered(object sender, EventArgs e)
         {
             if (isLoggingEnabled == false)
@@ -105,6 +110,7 @@ namespace AppsTracker.Logging
             currentUsageIdle = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
             Mediator.NotifyColleagues(MediatorMessages.STOP_LOGGING);
         }
+
 
         private void PowerModeChanged(object sender, Microsoft.Win32.PowerModeChangedEventArgs e)
         {
@@ -129,6 +135,7 @@ namespace AppsTracker.Logging
             }
 
         }
+
 
         private void SessionSwitch(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
         {
@@ -158,10 +165,12 @@ namespace AppsTracker.Logging
             }
         }
 
+
         private void AddUsage(UsageTypes usagetype, Usage usage)
         {
             loggingService.SaveNewUsageAsync(usagetype, usage);
         }
+
 
         private void SaveUsage(Usage usage)
         {
@@ -171,6 +180,7 @@ namespace AppsTracker.Logging
             usage.UsageEnd = DateTime.Now;
             loggingService.SaveModifiedUsageAsync(usage);
         }
+
 
         public void SettingsChanged(Setting settings)
         {
@@ -186,6 +196,7 @@ namespace AppsTracker.Logging
                 SaveStoppedUsage();
         }
 
+
         private void SaveStoppedUsage()
         {
             if (currentUsageStopped != null)
@@ -196,6 +207,7 @@ namespace AppsTracker.Logging
             }
         }
 
+
         private void Finish()
         {
             currentUsageLogin.IsCurrent = false;
@@ -205,6 +217,7 @@ namespace AppsTracker.Logging
             SaveStoppedUsage();
         }
 
+
         public void Dispose()
         {
             idleMonitor.Enabled = false;
@@ -213,10 +226,10 @@ namespace AppsTracker.Logging
             Microsoft.Win32.SystemEvents.PowerModeChanged -= PowerModeChanged;
         }
 
+
         public IMediator Mediator
         {
             get { return MVVM.Mediator.Instance; }
         }
-
     }
 }

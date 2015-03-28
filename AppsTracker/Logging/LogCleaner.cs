@@ -6,25 +6,28 @@
  */
 #endregion
 
+using System.ComponentModel.Composition;
 using AppsTracker.Data.Models;
 
 namespace AppsTracker.Logging
 {
+    [Export(typeof(IComponent))]
     internal class LogCleaner : IComponent
     {
-        LazyInit<LogCleanerHelper> _cleaner;
+        LazyInit<LogCleanerHelper> cleaner;
 
-        public LogCleaner(Setting settings)
+        public void InitializeComponent(Setting settings)
         {
-            _cleaner = new LazyInit<LogCleanerHelper>(() => new LogCleanerHelper(settings.OldLogDeleteDays));
-            _cleaner.Enabled = settings.DeleteOldLogs;
+            cleaner = new LazyInit<LogCleanerHelper>(() => new LogCleanerHelper(settings.OldLogDeleteDays));
+            cleaner.Enabled = settings.DeleteOldLogs;
         }
+
 
         public void SettingsChanged(Setting settings)
         {
-            _cleaner.Enabled = settings.DeleteOldLogs;
-            if (_cleaner.Enabled)
-                _cleaner.Component.Days = settings.OldLogDeleteDays;
+            cleaner.Enabled = settings.DeleteOldLogs;
+            if (cleaner.Enabled)
+                cleaner.Component.Days = settings.OldLogDeleteDays;
         }
 
         public void Dispose()

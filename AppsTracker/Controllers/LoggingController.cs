@@ -18,25 +18,19 @@ namespace AppsTracker.Controllers
     [Export(typeof(ILoggingController))]
     internal sealed class LoggingController : ILoggingController
     {
+        [ImportMany(typeof(IComponent))]
+        private List<IComponent> components;
 
-        private readonly IList<IComponent> components = new List<IComponent>();
 
         public void Initialize(Setting settings)
         {
-            components.Add(new WindowLogger(settings));
-            components.Add(new UsageLogger(settings));
-            components.Add(new LogCleaner(settings));
+            ComponentsForEach(c => c.InitializeComponent(settings));
         }
 
-        private void OnAll(Action<IComponent> action)
+        private void ComponentsForEach(Action<IComponent> action)
         {
             foreach (var comp in components)
                 action(comp);
-        }
-
-        private void OnAllParallel(Action<IComponent> action)
-        {
-            Parallel.ForEach<IComponent>(components, action);
         }
 
         public void SettingsChanging(Setting settings)
@@ -47,7 +41,7 @@ namespace AppsTracker.Controllers
 
         public void Dispose()
         {
-            OnAll(l => l.Dispose());
+            ComponentsForEach(l => l.Dispose());
         }
     }
 }

@@ -511,7 +511,7 @@ namespace AppsTracker
         {
             DateTime date1 = (DateTime)values[0];
             DateTime date2 = (DateTime)values[1];
-            return string.Format("Filtered by dates: {0} to {1}", date1.ToShortDateString(), date2.ToShortDateString());
+            return string.Format("Date range: {0} to {1}", date1.ToShortDateString(), date2.ToShortDateString());
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)

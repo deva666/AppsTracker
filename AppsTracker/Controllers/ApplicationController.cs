@@ -88,13 +88,17 @@ ShowEULAWindow();
 
         private void ReadSettingsFromRegistry()
         {
+            var settings = settingsService.Settings;
+
             bool? exists = RegistryEntryExists();
-            if (exists == null && settingsService.Settings.RunAtStartup)
-                settingsService.Settings.RunAtStartup = false;
-            else if (exists.HasValue && exists.Value && !settingsService.Settings.RunAtStartup)
-                settingsService.Settings.RunAtStartup = true;
-            else if (exists.HasValue && !exists.Value && settingsService.Settings.RunAtStartup)
-                settingsService.Settings.RunAtStartup = false;
+            if (exists == null && settings.RunAtStartup)
+                settings.RunAtStartup = false;
+            else if (exists.HasValue && exists.Value && !settings.RunAtStartup)
+                settings.RunAtStartup = true;
+            else if (exists.HasValue && !exists.Value && settings.RunAtStartup)
+                settings.RunAtStartup = false;
+
+            settingsService.SaveChanges(settings);
         }
 
         private bool? RegistryEntryExists()

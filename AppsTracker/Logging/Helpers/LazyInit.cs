@@ -13,7 +13,7 @@ namespace AppsTracker.Logging
     internal sealed class LazyInit<T> : IDisposable where T : class,IDisposable
     {
         private bool enabled = false;
-        private readonly object @lock = new object();
+        private readonly object _lock = new object();
 
         public bool Enabled
         {
@@ -33,21 +33,21 @@ namespace AppsTracker.Logging
         {
             get
             {
-                return LazyInitValue();
+                return component;
             }
         }
 
-        private Func<T> getter;
+        private Func<T> valueFactory;
         private Action<T> onInit;
         private Action<T> onDispose;
 
-        public LazyInit(Func<T> getter)
+        public LazyInit(Func<T> valueFactory)
         {
-            this.getter = getter;
+            this.valueFactory = valueFactory;
         }
 
-        public LazyInit(Func<T> getter, Action<T> onInit, Action<T> onDispose)
-            : this(getter)
+        public LazyInit(Func<T> valueFactory, Action<T> onInit, Action<T> onDispose)
+            : this(valueFactory)
         {
             this.onInit = onInit;
             this.onDispose = onDispose;
@@ -66,24 +66,24 @@ namespace AppsTracker.Logging
 
         private T LazyInitValue()
         {
-            if (component == null)
+            lock (_lock)
             {
-                lock (@lock)
+                if (component == null)
                 {
-                    if (component == null)
-                    {
-                        component = getter();
-                        if (onInit != null)
-                            onInit(component);
-                    }
+                    component = valueFactory();
+                }
+                if (onInit != null)
+                {
+                    onInit(component);
                 }
             }
+
             return component;
         }
 
         private void DisposeComponent()
         {
-            lock (@lock)
+            lock (_lock)
             {
                 if (component != null)
                 {
@@ -92,7 +92,6 @@ namespace AppsTracker.Logging
                     component.Dispose();
                     component = null;
                 }
-
             }
         }
     }

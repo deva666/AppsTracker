@@ -106,8 +106,8 @@ namespace AppsTracker.Hooks
 
         private void Dispose(bool disposing)
         {
-            System.Diagnostics.Debug.WriteLine("Disposing " + this.GetType().Name + " " + this.GetType().FullName);
-            if (isDisposed) return;
+            if (isDisposed) 
+                return;
             WinAPI.UnhookWindowsHookEx(hookID);
             isDisposed = true;
         }
