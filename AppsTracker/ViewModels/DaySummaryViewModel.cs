@@ -65,11 +65,10 @@ namespace AppsTracker.ViewModels
             get { return selectedApp; }
             set
             {
-                selectedApp = value;
+                SetPropertyValue(ref selectedApp, value);
                 SelectedWindowsDuration = string.Empty;
                 if (value != null)
                     windowsList.Reload();
-                PropertyChanging("TopAppsSingle");
             }
         }
 
