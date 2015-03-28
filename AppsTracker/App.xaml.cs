@@ -11,8 +11,10 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
 using System.Runtime;
+using System.Threading;
 using System.Windows;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using AppsTracker.Controllers;
 using AppsTracker.Data.Service;
 using AppsTracker.Views;
@@ -45,8 +47,10 @@ namespace AppsTracker
             Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline)
                                                                 , new PropertyMetadata() { DefaultValue = 40 });
 
-            RegisterServices();
+            var context = new DispatcherSynchronizationContext(Application.Current.Dispatcher);
+            SynchronizationContext.SetSynchronizationContext(context);
 
+            RegisterServices();
             container = GetCompositionContainer();
 
             applicationController = container.GetExportedValue<IApplicationController>();

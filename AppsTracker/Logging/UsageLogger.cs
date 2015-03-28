@@ -17,11 +17,11 @@ namespace AppsTracker.Logging
     [Export(typeof(IComponent))]
     internal sealed class UsageLogger : IComponent, ICommunicator
     {
-        private IIdleNotifier idleNotifierInstance;
-
         private bool isLoggingEnabled;
 
         private readonly ILoggingService loggingService;
+
+        private readonly IIdleNotifier idleNotifierInstance;
 
         private LazyInit<IIdleNotifier> idleNotifier;
 

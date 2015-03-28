@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using AppsTracker.Data.Service;
 using AppsTracker.Hooks;
+using AppsTracker.Logging.Helpers;
 
 namespace AppsTracker.Logging
 {
@@ -11,6 +12,8 @@ namespace AppsTracker.Logging
     public class IdleMonitor : IIdleNotifier
     {
         private readonly ISqlSettingsService settingsService;
+        
+        private readonly ISyncContext syncContext;
 
         private bool disposed = false;
         private bool idleEntered = false;
@@ -27,8 +30,10 @@ namespace AppsTracker.Logging
         public event EventHandler IdleEntered;
         public event EventHandler IdleStoped;
 
-        public IdleMonitor()
+        [ImportingConstructor]
+        public IdleMonitor(ISyncContext syncContext)
         {
+            this.syncContext = syncContext;
             settingsService = ServiceFactory.Get<ISqlSettingsService>();
             idleTimer = new Timer(CheckIdleState, null, 1 * 60 * 1000, 1000);
         }
@@ -69,9 +74,10 @@ namespace AppsTracker.Logging
 
         private void Reset()
         {
-            if (!idleEntered)
+            if (Volatile.Read(ref idleEntered) == false)
                 return;
-            idleEntered = false;
+
+            Volatile.Write(ref idleEntered, false);
             RemoveHooks();
             idleTimer.Change(1 * 60 * 1000, 1000);
             IdleStoped.InvokeSafely(this, EventArgs.Empty);
@@ -79,7 +85,7 @@ namespace AppsTracker.Logging
 
         private void CheckIdleState(object sender)
         {
-            if (idleEntered)
+            if (Volatile.Read(ref idleEntered))
                 return;
 
             IdleTimeInfo idleInfo = IdleTimeWatcher.GetIdleTimeInfo();
@@ -87,9 +93,9 @@ namespace AppsTracker.Logging
             if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(settingsService.Settings.IdleTimer))
             {
                 idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-                idleEntered = true;
-                App.Current.Dispatcher.Invoke(SetHooks);
-                IdleEntered.InvokeSafely(this, EventArgs.Empty);
+                Volatile.Write(ref idleEntered, true);
+                syncContext.Invoke(s => SetHooks());
+                syncContext.Invoke(s => IdleEntered.InvokeSafely(this, EventArgs.Empty));
             }
         }
 

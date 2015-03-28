@@ -13,6 +13,7 @@ using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.Data.Utils;
 using AppsTracker.Hooks;
+using AppsTracker.Logging.Helpers;
 using AppsTracker.MVVM;
 
 namespace AppsTracker.Logging
@@ -20,15 +21,13 @@ namespace AppsTracker.Logging
     [Export(typeof(IComponent))]
     internal sealed class WindowLogger : IComponent, ICommunicator
     {
-        private IWindowNotifier windowNotifierInstance;
-
-        private readonly object _lock = new object();
-
         private bool isLoggingEnabled;
 
         private string activeWindowTitle;
 
         private readonly ILoggingService loggingService;
+        private readonly IWindowNotifier windowNotifierInstance;
+        private readonly ISyncContext syncContext;
 
         private LazyInit<IWindowNotifier> windowNotifier;
 
@@ -40,12 +39,18 @@ namespace AppsTracker.Logging
         private Setting settings;
 
         [ImportingConstructor]
-        public WindowLogger(IWindowNotifier windowNotifier)
+        public WindowLogger(IWindowNotifier windowNotifier, ISyncContext syncContext)
         {
             loggingService = ServiceFactory.Get<ILoggingService>();
             windowNotifierInstance = windowNotifier;
+            this.syncContext = syncContext;
         }
 
+        public void SettingsChanged(Setting settings)
+        {
+            this.settings = settings;
+            ConfigureComponents();
+        }
 
         public void InitializeComponent(Setting settings)
         {
@@ -63,8 +68,8 @@ namespace AppsTracker.Logging
                                                             OnScreenshotInit,
                                                             OnScreenshotDispose);
 
-            windowCheckTimer = new LazyInit<System.Threading.Timer>(() => new System.Threading.Timer(s => App.Current.Dispatcher.Invoke(CheckWindowTitle))
-                                                                        , t => t.Change(500, 500)
+            windowCheckTimer = new LazyInit<System.Threading.Timer>(() => new System.Threading.Timer(s => syncContext.Invoke(CheckWindowTitle))
+                                                                        , t => t.Change(1000, 1000)
                                                                         , t => t.Dispose());
 
             ConfigureComponents();
@@ -93,18 +98,21 @@ namespace AppsTracker.Logging
             if ((settings.TakeScreenshots && settings.LoggingEnabled) && settings.TimerInterval != screenshotTimer.Component.Interval)
                 screenshotTimer.Component.Interval = settings.TimerInterval;
 
-            windowNotifier.Enabled =
-                isLoggingEnabled =
+            isLoggingEnabled =
+                windowNotifier.Enabled =
                     windowCheckTimer.Enabled =
                         settings.LoggingEnabled;
         }
 
-        private async void ScreenshotTick(object sender, System.Timers.ElapsedEventArgs e)
+        private void ScreenshotTick(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (isLoggingEnabled == false)
-                return;
+            syncContext.Invoke(async () =>
+            {
+                if (isLoggingEnabled == false)
+                    return;
 
-            await AddScreenshot();
+                await AddScreenshot();
+            });
         }
 
         private void CheckWindowTitle()
@@ -126,41 +134,40 @@ namespace AppsTracker.Logging
 
         private void OnWindowChange(string windowTitle, IAppInfo appInfo)
         {
-            SaveCurrentLog();
-
             if (appInfo == null || (appInfo != null && string.IsNullOrEmpty(appInfo.Name)))
+            {
+                ExchangeLogs(null);
                 return;
+            }
 
             bool newApp = false;
-            CreateNewLog(windowTitle, Globals.UsageID, Globals.UserID, appInfo, out newApp);
+            SaveCreateLog(windowTitle, Globals.UsageID, Globals.UserID, appInfo, out newApp);
             activeWindowTitle = windowTitle;
 
             if (newApp)
                 NewAppAdded(appInfo);
         }
 
-        private void SaveCurrentLog()
+
+        private void SaveCreateLog(string windowTitle, int usageID, int userID, IAppInfo appInfo, out bool newApp)
         {
+            var newLog = loggingService.CreateNewLog(windowTitle, usageID, userID, appInfo, out newApp);
+            ExchangeLogs(newLog);
+        }
+
+        private void ExchangeLogs(Log newLog)
+        {
+            Log tempLog;
+
+            activeWindowTitle = string.Empty;            
             if (currentLog == null)
                 return;
 
-            Log tempLog;
-            lock (_lock)
-            {
-                tempLog = currentLog;
-                currentLog = null;
-            }
+            tempLog = currentLog;
+            currentLog = newLog;
 
             tempLog.Finish();
             loggingService.SaveModifiedLogAsync(tempLog);
-        }
-
-        private void CreateNewLog(string windowTitle, int usageID, int userID, IAppInfo appInfo, out bool newApp)
-        {
-            lock (_lock)
-            {
-                currentLog = loggingService.CreateNewLog(windowTitle, usageID, userID, appInfo, out newApp);
-            }
         }
 
         private void NewAppAdded(IAppInfo appInfo)
@@ -172,34 +179,25 @@ namespace AppsTracker.Logging
         private async Task AddScreenshot()
         {
             var dbSizeAsync = Globals.GetDBSizeAsync();
-
             Screenshot screenshot = Screenshots.GetScreenshot();
-            lock (_lock)
-            {
-                if (screenshot == null || currentLog == null)
-                    return;
 
-                screenshot.LogID = currentLog.LogID;
-            }
+            if (screenshot == null || currentLog == null)
+                return;
+
+            screenshot.LogID = currentLog.LogID;
 
             await Task.WhenAll(loggingService.SaveNewScreenshotAsync(screenshot), dbSizeAsync);
-        }
-
-        public void SettingsChanged(Setting settings)
-        {
-            this.settings = settings;
-            ConfigureComponents();
         }
 
         private void StopLogging()
         {
             isLoggingEnabled = false;
-            SaveCurrentLog();
+            ExchangeLogs(null);
         }
 
         private void ResumeLogging()
         {
-            isLoggingEnabled = true;
+            isLoggingEnabled = settings.LoggingEnabled;
         }
 
         public IMediator Mediator

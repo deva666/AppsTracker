@@ -13,9 +13,9 @@ namespace AppsTracker.MVVM
 {
     public abstract class ViewModelBase : ObservableObject, IWorker, IDisposable
     {
-        protected bool working;
+        private bool working;
 
-        protected object _lock = new object();
+        private object _lock = new object();
 
         public abstract string Title { get; }
 

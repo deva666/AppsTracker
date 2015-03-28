@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Windows;
 using AppsTracker.Data.Service;
+using AppsTracker.Logging.Helpers;
 using AppsTracker.Views;
 using Microsoft.Win32;
 
@@ -21,6 +22,7 @@ namespace AppsTracker.Controllers
     {
         private readonly IAppearanceController appearanceController;
         private readonly ILoggingController loggingController;
+        private readonly ISyncContext syncContext;
 
         private ISqlSettingsService settingsService;
         private IXmlSettingsService xmlSettingsService;
@@ -29,14 +31,16 @@ namespace AppsTracker.Controllers
         private Window mainWindow;
 
         [ImportingConstructor]
-        public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController)
+        public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController,ISyncContext syncContext)
         {
             this.appearanceController = appearanceController;
             this.loggingController = loggingController;
+            this.syncContext = syncContext;
         }
 
         public void Initialize(bool autoStart)
         {
+            syncContext.Context = System.Threading.SynchronizationContext.Current;
             settingsService = ServiceFactory.Get<ISqlSettingsService>();
             xmlSettingsService = ServiceFactory.Get<IXmlSettingsService>();
             xmlSettingsService.Initialize();

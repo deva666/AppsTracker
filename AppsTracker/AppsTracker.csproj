@@ -184,6 +184,8 @@
     <Compile Include="Controllers\LoggingController.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Logging\Helpers\ILogCleaner.cs" />
+    <Compile Include="Logging\Helpers\ISyncContext.cs" />
+    <Compile Include="Logging\Helpers\SyncContext.cs" />
     <Compile Include="Logging\Hooks\IWindowNotifier.cs" />
     <Compile Include="Logging\AppWatcher.cs" />
     <Compile Include="Logging\Helpers\IIdleNotifier.cs" />
