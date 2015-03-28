@@ -9,7 +9,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Logging;
 
@@ -27,21 +26,20 @@ namespace AppsTracker.Controllers
             ComponentsForEach(c => c.InitializeComponent(settings));
         }
 
+        public void SettingsChanging(Setting settings)
+        {
+            ComponentsForEach(c => c.SettingsChanged(settings));
+        }
+
         private void ComponentsForEach(Action<IComponent> action)
         {
             foreach (var comp in components)
                 action(comp);
         }
 
-        public void SettingsChanging(Setting settings)
-        {
-            foreach (var comp in components)
-                comp.SettingsChanged(settings);
-        }
-
         public void Dispose()
         {
-            ComponentsForEach(l => l.Dispose());
+            ComponentsForEach(c => c.Dispose());
         }
     }
 }

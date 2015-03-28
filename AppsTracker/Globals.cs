@@ -6,17 +6,17 @@
  */
 #endregion
 
-using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using AppsTracker.Data.Models;
+using AppsTracker.Data.Service;
 
 namespace AppsTracker
 {
     public static class Globals
     {
-        private static bool _isLastDateFiltered;
+        private static bool isDateRangeFiltered;
 
         private static DateTime dateFrom;
         private static DateTime dateTo;
@@ -39,14 +39,14 @@ namespace AppsTracker
         {
             get
             {
-                if (_isLastDateFiltered)
+                if (isDateRangeFiltered)
                     return dateTo;
                 else
                     return DateTime.Now;
             }
             set
             {
-                _isLastDateFiltered = true;
+                isDateRangeFiltered = true;
                 dateTo = value;
             }
         }
@@ -66,7 +66,7 @@ namespace AppsTracker
         public static void ClearDateFilter()
         {
             dateFrom = GetFirstDate();
-            _isLastDateFiltered = false;
+            isDateRangeFiltered = false;
         }
 
         private static DateTime GetFirstDate()

@@ -256,6 +256,8 @@ namespace AppsTracker.ViewModels
         {
             IsFilterApplied = false;
             Globals.ClearDateFilter();
+            PropertyChanging("DateFrom");
+            PropertyChanging("DateTo");
             Mediator.NotifyColleagues(MediatorMessages.RefreshLogs);
         }
 

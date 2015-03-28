@@ -66,18 +66,18 @@ namespace AppsTracker.Logging
 
         private T LazyInitValue()
         {
-            lock (_lock)
+            if (component == null)
             {
-                if (component == null)
+                lock (_lock)
                 {
-                    component = valueFactory();
-                }
-                if (onInit != null)
-                {
-                    onInit(component);
+                    if (component == null)
+                    {
+                        component = valueFactory();
+                        if (onInit != null)
+                            onInit(component);
+                    }
                 }
             }
-
             return component;
         }
 

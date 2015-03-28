@@ -158,13 +158,6 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private void LoadAppsOverall()
-        {
-            appSummaryList.Reload();
-            IsChartVisible = false;
-        }
-
-
         private IEnumerable<Aplication> GetApps()
         {
             return dataService.GetFiltered<Aplication>(a => a.User.UserID == Globals.SelectedUserID

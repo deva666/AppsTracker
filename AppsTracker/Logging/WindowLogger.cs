@@ -8,9 +8,7 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using System.Timers;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.Data.Utils;
@@ -22,8 +20,7 @@ namespace AppsTracker.Logging
     [Export(typeof(IComponent))]
     internal sealed class WindowLogger : IComponent, ICommunicator
     {
-        [Import(typeof(IWindowNotifier))]
-        IWindowNotifier windowNotifierInstance;
+        private IWindowNotifier windowNotifierInstance;
 
         private readonly object _lock = new object();
 
@@ -33,17 +30,20 @@ namespace AppsTracker.Logging
 
         private readonly ILoggingService loggingService;
 
+        private LazyInit<IWindowNotifier> windowNotifier;
+
         private Log currentLog;
 
-        private LazyInit<Timer> screenshotTimer;
-        private LazyInit<IWindowNotifier> windowNotifier;
+        private LazyInit<System.Timers.Timer> screenshotTimer;
         private LazyInit<System.Threading.Timer> windowCheckTimer;
 
         private Setting settings;
 
-        public WindowLogger()
+        [ImportingConstructor]
+        public WindowLogger(IWindowNotifier windowNotifier)
         {
             loggingService = ServiceFactory.Get<ILoggingService>();
+            windowNotifierInstance = windowNotifier;
         }
 
 
@@ -52,10 +52,10 @@ namespace AppsTracker.Logging
             this.settings = settings;
 
             windowNotifier = new LazyInit<IWindowNotifier>(() => windowNotifierInstance,
-                                                                w => w.WindowChanged += WindowChanging,
-                                                                w => w.WindowChanged -= WindowChanging);
+                                                           w => w.WindowChanged += WindowChanging,
+                                                           w => w.WindowChanged -= WindowChanging);
 
-            screenshotTimer = new LazyInit<Timer>(() => new Timer()
+            screenshotTimer = new LazyInit<System.Timers.Timer>(() => new System.Timers.Timer()
                                                             {
                                                                 AutoReset = true,
                                                                 Interval = settings.TimerInterval
@@ -74,13 +74,13 @@ namespace AppsTracker.Logging
         }
 
 
-        private void OnScreenshotInit(Timer timer)
+        private void OnScreenshotInit(System.Timers.Timer timer)
         {
             timer.Enabled = true;
             timer.Elapsed += ScreenshotTick;
         }
 
-        private void OnScreenshotDispose(Timer timer)
+        private void OnScreenshotDispose(System.Timers.Timer timer)
         {
             timer.Enabled = false;
             timer.Elapsed -= ScreenshotTick;
@@ -93,9 +93,10 @@ namespace AppsTracker.Logging
             if ((settings.TakeScreenshots && settings.LoggingEnabled) && settings.TimerInterval != screenshotTimer.Component.Interval)
                 screenshotTimer.Component.Interval = settings.TimerInterval;
 
-            isLoggingEnabled =
-                windowNotifier.Enabled =
-                    windowCheckTimer.Enabled = settings.LoggingEnabled;
+            windowNotifier.Enabled =
+                isLoggingEnabled =
+                    windowCheckTimer.Enabled =
+                        settings.LoggingEnabled;
         }
 
         private async void ScreenshotTick(object sender, System.Timers.ElapsedEventArgs e)
@@ -206,18 +207,15 @@ namespace AppsTracker.Logging
             get { return MVVM.Mediator.Instance; }
         }
 
-        [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", Justification = "Setting enabled to false calls Dispose", MessageId = "_keyboardHook"),
-        SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", Justification = "Setting enabled to false calls Dispose", MessageId = "_screenshotTimer"),
-        SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", Justification = "Setting enabled to false calls Dispose", MessageId = "_winHook"),
-        SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", Justification = "Setting enabled to false calls Dispose", MessageId = "_windowCheckTimer")]
         public void Dispose()
         {
-            screenshotTimer.Enabled =
-                windowCheckTimer.Enabled =
-                    windowNotifier.Enabled = false;
+            windowNotifierInstance.Dispose();
+
+            windowNotifier.Enabled =
+                screenshotTimer.Enabled =
+                    windowCheckTimer.Enabled = false;
 
             StopLogging();
         }
-
     }
 }

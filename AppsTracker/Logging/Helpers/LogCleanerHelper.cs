@@ -7,14 +7,16 @@
 #endregion
 
 using System;
+using System.ComponentModel.Composition;
 using System.Threading.Tasks;
-
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Service;
+using AppsTracker.Logging.Helpers;
 
 namespace AppsTracker.Logging
 {
-    internal sealed class LogCleanerHelper : IDisposable
+    [Export(typeof(ILogCleaner))]
+    internal sealed class LogCleaner : ILogCleaner
     {
         private int daysTreshold;
 
@@ -22,10 +24,7 @@ namespace AppsTracker.Logging
 
         public int Days
         {
-            get
-            {
-                return daysTreshold;
-            }
+            get { return daysTreshold; }
             set
             {
                 Ensure.Condition<InvalidOperationException>(value >= 15, "Minimum value must be 15");
@@ -33,19 +32,17 @@ namespace AppsTracker.Logging
             }
         }
 
-        public LogCleanerHelper(int daysToDelete)
+        public LogCleaner()
         {
             dataService = ServiceFactory.Get<IDataService>();
-            Days = daysToDelete;
-            CleanAsync();
         }
 
-        private void Clean()
+        public void Clean()
         {
             dataService.DeleteOldLogs(daysTreshold);
         }
 
-        private Task CleanAsync()
+        public Task CleanAsync()
         {
             return Task.Run(new Action(Clean));
         }

@@ -8,7 +8,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.MVVM;
@@ -18,25 +17,26 @@ namespace AppsTracker.Logging
     [Export(typeof(IComponent))]
     internal sealed class UsageLogger : IComponent, ICommunicator
     {
-        [Import(typeof(IIdleNotifier))]
         private IIdleNotifier idleNotifierInstance;
 
         private bool isLoggingEnabled;
 
         private readonly ILoggingService loggingService;
 
+        private LazyInit<IIdleNotifier> idleNotifier;
+
         private Usage currentUsageLocked;
         private Usage currentUsageIdle;
         private Usage currentUsageLogin;
         private Usage currentUsageStopped;
 
-        private LazyInit<IIdleNotifier> idleMonitor;
-
         private Setting settings;
 
-        public UsageLogger()
+        [ImportingConstructor]
+        public UsageLogger(IIdleNotifier idleNotifier)
         {
             loggingService = ServiceFactory.Get<ILoggingService>();
+            idleNotifierInstance = idleNotifier;
         }
 
 
@@ -44,19 +44,19 @@ namespace AppsTracker.Logging
         {
             this.settings = settings;
 
-            InitLogin();
+            idleNotifier = new LazyInit<IIdleNotifier>(() => idleNotifierInstance,
+                                                        i =>
+                                                        {
+                                                            i.IdleEntered += IdleEntered;
+                                                            i.IdleStoped += IdleStopped;
+                                                        },
+                                                        i =>
+                                                        {
+                                                            i.IdleEntered -= IdleEntered;
+                                                            i.IdleStoped -= IdleStopped;
+                                                        });
 
-            idleMonitor = new LazyInit<IIdleNotifier>(() => idleNotifierInstance,
-                                                            m =>
-                                                            {
-                                                                m.IdleEntered += IdleEntered;
-                                                                m.IdleStoped += IdleStopped;
-                                                            },
-                                                            m =>
-                                                            {
-                                                                m.IdleEntered -= IdleEntered;
-                                                                m.IdleStoped -= IdleStopped;
-                                                            });
+            InitLogin();
 
             Microsoft.Win32.SystemEvents.SessionSwitch += SessionSwitch;
             Microsoft.Win32.SystemEvents.PowerModeChanged += PowerModeChanged;
@@ -67,7 +67,7 @@ namespace AppsTracker.Logging
 
         private void Configure()
         {
-            idleMonitor.Enabled = settings.EnableIdle && settings.LoggingEnabled;
+            idleNotifier.Enabled = settings.LoggingEnabled && settings.EnableIdle;
             isLoggingEnabled = settings.LoggingEnabled;
             CheckStoppedUsage();
         }
@@ -151,11 +151,14 @@ namespace AppsTracker.Logging
                     AddUsage(UsageTypes.Idle, currentUsageIdle);
                     currentUsageIdle = null;
                 }
-                idleMonitor.Enabled = false;
+                idleNotifier.Enabled = false;
             }
             else if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionUnlock)
             {
-                idleMonitor.Enabled = settings.LoggingEnabled && settings.EnableIdle;
+                if (settings.EnableIdle && settings.LoggingEnabled)
+                {
+                    idleNotifier.Enabled = true;
+                }
                 if (currentUsageLocked != null)
                 {
                     currentUsageLocked.UsageEnd = DateTime.Now;
@@ -220,7 +223,8 @@ namespace AppsTracker.Logging
 
         public void Dispose()
         {
-            idleMonitor.Enabled = false;
+            idleNotifierInstance.Dispose();
+            idleNotifier.Enabled = false;
             Finish();
             Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;
             Microsoft.Win32.SystemEvents.PowerModeChanged -= PowerModeChanged;
