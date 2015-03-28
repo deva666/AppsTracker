@@ -14,7 +14,7 @@ using AppsTracker.Logging.Helpers;
 namespace AppsTracker.Logging
 {
     [Export(typeof(IComponent))]
-    internal class DataCleaner : IComponent, IDisposable
+    internal sealed class DataCleaner : IComponent, IDisposable
     {
         private ILogCleaner logCleanerInstance;
 

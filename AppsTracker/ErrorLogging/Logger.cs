@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.ComponentModel.Composition;
 
 namespace AppsTracker
 {
+    [Export(typeof(ILogger))]
     public class FileLogger : ILogger
     {
         private static readonly Lazy<FileLogger> instance = new Lazy<FileLogger>(() => new FileLogger());
         public static FileLogger Instance { get { return instance.Value; } }
+     
         private FileLogger()
         {
-
         }
 
         public void Log(System.Exception ex)

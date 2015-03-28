@@ -228,7 +228,8 @@ ShowEULAWindow();
             settings.TakeScreenshots = false;
             await settingsService.SaveChangesAsync(settings);
 
-            MessageWindow msgWindow = new MessageWindow("Database size has reached the maximum allowed value" + Environment.NewLine + "Please run the screenshot cleaner from the settings menu to continue capturing screenshots.", false);
+            MessageWindow msgWindow = new MessageWindow("Database size has reached the maximum allowed value"
+                + Environment.NewLine + "Please run the screenshot cleaner from the settings menu to continue capturing screenshots.", false);
             msgWindow.ShowDialog();
 
             Globals.DBCleaningRequired -= Globals_DBCleaningRequired;
@@ -245,6 +246,5 @@ ShowEULAWindow();
                 trayIcon = null;
             }
         }
-
     }
 }

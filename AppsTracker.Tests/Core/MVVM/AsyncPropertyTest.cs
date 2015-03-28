@@ -46,9 +46,6 @@ namespace AppsTracker.Tests.Core.MVVM
             _prop.Reset();
             var result = _prop.Result;
             Assert.IsTrue(result == default(int), "Default result value");
-            while (_propertyChanged == false) { }
-            result = _prop.Result;
-            Assert.IsTrue(result == default(int), "Result value mismatch");
         }
 
         [TestMethod]

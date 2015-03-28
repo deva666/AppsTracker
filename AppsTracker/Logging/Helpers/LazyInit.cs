@@ -33,6 +33,7 @@ namespace AppsTracker.Logging
         {
             get
             {
+                component = LazyInitValue();
                 return component;
             }
         }

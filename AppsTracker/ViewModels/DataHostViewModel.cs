@@ -26,6 +26,5 @@ namespace AppsTracker.ViewModels
 
             SelectedChild = GetChild(typeof(AppDetailsViewModel));
         }
-
     }
 }

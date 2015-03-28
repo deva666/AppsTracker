@@ -23,6 +23,7 @@ namespace AppsTracker
     public partial class App : Application
     {
         private readonly IApplicationController applicationController;
+        private readonly CompositionContainer container;
 
         public App(ReadOnlyCollection<string> args)
         {
@@ -46,7 +47,7 @@ namespace AppsTracker
 
             RegisterServices();
 
-            var container = GetCompositionContainer();
+            container = GetCompositionContainer();
 
             applicationController = container.GetExportedValue<IApplicationController>();
             applicationController.Initialize(autostart);
@@ -80,9 +81,9 @@ namespace AppsTracker
         {
             try
             {
-                FileLogger.Instance.Log(e.Exception);
                 MessageWindow messageWindow = new MessageWindow(e.Exception);
                 messageWindow.ShowDialog();
+                container.GetExportedValue<ILogger>().Log(e.Exception);
             }
             finally
             {
@@ -92,6 +93,7 @@ namespace AppsTracker
 
         internal void FinishAndExit()
         {
+            container.Dispose();
             applicationController.ShutDown();
             Application.Current.Shutdown();
         }
