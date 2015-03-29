@@ -1,14 +1,23 @@
-﻿using System;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2015
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
+using System.ComponentModel.Composition;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Data.Service
 {
+    [Export(typeof(ILoggingService))]
     public sealed class LoggingService : ILoggingService
     {
 

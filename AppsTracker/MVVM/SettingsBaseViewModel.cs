@@ -52,7 +52,7 @@ namespace AppsTracker.MVVM
 
         public SettingsBaseViewModel()
         {
-            settingsService = ServiceFactory.Get<ISqlSettingsService>();
+            settingsService = serviceResolver.Resolve<ISqlSettingsService>();
             Settings = settingsService.Settings;
         }
 

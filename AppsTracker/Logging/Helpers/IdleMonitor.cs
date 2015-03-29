@@ -31,10 +31,10 @@ namespace AppsTracker.Logging
         public event EventHandler IdleStoped;
 
         [ImportingConstructor]
-        public IdleMonitor(ISyncContext syncContext)
+        public IdleMonitor(ISyncContext syncContext, ISqlSettingsService settingsService)
         {
             this.syncContext = syncContext;
-            settingsService = ServiceFactory.Get<ISqlSettingsService>();
+            this.settingsService = settingsService;
             idleTimer = new Timer(CheckIdleState, null, 1 * 60 * 1000, 1000);
         }
 

@@ -32,9 +32,10 @@ namespace AppsTracker.Logging
             }
         }
 
-        public LogCleaner()
+        [ImportingConstructor]
+        public LogCleaner(IDataService dataService)
         {
-            dataService = ServiceFactory.Get<IDataService>();
+            this.dataService = dataService;
         }
 
         public void Clean()

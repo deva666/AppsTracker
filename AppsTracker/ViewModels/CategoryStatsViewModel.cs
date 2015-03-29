@@ -71,7 +71,7 @@ namespace AppsTracker.ViewModels
 
         public CategoryStatsViewModel()
         {
-            statsService = ServiceFactory.Get<IStatsService>();
+            statsService = serviceResolver.Resolve<IStatsService>();
 
             categoryList = new AsyncProperty<IEnumerable<CategoryDuration>>(GetCategories, this);
             dailyCategoryList = new AsyncProperty<IEnumerable<DailyCategoryDuration>>(GetDailyCategories, this);

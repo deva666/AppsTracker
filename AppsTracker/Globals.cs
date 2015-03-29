@@ -7,17 +7,18 @@
 #endregion
 
 using System;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
+using AppsTracker.MVVM;
 
 namespace AppsTracker
 {
     public static class Globals
     {
-        private static bool isDateRangeFiltered;
-
+        private static bool isDateRangeFiltered;       
         private static DateTime dateFrom;
         private static DateTime dateTo;
 
@@ -71,7 +72,7 @@ namespace AppsTracker
 
         private static DateTime GetFirstDate()
         {
-            return ServiceFactory.Get<ILoggingService>().GetFirstDate(SelectedUserID);
+            return ServiceResolver.Instance.Resolve<ILoggingService>().GetFirstDate(SelectedUserID);
         }
 
         public static void ChangeUser(Uzer uzer)

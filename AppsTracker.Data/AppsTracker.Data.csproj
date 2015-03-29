@@ -135,7 +135,6 @@
     <Compile Include="Service\IStatsService.cs" />
     <Compile Include="Service\ISqlSettingsService.cs" />
     <Compile Include="Service\IXmlSettingsService.cs" />
-    <Compile Include="Service\ServiceFactory.cs" />
     <Compile Include="Service\SqlSettingsService.cs" />
     <Compile Include="Service\XmlSettingsService.cs" />
     <Compile Include="Utils\Extensions.cs" />

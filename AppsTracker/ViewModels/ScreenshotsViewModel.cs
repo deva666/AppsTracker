@@ -92,8 +92,8 @@ namespace AppsTracker.ViewModels
 
         public ScreenshotsViewModel()
         {
-            dataService = ServiceFactory.Get<IDataService>();
-            settingsService = ServiceFactory.Get<ISqlSettingsService>();
+            dataService = serviceResolver.Resolve<IDataService>();
+            settingsService = serviceResolver.Resolve<ISqlSettingsService>();
 
             logList = new AsyncProperty<IEnumerable<Log>>(GetContent, this);
 

@@ -78,7 +78,7 @@ namespace AppsTracker.ViewModels
 
         public UserStatsViewModel()
         {
-            statsService = ServiceFactory.Get<IStatsService>();
+            statsService = serviceResolver.Resolve<IStatsService>();
 
             usersList = new AsyncProperty<IEnumerable<UserLoggedTime>>(GetContent, this);
             dailyUsageList = new AsyncProperty<IEnumerable<UsageOverview>>(GetSubContent, this);

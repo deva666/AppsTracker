@@ -162,7 +162,7 @@ namespace AppsTracker.ViewModels
 
         public SettingsAppCategoriesViewModel()
         {
-            categoriesService = ServiceFactory.Get<ICategoriesService>();
+            categoriesService = serviceResolver.Resolve<ICategoriesService>();
             LoadContent();
             Mediator.Instance.Register<Aplication>(MediatorMessages.ApplicationAdded, AppAdded);
         }

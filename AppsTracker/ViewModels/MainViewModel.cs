@@ -204,8 +204,8 @@ namespace AppsTracker.ViewModels
 
         public MainViewModel()
         {
-            dataService = ServiceFactory.Get<IDataService>();
-            settingsService = ServiceFactory.Get<ISqlSettingsService>();
+            dataService = serviceResolver.Resolve<IDataService>();
+            settingsService = serviceResolver.Resolve<ISqlSettingsService>();
 
             RegisterChild(() => new DataHostViewModel());
             RegisterChild(() => new StatisticsHostViewModel());

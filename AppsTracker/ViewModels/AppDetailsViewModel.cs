@@ -144,14 +144,13 @@ namespace AppsTracker.ViewModels
 
         public AppDetailsViewModel()
         {
-            dataService = ServiceFactory.Get<IDataService>();
-            statsService = ServiceFactory.Get<IStatsService>();
+            dataService = serviceResolver.Resolve<IDataService>();
+            statsService = serviceResolver.Resolve<IStatsService>();
 
             appList = new AsyncProperty<IEnumerable<Aplication>>(GetApps, this);
             appSummaryList = new AsyncProperty<IEnumerable<AppSummary>>(GetAppSummary, this);
             windowSummaryList = new AsyncProperty<IEnumerable<WindowSummary>>(GetWindowSummary, this);
             windowDurationList = new AsyncProperty<IEnumerable<WindowDurationOverview>>(GetWindowDuration, this);
-
 
             Mediator.Register(MediatorMessages.ApplicationAdded, new Action<Aplication>(ApplicationAdded));
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(appList.Reload));

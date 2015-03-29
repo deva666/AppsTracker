@@ -2,20 +2,20 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-using AppsTracker.Views;
 using AppsTracker.Data.Service;
-using AppsTracker.Logging;
+using AppsTracker.MVVM;
+using AppsTracker.Views;
 
 namespace AppsTracker
 {
     public partial class PasswordWindow : Window
     {
-        ISqlSettingsService _settingService;
+        ISqlSettingsService settingService;
 
         public PasswordWindow()
         {
             InitializeComponent();
-            _settingService = ServiceFactory.Get<ISqlSettingsService>();
+            settingService = ServiceResolver.Instance.Resolve<ISqlSettingsService>();
             SetKeylogger(false);
             this.Closing += (s, e) => SetKeylogger(true);
         }
@@ -74,7 +74,7 @@ namespace AppsTracker
 
         private void CheckPassword()
         {
-            if (Hashing.Hash.GetEncryptedString(pbPassword.Password) == _settingService.Settings.WindowOpen)
+            if (Hashing.Hash.GetEncryptedString(pbPassword.Password) == settingService.Settings.WindowOpen)
             {
                 this.DialogResult = true;
                 FadeUnloaded();

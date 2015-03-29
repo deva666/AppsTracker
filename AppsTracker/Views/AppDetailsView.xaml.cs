@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using AppsTracker.Data.Service;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.Views
 {
@@ -12,15 +13,10 @@ namespace AppsTracker.Views
         public AppDetailsView()
         {
             InitializeComponent();
-            xmlService = ServiceFactory.Get<IXmlSettingsService>();
+            xmlService = ServiceResolver.Instance.Resolve<IXmlSettingsService>();
             var width = xmlService.LogsViewSettings.VerticalSeparatorPosition;
             if (width != default(double))
                 rootLayout.ColumnDefinitions[0].Width = new GridLength(width);
-        }
-
-        private void CommandBinding_Executed_1(object sender, ExecutedRoutedEventArgs e)
-        {
-            // lbData.SelectAll();
         }
 
         private void Thumb_DragDelta_1(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)

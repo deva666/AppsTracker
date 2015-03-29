@@ -23,31 +23,30 @@ namespace AppsTracker.Controllers
         private readonly IAppearanceController appearanceController;
         private readonly ILoggingController loggingController;
         private readonly ISyncContext syncContext;
-
-        private ISqlSettingsService settingsService;
-        private IXmlSettingsService xmlSettingsService;
+        private readonly IXmlSettingsService xmlSettingsService;
+        private readonly ISqlSettingsService sqlSettingsService;
 
         private TrayIcon trayIcon;
         private Window mainWindow;
 
         [ImportingConstructor]
-        public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController,ISyncContext syncContext)
+        public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController,ISyncContext syncContext, ISqlSettingsService sqlSettingsService, IXmlSettingsService xmlSettingsService)
         {
             this.appearanceController = appearanceController;
             this.loggingController = loggingController;
             this.syncContext = syncContext;
+            this.xmlSettingsService = xmlSettingsService;
+            this.sqlSettingsService = sqlSettingsService;
         }
 
         public void Initialize(bool autoStart)
         {
             syncContext.Context = System.Threading.SynchronizationContext.Current;
-            settingsService = ServiceFactory.Get<ISqlSettingsService>();
-            xmlSettingsService = ServiceFactory.Get<IXmlSettingsService>();
             xmlSettingsService.Initialize();
-            PropertyChangedEventManager.AddHandler(settingsService, OnSettingsChanged, "Settings");
+            PropertyChangedEventManager.AddHandler(sqlSettingsService, OnSettingsChanged, "Settings");
 
-            appearanceController.Initialize(settingsService.Settings);
-            loggingController.Initialize(settingsService.Settings);
+            appearanceController.Initialize(sqlSettingsService.Settings);
+            loggingController.Initialize(sqlSettingsService.Settings);
 
 #if PORTABLE_SYMBOL
 
@@ -71,13 +70,13 @@ ShowEULAWindow();
 
         private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
         {
-            loggingController.SettingsChanging(settingsService.Settings);
-            appearanceController.SettingsChanging(settingsService.Settings);
+            loggingController.SettingsChanging(sqlSettingsService.Settings);
+            appearanceController.SettingsChanging(sqlSettingsService.Settings);
         }
 
         private void ShowEULAWindow()
         {
-            if (settingsService.Settings.FirstRun)
+            if (sqlSettingsService.Settings.FirstRun)
             {
                 EULAWindow eulaWindow = new EULAWindow();
                 var dialogResult = eulaWindow.ShowDialog();
@@ -92,7 +91,7 @@ ShowEULAWindow();
 
         private void ReadSettingsFromRegistry()
         {
-            var settings = settingsService.Settings;
+            var settings = sqlSettingsService.Settings;
 
             bool? exists = RegistryEntryExists();
             if (exists == null && settings.RunAtStartup)
@@ -102,7 +101,7 @@ ShowEULAWindow();
             else if (exists.HasValue && !exists.Value && settings.RunAtStartup)
                 settings.RunAtStartup = false;
 
-            settingsService.SaveChanges(settings);
+            sqlSettingsService.SaveChanges(settings);
         }
 
         private bool? RegistryEntryExists()
@@ -122,12 +121,12 @@ ShowEULAWindow();
 
         private void FirstRunWindowSetup()
         {
-            if (settingsService.Settings.FirstRun)
+            if (sqlSettingsService.Settings.FirstRun)
             {
                 SetInitialWindowDimensions();
-                var settings = settingsService.Settings;
+                var settings = sqlSettingsService.Settings;
                 settings.FirstRun = false;
-                settingsService.SaveChanges(settings);
+                sqlSettingsService.SaveChanges(settings);
             }
         }
 
@@ -171,7 +170,7 @@ ShowEULAWindow();
 
         private bool CheckPassword()
         {
-            if (settingsService.Settings.IsMasterPasswordSet)
+            if (sqlSettingsService.Settings.IsMasterPasswordSet)
             {
                 PasswordWindow passwordWindow = new PasswordWindow();
                 bool? dialog = passwordWindow.ShowDialog();
@@ -228,9 +227,9 @@ ShowEULAWindow();
 
         private async void Globals_DBCleaningRequired(object sender, EventArgs e)
         {
-            var settings = settingsService.Settings;
+            var settings = sqlSettingsService.Settings;
             settings.TakeScreenshots = false;
-            await settingsService.SaveChangesAsync(settings);
+            await sqlSettingsService.SaveChangesAsync(settings);
 
             MessageWindow msgWindow = new MessageWindow("Database size has reached the maximum allowed value"
                 + Environment.NewLine + "Please run the screenshot cleaner from the settings menu to continue capturing screenshots.", false);

@@ -19,6 +19,7 @@ namespace AppsTracker.MVVM
 
         public abstract string Title { get; }
 
+        protected IServiceResolver serviceResolver = ServiceResolver.Instance;
 
         public bool Working
         {

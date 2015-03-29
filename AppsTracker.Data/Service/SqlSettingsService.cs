@@ -1,11 +1,21 @@
-﻿using AppsTracker.Data.Db;
-using AppsTracker.Data.Models;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2015
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
 using System;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
+using AppsTracker.Data.Db;
+using AppsTracker.Data.Models;
 
 namespace AppsTracker.Data.Service
 {
+    [Export(typeof(ISqlSettingsService))]
     public sealed class SqlSettingsService : ISqlSettingsService
     {
         private static Lazy<SqlSettingsService> instance = new Lazy<SqlSettingsService>(() => new SqlSettingsService());

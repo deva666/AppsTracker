@@ -1,6 +1,15 @@
-﻿using System;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2015
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Data.Entity;
 using System.Linq;
 using AppsTracker.Data.Db;
@@ -8,6 +17,7 @@ using AppsTracker.Data.Models;
 
 namespace AppsTracker.Data.Service
 {
+    [Export(typeof(ICategoriesService))]
     public sealed class CategoriesService : ICategoriesService
     {
         private Boolean isDisposed = false;

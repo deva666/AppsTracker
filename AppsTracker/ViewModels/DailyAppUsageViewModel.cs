@@ -44,7 +44,7 @@ namespace AppsTracker.ViewModels
 
         public DailyAppUsageViewModel()
         {
-            statsService = ServiceFactory.Get<IStatsService>();
+            statsService = serviceResolver.Resolve<IStatsService>();
 
             appsList = new AsyncProperty<IEnumerable<AppDurationOverview>>(GetApps, this);
 

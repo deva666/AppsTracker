@@ -52,6 +52,7 @@ namespace AppsTracker
 
             RegisterServices();
             container = GetCompositionContainer();
+            AppsTracker.MVVM.ServiceResolver.Instance.Initialize(container);
 
             applicationController = container.GetExportedValue<IApplicationController>();
             applicationController.Initialize(autostart);
@@ -62,18 +63,19 @@ namespace AppsTracker
 
         private void RegisterServices()
         {
-            ServiceFactory.Register<ISqlSettingsService>(() => SqlSettingsService.Instance);
-            ServiceFactory.Register<IXmlSettingsService>(() => XmlSettingsService.Instance);
-            ServiceFactory.Register<IDataService>(() => new DataService());
-            ServiceFactory.Register<ILoggingService>(() => new LoggingService());
-            ServiceFactory.Register<IStatsService>(() => new StatsService());
-            ServiceFactory.Register<ICategoriesService>(() => new CategoriesService());
+            //ServiceFactory.Register<ISqlSettingsService>(() => SqlSettingsService.Instance);
+            //ServiceFactory.Register<IXmlSettingsService>(() => XmlSettingsService.Instance);
+            //ServiceFactory.Register<IDataService>(() => new DataService());
+            //ServiceFactory.Register<ILoggingService>(() => new LoggingService());
+            //ServiceFactory.Register<IStatsService>(() => new StatsService());
+            //ServiceFactory.Register<ICategoriesService>(() => new CategoriesService());
         }
 
         private CompositionContainer GetCompositionContainer()
         {
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+            catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Data.Db.AppsEntities).Assembly));
             var container = new CompositionContainer(catalog);
             var batch = new CompositionBatch();
             batch.AddExportedValue(container);

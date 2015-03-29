@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Data.Service
 {
+    [Export(typeof(IStatsService))]
     public class StatsService : IStatsService
     {
         private IEnumerable<Log> _cachedLogs = null;

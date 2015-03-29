@@ -13,9 +13,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.ComponentModel.Composition;
 
 namespace AppsTracker.Data.Service
 {
+    [Export(typeof(IDataService))]
     public sealed class DataService : IDataService
     {
         public IEnumerable<T> Get<T>() where T : class

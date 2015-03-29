@@ -145,8 +145,8 @@ namespace AppsTracker.ViewModels
 
         public DaySummaryViewModel()
         {
-            dataService = ServiceFactory.Get<IDataService>();
-            statsService = ServiceFactory.Get<IStatsService>();
+            dataService = serviceResolver.Resolve<IDataService>();
+            statsService = serviceResolver.Resolve<IStatsService>();
 
             logsList = new AsyncProperty<IEnumerable<LogSummary>>(GetLogSummary, this);
             appsList = new AsyncProperty<IEnumerable<AppSummary>>(GetAppsSummary, this);

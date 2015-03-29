@@ -1,10 +1,20 @@
-﻿using AppsTracker.Data.XmlSettings;
+﻿#region Licence
+/*
+  *  Author: Marko Devcic, madevcic@gmail.com
+  *  Copyright: Marko Devcic, 2015
+  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
+ */
+#endregion
+
 using System;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Xml.Linq;
+using AppsTracker.Data.XmlSettings;
 
 namespace AppsTracker.Data.Service
 {
+    [Export(typeof(IXmlSettingsService))]
     public sealed class XmlSettingsService : IXmlSettingsService
     {
         private const string SETTINGS_FILE_NAME = "settings.xml";

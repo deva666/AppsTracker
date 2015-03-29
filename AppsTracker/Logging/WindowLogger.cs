@@ -40,9 +40,9 @@ namespace AppsTracker.Logging
         private Setting settings;
 
         [ImportingConstructor]
-        public WindowLogger(IWindowNotifier windowNotifier, ISyncContext syncContext, IScreenshotFactory screenshotFactory)
+        public WindowLogger(IWindowNotifier windowNotifier, ISyncContext syncContext, IScreenshotFactory screenshotFactory, ILoggingService loggingService)
         {
-            this.loggingService = ServiceFactory.Get<ILoggingService>();
+            this.loggingService = loggingService;
             this.windowNotifierInstance = windowNotifier;
             this.syncContext = syncContext;
             this.screenshotFactory = screenshotFactory;
@@ -182,7 +182,7 @@ namespace AppsTracker.Logging
         private async Task AddScreenshot()
         {
             var dbSizeTask = Globals.GetDBSizeAsync();
-            Screenshot screenshot = screenshotFactory.CreateScreenshot();
+            var screenshot = screenshotFactory.CreateScreenshot();
 
             if (screenshot == null || currentLog == null)
                 return;

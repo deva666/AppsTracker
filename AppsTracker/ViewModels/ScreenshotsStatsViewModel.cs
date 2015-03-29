@@ -72,7 +72,7 @@ namespace AppsTracker.ViewModels
 
         public ScreenshotsStatsViewModel()
         {
-            statsService = ServiceFactory.Get<IStatsService>();
+            statsService = serviceResolver.Resolve<IStatsService>();
 
             screenshotList = new AsyncProperty<IEnumerable<ScreenshotModel>>(GetScreenshots, this);
             dailyScreenshotsList = new AsyncProperty<IEnumerable<DailyScreenshotModel>>(GetDailyScreenshots, this);

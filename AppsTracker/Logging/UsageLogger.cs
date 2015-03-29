@@ -33,9 +33,9 @@ namespace AppsTracker.Logging
         private Setting settings;
 
         [ImportingConstructor]
-        public UsageLogger(IIdleNotifier idleNotifier)
+        public UsageLogger(IIdleNotifier idleNotifier, ILoggingService loggingService)
         {
-            loggingService = ServiceFactory.Get<ILoggingService>();
+            this.loggingService = loggingService;
             idleNotifierInstance = idleNotifier;
         }
 
