@@ -64,6 +64,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
+
         public Aplication GetApp(IAppInfo appInfo)
         {
             using (var context = new AppsEntities())

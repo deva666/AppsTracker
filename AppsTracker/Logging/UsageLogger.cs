@@ -44,17 +44,7 @@ namespace AppsTracker.Logging
         {
             this.settings = settings;
 
-            idleNotifier = new LazyInit<IIdleNotifier>(() => idleNotifierInstance,
-                                                        i =>
-                                                        {
-                                                            i.IdleEntered += IdleEntered;
-                                                            i.IdleStoped += IdleStopped;
-                                                        },
-                                                        i =>
-                                                        {
-                                                            i.IdleEntered -= IdleEntered;
-                                                            i.IdleStoped -= IdleStopped;
-                                                        });
+            idleNotifier = new LazyInit<IIdleNotifier>(() => idleNotifierInstance, OnIdleNotifierInit, OnIdleNotifierDispose);
 
             InitLogin();
 
@@ -64,6 +54,17 @@ namespace AppsTracker.Logging
             Configure();
         }
 
+        private void OnIdleNotifierInit(IIdleNotifier notifier)
+        {
+            notifier.IdleEntered += IdleEntered;
+            notifier.IdleStoped += IdleStopped;
+        }
+
+        private void OnIdleNotifierDispose(IIdleNotifier notifier)
+        {
+            notifier.IdleEntered -= IdleEntered;
+            notifier.IdleStoped -= IdleStopped;
+        }
 
         private void Configure()
         {

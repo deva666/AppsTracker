@@ -10,6 +10,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -121,7 +122,6 @@ namespace AppsTracker.ViewModels
             ScreenshotViewerWindow window = new ScreenshotViewerWindow(logs.SelectMany(l => l.Screenshots));
             window.Owner = App.Current.MainWindow;
             window.Show();
-
         }
 
 
@@ -186,11 +186,84 @@ namespace AppsTracker.ViewModels
                 path.Append(".jpg");
                 string folderPath;
                 if (Directory.Exists(settingsService.Settings.DefaultScreenshotSavePath))
-                    folderPath = Path.Combine(settingsService.Settings.DefaultScreenshotSavePath, Screenshots.CorrectPath(path.ToString()));
+                    folderPath = Path.Combine(settingsService.Settings.DefaultScreenshotSavePath, CorrectPath(path.ToString()));
                 else
-                    folderPath = Screenshots.CorrectPath(path.ToString());
-                Screenshots.SaveScreenshotToFile(screenshot, folderPath);
+                    folderPath = CorrectPath(path.ToString());
+                SaveScreenshot(screenshot.Screensht, folderPath);
             });
+        }
+
+        private string CorrectPath(string windowTitle)
+        {
+            string newTitle = windowTitle;
+            char[] illegalChars = new char[] { '<', '>', ':', '"', '\\', '|', '?', '*', '0' };
+            if (windowTitle.IndexOfAny(illegalChars) >= 0)
+            {
+                foreach (var chr in illegalChars)
+                {
+                    if (newTitle.Contains(chr))
+                    {
+                        while (newTitle.Contains(chr))
+                        {
+                            newTitle = newTitle.Remove(newTitle.IndexOf(chr), 1);
+                        }
+                    }
+                }
+            }
+            char[] charArray = newTitle.ToArray();
+            foreach (var chr in charArray)
+            {
+                int i = chr;
+                if (i >= 1 && i <= 31) newTitle = newTitle.Remove(newTitle.IndexOf(chr), 1);
+            }
+
+            newTitle = TrimPath(newTitle);
+            return newTitle;
+        }
+
+        private string TrimPath(string path)
+        {
+            if (path.Length >= 247)
+            {
+                while (path.Length >= 247)
+                {
+                    path = path.Remove(path.Length - 1, 1);
+                }
+            }
+            return path;
+        }
+
+        private void SaveScreenshot(byte[] image, string path)
+        {
+            ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Jpeg);
+
+            try
+            {
+                using (FileStream fileStream = File.Open(path, FileMode.OpenOrCreate))
+                {
+                    fileStream.Write(image, 0, image.Length);
+                }
+            }
+            catch (IOException ex)
+            {
+                MessageWindow window = new MessageWindow(ex);
+                window.ShowDialog();
+            }
+        }
+
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
         }
     }
 }

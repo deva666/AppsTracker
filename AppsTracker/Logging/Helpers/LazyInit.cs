@@ -47,6 +47,12 @@ namespace AppsTracker.Logging
             this.valueFactory = valueFactory;
         }
 
+        public LazyInit(Func<T> valueFactory, Action<T> onInit)
+            : this(valueFactory)
+        {
+            this.onInit = onInit;
+        }
+
         public LazyInit(Func<T> valueFactory, Action<T> onInit, Action<T> onDispose)
             : this(valueFactory)
         {

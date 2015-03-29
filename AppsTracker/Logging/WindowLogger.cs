@@ -28,6 +28,7 @@ namespace AppsTracker.Logging
         private readonly ILoggingService loggingService;
         private readonly IWindowNotifier windowNotifierInstance;
         private readonly ISyncContext syncContext;
+        private readonly IScreenshotFactory screenshotFactory;
 
         private LazyInit<IWindowNotifier> windowNotifier;
 
@@ -39,11 +40,12 @@ namespace AppsTracker.Logging
         private Setting settings;
 
         [ImportingConstructor]
-        public WindowLogger(IWindowNotifier windowNotifier, ISyncContext syncContext)
+        public WindowLogger(IWindowNotifier windowNotifier, ISyncContext syncContext, IScreenshotFactory screenshotFactory)
         {
-            loggingService = ServiceFactory.Get<ILoggingService>();
-            windowNotifierInstance = windowNotifier;
+            this.loggingService = ServiceFactory.Get<ILoggingService>();
+            this.windowNotifierInstance = windowNotifier;
             this.syncContext = syncContext;
+            this.screenshotFactory = screenshotFactory;
         }
 
         public void SettingsChanged(Setting settings)
@@ -159,12 +161,13 @@ namespace AppsTracker.Logging
         {
             Log tempLog;
 
-            activeWindowTitle = string.Empty;            
-            if (currentLog == null)
-                return;
+            activeWindowTitle = string.Empty;
 
             tempLog = currentLog;
             currentLog = newLog;
+
+            if (tempLog == null)
+                return;
 
             tempLog.Finish();
             loggingService.SaveModifiedLogAsync(tempLog);
@@ -178,15 +181,15 @@ namespace AppsTracker.Logging
 
         private async Task AddScreenshot()
         {
-            var dbSizeAsync = Globals.GetDBSizeAsync();
-            Screenshot screenshot = Screenshots.GetScreenshot();
+            var dbSizeTask = Globals.GetDBSizeAsync();
+            Screenshot screenshot = screenshotFactory.CreateScreenshot();
 
             if (screenshot == null || currentLog == null)
                 return;
 
             screenshot.LogID = currentLog.LogID;
 
-            await Task.WhenAll(loggingService.SaveNewScreenshotAsync(screenshot), dbSizeAsync);
+            await Task.WhenAll(loggingService.SaveNewScreenshotAsync(screenshot), dbSizeTask);
         }
 
         private void StopLogging()

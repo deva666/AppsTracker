@@ -184,6 +184,7 @@
     <Compile Include="Controllers\LoggingController.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Logging\Helpers\ILogCleaner.cs" />
+    <Compile Include="Logging\Helpers\IScreenshotFactory.cs" />
     <Compile Include="Logging\Helpers\ISyncContext.cs" />
     <Compile Include="Logging\Helpers\SyncContext.cs" />
     <Compile Include="Logging\Hooks\IWindowNotifier.cs" />
@@ -416,7 +417,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Screenshots\Screenshots.cs" />
+    <Compile Include="Logging\Helpers\ScreenshotFactory.cs" />
     <Compile Include="Utils\Hash.cs" />
     <Compile Include="Logging\Hooks\WinHook.cs" />
     <Page Include="Views\Settings\AppCategoriesView.xaml">
