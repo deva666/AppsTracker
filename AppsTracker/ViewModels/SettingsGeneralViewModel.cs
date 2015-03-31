@@ -7,7 +7,7 @@
 #endregion
 
 using AppsTracker.Views;
-using AppsTracker.MVVM;
+using AppsTracker.ServiceLocation;
 using Microsoft.Win32;
 using System;
 using System.Windows.Input;

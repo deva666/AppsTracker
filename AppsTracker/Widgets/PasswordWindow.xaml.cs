@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using AppsTracker.Data.Service;
-using AppsTracker.MVVM;
+using AppsTracker.ServiceLocation;
 using AppsTracker.Views;
 
 namespace AppsTracker
@@ -15,7 +15,7 @@ namespace AppsTracker
         public PasswordWindow()
         {
             InitializeComponent();
-            settingService = ServiceResolver.Instance.Resolve<ISqlSettingsService>();
+            settingService = ServiceLocator.Instance.Resolve<ISqlSettingsService>();
             SetKeylogger(false);
             this.Closing += (s, e) => SetKeylogger(true);
         }

@@ -12,7 +12,7 @@ using System.Linq;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
-using AppsTracker.MVVM;
+using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.ViewModels
 {
@@ -139,7 +139,7 @@ namespace AppsTracker.ViewModels
 
         public IMediator Mediator
         {
-            get { return MVVM.Mediator.Instance; }
+            get { return ServiceLocation.Mediator.Instance; }
         }
 
 

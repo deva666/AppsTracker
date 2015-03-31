@@ -2,12 +2,12 @@
 using System.ComponentModel.Composition.Hosting;
 using AppsTracker.Data.Service;
 
-namespace AppsTracker.MVVM
+namespace AppsTracker.ServiceLocation
 {
-    internal sealed class ServiceResolver : AppsTracker.MVVM.IServiceResolver
+    internal sealed class ServiceLocator : IServiceResolver
     {
-        private static Lazy<ServiceResolver> instance = new Lazy<ServiceResolver>(() => new ServiceResolver());
-        public static ServiceResolver Instance
+        private static Lazy<ServiceLocator> instance = new Lazy<ServiceLocator>(() => new ServiceLocator());
+        public static ServiceLocator Instance
         {
             get { return instance.Value; }
         }

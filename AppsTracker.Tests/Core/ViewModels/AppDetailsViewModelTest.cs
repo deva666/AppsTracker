@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace AppsTracker.Tests.Core.ViewModels
 {
     [TestClass]
-    public class Data_logsViewModelTest : TestBase
+    public class AppDetailsViewModelTest : TestBase
     {
         [TestInitialize]
         public void Init()

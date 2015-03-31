@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using AppsTracker.Data.Service;
 
 namespace AppsTracker.Tests.Fakes.Service
 {
+    [Export(typeof(ISqlSettingsService))]
     class SqlSettingsServiceMock : ISqlSettingsService
     {
         public Data.Models.Setting Settings

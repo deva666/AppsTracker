@@ -7,7 +7,7 @@
 #endregion
 
 using AppsTracker.Data.Models;
-using AppsTracker.MVVM;
+using AppsTracker.ServiceLocation;
 using System;
 using System.Collections.Generic;
 using System.Linq;

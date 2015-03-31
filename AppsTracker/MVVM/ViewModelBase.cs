@@ -9,7 +9,7 @@
 using System;
 using System.Diagnostics;
 
-namespace AppsTracker.MVVM
+namespace AppsTracker.ServiceLocation
 {
     public abstract class ViewModelBase : ObservableObject, IWorker, IDisposable
     {
@@ -19,7 +19,7 @@ namespace AppsTracker.MVVM
 
         public abstract string Title { get; }
 
-        protected IServiceResolver serviceResolver = ServiceResolver.Instance;
+        protected IServiceResolver serviceResolver = ServiceLocator.Instance;
 
         public bool Working
         {

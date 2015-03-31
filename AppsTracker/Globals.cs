@@ -12,7 +12,7 @@ using System.IO;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
-using AppsTracker.MVVM;
+using AppsTracker.ServiceLocation;
 
 namespace AppsTracker
 {
@@ -72,7 +72,7 @@ namespace AppsTracker
 
         private static DateTime GetFirstDate()
         {
-            return ServiceResolver.Instance.Resolve<ILoggingService>().GetFirstDate(SelectedUserID);
+            return ServiceLocator.Instance.Resolve<ILoggingService>().GetFirstDate(SelectedUserID);
         }
 
         public static void ChangeUser(Uzer uzer)

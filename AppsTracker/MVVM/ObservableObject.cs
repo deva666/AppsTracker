@@ -10,7 +10,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
-namespace AppsTracker.MVVM
+namespace AppsTracker.ServiceLocation
 {
     public class ObservableObject : INotifyPropertyChanged
     {

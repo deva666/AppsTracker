@@ -10,7 +10,7 @@
         WindowStartupLocation="CenterScreen"
         BorderBrush="{DynamicResource WindowBorderBrush}"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:viewModel="clr-namespace:AppsTracker.MVVM">
+        xmlns:viewModel="clr-namespace:AppsTracker.ServiceLocation">
     <Window.DataContext>
         <viewModel:AboutWindowViewModel />
     </Window.DataContext>

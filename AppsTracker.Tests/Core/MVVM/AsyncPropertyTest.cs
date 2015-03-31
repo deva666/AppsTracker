@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using AppsTracker.MVVM;
+using AppsTracker.ServiceLocation;
 using AppsTracker.Tests.Fakes.MVVM;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

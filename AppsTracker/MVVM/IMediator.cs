@@ -8,7 +8,7 @@
 
 using System;
 
-namespace AppsTracker.MVVM
+namespace AppsTracker.ServiceLocation
 {
     public interface IMediator
     {

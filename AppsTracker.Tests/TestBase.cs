@@ -1,25 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppsTracker.Data.Service;
-using AppsTracker.Tests.Fakes.Service;
+﻿using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using AppsTracker.Logging.Helpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AppsTracker.Tests
 {
+    [TestClass]
     public abstract class TestBase
     {
+        private CompositionContainer container;
+        private AggregateCatalog catalog;
+
+        public CompositionContainer Container { get { return container; } }
+
+        [TestInitialize]
         protected void Initialize()
         {
-            //if (!ServiceFactory.ContainsKey<IDataService>())
-            //    ServiceFactory.Register<IDataService>(() => new AppsServiceMock());
-            //if (!ServiceFactory.ContainsKey<IStatsService>())
-            //    ServiceFactory.Register<IStatsService>(() => new StatsServiceMock());
-            //if (!ServiceFactory.ContainsKey<ISqlSettingsService>())
-            //    ServiceFactory.Register<ISqlSettingsService>(() => new SqlSettingsServiceMock());
-            //if (!ServiceFactory.ContainsKey<IXmlSettingsService>())
-            //    ServiceFactory.Register<IXmlSettingsService>(() => new XmlSettingsServiceMock());
+            catalog = new AggregateCatalog();
+            catalog.Catalogs.Add(new AssemblyCatalog(typeof(TestBase).Assembly));
+            container = new CompositionContainer(catalog);
+            var batch = new CompositionBatch();
+            batch.AddExportedValue(container);
+            container.Compose(batch);
+
+            ServiceLocation.ServiceLocator.Instance.Initialize(container);
+
+            var syncContext = container.GetExportedValue<ISyncContext>();
+            syncContext.Context = new System.Threading.SynchronizationContext();
         }
     }
 }

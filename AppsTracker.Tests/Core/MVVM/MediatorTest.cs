@@ -8,7 +8,7 @@
 
 using System;
 
-using AppsTracker.MVVM;
+using AppsTracker.ServiceLocation;
 using AppsTracker.Tests.Fakes.MVVM;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

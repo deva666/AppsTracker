@@ -6,7 +6,7 @@
  */
 #endregion
 
-using AppsTracker.MVVM;
+using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.Tests.Fakes.MVVM
 {

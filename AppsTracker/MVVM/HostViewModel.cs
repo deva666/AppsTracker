@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 
-namespace AppsTracker.MVVM
+namespace AppsTracker.ServiceLocation
 {
     internal abstract class HostViewModel : ViewModelBase
     {

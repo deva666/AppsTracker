@@ -17,9 +17,12 @@ namespace AppsTracker.Controllers
     [Export(typeof(ILoggingController))]
     internal sealed class LoggingController : ILoggingController
     {
+#pragma warning disable 0649
+
         [ImportMany(typeof(IComponent))]
         private List<IComponent> components;
 
+#pragma warning restore 0649
 
         public void Initialize(Setting settings)
         {

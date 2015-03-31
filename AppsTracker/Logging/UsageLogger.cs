@@ -10,7 +10,7 @@ using System;
 using System.ComponentModel.Composition;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
-using AppsTracker.MVVM;
+using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.Logging
 {
@@ -234,7 +234,7 @@ namespace AppsTracker.Logging
 
         public IMediator Mediator
         {
-            get { return MVVM.Mediator.Instance; }
+            get { return ServiceLocation.Mediator.Instance; }
         }
     }
 }

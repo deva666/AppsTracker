@@ -50,25 +50,14 @@ namespace AppsTracker
             var context = new DispatcherSynchronizationContext(Application.Current.Dispatcher);
             SynchronizationContext.SetSynchronizationContext(context);
 
-            RegisterServices();
             container = GetCompositionContainer();
-            AppsTracker.MVVM.ServiceResolver.Instance.Initialize(container);
+            AppsTracker.ServiceLocation.ServiceLocator.Instance.Initialize(container);
 
             applicationController = container.GetExportedValue<IApplicationController>();
             applicationController.Initialize(autostart);
 
             this.SessionEnding += (s, e) => FinishAndExit();
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
-        }
-
-        private void RegisterServices()
-        {
-            //ServiceFactory.Register<ISqlSettingsService>(() => SqlSettingsService.Instance);
-            //ServiceFactory.Register<IXmlSettingsService>(() => XmlSettingsService.Instance);
-            //ServiceFactory.Register<IDataService>(() => new DataService());
-            //ServiceFactory.Register<ILoggingService>(() => new LoggingService());
-            //ServiceFactory.Register<IStatsService>(() => new StatsService());
-            //ServiceFactory.Register<ICategoriesService>(() => new CategoriesService());
         }
 
         private CompositionContainer GetCompositionContainer()

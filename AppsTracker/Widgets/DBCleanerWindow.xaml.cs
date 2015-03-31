@@ -14,7 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 
 using AppsTracker.Data.Service;
-using AppsTracker.MVVM;
+using AppsTracker.ServiceLocation;
 
 
 namespace AppsTracker.Views
@@ -97,7 +97,7 @@ namespace AppsTracker.Views
 
         private int DeleteOldScreenshots(int days)
         {
-            return ServiceResolver.Instance.Resolve<IDataService>().DeleteOldScreenshots(days);
+            return ServiceLocator.Instance.Resolve<IDataService>().DeleteOldScreenshots(days);
         }
     }
 }

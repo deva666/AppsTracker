@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
-using AppsTracker.MVVM;
+using AppsTracker.ServiceLocation;
 using AppsTracker.Views;
 
 namespace AppsTracker.ViewModels
@@ -86,7 +86,7 @@ namespace AppsTracker.ViewModels
 
         public IMediator Mediator
         {
-            get { return MVVM.Mediator.Instance; }
+            get { return ServiceLocation.Mediator.Instance; }
         }
 
 

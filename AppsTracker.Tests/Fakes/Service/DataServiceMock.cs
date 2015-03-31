@@ -8,12 +8,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 
 namespace AppsTracker.Tests.Fakes.Service
 {
-    public class AppsServiceMock : IDataService
+    [Export(typeof(IDataService))]
+    public class DataServiceMock : IDataService
     {
         public IEnumerable<T> GetFiltered<T>(System.Linq.Expressions.Expression<Func<T, bool>> filter) where T : class
         {

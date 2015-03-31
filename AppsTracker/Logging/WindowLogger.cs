@@ -14,7 +14,7 @@ using AppsTracker.Data.Service;
 using AppsTracker.Data.Utils;
 using AppsTracker.Hooks;
 using AppsTracker.Logging.Helpers;
-using AppsTracker.MVVM;
+using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.Logging
 {
@@ -40,7 +40,10 @@ namespace AppsTracker.Logging
         private Setting settings;
 
         [ImportingConstructor]
-        public WindowLogger(IWindowNotifier windowNotifier, ISyncContext syncContext, IScreenshotFactory screenshotFactory, ILoggingService loggingService)
+        public WindowLogger(IWindowNotifier windowNotifier,
+                            ISyncContext syncContext, 
+                            IScreenshotFactory screenshotFactory, 
+                            ILoggingService loggingService)
         {
             this.loggingService = loggingService;
             this.windowNotifierInstance = windowNotifier;
@@ -205,7 +208,7 @@ namespace AppsTracker.Logging
 
         public IMediator Mediator
         {
-            get { return MVVM.Mediator.Instance; }
+            get { return ServiceLocation.Mediator.Instance; }
         }
 
         public void Dispose()

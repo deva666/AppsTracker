@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using AppsTracker.Data.Service;
-using AppsTracker.MVVM;
+using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.Views
 {
@@ -12,7 +12,7 @@ namespace AppsTracker.Views
         public DaySummaryView()
         {
             InitializeComponent();
-            xmlService = ServiceResolver.Instance.Resolve<IXmlSettingsService>();
+            xmlService = ServiceLocator.Instance.Resolve<IXmlSettingsService>();
             var height = xmlService.DaysViewSettings.SeparatorPosition;
             if (height != default(double))
                 rootLayout.RowDefinitions[1].Height = new GridLength(height);

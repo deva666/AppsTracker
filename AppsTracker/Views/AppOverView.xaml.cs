@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using AppsTracker.Data.Service;
-using AppsTracker.MVVM;
+using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.Views
 {
@@ -12,7 +12,7 @@ namespace AppsTracker.Views
         public AppOverView()
         {
             InitializeComponent();
-            xmlService = ServiceResolver.Instance.Resolve<IXmlSettingsService>();
+            xmlService = ServiceLocator.Instance.Resolve<IXmlSettingsService>();
             var height = xmlService.LogsViewSettings.HorizontalSeparatorPosition;
             if (height != default(double))
                 rootLayout.RowDefinitions[1].Height = new GridLength(height);

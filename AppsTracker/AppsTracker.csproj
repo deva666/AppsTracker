@@ -191,8 +191,8 @@
     <Compile Include="Logging\AppWatcher.cs" />
     <Compile Include="Logging\Helpers\IIdleNotifier.cs" />
     <Compile Include="Logging\LoggingStatus.cs" />
-    <Compile Include="MVVM\IServiceResolver.cs" />
-    <Compile Include="MVVM\ServiceResolver.cs" />
+    <Compile Include="ServiceLocation\IServiceResolver.cs" />
+    <Compile Include="ServiceLocation\ServiceResolver.cs" />
     <Compile Include="ViewModels\CategoryStatsViewModel.cs" />
     <Compile Include="ViewModels\SettingsAppCategoriesViewModel.cs" />
     <Compile Include="Views\Settings\AppCategoriesView.xaml.cs">

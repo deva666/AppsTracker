@@ -1,5 +1,5 @@
 ﻿
-namespace AppsTracker.MVVM
+namespace AppsTracker.ServiceLocation
 {
     public static class MediatorMessages
     {

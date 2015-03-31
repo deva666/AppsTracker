@@ -50,6 +50,7 @@
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
@@ -74,15 +75,17 @@
     <Compile Include="Core\Logging\LazyInitTest.cs" />
     <Compile Include="Core\MVVM\AsyncPropertyTest.cs" />
     <Compile Include="Core\MVVM\MediatorTest.cs" />
-    <Compile Include="Core\ViewModels\Data_logsViewModelTest.cs" />
+    <Compile Include="Core\ViewModels\AppDetailsViewModelTest.cs" />
     <Compile Include="Core\ViewModels\MainViewModelTest.cs" />
     <Compile Include="Core\ViewModels\ScreenshotViewModelTest.cs" />
-    <Compile Include="Data\Service\ServiceFactoryTest.cs" />
     <Compile Include="Fakes\Logging\DisposableMock.cs" />
+    <Compile Include="Fakes\Logging\Helpers\SyncContextMock.cs" />
     <Compile Include="Fakes\MVVM\MediatorParamMock.cs" />
     <Compile Include="Fakes\MVVM\ViewModelMock.cs" />
-    <Compile Include="Fakes\Service\AppServiceMock.cs" />
-    <Compile Include="Fakes\Service\ChartServiceMock.cs" />
+    <Compile Include="Fakes\Service\CategoriesServiceMock.cs" />
+    <Compile Include="Fakes\Service\DataServiceMock.cs" />
+    <Compile Include="Fakes\Service\LoggingServiceMock.cs" />
+    <Compile Include="Fakes\Service\StatsServiceMock.cs" />
     <Compile Include="Fakes\Service\SqlSettingsServiceMock.cs" />
     <Compile Include="Fakes\Service\XmlSettingsServiceMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

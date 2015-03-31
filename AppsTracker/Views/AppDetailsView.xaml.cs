@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using AppsTracker.Data.Service;
-using AppsTracker.MVVM;
+using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.Views
 {
@@ -13,7 +13,7 @@ namespace AppsTracker.Views
         public AppDetailsView()
         {
             InitializeComponent();
-            xmlService = ServiceResolver.Instance.Resolve<IXmlSettingsService>();
+            xmlService = ServiceLocator.Instance.Resolve<IXmlSettingsService>();
             var width = xmlService.LogsViewSettings.VerticalSeparatorPosition;
             if (width != default(double))
                 rootLayout.ColumnDefinitions[0].Width = new GridLength(width);

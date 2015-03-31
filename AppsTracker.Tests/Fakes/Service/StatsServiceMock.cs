@@ -8,11 +8,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 
 namespace AppsTracker.Tests.Fakes.Service
 {
+    [Export(typeof(IStatsService))]
     public class StatsServiceMock : IStatsService
     {
         public IEnumerable<AppSummary> GetAppSummary(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo)

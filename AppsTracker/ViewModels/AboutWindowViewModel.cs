@@ -9,7 +9,7 @@
 using System;
 using System.Reflection;
 
-namespace AppsTracker.MVVM
+namespace AppsTracker.ServiceLocation
 {
     internal sealed class AboutWindowViewModel : ViewModelBase
     {
