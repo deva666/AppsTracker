@@ -16,8 +16,8 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using AppsTracker.Controllers;
-using AppsTracker.Data.Service;
-using AppsTracker.Views;
+using AppsTracker.Service;
+using AppsTracker.Widgets;
 
 
 namespace AppsTracker
@@ -64,7 +64,7 @@ namespace AppsTracker
         {
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
-            catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Data.Db.AppsEntities).Assembly));
+            //catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Data.Db.AppsEntities).Assembly));
             var container = new CompositionContainer(catalog);
             var batch = new CompositionBatch();
             batch.AddExportedValue(container);

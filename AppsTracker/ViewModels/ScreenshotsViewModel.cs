@@ -17,9 +17,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Service;
 using AppsTracker.ServiceLocation;
-using AppsTracker.Views;
+using AppsTracker.Widgets;
 
 namespace AppsTracker.ViewModels
 {

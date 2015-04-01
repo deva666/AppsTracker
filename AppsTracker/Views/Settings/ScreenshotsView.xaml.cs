@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace AppsTracker.Views.SettingsViews
+namespace AppsTracker.Widgets.SettingsViews
 {
     /// <summary>
     /// Interaction logic for ScreenshotsView.xaml

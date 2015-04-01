@@ -12,7 +12,7 @@ using System.IO;
 using System.Xml.Linq;
 using AppsTracker.Data.XmlSettings;
 
-namespace AppsTracker.Data.Service
+namespace AppsTracker.Service
 {
     [Export(typeof(IXmlSettingsService))]
     public sealed class XmlSettingsService : IXmlSettingsService

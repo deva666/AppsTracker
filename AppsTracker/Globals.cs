@@ -11,7 +11,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Service;
 using AppsTracker.ServiceLocation;
 
 namespace AppsTracker

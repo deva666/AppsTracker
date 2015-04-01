@@ -2,7 +2,7 @@
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Threading;
-using AppsTracker.Data.Service;
+using AppsTracker.Service;
 using AppsTracker.Hooks;
 using AppsTracker.Logging.Helpers;
 

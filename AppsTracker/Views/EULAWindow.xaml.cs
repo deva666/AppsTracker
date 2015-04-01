@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media.Animation;
 
-namespace AppsTracker.Views
+namespace AppsTracker.Widgets
 {
     public partial class EULAWindow : Window
     {

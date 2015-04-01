@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
 
-namespace AppsTracker.Data.Service
+namespace AppsTracker.Service
 {
     [Export(typeof(ISqlSettingsService))]
     public sealed class SqlSettingsService : ISqlSettingsService

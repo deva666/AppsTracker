@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Utils;
-namespace AppsTracker.Data.Service
+namespace AppsTracker.Service
 {
     public interface ILoggingService : IBaseService
     {

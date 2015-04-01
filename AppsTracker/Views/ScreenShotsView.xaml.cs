@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using AppsTracker.Data.Service;
+using AppsTracker.Service;
 using AppsTracker.ServiceLocation;
 
-namespace AppsTracker.Views
+namespace AppsTracker.Widgets
 {
 
     public partial class ScreenshotsView : UserControl

@@ -1,6 +1,6 @@
 ﻿using AppsTracker.Data.XmlSettings;
 
-namespace AppsTracker.Data.Service
+namespace AppsTracker.Service
 {
     public interface IXmlSettingsService : IBaseService
     {     

@@ -193,6 +193,19 @@
     <Compile Include="Logging\LoggingStatus.cs" />
     <Compile Include="ServiceLocation\IServiceResolver.cs" />
     <Compile Include="ServiceLocation\ServiceResolver.cs" />
+    <Compile Include="Service\CategoriesService.cs" />
+    <Compile Include="Service\DataService.cs" />
+    <Compile Include="Service\IBaseService.cs" />
+    <Compile Include="Service\ICategoriesService.cs" />
+    <Compile Include="Service\IDataService.cs" />
+    <Compile Include="Service\ILoggingService.cs" />
+    <Compile Include="Service\ISqlSettingsService.cs" />
+    <Compile Include="Service\IStatsService.cs" />
+    <Compile Include="Service\IXmlSettingsService.cs" />
+    <Compile Include="Service\LoggingService.cs" />
+    <Compile Include="Service\SqlSettingsService.cs" />
+    <Compile Include="Service\StatsService.cs" />
+    <Compile Include="Service\XmlSettingsService.cs" />
     <Compile Include="ViewModels\CategoryStatsViewModel.cs" />
     <Compile Include="ViewModels\SettingsAppCategoriesViewModel.cs" />
     <Compile Include="Views\IWindow.cs" />
@@ -221,6 +234,7 @@
     <Compile Include="Widgets\ImageView.xaml.cs">
       <DependentUpon>ImageView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Widgets\ITrayIcon.cs" />
     <Compile Include="Widgets\KeystrokeViewer.xaml.cs">
       <DependentUpon>KeystrokeViewer.xaml</DependentUpon>
     </Compile>

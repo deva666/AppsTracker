@@ -9,10 +9,9 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
-using System.Windows;
-using AppsTracker.Data.Service;
+using AppsTracker.Service;
 using AppsTracker.Logging.Helpers;
-using AppsTracker.Views;
+using AppsTracker.Widgets;
 using Microsoft.Win32;
 
 namespace AppsTracker.Controllers
@@ -25,13 +24,16 @@ namespace AppsTracker.Controllers
         private readonly ISyncContext syncContext;
         private readonly IXmlSettingsService xmlSettingsService;
         private readonly ISqlSettingsService sqlSettingsService;
-        
+        private readonly ITrayIcon trayIcon;
+
         private IWindow mainWindow;
-        private TrayIcon trayIcon;
-        private Type mainWindowType;
+
+        private readonly Type mainWindowType;
 
         [ImportingConstructor]
-        public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController,ISyncContext syncContext, ISqlSettingsService sqlSettingsService, IXmlSettingsService xmlSettingsService, IWindow window)
+        public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController,
+                                        ISyncContext syncContext, ISqlSettingsService sqlSettingsService,
+                                        IXmlSettingsService xmlSettingsService, IWindow window, ITrayIcon trayIcon)
         {
             this.appearanceController = appearanceController;
             this.loggingController = loggingController;
@@ -40,6 +42,7 @@ namespace AppsTracker.Controllers
             this.sqlSettingsService = sqlSettingsService;
             this.mainWindow = window;
             this.mainWindowType = mainWindow.GetType();
+            this.trayIcon = trayIcon;
         }
 
         public void Initialize(bool autoStart)
@@ -63,7 +66,7 @@ ShowEULAWindow();
 
             FirstRunWindowSetup();
 
-            ShowTrayIcon();
+            InitializeTrayIcon();
 
             Globals.DBCleaningRequired += Globals_DBCleaningRequired;
             Globals.GetDBSize();
@@ -111,8 +114,8 @@ ShowEULAWindow();
         {
             try
             {
-                RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-                if (rk.GetValue("app service") == null)
+                var key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                if (key.GetValue("app service") == null)
                     return false;
                 return true;
             }
@@ -133,10 +136,8 @@ ShowEULAWindow();
             }
         }
 
-        private void ShowTrayIcon()
+        private void InitializeTrayIcon()
         {
-            if (trayIcon == null)
-                trayIcon = new Views.TrayIcon();
             trayIcon.ShowApp.Click += (s, e) => CreateOrShowMainWindow();
             trayIcon.IsVisible = true;
         }
@@ -243,11 +244,7 @@ ShowEULAWindow();
             CloseMainWindow();
             xmlSettingsService.ShutDown();
             loggingController.Dispose();
-            if (trayIcon != null)
-            {
-                trayIcon.Dispose();
-                trayIcon = null;
-            }
+            trayIcon.Dispose();
         }
     }
 }

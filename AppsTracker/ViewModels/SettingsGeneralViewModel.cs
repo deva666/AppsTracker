@@ -6,7 +6,7 @@
  */
 #endregion
 
-using AppsTracker.Views;
+using AppsTracker.Widgets;
 using AppsTracker.ServiceLocation;
 using Microsoft.Win32;
 using System;

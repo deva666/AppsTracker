@@ -13,11 +13,11 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 
-using AppsTracker.Data.Service;
+using AppsTracker.Service;
 using AppsTracker.ServiceLocation;
 
 
-namespace AppsTracker.Views
+namespace AppsTracker.Widgets
 {
     public partial class DBCleanerWindow : Window
     {

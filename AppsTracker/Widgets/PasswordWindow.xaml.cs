@@ -2,9 +2,9 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-using AppsTracker.Data.Service;
+using AppsTracker.Service;
 using AppsTracker.ServiceLocation;
-using AppsTracker.Views;
+using AppsTracker.Widgets;
 
 namespace AppsTracker
 {

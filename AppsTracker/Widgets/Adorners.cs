@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace AppsTracker.Views
+namespace AppsTracker.Widgets
 {
     public class HideAdorner : Adorner
     {
         double width, height;
 
-        public HideAdorner(UIElement adornedElement) : base(adornedElement)
+        public HideAdorner(UIElement adornedElement)
+            : base(adornedElement)
         {
             width = this.AdornedElement.DesiredSize.Width;
             height = this.AdornedElement.DesiredSize.Height;

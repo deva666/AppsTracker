@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AppsTracker.Views.Statistics
+namespace AppsTracker.Widgets.Statistics
 {
     /// <summary>
     /// Interaction logic for BlockedAppByDayView.xaml

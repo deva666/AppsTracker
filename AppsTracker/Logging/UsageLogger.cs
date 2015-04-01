@@ -9,7 +9,7 @@
 using System;
 using System.ComponentModel.Composition;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Service;
 using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.Logging

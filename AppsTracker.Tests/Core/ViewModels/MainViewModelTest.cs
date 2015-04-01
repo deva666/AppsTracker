@@ -8,7 +8,7 @@
 
 using System;
 using System.Collections.Generic;
-using AppsTracker.Data.Service;
+using AppsTracker.Service;
 using AppsTracker.Data.Models;
 using AppsTracker.ServiceLocation;
 using AppsTracker.Tests.Fakes.Service;

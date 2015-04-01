@@ -6,7 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using AppsTracker.ViewModels;
 
-namespace AppsTracker.Views
+namespace AppsTracker.Widgets
 {
     public partial class ScreenshotViewerWindow : Window
     {

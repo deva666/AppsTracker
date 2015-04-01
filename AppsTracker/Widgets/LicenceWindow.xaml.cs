@@ -14,7 +14,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace AppsTracker.Views
+namespace AppsTracker.Widgets
 {
     public partial class LicenceWindow : Window
     {

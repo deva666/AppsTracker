@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace AppsTracker.Views
+namespace AppsTracker.Widgets
 {
     public partial class progressBar : UserControl
     {

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AppsTracker.Views.SettingsViews
+namespace AppsTracker.Widgets.SettingsViews
 {
     public partial class MasterPasswordView : UserControl
     {

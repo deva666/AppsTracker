@@ -8,7 +8,7 @@
 
 using System;
 using System.Collections.ObjectModel;
-using AppsTracker.Views;
+using AppsTracker.Widgets;
 using Microsoft.VisualBasic.ApplicationServices;
 
 namespace AppsTracker

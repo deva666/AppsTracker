@@ -4,7 +4,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AppsTracker.Data.Service;
+using AppsTracker.Service;
 
 namespace AppsTracker.Tests.Fakes.Service
 {

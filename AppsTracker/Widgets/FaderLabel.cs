@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace AppsTracker.Views
+namespace AppsTracker.Widgets
 {
     public class FaderLabel : ContentControl
     {

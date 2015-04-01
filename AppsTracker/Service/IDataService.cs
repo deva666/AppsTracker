@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using AppsTracker.Data.Models;
 
-namespace AppsTracker.Data.Service
+namespace AppsTracker.Service
 {
     public interface IDataService : IBaseService
     {

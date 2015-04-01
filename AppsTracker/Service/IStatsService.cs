@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 using AppsTracker.Data.Models;
 
-namespace AppsTracker.Data.Service
+namespace AppsTracker.Service
 {
     public interface IStatsService : IBaseService, IDisposable
     {

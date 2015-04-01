@@ -10,7 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using AppsTracker.Hashing;
 using AppsTracker.ServiceLocation;
-using AppsTracker.Views;
+using AppsTracker.Widgets;
 
 namespace AppsTracker.ViewModels
 {

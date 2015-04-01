@@ -15,7 +15,7 @@ using System.Linq;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
 
-namespace AppsTracker.Data.Service
+namespace AppsTracker.Service
 {
     [Export(typeof(ICategoriesService))]
     public sealed class CategoriesService : ICategoriesService

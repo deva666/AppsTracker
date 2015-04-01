@@ -8,7 +8,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using AppsTracker.ServiceLocation;
 
-namespace AppsTracker.Views
+namespace AppsTracker.Widgets
 {
     public partial class ScreenshotViewer : UserControl, INotifyPropertyChanged
     {

@@ -17,7 +17,7 @@ using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Utils;
 
-namespace AppsTracker.Data.Service
+namespace AppsTracker.Service
 {
     [Export(typeof(IStatsService))]
     public class StatsService : IStatsService

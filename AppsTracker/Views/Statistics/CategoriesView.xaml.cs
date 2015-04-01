@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace AppsTracker.Views.Statistics
+namespace AppsTracker.Widgets.Statistics
 {
 
     public partial class CategoriesView : UserControl

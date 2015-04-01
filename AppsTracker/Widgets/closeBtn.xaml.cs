@@ -9,7 +9,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace AppsTracker.Views
+namespace AppsTracker.Widgets
 {
     public partial class closeBtn : UserControl
     {

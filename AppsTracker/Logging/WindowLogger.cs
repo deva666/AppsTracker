@@ -10,7 +10,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Service;
 using AppsTracker.Data.Utils;
 using AppsTracker.Hooks;
 using AppsTracker.Logging.Helpers;

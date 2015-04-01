@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="AppsTracker.Views.AppDetailsView"
+﻿<UserControl x:Class="AppsTracker.Widgets.AppDetailsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:AppsTracker"
-             xmlns:controls="clr-namespace:AppsTracker.Views"
-             xmlns:views="clr-namespace:AppsTracker.Views"
+             xmlns:controls="clr-namespace:AppsTracker.Widgets"
+             xmlns:views="clr-namespace:AppsTracker.Widgets"
              mc:Ignorable="d">
     <UserControl.Resources>
         <local:BlockedProcessMultiConverter x:Key="convertBlockedProcesses" />        

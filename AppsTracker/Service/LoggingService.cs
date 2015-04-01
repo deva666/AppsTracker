@@ -15,7 +15,7 @@ using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Utils;
 
-namespace AppsTracker.Data.Service
+namespace AppsTracker.Service
 {
     [Export(typeof(ILoggingService))]
     public sealed class LoggingService : ILoggingService

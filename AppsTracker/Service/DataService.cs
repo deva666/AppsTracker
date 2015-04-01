@@ -15,7 +15,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.ComponentModel.Composition;
 
-namespace AppsTracker.Data.Service
+namespace AppsTracker.Service
 {
     [Export(typeof(IDataService))]
     public sealed class DataService : IDataService

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AppsTracker.Views
+namespace AppsTracker.Widgets
 {
     /// <summary>
     /// Interaction logic for Next.xaml

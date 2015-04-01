@@ -7,11 +7,13 @@
 #endregion
 
 using System;
+using System.ComponentModel.Composition;
 using System.Windows.Forms;
 
-namespace AppsTracker.Views
+namespace AppsTracker.Widgets
 {
-    public class TrayIcon : IDisposable
+    [Export(typeof(ITrayIcon))]
+    public class TrayIcon : IDisposable, ITrayIcon
     {
         private NotifyIcon notifyIcon;
         private ContextMenuStrip iconMenu;

@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace AppsTracker.Views
+namespace AppsTracker.Widgets
 {
     public class SortableGridViewColumn : GridViewColumn
     {

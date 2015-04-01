@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using AppsTracker.Data.Models;
-namespace AppsTracker.Data.Service
+namespace AppsTracker.Service
 {
     public interface ICategoriesService : IDisposable, IBaseService
     {
