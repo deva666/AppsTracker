@@ -47,7 +47,7 @@ namespace AppsTracker.Widgets
 
             #region Event Handlers
 
-            menuItemExit.Click += (s, e) => { (App.Current as App).FinishAndExit(); };
+            menuItemExit.Click += (s, e) => { (App.Current as App).ShutdownApp(); };
 
             #endregion
         }

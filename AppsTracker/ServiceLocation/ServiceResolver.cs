@@ -12,9 +12,9 @@ namespace AppsTracker.ServiceLocation
             get { return instance.Value; }
         }
 
-        private CompositionContainer container;
+        private ExportProvider container;
 
-        public void Initialize(CompositionContainer container)
+        public void Initialize(ExportProvider container)
         {
             this.container = container;
         }

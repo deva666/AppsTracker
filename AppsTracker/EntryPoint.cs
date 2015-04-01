@@ -46,7 +46,7 @@ namespace AppsTracker
             finally
             {
                 if (app != null)
-                    app.FinishAndExit();
+                    app.ShutdownApp();
             }
         }
 

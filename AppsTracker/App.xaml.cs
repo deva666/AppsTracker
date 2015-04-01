@@ -17,7 +17,6 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using AppsTracker.Controllers;
 using AppsTracker.Service;
-using AppsTracker.Widgets;
 
 
 namespace AppsTracker
@@ -56,7 +55,7 @@ namespace AppsTracker
             applicationController = container.GetExportedValue<IApplicationController>();
             applicationController.Initialize(autostart);
 
-            this.SessionEnding += (s, e) => FinishAndExit();
+            this.SessionEnding += (s, e) => ShutdownApp();
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
         }
 
@@ -64,7 +63,6 @@ namespace AppsTracker
         {
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
-            //catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Data.Db.AppsEntities).Assembly));
             var container = new CompositionContainer(catalog);
             var batch = new CompositionBatch();
             batch.AddExportedValue(container);
@@ -76,17 +74,16 @@ namespace AppsTracker
         {
             try
             {
-                MessageWindow messageWindow = new MessageWindow(e.Exception);
-                messageWindow.ShowDialog();
+                container.GetExportedValue<IMessageService>().ShowDialog(e.Exception);
                 container.GetExportedValue<ILogger>().Log(e.Exception);
             }
             finally
             {
-                FinishAndExit();
+                ShutdownApp();
             }
         }
 
-        internal void FinishAndExit()
+        internal void ShutdownApp()
         {
             container.Dispose();
             applicationController.ShutDown();

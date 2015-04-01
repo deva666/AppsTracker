@@ -11,6 +11,7 @@ using AppsTracker.ServiceLocation;
 using Microsoft.Win32;
 using System;
 using System.Windows.Input;
+using AppsTracker.Service;
 
 namespace AppsTracker.ViewModels
 {
@@ -75,10 +76,9 @@ namespace AppsTracker.ViewModels
             }
             catch (System.Security.SecurityException)
             {
-                MessageWindow messageWindow = new MessageWindow("You don't have administrative privilages to change this option."
+                serviceResolver.Resolve<IMessageService>().ShowDialog("You don't have administrative privilages to change this option."
                                         + Environment.NewLine + "Please try running the app as Administrator." + Environment.NewLine
-                                        + "Right click on the app or shortcut and select 'Run as Adminstrator'.");
-                messageWindow.ShowDialog();
+                                        + "Right click on the app or shortcut and select 'Run as Adminstrator'.", false);
             }
             SettingsChanging();
         }

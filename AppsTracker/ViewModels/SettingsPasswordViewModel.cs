@@ -9,18 +9,24 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using AppsTracker.Hashing;
+using AppsTracker.Service;
 using AppsTracker.ServiceLocation;
-using AppsTracker.Widgets;
 
 namespace AppsTracker.ViewModels
 {
     internal sealed class SettingsPasswordViewModel : SettingsBaseViewModel
     {
+        private readonly IMessageService messageService;
+
         public override string Title
         {
             get { return "MASTER PASSWORD"; }
         }
 
+        public SettingsPasswordViewModel()
+        {
+            messageService = serviceResolver.Resolve<IMessageService>();
+        }
 
         private ICommand setPasswordCommand;
 
@@ -50,8 +56,7 @@ namespace AppsTracker.ViewModels
                 }
                 if (currentPassword != storedPassword)
                 {
-                    MessageWindow messageWindow = new MessageWindow("Wrong current password.");
-                    messageWindow.ShowDialog();
+                    messageService.ShowDialog("Wrong current password.", false);
                     return;
                 }
             }
@@ -59,16 +64,14 @@ namespace AppsTracker.ViewModels
             string confirmPassword = passwords[1].Password;
             if (password != confirmPassword)
             {
-                MessageWindow messageWindow = new MessageWindow("Passwords don't match.");
-                messageWindow.ShowDialog();
+                messageService.ShowDialog("Passwords don't match", false);
                 return;
             }
             if (!string.IsNullOrEmpty(password.Trim()))
             {
                 Settings.IsMasterPasswordSet = true;
                 Settings.WindowOpen = Hash.GetEncryptedString(password);
-                MessageWindow messageWindow = new MessageWindow("Password set.");
-                messageWindow.ShowDialog();
+                messageService.ShowDialog("Password set.", false);
             }
             else
             {

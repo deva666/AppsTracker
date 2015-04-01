@@ -20,7 +20,6 @@ namespace AppsTracker.Service
     [Export(typeof(ILoggingService))]
     public sealed class LoggingService : ILoggingService
     {
-
         public async Task SaveModifiedLogAsync(Log log)
         {
             using (var context = new AppsEntities())

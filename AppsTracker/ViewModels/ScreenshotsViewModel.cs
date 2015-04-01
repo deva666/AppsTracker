@@ -246,8 +246,7 @@ namespace AppsTracker.ViewModels
             }
             catch (IOException ex)
             {
-                MessageWindow window = new MessageWindow(ex);
-                window.ShowDialog();
+                serviceResolver.Resolve<IMessageService>().ShowDialog(ex);
             }
         }
 

@@ -199,10 +199,12 @@
     <Compile Include="Service\ICategoriesService.cs" />
     <Compile Include="Service\IDataService.cs" />
     <Compile Include="Service\ILoggingService.cs" />
+    <Compile Include="Service\IMessageService.cs" />
     <Compile Include="Service\ISqlSettingsService.cs" />
     <Compile Include="Service\IStatsService.cs" />
     <Compile Include="Service\IXmlSettingsService.cs" />
     <Compile Include="Service\LoggingService.cs" />
+    <Compile Include="Service\MessageService.cs" />
     <Compile Include="Service\SqlSettingsService.cs" />
     <Compile Include="Service\StatsService.cs" />
     <Compile Include="Service\XmlSettingsService.cs" />

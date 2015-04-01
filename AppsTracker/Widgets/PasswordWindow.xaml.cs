@@ -4,20 +4,19 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using AppsTracker.Service;
 using AppsTracker.ServiceLocation;
-using AppsTracker.Widgets;
 
 namespace AppsTracker
 {
     public partial class PasswordWindow : Window
     {
-        ISqlSettingsService settingService;
+        private readonly ISqlSettingsService settingService;
+        private readonly IMessageService messageService;
 
         public PasswordWindow()
         {
             InitializeComponent();
             settingService = ServiceLocator.Instance.Resolve<ISqlSettingsService>();
-            SetKeylogger(false);
-            this.Closing += (s, e) => SetKeylogger(true);
+            messageService = ServiceLocator.Instance.Resolve<IMessageService>();
         }
 
         private void FadeUnloaded()
@@ -34,8 +33,6 @@ namespace AppsTracker
             story.Completed += (s, e) => { this.Close(); };
             story.Begin(this);
         }
-
-        #region Event Handlers
 
         private void lblOK_Click(object sender, RoutedEventArgs e)
         {
@@ -62,15 +59,6 @@ namespace AppsTracker
                 e.Handled = true;
             }
         }
-        #endregion
-
-        #region Class Methods
-
-        private void SetKeylogger(bool enabled)
-        {
-            //if (App.UzerSetting.LoggingEnabled && App.UzerSetting.EnableKeylogger)
-            //    App.Container.SetKeyboardHookEnabled(enabled);
-        }
 
         private void CheckPassword()
         {
@@ -81,13 +69,8 @@ namespace AppsTracker
             }
             else
             {
-                MessageWindow messageWindow = new MessageWindow("Wrong password.");
-                messageWindow.Owner = this;
-                messageWindow.ShowDialog();
+                messageService.ShowDialog("Wrong password.", false);
             }
         }
-        #endregion
-
-
     }
 }

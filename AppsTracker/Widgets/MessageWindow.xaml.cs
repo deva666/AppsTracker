@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Media.Animation;
@@ -33,22 +32,14 @@ namespace AppsTracker.Widgets
             stringBuilder.Append("Error: ");
             stringBuilder.Append(fail.Message);
             stringBuilder.Append(Environment.NewLine);
-            stringBuilder.Append("Inner exception: ");
-            stringBuilder.Append(fail.InnerException);
-            tbMessage.Text = stringBuilder.ToString();
-        }
-
-        public MessageWindow(IEnumerable<Exception> failCollection)
-            : this()
-        {
-            StringBuilder stringBuilder = new StringBuilder("Ooops, this is awkward ... something went wrong.");
-            foreach (var fail in failCollection)
+            if (fail.InnerException != null)
             {
-                stringBuilder.Append(Environment.NewLine);
-                stringBuilder.Append(fail.Message);
+                stringBuilder.Append("Inner exception: ");
+                stringBuilder.Append(fail.InnerException);
             }
             tbMessage.Text = stringBuilder.ToString();
         }
+
 
         private void FadeUnloaded()
         {

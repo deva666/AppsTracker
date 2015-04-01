@@ -24,23 +24,26 @@ namespace AppsTracker.Controllers
         private readonly ISyncContext syncContext;
         private readonly IXmlSettingsService xmlSettingsService;
         private readonly ISqlSettingsService sqlSettingsService;
+        private readonly IMessageService messageService;
         private readonly ITrayIcon trayIcon;
 
-        private IWindow mainWindow;
-
         private readonly Type mainWindowType;
+
+        private IWindow mainWindow;
 
         [ImportingConstructor]
         public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController,
                                         ISyncContext syncContext, ISqlSettingsService sqlSettingsService,
-                                        IXmlSettingsService xmlSettingsService, IWindow window, ITrayIcon trayIcon)
+                                        IXmlSettingsService xmlSettingsService, IWindow window, ITrayIcon trayIcon,
+                                        IMessageService messageService)
         {
             this.appearanceController = appearanceController;
             this.loggingController = loggingController;
             this.syncContext = syncContext;
             this.xmlSettingsService = xmlSettingsService;
             this.sqlSettingsService = sqlSettingsService;
-            this.mainWindow = window;
+            this.messageService = messageService;
+            this.mainWindow = window;            
             this.mainWindowType = mainWindow.GetType();
             this.trayIcon = trayIcon;
         }
@@ -54,11 +57,6 @@ namespace AppsTracker.Controllers
             appearanceController.Initialize(sqlSettingsService.Settings);
             loggingController.Initialize(sqlSettingsService.Settings);
 
-#if PORTABLE_SYMBOL
-
-ShowEULAWindow();
-
-#endif
             ReadSettingsFromRegistry();
 
             if (autoStart == false)
@@ -80,20 +78,6 @@ ShowEULAWindow();
             appearanceController.SettingsChanging(sqlSettingsService.Settings);
         }
 
-        private void ShowEULAWindow()
-        {
-            if (sqlSettingsService.Settings.FirstRun)
-            {
-                EULAWindow eulaWindow = new EULAWindow();
-                var dialogResult = eulaWindow.ShowDialog();
-                if (!dialogResult.HasValue && !dialogResult.Value)
-                {
-                    (App.Current as App).Shutdown();
-                    Environment.Exit(0);
-                    return;
-                }
-            }
-        }
 
         private void ReadSettingsFromRegistry()
         {
@@ -158,7 +142,9 @@ ShowEULAWindow();
                         ShowMainWindow();
                     }
                     else
+                    {
                         mainWindow.Activate();
+                    }
                 }
             }
         }
@@ -232,9 +218,8 @@ ShowEULAWindow();
             settings.TakeScreenshots = false;
             await sqlSettingsService.SaveChangesAsync(settings);
 
-            MessageWindow msgWindow = new MessageWindow("Database size has reached the maximum allowed value"
+            messageService.ShowDialog("Database size has reached the maximum allowed value"
                 + Environment.NewLine + "Please run the screenshot cleaner from the settings menu to continue capturing screenshots.", false);
-            msgWindow.ShowDialog();
 
             Globals.DBCleaningRequired -= Globals_DBCleaningRequired;
         }
