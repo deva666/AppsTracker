@@ -3,10 +3,13 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using AppsTracker.ViewModels;
+using AppsTracker.Views;
+using System.ComponentModel.Composition;
 
 namespace AppsTracker
 {
-    public partial class MainWindow : Window, IDisposable
+    [Export(typeof(IWindow))]
+    public partial class MainWindow : Window, IDisposable, IWindow
     {
         private bool disposed;
         private readonly MainViewModel mainViewModel;

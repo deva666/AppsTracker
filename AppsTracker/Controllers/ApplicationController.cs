@@ -25,18 +25,21 @@ namespace AppsTracker.Controllers
         private readonly ISyncContext syncContext;
         private readonly IXmlSettingsService xmlSettingsService;
         private readonly ISqlSettingsService sqlSettingsService;
-
+        
+        private IWindow mainWindow;
         private TrayIcon trayIcon;
-        private Window mainWindow;
+        private Type mainWindowType;
 
         [ImportingConstructor]
-        public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController,ISyncContext syncContext, ISqlSettingsService sqlSettingsService, IXmlSettingsService xmlSettingsService)
+        public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController,ISyncContext syncContext, ISqlSettingsService sqlSettingsService, IXmlSettingsService xmlSettingsService, IWindow window)
         {
             this.appearanceController = appearanceController;
             this.loggingController = loggingController;
             this.syncContext = syncContext;
             this.xmlSettingsService = xmlSettingsService;
             this.sqlSettingsService = sqlSettingsService;
+            this.mainWindow = window;
+            this.mainWindowType = mainWindow.GetType();
         }
 
         public void Initialize(bool autoStart)
@@ -140,21 +143,18 @@ ShowEULAWindow();
 
         private void CreateOrShowMainWindow()
         {
-            if (CheckPassword())
+            if (IsPasswordProtected())
             {
                 if (mainWindow == null)
                 {
-                    CreateMainWindow();
-                    LoadWindowPosition();
-                    mainWindow.Show();
+                    mainWindow = (IWindow)Activator.CreateInstance(mainWindowType);
+                    ShowMainWindow();
                 }
                 else
                 {
                     if (!mainWindow.IsLoaded)
                     {
-                        CreateMainWindow();
-                        LoadWindowPosition();
-                        mainWindow.Show();
+                        ShowMainWindow();
                     }
                     else
                         mainWindow.Activate();
@@ -162,13 +162,14 @@ ShowEULAWindow();
             }
         }
 
-        private void CreateMainWindow()
+        private void ShowMainWindow()
         {
-            mainWindow = new AppsTracker.MainWindow();
             mainWindow.Closing += (s, e) => SaveWindowPosition();
+            LoadWindowPosition();
+            mainWindow.Show();
         }
 
-        private bool CheckPassword()
+        private bool IsPasswordProtected()
         {
             if (sqlSettingsService.Settings.IsMasterPasswordSet)
             {
@@ -197,9 +198,7 @@ ShowEULAWindow();
         {
             if (mainWindow != null)
             {
-                SaveWindowPosition();
                 mainWindow.Close();
-                mainWindow = null;
             }
         }
 
@@ -209,6 +208,7 @@ ShowEULAWindow();
             xmlSettingsService.MainWindowSettings.Width = mainWindow.Width;
             xmlSettingsService.MainWindowSettings.Left = mainWindow.Left;
             xmlSettingsService.MainWindowSettings.Top = mainWindow.Top;
+            mainWindow = null;
         }
 
         private void SetInitialWindowDimensions()
