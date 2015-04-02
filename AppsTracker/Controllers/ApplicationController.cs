@@ -6,13 +6,13 @@
  */
 #endregion
 
+using AppsTracker.Logging.Helpers;
+using AppsTracker.Service;
+using AppsTracker.Widgets;
+using Microsoft.Win32;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
-using AppsTracker.Service;
-using AppsTracker.Logging.Helpers;
-using AppsTracker.Widgets;
-using Microsoft.Win32;
 
 namespace AppsTracker.Controllers
 {
@@ -26,16 +26,15 @@ namespace AppsTracker.Controllers
         private readonly ISqlSettingsService sqlSettingsService;
         private readonly IMessageService messageService;
         private readonly ITrayIcon trayIcon;
-
-        private readonly Type mainWindowType;
+        private readonly ExportFactory<IWindow> mainWindowValueFactory;
 
         private IWindow mainWindow;
 
         [ImportingConstructor]
         public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController,
                                         ISyncContext syncContext, ISqlSettingsService sqlSettingsService,
-                                        IXmlSettingsService xmlSettingsService, IWindow window, ITrayIcon trayIcon,
-                                        IMessageService messageService)
+                                        IXmlSettingsService xmlSettingsService, ITrayIcon trayIcon,
+                                        IMessageService messageService, ExportFactory<IWindow> windowValueFactory)
         {
             this.appearanceController = appearanceController;
             this.loggingController = loggingController;
@@ -43,8 +42,7 @@ namespace AppsTracker.Controllers
             this.xmlSettingsService = xmlSettingsService;
             this.sqlSettingsService = sqlSettingsService;
             this.messageService = messageService;
-            this.mainWindow = window;            
-            this.mainWindowType = mainWindow.GetType();
+            this.mainWindowValueFactory = windowValueFactory;
             this.trayIcon = trayIcon;
         }
 
@@ -131,8 +129,8 @@ namespace AppsTracker.Controllers
             if (IsPasswordProtected())
             {
                 if (mainWindow == null)
-                {
-                    mainWindow = (IWindow)Activator.CreateInstance(mainWindowType);
+                {                    
+                    mainWindow = mainWindowValueFactory.CreateExport().Value;
                     ShowMainWindow();
                 }
                 else
