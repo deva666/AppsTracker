@@ -6,13 +6,13 @@
  */
 #endregion
 
+using System;
+using System.ComponentModel;
+using System.ComponentModel.Composition;
 using AppsTracker.Logging.Helpers;
 using AppsTracker.Service;
 using AppsTracker.Widgets;
 using Microsoft.Win32;
-using System;
-using System.ComponentModel;
-using System.ComponentModel.Composition;
 
 namespace AppsTracker.Controllers
 {
@@ -33,10 +33,9 @@ namespace AppsTracker.Controllers
 
         [ImportingConstructor]
         public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController,
-                                        ISyncContext syncContext, ISqlSettingsService sqlSettingsService,
-                                        IXmlSettingsService xmlSettingsService, ILoggingService loggingService,
-            ITrayIcon trayIcon,
-                                        IMessageService messageService, ExportFactory<IWindow> windowValueFactory)
+                                     ISyncContext syncContext, ISqlSettingsService sqlSettingsService,
+                                     IXmlSettingsService xmlSettingsService, ILoggingService loggingService,
+                                     ITrayIcon trayIcon, IMessageService messageService, ExportFactory<IWindow> windowValueFactory)
         {
             this.appearanceController = appearanceController;
             this.loggingController = loggingController;
@@ -104,7 +103,7 @@ namespace AppsTracker.Controllers
                     return false;
                 return true;
             }
-            catch (Exception)
+            catch
             {
                 return null;
             }
@@ -132,7 +131,7 @@ namespace AppsTracker.Controllers
             if (IsPasswordProtected())
             {
                 if (mainWindow == null)
-                {                    
+                {
                     mainWindow = mainWindowValueFactory.CreateExport().Value;
                     ShowMainWindow();
                 }
