@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace AppsTracker.ServiceLocation
+namespace AppsTracker.MVVM
 {
     internal class MessageToActionsMap
     {

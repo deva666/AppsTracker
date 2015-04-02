@@ -8,8 +8,9 @@
 
 using System;
 using System.Diagnostics;
+using AppsTracker.ServiceLocation;
 
-namespace AppsTracker.ServiceLocation
+namespace AppsTracker.MVVM
 {
     public abstract class ViewModelBase : ObservableObject, IWorker, IDisposable
     {

@@ -6,13 +6,12 @@
  */
 #endregion
 
-using AppsTracker.Data.Models;
-using AppsTracker.ServiceLocation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-
+using AppsTracker.Data.Models;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {

@@ -15,11 +15,12 @@ using AppsTracker.Data.Utils;
 using AppsTracker.Hooks;
 using AppsTracker.Logging.Helpers;
 using AppsTracker.ServiceLocation;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.Logging
 {
     [Export(typeof(IComponent))]
-    internal sealed class WindowLogger : IComponent, ICommunicator
+    internal sealed class WindowLogger : IComponent
     {
         private bool isLoggingEnabled;
 
@@ -146,7 +147,7 @@ namespace AppsTracker.Logging
             }
 
             bool newApp = false;
-            SaveCreateLog(windowTitle, Globals.UsageID, Globals.UserID, appInfo, out newApp);
+            SaveCreateLog(windowTitle, loggingService.UsageID, loggingService.UserID, appInfo, out newApp);
             activeWindowTitle = windowTitle;
 
             if (newApp)
@@ -184,7 +185,7 @@ namespace AppsTracker.Logging
 
         private async Task AddScreenshot()
         {
-            var dbSizeTask = Globals.GetDBSizeAsync();
+            var dbSizeTask = loggingService.GetDBSizeAsync();
             var screenshot = screenshotFactory.CreateScreenshot();
 
             if (screenshot == null || currentLog == null)
@@ -208,7 +209,7 @@ namespace AppsTracker.Logging
 
         public IMediator Mediator
         {
-            get { return ServiceLocation.Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
 
         public void Dispose()

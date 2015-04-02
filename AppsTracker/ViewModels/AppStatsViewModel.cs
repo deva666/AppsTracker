@@ -10,8 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
+using AppsTracker.MVVM;
 using AppsTracker.Service;
-using AppsTracker.ServiceLocation;
 
 
 namespace AppsTracker.ViewModels
@@ -19,7 +19,7 @@ namespace AppsTracker.ViewModels
     internal sealed class AppStatsViewModel : ViewModelBase, ICommunicator
     {
         private readonly IStatsService statsService;
-
+        private readonly ILoggingService loggingService;
 
         public override string Title
         {
@@ -69,7 +69,7 @@ namespace AppsTracker.ViewModels
 
         public IMediator Mediator
         {
-            get { return ServiceLocation.Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
 
 
@@ -82,6 +82,7 @@ namespace AppsTracker.ViewModels
         public AppStatsViewModel()
         {
             statsService = serviceResolver.Resolve<IStatsService>();
+            loggingService = serviceResolver.Resolve<ILoggingService>();
 
             appsList = new AsyncProperty<IEnumerable<AppDuration>>(GetApps, this);
             dailyAppList = new AsyncProperty<IEnumerable<DailyAppDuration>>(GetDailyApp, this);
@@ -99,7 +100,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<AppDuration> GetApps()
         {
-            return statsService.GetAppsDuration(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
+            return statsService.GetAppsDuration(loggingService.SelectedUserID, loggingService.DateFrom, loggingService.DateTo);
         }
 
 
@@ -109,7 +110,7 @@ namespace AppsTracker.ViewModels
             if (app == null)
                 return null;
 
-            return statsService.GetAppDurationByDate(Globals.SelectedUserID, app.Name, Globals.DateFrom, Globals.DateTo);
+            return statsService.GetAppDurationByDate(loggingService.SelectedUserID, app.Name, loggingService.DateFrom, loggingService.DateTo);
         }
     }
 }

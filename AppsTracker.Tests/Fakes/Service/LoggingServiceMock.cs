@@ -57,5 +57,91 @@ namespace AppsTracker.Tests.Fakes.Service
         {
             return DateTime.Now.AddDays(-30);
         }
+
+        public bool DBSizeOperational
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public int UserID
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public string UserName
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public int UsageID
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public int SelectedUserID
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public string SelectedUserName
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public Uzer SelectedUser
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public DateTime DateFrom
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public DateTime DateTo
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public event EventHandler DbSizeCritical;
+
+        public void Initialize(Uzer uzer, int usageID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ChangeUser(Uzer uzer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ClearDateFilter()
+        {
+            throw new NotImplementedException();
+        }
+
+        public decimal GetDBSize()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<decimal> GetDBSizeAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

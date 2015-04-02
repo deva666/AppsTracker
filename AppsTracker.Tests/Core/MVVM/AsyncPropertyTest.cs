@@ -3,6 +3,7 @@ using System.Threading;
 using AppsTracker.ServiceLocation;
 using AppsTracker.Tests.Fakes.MVVM;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.Tests.Core.MVVM
 {

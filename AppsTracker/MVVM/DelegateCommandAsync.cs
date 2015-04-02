@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Diagnostics.CodeAnalysis;
 
-namespace AppsTracker.ServiceLocation
+namespace AppsTracker.MVVM
 {
     public class DelegateCommandAsync : ICommand
     {

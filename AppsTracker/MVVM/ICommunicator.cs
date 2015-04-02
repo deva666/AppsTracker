@@ -7,7 +7,7 @@
 #endregion
 
 
-namespace AppsTracker.ServiceLocation
+namespace AppsTracker.MVVM
 {
     public interface ICommunicator
     {

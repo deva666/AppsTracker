@@ -1,5 +1,5 @@
 ﻿
-namespace AppsTracker.ServiceLocation
+namespace AppsTracker.MVVM
 {
     internal interface IWorker
     {

@@ -19,7 +19,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 
 using AppsTracker.Data.Models;
-using AppsTracker.ServiceLocation;
+using AppsTracker.MVVM;
 
 namespace AppsTracker
 {

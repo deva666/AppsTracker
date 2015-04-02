@@ -11,8 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
+using AppsTracker.MVVM;
 using AppsTracker.Service;
-using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.ViewModels
 {
@@ -20,7 +20,7 @@ namespace AppsTracker.ViewModels
     {
         private readonly IDataService dataService;
         private readonly IStatsService statsService;
-
+        private readonly ILoggingService loggingService;
 
         public override string Title
         {
@@ -139,7 +139,7 @@ namespace AppsTracker.ViewModels
 
         public IMediator Mediator
         {
-            get { return ServiceLocation.Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
 
 
@@ -147,6 +147,7 @@ namespace AppsTracker.ViewModels
         {
             dataService = serviceResolver.Resolve<IDataService>();
             statsService = serviceResolver.Resolve<IStatsService>();
+            loggingService = serviceResolver.Resolve<ILoggingService>();
 
             logsList = new AsyncProperty<IEnumerable<LogSummary>>(GetLogSummary, this);
             appsList = new AsyncProperty<IEnumerable<AppSummary>>(GetAppsSummary, this);
@@ -172,13 +173,13 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<LogSummary> GetLogSummary()
         {
-            return statsService.GetLogSummary(Globals.SelectedUserID, selectedDate);
+            return statsService.GetLogSummary(loggingService.SelectedUserID, selectedDate);
         }
 
 
         private IEnumerable<AppSummary> GetAppsSummary()
         {
-            return statsService.GetAllAppSummaries(Globals.SelectedUserID, selectedDate);
+            return statsService.GetAllAppSummaries(loggingService.SelectedUserID, selectedDate);
         }
 
 
@@ -188,13 +189,13 @@ namespace AppsTracker.ViewModels
             if (model == null)
                 return null;
 
-            return statsService.GetWindowsSummary(Globals.SelectedUserID, model.AppName, selectedDate);
+            return statsService.GetWindowsSummary(loggingService.SelectedUserID, model.AppName, selectedDate);
         }
 
 
         private string GetDayDuration()
         {
-            var tuple = statsService.GetDayInfo(Globals.SelectedUserID, selectedDate);
+            var tuple = statsService.GetDayInfo(loggingService.SelectedUserID, selectedDate);
 
             return string.Format("Day start: {0}   -   Day end: {1} \t Total duration: {2}", tuple.Item1, tuple.Item2, tuple.Item3);
         }
@@ -202,13 +203,13 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<UsageByTime> GetUsageSummary()
         {
-            return statsService.GetUsageSummary(Globals.SelectedUserID, selectedDate);
+            return statsService.GetUsageSummary(loggingService.SelectedUserID, selectedDate);
         }
 
 
         private IEnumerable<CategoryDuration> GetCategories()
         {
-            return statsService.GetCategories(Globals.SelectedUserID, selectedDate);
+            return statsService.GetCategories(loggingService.SelectedUserID, selectedDate);
         }
 
 

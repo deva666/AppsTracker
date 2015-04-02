@@ -7,10 +7,8 @@
 #endregion
 
 using System;
-
-using AppsTracker.ServiceLocation;
+using AppsTracker.MVVM;
 using AppsTracker.Tests.Fakes.MVVM;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AppsTracker.Tests.Core.MVVM
@@ -49,7 +47,7 @@ namespace AppsTracker.Tests.Core.MVVM
             if (((MediatorParamMock)param).Message == "Success")
                 _messageMatch = true;
         }
-        
+
         private void EmptyCallback()
         {
             _callbackTriggered = true;

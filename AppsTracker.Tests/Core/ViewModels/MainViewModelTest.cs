@@ -8,10 +8,8 @@
 
 using System;
 using System.Collections.Generic;
-using AppsTracker.Service;
 using AppsTracker.Data.Models;
-using AppsTracker.ServiceLocation;
-using AppsTracker.Tests.Fakes.Service;
+using AppsTracker.MVVM;
 using AppsTracker.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

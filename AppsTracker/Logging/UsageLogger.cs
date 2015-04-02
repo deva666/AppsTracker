@@ -11,11 +11,12 @@ using System.ComponentModel.Composition;
 using AppsTracker.Data.Models;
 using AppsTracker.Service;
 using AppsTracker.ServiceLocation;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.Logging
 {
     [Export(typeof(IComponent))]
-    internal sealed class UsageLogger : IComponent, ICommunicator
+    internal sealed class UsageLogger : IComponent
     {
         private bool isLoggingEnabled;
 
@@ -78,7 +79,7 @@ namespace AppsTracker.Logging
             var user = GetUzer(Environment.UserName);
             currentUsageLogin = LoginUser(user.UserID);
 
-            Globals.Initialize(user, currentUsageLogin.UsageID);
+            loggingService.Initialize(user, currentUsageLogin.UsageID);
         }
 
         private Usage LoginUser(int userID)
@@ -108,7 +109,7 @@ namespace AppsTracker.Logging
             if (isLoggingEnabled == false)
                 return;
 
-            currentUsageIdle = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
+            currentUsageIdle = new Usage(loggingService.UserID) { SelfUsageID = loggingService.UsageID };
             Mediator.NotifyColleagues(MediatorMessages.STOP_LOGGING);
         }
 
@@ -145,7 +146,7 @@ namespace AppsTracker.Logging
 
             if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionLock)
             {
-                currentUsageLocked = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
+                currentUsageLocked = new Usage(loggingService.UserID) { SelfUsageID = loggingService.UsageID };
                 if (currentUsageIdle != null)
                 {
                     currentUsageIdle.UsageEnd = DateTime.Now;
@@ -195,7 +196,7 @@ namespace AppsTracker.Logging
         private void CheckStoppedUsage()
         {
             if (isLoggingEnabled == false && currentUsageStopped == null)
-                currentUsageStopped = new Usage(Globals.UserID) { SelfUsageID = Globals.UsageID };
+                currentUsageStopped = new Usage(loggingService.UserID) { SelfUsageID = loggingService.UsageID };
             else if (isLoggingEnabled && currentUsageStopped != null)
                 SaveStoppedUsage();
         }
@@ -234,7 +235,7 @@ namespace AppsTracker.Logging
 
         public IMediator Mediator
         {
-            get { return ServiceLocation.Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
     }
 }

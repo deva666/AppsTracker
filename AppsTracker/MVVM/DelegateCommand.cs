@@ -9,7 +9,7 @@
 using System;
 using System.Windows.Input;
 
-namespace AppsTracker.ServiceLocation
+namespace AppsTracker.MVVM
 {
    public class DelegateCommand : ICommand
    {

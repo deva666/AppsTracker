@@ -6,7 +6,7 @@
  */
 #endregion
 
-using AppsTracker.ServiceLocation;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {

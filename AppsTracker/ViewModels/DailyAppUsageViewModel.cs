@@ -9,14 +9,15 @@
 using System;
 using System.Collections.Generic;
 using AppsTracker.Data.Models;
+using AppsTracker.MVVM;
 using AppsTracker.Service;
-using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.ViewModels
 {
     internal sealed class DailyAppUsageViewModel : ViewModelBase, ICommunicator
     {
         private readonly IStatsService statsService;
+        private readonly ILoggingService loggingService;
 
 
         public override string Title
@@ -38,13 +39,14 @@ namespace AppsTracker.ViewModels
 
         public IMediator Mediator
         {
-            get { return ServiceLocation.Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
 
 
         public DailyAppUsageViewModel()
         {
             statsService = serviceResolver.Resolve<IStatsService>();
+            loggingService = serviceResolver.Resolve<ILoggingService>();
 
             appsList = new AsyncProperty<IEnumerable<AppDurationOverview>>(GetApps, this);
 
@@ -54,7 +56,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<AppDurationOverview> GetApps()
         {
-            return statsService.GetAppsUsageSeries(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
+            return statsService.GetAppsUsageSeries(loggingService.SelectedUserID, loggingService.DateFrom, loggingService.DateTo);
         }
     }
 }

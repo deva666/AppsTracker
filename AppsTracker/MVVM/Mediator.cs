@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AppsTracker.ServiceLocation
+namespace AppsTracker.MVVM
 {
     public class Mediator : IMediator
     {

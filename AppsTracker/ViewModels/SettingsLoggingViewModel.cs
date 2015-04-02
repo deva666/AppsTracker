@@ -7,7 +7,7 @@
 #endregion
 
 using System.Windows.Input;
-using AppsTracker.ServiceLocation;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {

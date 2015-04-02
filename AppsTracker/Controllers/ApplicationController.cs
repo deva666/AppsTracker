@@ -24,6 +24,7 @@ namespace AppsTracker.Controllers
         private readonly ISyncContext syncContext;
         private readonly IXmlSettingsService xmlSettingsService;
         private readonly ISqlSettingsService sqlSettingsService;
+        private readonly ILoggingService loggingService;
         private readonly IMessageService messageService;
         private readonly ITrayIcon trayIcon;
         private readonly ExportFactory<IWindow> mainWindowValueFactory;
@@ -33,7 +34,8 @@ namespace AppsTracker.Controllers
         [ImportingConstructor]
         public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController,
                                         ISyncContext syncContext, ISqlSettingsService sqlSettingsService,
-                                        IXmlSettingsService xmlSettingsService, ITrayIcon trayIcon,
+                                        IXmlSettingsService xmlSettingsService, ILoggingService loggingService,
+            ITrayIcon trayIcon,
                                         IMessageService messageService, ExportFactory<IWindow> windowValueFactory)
         {
             this.appearanceController = appearanceController;
@@ -41,6 +43,7 @@ namespace AppsTracker.Controllers
             this.syncContext = syncContext;
             this.xmlSettingsService = xmlSettingsService;
             this.sqlSettingsService = sqlSettingsService;
+            this.loggingService = loggingService;
             this.messageService = messageService;
             this.mainWindowValueFactory = windowValueFactory;
             this.trayIcon = trayIcon;
@@ -64,8 +67,8 @@ namespace AppsTracker.Controllers
 
             InitializeTrayIcon();
 
-            Globals.DBCleaningRequired += Globals_DBCleaningRequired;
-            Globals.GetDBSize();
+            loggingService.DbSizeCritical += OnDbSizeCritical;
+            loggingService.GetDBSize();
 
             EntryPoint.SingleInstanceManager.SecondInstanceActivating += (s, e) => CreateOrShowMainWindow();
         }
@@ -210,7 +213,7 @@ namespace AppsTracker.Controllers
             mainWindow.Height = height;
         }
 
-        private async void Globals_DBCleaningRequired(object sender, EventArgs e)
+        private async void OnDbSizeCritical(object sender, EventArgs e)
         {
             var settings = sqlSettingsService.Settings;
             settings.TakeScreenshots = false;
@@ -219,7 +222,7 @@ namespace AppsTracker.Controllers
             messageService.ShowDialog("Database size has reached the maximum allowed value"
                 + Environment.NewLine + "Please run the screenshot cleaner from the settings menu to continue capturing screenshots.", false);
 
-            Globals.DBCleaningRequired -= Globals_DBCleaningRequired;
+            loggingService.DbSizeCritical -= OnDbSizeCritical;
         }
 
         public void ShutDown()

@@ -8,6 +8,7 @@
 
 using System;
 using System.Reflection;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.ServiceLocation
 {

@@ -17,8 +17,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
+using AppsTracker.MVVM;
 using AppsTracker.Service;
-using AppsTracker.ServiceLocation;
 using AppsTracker.Widgets;
 
 namespace AppsTracker.ViewModels
@@ -27,6 +27,7 @@ namespace AppsTracker.ViewModels
     {
         private readonly IDataService dataService;
         private readonly ISqlSettingsService settingsService;
+        private readonly ILoggingService loggingService;
 
         public override string Title
         {
@@ -86,7 +87,7 @@ namespace AppsTracker.ViewModels
 
         public IMediator Mediator
         {
-            get { return ServiceLocation.Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
 
 
@@ -94,6 +95,7 @@ namespace AppsTracker.ViewModels
         {
             dataService = serviceResolver.Resolve<IDataService>();
             settingsService = serviceResolver.Resolve<ISqlSettingsService>();
+            loggingService = serviceResolver.Resolve<ILoggingService>();
 
             logList = new AsyncProperty<IEnumerable<Log>>(GetContent, this);
 
@@ -105,9 +107,9 @@ namespace AppsTracker.ViewModels
         private IEnumerable<Log> GetContent()
         {
             return dataService.GetFiltered<Log>(l => l.Screenshots.Count > 0
-                                                && l.DateCreated >= Globals.DateFrom
-                                                && l.DateCreated <= Globals.DateTo
-                                                && l.Window.Application.UserID == Globals.SelectedUserID
+                                                && l.DateCreated >= loggingService.DateFrom
+                                                && l.DateCreated <= loggingService.DateTo
+                                                && l.Window.Application.UserID == loggingService.SelectedUserID
                                                 , l => l.Screenshots
                                                 , l => l.Window.Application);
         }

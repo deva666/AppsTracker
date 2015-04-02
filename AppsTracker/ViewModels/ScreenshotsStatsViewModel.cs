@@ -10,15 +10,15 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
+using AppsTracker.MVVM;
 using AppsTracker.Service;
-using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.ViewModels
 {
     internal sealed class ScreenshotsStatsViewModel : ViewModelBase, ICommunicator
     {
         private readonly IStatsService statsService;
-
+        private readonly ILoggingService loggingService;
 
         public override string Title
         {
@@ -66,13 +66,14 @@ namespace AppsTracker.ViewModels
 
         public IMediator Mediator
         {
-            get { return ServiceLocation.Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
 
 
         public ScreenshotsStatsViewModel()
         {
             statsService = serviceResolver.Resolve<IStatsService>();
+            loggingService = serviceResolver.Resolve<ILoggingService>();
 
             screenshotList = new AsyncProperty<IEnumerable<ScreenshotModel>>(GetScreenshots, this);
             dailyScreenshotsList = new AsyncProperty<IEnumerable<DailyScreenshotModel>>(GetDailyScreenshots, this);
@@ -83,7 +84,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<ScreenshotModel> GetScreenshots()
         {
-            return statsService.GetScreenshots(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
+            return statsService.GetScreenshots(loggingService.SelectedUserID, loggingService.DateFrom, loggingService.DateTo);
         }
 
 
@@ -93,7 +94,7 @@ namespace AppsTracker.ViewModels
             if (model == null)
                 return null;
 
-            return statsService.GetScreenshotsByApp(Globals.SelectedUserID, model.AppName, Globals.DateFrom, Globals.DateTo);
+            return statsService.GetScreenshotsByApp(loggingService.SelectedUserID, model.AppName, loggingService.DateFrom, loggingService.DateTo);
         }
 
         private void ReloadAll()

@@ -9,13 +9,16 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
-using AppsTracker.ServiceLocation;
+using AppsTracker.MVVM;
+using AppsTracker.Service;
 using AppsTracker.Widgets;
 
 namespace AppsTracker.ViewModels
 {
     internal sealed class SettingsScreenshotsViewModel : SettingsBaseViewModel
     {
+        private readonly ILoggingService loggingService;
+
         public override string Title
         {
             get { return "SCREENSHOTS"; }
@@ -37,7 +40,7 @@ namespace AppsTracker.ViewModels
         {
             get
             {
-                return changeScreenshotsCommand ?? (changeScreenshotsCommand = new DelegateCommand(ChangeScreenshots, o => Globals.DBSizeOperational));
+                return changeScreenshotsCommand ?? (changeScreenshotsCommand = new DelegateCommand(ChangeScreenshots, o => loggingService.DBSizeOperational));
             }
         }
 
@@ -85,6 +88,11 @@ namespace AppsTracker.ViewModels
             }
         }
 
+
+        public SettingsScreenshotsViewModel()
+        {
+            loggingService = serviceResolver.Resolve<ILoggingService>();
+        }
 
         private void ChangeScreenshots()
         {

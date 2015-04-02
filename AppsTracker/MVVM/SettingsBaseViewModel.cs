@@ -11,7 +11,7 @@ using System.Windows.Input;
 using AppsTracker.Data.Models;
 using AppsTracker.Service;
 
-namespace AppsTracker.ServiceLocation
+namespace AppsTracker.MVVM
 {
     internal abstract class SettingsBaseViewModel : ViewModelBase
     {

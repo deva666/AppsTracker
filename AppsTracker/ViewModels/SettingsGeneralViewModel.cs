@@ -6,12 +6,12 @@
  */
 #endregion
 
-using AppsTracker.Widgets;
-using AppsTracker.ServiceLocation;
-using Microsoft.Win32;
 using System;
 using System.Windows.Input;
+using AppsTracker.MVVM;
 using AppsTracker.Service;
+using AppsTracker.Widgets;
+using Microsoft.Win32;
 
 namespace AppsTracker.ViewModels
 {

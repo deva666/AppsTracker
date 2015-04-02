@@ -10,7 +10,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AppsTracker.ServiceLocation
+namespace AppsTracker.MVVM
 {
     internal class AsyncProperty<T> : ObservableObject
     {

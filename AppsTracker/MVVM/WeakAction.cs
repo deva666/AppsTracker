@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace AppsTracker.ServiceLocation
+namespace AppsTracker.MVVM
 {
     internal class WeakAction
     {

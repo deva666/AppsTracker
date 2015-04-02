@@ -10,15 +10,15 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
+using AppsTracker.MVVM;
 using AppsTracker.Service;
-using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.ViewModels
 {
     internal sealed class UserStatsViewModel : ViewModelBase, ICommunicator
     {
         private readonly IStatsService statsService;
-
+        private readonly ILoggingService loggingService;
 
         public override string Title
         {
@@ -72,13 +72,14 @@ namespace AppsTracker.ViewModels
 
         public IMediator Mediator
         {
-            get { return ServiceLocation.Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
 
 
         public UserStatsViewModel()
         {
             statsService = serviceResolver.Resolve<IStatsService>();
+            loggingService = serviceResolver.Resolve<ILoggingService>();
 
             usersList = new AsyncProperty<IEnumerable<UserLoggedTime>>(GetContent, this);
             dailyUsageList = new AsyncProperty<IEnumerable<UsageOverview>>(GetSubContent, this);
@@ -96,7 +97,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<UserLoggedTime> GetContent()
         {
-            return statsService.GetAllUsers(Globals.DateFrom, Globals.DateTo);
+            return statsService.GetAllUsers(loggingService.DateFrom, loggingService.DateTo);
         }
 
 
@@ -106,7 +107,7 @@ namespace AppsTracker.ViewModels
             if (user == null)
                 return null;
 
-            return statsService.GetUsageSeries(user.Username, Globals.DateFrom, Globals.DateTo);
+            return statsService.GetUsageSeries(user.Username, loggingService.DateFrom, loggingService.DateTo);
         }
 
 

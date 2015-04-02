@@ -10,8 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
+using AppsTracker.MVVM;
 using AppsTracker.Service;
-using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.ViewModels
 {
@@ -19,7 +19,7 @@ namespace AppsTracker.ViewModels
     {
         private readonly IDataService dataService;
         private readonly ISqlSettingsService settingsService;
-
+        private readonly ILoggingService loggingService;
 
         private bool isPopupCalendarOpen = false;
 
@@ -65,19 +65,19 @@ namespace AppsTracker.ViewModels
 
         public decimal DBSize
         {
-            get { return Globals.GetDBSize(); }
+            get { return loggingService.GetDBSize(); }
         }
 
 
         public DateTime DateFrom
         {
-            get { return Globals.DateFrom; }
+            get { return loggingService.DateFrom; }
             set
             {
-                if (Globals.DateFrom == value)
+                if (loggingService.DateFrom == value)
                     return;
                 IsFilterApplied = true;
-                Globals.DateFrom = value;
+                loggingService.DateFrom = value;
                 PropertyChanging("DateFrom");
                 Mediator.NotifyColleagues(MediatorMessages.RefreshLogs);
             }
@@ -86,13 +86,13 @@ namespace AppsTracker.ViewModels
 
         public DateTime DateTo
         {
-            get { return Globals.DateTo; }
+            get { return loggingService.DateTo; }
             set
             {
-                if (Globals.DateTo == value)
+                if (loggingService.DateTo == value)
                     return;
                 IsFilterApplied = true;
-                Globals.DateTo = value;
+                loggingService.DateTo = value;
                 PropertyChanging("DateTo");
                 Mediator.NotifyColleagues(MediatorMessages.RefreshLogs);
             }
@@ -103,7 +103,7 @@ namespace AppsTracker.ViewModels
 
         public string UserName
         {
-            get { return Globals.SelectedUserName; }
+            get { return loggingService.SelectedUserName; }
             set { SetPropertyValue(ref userName, value); }
         }
 
@@ -121,13 +121,13 @@ namespace AppsTracker.ViewModels
         {
             get
             {
-                return Globals.SelectedUser;
+                return loggingService.SelectedUser;
             }
             set
             {
-                if (value != null && value.UserID != Globals.SelectedUserID)
+                if (value != null && value.UserID != loggingService.SelectedUserID)
                 {
-                    Globals.ChangeUser(value);
+                    loggingService.ChangeUser(value);
                     PropertyChanging("User");
                     ClearFilter();
                 }
@@ -198,7 +198,7 @@ namespace AppsTracker.ViewModels
 
         public IMediator Mediator
         {
-            get { return ServiceLocation.Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
 
 
@@ -206,6 +206,7 @@ namespace AppsTracker.ViewModels
         {
             dataService = serviceResolver.Resolve<IDataService>();
             settingsService = serviceResolver.Resolve<ISqlSettingsService>();
+            loggingService = serviceResolver.Resolve<ILoggingService>();
 
             RegisterChild(() => new DataHostViewModel());
             RegisterChild(() => new StatisticsHostViewModel());
@@ -255,7 +256,7 @@ namespace AppsTracker.ViewModels
         private void ClearFilter()
         {
             IsFilterApplied = false;
-            Globals.ClearDateFilter();
+            loggingService.ClearDateFilter();
             PropertyChanging("DateFrom");
             PropertyChanging("DateTo");
             Mediator.NotifyColleagues(MediatorMessages.RefreshLogs);

@@ -11,8 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
+using AppsTracker.MVVM;
 using AppsTracker.Service;
-using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.ViewModels
 {
@@ -20,7 +20,7 @@ namespace AppsTracker.ViewModels
     {
         private readonly IDataService dataService;
         private readonly IStatsService statsService;
-
+        private readonly ILoggingService loggingService;
 
         public override string Title
         {
@@ -138,7 +138,7 @@ namespace AppsTracker.ViewModels
 
         public IMediator Mediator
         {
-            get { return ServiceLocation.Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
 
 
@@ -146,6 +146,7 @@ namespace AppsTracker.ViewModels
         {
             dataService = serviceResolver.Resolve<IDataService>();
             statsService = serviceResolver.Resolve<IStatsService>();
+            loggingService = serviceResolver.Resolve<ILoggingService>();
 
             appList = new AsyncProperty<IEnumerable<Aplication>>(GetApps, this);
             appSummaryList = new AsyncProperty<IEnumerable<AppSummary>>(GetAppSummary, this);
@@ -159,9 +160,9 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<Aplication> GetApps()
         {
-            return dataService.GetFiltered<Aplication>(a => a.User.UserID == Globals.SelectedUserID
-                                                                && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= Globals.DateFrom).Any()
-                                                                && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= Globals.DateTo).Any())
+            return dataService.GetFiltered<Aplication>(a => a.User.UserID == loggingService.SelectedUserID
+                                                                && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= loggingService.DateFrom).Any()
+                                                                && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= loggingService.DateTo).Any())
                                                            .ToList()
                                                            .Distinct();
         }
@@ -173,7 +174,7 @@ namespace AppsTracker.ViewModels
             if (app == null)
                 return null;
 
-            return statsService.GetAppSummary(Globals.SelectedUserID, app.ApplicationID, app.Name, Globals.DateFrom, Globals.DateTo);
+            return statsService.GetAppSummary(loggingService.SelectedUserID, app.ApplicationID, app.Name, loggingService.DateFrom, loggingService.DateTo);
         }
 
 
@@ -184,7 +185,7 @@ namespace AppsTracker.ViewModels
                 return null;
 
             var selectedDates = AppSummaryList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
-            return statsService.GetWindowsSummary(Globals.SelectedUserID, selectedApp.AppName, selectedDates);
+            return statsService.GetWindowsSummary(loggingService.SelectedUserID, selectedApp.AppName, selectedDates);
         }
 
 
@@ -198,7 +199,7 @@ namespace AppsTracker.ViewModels
             var selectedWindows = WindowSummaryList.Result.Where(w => w.IsSelected).Select(w => w.Title).ToList();
             var selectedDates = AppSummaryList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
 
-            return statsService.GetWindowDurationOverview(Globals.SelectedUserID, selectedApp.AppName, selectedWindows, selectedDates);
+            return statsService.GetWindowDurationOverview(loggingService.SelectedUserID, selectedApp.AppName, selectedWindows, selectedDates);
         }
 
 

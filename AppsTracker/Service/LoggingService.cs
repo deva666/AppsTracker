@@ -9,6 +9,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AppsTracker.Data.Db;
@@ -20,6 +21,95 @@ namespace AppsTracker.Service
     [Export(typeof(ILoggingService))]
     public sealed class LoggingService : ILoggingService
     {
+        private bool isDateRangeFiltered;
+        private DateTime dateFrom;
+        private DateTime dateTo;
+
+        public bool DBSizeOperational { get; private set; }
+        public int UserID { get; private set; }
+        public string UserName { get; private set; }
+        public int UsageID { get; private set; }
+        public int SelectedUserID { get; private set; }
+        public string SelectedUserName { get; private set; }
+        public Uzer SelectedUser { get; private set; }
+
+        public DateTime DateFrom
+        {
+            get { return dateFrom; }
+            set { dateFrom = value; }
+        }
+
+        public DateTime DateTo
+        {
+            get
+            {
+                if (isDateRangeFiltered)
+                    return dateTo;
+                else
+                    return DateTime.Now;
+            }
+            set
+            {
+                isDateRangeFiltered = true;
+                dateTo = value;
+            }
+        }
+
+        public event EventHandler DbSizeCritical;
+
+        public void Initialize(Uzer uzer, int usageID)
+        {
+            UserID = uzer.UserID;
+            UserName = uzer.Name;
+            SelectedUserID = UserID;
+            SelectedUserName = UserName;
+            dateFrom = GetFirstDate(SelectedUserID);
+            UsageID = usageID;
+        }
+
+
+        public void ChangeUser(Uzer uzer)
+        {
+            if (uzer == null)
+                throw new ArgumentNullException("User");
+            SelectedUserID = uzer.UserID;
+            SelectedUserName = uzer.Name;
+            SelectedUser = uzer;
+            ClearDateFilter();
+        }
+
+        public void ClearDateFilter()
+        {
+            dateFrom = GetFirstDate(SelectedUserID);
+            isDateRangeFiltered = false;
+        }
+
+        public decimal GetDBSize()
+        {
+            try
+            {
+                FileInfo file = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "appsdb.sdf"));
+                decimal size = Math.Round((decimal)file.Length / 1048576, 2);
+                if (size >= 3900m)
+                {
+                    DBSizeOperational = false;
+                    DbSizeCritical.InvokeSafely(this, EventArgs.Empty);
+                }
+                else
+                    DBSizeOperational = true;
+                return size;
+            }
+            catch 
+            {
+                return -1;
+            }
+        }
+
+        public Task<decimal> GetDBSizeAsync()
+        {
+            return Task<decimal>.Run(new Func<decimal>(GetDBSize));
+        }
+
         public async Task SaveModifiedLogAsync(Log log)
         {
             using (var context = new AppsEntities())

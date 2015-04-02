@@ -10,15 +10,15 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
+using AppsTracker.MVVM;
 using AppsTracker.Service;
-using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.ViewModels
 {
     internal sealed class CategoryStatsViewModel : ViewModelBase, ICommunicator
     {
         private readonly IStatsService statsService;
-
+        private readonly ILoggingService loggingService;
 
         public override string Title
         {
@@ -65,13 +65,14 @@ namespace AppsTracker.ViewModels
 
         public IMediator Mediator
         {
-            get { return ServiceLocation.Mediator.Instance; }
+            get { return MVVM.Mediator.Instance; }
         }
 
 
         public CategoryStatsViewModel()
         {
             statsService = serviceResolver.Resolve<IStatsService>();
+            loggingService = serviceResolver.Resolve<ILoggingService>();
 
             categoryList = new AsyncProperty<IEnumerable<CategoryDuration>>(GetCategories, this);
             dailyCategoryList = new AsyncProperty<IEnumerable<DailyCategoryDuration>>(GetDailyCategories, this);
@@ -81,7 +82,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<CategoryDuration> GetCategories()
         {
-            return statsService.GetCategoryStats(Globals.SelectedUserID, Globals.DateFrom, Globals.DateTo);
+            return statsService.GetCategoryStats(loggingService.SelectedUserID, loggingService.DateFrom, loggingService.DateTo);
         }
 
 
@@ -91,7 +92,7 @@ namespace AppsTracker.ViewModels
             if (category == null)
                 return null;
 
-            return statsService.GetDailyCategoryStats(Globals.SelectedUserID, category.Name, Globals.DateFrom, Globals.DateTo);
+            return statsService.GetDailyCategoryStats(loggingService.SelectedUserID, category.Name, loggingService.DateFrom, loggingService.DateTo);
         }
 
         private void ReloadAll()
