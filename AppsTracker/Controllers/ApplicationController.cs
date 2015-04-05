@@ -28,14 +28,16 @@ namespace AppsTracker.Controllers
         private readonly IMessageService messageService;
         private readonly ITrayIcon trayIcon;
         private readonly ExportFactory<IWindow> mainWindowValueFactory;
+        private readonly ExportFactory<IPasswordWindow> passwordWindowValueFactory;
 
-        private IWindow mainWindow;
+        private IWindow mainWindow;        
 
         [ImportingConstructor]
         public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController,
                                      ISyncContext syncContext, ISqlSettingsService sqlSettingsService,
                                      IXmlSettingsService xmlSettingsService, ILoggingService loggingService,
-                                     ITrayIcon trayIcon, IMessageService messageService, ExportFactory<IWindow> windowValueFactory)
+                                     ITrayIcon trayIcon, IMessageService messageService, ExportFactory<IWindow> windowValueFactory,
+                                     ExportFactory<IPasswordWindow> passwordWindowValueFactory)
         {
             this.appearanceController = appearanceController;
             this.loggingController = loggingController;
@@ -45,6 +47,7 @@ namespace AppsTracker.Controllers
             this.loggingService = loggingService;
             this.messageService = messageService;
             this.mainWindowValueFactory = windowValueFactory;
+            this.passwordWindowValueFactory = passwordWindowValueFactory;
             this.trayIcon = trayIcon;
         }
 
@@ -128,7 +131,7 @@ namespace AppsTracker.Controllers
 
         private void CreateOrShowMainWindow()
         {
-            if (IsPasswordProtected())
+            if (CanOpenMainWindow())
             {
                 if (mainWindow == null)
                 {
@@ -156,11 +159,11 @@ namespace AppsTracker.Controllers
             mainWindow.Show();
         }
 
-        private bool IsPasswordProtected()
+        private bool CanOpenMainWindow()
         {
             if (sqlSettingsService.Settings.IsMasterPasswordSet)
             {
-                PasswordWindow passwordWindow = new PasswordWindow();
+                var passwordWindow = passwordWindowValueFactory.CreateExport().Value;
                 bool? dialog = passwordWindow.ShowDialog();
                 if (dialog.Value)
                 {

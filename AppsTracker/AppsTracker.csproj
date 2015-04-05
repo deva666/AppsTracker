@@ -247,6 +247,7 @@
     <Compile Include="Widgets\Next.xaml.cs">
       <DependentUpon>Next.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Widgets\IPasswordWindow.cs"/>
     <Compile Include="Widgets\PageController.xaml.cs">
       <DependentUpon>PageController.xaml</DependentUpon>
     </Compile>

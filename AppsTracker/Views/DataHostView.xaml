@@ -49,8 +49,8 @@
                        Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=APPS}">
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding ChangePageCommand}"
-                                      CommandParameter="{x:Type vModels:AppDetailsViewModel}">
+                                      Command="{Binding GoToAppDetailsCommand}"
+                                      >
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>
@@ -58,8 +58,8 @@
                        Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=DAY SUMMARY}">
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding ChangePageCommand}"
-                                      CommandParameter="{x:Type vModels:DaySummaryViewModel}">
+                                      Command="{Binding GoToDaySummaryCommand}"
+                                      >
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>
@@ -67,8 +67,8 @@
                        Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=SCREENSHOTS}">
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding ChangePageCommand}"
-                                      CommandParameter="{x:Type vModels:ScreenshotsViewModel}">
+                                      Command="{Binding GoToScreenshotsCommand}"
+                                      >
                         </MouseBinding>
                     </Label.InputBindings>
                 </Label>

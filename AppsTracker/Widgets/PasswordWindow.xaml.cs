@@ -1,13 +1,17 @@
 ﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using AppsTracker.Service;
 using AppsTracker.ServiceLocation;
+using AppsTracker.Widgets;
 
 namespace AppsTracker
 {
-    public partial class PasswordWindow : Window
+    [Export(typeof(IPasswordWindow))]
+    public partial class PasswordWindow : Window, IPasswordWindow
     {
         private readonly ISqlSettingsService settingService;
         private readonly IMessageService messageService;

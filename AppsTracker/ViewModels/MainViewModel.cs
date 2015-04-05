@@ -195,6 +195,27 @@ namespace AppsTracker.ViewModels
             get { return thisMonthCommand ?? (thisMonthCommand = new DelegateCommand(ThisMonth)); }
         }
 
+        private ICommand goToDataCommand;
+
+        public ICommand GoToDataCommand
+        {
+            get { return goToDataCommand ?? (goToDataCommand = new DelegateCommand(GoToData)); }
+        }
+
+
+        private ICommand goToStatsCommand;
+
+        public ICommand GoToStatsCommand
+        {
+            get { return goToStatsCommand ?? (goToStatsCommand = new DelegateCommand(GoToStats)); }
+        }
+
+        private ICommand goToSettingsCommand;
+
+        public ICommand goToSettingsCommand
+        {
+            get { return goToSettingsCommand ?? (goToSettingsCommand = new DelegateCommand(GoToSettings)); }
+        }
 
         public IMediator Mediator
         {
@@ -212,19 +233,20 @@ namespace AppsTracker.ViewModels
             RegisterChild(() => new StatisticsHostViewModel());
             RegisterChild(() => new SettingsHostViewModel());
 
-            SelectedChild = GetChild(typeof(DataHostViewModel));
+            SelectedChild = GetChild<DataHostViewModel>();
         }
 
 
         private void GetUsers()
         {
-            userCollection = dataService.GetFiltered<Uzer>(u => u.UserID >= 0);
+            userCollection = dataService.GetFiltered<Uzer>(u => u.UserID > 0);
         }
 
 
         protected override void ChangePage(object parameter)
         {
-            ToSettings = (SelectedChild == null || SelectedChild.GetType() == (Type)parameter) ? ToSettings : SelectedChild.GetType();
+            ToSettings = (SelectedChild == null || SelectedChild.GetType() == (Type)parameter) 
+                                                        ? ToSettings : SelectedChild.GetType();
             base.ChangePage(parameter);
         }
 
@@ -288,6 +310,24 @@ namespace AppsTracker.ViewModels
             DateTo = DateFrom.AddDays(6);
         }
 
+
+        private void GoToData()
+        {
+            SelectedChild = GetChild<DataHostViewModel>();
+        }
+
+
+        private void GoToStats()
+        {
+            SelectedChild = GetChild<StatisticsHostViewModel>();
+        }
+
+
+        private void GoToSettings()
+        {
+            ToSettings = SelectedChild;
+            SelectedChild = GetChild<SettingsHostViewModel>();
+        }
 
         protected override void Disposing()
         {

@@ -6,6 +6,7 @@
  */
 #endregion
 
+using System.Windows.Input;
 using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
@@ -18,13 +19,54 @@ namespace AppsTracker.ViewModels
         }
 
 
+		private ICommand goToAppDetailsCommand;
+
+		public ICommand GoToAppDetailsCommand
+		{
+			get { return goToAppDetailsCommand ?? (goToAppDetailsCommand = new DelegateCommand (GoToAppDetails));}
+		}
+
+
+		private ICommand goToScreenshotsCommand;
+
+		public ICommand GoToScreenshotsCommand
+		{
+			get{ return goToScreenshotsCommand ?? (goToScreenshotsCommand = new DelegateCommand (GoToScreenshots));}
+		}
+
+
+		private ICommand goToDaySummaryCommand;
+
+		public ICommand GoToDaySummaryCommand
+		{
+			get{ return goToDaySummaryCommand ?? (goToDaySummaryCommand = new DelegateCommand (GoToDaySummary)); }
+		}
+
         public DataHostViewModel()
         {
             RegisterChild(() => new AppDetailsViewModel());
             RegisterChild(() => new ScreenshotsViewModel());
             RegisterChild(() => new DaySummaryViewModel());
 
-            SelectedChild = GetChild(typeof(AppDetailsViewModel));
+			SelectedChild = GetChild<AppDetailsViewModel>();
         }
+
+
+		private void GoToAppDetails()
+		{
+			SelectedChild = GetChild<AppDetailsViewModel> ();
+		}
+
+
+		private void GoToScreenshots()
+		{
+			SelectedChild = GetChild<ScreenshotsViewModel> ();
+		}
+
+
+		private void GoToDaySummary()
+		{
+			SelectedChild = GetChild<DaySummaryViewModel> ();
+		}
     }
 }

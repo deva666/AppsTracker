@@ -146,8 +146,8 @@
                                      Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=data}">
                 <customControls:FadingUC.InputBindings>
                     <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding ChangePageCommand}"
-                                  CommandParameter="{x:Type viewModels:DataHostViewModel}" />
+                                  Command="{Binding GoToDataCommand}"
+                                  />
                 </customControls:FadingUC.InputBindings>
             </customControls:FadingUC>
             <customControls:FadingUC StringContent="statistics"
@@ -156,8 +156,8 @@
                                      Visibility="{Binding SelectedChild, Converter={StaticResource convertPageNameToVisibilityB}, ConverterParameter=settings}">
                 <customControls:FadingUC.InputBindings>
                     <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding ChangePageCommand}"
-                                  CommandParameter="{x:Type viewModels:StatisticsHostViewModel}" />
+                                  Command="{Binding GoToStatsCommand}"
+                                  />
                 </customControls:FadingUC.InputBindings>
             </customControls:FadingUC>
             <customControls:BackButton Style="{DynamicResource BackBtnStyle}"
@@ -166,8 +166,8 @@
                                        Margin="30,4,0,0">
                 <customControls:BackButton.InputBindings>
                     <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding ChangePageCommand}"
-                                  CommandParameter="{Binding ToSettings}" />
+                                  Command="{Binding ReturnFromSettingsCommand}"
+                                  />
                 </customControls:BackButton.InputBindings>
             </customControls:BackButton>
 

@@ -53,8 +53,8 @@
                    HorizontalAlignment="Left">
                 <Label.InputBindings>
                     <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding ChangePageCommand}"
-                                  CommandParameter="{x:Type viewModels:SettingsGeneralViewModel}" />
+                                  Command="{Binding GoToGeneralCommand}"
+                                  />
                 </Label.InputBindings>
             </Label>
 
@@ -65,8 +65,8 @@
                    HorizontalAlignment="Left">
                 <Label.InputBindings>
                     <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding ChangePageCommand}"
-                                  CommandParameter="{x:Type viewModels:SettingsLoggingViewModel}" />
+                                  Command="{Binding GoToLoggingCommand}"
+                                   />
                 </Label.InputBindings>
             </Label>
             <Label Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=SCREENSHOTS}"
@@ -76,8 +76,8 @@
                    HorizontalAlignment="Left">
                 <Label.InputBindings>
                     <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding ChangePageCommand}"
-                                  CommandParameter="{x:Type viewModels:SettingsScreenshotsViewModel}" />
+                                  Command="{Binding GoToScreenshotsCommand}"
+                                  />
                 </Label.InputBindings>
             </Label>
 
@@ -88,8 +88,8 @@
                    HorizontalAlignment="Left">
                 <Label.InputBindings>
                     <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding ChangePageCommand}"
-                                  CommandParameter="{x:Type viewModels:SettingsPasswordViewModel}" />
+                                  Command="{Binding GoToPasswordCommand}"
+                                   />
                 </Label.InputBindings>
             </Label>
 
@@ -100,8 +100,8 @@
                    HorizontalAlignment="Left">
                 <Label.InputBindings>
                     <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding ChangePageCommand}"
-                                  CommandParameter="{x:Type viewModels:SettingsAppCategoriesViewModel}" />
+                                  Command="{Binding GoToAppCategoriesCommand}"
+                                   />
                 </Label.InputBindings>
             </Label>
 

@@ -17,9 +17,9 @@ namespace AppsTracker.MVVM
     {
         private readonly Dictionary<Type, ViewModelResolver> childrenMap = new Dictionary<Type, ViewModelResolver>();
 
-        protected ViewModelBase selectedChild;
+        private ViewModelBase selectedChild;
 
-        protected ICommand changePageCommand;
+        private ICommand changePageCommand;
 
 
         public ViewModelBase SelectedChild
@@ -50,14 +50,31 @@ namespace AppsTracker.MVVM
         }
 
 
-        protected void RegisterChild<T>(Func<T> getter) where T : ViewModelBase
+        protected void RegisterChild<T>(Func<T> valueFactory) where T : ViewModelBase
         {
             if (childrenMap.ContainsKey(typeof(T)))
                 return;
-            Ensure.NotNull(getter);
+            Ensure.NotNull(valueFactory);
 
-            var resolver = new ViewModelResolver(getter);
+            var resolver = new ViewModelResolver(valueFactory);
             childrenMap.Add(typeof(T), resolver);
+        }
+
+
+        protected ViewModelBase GetChild<T>() where T : ViewModelBase
+        {
+            Ensure.Condition<InvalidOperationException>(childrenMap.ContainsKey(typeof(T)),
+                string.Format("Type {0} not registed", typeof(T)));
+
+            var resolver = childrenMap[typeof(T)];
+            ViewModelBase viewModel = null;
+            resolver.Reference.TryGetTarget(out viewModel);
+            if(viewModel == null)
+            {
+                viewModel = resolver.ValueFactory();
+                resolver.Reference.SetTarget(viewModel);
+            }
+            return viewModel;
         }
 
 
@@ -71,7 +88,7 @@ namespace AppsTracker.MVVM
             resolver.Reference.TryGetTarget(out viewModel);
             if (viewModel == null)
             {
-                viewModel = resolver.Getter();
+                viewModel = resolver.ValueFactory();
                 resolver.Reference.SetTarget(viewModel);
             }
             return viewModel;
@@ -81,12 +98,12 @@ namespace AppsTracker.MVVM
         private class ViewModelResolver
         {
             public WeakReference<ViewModelBase> Reference { get; private set; }
-            public Func<ViewModelBase> Getter { get; private set; }
+            public Func<ViewModelBase> ValueFactory { get; private set; }
 
-            public ViewModelResolver(Func<ViewModelBase> getter)
+            public ViewModelResolver(Func<ViewModelBase> valueFactory)
             {
                 Reference = new WeakReference<ViewModelBase>(null);
-                Getter = getter;
+                ValueFactory = valueFactory;
             }
         }
     }

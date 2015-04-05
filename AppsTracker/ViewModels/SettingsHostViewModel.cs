@@ -6,6 +6,7 @@
  */
 #endregion
 
+using System.Windows.Input;
 using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
@@ -18,6 +19,45 @@ namespace AppsTracker.ViewModels
         }
 
 
+        private ICommand goToGeneralCommand;
+
+        public ICommand GoToGeneralCommand
+        {
+            get{ return goToGeneralCommand ?? (goToGeneralCommand = new DelegateCommand(GoToGeneral)); }
+        }
+
+
+        private ICommand goToLoggingCommand;
+
+        public ICommand GoToLoggingCommand
+        {
+            get{ return goToLoggingCommand ?? (goToLoggingCommand = new DelegateCommand(GoToLogging)); }
+        }
+
+        private ICommand goToScreenshotsCommand;
+
+        public ICommand GoToScreenshotsCommand
+        {
+            get{ return goToScreenshotsCommand ?? (goToScreenshotsCommand = new DelegateCommand(GoToScreenshots)); }
+        }
+
+
+        private ICommand goToPasswordCommand;
+
+        public ICommand GoToPasswordCommand
+        {
+            get{ return goToPasswordCommand ?? (goToPasswordCommand = new DelegateCommand(GoToPassword)); }
+        }
+
+
+        private ICommand goToAppCategoriesCommand;
+
+        public ICommand GoToAppCategoriesCommand
+        {
+            get{ return goToAppCategoriesCommand ?? (goToAppCategoriesCommand = new DelegateCommand(GoToAppCategories)); }
+        }
+
+
         public SettingsHostViewModel()
         {
             RegisterChild<SettingsGeneralViewModel>(() => new SettingsGeneralViewModel());
@@ -26,7 +66,37 @@ namespace AppsTracker.ViewModels
             RegisterChild<SettingsPasswordViewModel>(() => new SettingsPasswordViewModel());
             RegisterChild<SettingsAppCategoriesViewModel>(() => new SettingsAppCategoriesViewModel());
 
-            SelectedChild = GetChild(typeof(SettingsGeneralViewModel));
+            SelectedChild = GetChild<SettingsGeneralViewModel>();
+        }
+
+
+        private void GoToGeneral()
+        {
+            SelectedChild = GetChild<SettingsGeneralViewModel>();
+        }
+
+        
+        private void GoToLogging()
+        {
+            SelectedChild = GetChild<SettingsLoggingViewModel>();
+        }
+
+        
+        private void GoToScreenshots()
+        {
+            SelectedChild = GetChild<SettingsScreenshotsViewModel>();
+        }
+
+
+        private void GoToPassword()
+        {
+            SelectedChild = GetChild<SettingsPasswordViewModel>();
+        }
+
+
+        private void GoToAppCategories()
+        {
+            SelectedChild = GetChild<SettingsAppCategoriesViewModel>();
         }
     }
 }
