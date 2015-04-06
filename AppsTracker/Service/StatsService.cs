@@ -668,7 +668,7 @@ namespace AppsTracker.Service
                 DateTime nextDay = fromDay.AddDays(1d);
                 DateTime today = DateTime.Now.Date;
 
-                var query = context.Usages.Where(u => u.User.UserID == userID
+                var usageQuery = context.Usages.Where(u => u.User.UserID == userID
                                                      && ((u.UsageStart >= fromDay
                                                      && u.UsageStart <= nextDay)
                                                         || (u.IsCurrent && u.UsageStart < fromDay && today >= fromDay)
@@ -676,11 +676,14 @@ namespace AppsTracker.Service
                                                      && u.UsageType == UsageTypes.Login)
                                             .ToList();
 
-                var logins = BreakUsagesByDay(query);
+				var durationQuery = context.Logs.Where (l => l.DateCreated >= dateFrom
+					&& l.DateCreated <= nextDay).ToList();
 
-                var loginBegin = logins.OrderBy(l => l.UsageStart).FirstOrDefault();
+				var logins = BreakUsagesByDay(usageQuery);
 
-                var loginEnd = logins.OrderByDescending(l => l.UsageEnd).FirstOrDefault();
+                var loginBegin = logins.Where(l=> l.UsageStart >= fromDay).OrderBy(l => l.UsageStart).FirstOrDefault();
+
+                var loginEnd = logins.Where(l=> l.UsageEnd <= nextDay).OrderByDescending(l => l.UsageEnd).FirstOrDefault();
 
                 string dayBegin = loginBegin == null ? "N/A" : loginBegin.GetDisplayedStart(fromDay).ToShortTimeString();
                 string dayEnd;
@@ -698,7 +701,7 @@ namespace AppsTracker.Service
                     dayEnd = loginEnd.GetDisplayedEnd(fromDay).ToShortTimeString();
                 }
 
-                var durationSpan = new TimeSpan(logins.Sum(l => l.Duration.Ticks));
+                var durationSpan = new TimeSpan(durationQuery.Sum(l => l.Duration.Ticks));
                 var duration = durationSpan.Days > 0 ? string.Format("{0:D2}:{1:D2}:{2:D2}", durationSpan.Days, durationSpan.Hours, durationSpan.Minutes) : string.Format("{0:D2}:{1:D2}", durationSpan.Hours, durationSpan.Minutes);
 
                 return new Tuple<string, string, string>(dayBegin, dayEnd, duration);
