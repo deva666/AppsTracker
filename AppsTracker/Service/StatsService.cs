@@ -15,7 +15,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Service
 {
@@ -676,14 +675,14 @@ namespace AppsTracker.Service
                                                      && u.UsageType == UsageTypes.Login)
                                             .ToList();
 
-				var durationQuery = context.Logs.Where (l => l.DateCreated >= dateFrom
-					&& l.DateCreated <= nextDay).ToList();
+                var durationQuery = context.Logs.Where(l => l.DateCreated >= dateFrom
+                    && l.DateCreated <= nextDay).ToList();
 
-				var logins = BreakUsagesByDay(usageQuery);
+                var logins = BreakUsagesByDay(usageQuery);
 
-                var loginBegin = logins.Where(l=> l.UsageStart >= fromDay).OrderBy(l => l.UsageStart).FirstOrDefault();
+                var loginBegin = logins.Where(l => l.UsageStart >= fromDay).OrderBy(l => l.UsageStart).FirstOrDefault();
 
-                var loginEnd = logins.Where(l=> l.UsageEnd <= nextDay).OrderByDescending(l => l.UsageEnd).FirstOrDefault();
+                var loginEnd = logins.Where(l => l.UsageEnd <= nextDay).OrderByDescending(l => l.UsageEnd).FirstOrDefault();
 
                 string dayBegin = loginBegin == null ? "N/A" : loginBegin.GetDisplayedStart(fromDay).ToShortTimeString();
                 string dayEnd;
@@ -701,7 +700,7 @@ namespace AppsTracker.Service
                     dayEnd = loginEnd.GetDisplayedEnd(fromDay).ToShortTimeString();
                 }
 
-                var durationSpan = new TimeSpan(durationQuery.Sum(l => l.Duration.Ticks));
+                var durationSpan = new TimeSpan(durationQuery.Sum(l => l.Duration));
                 var duration = durationSpan.Days > 0 ? string.Format("{0:D2}:{1:D2}:{2:D2}", durationSpan.Days, durationSpan.Hours, durationSpan.Minutes) : string.Format("{0:D2}:{1:D2}", durationSpan.Hours, durationSpan.Minutes);
 
                 return new Tuple<string, string, string>(dayBegin, dayEnd, duration);

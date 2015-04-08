@@ -27,7 +27,7 @@ namespace AppsTracker.MVVM
             get { return selectedChild; }
             set
             {
-                if (selectedChild != null && selectedChild.Title == value.Title)
+                if (value == null || (selectedChild != null && selectedChild.Title == value.Title))
                     return;
 
                 SetPropertyValue(ref selectedChild, value);
@@ -81,7 +81,7 @@ namespace AppsTracker.MVVM
         protected ViewModelBase GetChild(Type type)
         {
             Ensure.NotNull(type);
-            Ensure.Condition<InvalidOperationException>(childrenMap.ContainsKey(type) == true, string.Format("Can't resolve {0} type!", type));
+            Ensure.Condition<InvalidOperationException>(childrenMap.ContainsKey(type) == true, string.Format("Type {0} not registed", type));
 
             var resolver = childrenMap[type];
             ViewModelBase viewModel = null;

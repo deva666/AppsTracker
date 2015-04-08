@@ -212,7 +212,7 @@ namespace AppsTracker.ViewModels
 
         private ICommand goToSettingsCommand;
 
-        public ICommand goToSettingsCommand
+        public ICommand GoToSettingsCommand
         {
             get { return goToSettingsCommand ?? (goToSettingsCommand = new DelegateCommand(GoToSettings)); }
         }
@@ -331,10 +331,10 @@ namespace AppsTracker.ViewModels
 
         protected override void Disposing()
         {
-            if (selectedChild != null)
+            if (SelectedChild != null)
             {
-                selectedChild.Dispose();
-                selectedChild = null;
+                SelectedChild.Dispose();
+                SelectedChild = null;
             }
             base.Disposing();
         }
