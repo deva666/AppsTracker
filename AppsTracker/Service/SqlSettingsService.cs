@@ -18,13 +18,6 @@ namespace AppsTracker.Service
     [Export(typeof(ISqlSettingsService))]
     public sealed class SqlSettingsService : ISqlSettingsService
     {
-        private static Lazy<SqlSettingsService> instance = new Lazy<SqlSettingsService>(() => new SqlSettingsService());
-
-        public static SqlSettingsService Instance
-        {
-            get { return instance.Value; }
-        }
-
         private Setting settings;
         public Setting Settings
         {

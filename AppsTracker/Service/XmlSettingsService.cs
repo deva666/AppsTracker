@@ -21,10 +21,6 @@ namespace AppsTracker.Service
         private readonly string settingsPath = Path.Combine(Environment.GetFolderPath
             (Environment.SpecialFolder.CommonApplicationData), "AppService");
 
-        private static readonly Lazy<XmlSettingsService> instance =
-            new Lazy<XmlSettingsService>(() => new XmlSettingsService());
-        public static XmlSettingsService Instance { get { return instance.Value; } }
-
         public LogsViewSettings LogsViewSettings { get; private set; }
         public KeylogsViewSettings KeylogsViewSettings { get; private set; }
         public ScreenshotsViewSettings ScreenshotsViewSettings { get; private set; }
