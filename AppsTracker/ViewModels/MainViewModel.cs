@@ -328,15 +328,5 @@ namespace AppsTracker.ViewModels
             ToSettings = SelectedChild;
             SelectedChild = GetChild<SettingsHostViewModel>();
         }
-
-        protected override void Disposing()
-        {
-            if (SelectedChild != null)
-            {
-                SelectedChild.Dispose();
-                SelectedChild = null;
-            }
-            base.Disposing();
-        }
     }
 }

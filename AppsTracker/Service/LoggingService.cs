@@ -12,6 +12,7 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Utils;
@@ -21,39 +22,71 @@ namespace AppsTracker.Service
     [Export(typeof(ILoggingService))]
     public sealed class LoggingService : ILoggingService
     {
-        private bool isDateRangeFiltered;
-        private DateTime dateFrom;
-        private DateTime dateTo;
+        private const int MEGA_BYTES = 1048576;
+        private const decimal DB_SIZE_LIMIT = 3900m;
 
-        public bool DBSizeOperational { get; private set; }
-        public int UserID { get; private set; }
-        public string UserName { get; private set; }
-        public int UsageID { get; private set; }
-        public int SelectedUserID { get; private set; }
-        public string SelectedUserName { get; private set; }
-        public Uzer SelectedUser { get; private set; }
+        private volatile bool isDateRangeFiltered;
+
+        private int userID;
+
+        public int UserID
+        {
+            get { return userID; }
+            private set { Interlocked.Exchange(ref userID, value); }
+        }
+
+
+        private int usageID;
+
+        public int UsageID
+        {
+            get { return usageID; }
+            private set { Interlocked.Exchange(ref usageID, value); }
+        }
+
+        private int selectedUserID;
+
+        public int SelectedUserID
+        {
+            get { return selectedUserID; }
+            private set { Interlocked.Exchange(ref selectedUserID, value); }
+        }
+
+
+        private long dateFromTicks;
 
         public DateTime DateFrom
         {
-            get { return dateFrom; }
-            set { dateFrom = value; }
+            get { return new DateTime(Interlocked.Read(ref dateFromTicks)); }
+            set { Interlocked.Exchange(ref dateFromTicks, value.Ticks); }
         }
+
+
+        private long dateToTicks;
 
         public DateTime DateTo
         {
             get
             {
                 if (isDateRangeFiltered)
-                    return dateTo;
+                    return new DateTime(Interlocked.Read(ref dateToTicks));
                 else
                     return DateTime.Now;
             }
             set
             {
                 isDateRangeFiltered = true;
-                dateTo = value;
+                Interlocked.Exchange(ref dateToTicks, value.Ticks);
             }
         }
+
+        public bool DBSizeOperational { get; private set; }
+
+        public string SelectedUserName { get; private set; }
+
+        public Uzer SelectedUser { get; private set; }
+        
+        public string UserName { get; private set; }
 
         public event EventHandler DbSizeCritical;
 
@@ -63,7 +96,7 @@ namespace AppsTracker.Service
             UserName = uzer.Name;
             SelectedUserID = UserID;
             SelectedUserName = UserName;
-            dateFrom = GetFirstDate(SelectedUserID);
+            DateFrom = GetFirstDate(SelectedUserID);
             UsageID = usageID;
         }
 
@@ -80,7 +113,7 @@ namespace AppsTracker.Service
 
         public void ClearDateFilter()
         {
-            dateFrom = GetFirstDate(SelectedUserID);
+            DateFrom = GetFirstDate(SelectedUserID);
             isDateRangeFiltered = false;
         }
 
@@ -89,8 +122,8 @@ namespace AppsTracker.Service
             try
             {
                 FileInfo file = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "appsdb.sdf"));
-                decimal size = Math.Round((decimal)file.Length / 1048576, 2);
-                if (size >= 3900m)
+                decimal size = Math.Round((decimal)file.Length / MEGA_BYTES, 2);
+                if (size >= DB_SIZE_LIMIT)
                 {
                     DBSizeOperational = false;
                     DbSizeCritical.InvokeSafely(this, EventArgs.Empty);
@@ -99,7 +132,7 @@ namespace AppsTracker.Service
                     DBSizeOperational = true;
                 return size;
             }
-            catch 
+            catch
             {
                 return -1;
             }
