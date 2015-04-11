@@ -54,9 +54,9 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private object toSettings;
+        private Type toSettings;
 
-        public object ToSettings
+        public Type ToSettings
         {
             get { return toSettings; }
             set { SetPropertyValue(ref toSettings, value); }
@@ -217,6 +217,15 @@ namespace AppsTracker.ViewModels
             get { return goToSettingsCommand ?? (goToSettingsCommand = new DelegateCommand(GoToSettings)); }
         }
 
+
+        private ICommand returnFromSettingsCommand;
+
+        public ICommand ReturnFromSettingsCommand
+        {
+            get { return returnFromSettingsCommand ?? (returnFromSettingsCommand = new DelegateCommand(ReturnFromSettings)); }
+        }
+
+
         public IMediator Mediator
         {
             get { return MVVM.Mediator.Instance; }
@@ -245,7 +254,7 @@ namespace AppsTracker.ViewModels
 
         protected override void ChangePage(object parameter)
         {
-            ToSettings = (SelectedChild == null || SelectedChild.GetType() == (Type)parameter) 
+            ToSettings = (SelectedChild == null || SelectedChild.GetType() == (Type)parameter)
                                                         ? ToSettings : SelectedChild.GetType();
             base.ChangePage(parameter);
         }
@@ -325,8 +334,18 @@ namespace AppsTracker.ViewModels
 
         private void GoToSettings()
         {
-            ToSettings = SelectedChild;
+            if (ToSettings != SelectedChild.GetType())
+                ToSettings = SelectedChild.GetType();
             SelectedChild = GetChild<SettingsHostViewModel>();
+        }
+
+
+        private void ReturnFromSettings()
+        {
+            if (toSettings == null)
+                throw new InvalidOperationException("to settings should be assigned a value");
+
+            SelectedChild = GetChild(toSettings);
         }
     }
 }

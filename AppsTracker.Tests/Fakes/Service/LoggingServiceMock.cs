@@ -60,88 +60,83 @@ namespace AppsTracker.Tests.Fakes.Service
 
         public bool DBSizeOperational
         {
-            get { throw new NotImplementedException(); }
+            get;
+            set;
         }
 
         public int UserID
         {
-            get { throw new NotImplementedException(); }
+            get;
+            set;
         }
 
         public string UserName
         {
-            get { throw new NotImplementedException(); }
+            get;
+            set;
         }
 
         public int UsageID
         {
-            get { throw new NotImplementedException(); }
+            get;
+            set;
         }
 
         public int SelectedUserID
         {
-            get { throw new NotImplementedException(); }
+            get;
+            set;
         }
 
         public string SelectedUserName
         {
-            get { throw new NotImplementedException(); }
+            get;
+            set;
         }
 
         public Uzer SelectedUser
         {
-            get { throw new NotImplementedException(); }
+            get;
+            set;
         }
 
         public DateTime DateFrom
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            set;
         }
 
         public DateTime DateTo
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            set;
         }
 
         public event EventHandler DbSizeCritical;
 
         public void Initialize(Uzer uzer, int usageID)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void ChangeUser(Uzer uzer)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void ClearDateFilter()
         {
-            throw new NotImplementedException();
+            
         }
 
         public decimal GetDBSize()
         {
-            throw new NotImplementedException();
+            return 1;
         }
 
         public Task<decimal> GetDBSizeAsync()
         {
-            throw new NotImplementedException();
+            return Task.FromResult<decimal>(1);
         }
     }
 }

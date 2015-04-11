@@ -85,6 +85,7 @@
     <Compile Include="Fakes\Service\CategoriesServiceMock.cs" />
     <Compile Include="Fakes\Service\DataServiceMock.cs" />
     <Compile Include="Fakes\Service\LoggingServiceMock.cs" />
+    <Compile Include="Fakes\Service\MessageServiceMock.cs" />
     <Compile Include="Fakes\Service\StatsServiceMock.cs" />
     <Compile Include="Fakes\Service\SqlSettingsServiceMock.cs" />
     <Compile Include="Fakes\Service\XmlSettingsServiceMock.cs" />
