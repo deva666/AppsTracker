@@ -9,9 +9,8 @@ using System.ComponentModel.Composition;
 namespace AppsTracker
 {
     [Export(typeof(IWindow))]
-    public partial class MainWindow : Window, IDisposable, IWindow
+    public partial class MainWindow : Window, IWindow
     {
-        private bool disposed;
         private readonly MainViewModel mainViewModel;
 
         public MainWindow()
@@ -112,20 +111,5 @@ namespace AppsTracker
         }
 
         #endregion
-
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (!disposed)
-            {
-                disposed = true;
-                mainViewModel.Dispose();
-            }
-        }
     }
 }

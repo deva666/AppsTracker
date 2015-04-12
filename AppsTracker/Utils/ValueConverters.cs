@@ -1178,6 +1178,22 @@ namespace AppsTracker
         }
     }
 
+    public class SelectedScreenshotsConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            Log selectedLog = value as Log;
+            if (selectedLog == null)
+                return false;
+
+            return selectedLog.Screenshots.Any(s => s.IsSelected);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 
 

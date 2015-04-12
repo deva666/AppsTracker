@@ -36,14 +36,14 @@ namespace AppsTracker.Tests.Fakes.Service
 
         public IEnumerable<T> Get<T>() where T : class
         {
-           System.Threading.Thread.Sleep(500);
-           return new List<T>();
+            System.Threading.Thread.Sleep(500);
+            return new List<T>();
         }
 
         public IEnumerable<T> Get<T>(params System.Linq.Expressions.Expression<Func<T, object>>[] navigations) where T : class
         {
-           System.Threading.Thread.Sleep(500);
-           return new List<T>();
+            System.Threading.Thread.Sleep(500);
+            return new List<T>();
         }
 
 
@@ -54,7 +54,18 @@ namespace AppsTracker.Tests.Fakes.Service
 
         public void DeleteOldLogs(int daysTreshold)
         {
-            
+
+        }
+
+
+        System.Threading.Tasks.Task IDataService.DeleteScreenshotsInLogs(IEnumerable<Log> logs)
+        {
+            return System.Threading.Tasks.Task.Delay(100);
+        }
+
+        public System.Threading.Tasks.Task DeleteScreenshots(IEnumerable<Screenshot> screenshots)
+        {
+            return System.Threading.Tasks.Task.Delay(100);
         }
     }
 }

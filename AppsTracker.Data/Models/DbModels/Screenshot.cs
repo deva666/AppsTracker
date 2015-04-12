@@ -18,6 +18,20 @@ namespace AppsTracker.Data.Models
 {
     public class Screenshot : INotifyPropertyChanged
     {
+        private bool isSelected;
+
+        [NotMapped]
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set
+            {
+                isSelected = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("IsSelected"));
+            }
+        }
+
         [NotMapped]
         public bool IsOpen
         {

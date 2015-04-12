@@ -14,6 +14,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 
 namespace AppsTracker.Service
 {
@@ -58,7 +59,7 @@ namespace AppsTracker.Service
             }
         }
 
-        public int DeleteScreenshotsInLogs(IEnumerable<Log> logs)
+        public async Task DeleteScreenshotsInLogs(IEnumerable<Log> logs)
         {
             var count = logs.Select(l => l.Screenshots).Count();
             using (var context = new AppsEntities())
@@ -74,19 +75,24 @@ namespace AppsTracker.Service
                         context.Screenshots.Remove(screenshot);
                     }
                 }
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
-            return count;
         }
 
-        public Aplication GetApp(int userID, string appName)
+
+        public async Task DeleteScreenshots(IEnumerable<Screenshot> screenshots)
         {
             using (var context = new AppsEntities())
             {
-                return context.Applications.FirstOrDefault(a => a.UserID == userID
-                    && a.Name == appName);
+                foreach (var shot in screenshots)
+                {
+                    context.Screenshots.Attach(shot);
+                }
+                context.Screenshots.RemoveRange(screenshots);
+                await context.SaveChangesAsync();
             }
         }
+
 
         public int DeleteOldScreenshots(int daysBackwards)
         {

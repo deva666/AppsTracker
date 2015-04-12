@@ -41,10 +41,8 @@ namespace AppsTracker.Logging
         private Setting settings;
 
         [ImportingConstructor]
-        public WindowLogger(IWindowNotifier windowNotifier,
-                            ISyncContext syncContext, 
-                            IScreenshotFactory screenshotFactory, 
-                            ILoggingService loggingService)
+        public WindowLogger(IWindowNotifier windowNotifier,ISyncContext syncContext, 
+                            IScreenshotFactory screenshotFactory, ILoggingService loggingService)
         {
             this.loggingService = loggingService;
             this.windowNotifierInstance = windowNotifier;

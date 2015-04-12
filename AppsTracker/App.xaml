@@ -986,10 +986,10 @@
                                     RenderTransformOrigin="0.5,0.5">
                                 <Border.Triggers>
                                     <EventTrigger RoutedEvent="Border.MouseEnter">
-                                        <BeginStoryboard Storyboard="{StaticResource BorderColorShow}" />
+                                        <BeginStoryboard Storyboard="{DynamicResource BorderColorShow}" />
                                     </EventTrigger>
                                     <EventTrigger RoutedEvent="Border.MouseLeave">
-                                        <BeginStoryboard Storyboard="{StaticResource BorderColorHide}" />
+                                        <BeginStoryboard Storyboard="{DynamicResource BorderColorHide}" />
                                     </EventTrigger>
                                 </Border.Triggers>
                                 <ToggleButton x:Name="tbImage"
@@ -1008,7 +1008,9 @@
                                                           VerticalAlignment="Top"
                                                           Height="20"
                                                           Width="20"
-                                                          IsChecked="{Binding IsSelected}" />
+                                                          IsChecked="{Binding IsSelected}"
+                                                          Cursor="Arrow">
+                                                </CheckBox>
                                             </Grid>
                                         </ControlTemplate>
                                     </ToggleButton.Template>

@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 
 namespace AppsTracker.Service
@@ -23,10 +24,12 @@ namespace AppsTracker.Service
        
         IEnumerable<T> GetFiltered<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class;
        
-        int DeleteScreenshotsInLogs(IEnumerable<Log> logs);
+        Task DeleteScreenshotsInLogs(IEnumerable<Log> logs);
        
         int DeleteOldScreenshots(int daysBackwards);
        
         void DeleteOldLogs(int daysTreshold);
+
+        Task DeleteScreenshots(IEnumerable<Screenshot> screenshots);
     }
 }

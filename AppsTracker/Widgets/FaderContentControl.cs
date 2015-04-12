@@ -73,6 +73,9 @@ namespace AppsTracker.Widgets
 
         private void ChangeVisibility(bool visible)
         {
+            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+                return;
+
             if (!visible)
             {
                 Storyboard fadeOutClone = fadeOut.Clone();

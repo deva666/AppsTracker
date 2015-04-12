@@ -265,6 +265,7 @@ namespace AppsTracker.ViewModels
             var settings = UserSettings;
             settings.LoggingEnabled = !settings.LoggingEnabled;
             settingsService.SaveChanges(settings);
+            PropertyChanging("UserSettings");
         }
 
 

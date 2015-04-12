@@ -18,6 +18,7 @@ using AppsTracker.Data.Models;
 namespace AppsTracker.Service
 {
     [Export(typeof(ICategoriesService))]
+    [PartCreationPolicy(System.ComponentModel.Composition.CreationPolicy.NonShared)]
     public sealed class CategoriesService : ICategoriesService
     {
         private Boolean isDisposed = false;

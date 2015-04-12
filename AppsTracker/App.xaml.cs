@@ -74,7 +74,7 @@ namespace AppsTracker
         {
             try
             {
-                container.GetExportedValue<IMessageService>().ShowDialog(e.Exception);
+                container.GetExportedValue<IWindowService>().ShowDialog(e.Exception);
                 container.GetExportedValue<ILogger>().Log(e.Exception);
             }
             finally

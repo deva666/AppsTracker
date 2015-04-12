@@ -7,7 +7,7 @@ using AppsTracker.Service;
 
 namespace AppsTracker.Tests.Fakes.Service
 {
-    class MessageServiceMock : IMessageService
+    class MessageServiceMock : IWindowService
     {
         public void Show(Exception fail)
         {

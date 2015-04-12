@@ -9,6 +9,7 @@ namespace AppsTracker.MVVM
     {
         private Func<Task> _delegate;
         private Func<object, Task> _parameterizedDelegate;
+        private Func<bool> _canExecute;
 
         public DelegateCommandAsync(Func<Task> @delegate)
         {
@@ -20,9 +21,15 @@ namespace AppsTracker.MVVM
             _parameterizedDelegate = parameterizedDelegate;
         }
 
+        public DelegateCommandAsync(Func<Task> @delegate, Func<bool> canExecute)
+            : this(@delegate)
+        {
+            _canExecute = canExecute;
+        }
+
         public bool CanExecute(object parameter)
         {
-            return true;
+            return _canExecute == null ? true : _canExecute();
         }
 
         public event EventHandler CanExecuteChanged { add { } remove { } }

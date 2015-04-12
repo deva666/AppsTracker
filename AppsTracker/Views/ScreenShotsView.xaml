@@ -9,8 +9,8 @@
              xmlns:utils="clr-namespace:AppsTracker.Utils"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              mc:Ignorable="d"
-             d:DesignHeight="300"
-             d:DesignWidth="300">
+             d:DesignHeight="700"
+             d:DesignWidth="900">
     <UserControl.Resources>
         <logging:Log x:Key="logData" />
         <local:ConvertDuration x:Key="convertDuration" />
@@ -18,21 +18,7 @@
         <local:ConvertIntToVisibilityBackwards x:Key="convertIntToVisBack" />
         <local:ConvertBoolToVisibility x:Key="convertVisibility" />
         <local:ConvertSelectedIndexToBool x:Key="convertSelectedIndexToBool" />
-        <ContextMenu x:Key="cMenu">
-            <MenuItem Header="Save selected screenshots to file"
-                      Command="{Binding SaveScreenshotCommand}"
-                      CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}" />
-            <MenuItem Header="Delete selected screenshots"
-                      Command="{Binding DeleteSelectedScreenshotsCommand}"
-                      CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}" />
-        </ContextMenu>
-
-        <ContextMenu x:Key="sMenu">
-            <MenuItem Header="Save screenshot to file"
-                      Command="{Binding SaveScreenshotCommand}"
-                      CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}" />
-        </ContextMenu>
-
+        <local:SelectedScreenshotsConverter x:Key="selectedScreenshotsConverter" />
         <DataTemplate x:Key="appTemplate">
             <Label Style="{DynamicResource GVLabelStyle}"
                    Content="{Binding Window.Application.Name}">
@@ -146,6 +132,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <controls:progressBar Visibility="{Binding Working, Converter={StaticResource convertVisibility}}"
@@ -163,9 +150,9 @@
                                      VirtualizingStackPanel.IsVirtualizing="True"
                                      VirtualizingStackPanel.IsVirtualizingWhenGrouping="True"
                                      VirtualizingStackPanel.ScrollUnit="Item"
-                                     VirtualizingStackPanel.CacheLengthUnit="Page"
-                                     ContextMenu="{StaticResource cMenu}"
-                                     SelectionMode="Extended">
+                                     VirtualizingStackPanel.CacheLengthUnit="Page"                                     
+                                     SelectionMode="Single"
+                                     SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
 
             <controls:FilterableListView.View>
                 <GridView ColumnHeaderContainerStyle="{DynamicResource HeaderStyle}">
@@ -174,7 +161,7 @@
                                                      SortPropertyName="AppName" />
                     <controls:SortableGridViewColumn Header="Window"
                                                      CellTemplate="{StaticResource wndTemplate}"
-                                                     SortPropertyName="WindowTitle" />
+                                                     SortPropertyName="Window.Title" />
                     <controls:SortableGridViewColumn Header="Date"
                                                      CellTemplate="{StaticResource dateTemplate}"
                                                      SortPropertyName="DateCreated" />
@@ -270,8 +257,41 @@
                                    VerticalAlignment="Top" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
-
             </ListBox>
+        </controls:FaderContentControl>
+        <controls:FaderContentControl Visibility="{Binding ElementName=mainContentHolder, Path=SelectedIndex, Converter={StaticResource convertIntToVisBack}}"
+                                      Grid.Row="4"
+                                      ClipToBounds="True"
+                                      HorizontalAlignment="Right"
+                                      Margin="0,0,120,0">
+            <StackPanel Orientation="Horizontal">
+                <ToggleButton Grid.Row="4">
+                    <ToggleButton.Template>
+                        <ControlTemplate>
+                            <Label Content="Delete selected"
+                                   Style="{DynamicResource SelectableLabelStyle}">
+                                <Label.InputBindings>
+                                    <MouseBinding Gesture="LeftClick"
+                                                  Command="{Binding DeleteSelectedScreenshotsCommand}" />
+                                </Label.InputBindings>
+                            </Label>
+                        </ControlTemplate>
+                    </ToggleButton.Template>
+                </ToggleButton>
+                <ToggleButton Margin="20,0,0,0">
+                    <ToggleButton.Template>
+                        <ControlTemplate>
+                            <Label Content="Save selected to a file"
+                                   Style="{DynamicResource SelectableLabelStyle}">
+                                <Label.InputBindings>
+                                    <MouseBinding Gesture="LeftClick"
+                                                  Command="{Binding SaveSelectedScreenshotsCommand}" />
+                                </Label.InputBindings>
+                            </Label>
+                        </ControlTemplate>
+                    </ToggleButton.Template>
+                </ToggleButton>
+            </StackPanel>
         </controls:FaderContentControl>
     </Grid>
 

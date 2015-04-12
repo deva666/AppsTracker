@@ -4,8 +4,8 @@ using AppsTracker.Widgets;
 
 namespace AppsTracker.Service
 {
-    [Export(typeof(IMessageService))]
-    internal sealed class MessageService : AppsTracker.Service.IMessageService
+    [Export(typeof(IWindowService))]
+    internal sealed class WindowService : AppsTracker.Service.IWindowService
     {
         public void ShowDialog(string message, bool showCancel = true)
         {
@@ -29,6 +29,20 @@ namespace AppsTracker.Service
         {
             var msgWindow = new MessageWindow(fail);
             msgWindow.Show();
+        }
+
+
+        public void ShowWindow<T>() where T : System.Windows.Window
+        {
+            var instance = Activator.CreateInstance<T>();            
+            instance.Show();
+        }
+
+
+        public void ShowWindow<T>(params object[] args) where T : System.Windows.Window
+        {
+            T instance = (T)Activator.CreateInstance(typeof(T), args);
+            instance.Show();
         }
     }
 }

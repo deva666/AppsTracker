@@ -25,7 +25,7 @@ namespace AppsTracker.Controllers
         private readonly IXmlSettingsService xmlSettingsService;
         private readonly ISqlSettingsService sqlSettingsService;
         private readonly ILoggingService loggingService;
-        private readonly IMessageService messageService;
+        private readonly IWindowService windowService;
         private readonly ITrayIcon trayIcon;
         private readonly ExportFactory<IWindow> mainWindowValueFactory;
         private readonly ExportFactory<IPasswordWindow> passwordWindowValueFactory;
@@ -36,7 +36,7 @@ namespace AppsTracker.Controllers
         public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController,
                                      ISyncContext syncContext, ISqlSettingsService sqlSettingsService,
                                      IXmlSettingsService xmlSettingsService, ILoggingService loggingService,
-                                     ITrayIcon trayIcon, IMessageService messageService, ExportFactory<IWindow> windowValueFactory,
+                                     ITrayIcon trayIcon, IWindowService windowService, ExportFactory<IWindow> windowValueFactory,
                                      ExportFactory<IPasswordWindow> passwordWindowValueFactory)
         {
             this.appearanceController = appearanceController;
@@ -45,7 +45,7 @@ namespace AppsTracker.Controllers
             this.xmlSettingsService = xmlSettingsService;
             this.sqlSettingsService = sqlSettingsService;
             this.loggingService = loggingService;
-            this.messageService = messageService;
+            this.windowService = windowService;
             this.mainWindowValueFactory = windowValueFactory;
             this.passwordWindowValueFactory = passwordWindowValueFactory;
             this.trayIcon = trayIcon;
@@ -221,7 +221,7 @@ namespace AppsTracker.Controllers
             settings.TakeScreenshots = false;
             await sqlSettingsService.SaveChangesAsync(settings);
 
-            messageService.ShowDialog("Database size has reached the maximum allowed value"
+            windowService.ShowDialog("Database size has reached the maximum allowed value"
                 + Environment.NewLine + "Please run the screenshot cleaner from the settings menu to continue capturing screenshots.", false);
 
             loggingService.DbSizeCritical -= OnDbSizeCritical;

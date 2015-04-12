@@ -9,7 +9,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -25,9 +24,12 @@ namespace AppsTracker.ViewModels
 {
     internal sealed class ScreenshotsViewModel : ViewModelBase, ICommunicator
     {
+        private const int MAX_FILE_NAME_LENGTH = 245;
+
         private readonly IDataService dataService;
         private readonly ISqlSettingsService settingsService;
         private readonly ILoggingService loggingService;
+        private readonly IWindowService windowService;
 
         public override string Title
         {
@@ -40,7 +42,11 @@ namespace AppsTracker.ViewModels
         public string InfoContent
         {
             get { return infoContent; }
-            set { SetPropertyValue(ref infoContent, value); }
+            set
+            {
+                SetPropertyValue(ref infoContent, string.Empty);
+                SetPropertyValue(ref infoContent, value);
+            }
         }
 
 
@@ -53,21 +59,20 @@ namespace AppsTracker.ViewModels
         }
 
 
+        private Log selectedItem;
+
+        public Log SelectedItem
+        {
+            get { return selectedItem; }
+            set { SetPropertyValue(ref selectedItem, value); }
+        }
+
         private readonly AsyncProperty<IEnumerable<Log>> logList;
 
         public AsyncProperty<IEnumerable<Log>> LogList
         {
             get { return logList; }
         }
-
-
-        private ICommand deleteSelectedScreenshotsCommand;
-
-        public ICommand DeleteSelectedScreenshotsCommand
-        {
-            get { return deleteSelectedScreenshotsCommand ?? (deleteSelectedScreenshotsCommand = new DelegateCommand(DeleteSelectedScreenshots)); }
-        }
-
 
         private ICommand openScreenshotViewerCommand;
 
@@ -77,11 +82,27 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private ICommand saveScreenshotCommand;
+        private ICommand deleteSelectedScreenshotsCommand;
 
-        public ICommand SaveScreenshotCommand
+        public ICommand DeleteSelectedScreenshotsCommand
         {
-            get { return saveScreenshotCommand ?? (saveScreenshotCommand = new DelegateCommand(SaveScreenshot)); }
+            get
+            {
+                return deleteSelectedScreenshotsCommand ?? (deleteSelectedScreenshotsCommand = new DelegateCommandAsync(DeleteSelectedScreenhsots
+                    , () => selectedItem != null && selectedItem.Screenshots.Any(s => s.IsSelected)));
+            }
+        }
+
+
+        private ICommand saveSelectedScreenshotsCommand;
+
+        public ICommand SaveSelectedScreenshotsCommand
+        {
+            get
+            {
+                return saveSelectedScreenshotsCommand ?? (saveSelectedScreenshotsCommand = new DelegateCommandAsync(SaveSelectedScreenshots
+                    , () => selectedItem != null && selectedItem.Screenshots.Any(s => s.IsSelected)));
+            }
         }
 
 
@@ -96,15 +117,16 @@ namespace AppsTracker.ViewModels
             dataService = serviceResolver.Resolve<IDataService>();
             settingsService = serviceResolver.Resolve<ISqlSettingsService>();
             loggingService = serviceResolver.Resolve<ILoggingService>();
+            windowService = serviceResolver.Resolve<IWindowService>();
 
-            logList = new AsyncProperty<IEnumerable<Log>>(GetContent, this);
+            logList = new AsyncProperty<IEnumerable<Log>>(GetLogs, this);
 
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(logList.Reload));
             SelectedDate = DateTime.Today;
         }
 
 
-        private IEnumerable<Log> GetContent()
+        private IEnumerable<Log> GetLogs()
         {
             return dataService.GetFiltered<Log>(l => l.Screenshots.Count > 0
                                                 && l.DateCreated >= loggingService.DateFrom
@@ -121,85 +143,74 @@ namespace AppsTracker.ViewModels
                 return;
             IList collection = parameter as IList;
             var logs = collection.Cast<Log>();
-            ScreenshotViewerWindow window = new ScreenshotViewerWindow(logs.SelectMany(l => l.Screenshots));
-            window.Owner = App.Current.MainWindow;
-            window.Show();
+            windowService.ShowWindow<ScreenshotViewerWindow>(logs.SelectMany(l => l.Screenshots));
         }
 
 
-        private void DeleteSelectedScreenshots(object parameter)
+        private async Task DeleteSelectedScreenhsots()
         {
-            ObservableCollection<object> parameterCollection = parameter as ObservableCollection<object>;
-            if (parameterCollection != null)
-            {
-                var logs = parameterCollection.Cast<Log>().Where(l => l.Screenshots.Count > 0).ToList();
-                var deletedCount = dataService.DeleteScreenshotsInLogs(logs);
-                if (deletedCount > 0)
-                    InfoContent = "Screenshots deleted";
-                logList.Reload();
-            }
+            if (selectedItem == null)
+                return;
+            var selectedShots = selectedItem.Screenshots.Where(s => s.IsSelected);
+            var count = selectedShots.Count();
+            await dataService.DeleteScreenshots(selectedShots);
+            InfoContent = string.Format("Deleted {0}", count);
+            logList.Reload();
         }
 
 
-        private void SaveScreenshot(object parameter)
+        private async Task SaveSelectedScreenshots()
         {
-            if (parameter is ObservableCollection<object>)
-                SaveAllScreenshots(parameter as ObservableCollection<object>);
-            else if (parameter is Screenshot)
-                SaveSingleScreenshot(parameter as Screenshot);
-        }
+            var selectedLog = selectedItem;
+            if (selectedLog == null)
+                return;
 
-
-        private async void SaveSingleScreenshot(Screenshot screenshot)
-        {
-            StringBuilder path = new StringBuilder();
-            await SaveToFileAsync(path, screenshot.Log, screenshot);
-            InfoContent = "Screenshot saved";
-        }
-
-
-        private async void SaveAllScreenshots(ObservableCollection<object> collection)
-        {
-            var logsList = collection.Cast<Log>().ToList();
-            StringBuilder path = new StringBuilder();
+            var pathBuilder = new StringBuilder();
             Working = true;
-            foreach (var log in logsList)
+            var selectedShots = selectedLog.Screenshots.Where(s => s.IsSelected);
+            try
             {
-                foreach (var screenshot in log.Screenshots)
+                foreach (var shot in selectedShots)
                 {
-                    await SaveToFileAsync(path, log, screenshot);
-                    path.Clear();
+                    await SaveToFileAsync(pathBuilder, selectedLog, shot);
                 }
+                InfoContent = string.Format("Saved {0}", selectedShots.Count());
             }
-            Working = false;
-            InfoContent = "Screenshots saved";
-        }
-
-
-        private Task SaveToFileAsync(StringBuilder path, Log log, Screenshot screenshot)
-        {
-            return Task.Run(() =>
+            catch (IOException fail)
             {
-                path.Append(log.Window.Application.Name);
-                path.Append("_");
-                path.Append(log.Window.Title);
-                path.Append("_");
-                path.Append(screenshot.GetHashCode());
-                path.Append(".jpg");
-                string folderPath;
-                if (Directory.Exists(settingsService.Settings.DefaultScreenshotSavePath))
-                    folderPath = Path.Combine(settingsService.Settings.DefaultScreenshotSavePath, CorrectPath(path.ToString()));
-                else
-                    folderPath = CorrectPath(path.ToString());
-                SaveScreenshot(screenshot.Screensht, folderPath);
-            });
+                windowService.Show(fail);
+            }
+            finally
+            {
+                Working = false;
+            }
         }
 
-        private string CorrectPath(string windowTitle)
+
+        private async Task SaveToFileAsync(StringBuilder path, Log log, Screenshot screenshot)
         {
-            string newTitle = windowTitle;
-            char[] illegalChars = new char[] { '<', '>', ':', '"', '\\', '|', '?', '*', '0' };
-            if (windowTitle.IndexOfAny(illegalChars) >= 0)
+            path.Append(log.Window.Application.Name);
+            path.Append("_");
+            path.Append(log.Window.Title);
+            path.Append("_");
+            path.Append(screenshot.GetHashCode());
+            path.Append(".jpg");
+            string folderPath;
+
+            if (Directory.Exists(settingsService.Settings.DefaultScreenshotSavePath))
+                folderPath = Path.Combine(settingsService.Settings.DefaultScreenshotSavePath, CorrectPath(path.ToString()));
+            else
+                folderPath = CorrectPath(path.ToString());
+
+            folderPath = TrimPath(folderPath);
+            await SaveScreenshot(screenshot.Screensht, folderPath);
+        }
+
+        private string CorrectPath(string path)
+        {
+            string newTitle = path;
+            char[] illegalChars = new char[] { '<', '>', ':', '"', '\\','/', '|', '?', '*', '0' };
+            if (path.IndexOfAny(illegalChars) >= 0)
             {
                 foreach (var chr in illegalChars)
                 {
@@ -219,36 +230,30 @@ namespace AppsTracker.ViewModels
                 if (i >= 1 && i <= 31) newTitle = newTitle.Remove(newTitle.IndexOf(chr), 1);
             }
 
-            newTitle = TrimPath(newTitle);
             return newTitle;
         }
 
         private string TrimPath(string path)
         {
-            if (path.Length >= 247)
+            var extension = Path.GetExtension(path);
+            var pathNoExtension = path.Remove(path.Length - extension.Length - 1, extension.Length + 1);
+            if (pathNoExtension.Length >= MAX_FILE_NAME_LENGTH)
             {
-                while (path.Length >= 247)
+                while (pathNoExtension.Length >= MAX_FILE_NAME_LENGTH)
                 {
-                    path = path.Remove(path.Length - 1, 1);
+                    pathNoExtension = pathNoExtension.Remove(pathNoExtension.Length - 1, 1);
                 }
             }
-            return path;
+            return pathNoExtension + extension;
         }
 
-        private void SaveScreenshot(byte[] image, string path)
+        private async Task SaveScreenshot(byte[] image, string path)
         {
             ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Jpeg);
 
-            try
+            using (FileStream fileStream = File.Open(path, FileMode.OpenOrCreate))
             {
-                using (FileStream fileStream = File.Open(path, FileMode.OpenOrCreate))
-                {
-                    fileStream.Write(image, 0, image.Length);
-                }
-            }
-            catch (IOException ex)
-            {
-                serviceResolver.Resolve<IMessageService>().ShowDialog(ex);
+                await fileStream.WriteAsync(image, 0, image.Length);
             }
         }
 

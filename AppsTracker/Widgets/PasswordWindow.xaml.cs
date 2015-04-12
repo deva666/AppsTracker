@@ -14,13 +14,13 @@ namespace AppsTracker
     public partial class PasswordWindow : Window, IPasswordWindow
     {
         private readonly ISqlSettingsService settingService;
-        private readonly IMessageService messageService;
+        private readonly IWindowService windowService;
 
         public PasswordWindow()
         {
             InitializeComponent();
             settingService = ServiceLocator.Instance.Resolve<ISqlSettingsService>();
-            messageService = ServiceLocator.Instance.Resolve<IMessageService>();
+            windowService = ServiceLocator.Instance.Resolve<IWindowService>();
         }
 
         private void FadeUnloaded()
@@ -73,7 +73,7 @@ namespace AppsTracker
             }
             else
             {
-                messageService.ShowDialog("Wrong password.", false);
+                windowService.ShowDialog("Wrong password.", false);
             }
         }
     }
