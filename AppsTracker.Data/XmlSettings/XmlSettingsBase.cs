@@ -19,7 +19,6 @@ namespace AppsTracker.Data.XmlSettings
 
             foreach (var prop in properties)
             {
-                var settingsNode = (SettingsNodeAttribute)prop.GetCustomAttributes(typeof(SettingsNodeAttribute), true)[0];
                 var node = new XElement(prop.Name);
                 node.Add(prop.GetValue(this, BindingFlags.Default, null, null, CultureInfo.InvariantCulture));
                 xml.Add(node);

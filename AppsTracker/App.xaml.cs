@@ -6,6 +6,7 @@
  */
 #endregion
 
+using System.Linq;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
@@ -35,11 +36,6 @@ namespace AppsTracker
 
             this.ShutdownMode = System.Windows.ShutdownMode.OnExplicitShutdown;
 
-            bool autostart = false;
-            foreach (var arg in args)
-                if (arg.ToUpper().Contains(Constants.CMD_ARGS_AUTOSTART))
-                    autostart = true;
-
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement)
                                                                 , new FrameworkPropertyMetadata(System.Windows.Markup.XmlLanguage.GetLanguage(System.Globalization.CultureInfo.CurrentCulture.IetfLanguageTag)));
 
@@ -52,11 +48,12 @@ namespace AppsTracker
             container = GetCompositionContainer();
             AppsTracker.ServiceLocation.ServiceLocator.Instance.Initialize(container);
 
+            bool autostart = args.Where(a => a.ToUpper() == Constants.CMD_ARGS_AUTOSTART).Count() > 0;
             applicationController = container.GetExportedValue<IApplicationController>();
             applicationController.Initialize(autostart);
 
             this.SessionEnding += (s, e) => ShutdownApp();
-            this.DispatcherUnhandledException += App_DispatcherUnhandledException;
+            this.DispatcherUnhandledException += OnDispatcherUnhandledException;
         }
 
         private CompositionContainer GetCompositionContainer()
@@ -70,7 +67,7 @@ namespace AppsTracker
             return container;
         }
 
-        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             try
             {

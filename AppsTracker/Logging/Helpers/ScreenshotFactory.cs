@@ -23,22 +23,25 @@ namespace AppsTracker.Logging.Helpers
                 size = Size.Empty;
                 WinAPI.RECT rect = new WinAPI.RECT();
                 IntPtr hForWnd = WinAPI.GetForegroundWindow();
-                if (hForWnd == IntPtr.Zero) return null;
+                if (hForWnd == IntPtr.Zero) 
+                    return null;
                 WinAPI.GetWindowRect(hForWnd, ref rect);
                 IntPtr hwnd = WinAPI.GetDC(IntPtr.Zero);
-                if (hwnd == IntPtr.Zero) return null;
-                using (Graphics g = Graphics.FromHdc(hwnd))
+                if (hwnd == IntPtr.Zero)
+                    return null;
+                
+                using (Graphics graphics = Graphics.FromHdc(hwnd))
                 {
-                    Bitmap tempImg = new Bitmap(rect.Width, rect.Height, g);
-                    using (Graphics tempG = Graphics.FromImage(tempImg))
+                    Bitmap tempImg = new Bitmap(rect.Width, rect.Height, graphics);
+                    using (Graphics tempGraphics = Graphics.FromImage(tempImg))
                     {
-                        tempG.CopyFromScreen(rect.X, rect.Y, 0, 0, rect.Size, CopyPixelOperation.SourceCopy);
+                        tempGraphics.CopyFromScreen(rect.X, rect.Y, 0, 0, rect.Size, CopyPixelOperation.SourceCopy);
                     }
                     size = new Size(rect.Width, rect.Height);
                     return tempImg;
                 }
             }
-            catch (Exception)
+            catch 
             {
                 size = Size.Empty;
                 return null;
@@ -55,6 +58,7 @@ namespace AppsTracker.Logging.Helpers
             {
                 if (screenshotImage == null)
                     return null;
+
                 screenshot = new Screenshot(size, screenshotImage);
             }
 

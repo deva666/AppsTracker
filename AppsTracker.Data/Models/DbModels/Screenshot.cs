@@ -80,10 +80,10 @@ namespace AppsTracker.Data.Models
 
 
 
-        private byte[] GetByteArrayFromImage(Image imageIn)
+        private byte[] GetByteArrayFromImage(Image image)
         {
             ImageConverter converter = new ImageConverter();
-            return (byte[])converter.ConvertTo(imageIn, typeof(byte[]));
+            return (byte[])converter.ConvertTo(image, typeof(byte[]));
         }
 
         private void GetPopupSize()
