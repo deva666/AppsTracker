@@ -26,18 +26,12 @@ namespace AppsTracker.Controllers
         private readonly ISqlSettingsService sqlSettingsService;
         private readonly ILoggingService loggingService;
         private readonly IWindowService windowService;
-        private readonly ITrayIcon trayIcon;
-        private readonly ExportFactory<IWindow> mainWindowValueFactory;
-        private readonly ExportFactory<IPasswordWindow> passwordWindowValueFactory;
-
-        private IWindow mainWindow;        
 
         [ImportingConstructor]
         public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController,
                                      ISyncContext syncContext, ISqlSettingsService sqlSettingsService,
                                      IXmlSettingsService xmlSettingsService, ILoggingService loggingService,
-                                     ITrayIcon trayIcon, IWindowService windowService, ExportFactory<IWindow> windowValueFactory,
-                                     ExportFactory<IPasswordWindow> passwordWindowValueFactory)
+                                     IWindowService windowService)
         {
             this.appearanceController = appearanceController;
             this.loggingController = loggingController;
@@ -46,9 +40,6 @@ namespace AppsTracker.Controllers
             this.sqlSettingsService = sqlSettingsService;
             this.loggingService = loggingService;
             this.windowService = windowService;
-            this.mainWindowValueFactory = windowValueFactory;
-            this.passwordWindowValueFactory = passwordWindowValueFactory;
-            this.trayIcon = trayIcon;
         }
 
         public void Initialize(bool autoStart)
@@ -60,159 +51,22 @@ namespace AppsTracker.Controllers
             appearanceController.Initialize(sqlSettingsService.Settings);
             loggingController.Initialize(sqlSettingsService.Settings);
 
-            ReadSettingsFromRegistry();
-
             if (autoStart == false)
-                CreateOrShowMainWindow();
+                windowService.CreateOrShowMainWindow();
 
-            FirstRunWindowSetup();
-
-            InitializeTrayIcon();
+            windowService.FirstRunWindowSetup();
+            windowService.InitializeTrayIcon();
 
             loggingService.DbSizeCritical += OnDbSizeCritical;
             loggingService.GetDBSize();
 
-            EntryPoint.SingleInstanceManager.SecondInstanceActivating += (s, e) => CreateOrShowMainWindow();
+            EntryPoint.SingleInstanceManager.SecondInstanceActivating += (s, e) => windowService.CreateOrShowMainWindow();
         }
 
         private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
         {
             loggingController.SettingsChanging(sqlSettingsService.Settings);
             appearanceController.SettingsChanging(sqlSettingsService.Settings);
-        }
-
-
-        private void ReadSettingsFromRegistry()
-        {
-            var settings = sqlSettingsService.Settings;
-
-            bool? exists = RegistryEntryExists();
-            if (exists == null && settings.RunAtStartup)
-                settings.RunAtStartup = false;
-            else if (exists.HasValue && exists.Value && !settings.RunAtStartup)
-                settings.RunAtStartup = true;
-            else if (exists.HasValue && !exists.Value && settings.RunAtStartup)
-                settings.RunAtStartup = false;
-
-            sqlSettingsService.SaveChanges(settings);
-        }
-
-        private bool? RegistryEntryExists()
-        {
-            try
-            {
-                var key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-                if (key.GetValue("app service") == null)
-                    return false;
-                return true;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        private void FirstRunWindowSetup()
-        {
-            if (sqlSettingsService.Settings.FirstRun)
-            {
-                SetInitialWindowDimensions();
-                var settings = sqlSettingsService.Settings;
-                settings.FirstRun = false;
-                sqlSettingsService.SaveChanges(settings);
-            }
-        }
-
-        private void InitializeTrayIcon()
-        {
-            trayIcon.ShowApp.Click += (s, e) => CreateOrShowMainWindow();
-            trayIcon.IsVisible = true;
-        }
-
-        private void CreateOrShowMainWindow()
-        {
-            if (CanOpenMainWindow())
-            {
-                if (mainWindow == null)
-                {
-                    mainWindow = mainWindowValueFactory.CreateExport().Value;
-                    ShowMainWindow();
-                }
-                else
-                {
-                    if (!mainWindow.IsLoaded)
-                    {
-                        ShowMainWindow();
-                    }
-                    else
-                    {
-                        mainWindow.Activate();
-                    }
-                }
-            }
-        }
-
-        private void ShowMainWindow()
-        {
-            mainWindow.Closing += (s, e) => SaveWindowPosition();
-            LoadWindowPosition();
-            mainWindow.Show();
-        }
-
-        private bool CanOpenMainWindow()
-        {
-            if (sqlSettingsService.Settings.IsMasterPasswordSet)
-            {
-                var passwordWindow = passwordWindowValueFactory.CreateExport().Value;
-                bool? dialog = passwordWindow.ShowDialog();
-                if (dialog.Value)
-                {
-                    return true;
-                }
-                return false;
-            }
-            else
-                return true;
-        }
-
-        private void LoadWindowPosition()
-        {
-            var mainWindowSettings = xmlSettingsService.MainWindowSettings;
-            mainWindow.Left = mainWindowSettings.Left;
-            mainWindow.Top = mainWindowSettings.Top;
-            mainWindow.Width = mainWindowSettings.Width;
-            mainWindow.Height = mainWindowSettings.Height;
-        }
-
-        private void CloseMainWindow()
-        {
-            if (mainWindow != null)
-            {
-                mainWindow.Close();
-            }
-        }
-
-        private void SaveWindowPosition()
-        {
-            xmlSettingsService.MainWindowSettings.Height = mainWindow.Height;
-            xmlSettingsService.MainWindowSettings.Width = mainWindow.Width;
-            xmlSettingsService.MainWindowSettings.Left = mainWindow.Left;
-            xmlSettingsService.MainWindowSettings.Top = mainWindow.Top;
-            mainWindow = null;
-        }
-
-        private void SetInitialWindowDimensions()
-        {
-            var bound = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
-            double left, top, width, height;
-            left = bound.Left + 50d;
-            top = bound.Top + 50d;
-            width = bound.Width - 100d;
-            height = bound.Height - 100d;
-            mainWindow.Left = left;
-            mainWindow.Top = top;
-            mainWindow.Width = width;
-            mainWindow.Height = height;
         }
 
         private async void OnDbSizeCritical(object sender, EventArgs e)
@@ -229,10 +83,9 @@ namespace AppsTracker.Controllers
 
         public void ShutDown()
         {
-            CloseMainWindow();
+            windowService.Shutdown();
             xmlSettingsService.ShutDown();
             loggingController.Dispose();
-            trayIcon.Dispose();
         }
     }
 }

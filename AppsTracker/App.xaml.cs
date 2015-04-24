@@ -6,10 +6,11 @@
  */
 #endregion
 
-using System.Linq;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Linq;
 using System.Reflection;
 using System.Runtime;
 using System.Threading;
@@ -18,7 +19,6 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using AppsTracker.Controllers;
 using AppsTracker.Service;
-
 
 namespace AppsTracker
 {
@@ -53,7 +53,21 @@ namespace AppsTracker
             applicationController.Initialize(autostart);
 
             this.SessionEnding += (s, e) => ShutdownApp();
-            this.DispatcherUnhandledException += OnDispatcherUnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+        }
+
+        private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            try
+            {
+                var fail = (Exception)e.ExceptionObject;
+                container.GetExportedValue<IWindowService>().ShowDialog(fail);
+                container.GetExportedValue<ILogger>().Log(fail);
+            }
+            finally
+            {
+                ShutdownApp();
+            }
         }
 
         private CompositionContainer GetCompositionContainer()
@@ -65,19 +79,6 @@ namespace AppsTracker
             batch.AddExportedValue(container);
             container.Compose(batch);
             return container;
-        }
-
-        private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-        {
-            try
-            {
-                container.GetExportedValue<IWindowService>().ShowDialog(e.Exception);
-                container.GetExportedValue<ILogger>().Log(e.Exception);
-            }
-            finally
-            {
-                ShutdownApp();
-            }
         }
 
         internal void ShutdownApp()

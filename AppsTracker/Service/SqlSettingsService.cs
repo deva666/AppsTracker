@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
+using Microsoft.Win32;
 
 namespace AppsTracker.Service
 {
@@ -28,9 +29,10 @@ namespace AppsTracker.Service
             }
         }
 
-        private SqlSettingsService()
+        public SqlSettingsService()
         {
             CreateSettings();
+            ReadSettingsFromRegistry();
         }
 
         private void CreateSettings()
@@ -72,6 +74,34 @@ namespace AppsTracker.Service
             this.settings = settings;
 
             NotifyPropertyChanged();
+        }
+
+        private void ReadSettingsFromRegistry()
+        {           
+            bool? exists = RegistryEntryExists();
+            if (exists == null && settings.RunAtStartup)
+                settings.RunAtStartup = false;
+            else if (exists.HasValue && exists.Value && !settings.RunAtStartup)
+                settings.RunAtStartup = true;
+            else if (exists.HasValue && !exists.Value && settings.RunAtStartup)
+                settings.RunAtStartup = false;
+
+            SaveChanges(settings);
+        }
+
+        private bool? RegistryEntryExists()
+        {
+            try
+            {
+                var key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                if (key.GetValue("app service") == null)
+                    return false;
+                return true;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
 

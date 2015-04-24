@@ -18,7 +18,6 @@ namespace AppsTracker
         [STAThread]
         public static void Main(string[] args)
         {
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 #if DEBUG
             RunApp(new ReadOnlyCollection<string>(args));
 #else
@@ -26,28 +25,6 @@ namespace AppsTracker
             SingleInstanceManager singleInstanceApp = new SingleInstanceManager();
             singleInstanceApp.Run(args);
 #endif
-        }
-
-        private static void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
-        {
-            var app = App.Current as App;
-            try
-            {
-                Exception ex = e.ExceptionObject as Exception;
-                FileLogger.Instance.Log(ex);
-
-                System.Windows.Application.Current.Dispatcher.Invoke(new Action(() =>
-                {
-                    MessageWindow messageWindow = new MessageWindow(ex);
-                    messageWindow.ShowDialog();
-                }));
-
-            }
-            finally
-            {
-                if (app != null)
-                    app.ShutdownApp();
-            }
         }
 
         private static void RunApp(ReadOnlyCollection<String> eventArgs)

@@ -28,5 +28,42 @@ namespace AppsTracker.Tests.Fakes.Service
         {
             
         }
+
+
+        public void ShowWindow<T>() where T : System.Windows.Window
+        {
+            
+        }
+
+        public void ShowWindow<T>(params object[] args) where T : System.Windows.Window
+        {
+            
+        }
+
+
+        public void FirstRunWindowSetup()
+        {
+            
+        }
+
+        public void InitializeTrayIcon()
+        {
+            
+        }
+
+        public void CreateOrShowMainWindow()
+        {
+            
+        }
+
+        public void CloseMainWindow()
+        {
+            
+        }
+
+        public void Shutdown()
+        {
+            
+        }
     }
 }
