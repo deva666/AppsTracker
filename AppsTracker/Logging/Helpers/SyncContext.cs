@@ -7,12 +7,17 @@ namespace AppsTracker.Logging.Helpers
     [Export(typeof(ISyncContext))]
     internal sealed class SyncContext : ISyncContext
     {
-        private System.Threading.SynchronizationContext context;
+        private SynchronizationContext context;
 
-        public System.Threading.SynchronizationContext Context
+        public SynchronizationContext Context
         {
             get { return context; }
             set { context = value; }
+        }
+
+        public SyncContext()
+        {
+            context = SynchronizationContext.Current;
         }
 
         public void Invoke(SendOrPostCallback method, object state = null)

@@ -44,7 +44,6 @@ namespace AppsTracker.Controllers
 
         public void Initialize(bool autoStart)
         {
-            syncContext.Context = System.Threading.SynchronizationContext.Current;
             xmlSettingsService.Initialize();
             PropertyChangedEventManager.AddHandler(sqlSettingsService, OnSettingsChanged, "Settings");
 
