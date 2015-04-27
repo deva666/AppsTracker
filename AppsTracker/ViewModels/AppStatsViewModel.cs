@@ -73,12 +73,6 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private void ReturnFromDetailedView()
-        {
-            SelectedApp = null;
-        }
-
-
         public AppStatsViewModel()
         {
             statsService = serviceResolver.Resolve<IStatsService>();
@@ -112,5 +106,12 @@ namespace AppsTracker.ViewModels
 
             return statsService.GetAppDurationByDate(loggingService.SelectedUserID, app.Name, loggingService.DateFrom, loggingService.DateTo);
         }
+
+
+        private void ReturnFromDetailedView()
+        {
+            SelectedApp = null;
+        }
+
     }
 }

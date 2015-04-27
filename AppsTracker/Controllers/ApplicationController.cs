@@ -21,7 +21,6 @@ namespace AppsTracker.Controllers
     {
         private readonly IAppearanceController appearanceController;
         private readonly ILoggingController loggingController;
-        private readonly ISyncContext syncContext;
         private readonly IXmlSettingsService xmlSettingsService;
         private readonly ISqlSettingsService sqlSettingsService;
         private readonly ILoggingService loggingService;
@@ -29,13 +28,11 @@ namespace AppsTracker.Controllers
 
         [ImportingConstructor]
         public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController,
-                                     ISyncContext syncContext, ISqlSettingsService sqlSettingsService,
-                                     IXmlSettingsService xmlSettingsService, ILoggingService loggingService,
-                                     IWindowService windowService)
+                                     ISqlSettingsService sqlSettingsService, IXmlSettingsService xmlSettingsService,
+                                     ILoggingService loggingService, IWindowService windowService)
         {
             this.appearanceController = appearanceController;
             this.loggingController = loggingController;
-            this.syncContext = syncContext;
             this.xmlSettingsService = xmlSettingsService;
             this.sqlSettingsService = sqlSettingsService;
             this.loggingService = loggingService;

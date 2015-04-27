@@ -87,7 +87,7 @@ namespace AppsTracker.Controllers
             ColorAnimation animation = new ColorAnimation();
             animation.From = (System.Windows.Media.Color)oldDictionary["WindowBackgroundColor"];
             animation.To = (System.Windows.Media.Color)newDictionary["WindowBackgroundColor"];
-            animation.Duration = new Duration(TimeSpan.FromSeconds(0.4d));
+            animation.Duration = new Duration(TimeSpan.FromSeconds(0.5d));
 
             Storyboard.SetTarget(animation, App.Current.MainWindow);
             Storyboard.SetTargetProperty(animation, new PropertyPath("Background.Color"));
