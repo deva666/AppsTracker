@@ -14,6 +14,10 @@ namespace AppsTracker.ServiceLocation
 
         private ExportProvider container;
 
+        private ServiceLocator()
+        {
+        }
+
         public void Initialize(ExportProvider container)
         {
             this.container = container;
