@@ -10,11 +10,13 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime;
 using System.Threading;
 using System.Windows;
+using System.Windows.Markup;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using AppsTracker.Controllers;
@@ -34,10 +36,10 @@ namespace AppsTracker
 
             InitializeComponent();
 
-            this.ShutdownMode = System.Windows.ShutdownMode.OnExplicitShutdown;
+            this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement)
-                                                                , new FrameworkPropertyMetadata(System.Windows.Markup.XmlLanguage.GetLanguage(System.Globalization.CultureInfo.CurrentCulture.IetfLanguageTag)));
+                                                                , new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline)
                                                                 , new PropertyMetadata() { DefaultValue = 40 });
@@ -46,7 +48,7 @@ namespace AppsTracker
             SynchronizationContext.SetSynchronizationContext(context);
 
             container = GetCompositionContainer();
-            AppsTracker.ServiceLocation.ServiceLocator.Instance.Initialize(container);
+            ServiceLocation.ServiceLocator.Instance.Initialize(container);
 
             bool autostart = args.Where(a => a.ToUpper() == Constants.CMD_ARGS_AUTOSTART).Count() > 0;
             applicationController = container.GetExportedValue<IApplicationController>();
