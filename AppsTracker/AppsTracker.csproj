@@ -294,8 +294,8 @@
     <Compile Include="Tracking\IComponent.cs" />
     <Compile Include="Tracking\Helpers\LazyInit.cs" />
     <Compile Include="Tracking\Helpers\WindowHelper.cs" />
-    <Compile Include="Tracking\UsageLogger.cs" />
-    <Compile Include="Tracking\WindowLogger.cs" />
+    <Compile Include="Tracking\UsageTracker.cs" />
+    <Compile Include="Tracking\WindowTracker.cs" />
     <Compile Include="MVVM\AsyncProperty.cs" />
     <Compile Include="MVVM\DelegateCommandAsync.cs" />
     <Compile Include="MVVM\HostViewModel.cs" />
