@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using AppsTracker.Data.Models;
-using AppsTracker.Logging;
+using AppsTracker.Tracking;
 
 namespace AppsTracker.Controllers
 {

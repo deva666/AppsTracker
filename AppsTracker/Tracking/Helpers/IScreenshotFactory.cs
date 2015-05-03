@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AppsTracker.Logging.Helpers
+namespace AppsTracker.Tracking.Helpers
 {
     interface IScreenshotFactory
     {

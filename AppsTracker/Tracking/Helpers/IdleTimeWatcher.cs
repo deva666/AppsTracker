@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace AppsTracker.Logging
+namespace AppsTracker.Tracking
 {
     public class IdleTimeWatcher
     {

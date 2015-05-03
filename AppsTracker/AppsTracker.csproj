@@ -183,14 +183,16 @@
     <Compile Include="Controllers\ILoggingController.cs" />
     <Compile Include="Controllers\LoggingController.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Logging\Helpers\ILogCleaner.cs" />
-    <Compile Include="Logging\Helpers\IScreenshotFactory.cs" />
-    <Compile Include="Logging\Helpers\ISyncContext.cs" />
-    <Compile Include="Logging\Helpers\SyncContext.cs" />
-    <Compile Include="Logging\Hooks\IWindowNotifier.cs" />
-    <Compile Include="Logging\AppWatcher.cs" />
-    <Compile Include="Logging\Helpers\IIdleNotifier.cs" />
-    <Compile Include="Logging\LoggingStatus.cs" />
+    <Compile Include="Tracking\Helpers\ILogCleaner.cs" />
+    <Compile Include="Tracking\Helpers\IMidnightNotifier.cs" />
+    <Compile Include="Tracking\Helpers\IScreenshotFactory.cs" />
+    <Compile Include="Tracking\Helpers\ISyncContext.cs" />
+    <Compile Include="Tracking\Helpers\MidnightNotifier.cs" />
+    <Compile Include="Tracking\Helpers\SyncContext.cs" />
+    <Compile Include="Tracking\Hooks\IWindowNotifier.cs" />
+    <Compile Include="Tracking\AppWatcher.cs" />
+    <Compile Include="Tracking\Helpers\IIdleNotifier.cs" />
+    <Compile Include="Tracking\LoggingStatus.cs" />
     <Compile Include="ServiceLocation\IServiceResolver.cs" />
     <Compile Include="ServiceLocation\ServiceResolver.cs" />
     <Compile Include="Service\CategoriesService.cs" />
@@ -248,9 +250,6 @@
       <DependentUpon>Next.xaml</DependentUpon>
     </Compile>
     <Compile Include="Widgets\IPasswordWindow.cs" />
-    <Compile Include="Widgets\PageController.xaml.cs">
-      <DependentUpon>PageController.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Widgets\Pause.xaml.cs">
       <DependentUpon>Pause.xaml</DependentUpon>
     </Compile>
@@ -283,18 +282,18 @@
     </Compile>
     <Compile Include="Widgets\ScrollingContentControl.cs" />
     <Compile Include="ErrorLogging\ILogger.cs" />
-    <Compile Include="Logging\Hooks\EventArgs\KeyboardHookArgs.cs" />
-    <Compile Include="Logging\Hooks\EventArgs\MouseHookArgs.cs" />
-    <Compile Include="Logging\Hooks\EventArgs\WindowChangedArgs.cs" />
-    <Compile Include="Logging\DataCleaner.cs" />
-    <Compile Include="Logging\Helpers\LogCleaner.cs" />
-    <Compile Include="Logging\Helpers\IdleMonitor.cs" />
-    <Compile Include="Logging\Helpers\IdleTimeWatcher.cs" />
-    <Compile Include="Logging\IComponent.cs" />
-    <Compile Include="Logging\Helpers\LazyInit.cs" />
-    <Compile Include="Logging\Helpers\WindowHelper.cs" />
-    <Compile Include="Logging\UsageLogger.cs" />
-    <Compile Include="Logging\WindowLogger.cs" />
+    <Compile Include="Tracking\Hooks\EventArgs\KeyboardHookArgs.cs" />
+    <Compile Include="Tracking\Hooks\EventArgs\MouseHookArgs.cs" />
+    <Compile Include="Tracking\Hooks\EventArgs\WindowChangedArgs.cs" />
+    <Compile Include="Tracking\DataCleaner.cs" />
+    <Compile Include="Tracking\Helpers\LogCleaner.cs" />
+    <Compile Include="Tracking\Helpers\IdleMonitor.cs" />
+    <Compile Include="Tracking\Helpers\IdleTimeWatcher.cs" />
+    <Compile Include="Tracking\IComponent.cs" />
+    <Compile Include="Tracking\Helpers\LazyInit.cs" />
+    <Compile Include="Tracking\Helpers\WindowHelper.cs" />
+    <Compile Include="Tracking\UsageLogger.cs" />
+    <Compile Include="Tracking\WindowLogger.cs" />
     <Compile Include="MVVM\AsyncProperty.cs" />
     <Compile Include="MVVM\DelegateCommandAsync.cs" />
     <Compile Include="MVVM\HostViewModel.cs" />
@@ -375,7 +374,7 @@
     <Compile Include="MVVM\ObservableObject.cs" />
     <Compile Include="MVVM\ViewModelBase.cs" />
     <Compile Include="ErrorLogging\Logger.cs" />
-    <Compile Include="Logging\Hooks\MouseHook.cs" />
+    <Compile Include="Tracking\Hooks\MouseHook.cs" />
     <Compile Include="MVVM\WeakAction.cs" />
     <Compile Include="ViewModels\AppDetailsViewModel.cs" />
     <Compile Include="ViewModels\ScreenshotsViewModel.cs" />
@@ -436,9 +435,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Logging\Helpers\ScreenshotFactory.cs" />
+    <Compile Include="Tracking\Helpers\ScreenshotFactory.cs" />
     <Compile Include="Utils\Hash.cs" />
-    <Compile Include="Logging\Hooks\WinHook.cs" />
+    <Compile Include="Tracking\Hooks\WinHook.cs" />
     <Page Include="Views\Settings\AppCategoriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -511,10 +510,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\PageController.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Widgets\Pause.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -570,7 +565,7 @@
     <Compile Include="Widgets\closeBtn.xaml.cs">
       <DependentUpon>closeBtn.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Logging\Hooks\KeyboardHook.cs" />
+    <Compile Include="Tracking\Hooks\KeyboardHook.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

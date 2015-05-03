@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Threading;
 using AppsTracker.Service;
 using AppsTracker.Hooks;
-using AppsTracker.Logging.Helpers;
+using AppsTracker.Tracking.Helpers;
 
-namespace AppsTracker.Logging
+namespace AppsTracker.Tracking
 {
     [Export(typeof(IIdleNotifier))]
     public class IdleMonitor : IIdleNotifier

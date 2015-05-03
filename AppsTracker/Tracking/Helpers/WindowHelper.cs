@@ -11,7 +11,7 @@ using System;
 using System.Diagnostics;
 using System.Text;
 
-namespace AppsTracker.Logging
+namespace AppsTracker.Tracking
 {
     internal sealed class WindowHelper
     {

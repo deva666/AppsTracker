@@ -1,17 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.ComponentModel.Composition;
 using System.Data.Entity;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
-using System.Threading;
+using AppsTracker.Tracking.Helpers;
 
-namespace AppsTracker.Logging
+namespace AppsTracker.Tracking
 {
     internal sealed class AppWatcher
     {
+        private readonly IMidnightNotifier midnightNotifier;
+
         private readonly Timer dayTimer;
         private readonly Timer weekTimer;
         private readonly Timer monthTimer;
@@ -20,11 +22,21 @@ namespace AppsTracker.Logging
         private AppWarning weekWarning;
         private AppWarning monthWarning;
 
-        public AppWatcher()
+
+        [ImportingConstructor]
+        public AppWatcher(IMidnightNotifier midnightNotifier)
         {
+            this.midnightNotifier = midnightNotifier;
+            this.midnightNotifier.MidnightTick += MidnightTick;
+
             dayTimer = new Timer(DayTimerCallback);
             weekTimer = new Timer(WeekTimerCallback);
             monthTimer = new Timer(MonthTimerCallback);
+        }
+
+        private void MidnightTick(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void DayTimerCallback(object state)
@@ -80,7 +92,7 @@ namespace AppsTracker.Logging
                 DayTimerCallback(null);
                 return;
             }
-            
+
             var ticksTillMidnight = DateTime.Now.AddDays(1).Date.Ticks - DateTime.Now.Ticks;
             var ticksTillLimitReached = dayWarning.Limit - duration;
             if (ticksTillMidnight < ticksTillLimitReached)

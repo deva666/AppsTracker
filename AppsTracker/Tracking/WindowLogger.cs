@@ -13,11 +13,11 @@ using AppsTracker.Data.Models;
 using AppsTracker.Service;
 using AppsTracker.Data.Utils;
 using AppsTracker.Hooks;
-using AppsTracker.Logging.Helpers;
+using AppsTracker.Tracking.Helpers;
 using AppsTracker.ServiceLocation;
 using AppsTracker.MVVM;
 
-namespace AppsTracker.Logging
+namespace AppsTracker.Tracking
 {
     [Export(typeof(IComponent))]
     internal sealed class WindowLogger : IComponent

@@ -9,9 +9,9 @@
 using System;
 using System.ComponentModel.Composition;
 using AppsTracker.Data.Models;
-using AppsTracker.Logging.Helpers;
+using AppsTracker.Tracking.Helpers;
 
-namespace AppsTracker.Logging
+namespace AppsTracker.Tracking
 {
     [Export(typeof(IComponent))]
     internal sealed class DataCleaner : IComponent, IDisposable

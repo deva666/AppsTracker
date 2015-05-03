@@ -8,7 +8,7 @@
 
 using System;
 
-namespace AppsTracker.Logging
+namespace AppsTracker.Tracking
 {
     internal sealed class LazyInit<T> : IDisposable where T : class,IDisposable
     {

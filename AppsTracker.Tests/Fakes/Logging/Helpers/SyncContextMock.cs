@@ -4,7 +4,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AppsTracker.Logging.Helpers;
+using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tests.Fakes.Logging.Helpers
 {

@@ -13,7 +13,7 @@ using AppsTracker.Service;
 using AppsTracker.ServiceLocation;
 using AppsTracker.MVVM;
 
-namespace AppsTracker.Logging
+namespace AppsTracker.Tracking
 {
     [Export(typeof(IComponent))]
     internal sealed class UsageLogger : IComponent

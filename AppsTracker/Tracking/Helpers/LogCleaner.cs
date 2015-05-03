@@ -11,9 +11,9 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using AppsTracker.Common.Utils;
 using AppsTracker.Service;
-using AppsTracker.Logging.Helpers;
+using AppsTracker.Tracking.Helpers;
 
-namespace AppsTracker.Logging
+namespace AppsTracker.Tracking
 {
     [Export(typeof(ILogCleaner))]
     internal sealed class LogCleaner : ILogCleaner

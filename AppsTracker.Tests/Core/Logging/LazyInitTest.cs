@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using AppsTracker.Logging;
+using AppsTracker.Tracking;
 using AppsTracker.Tests.Fakes.Logging;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

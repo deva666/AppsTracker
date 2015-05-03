@@ -9,7 +9,7 @@
 using System;
 using AppsTracker.Data.Models;
 
-namespace AppsTracker.Logging
+namespace AppsTracker.Tracking
 {
     interface IComponent : IDisposable
     {

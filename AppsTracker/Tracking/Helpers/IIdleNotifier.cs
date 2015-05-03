@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AppsTracker.Logging
+namespace AppsTracker.Tracking
 {
     interface IIdleNotifier : IDisposable
     {

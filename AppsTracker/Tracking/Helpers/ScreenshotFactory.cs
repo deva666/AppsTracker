@@ -11,7 +11,7 @@ using System.ComponentModel.Composition;
 using System.Drawing;
 using AppsTracker.Data.Models;
 
-namespace AppsTracker.Logging.Helpers
+namespace AppsTracker.Tracking.Helpers
 {
     [Export(typeof(IScreenshotFactory))]
     internal sealed class ScreenshotFactory : IScreenshotFactory

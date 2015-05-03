@@ -9,7 +9,7 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
-using AppsTracker.Logging.Helpers;
+using AppsTracker.Tracking.Helpers;
 using AppsTracker.Service;
 using AppsTracker.Widgets;
 using Microsoft.Win32;
