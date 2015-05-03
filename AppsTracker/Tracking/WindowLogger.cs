@@ -8,19 +8,17 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using AppsTracker.Data.Models;
-using AppsTracker.Service;
 using AppsTracker.Data.Utils;
 using AppsTracker.Hooks;
-using AppsTracker.Tracking.Helpers;
-using AppsTracker.ServiceLocation;
 using AppsTracker.MVVM;
+using AppsTracker.Service;
+using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
 {
     [Export(typeof(IComponent))]
-    internal sealed class WindowLogger : IComponent
+    internal sealed class WindowTracker : IComponent
     {
         private bool isLoggingEnabled;
 
@@ -29,48 +27,43 @@ namespace AppsTracker.Tracking
         private readonly ILoggingService loggingService;
         private readonly IWindowNotifier windowNotifierInstance;
         private readonly ISyncContext syncContext;
-        private readonly IScreenshotFactory screenshotFactory;
+        private readonly IScreenshotTracker screenshotTracker;
 
         private LazyInit<IWindowNotifier> windowNotifier;
 
         private Log currentLog;
 
-        private LazyInit<System.Timers.Timer> screenshotTimer;
         private LazyInit<System.Threading.Timer> windowCheckTimer;
 
         private Setting settings;
 
         [ImportingConstructor]
-        public WindowLogger(IWindowNotifier windowNotifier,ISyncContext syncContext, 
-                            IScreenshotFactory screenshotFactory, ILoggingService loggingService)
+        public WindowTracker(IWindowNotifier windowNotifier, ILoggingService loggingService
+            , IScreenshotTracker screenshotTracker, ISyncContext syncContext)
         {
             this.loggingService = loggingService;
             this.windowNotifierInstance = windowNotifier;
+            this.screenshotTracker = screenshotTracker;
             this.syncContext = syncContext;
-            this.screenshotFactory = screenshotFactory;
         }
 
         public void SettingsChanged(Setting settings)
         {
             this.settings = settings;
             ConfigureComponents();
+            screenshotTracker.SettingsChanging(settings);
         }
 
         public void InitializeComponent(Setting settings)
         {
             this.settings = settings;
 
+            screenshotTracker.Initialize(settings);
+            screenshotTracker.ScreenshotTaken += OnScreenshotTaken;
+
             windowNotifier = new LazyInit<IWindowNotifier>(() => windowNotifierInstance,
                                                            w => w.WindowChanged += WindowChanging,
                                                            w => w.WindowChanged -= WindowChanging);
-
-            screenshotTimer = new LazyInit<System.Timers.Timer>(() => new System.Timers.Timer()
-                                                            {
-                                                                AutoReset = true,
-                                                                Interval = settings.TimerInterval
-                                                            },
-                                                            OnScreenshotInit,
-                                                            OnScreenshotDispose);
 
             windowCheckTimer = new LazyInit<System.Threading.Timer>(() => new System.Threading.Timer(s => syncContext.Invoke(CheckWindowTitle))
                                                                         , t => t.Change(1000, 1000)
@@ -82,41 +75,23 @@ namespace AppsTracker.Tracking
             Mediator.Register(MediatorMessages.RESUME_LOGGING, new Action(ResumeLogging));
         }
 
-
-        private void OnScreenshotInit(System.Timers.Timer timer)
+        private async void OnScreenshotTaken(object sender, ScreenshotEventArgs e)
         {
-            timer.Enabled = true;
-            timer.Elapsed += ScreenshotTick;
-        }
+            var screenshot = e.Screenshot;
 
-        private void OnScreenshotDispose(System.Timers.Timer timer)
-        {
-            timer.Enabled = false;
-            timer.Elapsed -= ScreenshotTick;
+            if (isLoggingEnabled == false || screenshot == null || currentLog == null)
+                return;
+
+            screenshot.LogID = currentLog.LogID;
+            await loggingService.SaveNewScreenshotAsync(screenshot);
         }
 
         private void ConfigureComponents()
         {
-            screenshotTimer.Enabled = (settings.TakeScreenshots && settings.LoggingEnabled);
-
-            if ((settings.TakeScreenshots && settings.LoggingEnabled) && settings.TimerInterval != screenshotTimer.Component.Interval)
-                screenshotTimer.Component.Interval = settings.TimerInterval;
-
             isLoggingEnabled =
                 windowNotifier.Enabled =
                     windowCheckTimer.Enabled =
                         settings.LoggingEnabled;
-        }
-
-        private void ScreenshotTick(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            syncContext.Invoke(async () =>
-            {
-                if (isLoggingEnabled == false)
-                    return;
-
-                await AddScreenshot();
-            });
         }
 
         private void CheckWindowTitle()
@@ -181,19 +156,6 @@ namespace AppsTracker.Tracking
             Mediator.NotifyColleagues(MediatorMessages.ApplicationAdded, newApp);
         }
 
-        private async Task AddScreenshot()
-        {
-            var dbSizeTask = loggingService.GetDBSizeAsync();
-            var screenshot = screenshotFactory.CreateScreenshot();
-
-            if (screenshot == null || currentLog == null)
-                return;
-
-            screenshot.LogID = currentLog.LogID;
-
-            await Task.WhenAll(loggingService.SaveNewScreenshotAsync(screenshot), dbSizeTask);
-        }
-
         private void StopLogging()
         {
             isLoggingEnabled = false;
@@ -213,9 +175,9 @@ namespace AppsTracker.Tracking
         public void Dispose()
         {
             windowNotifierInstance.Dispose();
+            screenshotTracker.Dispose();
 
             windowNotifier.Enabled =
-                screenshotTimer.Enabled =
                     windowCheckTimer.Enabled = false;
 
             StopLogging();

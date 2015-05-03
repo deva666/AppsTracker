@@ -186,8 +186,10 @@
     <Compile Include="Tracking\Helpers\ILogCleaner.cs" />
     <Compile Include="Tracking\Helpers\IMidnightNotifier.cs" />
     <Compile Include="Tracking\Helpers\IScreenshotFactory.cs" />
+    <Compile Include="Tracking\IScreenshotTracker.cs" />
     <Compile Include="Tracking\Helpers\ISyncContext.cs" />
     <Compile Include="Tracking\Helpers\MidnightNotifier.cs" />
+    <Compile Include="Tracking\ScreenshotTracker.cs" />
     <Compile Include="Tracking\Helpers\SyncContext.cs" />
     <Compile Include="Tracking\Hooks\IWindowNotifier.cs" />
     <Compile Include="Tracking\AppWatcher.cs" />

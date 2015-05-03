@@ -16,7 +16,7 @@ using AppsTracker.MVVM;
 namespace AppsTracker.Tracking
 {
     [Export(typeof(IComponent))]
-    internal sealed class UsageLogger : IComponent
+    internal sealed class UsageTracker : IComponent
     {
         private bool isLoggingEnabled;
 
@@ -34,7 +34,7 @@ namespace AppsTracker.Tracking
         private Setting settings;
 
         [ImportingConstructor]
-        public UsageLogger(IIdleNotifier idleNotifier, ILoggingService loggingService)
+        public UsageTracker(IIdleNotifier idleNotifier, ILoggingService loggingService)
         {
             this.loggingService = loggingService;
             idleNotifierInstance = idleNotifier;
@@ -76,21 +76,12 @@ namespace AppsTracker.Tracking
 
         private void InitLogin()
         {
-            var user = GetUzer(Environment.UserName);
-            currentUsageLogin = LoginUser(user.UserID);
+            var user = loggingService.GetUzer(Environment.UserName);
+            currentUsageLogin = loggingService.LoginUser(user.UserID);
 
             loggingService.Initialize(user, currentUsageLogin.UsageID);
         }
 
-        private Usage LoginUser(int userID)
-        {
-            return loggingService.LoginUser(userID);
-        }
-
-        private Uzer GetUzer(string userName)
-        {
-            return loggingService.GetUzer(userName);
-        }
 
         private void IdleStopped(object sender, EventArgs e)
         {
