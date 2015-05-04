@@ -15,8 +15,8 @@ using AppsTracker.MVVM;
 
 namespace AppsTracker.Tracking
 {
-    [Export(typeof(IComponent))]
-    internal sealed class UsageTracker : IComponent
+    [Export(typeof(IModule))]
+    internal sealed class UsageTracker : IModule
     {
         private bool isLoggingEnabled;
 

@@ -58,20 +58,20 @@ namespace AppsTracker
             timer.Start();
         }
 
-        public static bool Running(this LoggingStatus status)
+        public static bool Running(this TrackingStatus status)
         {
-            if (status == LoggingStatus.Running)
+            if (status == TrackingStatus.Running)
                 return true;
             else
                 return false;
         }
 
-        //public static LoggingStatus ConvertToLoggingStatus(this bool boolean)
+        //public static TrackingStatus ConvertToLoggingStatus(this bool boolean)
         //{
         //    if (boolean)
-        //        return LoggingStatus.Running;
+        //        return TrackingStatus.Running;
         //    else
-        //        return LoggingStatus.Stopped;
+        //        return TrackingStatus.Stopped;
         //}
 
 

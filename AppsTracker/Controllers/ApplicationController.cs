@@ -20,14 +20,14 @@ namespace AppsTracker.Controllers
     internal sealed class ApplicationController : IApplicationController
     {
         private readonly IAppearanceController appearanceController;
-        private readonly ILoggingController loggingController;
+        private readonly ITrackingController loggingController;
         private readonly IXmlSettingsService xmlSettingsService;
         private readonly ISqlSettingsService sqlSettingsService;
         private readonly ILoggingService loggingService;
         private readonly IWindowService windowService;
 
         [ImportingConstructor]
-        public ApplicationController(IAppearanceController appearanceController, ILoggingController loggingController,
+        public ApplicationController(IAppearanceController appearanceController, ITrackingController loggingController,
                                      ISqlSettingsService sqlSettingsService, IXmlSettingsService xmlSettingsService,
                                      ILoggingService loggingService, IWindowService windowService)
         {

@@ -180,8 +180,8 @@
     <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\IAppearanceController.cs" />
     <Compile Include="Controllers\IApplicationController.cs" />
-    <Compile Include="Controllers\ILoggingController.cs" />
-    <Compile Include="Controllers\LoggingController.cs" />
+    <Compile Include="Controllers\ITrackingController.cs" />
+    <Compile Include="Controllers\TrackingController.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Tracking\Helpers\ILogCleaner.cs" />
     <Compile Include="Tracking\Helpers\IMidnightNotifier.cs" />
@@ -194,7 +194,7 @@
     <Compile Include="Tracking\Hooks\IWindowNotifier.cs" />
     <Compile Include="Tracking\AppWatcher.cs" />
     <Compile Include="Tracking\Helpers\IIdleNotifier.cs" />
-    <Compile Include="Tracking\LoggingStatus.cs" />
+    <Compile Include="Tracking\TrackingStatus.cs" />
     <Compile Include="ServiceLocation\IServiceResolver.cs" />
     <Compile Include="ServiceLocation\ServiceResolver.cs" />
     <Compile Include="Service\CategoriesService.cs" />
@@ -291,7 +291,7 @@
     <Compile Include="Tracking\Helpers\LogCleaner.cs" />
     <Compile Include="Tracking\Helpers\IdleMonitor.cs" />
     <Compile Include="Tracking\Helpers\IdleTimeWatcher.cs" />
-    <Compile Include="Tracking\IComponent.cs" />
+    <Compile Include="Tracking\IModule.cs" />
     <Compile Include="Tracking\Helpers\LazyInit.cs" />
     <Compile Include="Tracking\Helpers\WindowHelper.cs" />
     <Compile Include="Tracking\UsageTracker.cs" />

@@ -211,12 +211,12 @@ namespace AppsTracker
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            LoggingStatus loggingStatus = (LoggingStatus)value;
+            TrackingStatus loggingStatus = (TrackingStatus)value;
             switch (loggingStatus)
             {
-                case LoggingStatus.Running:
+                case TrackingStatus.Running:
                     return "/Resources/stop.png";
-                case LoggingStatus.Stopped:
+                case TrackingStatus.Stopped:
                     return "/Resources/play.png";
                 default:
                     return null;
@@ -228,9 +228,9 @@ namespace AppsTracker
             switch (value as string)
             {
                 case "c":
-                    return LoggingStatus.Stopped;
+                    return TrackingStatus.Stopped;
                 case "4":
-                    return LoggingStatus.Running;
+                    return TrackingStatus.Running;
                 default:
                     return null;
             }

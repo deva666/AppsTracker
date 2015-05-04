@@ -138,7 +138,7 @@ namespace AppsTracker.Service
 
             var totalFiltered = logs.Where(l => days.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)) && selectedWindows.Contains(l.Window.Title));
 
-            List<WindowDurationOverview> result = new List<WindowDurationOverview>();
+            IList<WindowDurationOverview> result = new List<WindowDurationOverview>();
 
             var projected = from l in totalFiltered
                             group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day } into grp

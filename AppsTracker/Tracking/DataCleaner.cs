@@ -13,17 +13,17 @@ using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
 {
-    [Export(typeof(IComponent))]
-    internal sealed class DataCleaner : IComponent, IDisposable
+    [Export(typeof(IModule))]
+    internal sealed class DataCleaner : IModule
     {
         private ILogCleaner logCleanerInstance;
 
         private LazyInit<ILogCleaner> logCleaner;
 
         [ImportingConstructor]
-        public DataCleaner(ILogCleaner logCleaner)
+        public DataCleaner(ILogCleaner logCleanerInstance)
         {
-            this.logCleanerInstance = logCleaner;
+            this.logCleanerInstance = logCleanerInstance;
         }
 
 

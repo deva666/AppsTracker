@@ -67,14 +67,7 @@ namespace AppsTracker.MVVM
                 string.Format("Type {0} not registed", typeof(T)));
 
             var resolver = childrenMap[typeof(T)];
-            ViewModelBase viewModel = null;
-            resolver.Reference.TryGetTarget(out viewModel);
-            if(viewModel == null)
-            {
-                viewModel = resolver.ValueFactory();
-                resolver.Reference.SetTarget(viewModel);
-            }
-            return viewModel;
+            return GetChildInternal(resolver);
         }
 
 
@@ -84,6 +77,12 @@ namespace AppsTracker.MVVM
             Ensure.Condition<InvalidOperationException>(childrenMap.ContainsKey(type) == true, string.Format("Type {0} not registed", type));
 
             var resolver = childrenMap[type];
+            return GetChildInternal(resolver);
+        }
+
+
+        private static ViewModelBase GetChildInternal(ViewModelResolver resolver)
+        {
             ViewModelBase viewModel = null;
             resolver.Reference.TryGetTarget(out viewModel);
             if (viewModel == null)

@@ -17,8 +17,8 @@ using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
 {
-    [Export(typeof(IComponent))]
-    internal sealed class WindowTracker : IComponent
+    [Export(typeof(IModule))]
+    internal sealed class WindowTracker : IModule
     {
         private bool isLoggingEnabled;
 
