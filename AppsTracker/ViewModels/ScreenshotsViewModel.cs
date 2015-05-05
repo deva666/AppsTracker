@@ -24,7 +24,7 @@ using AppsTracker.Widgets;
 namespace AppsTracker.ViewModels
 {
     [Export, PartCreationPolicy(CreationPolicy.Any)]
-    public sealed class ScreenshotsViewModel : ViewModelBase, ICommunicator
+    public sealed class ScreenshotsViewModel : ViewModelBase
     {
         private const int MAX_FILE_NAME_LENGTH = 245;
 
@@ -32,6 +32,8 @@ namespace AppsTracker.ViewModels
         private readonly ISqlSettingsService settingsService;
         private readonly ILoggingService loggingService;
         private readonly IWindowService windowService;
+        private readonly IMediator mediator;
+
 
         public override string Title
         {
@@ -108,27 +110,24 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public IMediator Mediator
-        {
-            get { return MVVM.Mediator.Instance; }
-        }
-
 
         [ImportingConstructor]
         public ScreenshotsViewModel(IDataService dataService,
                                     ISqlSettingsService settingsService,
                                     ILoggingService loggingService,
-                                    IWindowService windowService)
+                                    IWindowService windowService,
+                                    IMediator mediator)
         {
             this.dataService = dataService;
             this.settingsService = settingsService;
             this.loggingService = loggingService;
             this.windowService = windowService;
+            this.mediator = mediator;
 
             logList = new AsyncProperty<IEnumerable<Log>>(GetLogs, this);
 
-            Mediator.Register(MediatorMessages.RefreshLogs, new Action(logList.Reload));
             SelectedDate = DateTime.Today;
+            this.mediator.Register(MediatorMessages.RefreshLogs, new Action(logList.Reload));
         }
 
 

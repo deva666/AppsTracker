@@ -17,10 +17,12 @@ using AppsTracker.Service;
 namespace AppsTracker.ViewModels
 {
     [Export, PartCreationPolicy(CreationPolicy.Any)]
-    public sealed class ScreenshotsStatsViewModel : ViewModelBase, ICommunicator
+    public sealed class ScreenshotsStatsViewModel : ViewModelBase
     {
         private readonly IStatsService statsService;
         private readonly ILoggingService loggingService;
+        private readonly IMediator mediator;
+
 
         public override string Title
         {
@@ -66,11 +68,6 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public IMediator Mediator
-        {
-            get { return MVVM.Mediator.Instance; }
-        }
-
 
         [ImportingConstructor]
         public ScreenshotsStatsViewModel(IStatsService statsService, ILoggingService loggingService)
@@ -81,7 +78,7 @@ namespace AppsTracker.ViewModels
             screenshotList = new AsyncProperty<IEnumerable<ScreenshotModel>>(GetScreenshots, this);
             dailyScreenshotsList = new AsyncProperty<IEnumerable<DailyScreenshotModel>>(GetDailyScreenshots, this);
 
-            Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadAll));
+            this.mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadAll));
         }
 
 

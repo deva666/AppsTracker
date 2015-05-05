@@ -28,6 +28,8 @@ namespace AppsTracker.Tracking
         private readonly IWindowNotifier windowNotifierInstance;
         private readonly ISyncContext syncContext;
         private readonly IScreenshotTracker screenshotTracker;
+        private readonly IWindowHelper windowHelper;
+        private readonly IMediator mediator;
 
         private LazyInit<IWindowNotifier> windowNotifier;
 
@@ -38,13 +40,19 @@ namespace AppsTracker.Tracking
         private Setting settings;
 
         [ImportingConstructor]
-        public WindowTracker(IWindowNotifier windowNotifier, ILoggingService loggingService
-            , IScreenshotTracker screenshotTracker, ISyncContext syncContext)
+        public WindowTracker(IWindowNotifier windowNotifier,
+                             ILoggingService loggingService,
+                             IScreenshotTracker screenshotTracker,
+                             ISyncContext syncContext,
+                             IWindowHelper windowHelper,
+                             IMediator mediator)
         {
             this.loggingService = loggingService;
             this.windowNotifierInstance = windowNotifier;
             this.screenshotTracker = screenshotTracker;
             this.syncContext = syncContext;
+            this.windowHelper = windowHelper;
+            this.mediator = mediator;
         }
 
         public void SettingsChanged(Setting settings)
@@ -71,8 +79,8 @@ namespace AppsTracker.Tracking
 
             ConfigureComponents();
 
-            Mediator.Register(MediatorMessages.STOP_LOGGING, new Action(StopLogging));
-            Mediator.Register(MediatorMessages.RESUME_LOGGING, new Action(ResumeLogging));
+            mediator.Register(MediatorMessages.STOP_LOGGING, new Action(StopLogging));
+            mediator.Register(MediatorMessages.RESUME_LOGGING, new Action(ResumeLogging));
         }
 
         private async void OnScreenshotTaken(object sender, ScreenshotEventArgs e)
@@ -99,8 +107,8 @@ namespace AppsTracker.Tracking
             if (isLoggingEnabled == false)
                 return;
 
-            if (activeWindowTitle != WindowHelper.GetActiveWindowName())
-                OnWindowChange(WindowHelper.GetActiveWindowName(), WindowHelper.GetActiveWindowAppInfo());
+            if (activeWindowTitle != windowHelper.GetActiveWindowName())
+                OnWindowChange(windowHelper.GetActiveWindowName(), windowHelper.GetActiveWindowAppInfo());
         }
 
         private void WindowChanging(object sender, WindowChangedArgs e)
@@ -153,7 +161,7 @@ namespace AppsTracker.Tracking
         private void NewAppAdded(IAppInfo appInfo)
         {
             var newApp = loggingService.GetApp(appInfo);
-            Mediator.NotifyColleagues(MediatorMessages.ApplicationAdded, newApp);
+            mediator.NotifyColleagues(MediatorMessages.ApplicationAdded, newApp);
         }
 
         private void StopLogging()
@@ -165,11 +173,6 @@ namespace AppsTracker.Tracking
         private void ResumeLogging()
         {
             isLoggingEnabled = settings.LoggingEnabled;
-        }
-
-        public IMediator Mediator
-        {
-            get { return MVVM.Mediator.Instance; }
         }
 
         public void Dispose()

@@ -23,6 +23,7 @@ namespace AppsTracker.ViewModels
         private const string SETTINGS_SAVED_MSG = "settings saved";
 
         private readonly ICategoriesService categoriesService;
+        private readonly IMediator mediator;
         private readonly List<AppCategory> categoriesToDelete = new List<AppCategory>();
 
 
@@ -163,11 +164,13 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public SettingsAppCategoriesViewModel(ICategoriesService categoriesService)
+        public SettingsAppCategoriesViewModel(ICategoriesService categoriesService, IMediator mediator)
         {
             this.categoriesService = categoriesService;
+            this.mediator = mediator;
+
             LoadContent();
-            Mediator.Instance.Register<Aplication>(MediatorMessages.ApplicationAdded, AppAdded);
+            this.mediator.Register<Aplication>(MediatorMessages.ApplicationAdded, AppAdded);
         }
 
 

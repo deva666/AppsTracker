@@ -21,7 +21,7 @@ namespace AppsTracker.Tracking
         private bool isLoggingEnabled;
 
         private readonly ILoggingService loggingService;
-
+        private readonly IMediator mediator;
         private readonly IIdleNotifier idleNotifierInstance;
 
         private LazyInit<IIdleNotifier> idleNotifier;
@@ -34,10 +34,13 @@ namespace AppsTracker.Tracking
         private Setting settings;
 
         [ImportingConstructor]
-        public UsageTracker(IIdleNotifier idleNotifier, ILoggingService loggingService)
+        public UsageTracker(IIdleNotifier idleNotifierInstance,
+                            ILoggingService loggingService,
+                            IMediator mediator)
         {
             this.loggingService = loggingService;
-            idleNotifierInstance = idleNotifier;
+            this.idleNotifierInstance = idleNotifierInstance;
+            this.mediator = mediator;
         }
 
 
@@ -85,7 +88,7 @@ namespace AppsTracker.Tracking
 
         private void IdleStopped(object sender, EventArgs e)
         {
-            Mediator.NotifyColleagues(MediatorMessages.RESUME_LOGGING);
+            mediator.NotifyColleagues(MediatorMessages.RESUME_LOGGING);
             if (currentUsageIdle == null)
                 return;
 
@@ -101,7 +104,7 @@ namespace AppsTracker.Tracking
                 return;
 
             currentUsageIdle = new Usage(loggingService.UserID) { SelfUsageID = loggingService.UsageID };
-            Mediator.NotifyColleagues(MediatorMessages.STOP_LOGGING);
+            mediator.NotifyColleagues(MediatorMessages.STOP_LOGGING);
         }
 
 
@@ -112,7 +115,7 @@ namespace AppsTracker.Tracking
                 case Microsoft.Win32.PowerModes.Resume:
                     InitLogin();
                     Configure();
-                    Mediator.NotifyColleagues(MediatorMessages.RESUME_LOGGING);
+                    mediator.NotifyColleagues(MediatorMessages.RESUME_LOGGING);
                     Microsoft.Win32.SystemEvents.SessionSwitch += SessionSwitch;
                     break;
                 case Microsoft.Win32.PowerModes.StatusChange:
@@ -122,11 +125,10 @@ namespace AppsTracker.Tracking
                     //If it's going to sleep, then don't log this as computer locked
                     isLoggingEnabled = false;
                     Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;
-                    Mediator.NotifyColleagues(MediatorMessages.STOP_LOGGING);
+                    mediator.NotifyColleagues(MediatorMessages.STOP_LOGGING);
                     Finish();
                     break;
             }
-
         }
 
 
@@ -221,12 +223,6 @@ namespace AppsTracker.Tracking
             Finish();
             Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;
             Microsoft.Win32.SystemEvents.PowerModeChanged -= PowerModeChanged;
-        }
-
-
-        public IMediator Mediator
-        {
-            get { return MVVM.Mediator.Instance; }
         }
     }
 }

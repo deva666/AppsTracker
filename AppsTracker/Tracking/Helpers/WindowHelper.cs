@@ -6,16 +6,18 @@
  */
 #endregion
 
-using AppsTracker.Data.Utils;
 using System;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Text;
+using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Tracking
 {
-    internal sealed class WindowHelper
+    [Export(typeof(IWindowHelper))]
+    internal sealed class WindowHelper : IWindowHelper
     {
-        public static string GetActiveWindowName()
+        public string GetActiveWindowName()
         {
             IntPtr foregroundWindow = WinAPI.GetForegroundWindow();
             StringBuilder windowTitle = new StringBuilder(WinAPI.GetWindowTextLength(foregroundWindow) + 1);
@@ -27,12 +29,12 @@ namespace AppsTracker.Tracking
             return "No Title";
         }
 
-        public static IntPtr GetActiveWindowHandle()
+        public IntPtr GetActiveWindowHandle()
         {
             return WinAPI.GetForegroundWindow();
         }
 
-        public static IAppInfo GetActiveWindowAppInfo()
+        public IAppInfo GetActiveWindowAppInfo()
         {
             var handle = GetActiveWindowHandle();
             if (handle == IntPtr.Zero)
@@ -42,7 +44,7 @@ namespace AppsTracker.Tracking
             return AppInfo.GetAppInfo(process);
         }
 
-        private static Process GetProcessFromHandle(IntPtr hWnd)
+        private Process GetProcessFromHandle(IntPtr hWnd)
         {
             uint processID = 0;
             if (hWnd != IntPtr.Zero)

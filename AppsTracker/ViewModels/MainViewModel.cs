@@ -17,11 +17,12 @@ using AppsTracker.Service;
 namespace AppsTracker.ViewModels
 {
     [Export, PartCreationPolicy(CreationPolicy.Any)]
-    public sealed class MainViewModel : HostViewModel, ICommunicator
+    public sealed class MainViewModel : HostViewModel
     {
         private readonly IDataService dataService;
         private readonly ISqlSettingsService settingsService;
         private readonly ILoggingService loggingService;
+        private readonly IMediator mediator;
 
         private bool isPopupCalendarOpen = false;
 
@@ -81,7 +82,7 @@ namespace AppsTracker.ViewModels
                 IsFilterApplied = true;
                 loggingService.DateFrom = value;
                 PropertyChanging("DateFrom");
-                Mediator.NotifyColleagues(MediatorMessages.RefreshLogs);
+                mediator.NotifyColleagues(MediatorMessages.RefreshLogs);
             }
         }
 
@@ -96,7 +97,7 @@ namespace AppsTracker.ViewModels
                 IsFilterApplied = true;
                 loggingService.DateTo = value;
                 PropertyChanging("DateTo");
-                Mediator.NotifyColleagues(MediatorMessages.RefreshLogs);
+                mediator.NotifyColleagues(MediatorMessages.RefreshLogs);
             }
         }
 
@@ -228,15 +229,12 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public IMediator Mediator
-        {
-            get { return MVVM.Mediator.Instance; }
-        }
 
         [ImportingConstructor]
         public MainViewModel(IDataService dataService,
                              ISqlSettingsService settingsService,
                              ILoggingService loggingService,
+                             IMediator mediator,
                              ExportFactory<DataHostViewModel> dataVMFactory,
                              ExportFactory<StatisticsHostViewModel> statisticsVMFactory,
                              ExportFactory<SettingsHostViewModel> settingsVMFactory)
@@ -244,6 +242,7 @@ namespace AppsTracker.ViewModels
             this.dataService = dataService;
             this.settingsService = settingsService;
             this.loggingService = loggingService;
+            this.mediator = mediator;
 
             RegisterChild(() =>
             {
@@ -310,7 +309,7 @@ namespace AppsTracker.ViewModels
             loggingService.ClearDateFilter();
             PropertyChanging("DateFrom");
             PropertyChanging("DateTo");
-            Mediator.NotifyColleagues(MediatorMessages.RefreshLogs);
+            mediator.NotifyColleagues(MediatorMessages.RefreshLogs);
         }
 
         private void CloseDatesPopup()

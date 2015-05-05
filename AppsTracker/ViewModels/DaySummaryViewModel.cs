@@ -18,11 +18,13 @@ using AppsTracker.Service;
 namespace AppsTracker.ViewModels
 {
     [Export, PartCreationPolicy(CreationPolicy.Any)]
-    public sealed class DaySummaryViewModel : ViewModelBase, ICommunicator
+    public sealed class DaySummaryViewModel : ViewModelBase
     {
         private readonly IDataService dataService;
         private readonly IStatsService statsService;
         private readonly ILoggingService loggingService;
+        private readonly IMediator mediator;
+
 
         public override string Title
         {
@@ -139,20 +141,17 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public IMediator Mediator
-        {
-            get { return MVVM.Mediator.Instance; }
-        }
-
 
         [ImportingConstructor]
         public DaySummaryViewModel(IDataService dataService,
                                    IStatsService statsService,
-                                   ILoggingService loggingService)
+                                   ILoggingService loggingService,
+                                   IMediator mediator)
         {
             this.dataService = dataService;
             this.statsService = statsService;
             this.loggingService = loggingService;
+            this.mediator = mediator;
 
             logsList = new AsyncProperty<IEnumerable<LogSummary>>(GetLogSummary, this);
             appsList = new AsyncProperty<IEnumerable<AppSummary>>(GetAppsSummary, this);
@@ -161,7 +160,7 @@ namespace AppsTracker.ViewModels
             categoryList = new AsyncProperty<IEnumerable<CategoryDuration>>(GetCategories, this);
             dayDuration = new AsyncProperty<string>(GetDayDuration, this);
 
-            Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadContent));
+            this.mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadContent));
         }
 
 

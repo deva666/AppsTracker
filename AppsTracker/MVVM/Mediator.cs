@@ -1,14 +1,11 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 
 namespace AppsTracker.MVVM
 {
-    public class Mediator : IMediator
+    [Export(typeof(IMediator))]
+    public sealed class Mediator : IMediator
     {
-        private static readonly Lazy<Mediator> _lazy = new Lazy<Mediator>(() => new Mediator());
-        public static Mediator Instance { get { return _lazy.Value; } }
-
-        private Mediator() { }
-
         private readonly MessageToActionsMap _invocationList = new MessageToActionsMap();
         private readonly MessageToActionsMap _parameterInvocationList = new MessageToActionsMap();
 

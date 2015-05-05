@@ -18,6 +18,7 @@ namespace AppsTracker.Tests.Core.MVVM
     {
         private readonly string _parameterMessage = "Callback with parameter";
         private readonly string _emptyMessage = "Empty callback";
+        private readonly Mediator mediator = new Mediator();
 
         private bool _typesMatch = false;
         private bool _messageMatch = false;
@@ -26,15 +27,15 @@ namespace AppsTracker.Tests.Core.MVVM
         [TestInitialize]
         public void Init()
         {
-            Mediator.Instance.Register(_parameterMessage, new Action<object>(ParameterCallback));
-            Mediator.Instance.Register(_emptyMessage, new Action(EmptyCallback));
+            mediator.Register(_parameterMessage, new Action<object>(ParameterCallback));
+            mediator.Register(_emptyMessage, new Action(EmptyCallback));
         }
 
         [TestMethod]
         public void TestMediatorNotification()
         {
-            Mediator.Instance.NotifyColleagues<MediatorParamMock>(_parameterMessage, new MediatorParamMock() { Message = "Success" });
-            Mediator.Instance.NotifyColleagues(_emptyMessage);
+            mediator.NotifyColleagues<MediatorParamMock>(_parameterMessage, new MediatorParamMock() { Message = "Success" });
+            mediator.NotifyColleagues(_emptyMessage);
             Assert.IsTrue(_typesMatch, "Mediator callback parameter type mismatch");
             Assert.IsTrue(_messageMatch, "Mediator callback parameter message mismatch");
             Assert.IsTrue(_callbackTriggered, "Mediator callback not triggered");

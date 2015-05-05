@@ -18,11 +18,12 @@ using AppsTracker.Service;
 namespace AppsTracker.ViewModels
 {
     [Export, PartCreationPolicy(CreationPolicy.Any)]
-    public sealed class AppDetailsViewModel : ViewModelBase, ICommunicator
+    public sealed class AppDetailsViewModel : ViewModelBase
     {
         private readonly IDataService dataService;
         private readonly IStatsService statsService;
         private readonly ILoggingService loggingService;
+        private readonly IMediator mediator;
 
         public override string Title
         {
@@ -138,27 +139,24 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public IMediator Mediator
-        {
-            get { return MVVM.Mediator.Instance; }
-        }
-
         [ImportingConstructor]
         public AppDetailsViewModel(IDataService dataService,
                                    IStatsService statsService,
-                                   ILoggingService loggingService)
+                                   ILoggingService loggingService,
+                                   IMediator mediator)
         {
             this.dataService = dataService;
             this.statsService = statsService;
             this.loggingService = loggingService;
+            this.mediator = mediator;
 
             appList = new AsyncProperty<IEnumerable<Aplication>>(GetApps, this);
             appSummaryList = new AsyncProperty<IEnumerable<AppSummary>>(GetAppSummary, this);
             windowSummaryList = new AsyncProperty<IEnumerable<WindowSummary>>(GetWindowSummary, this);
             windowDurationList = new AsyncProperty<IEnumerable<WindowDurationOverview>>(GetWindowDuration, this);
 
-            Mediator.Register(MediatorMessages.ApplicationAdded, new Action<Aplication>(ApplicationAdded));
-            Mediator.Register(MediatorMessages.RefreshLogs, new Action(appList.Reload));
+            this.mediator.Register(MediatorMessages.ApplicationAdded, new Action<Aplication>(ApplicationAdded));
+            this.mediator.Register(MediatorMessages.RefreshLogs, new Action(appList.Reload));
         }
 
 
