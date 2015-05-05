@@ -14,21 +14,15 @@
         MouseLeftButtonDown="Window_MouseLeftButtonDown_1"
         Closing="Window_Closing">
     <Window.Resources>
-        <local:ConvertIntToVisibilityCB x:Key="convertIntToVisibility" />
-        <local:ConvertBoolToVisibility x:Key="convertBoolToVisibility" />
-        <local:ConvertBoolToVisibilityReverse x:Key="convertBoolToVisReverse" />
         <local:ConvertDateFilter x:Key="convertDateFilter" />
-        <local:ConvertComboBoxCountToVisibility x:Key="convertComboBoxVisibility" />
         <local:ConvertPageNameToVisibility x:Key="convertPageNameToVisibility" />
         <local:ConvertPageNameToVisibilityB x:Key="convertPageNameToVisibilityB" />
         <local:ConvertPageNameToStyle x:Key="convertPageNameToSyle"
                                       SelectedLabelStyle="{StaticResource SelectedLabelStyle}"
                                       SelectableLabelStyle="{StaticResource SelectableLabelStyle}" />
-        <local:ConvertLoggingAction x:Key="convertLoggingAction" />
         <local:ConvertLoggingStatus x:Key="convertLoggingStatus" />
         <local:ConvertLoggingVisibiltyPlay x:Key="convertLoggingPlay" />
         <local:ConvertLoggingVisibiltyStop x:Key="convertLoggingStop" />
-        <local:ConvertTrialDates x:Key="convertTrialDates" />
 
         <Storyboard x:Key="themeChangeAnimation">
             <ColorAnimation AutoReverse="False"
@@ -125,8 +119,7 @@
                Margin="0,10,190,0">
             <Label.InputBindings>
                 <MouseBinding Gesture="LeftClick"
-                              Command="{Binding GoToSettingsCommand}"
-                              />
+                              Command="{Binding GoToSettingsCommand}" />
             </Label.InputBindings>
         </Label>
 
@@ -146,8 +139,7 @@
                                      Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=data}">
                 <customControls:FadingUC.InputBindings>
                     <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding GoToDataCommand}"
-                                  />
+                                  Command="{Binding GoToDataCommand}" />
                 </customControls:FadingUC.InputBindings>
             </customControls:FadingUC>
             <customControls:FadingUC StringContent="statistics"
@@ -156,8 +148,7 @@
                                      Visibility="{Binding SelectedChild, Converter={StaticResource convertPageNameToVisibilityB}, ConverterParameter=settings}">
                 <customControls:FadingUC.InputBindings>
                     <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding GoToStatsCommand}"
-                                  />
+                                  Command="{Binding GoToStatsCommand}" />
                 </customControls:FadingUC.InputBindings>
             </customControls:FadingUC>
             <customControls:BackButton Style="{DynamicResource BackBtnStyle}"
@@ -166,8 +157,7 @@
                                        Margin="30,4,0,0">
                 <customControls:BackButton.InputBindings>
                     <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding ReturnFromSettingsCommand}"
-                                  />
+                                  Command="{Binding ReturnFromSettingsCommand}" />
                 </customControls:BackButton.InputBindings>
             </customControls:BackButton>
 
@@ -470,7 +460,7 @@
                     </Label.InputBindings>
                 </Label>
             </customControls:FaderContentControl>
-            
+
             <Label ContentStringFormat="DB Size: {0} MB"
                    Style="{DynamicResource LabelStyle}"
                    Foreground="White"
@@ -481,7 +471,5 @@
                    Grid.Column="7">
             </Label>
         </Grid>
-
     </Grid>
-
 </Window>

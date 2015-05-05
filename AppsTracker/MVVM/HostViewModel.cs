@@ -74,7 +74,8 @@ namespace AppsTracker.MVVM
         protected ViewModelBase GetChild(Type type)
         {
             Ensure.NotNull(type);
-            Ensure.Condition<InvalidOperationException>(childrenMap.ContainsKey(type) == true, string.Format("Type {0} not registed", type));
+            Ensure.Condition<InvalidOperationException>(childrenMap.ContainsKey(type) == true,
+                string.Format("Type {0} not registed", type));
 
             var resolver = childrenMap[type];
             return GetChildInternal(resolver);

@@ -14,8 +14,8 @@ namespace AppsTracker.MVVM
 {
     public sealed class AsyncProperty<T> : ObservableObject
     {
-        private IWorker worker;
-        private Func<T> getter;
+        private readonly IWorker worker;
+        private readonly Func<T> getter;
 
         private Task<T> task;
 
