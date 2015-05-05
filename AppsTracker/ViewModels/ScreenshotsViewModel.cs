@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.ComponentModel.Composition;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
@@ -22,7 +23,8 @@ using AppsTracker.Widgets;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class ScreenshotsViewModel : ViewModelBase, ICommunicator
+    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    public sealed class ScreenshotsViewModel : ViewModelBase, ICommunicator
     {
         private const int MAX_FILE_NAME_LENGTH = 245;
 
@@ -112,12 +114,16 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public ScreenshotsViewModel()
+        [ImportingConstructor]
+        public ScreenshotsViewModel(IDataService dataService,
+                                    ISqlSettingsService settingsService,
+                                    ILoggingService loggingService,
+                                    IWindowService windowService)
         {
-            dataService = serviceResolver.Resolve<IDataService>();
-            settingsService = serviceResolver.Resolve<ISqlSettingsService>();
-            loggingService = serviceResolver.Resolve<ILoggingService>();
-            windowService = serviceResolver.Resolve<IWindowService>();
+            this.dataService = dataService;
+            this.settingsService = settingsService;
+            this.loggingService = loggingService;
+            this.windowService = windowService;
 
             logList = new AsyncProperty<IEnumerable<Log>>(GetLogs, this);
 

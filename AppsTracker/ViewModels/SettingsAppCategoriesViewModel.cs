@@ -8,6 +8,7 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
@@ -16,7 +17,8 @@ using AppsTracker.Service;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class SettingsAppCategoriesViewModel : ViewModelBase
+    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    public sealed class SettingsAppCategoriesViewModel : ViewModelBase
     {
         private const string SETTINGS_SAVED_MSG = "settings saved";
 
@@ -160,9 +162,10 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public SettingsAppCategoriesViewModel()
+        [ImportingConstructor]
+        public SettingsAppCategoriesViewModel(ICategoriesService categoriesService)
         {
-            categoriesService = serviceResolver.Resolve<ICategoriesService>();
+            this.categoriesService = categoriesService;
             LoadContent();
             Mediator.Instance.Register<Aplication>(MediatorMessages.ApplicationAdded, AppAdded);
         }

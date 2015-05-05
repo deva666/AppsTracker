@@ -6,6 +6,7 @@
  */
 #endregion
 
+using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using System.Windows.Input;
 using AppsTracker.Hashing;
@@ -14,7 +15,8 @@ using AppsTracker.Service;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class SettingsPasswordViewModel : SettingsBaseViewModel
+    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    public sealed class SettingsPasswordViewModel : SettingsBaseViewModel
     {
         private readonly IWindowService windowService;
 
@@ -23,9 +25,12 @@ namespace AppsTracker.ViewModels
             get { return "MASTER PASSWORD"; }
         }
 
-        public SettingsPasswordViewModel()
+
+        [ImportingConstructor]
+        public SettingsPasswordViewModel(IWindowService windowService, ISqlSettingsService settingsService) 
+            : base(settingsService)
         {
-            windowService = serviceResolver.Resolve<IWindowService>();
+            this.windowService = windowService;
         }
 
         private ICommand setPasswordCommand;

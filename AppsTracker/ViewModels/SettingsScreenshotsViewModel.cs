@@ -6,6 +6,7 @@
  */
 #endregion
 
+using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
@@ -15,7 +16,8 @@ using AppsTracker.Widgets;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class SettingsScreenshotsViewModel : SettingsBaseViewModel
+    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    public sealed class SettingsScreenshotsViewModel : SettingsBaseViewModel
     {
         private readonly ILoggingService loggingService;
 
@@ -89,9 +91,11 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public SettingsScreenshotsViewModel()
+        [ImportingConstructor]
+        public SettingsScreenshotsViewModel(ISqlSettingsService settingsService, ILoggingService loggingService)
+            : base(settingsService)
         {
-            loggingService = serviceResolver.Resolve<ILoggingService>();
+            this.loggingService = loggingService;
         }
 
         private void ChangeScreenshots()

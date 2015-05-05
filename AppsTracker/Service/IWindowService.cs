@@ -1,7 +1,7 @@
 ﻿using System;
 namespace AppsTracker.Service
 {
-    interface IWindowService : IBaseService
+    public interface IWindowService : IBaseService
     {
         void Show(Exception fail);
         void Show(string message, bool showCancel = true);

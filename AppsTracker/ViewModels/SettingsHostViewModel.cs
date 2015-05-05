@@ -8,10 +8,12 @@
 
 using System.Windows.Input;
 using AppsTracker.MVVM;
+using System.ComponentModel.Composition;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class SettingsHostViewModel : HostViewModel
+    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    public sealed class SettingsHostViewModel : HostViewModel
     {
         public override string Title
         {
@@ -23,7 +25,7 @@ namespace AppsTracker.ViewModels
 
         public ICommand GoToGeneralCommand
         {
-            get{ return goToGeneralCommand ?? (goToGeneralCommand = new DelegateCommand(GoToGeneral)); }
+            get { return goToGeneralCommand ?? (goToGeneralCommand = new DelegateCommand(GoToGeneral)); }
         }
 
 
@@ -31,14 +33,14 @@ namespace AppsTracker.ViewModels
 
         public ICommand GoToLoggingCommand
         {
-            get{ return goToLoggingCommand ?? (goToLoggingCommand = new DelegateCommand(GoToLogging)); }
+            get { return goToLoggingCommand ?? (goToLoggingCommand = new DelegateCommand(GoToLogging)); }
         }
 
         private ICommand goToScreenshotsCommand;
 
         public ICommand GoToScreenshotsCommand
         {
-            get{ return goToScreenshotsCommand ?? (goToScreenshotsCommand = new DelegateCommand(GoToScreenshots)); }
+            get { return goToScreenshotsCommand ?? (goToScreenshotsCommand = new DelegateCommand(GoToScreenshots)); }
         }
 
 
@@ -46,7 +48,7 @@ namespace AppsTracker.ViewModels
 
         public ICommand GoToPasswordCommand
         {
-            get{ return goToPasswordCommand ?? (goToPasswordCommand = new DelegateCommand(GoToPassword)); }
+            get { return goToPasswordCommand ?? (goToPasswordCommand = new DelegateCommand(GoToPassword)); }
         }
 
 
@@ -54,17 +56,52 @@ namespace AppsTracker.ViewModels
 
         public ICommand GoToAppCategoriesCommand
         {
-            get{ return goToAppCategoriesCommand ?? (goToAppCategoriesCommand = new DelegateCommand(GoToAppCategories)); }
+            get { return goToAppCategoriesCommand ?? (goToAppCategoriesCommand = new DelegateCommand(GoToAppCategories)); }
         }
 
 
-        public SettingsHostViewModel()
+        [ImportingConstructor]
+        public SettingsHostViewModel(ExportFactory<SettingsGeneralViewModel> generalVMFactory,
+                                     ExportFactory<SettingsLoggingViewModel> loggingVMFactory,
+                                     ExportFactory<SettingsScreenshotsViewModel> screenshotsVMFactory,
+                                     ExportFactory<SettingsPasswordViewModel> passwordVMFactory,
+                                     ExportFactory<SettingsAppCategoriesViewModel> appCategoriesVMFactory)
         {
-            RegisterChild<SettingsGeneralViewModel>(() => new SettingsGeneralViewModel());
-            RegisterChild<SettingsLoggingViewModel>(() => new SettingsLoggingViewModel());
-            RegisterChild<SettingsScreenshotsViewModel>(() => new SettingsScreenshotsViewModel());
-            RegisterChild<SettingsPasswordViewModel>(() => new SettingsPasswordViewModel());
-            RegisterChild<SettingsAppCategoriesViewModel>(() => new SettingsAppCategoriesViewModel());
+            RegisterChild(() =>
+            {
+                using (var context = generalVMFactory.CreateExport())
+                {
+                    return context.Value;
+                }
+            });
+            RegisterChild(() =>
+            {
+                using (var context = loggingVMFactory.CreateExport())
+                {
+                    return context.Value;
+                }
+            });
+            RegisterChild(() =>
+            {
+                using (var context = screenshotsVMFactory.CreateExport())
+                {
+                    return context.Value;
+                }
+            });
+            RegisterChild(() =>
+            {
+                using (var context = passwordVMFactory.CreateExport())
+                {
+                    return context.Value;
+                }
+            });
+            RegisterChild(() =>
+            {
+                using (var context = appCategoriesVMFactory.CreateExport())
+                {
+                    return context.Value;
+                }
+            });
 
             SelectedChild = GetChild<SettingsGeneralViewModel>();
         }
@@ -75,13 +112,13 @@ namespace AppsTracker.ViewModels
             SelectedChild = GetChild<SettingsGeneralViewModel>();
         }
 
-        
+
         private void GoToLogging()
         {
             SelectedChild = GetChild<SettingsLoggingViewModel>();
         }
 
-        
+
         private void GoToScreenshots()
         {
             SelectedChild = GetChild<SettingsScreenshotsViewModel>();

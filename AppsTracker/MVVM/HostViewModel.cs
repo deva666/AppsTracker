@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace AppsTracker.MVVM
 {
-    internal abstract class HostViewModel : ViewModelBase
+    public abstract class HostViewModel : ViewModelBase
     {
         private readonly Dictionary<Type, ViewModelResolver> childrenMap = new Dictionary<Type, ViewModelResolver>();
 

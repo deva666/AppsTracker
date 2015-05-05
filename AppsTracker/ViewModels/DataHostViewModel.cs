@@ -8,10 +8,12 @@
 
 using System.Windows.Input;
 using AppsTracker.MVVM;
+using System.ComponentModel.Composition;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class DataHostViewModel : HostViewModel
+    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    public sealed class DataHostViewModel : HostViewModel
     {
         public override string Title
         {
@@ -19,54 +21,75 @@ namespace AppsTracker.ViewModels
         }
 
 
-		private ICommand goToAppDetailsCommand;
+        private ICommand goToAppDetailsCommand;
 
-		public ICommand GoToAppDetailsCommand
-		{
-			get { return goToAppDetailsCommand ?? (goToAppDetailsCommand = new DelegateCommand (GoToAppDetails));}
-		}
-
-
-		private ICommand goToScreenshotsCommand;
-
-		public ICommand GoToScreenshotsCommand
-		{
-			get{ return goToScreenshotsCommand ?? (goToScreenshotsCommand = new DelegateCommand (GoToScreenshots));}
-		}
-
-
-		private ICommand goToDaySummaryCommand;
-
-		public ICommand GoToDaySummaryCommand
-		{
-			get{ return goToDaySummaryCommand ?? (goToDaySummaryCommand = new DelegateCommand (GoToDaySummary)); }
-		}
-
-        public DataHostViewModel()
+        public ICommand GoToAppDetailsCommand
         {
-            RegisterChild(() => new AppDetailsViewModel());
-            RegisterChild(() => new ScreenshotsViewModel());
-            RegisterChild(() => new DaySummaryViewModel());
-
-			SelectedChild = GetChild<AppDetailsViewModel>();
+            get { return goToAppDetailsCommand ?? (goToAppDetailsCommand = new DelegateCommand(GoToAppDetails)); }
         }
 
 
-		private void GoToAppDetails()
-		{
-			SelectedChild = GetChild<AppDetailsViewModel> ();
-		}
+        private ICommand goToScreenshotsCommand;
+
+        public ICommand GoToScreenshotsCommand
+        {
+            get { return goToScreenshotsCommand ?? (goToScreenshotsCommand = new DelegateCommand(GoToScreenshots)); }
+        }
 
 
-		private void GoToScreenshots()
-		{
-			SelectedChild = GetChild<ScreenshotsViewModel> ();
-		}
+        private ICommand goToDaySummaryCommand;
+
+        public ICommand GoToDaySummaryCommand
+        {
+            get { return goToDaySummaryCommand ?? (goToDaySummaryCommand = new DelegateCommand(GoToDaySummary)); }
+        }
+
+        [ImportingConstructor]
+        public DataHostViewModel(ExportFactory<AppDetailsViewModel> appDetailsVMFactory,
+                                 ExportFactory<ScreenshotsViewModel> screenshotsVMFactory,
+                                 ExportFactory<DaySummaryViewModel> daySummaryVMFactory)
+        {
+            RegisterChild(() =>
+            {
+                using (var context = appDetailsVMFactory.CreateExport())
+                {
+                    return context.Value;
+                }
+            });
+            RegisterChild(() =>
+            {
+                using (var context = screenshotsVMFactory.CreateExport())
+                {
+                    return context.Value;
+                }
+            });
+            RegisterChild(() =>
+            {
+                using (var context = daySummaryVMFactory.CreateExport())
+                {
+                    return context.Value;
+                }
+            });
+
+            SelectedChild = GetChild<AppDetailsViewModel>();
+        }
 
 
-		private void GoToDaySummary()
-		{
-			SelectedChild = GetChild<DaySummaryViewModel> ();
-		}
+        private void GoToAppDetails()
+        {
+            SelectedChild = GetChild<AppDetailsViewModel>();
+        }
+
+
+        private void GoToScreenshots()
+        {
+            SelectedChild = GetChild<ScreenshotsViewModel>();
+        }
+
+
+        private void GoToDaySummary()
+        {
+            SelectedChild = GetChild<DaySummaryViewModel>();
+        }
     }
 }

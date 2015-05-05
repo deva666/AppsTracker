@@ -214,7 +214,7 @@
     <Compile Include="Service\XmlSettingsService.cs" />
     <Compile Include="ViewModels\CategoryStatsViewModel.cs" />
     <Compile Include="ViewModels\SettingsAppCategoriesViewModel.cs" />
-    <Compile Include="Views\IWindow.cs" />
+    <Compile Include="Views\IShell.cs" />
     <Compile Include="Views\Settings\AppCategoriesView.xaml.cs">
       <DependentUpon>AppCategoriesView.xaml</DependentUpon>
     </Compile>

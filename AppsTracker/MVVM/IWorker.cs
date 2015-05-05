@@ -1,7 +1,7 @@
 ﻿
 namespace AppsTracker.MVVM
 {
-    internal interface IWorker
+    public interface IWorker
     {
         bool Working { get; set; }
     }

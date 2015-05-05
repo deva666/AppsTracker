@@ -5,20 +5,20 @@ using AppsTracker.Widgets;
 namespace AppsTracker.Service
 {
     [Export(typeof(IWindowService))]
-    internal sealed class WindowService : IWindowService
+    public sealed class WindowService : IWindowService
     {
         private readonly ISqlSettingsService sqlSettingsService;
         private readonly IXmlSettingsService xmlSettingsService;
         private readonly ITrayIcon trayIcon;
-        private readonly ExportFactory<IWindow> mainWindowValueFactory;
+        private readonly ExportFactory<IShell> mainWindowValueFactory;
         private readonly ExportFactory<IPasswordWindow> passwordWindowValueFactory;
 
-        private IWindow mainWindow;     
+        private IShell mainWindow;     
 
 
         [ImportingConstructor]
         public WindowService(ISqlSettingsService sqlSettingsService, IXmlSettingsService xmlSettingsService,
-                             ITrayIcon trayIcon, ExportFactory<IWindow> mainWindowValueFactory,
+                             ITrayIcon trayIcon, ExportFactory<IShell> mainWindowValueFactory,
                              ExportFactory<IPasswordWindow> passwordWindowValueFactory)
         {
             this.sqlSettingsService = sqlSettingsService;

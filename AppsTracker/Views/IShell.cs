@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AppsTracker.Widgets
 {
-    public interface IWindow 
+    public interface IShell 
     {
         event CancelEventHandler Closing;
 

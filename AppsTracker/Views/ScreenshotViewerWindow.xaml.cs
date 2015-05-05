@@ -16,7 +16,6 @@ namespace AppsTracker.Widgets
             InitializeComponent();
             this.WindowState = System.Windows.WindowState.Maximized;
             this.Loaded += (s, e) => ScaleLoaded();
-            this.Closing += (s, e) => { viewModel.Dispose(); viewModel = null; };
         }
 
         public ScreenshotViewerWindow(IEnumerable<AppsTracker.Data.Models.Screenshot> screenshotCollection)

@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.ComponentModel.Composition;
 using System.Windows.Input;
 using AppsTracker.MVVM;
 using AppsTracker.Service;
@@ -15,13 +16,15 @@ using Microsoft.Win32;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class SettingsGeneralViewModel : SettingsBaseViewModel
+    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    public sealed class SettingsGeneralViewModel : SettingsBaseViewModel
     {
         public override string Title
         {
             get { return "GENERAL"; }
         }
 
+        private readonly IWindowService windowService;
 
         private ICommand showAboutWindowCommand;
 
@@ -47,7 +50,12 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public SettingsGeneralViewModel() : base() { }
+        [ImportingConstructor]
+        public SettingsGeneralViewModel(IWindowService windowService, ISqlSettingsService settingsService)
+            : base(settingsService)
+        {
+            this.windowService = windowService;
+        }
 
 
         private void ShowAboutWindow()
@@ -76,7 +84,7 @@ namespace AppsTracker.ViewModels
             }
             catch (System.Security.SecurityException)
             {
-                serviceResolver.Resolve<IWindowService>().ShowDialog("You don't have administrative privilages to change this option."
+                windowService.ShowDialog("You don't have administrative privilages to change this option."
                                         + Environment.NewLine + "Please try running the app as Administrator." + Environment.NewLine
                                         + "Right click on the app or shortcut and select 'Run as Adminstrator'.", false);
             }

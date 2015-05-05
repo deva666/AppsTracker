@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace AppsTracker.MVVM
 {
-    public class ObservableObject : INotifyPropertyChanged
+    public abstract class ObservableObject : INotifyPropertyChanged
     {
         protected void PropertyChanging(string propertyName)
         {

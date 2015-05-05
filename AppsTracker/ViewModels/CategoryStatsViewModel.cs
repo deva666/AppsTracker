@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.ComponentModel.Composition;
 using System.Collections.Generic;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
@@ -15,7 +16,8 @@ using AppsTracker.Service;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class CategoryStatsViewModel : ViewModelBase, ICommunicator
+    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    public sealed class CategoryStatsViewModel : ViewModelBase, ICommunicator
     {
         private readonly IStatsService statsService;
         private readonly ILoggingService loggingService;
@@ -68,14 +70,15 @@ namespace AppsTracker.ViewModels
             get { return MVVM.Mediator.Instance; }
         }
 
-
-        public CategoryStatsViewModel()
+        [ImportingConstructor]
+        public CategoryStatsViewModel(IStatsService statsService, ILoggingService loggingService)
         {
-            statsService = serviceResolver.Resolve<IStatsService>();
-            loggingService = serviceResolver.Resolve<ILoggingService>();
+            this.statsService = statsService;
+            this.loggingService = loggingService;
 
             categoryList = new AsyncProperty<IEnumerable<CategoryDuration>>(GetCategories, this);
             dailyCategoryList = new AsyncProperty<IEnumerable<DailyCategoryDuration>>(GetDailyCategories, this);
+            
             Mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadAll));
         }
 

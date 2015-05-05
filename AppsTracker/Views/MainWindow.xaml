@@ -125,8 +125,8 @@
                Margin="0,10,190,0">
             <Label.InputBindings>
                 <MouseBinding Gesture="LeftClick"
-                              Command="{Binding ChangePageCommand}"
-                              CommandParameter="{x:Type viewModels:SettingsHostViewModel}" />
+                              Command="{Binding GoToSettingsCommand}"
+                              />
             </Label.InputBindings>
         </Label>
 

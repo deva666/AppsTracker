@@ -6,12 +6,15 @@
  */
 #endregion
 
+using System.ComponentModel.Composition;
 using System.Windows.Input;
 using AppsTracker.MVVM;
+using AppsTracker.Service;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class SettingsLoggingViewModel : SettingsBaseViewModel
+    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    public sealed class SettingsLoggingViewModel : SettingsBaseViewModel
     {
         public override string Title
         {
@@ -60,8 +63,9 @@ namespace AppsTracker.ViewModels
             get { return showPopUpCommand ?? (showPopUpCommand = new DelegateCommand(ShowPopUp)); }
         }
 
-        public SettingsLoggingViewModel()
-            : base()
+        [ImportingConstructor]
+        public SettingsLoggingViewModel(ISqlSettingsService settingsService)
+            : base(settingsService)
         {
 
         }

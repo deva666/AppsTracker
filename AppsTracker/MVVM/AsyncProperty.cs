@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace AppsTracker.MVVM
 {
-    internal class AsyncProperty<T> : ObservableObject
+    public sealed class AsyncProperty<T> : ObservableObject
     {
         private IWorker worker;
         private Func<T> getter;

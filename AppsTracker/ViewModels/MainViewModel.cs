@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
@@ -15,7 +16,8 @@ using AppsTracker.Service;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class MainViewModel : HostViewModel, ICommunicator
+    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    public sealed class MainViewModel : HostViewModel, ICommunicator
     {
         private readonly IDataService dataService;
         private readonly ISqlSettingsService settingsService;
@@ -231,16 +233,41 @@ namespace AppsTracker.ViewModels
             get { return MVVM.Mediator.Instance; }
         }
 
-
-        public MainViewModel()
+        [ImportingConstructor]
+        public MainViewModel(IDataService dataService,
+                             ISqlSettingsService settingsService,
+                             ILoggingService loggingService,
+                             ExportFactory<DataHostViewModel> dataVMFactory,
+                             ExportFactory<StatisticsHostViewModel> statisticsVMFactory,
+                             ExportFactory<SettingsHostViewModel> settingsVMFactory)
         {
-            dataService = serviceResolver.Resolve<IDataService>();
-            settingsService = serviceResolver.Resolve<ISqlSettingsService>();
-            loggingService = serviceResolver.Resolve<ILoggingService>();
+            this.dataService = dataService;
+            this.settingsService = settingsService;
+            this.loggingService = loggingService;
 
-            RegisterChild(() => new DataHostViewModel());
-            RegisterChild(() => new StatisticsHostViewModel());
-            RegisterChild(() => new SettingsHostViewModel());
+            RegisterChild(() =>
+            {
+                using (var context = dataVMFactory.CreateExport())
+                {
+                    return context.Value;
+                }
+            });
+
+            RegisterChild(() =>
+            {
+                using (var context = statisticsVMFactory.CreateExport())
+                {
+                    return context.Value;
+                }
+            });
+
+            RegisterChild(() =>
+            {
+                using (var context = settingsVMFactory.CreateExport())
+                {
+                    return context.Value;
+                }
+            });
 
             SelectedChild = GetChild<DataHostViewModel>();
         }
@@ -249,14 +276,6 @@ namespace AppsTracker.ViewModels
         private void GetUsers()
         {
             userCollection = dataService.GetFiltered<Uzer>(u => u.UserID > 0);
-        }
-
-
-        protected override void ChangePage(object parameter)
-        {
-            ToSettings = (SelectedChild == null || SelectedChild.GetType() == (Type)parameter)
-                                                        ? ToSettings : SelectedChild.GetType();
-            base.ChangePage(parameter);
         }
 
 
@@ -347,6 +366,7 @@ namespace AppsTracker.ViewModels
                 throw new InvalidOperationException("to settings should be assigned a value");
 
             SelectedChild = GetChild(toSettings);
+            toSettings = null;
         }
     }
 }

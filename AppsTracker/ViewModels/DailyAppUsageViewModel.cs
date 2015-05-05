@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.ComponentModel.Composition;
 using System.Collections.Generic;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
@@ -14,7 +15,8 @@ using AppsTracker.Service;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class DailyAppUsageViewModel : ViewModelBase, ICommunicator
+    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    public sealed class DailyAppUsageViewModel : ViewModelBase, ICommunicator
     {
         private readonly IStatsService statsService;
         private readonly ILoggingService loggingService;
@@ -43,10 +45,11 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public DailyAppUsageViewModel()
+        [ImportingConstructor]
+        public DailyAppUsageViewModel(IStatsService statsService, ILoggingService loggingService)
         {
-            statsService = serviceResolver.Resolve<IStatsService>();
-            loggingService = serviceResolver.Resolve<ILoggingService>();
+            this.statsService = statsService;
+            this.loggingService = loggingService;
 
             appsList = new AsyncProperty<IEnumerable<AppDurationOverview>>(GetApps, this);
 

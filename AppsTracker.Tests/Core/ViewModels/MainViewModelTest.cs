@@ -26,7 +26,7 @@ namespace AppsTracker.Tests.Core.ViewModels
         {
             base.Initialize();
 
-            _mainVM = new MainViewModel();
+           // _mainVM = new MainViewModel();
 
             Mediator.Instance.Register(MediatorMessages.RefreshLogs, new Action(RefreshLogsCallback));
         }

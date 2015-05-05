@@ -2,7 +2,7 @@
 
 namespace AppsTracker.Widgets
 {
-    interface ITrayIcon : IDisposable
+    public interface ITrayIcon : IDisposable
     {
         bool IsVisible { get; set; }
         System.Windows.Forms.ToolStripMenuItem ShowApp { get; }

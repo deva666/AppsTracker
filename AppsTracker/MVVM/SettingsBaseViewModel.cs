@@ -10,10 +10,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
 using AppsTracker.Service;
+using System.ComponentModel.Composition;
 
 namespace AppsTracker.MVVM
 {
-    internal abstract class SettingsBaseViewModel : ViewModelBase
+    public abstract class SettingsBaseViewModel : ViewModelBase
     {
         private const string SETTINGS_SAVED_MSG = "settings saved";
 
@@ -50,10 +51,10 @@ namespace AppsTracker.MVVM
         }
 
 
-        public SettingsBaseViewModel()
+        public SettingsBaseViewModel(ISqlSettingsService settingsService)
         {
-            settingsService = serviceResolver.Resolve<ISqlSettingsService>();
-            Settings = settingsService.Settings;
+            this.settingsService = settingsService;
+            Settings = this.settingsService.Settings;
         }
 
 

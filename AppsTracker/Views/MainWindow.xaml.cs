@@ -1,29 +1,26 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using AppsTracker.ViewModels;
 using AppsTracker.Widgets;
-using System.ComponentModel.Composition;
 
 namespace AppsTracker
 {
-    [Export(typeof(IWindow))]
-    public partial class MainWindow : Window, IWindow
+    [Export(typeof(IShell))]
+    public partial class MainWindow : Window, IShell
     {
-        private readonly MainViewModel mainViewModel;
-
-        public MainWindow()
+        [ImportingConstructor]
+        public MainWindow(MainViewModel mainViewModel)
         {
-            InitializeComponent();
-            mainViewModel = new MainViewModel();
+            InitializeComponent();            
             this.DataContext = mainViewModel;
             this.Loaded += (s, e) =>
             {
                 ScaleLoaded();
                 this.MaxHeight = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height + 7;
             };
-            this.Closing += (s, e) => { mainViewModel.Dispose(); };
         }
 
         #region Animations

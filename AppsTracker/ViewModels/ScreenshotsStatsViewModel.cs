@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.ComponentModel.Composition;
 using System.Collections.Generic;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
@@ -15,7 +16,8 @@ using AppsTracker.Service;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class ScreenshotsStatsViewModel : ViewModelBase, ICommunicator
+    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    public sealed class ScreenshotsStatsViewModel : ViewModelBase, ICommunicator
     {
         private readonly IStatsService statsService;
         private readonly ILoggingService loggingService;
@@ -70,10 +72,11 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public ScreenshotsStatsViewModel()
+        [ImportingConstructor]
+        public ScreenshotsStatsViewModel(IStatsService statsService, ILoggingService loggingService)
         {
-            statsService = serviceResolver.Resolve<IStatsService>();
-            loggingService = serviceResolver.Resolve<ILoggingService>();
+            this.statsService = statsService;
+            this.loggingService = loggingService;
 
             screenshotList = new AsyncProperty<IEnumerable<ScreenshotModel>>(GetScreenshots, this);
             dailyScreenshotsList = new AsyncProperty<IEnumerable<DailyScreenshotModel>>(GetDailyScreenshots, this);

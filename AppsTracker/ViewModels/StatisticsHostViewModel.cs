@@ -6,12 +6,14 @@
  */
 #endregion
 
-using AppsTracker.MVVM;
+using System.ComponentModel.Composition;
 using System.Windows.Input;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class StatisticsHostViewModel : HostViewModel
+    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    public sealed class StatisticsHostViewModel : HostViewModel
     {
         public override string Title { get { return "statistics"; } }
 
@@ -55,13 +57,48 @@ namespace AppsTracker.ViewModels
             get { return goToCategoryStatsCommand ?? (goToCategoryStatsCommand = new DelegateCommand(GoToCategoryStats)); }
         }
 
-        public StatisticsHostViewModel()
+        [ImportingConstructor]
+        public StatisticsHostViewModel(ExportFactory<UserStatsViewModel> userStatsVMFactory,
+                                       ExportFactory<AppStatsViewModel> appStatsVMFactory,
+                                       ExportFactory<DailyAppUsageViewModel> dailyAppUsageVMFactory,
+                                       ExportFactory<ScreenshotsStatsViewModel> screenshotStatsVMFactory,
+                                       ExportFactory<CategoryStatsViewModel> categoryStatsVMFactory)
         {
-            RegisterChild(() => new UserStatsViewModel());
-            RegisterChild(() => new AppStatsViewModel());
-            RegisterChild(() => new DailyAppUsageViewModel());
-            RegisterChild(() => new ScreenshotsStatsViewModel());
-            RegisterChild(() => new CategoryStatsViewModel());
+            RegisterChild(() =>
+            {
+                using (var context = userStatsVMFactory.CreateExport())
+                {
+                    return context.Value;
+                }
+            });
+            RegisterChild(() =>
+            {
+                using (var context = appStatsVMFactory.CreateExport())
+                {
+                    return context.Value;
+                }
+            });
+            RegisterChild(() =>
+            {
+                using (var context = dailyAppUsageVMFactory.CreateExport())
+                {
+                    return context.Value;
+                }
+            });
+            RegisterChild(() =>
+            {
+                using (var context = screenshotStatsVMFactory.CreateExport())
+                {
+                    return context.Value;
+                }
+            });
+            RegisterChild(() =>
+            {
+                using (var context = categoryStatsVMFactory.CreateExport())
+                {
+                    return context.Value;
+                }
+            });
 
             SelectedChild = GetChild(typeof(UserStatsViewModel));
         }
