@@ -9,6 +9,8 @@ namespace AppsTracker.Service
         void ShowDialog(string message, bool showCancel = true);
         void ShowWindow<T>() where T : System.Windows.Window;
         void ShowWindow<T>(params object[] args) where T : System.Windows.Window;
+        bool? ShowDialog<T>() where T : System.Windows.Window;
+        System.Windows.Forms.FolderBrowserDialog CreateFolderBrowserDialog();
         void FirstRunWindowSetup();
         void InitializeTrayIcon();
         void CreateOrShowMainWindow();

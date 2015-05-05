@@ -67,6 +67,19 @@ namespace AppsTracker.Service
             instance.Show();
         }
 
+
+        public bool? ShowDialog<T>() where T : System.Windows.Window
+        {
+            var instance = Activator.CreateInstance<T>();
+            return instance.ShowDialog();
+        }
+
+
+        public System.Windows.Forms.FolderBrowserDialog CreateFolderBrowserDialog()
+        {
+            return new System.Windows.Forms.FolderBrowserDialog();
+        }
+
         public void FirstRunWindowSetup()
         {
             if (sqlSettingsService.Settings.FirstRun)

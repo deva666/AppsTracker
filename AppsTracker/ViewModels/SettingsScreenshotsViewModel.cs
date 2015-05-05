@@ -20,6 +20,7 @@ namespace AppsTracker.ViewModels
     public sealed class SettingsScreenshotsViewModel : SettingsBaseViewModel
     {
         private readonly ILoggingService loggingService;
+        private readonly IWindowService windowService;
 
         public override string Title
         {
@@ -92,10 +93,13 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public SettingsScreenshotsViewModel(ISqlSettingsService settingsService, ILoggingService loggingService)
+        public SettingsScreenshotsViewModel(ISqlSettingsService settingsService, 
+                                            ILoggingService loggingService,
+                                            IWindowService windowService)
             : base(settingsService)
         {
             this.loggingService = loggingService;
+            this.windowService = windowService;
         }
 
         private void ChangeScreenshots()
@@ -154,7 +158,7 @@ namespace AppsTracker.ViewModels
         {
             string path;
 
-            System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
+            var dialog = windowService.CreateFolderBrowserDialog();
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 path = dialog.SelectedPath;
             else
@@ -167,8 +171,7 @@ namespace AppsTracker.ViewModels
 
         private void RunDBCleaner()
         {
-            DBCleanerWindow dbCleanerWindow = new DBCleanerWindow();
-            dbCleanerWindow.ShowDialog();
+            windowService.ShowDialog<DBCleanerWindow>();
         }
     }
 }

@@ -60,8 +60,7 @@ namespace AppsTracker.ViewModels
 
         private void ShowAboutWindow()
         {
-            AboutWindow aboutWindow = new AboutWindow();
-            aboutWindow.Show();
+            windowService.ShowWindow<AboutWindow>();
         }
 
 
@@ -69,16 +68,16 @@ namespace AppsTracker.ViewModels
         {
             try
             {
-                RegistryKey rk = Registry.CurrentUser.OpenSubKey
+                RegistryKey key = Registry.CurrentUser.OpenSubKey
                     ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
                 if (!Settings.RunAtStartup)
                 {
-                    rk.SetValue("app service", System.Reflection.Assembly.GetExecutingAssembly().Location + " -autostart");
+                    key.SetValue("app service", System.Reflection.Assembly.GetExecutingAssembly().Location + " -autostart");
                     Settings.RunAtStartup = true;
                 }
                 else
                 {
-                    rk.DeleteValue("app service", false);
+                    key.DeleteValue("app service", false);
                     Settings.RunAtStartup = false;
                 }
             }

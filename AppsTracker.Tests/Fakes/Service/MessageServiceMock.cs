@@ -65,5 +65,16 @@ namespace AppsTracker.Tests.Fakes.Service
         {
             
         }
+
+
+        public bool? ShowDialog<T>() where T : System.Windows.Window
+        {
+            return true;
+        }
+
+        public System.Windows.Forms.FolderBrowserDialog CreateFolderBrowserDialog()
+        {
+            return new System.Windows.Forms.FolderBrowserDialog();
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace AppsTracker.Widgets
     public partial class ScreenshotsView : UserControl
     {
         private readonly IXmlSettingsService xmlService;
+
         public ScreenshotsView()
         {
             InitializeComponent();
