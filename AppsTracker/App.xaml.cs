@@ -50,7 +50,7 @@ namespace AppsTracker
             container = GetCompositionContainer();
             ServiceLocation.ServiceLocator.Instance.Initialize(container);
 
-            bool autostart = args.Where(a => a.ToUpper() == Constants.CMD_ARGS_AUTOSTART).Count() > 0;
+            bool autostart = args.Where(a => a.ToUpper().Contains(Constants.CMD_ARGS_AUTOSTART)).Count() > 0;
             applicationController = container.GetExportedValue<IApplicationController>();
             applicationController.Initialize(autostart);
 
