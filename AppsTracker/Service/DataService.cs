@@ -147,8 +147,13 @@ namespace AppsTracker.Service
                     context.SaveChanges();
                 }
 
+                var appsInCategories = context.AppCategories.SelectMany(c => c.Applications).ToList();
+
                 foreach (var app in context.Applications.Where(a => a.Windows.Count == 0))
                 {
+                    if (appsInCategories.Contains(app))
+                        continue;
+
                     if (!context.Applications.Local.Any(a => a.ApplicationID == app.ApplicationID))
                         context.Applications.Attach(app);
                     context.Applications.Remove(app);
