@@ -164,9 +164,12 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public SettingsAppCategoriesViewModel(ICategoriesService categoriesService, IMediator mediator)
+        public SettingsAppCategoriesViewModel(ExportFactory<ICategoriesService> categoriesFactory, IMediator mediator)
         {
-            this.categoriesService = categoriesService;
+            using (var context = categoriesFactory.CreateExport())
+            {
+                this.categoriesService = context.Value;
+            }
             this.mediator = mediator;
 
             LoadContent();

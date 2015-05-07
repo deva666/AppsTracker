@@ -18,26 +18,23 @@ using AppsTracker.Data.Models;
 namespace AppsTracker.Service
 {
     [Export(typeof(ICategoriesService))]
-    [PartCreationPolicy(System.ComponentModel.Composition.CreationPolicy.NonShared)]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class CategoriesService : ICategoriesService
     {
         private Boolean isDisposed = false;
-        private readonly AppsEntities context;
+        private AppsEntities context;
 
-
-        public CategoriesService()
-        {
-            context = new AppsEntities();
-        }
 
         public List<Aplication> GetApps()
         {
+            context = context ?? new AppsEntities();
             var apps = context.Applications;
             return apps.ToList();
         }
 
         public ObservableCollection<AppCategory> GetCategories()
         {
+            context = context ?? new AppsEntities();
             var categories = context.AppCategories.Include(c => c.Applications);
             foreach (var cat in categories)
             {
@@ -48,6 +45,7 @@ namespace AppsTracker.Service
 
         public void SaveChanges(IEnumerable<AppCategory> categoriesToDelete, IEnumerable<AppCategory> modifiedCategories)
         {
+            context = context ?? new AppsEntities();
             foreach (var cat in categoriesToDelete)
             {
                 context.Entry(cat).State = EntityState.Deleted;
@@ -77,9 +75,10 @@ namespace AppsTracker.Service
 
         public void Dispose()
         {
-            if (isDisposed == false)
+            if (isDisposed == false && context != null)
             {
                 context.Dispose();
+                context = null;
                 isDisposed = true;
             }
         }

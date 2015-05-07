@@ -70,10 +70,13 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public ScreenshotsStatsViewModel(IStatsService statsService, ILoggingService loggingService)
+        public ScreenshotsStatsViewModel(IStatsService statsService, 
+                                         ILoggingService loggingService, 
+                                         IMediator mediator)
         {
             this.statsService = statsService;
             this.loggingService = loggingService;
+            this.mediator = mediator;
 
             screenshotList = new AsyncProperty<IEnumerable<ScreenshotModel>>(GetScreenshots, this);
             dailyScreenshotsList = new AsyncProperty<IEnumerable<DailyScreenshotModel>>(GetDailyScreenshots, this);
