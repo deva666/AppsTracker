@@ -13,7 +13,7 @@ namespace AppsTracker.Service
         private readonly ExportFactory<IShell> mainWindowValueFactory;
         private readonly ExportFactory<IPasswordWindow> passwordWindowValueFactory;
 
-        private IShell mainWindow;     
+        private IShell mainWindow;
 
 
         [ImportingConstructor]
@@ -56,7 +56,7 @@ namespace AppsTracker.Service
 
         public void ShowWindow<T>() where T : System.Windows.Window
         {
-            var instance = Activator.CreateInstance<T>();            
+            var instance = Activator.CreateInstance<T>();
             instance.Show();
         }
 
@@ -103,7 +103,10 @@ namespace AppsTracker.Service
             {
                 if (mainWindow == null)
                 {
-                    mainWindow = mainWindowValueFactory.CreateExport().Value;
+                    using (var context = mainWindowValueFactory.CreateExport())
+                    {
+                        mainWindow = context.Value;
+                    }
                     ShowMainWindow();
                 }
                 else
@@ -147,7 +150,11 @@ namespace AppsTracker.Service
         {
             if (sqlSettingsService.Settings.IsMasterPasswordSet)
             {
-                var passwordWindow = passwordWindowValueFactory.CreateExport().Value;
+                IPasswordWindow passwordWindow;
+                using (var context = passwordWindowValueFactory.CreateExport())
+                {
+                    passwordWindow = context.Value;
+                }
                 bool? dialog = passwordWindow.ShowDialog();
                 if (dialog.Value)
                 {

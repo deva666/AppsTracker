@@ -20,19 +20,19 @@ namespace AppsTracker.Controllers
     internal sealed class ApplicationController : IApplicationController
     {
         private readonly IAppearanceController appearanceController;
-        private readonly ITrackingController loggingController;
+        private readonly ITrackingController trackingController;
         private readonly IXmlSettingsService xmlSettingsService;
         private readonly ISqlSettingsService sqlSettingsService;
         private readonly ILoggingService loggingService;
         private readonly IWindowService windowService;
 
         [ImportingConstructor]
-        public ApplicationController(IAppearanceController appearanceController, ITrackingController loggingController,
+        public ApplicationController(IAppearanceController appearanceController, ITrackingController trackingController,
                                      ISqlSettingsService sqlSettingsService, IXmlSettingsService xmlSettingsService,
                                      ILoggingService loggingService, IWindowService windowService)
         {
             this.appearanceController = appearanceController;
-            this.loggingController = loggingController;
+            this.trackingController = trackingController;
             this.xmlSettingsService = xmlSettingsService;
             this.sqlSettingsService = sqlSettingsService;
             this.loggingService = loggingService;
@@ -45,7 +45,7 @@ namespace AppsTracker.Controllers
             PropertyChangedEventManager.AddHandler(sqlSettingsService, OnSettingsChanged, "Settings");
 
             appearanceController.Initialize(sqlSettingsService.Settings);
-            loggingController.Initialize(sqlSettingsService.Settings);
+            trackingController.Initialize(sqlSettingsService.Settings);
 
             if (autoStart == false)
                 windowService.CreateOrShowMainWindow();
@@ -61,7 +61,7 @@ namespace AppsTracker.Controllers
 
         private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
         {
-            loggingController.SettingsChanging(sqlSettingsService.Settings);
+            trackingController.SettingsChanging(sqlSettingsService.Settings);
             appearanceController.SettingsChanging(sqlSettingsService.Settings);
         }
 
@@ -81,7 +81,7 @@ namespace AppsTracker.Controllers
         {
             windowService.Shutdown();
             xmlSettingsService.ShutDown();
-            loggingController.Dispose();
+            trackingController.Dispose();
         }
     }
 }
