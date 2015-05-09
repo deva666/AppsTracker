@@ -9,6 +9,6 @@ namespace AppsTracker.Tracking.Helpers
 {
     interface ILimitHandler
     {
-        void Handle(AppWarning warning);
+        void Handle(AppLimit warning);
     }
 }

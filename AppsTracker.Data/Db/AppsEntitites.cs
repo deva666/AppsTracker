@@ -51,7 +51,7 @@ namespace AppsTracker.Data.Db
 
         public DbSet<Aplication> Applications { get; set; }
         public DbSet<AppCategory> AppCategories { get; set; }
-        public DbSet<AppWarning> AppWarnings { get; set; }
+        public DbSet<AppLimit> AppLimits { get; set; }
         public DbSet<BlockedApp> BlockedApps { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<Screenshot> Screenshots { get; set; }

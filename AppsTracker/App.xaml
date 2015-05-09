@@ -2233,6 +2233,321 @@
 
             </Style>
 
+            <Style x:Key="SliderRepeatButtonStyle"
+                   TargetType="RepeatButton">
+                <Setter Property="OverridesDefaultStyle"
+                        Value="true" />
+                <Setter Property="IsTabStop"
+                        Value="false" />
+                <Setter Property="Focusable"
+                        Value="false" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RepeatButton">
+                            <Rectangle Fill="Transparent" />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="BaseSliderThumbStyle"
+                   TargetType="Thumb">
+                <Setter Property="OverridesDefaultStyle"
+                        Value="true" />
+                <Setter Property="Focusable"
+                        Value="false" />
+                <Setter Property="IsTabStop"
+                        Value="false" />
+                <Setter Property="Background"
+                        Value="{DynamicResource 2ndBackgroundBrush}" />
+                <Setter Property="BorderBrush"
+                        Value="{DynamicResource WindowBorderBrush}" />
+                <Setter Property="BorderThickness"
+                        Value="1" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Thumb}">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                            </Border>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                         Value="True">
+                                    <Setter Property="Background"
+                                            Value="{DynamicResource DarkAccent}" />
+                                    <Setter Property="BorderBrush"
+                                            Value="{DynamicResource WindowBorderBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsDragging"
+                                         Value="True">
+                                    <Setter Property="Background"
+                                            Value="{DynamicResource LightAccent}" />
+                                    <Setter Property="BorderBrush"
+                                            Value="{DynamicResource WindowBorderBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled"
+                                         Value="False">
+                                    <Setter Property="Background"
+                                            Value="{DynamicResource ButtonTextDisabled}" />
+                                    <Setter Property="BorderBrush"
+                                            Value="{DynamicResource WindowForegroundBrush}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="HorizontalSliderThumbStyle"
+                   TargetType="Thumb"
+                   BasedOn="{StaticResource BaseSliderThumbStyle}">
+                <Setter Property="Height"
+                        Value="22" />
+                <Setter Property="Width"
+                        Value="11" />
+            </Style>
+
+            <Style x:Key="VerticalSliderThumbStyle"
+                   TargetType="Thumb"
+                   BasedOn="{StaticResource BaseSliderThumbStyle}">
+                <Setter Property="Height"
+                        Value="11" />
+                <Setter Property="Width"
+                        Value="22" />
+            </Style>
+
+            <Style TargetType="Slider">
+                <Setter Property="FocusVisualStyle"
+                        Value="{x:Null}" />
+                <Setter Property="Stylus.IsPressAndHoldEnabled"
+                        Value="false" />
+                <Setter Property="Background"
+                        Value="Transparent" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Slider">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    SnapsToDevicePixels="true">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto"
+                                                       MinHeight="{TemplateBinding Slider.MinHeight}" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <TickBar x:Name="TopTick"
+                                             Grid.Row="0"
+                                             Visibility="Collapsed"
+                                             Placement="Top"
+                                             Fill="{DynamicResource ButtonBackgroundPressed}"
+                                             Height="4" />
+                                    <TickBar x:Name="BottomTick"
+                                             Grid.Row="2"
+                                             Visibility="Collapsed"
+                                             Placement="Bottom"
+                                             Fill="{DynamicResource ButtonBackground}"
+                                             Height="4" />
+                                    <Border x:Name="TrackBackground"
+                                            Grid.Row="1"
+                                            Margin="5,0"
+                                            VerticalAlignment="center"
+                                            BorderBrush="{DynamicResource LightAccent}"
+                                            BorderThickness="1"
+                                            Background="{DynamicResource DarkAccent}"
+                                            Height="4.0">
+                                        <Canvas Margin="-6,-1">
+                                            <Rectangle x:Name="PART_SelectionRange"
+                                                       Fill="{DynamicResource 2ndBackgroundBrush}"
+                                                       Height="4.0"
+                                                       Visibility="Hidden"
+                                                       StrokeThickness="1.0"
+                                                       Stroke="{DynamicResource WindowBorderBrush}" />
+                                        </Canvas>
+                                    </Border>
+                                    <Track Grid.Row="1"
+                                           Name="PART_Track">
+                                        <Track.DecreaseRepeatButton>
+                                            <RepeatButton Style="{StaticResource SliderRepeatButtonStyle}"
+                                                          Command="{x:Static Slider.DecreaseLarge}" />
+                                        </Track.DecreaseRepeatButton>
+                                        <Track.IncreaseRepeatButton>
+                                            <RepeatButton Style="{StaticResource SliderRepeatButtonStyle}"
+                                                          Command="{x:Static Slider.IncreaseLarge}" />
+                                        </Track.IncreaseRepeatButton>
+                                        <Track.Thumb>
+                                            <Thumb x:Name="Thumb"
+                                                   Style="{StaticResource HorizontalSliderThumbStyle}" />
+                                        </Track.Thumb>
+                                    </Track>
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="TickPlacement"
+                                         Value="TopLeft">
+                                    <Setter TargetName="TopTick"
+                                            Property="Visibility"
+                                            Value="Visible" />
+                                    <Setter TargetName="TrackBackground"
+                                            Property="Margin"
+                                            Value="5,2,5,0" />
+                                </Trigger>
+                                <Trigger Property="TickPlacement"
+                                         Value="BottomRight">
+                                    <Setter TargetName="BottomTick"
+                                            Property="Visibility"
+                                            Value="Visible" />
+                                    <Setter TargetName="TrackBackground"
+                                            Property="Margin"
+                                            Value="5,0,5,2" />
+                                </Trigger>
+                                <Trigger Property="TickPlacement"
+                                         Value="Both">
+                                    <Setter TargetName="TopTick"
+                                            Property="Visibility"
+                                            Value="Visible" />
+                                    <Setter TargetName="BottomTick"
+                                            Property="Visibility"
+                                            Value="Visible" />
+                                </Trigger>
+                                <Trigger Property="IsSelectionRangeEnabled"
+                                         Value="true">
+                                    <Setter TargetName="PART_SelectionRange"
+                                            Property="Visibility"
+                                            Value="Visible" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled"
+                                         Value="false">
+                                    <Setter TargetName="TopTick"
+                                            Property="Fill"
+                                            Value="{DynamicResource ButtonTextDisabled}" />
+                                    <Setter TargetName="BottomTick"
+                                            Property="Fill"
+                                            Value="{DynamicResource ButtonTextDisabled}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="Orientation"
+                             Value="Vertical">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Slider}">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            SnapsToDevicePixels="true">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto"
+                                                                  MinWidth="{TemplateBinding Slider.MinWidth}" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TickBar x:Name="TopTick"
+                                                     Grid.Column="0"
+                                                     Visibility="Collapsed"
+                                                     Placement="Left"
+                                                     Fill="{DynamicResource LightAccent}"
+                                                     Width="4" />
+                                            <TickBar x:Name="BottomTick"
+                                                     Grid.Column="2"
+                                                     Visibility="Collapsed"
+                                                     Placement="Right"
+                                                     Fill="{DynamicResource DarkAccent}"
+                                                     Width="4" />
+                                            <Border Name="TrackBackground"
+                                                    Grid.Column="1"
+                                                    Margin="0,5"
+                                                    HorizontalAlignment="center"
+                                                    BorderBrush="{DynamicResource WindowBorderBrush}"
+                                                    BorderThickness="1"
+                                                    Background="{DynamicResource WindowBackgroundBrush}"
+                                                    Width="4.0">
+
+                                                <Canvas Margin="-1,-6">
+                                                    <Rectangle x:Name="PART_SelectionRange"
+                                                               Fill="{DynamicResource LightAccent}"
+                                                               Width="4.0"
+                                                               Visibility="Hidden"
+                                                               StrokeThickness="1.0"
+                                                               Stroke="{DynamicResource DarkAccent}" />
+                                                </Canvas>
+                                            </Border>
+
+                                            <Track Grid.Column="1"
+                                                   Name="PART_Track">
+                                                <Track.DecreaseRepeatButton>
+                                                    <RepeatButton Style="{StaticResource SliderRepeatButtonStyle}"
+                                                                  Command="{x:Static Slider.DecreaseLarge}" />
+                                                </Track.DecreaseRepeatButton>
+                                                <Track.IncreaseRepeatButton>
+                                                    <RepeatButton Style="{StaticResource SliderRepeatButtonStyle}"
+                                                                  Command="{x:Static Slider.IncreaseLarge}" />
+                                                </Track.IncreaseRepeatButton>
+                                                <Track.Thumb>
+                                                    <Thumb x:Name="Thumb"
+                                                           Style="{StaticResource VerticalSliderThumbStyle}" />
+                                                </Track.Thumb>
+                                            </Track>
+                                        </Grid>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="TickPlacement"
+                                                 Value="TopLeft">
+                                            <Setter TargetName="TopTick"
+                                                    Property="Visibility"
+                                                    Value="Visible" />
+                                            <Setter TargetName="TrackBackground"
+                                                    Property="Margin"
+                                                    Value="2,5,0,5" />
+                                        </Trigger>
+                                        <Trigger Property="TickPlacement"
+                                                 Value="BottomRight">
+                                            <Setter TargetName="BottomTick"
+                                                    Property="Visibility"
+                                                    Value="Visible" />
+                                            <Setter TargetName="TrackBackground"
+                                                    Property="Margin"
+                                                    Value="0,5,2,5" />
+                                        </Trigger>
+                                        <Trigger Property="TickPlacement"
+                                                 Value="Both">
+                                            <Setter TargetName="TopTick"
+                                                    Property="Visibility"
+                                                    Value="Visible" />
+                                            <Setter TargetName="BottomTick"
+                                                    Property="Visibility"
+                                                    Value="Visible" />
+                                        </Trigger>
+                                        <Trigger Property="IsSelectionRangeEnabled"
+                                                 Value="true">
+                                            <Setter TargetName="PART_SelectionRange"
+                                                    Property="Visibility"
+                                                    Value="Visible" />
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled"
+                                                 Value="false">
+                                            <Setter TargetName="TopTick"
+                                                    Property="Fill"
+                                                    Value="{DynamicResource ButtonTextDisabled}" />
+                                            <Setter TargetName="BottomTick"
+                                                    Property="Fill"
+                                                    Value="{DynamicResource ButtonTextDisabled}" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
             <DataTemplate x:Key="AppListBoxItemTemplate">
                 <Label Style="{DynamicResource LBLabelStyle}"
                        Content="{Binding Path=Name}"
@@ -2304,6 +2619,46 @@
                     </Label.ToolTip>
                 </Label>
             </DataTemplate>
+            
+            <DataTemplate x:Key="AppLimitDataTemplate">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Style="{DynamicResource LabelStyle}"
+                               Content="Limit span:" />
+                        <Label Style="{DynamicResource SelectableLabelStyle}"
+                               Content="{Binding LimitSpan}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="1">
+                        <Label Style="{DynamicResource LabelStyle}"
+                               Content="Limit:" />
+                        <Slider Minimum="0"
+                                Maximum="24" 
+                                
+                                TickFrequency="0.5"
+                                IsSnapToTickEnabled="True"
+                                MinWidth="150"
+                                Name="sliderLimit"
+                                />
+                        <Label Style="{DynamicResource LabelStyle}"
+                               Content="{Binding ElementName=sliderLimit,Path=Value}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="2">
+                        <Label Style="{DynamicResource LabelStyle}"
+                               Content="Limit reached action:" />
+                        <Label Style="{DynamicResource SelectableLabelStyle}"
+                               Content="{Binding LimitReachedAction}" />
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>    

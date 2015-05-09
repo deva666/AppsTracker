@@ -73,7 +73,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Common\EnsureTest.cs" />
-    <Compile Include="Core\Tracking\LazyInitTest.cs" />
     <Compile Include="Core\MVVM\AsyncPropertyTest.cs" />
     <Compile Include="Core\MVVM\MediatorTest.cs" />
     <Compile Include="Core\ViewModels\AppDetailsViewModelTest.cs" />
@@ -106,6 +105,9 @@
       <Project>{ed886551-a8b3-492d-acec-fe2df0b484f7}</Project>
       <Name>AppsTracker</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\Tracking\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

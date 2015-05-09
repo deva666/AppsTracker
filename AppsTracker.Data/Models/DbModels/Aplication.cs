@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using AppsTracker.Data.Utils;
@@ -25,6 +26,11 @@ namespace AppsTracker.Data.Models
             }
         }
 
+
+        [NotMapped]
+        public ObservableCollection<AppLimit> ObservableLimits { get; set; }
+
+
         private TimeSpan GetAppDuration()
         {
             long ticks = 0;
@@ -39,14 +45,16 @@ namespace AppsTracker.Data.Models
             return new TimeSpan(ticks);
         }
 
+
         public Aplication() { }
+
 
         public Aplication(string name, string fileName, string version, string description, string company, string realName)
         {
             this.BlockedApps = new HashSet<BlockedApp>();
             this.Windows = new HashSet<Window>();
             this.Categories = new HashSet<AppCategory>();
-            this.Warnings = new HashSet<AppWarning>();
+            this.Limits = new HashSet<AppLimit>();
 
             this.Name = !string.IsNullOrEmpty(name) ? name.Truncate(250) : !string.IsNullOrEmpty(realName) ? realName.Truncate(250) : fileName.Truncate(250);
             this.FileName = fileName.Truncate(360);
@@ -94,7 +102,7 @@ namespace AppsTracker.Data.Models
         public virtual ICollection<BlockedApp> BlockedApps { get; set; }
         public virtual ICollection<Window> Windows { get; set; }
         public virtual ICollection<AppCategory> Categories { get; set; }
-        public virtual ICollection<AppWarning> Warnings { get; set; }
+        public virtual ICollection<AppLimit> Limits { get; set; }
 
     }
 }

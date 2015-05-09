@@ -6,9 +6,9 @@
  */
 #endregion
 
+using System.ComponentModel.Composition;
 using System.Windows.Input;
 using AppsTracker.MVVM;
-using System.ComponentModel.Composition;
 
 namespace AppsTracker.ViewModels
 {
@@ -60,18 +60,31 @@ namespace AppsTracker.ViewModels
         }
 
 
+        private ICommand goToAppLimitsCommand;
+
+        public ICommand GoToAppLimitsCommand
+        {
+            get
+            {
+                return goToAppLimitsCommand ?? (goToAppLimitsCommand = new DelegateCommand(GoToAppLimits));
+            }
+        }
+
+
         [ImportingConstructor]
         public SettingsHostViewModel(ExportFactory<SettingsGeneralViewModel> generalVMFactory,
                                      ExportFactory<SettingsLoggingViewModel> loggingVMFactory,
                                      ExportFactory<SettingsScreenshotsViewModel> screenshotsVMFactory,
                                      ExportFactory<SettingsPasswordViewModel> passwordVMFactory,
-                                     ExportFactory<SettingsAppCategoriesViewModel> appCategoriesVMFactory)
+                                     ExportFactory<SettingsAppCategoriesViewModel> appCategoriesVMFactory,
+                                     ExportFactory<SettingsLimitsViewModel> appLimitsVMFactory)
         {
             RegisterChild(() => ProduceValue(generalVMFactory));
             RegisterChild(() => ProduceValue(loggingVMFactory));
             RegisterChild(() => ProduceValue(screenshotsVMFactory));
             RegisterChild(() => ProduceValue(passwordVMFactory));
-            RegisterChild(() => ProduceValue(appCategoriesVMFactory));         
+            RegisterChild(() => ProduceValue(appCategoriesVMFactory));
+            RegisterChild(() => ProduceValue(appLimitsVMFactory));
 
             SelectedChild = GetChild<SettingsGeneralViewModel>();
         }
@@ -104,6 +117,12 @@ namespace AppsTracker.ViewModels
         private void GoToAppCategories()
         {
             SelectedChild = GetChild<SettingsAppCategoriesViewModel>();
+        }
+
+
+        private void GoToAppLimits()
+        {
+            SelectedChild = GetChild<SettingsLimitsViewModel>();
         }
     }
 }

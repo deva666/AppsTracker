@@ -18,6 +18,8 @@ namespace AppsTracker.Data.Models
 {
     public class Screenshot : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private bool isSelected;
 
         [NotMapped]
@@ -118,11 +120,8 @@ namespace AppsTracker.Data.Models
                 PropertyChanged(this, new PropertyChangedEventArgs("IsOpen"));
         }
 
-        #region INotifyPropertyChanged Members
 
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        #endregion
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

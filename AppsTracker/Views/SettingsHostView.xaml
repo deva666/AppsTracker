@@ -1,15 +1,16 @@
 ﻿<UserControl x:Class="AppsTracker.Widgets.SettingsHostView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:AppsTracker.Widgets"
              xmlns:viewModels="clr-namespace:AppsTracker.ViewModels"
              xmlns:views="clr-namespace:AppsTracker.Widgets"
              xmlns:settingsViews="clr-namespace:AppsTracker.Widgets.SettingsViews"
              xmlns:local="clr-namespace:AppsTracker"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             mc:Ignorable="d"
+             d:DesignHeight="300"
+             d:DesignWidth="300">
     <UserControl.Resources>
         <local:ConvertPageNameToStyle x:Key="convertPageNameToSyle"
                                       SelectedLabelStyle="{StaticResource SelectedLabelStyle}"
@@ -36,11 +37,15 @@
         <DataTemplate DataType="{x:Type viewModels:SettingsAppCategoriesViewModel}">
             <settingsViews:AppCategoriesView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:SettingsLimitsViewModel}">
+            <settingsViews:AppLimitsView />
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="
+                      Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
@@ -53,8 +58,7 @@
                    HorizontalAlignment="Left">
                 <Label.InputBindings>
                     <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding GoToGeneralCommand}"
-                                  />
+                                  Command="{Binding GoToGeneralCommand}" />
                 </Label.InputBindings>
             </Label>
 
@@ -65,8 +69,7 @@
                    HorizontalAlignment="Left">
                 <Label.InputBindings>
                     <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding GoToLoggingCommand}"
-                                   />
+                                  Command="{Binding GoToLoggingCommand}" />
                 </Label.InputBindings>
             </Label>
             <Label Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=SCREENSHOTS}"
@@ -76,8 +79,7 @@
                    HorizontalAlignment="Left">
                 <Label.InputBindings>
                     <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding GoToScreenshotsCommand}"
-                                  />
+                                  Command="{Binding GoToScreenshotsCommand}" />
                 </Label.InputBindings>
             </Label>
 
@@ -88,8 +90,7 @@
                    HorizontalAlignment="Left">
                 <Label.InputBindings>
                     <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding GoToPasswordCommand}"
-                                   />
+                                  Command="{Binding GoToPasswordCommand}" />
                 </Label.InputBindings>
             </Label>
 
@@ -100,12 +101,21 @@
                    HorizontalAlignment="Left">
                 <Label.InputBindings>
                     <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding GoToAppCategoriesCommand}"
-                                   />
+                                  Command="{Binding GoToAppCategoriesCommand}" />
                 </Label.InputBindings>
             </Label>
 
-      </StackPanel>
+            <Label Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=APP LIMITS}"
+                   Content="APP LIMITS"
+                   FontSize="11"
+                   Margin="15,5,15,0"
+                   HorizontalAlignment="Left">
+                <Label.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding GoToAppLimitsCommand}" />
+                </Label.InputBindings>
+            </Label>
+        </StackPanel>
         <Separator HorizontalAlignment="Right"
                    Margin="0,20,20,20"
                    Background="DarkGray">
@@ -115,7 +125,7 @@
         </Separator>
         <controls:FaderContentControl Grid.Column="1"
                                       Content="{Binding SelectedChild}"
-                                      Margin="15"/>
+                                      Margin="15" />
 
     </Grid>
 
