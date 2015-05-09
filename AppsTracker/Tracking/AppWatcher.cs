@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Data.Entity;
 using System.Linq;
@@ -18,6 +19,11 @@ namespace AppsTracker.Tracking
         private readonly Timer weekTimer;
         private readonly Timer monthTimer;
 
+        private readonly Dictionary<Aplication, long> appLimitsMap = new Dictionary<Aplication, long>();
+        private readonly ProducerConsumerQueue workQueue = new ProducerConsumerQueue();
+
+        private Aplication currentApp;
+
         private AppWarning dayWarning;
         private AppWarning weekWarning;
         private AppWarning monthWarning;
@@ -32,6 +38,20 @@ namespace AppsTracker.Tracking
             dayTimer = new Timer(DayTimerCallback);
             weekTimer = new Timer(WeekTimerCallback);
             monthTimer = new Timer(MonthTimerCallback);
+        }
+
+
+        private void Initialize()
+        {
+            using (var context = new AppsEntities())
+            {
+                var appsWithLimits = context.AppWarnings;
+                foreach (var appWarning in appsWithLimits)
+                {
+                    appLimitsMap.Add(appWarning.Application, appWarning.Limit);
+                }
+
+            }
         }
 
         private void MidnightTick(object sender, EventArgs e)
@@ -64,7 +84,14 @@ namespace AppsTracker.Tracking
 
         public void AppChanged(Aplication app)
         {
+            currentApp = app;
             StopTimers();
+            GetAppDuration(app).ContinueWith(t =>
+            {
+                //get limit from dictionary
+                //if passed, kill the app
+                //else setup timer to fire on limit, if current app matches this app
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);
 
             using (var context = new AppsEntities())
             {
@@ -79,6 +106,12 @@ namespace AppsTracker.Tracking
             dayTimer.Change(Timeout.Infinite, Timeout.Infinite);
             weekTimer.Change(Timeout.Infinite, Timeout.Infinite);
             monthTimer.Change(Timeout.Infinite, Timeout.Infinite);
+        }
+
+        private async Task<Tuple<Aplication, long>> GetAppDuration(Aplication app)
+        {
+            var duration = await GetTodayDurationAsync(app);
+            return new Tuple<Aplication, long>(app, duration);
         }
 
         private async Task SetupDayWarning(AppWarning dayWarning)

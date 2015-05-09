@@ -73,7 +73,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Common\EnsureTest.cs" />
-    <Compile Include="Core\Logging\LazyInitTest.cs" />
+    <Compile Include="Core\Tracking\LazyInitTest.cs" />
     <Compile Include="Core\MVVM\AsyncPropertyTest.cs" />
     <Compile Include="Core\MVVM\MediatorTest.cs" />
     <Compile Include="Core\ViewModels\AppDetailsViewModelTest.cs" />

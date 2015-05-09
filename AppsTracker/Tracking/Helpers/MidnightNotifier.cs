@@ -5,7 +5,7 @@ using System.Threading;
 namespace AppsTracker.Tracking.Helpers
 {
     [Export(typeof(IMidnightNotifier))]
-    internal sealed class MidnightNotifier : AppsTracker.Tracking.Helpers.IMidnightNotifier
+    internal sealed class MidnightNotifier : IMidnightNotifier
     {
         public event EventHandler MidnightTick;
 

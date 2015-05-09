@@ -187,6 +187,7 @@
     <Compile Include="Tracking\Helpers\IMidnightNotifier.cs" />
     <Compile Include="Tracking\Helpers\IScreenshotFactory.cs" />
     <Compile Include="Tracking\Helpers\IWindowHelper.cs" />
+    <Compile Include="Tracking\Helpers\ProducerConsumerQueue.cs" />
     <Compile Include="Tracking\IScreenshotTracker.cs" />
     <Compile Include="Tracking\Helpers\ISyncContext.cs" />
     <Compile Include="Tracking\Helpers\MidnightNotifier.cs" />
@@ -218,6 +219,9 @@
     <Compile Include="Views\IShell.cs" />
     <Compile Include="Views\Settings\AppCategoriesView.xaml.cs">
       <DependentUpon>AppCategoriesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\AppWarningsView.xaml.cs">
+      <DependentUpon>AppWarningsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Statistics\CategoriesByDayView.xaml.cs">
       <DependentUpon>CategoriesByDayView.xaml</DependentUpon>
@@ -445,6 +449,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\AppWarningsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
