@@ -49,27 +49,9 @@ namespace AppsTracker.ViewModels
                                  ExportFactory<ScreenshotsViewModel> screenshotsVMFactory,
                                  ExportFactory<DaySummaryViewModel> daySummaryVMFactory)
         {
-            RegisterChild(() =>
-            {
-                using (var context = appDetailsVMFactory.CreateExport())
-                {
-                    return context.Value;
-                }
-            });
-            RegisterChild(() =>
-            {
-                using (var context = screenshotsVMFactory.CreateExport())
-                {
-                    return context.Value;
-                }
-            });
-            RegisterChild(() =>
-            {
-                using (var context = daySummaryVMFactory.CreateExport())
-                {
-                    return context.Value;
-                }
-            });
+            RegisterChild(() => ProduceValue(appDetailsVMFactory));
+            RegisterChild(() => ProduceValue(screenshotsVMFactory));
+            RegisterChild(() => ProduceValue(daySummaryVMFactory));        
 
             SelectedChild = GetChild<AppDetailsViewModel>();
         }

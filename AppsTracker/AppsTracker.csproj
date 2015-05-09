@@ -183,6 +183,7 @@
     <Compile Include="Controllers\ITrackingController.cs" />
     <Compile Include="Controllers\TrackingController.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Tracking\Helpers\ILimitHandler.cs" />
     <Compile Include="Tracking\Helpers\ILogCleaner.cs" />
     <Compile Include="Tracking\Helpers\IMidnightNotifier.cs" />
     <Compile Include="Tracking\Helpers\IScreenshotFactory.cs" />
@@ -194,7 +195,7 @@
     <Compile Include="Tracking\ScreenshotTracker.cs" />
     <Compile Include="Tracking\Helpers\SyncContext.cs" />
     <Compile Include="Tracking\Hooks\IWindowNotifier.cs" />
-    <Compile Include="Tracking\AppWatcher.cs" />
+    <Compile Include="Tracking\LimitObserver.cs" />
     <Compile Include="Tracking\Helpers\IIdleNotifier.cs" />
     <Compile Include="Tracking\TrackingStatus.cs" />
     <Compile Include="ServiceLocation\IServiceResolver.cs" />

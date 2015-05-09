@@ -11,31 +11,29 @@ using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
 {
-    internal sealed class AppWatcher
+    internal sealed class LimitObserver
     {
         private readonly IMidnightNotifier midnightNotifier;
+        private readonly ILimitHandler limitHandler;
 
         private readonly Timer dayTimer;
         private readonly Timer weekTimer;
         private readonly Timer monthTimer;
 
-        private readonly Dictionary<Aplication, long> appLimitsMap = new Dictionary<Aplication, long>();
-        private readonly ProducerConsumerQueue workQueue = new ProducerConsumerQueue();
+        private readonly Dictionary<Aplication, AppWarning> appLimitsMap = new Dictionary<Aplication, AppWarning>();
 
         private Aplication currentApp;
-
-        private AppWarning dayWarning;
-        private AppWarning weekWarning;
-        private AppWarning monthWarning;
+        private AppWarning currentWarning;
 
 
         [ImportingConstructor]
-        public AppWatcher(IMidnightNotifier midnightNotifier)
+        public LimitObserver(IMidnightNotifier midnightNotifier, ILimitHandler limitHandler)
         {
             this.midnightNotifier = midnightNotifier;
             this.midnightNotifier.MidnightTick += MidnightTick;
+            this.limitHandler = limitHandler;
 
-            dayTimer = new Timer(DayTimerCallback);
+            dayTimer = new Timer(DayTimerCallback, currentWarning, Timeout.Infinite, Timeout.Infinite);
             weekTimer = new Timer(WeekTimerCallback);
             monthTimer = new Timer(MonthTimerCallback);
         }
@@ -48,7 +46,7 @@ namespace AppsTracker.Tracking
                 var appsWithLimits = context.AppWarnings;
                 foreach (var appWarning in appsWithLimits)
                 {
-                    appLimitsMap.Add(appWarning.Application, appWarning.Limit);
+                    appLimitsMap.Add(appWarning.Application, appWarning);
                 }
 
             }
@@ -56,20 +54,13 @@ namespace AppsTracker.Tracking
 
         private void MidnightTick(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            //stop timers, load current app duration
         }
 
         private void DayTimerCallback(object state)
         {
-            switch (dayWarning.TimeElapsedAction)
-            {
-                case TimeElapsedAction.Warn:
-                    break;
-                case TimeElapsedAction.Shutdown:
-                    break;
-                case TimeElapsedAction.None:
-                    break;
-            }
+            var warning = (AppWarning)state;
+            limitHandler.Handle(warning);
         }
 
         private void WeekTimerCallback(object state)
@@ -86,18 +77,28 @@ namespace AppsTracker.Tracking
         {
             currentApp = app;
             StopTimers();
-            GetAppDuration(app).ContinueWith(t =>
+            if (appLimitsMap.ContainsKey(app))
             {
-                //get limit from dictionary
-                //if passed, kill the app
-                //else setup timer to fire on limit, if current app matches this app
-            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+                GetAppDuration(app).ContinueWith(GetAppDurationContinuation, SynchronizationContext.Current, TaskContinuationOptions.OnlyOnRanToCompletion);
+            }
+        }
 
-            using (var context = new AppsEntities())
+        private void GetAppDurationContinuation(Task<Tuple<Aplication, long>> task, object state)
+        {
+            AppWarning warning;
+            if (appLimitsMap.TryGetValue(task.Result.Item1, out warning) == false)
+                return;
+
+            if (task.Result.Item2 >= warning.Limit)
             {
-                var warnings = context.AppWarnings.Include(w => w.Application).Where(w => w.Application.ApplicationID == app.ApplicationID);
-                dayWarning = warnings.FirstOrDefault(w => w.WarningSpan == WarningSpan.Day);
-                var daySetupTask = SetupDayWarning(dayWarning);
+                limitHandler.Handle(warning);
+            }
+            else if (currentApp != task.Result.Item1)
+                return;
+            else
+            {
+                currentWarning = warning;
+                dayTimer.Change(new TimeSpan((warning.Limit - task.Result.Item2)), Timeout.InfiniteTimeSpan);
             }
         }
 

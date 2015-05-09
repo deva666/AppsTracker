@@ -64,42 +64,12 @@ namespace AppsTracker.ViewModels
                                        ExportFactory<ScreenshotsStatsViewModel> screenshotStatsVMFactory,
                                        ExportFactory<CategoryStatsViewModel> categoryStatsVMFactory)
         {
-            RegisterChild(() =>
-            {
-                using (var context = userStatsVMFactory.CreateExport())
-                {
-                    return context.Value;
-                }
-            });
-            RegisterChild(() =>
-            {
-                using (var context = appStatsVMFactory.CreateExport())
-                {
-                    return context.Value;
-                }
-            });
-            RegisterChild(() =>
-            {
-                using (var context = dailyAppUsageVMFactory.CreateExport())
-                {
-                    return context.Value;
-                }
-            });
-            RegisterChild(() =>
-            {
-                using (var context = screenshotStatsVMFactory.CreateExport())
-                {
-                    return context.Value;
-                }
-            });
-            RegisterChild(() =>
-            {
-                using (var context = categoryStatsVMFactory.CreateExport())
-                {
-                    return context.Value;
-                }
-            });
-
+            RegisterChild(() => ProduceValue(userStatsVMFactory));
+            RegisterChild(() => ProduceValue(appStatsVMFactory));
+            RegisterChild(() => ProduceValue(dailyAppUsageVMFactory));
+            RegisterChild(() => ProduceValue(screenshotStatsVMFactory));
+            RegisterChild(() => ProduceValue(categoryStatsVMFactory));
+            
             SelectedChild = GetChild(typeof(UserStatsViewModel));
         }
 

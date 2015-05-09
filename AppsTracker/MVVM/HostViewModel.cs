@@ -6,10 +6,11 @@
  */
 #endregion
 
-using AppsTracker.Common.Utils;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Windows.Input;
+using AppsTracker.Common.Utils;
 
 namespace AppsTracker.MVVM
 {
@@ -47,6 +48,14 @@ namespace AppsTracker.MVVM
         protected virtual void ChangePage(object parameter)
         {
             SelectedChild = GetChild((Type)parameter);
+        }
+
+        protected T ProduceValue<T>(ExportFactory<T> factory) where T : ViewModelBase
+        {
+            using (var context = factory.CreateExport())
+            {
+                return context.Value;
+            }
         }
 
 

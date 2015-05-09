@@ -67,41 +67,11 @@ namespace AppsTracker.ViewModels
                                      ExportFactory<SettingsPasswordViewModel> passwordVMFactory,
                                      ExportFactory<SettingsAppCategoriesViewModel> appCategoriesVMFactory)
         {
-            RegisterChild(() =>
-            {
-                using (var context = generalVMFactory.CreateExport())
-                {
-                    return context.Value;
-                }
-            });
-            RegisterChild(() =>
-            {
-                using (var context = loggingVMFactory.CreateExport())
-                {
-                    return context.Value;
-                }
-            });
-            RegisterChild(() =>
-            {
-                using (var context = screenshotsVMFactory.CreateExport())
-                {
-                    return context.Value;
-                }
-            });
-            RegisterChild(() =>
-            {
-                using (var context = passwordVMFactory.CreateExport())
-                {
-                    return context.Value;
-                }
-            });
-            RegisterChild(() =>
-            {
-                using (var context = appCategoriesVMFactory.CreateExport())
-                {
-                    return context.Value;
-                }
-            });
+            RegisterChild(() => ProduceValue(generalVMFactory));
+            RegisterChild(() => ProduceValue(loggingVMFactory));
+            RegisterChild(() => ProduceValue(screenshotsVMFactory));
+            RegisterChild(() => ProduceValue(passwordVMFactory));
+            RegisterChild(() => ProduceValue(appCategoriesVMFactory));         
 
             SelectedChild = GetChild<SettingsGeneralViewModel>();
         }

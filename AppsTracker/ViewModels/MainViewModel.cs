@@ -242,31 +242,11 @@ namespace AppsTracker.ViewModels
             this.dataService = dataService;
             this.settingsService = settingsService;
             this.loggingService = loggingService;
-            this.mediator = mediator;
+            this.mediator = mediator;         
 
-            RegisterChild(() =>
-            {
-                using (var context = dataVMFactory.CreateExport())
-                {
-                    return context.Value;
-                }
-            });
-
-            RegisterChild(() =>
-            {
-                using (var context = statisticsVMFactory.CreateExport())
-                {
-                    return context.Value;
-                }
-            });
-
-            RegisterChild(() =>
-            {
-                using (var context = settingsVMFactory.CreateExport())
-                {
-                    return context.Value;
-                }
-            });
+            RegisterChild(() => ProduceValue(dataVMFactory));
+            RegisterChild(() => ProduceValue(statisticsVMFactory));
+            RegisterChild(() => ProduceValue(settingsVMFactory));
 
             SelectedChild = GetChild<DataHostViewModel>();
         }
