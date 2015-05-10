@@ -15,12 +15,21 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace AppsTracker.Service
 {
     [Export(typeof(IDataService))]
     public sealed class DataService : IDataService
     {
+        private const int MEGA_BYTES = 1048576;
+        private const decimal DB_SIZE_LIMIT = 3900m;
+
+        public bool DBSizeOperational { get; private set; }
+
+        public event EventHandler DbSizeCritical;
+
+
         public IEnumerable<T> Get<T>() where T : class
         {
             using (var context = new AppsEntities())
@@ -58,6 +67,86 @@ namespace AppsTracker.Service
                 return query.AsNoTracking().Where(filter).ToList();
             }
         }
+
+        public void SaveModifiedEntity<T>(T item) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                context.Entry<T>(item).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+        }
+
+        public async Task SaveModifiedEntityAsync<T>(T item) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                context.Entry<T>(item).State = EntityState.Modified;
+                await context.SaveChangesAsync();
+            }
+        }
+
+
+        public void SaveNewEntity<T>(T item) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                context.Set<T>().Add(item);
+                context.SaveChanges();
+            }
+        }
+
+        public async Task SaveNewEntityAsync<T>(T item) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                context.Set<T>().Add(item);
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public void SaveModifiedEntityRange<T>(IEnumerable<T> items) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                foreach (var item in items)
+                {
+                    context.Entry(item).State = EntityState.Modified;
+                }
+                context.SaveChanges();
+            }
+        }
+
+        public async Task SaveModifiedEntityRangeAsync<T>(IEnumerable<T> items) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                foreach (var item in items)
+                {
+                    context.Entry(item).State = EntityState.Modified;
+                }
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public void SaveNewEntityRange<T>(IEnumerable<T> items) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                context.Set<T>().AddRange(items);
+                context.SaveChanges();
+            }
+        }
+
+        public async Task SaveNewEntityRangeAsync<T>(IEnumerable<T> items) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                context.Set<T>().AddRange(items);
+                await context.SaveChangesAsync();
+            }
+        }
+
 
         public async Task DeleteScreenshotsInLogs(IEnumerable<Log> logs)
         {
@@ -159,6 +248,32 @@ namespace AppsTracker.Service
                     context.Applications.Remove(app);
                     context.SaveChanges();
                 }
+            }
+        }
+
+        public Task<decimal> GetDBSizeAsync()
+        {
+            return Task<decimal>.Run(new Func<decimal>(GetDBSize));
+        }
+
+        public decimal GetDBSize()
+        {
+            try
+            {
+                FileInfo file = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "appsdb.sdf"));
+                decimal size = Math.Round((decimal)file.Length / MEGA_BYTES, 2);
+                if (size >= DB_SIZE_LIMIT)
+                {
+                    DBSizeOperational = false;
+                    DbSizeCritical.InvokeSafely(this, EventArgs.Empty);
+                }
+                else
+                    DBSizeOperational = true;
+                return size;
+            }
+            catch
+            {
+                return -1;
             }
         }
     }

@@ -14,19 +14,19 @@ namespace AppsTracker.Tracking
 
         private readonly IScreenshotFactory screenshotFactory;
         private readonly ISyncContext syncContext;
-        private readonly ILoggingService loggingService;
+        private readonly IDataService dataService;
 
         private LazyInit<System.Timers.Timer> screenshotTimer;
 
         private Setting settings;
 
         [ImportingConstructor]
-        public ScreenshotTracker(IScreenshotFactory screenshotFactory, ISyncContext syncContext
-                                    , ILoggingService loggingService)
+        public ScreenshotTracker(IScreenshotFactory screenshotFactory, ISyncContext syncContext,
+                                 IDataService dataService)
         {
             this.screenshotFactory = screenshotFactory;
             this.syncContext = syncContext;
-            this.loggingService = loggingService;
+            this.dataService = dataService;
         }
 
         public void Initialize(Setting settings)
@@ -66,7 +66,7 @@ namespace AppsTracker.Tracking
 
         private async Task TakeScreenshot()
         {
-            var dbSizeTask = loggingService.GetDBSizeAsync();
+            var dbSizeTask = dataService.GetDBSizeAsync();
             var screenshot = screenshotFactory.CreateScreenshot();
 
             ScreenshotTaken.InvokeSafely(this, new ScreenshotEventArgs(screenshot));

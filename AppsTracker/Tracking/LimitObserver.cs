@@ -15,7 +15,7 @@ namespace AppsTracker.Tracking
 {
     internal sealed class LimitObserver
     {
-        private readonly ILoggingService loggingService;
+        private readonly ITrackingService trackingService;
         private readonly IDataService dataService;
         private readonly IMidnightNotifier midnightNotifier;
         private readonly ILimitHandler limitHandler;
@@ -35,10 +35,10 @@ namespace AppsTracker.Tracking
         public LimitObserver(IMidnightNotifier midnightNotifier,
                              ILimitHandler limitHandler,
                              IDataService dataService,
-                             ILoggingService loggingService,
+                             ITrackingService trackingService,
                              IMediator mediator)
         {
-            this.loggingService = loggingService;
+            this.trackingService = trackingService;
             this.dataService = dataService;
             this.midnightNotifier = midnightNotifier;
             this.limitHandler = limitHandler;
@@ -57,7 +57,7 @@ namespace AppsTracker.Tracking
             midnightNotifier.MidnightTick += MidnightTick;
 
             var appsWithLimits = dataService.GetFiltered<Aplication>(a => a.Limits.Count > 0
-                                                                     && a.UserID == loggingService.UserID,
+                                                                     && a.UserID == trackingService.UserID,
                                                                      a => a.Limits);
             foreach (var app in appsWithLimits)
             {
@@ -133,7 +133,7 @@ namespace AppsTracker.Tracking
 
         private long GetTodayDuration(Aplication app)
         {
-            var loadedApp = dataService.GetFiltered<Aplication>(a => a.UserID == loggingService.UserID
+            var loadedApp = dataService.GetFiltered<Aplication>(a => a.UserID == trackingService.UserID
                                                                 && a.ApplicationID == app.ApplicationID,
                                                                 a => a.Windows.Select(w => w.Logs))
                                                                 .First();

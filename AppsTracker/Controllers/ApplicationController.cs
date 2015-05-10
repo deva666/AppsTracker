@@ -23,19 +23,19 @@ namespace AppsTracker.Controllers
         private readonly ITrackingController trackingController;
         private readonly IXmlSettingsService xmlSettingsService;
         private readonly ISqlSettingsService sqlSettingsService;
-        private readonly ILoggingService loggingService;
+        private readonly IDataService dataService;
         private readonly IWindowService windowService;
 
         [ImportingConstructor]
         public ApplicationController(IAppearanceController appearanceController, ITrackingController trackingController,
                                      ISqlSettingsService sqlSettingsService, IXmlSettingsService xmlSettingsService,
-                                     ILoggingService loggingService, IWindowService windowService)
+                                     IDataService dataService, IWindowService windowService)
         {
             this.appearanceController = appearanceController;
             this.trackingController = trackingController;
             this.xmlSettingsService = xmlSettingsService;
             this.sqlSettingsService = sqlSettingsService;
-            this.loggingService = loggingService;
+            this.dataService = dataService;
             this.windowService = windowService;
         }
 
@@ -53,8 +53,8 @@ namespace AppsTracker.Controllers
             windowService.FirstRunWindowSetup();
             windowService.InitializeTrayIcon();
 
-            loggingService.DbSizeCritical += OnDbSizeCritical;
-            loggingService.GetDBSize();
+            dataService.DbSizeCritical += OnDbSizeCritical;
+            dataService.GetDBSize();
 
             EntryPoint.SingleInstanceManager.SecondInstanceActivating += (s, e) => windowService.CreateOrShowMainWindow();
         }
@@ -74,7 +74,7 @@ namespace AppsTracker.Controllers
             windowService.ShowDialog("Database size has reached the maximum allowed value"
                 + Environment.NewLine + "Please run the screenshot cleaner from the settings menu to continue capturing screenshots.", false);
 
-            loggingService.DbSizeCritical -= OnDbSizeCritical;
+            dataService.DbSizeCritical -= OnDbSizeCritical;
         }
 
         public void ShutDown()

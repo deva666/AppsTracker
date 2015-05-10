@@ -15,13 +15,38 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class SettingsLimitsViewModel : ViewModelBase
     {
-        public override string Title
+        private const string SETTINGS_SAVED_MSG = "settings saved";
+
+        private readonly IDataService dataService;
+        private readonly ITrackingService trackingService;
+        
+        
+        public override string Title        
         {
             get { return "APP LIMITS"; }
         }
 
-        private readonly IDataService dataService;
-        private readonly ILoggingService loggingService;
+
+        private string infoMessage;
+
+        public string InfoMessage
+        {
+            get { return infoMessage; }
+            set
+            {
+                SetPropertyValue(ref infoMessage, string.Empty);
+                SetPropertyValue(ref infoMessage, value);
+            }
+        }
+        
+
+        private bool isAddNewPopupOpen;
+
+        public bool IsAddNewPopupOpen
+        {
+            get { return isAddNewPopupOpen; }
+            set { SetPropertyValue(ref isAddNewPopupOpen, value); }
+        }
 
 
         private Aplication selectedApp;
@@ -59,26 +84,38 @@ namespace AppsTracker.ViewModels
             get
             {
                 return saveChangesCommand ??
-                    (saveChangesCommand = new DelegateCommand(SaveChanges));
+                    (saveChangesCommand = new DelegateCommandAsync(SaveChanges));
+            }
+        }
+
+
+        private ICommand openAddNewPopupCommand;
+
+        public ICommand OpenAddNewPopupCommand
+        {
+            get
+            {
+                return openAddNewPopupCommand ??
+                    (openAddNewPopupCommand = new DelegateCommand(OpenAddNewPopup));
             }
         }
 
 
         [ImportingConstructor]
         public SettingsLimitsViewModel(IDataService dataService,
-                                       ILoggingService loggingService)
+                                       ITrackingService trackingService)
         {
             this.dataService = dataService;
-            this.loggingService = loggingService;
+            this.trackingService = trackingService;
 
             AppList = new AsyncProperty<IEnumerable<Aplication>>(GetApps, this);
         }
 
         private IEnumerable<Aplication> GetApps()
         {
-            var apps = dataService.GetFiltered<Aplication>(a => a.User.UserID == loggingService.SelectedUserID
-                                                             && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= loggingService.DateFrom).Any()
-                                                             && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= loggingService.DateTo).Any(),
+            var apps = dataService.GetFiltered<Aplication>(a => a.User.UserID == trackingService.SelectedUserID
+                                                             && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= trackingService.DateFrom).Any()
+                                                             && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= trackingService.DateTo).Any(),
                                                              a => a.Limits)
                                                         .ToList()
                                                         .Distinct();
@@ -91,19 +128,45 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private void AddNewLimit()
+        private void AddNewLimit(object parameter)
         {
             if (selectedApp == null)
                 return;
 
-            selectedApp.ObservableLimits.Add(new AppLimit());
+            string limit = (string)parameter;
+            var appLimit = new AppLimit() { Application = selectedApp};
 
+            if (limit.ToUpper() == "DAILY")
+                appLimit.LimitSpan = LimitSpan.Day;
+            else if (limit.ToUpper() == "WEEKLY")
+                appLimit.LimitSpan = LimitSpan.Week;
+            else if (limit.ToUpper() == "MONTHLY")
+                appLimit.LimitSpan = LimitSpan.Month;
+
+            selectedApp.ObservableLimits.Add(appLimit);
+
+            IsAddNewPopupOpen = false;
+            PropertyChanging("SelectedApp");
         }
 
-        private void SaveChanges()
+        private async Task SaveChanges()
         {
-            
+            var apps = AppList.Result;
+            if (apps == null)
+                return;
+
+            var appsToSave = apps.Where(a => a.Limits.Count != a.ObservableLimits.Count);
+            foreach (var app in appsToSave)
+            {
+                app.Limits = new HashSet<AppLimit>(app.ObservableLimits);
+            }
+            await dataService.SaveModifiedEntityRangeAsync(appsToSave);
+            InfoMessage = SETTINGS_SAVED_MSG;
         }
 
+        private void OpenAddNewPopup()
+        {
+            IsAddNewPopupOpen = !IsAddNewPopupOpen;
+        }
     }
 }

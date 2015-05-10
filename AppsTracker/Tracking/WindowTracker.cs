@@ -24,7 +24,8 @@ namespace AppsTracker.Tracking
 
         private string activeWindowTitle;
 
-        private readonly ILoggingService loggingService;
+        private readonly ITrackingService trackingService;
+        private readonly IDataService dataService;
         private readonly IWindowNotifier windowNotifierInstance;
         private readonly ISyncContext syncContext;
         private readonly IScreenshotTracker screenshotTracker;
@@ -40,14 +41,16 @@ namespace AppsTracker.Tracking
         private Setting settings;
 
         [ImportingConstructor]
-        public WindowTracker(IWindowNotifier windowNotifier,
-                             ILoggingService loggingService,
+        public WindowTracker(ITrackingService trackingService,
+                             IDataService dataService,
+                             IWindowNotifier windowNotifier,
                              IScreenshotTracker screenshotTracker,
                              ISyncContext syncContext,
                              IWindowHelper windowHelper,
                              IMediator mediator)
         {
-            this.loggingService = loggingService;
+            this.trackingService = trackingService;
+            this.dataService = dataService;
             this.windowNotifierInstance = windowNotifier;
             this.screenshotTracker = screenshotTracker;
             this.syncContext = syncContext;
@@ -91,7 +94,7 @@ namespace AppsTracker.Tracking
                 return;
 
             screenshot.LogID = currentLog.LogID;
-            await loggingService.SaveNewScreenshotAsync(screenshot);
+            await dataService.SaveNewEntityAsync(screenshot);
         }
 
         private void ConfigureComponents()
@@ -128,7 +131,7 @@ namespace AppsTracker.Tracking
             }
 
             bool newApp = false;
-            SaveCreateLog(windowTitle, loggingService.UsageID, loggingService.UserID, appInfo, out newApp);
+            SaveCreateLog(windowTitle, trackingService.UsageID, trackingService.UserID, appInfo, out newApp);
             activeWindowTitle = windowTitle;
 
             if (newApp)
@@ -138,7 +141,7 @@ namespace AppsTracker.Tracking
 
         private void SaveCreateLog(string windowTitle, int usageID, int userID, IAppInfo appInfo, out bool newApp)
         {
-            var newLog = loggingService.CreateNewLog(windowTitle, usageID, userID, appInfo, out newApp);
+            var newLog = trackingService.CreateNewLog(windowTitle, usageID, userID, appInfo, out newApp);
             ExchangeLogs(newLog);
         }
 
@@ -155,12 +158,12 @@ namespace AppsTracker.Tracking
                 return;
 
             tempLog.Finish();
-            loggingService.SaveModifiedLogAsync(tempLog);
+            dataService.SaveModifiedEntityAsync(tempLog);
         }
 
         private void NewAppAdded(IAppInfo appInfo)
         {
-            var newApp = loggingService.GetApp(appInfo);
+            var newApp = trackingService.GetApp(appInfo);
             mediator.NotifyColleagues(MediatorMessages.ApplicationAdded, newApp);
         }
 

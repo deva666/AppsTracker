@@ -21,7 +21,7 @@ namespace AppsTracker.ViewModels
     {
         private readonly IDataService dataService;
         private readonly ISqlSettingsService settingsService;
-        private readonly ILoggingService loggingService;
+        private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
         private bool isPopupCalendarOpen = false;
@@ -68,19 +68,19 @@ namespace AppsTracker.ViewModels
 
         public decimal DBSize
         {
-            get { return loggingService.GetDBSize(); }
+            get { return dataService.GetDBSize(); }
         }
 
 
         public DateTime DateFrom
         {
-            get { return loggingService.DateFrom; }
+            get { return trackingService.DateFrom; }
             set
             {
-                if (loggingService.DateFrom == value)
+                if (trackingService.DateFrom == value)
                     return;
                 IsFilterApplied = true;
-                loggingService.DateFrom = value;
+                trackingService.DateFrom = value;
                 PropertyChanging("DateFrom");
                 mediator.NotifyColleagues(MediatorMessages.RefreshLogs);
             }
@@ -89,13 +89,13 @@ namespace AppsTracker.ViewModels
 
         public DateTime DateTo
         {
-            get { return loggingService.DateTo; }
+            get { return trackingService.DateTo; }
             set
             {
-                if (loggingService.DateTo == value)
+                if (trackingService.DateTo == value)
                     return;
                 IsFilterApplied = true;
-                loggingService.DateTo = value;
+                trackingService.DateTo = value;
                 PropertyChanging("DateTo");
                 mediator.NotifyColleagues(MediatorMessages.RefreshLogs);
             }
@@ -106,7 +106,7 @@ namespace AppsTracker.ViewModels
 
         public string UserName
         {
-            get { return loggingService.SelectedUserName; }
+            get { return trackingService.SelectedUserName; }
             set { SetPropertyValue(ref userName, value); }
         }
 
@@ -124,13 +124,13 @@ namespace AppsTracker.ViewModels
         {
             get
             {
-                return loggingService.SelectedUser;
+                return trackingService.SelectedUser;
             }
             set
             {
-                if (value != null && value.UserID != loggingService.SelectedUserID)
+                if (value != null && value.UserID != trackingService.SelectedUserID)
                 {
-                    loggingService.ChangeUser(value);
+                    trackingService.ChangeUser(value);
                     PropertyChanging("User");
                     ClearFilter();
                 }
@@ -233,7 +233,7 @@ namespace AppsTracker.ViewModels
         [ImportingConstructor]
         public MainViewModel(IDataService dataService,
                              ISqlSettingsService settingsService,
-                             ILoggingService loggingService,
+                             ITrackingService trackingService,
                              IMediator mediator,
                              ExportFactory<DataHostViewModel> dataVMFactory,
                              ExportFactory<StatisticsHostViewModel> statisticsVMFactory,
@@ -241,7 +241,7 @@ namespace AppsTracker.ViewModels
         {
             this.dataService = dataService;
             this.settingsService = settingsService;
-            this.loggingService = loggingService;
+            this.trackingService = trackingService;
             this.mediator = mediator;         
 
             RegisterChild(() => ProduceValue(dataVMFactory));
@@ -286,7 +286,7 @@ namespace AppsTracker.ViewModels
         private void ClearFilter()
         {
             IsFilterApplied = false;
-            loggingService.ClearDateFilter();
+            trackingService.ClearDateFilter();
             PropertyChanging("DateFrom");
             PropertyChanging("DateTo");
             mediator.NotifyColleagues(MediatorMessages.RefreshLogs);

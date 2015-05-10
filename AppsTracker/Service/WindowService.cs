@@ -91,6 +91,23 @@ namespace AppsTracker.Service
             }
         }
 
+        private void SetInitialWindowDimensions()
+        {
+            var bound = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
+            double left, top, width, height;
+            var widthRatio = bound.Width * 0.15d;
+            var heightRatio = bound.Height * 0.15d;
+            left = bound.Left + widthRatio;
+            top = bound.Top + heightRatio;
+            width = bound.Width - widthRatio * 2;
+            height = bound.Height - heightRatio * 2;
+            mainWindow.Left = left;
+            mainWindow.Top = top;
+            mainWindow.Width = width;
+            mainWindow.Height = height;
+        }
+
+
         public void InitializeTrayIcon()
         {
             trayIcon.ShowApp.Click += (s, e) => CreateOrShowMainWindow();
@@ -185,18 +202,5 @@ namespace AppsTracker.Service
             mainWindow = null;
         }
 
-        private void SetInitialWindowDimensions()
-        {
-            var bound = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
-            double left, top, width, height;
-            left = bound.Left + 50d;
-            top = bound.Top + 50d;
-            width = bound.Width - 100d;
-            height = bound.Height - 100d;
-            mainWindow.Left = left;
-            mainWindow.Top = top;
-            mainWindow.Width = width;
-            mainWindow.Height = height;
-        }
     }
 }

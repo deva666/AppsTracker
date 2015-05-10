@@ -206,12 +206,12 @@
     <Compile Include="Service\IBaseService.cs" />
     <Compile Include="Service\ICategoriesService.cs" />
     <Compile Include="Service\IDataService.cs" />
-    <Compile Include="Service\ILoggingService.cs" />
+    <Compile Include="Service\ITrackingService.cs" />
     <Compile Include="Service\IWindowService.cs" />
     <Compile Include="Service\ISqlSettingsService.cs" />
     <Compile Include="Service\IStatsService.cs" />
     <Compile Include="Service\IXmlSettingsService.cs" />
-    <Compile Include="Service\LoggingService.cs" />
+    <Compile Include="Service\TrackingService.cs" />
     <Compile Include="Service\WindowService.cs" />
     <Compile Include="Service\SqlSettingsService.cs" />
     <Compile Include="Service\StatsService.cs" />

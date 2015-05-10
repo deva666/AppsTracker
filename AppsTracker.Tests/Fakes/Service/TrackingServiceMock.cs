@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Service;
 
 namespace AppsTracker.Tests.Fakes.Service
 {
-    [Export(typeof(ILoggingService))]
-    class LoggingServiceMock : ILoggingService
+    [Export(typeof(ITrackingService))]
+    class TrackingServiceMock : ITrackingService
     {
         public Data.Models.Log CreateNewLog(string windowTitle, int usageID, int userID, Data.Utils.IAppInfo appInfo, out bool newApp)
         {
@@ -23,16 +19,6 @@ namespace AppsTracker.Tests.Fakes.Service
             return new Aplication(appInfo);
         }
 
-        public Task SaveModifiedLogAsync(Data.Models.Log log)
-        {
-            return Task.Delay(50);
-        }
-
-        public Task SaveNewScreenshotAsync(Data.Models.Screenshot screenshot)
-        {
-            return Task.Delay(50);
-        }
-
         public Data.Models.Usage LoginUser(int userID)
         {
             return new Usage(userID);
@@ -43,25 +29,9 @@ namespace AppsTracker.Tests.Fakes.Service
             return new Uzer() { Name = userName };
         }
 
-        public Task SaveNewUsageAsync(Data.Models.UsageTypes usagetype, Data.Models.Usage usage)
-        {
-            return Task.Delay(50);
-        }
-
-        public Task SaveModifiedUsageAsync(Data.Models.Usage usage)
-        {
-            return Task.Delay(50);
-        }
-
         public DateTime GetFirstDate(int userID)
         {
             return DateTime.Now.AddDays(-30);
-        }
-
-        public bool DBSizeOperational
-        {
-            get;
-            set;
         }
 
         public int UserID
@@ -112,31 +82,21 @@ namespace AppsTracker.Tests.Fakes.Service
             set;
         }
 
-        public event EventHandler DbSizeCritical;
 
         public void Initialize(Uzer uzer, int usageID)
         {
-            
+
         }
 
         public void ChangeUser(Uzer uzer)
         {
-            
+
         }
 
         public void ClearDateFilter()
         {
-            
+
         }
 
-        public decimal GetDBSize()
-        {
-            return 1;
-        }
-
-        public Task<decimal> GetDBSizeAsync()
-        {
-            return Task.FromResult<decimal>(1);
-        }
     }
 }

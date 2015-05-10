@@ -13,6 +13,10 @@
                 <ResourceDictionary Source="/Themes/RunningLight.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <local:ConvertTicksToTimespan x:Key="convertTicksToTimespan" />
+            <local:ConvertDoubleToTimespan x:Key="convertDoubleToTimespan" />
+            <local:ConvertLimitSpanToMaxSlider x:Key="convertLimitSpanToMaxSlider" />
+
             <Style x:Key="MinimalChartStyle"
                    TargetType="chart:ChartBase">
 
@@ -58,23 +62,23 @@
                 <Setter Property="Control.Foreground"
                         Value="{DynamicResource WindowForegroundBrush}" />
                 <Style.Triggers>
-               <MultiTrigger>
-                  <MultiTrigger.Conditions>
-                     <Condition Property="Control.IsMouseOver"
-                                Value="True" />
-                     <Condition Property="Control.IsEnabled"
-                                Value="True" />
-                  </MultiTrigger.Conditions>
-                  <MultiTrigger.Setters>
-                     <Setter Property="Control.Foreground"
-                             Value="{DynamicResource HighlightBrush}" />
-                  </MultiTrigger.Setters>
-               </MultiTrigger>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="Control.IsMouseOver"
+                                       Value="True" />
+                            <Condition Property="Control.IsEnabled"
+                                       Value="True" />
+                        </MultiTrigger.Conditions>
+                        <MultiTrigger.Setters>
+                            <Setter Property="Control.Foreground"
+                                    Value="{DynamicResource HighlightBrush}" />
+                        </MultiTrigger.Setters>
+                    </MultiTrigger>
                     <Trigger Property="Control.IsEnabled"
                              Value="False">
-                  <Setter Property="Control.Foreground"
-                          Value="{DynamicResource ButtonTextDisabled}" />
-               </Trigger>
+                        <Setter Property="Control.Foreground"
+                                Value="{DynamicResource ButtonTextDisabled}" />
+                    </Trigger>
                 </Style.Triggers>
             </Style>
 
@@ -307,7 +311,7 @@
                         Value="False" />
                 <Setter Property="IsSelected"
                         Value="{Binding IsSelected, Mode=TwoWay}" />
-              
+
                 <Style.Triggers>
                     <Trigger Property="IsSelected"
                              Value="True">
@@ -1633,22 +1637,22 @@
                                         </VisualState>
                                     </VisualStateGroup>
                                 </VisualStateManager.VisualStateGroups>
-                        <ContentPresenter Cursor="{TemplateBinding Cursor}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          Content="{TemplateBinding Content}"
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          Margin="{TemplateBinding Padding}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          x:Name="mainArea">
-                           <ContentPresenter.RenderTransform>
-                              <TranslateTransform />
-                           </ContentPresenter.RenderTransform>
-                        </ContentPresenter>
-                        <Rectangle x:Name="paintArea">
-                           <Rectangle.RenderTransform>
-                              <TranslateTransform />
-                           </Rectangle.RenderTransform>
-                        </Rectangle>
+                                <ContentPresenter Cursor="{TemplateBinding Cursor}"
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                  Content="{TemplateBinding Content}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  Margin="{TemplateBinding Padding}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  x:Name="mainArea">
+                                    <ContentPresenter.RenderTransform>
+                                        <TranslateTransform />
+                                    </ContentPresenter.RenderTransform>
+                                </ContentPresenter>
+                                <Rectangle x:Name="paintArea">
+                                    <Rectangle.RenderTransform>
+                                        <TranslateTransform />
+                                    </Rectangle.RenderTransform>
+                                </Rectangle>
                                 <Grid.RenderTransform>
                                     <TranslateTransform />
                                 </Grid.RenderTransform>
@@ -2619,46 +2623,65 @@
                     </Label.ToolTip>
                 </Label>
             </DataTemplate>
-            
+
             <DataTemplate x:Key="AppLimitDataTemplate">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal">
+                <Border BorderBrush="{DynamicResource 2ndBackgroundBrush}"
+                        BorderThickness="0 0 0 2">
+                    <Border.RenderTransform>
+                        <TranslateTransform />
+                    </Border.RenderTransform>
+                    <Border.Triggers>
+                        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                            <BeginStoryboard Storyboard="{StaticResource ElementFadeIn}" />
+                        </EventTrigger>
+                    </Border.Triggers>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition MinWidth="165" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    Margin="15">
+                            <Label Style="{DynamicResource LabelStyle}"
+                                   Content="Span:"
+                                   FontSize="15" />
+                            <Label Style="{DynamicResource LabelStyle}"
+                                   Content="{Binding LimitSpan}"
+                                   FontSize="15" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="1">
+                            <Label Style="{DynamicResource LabelStyle}"
+                                   Content="Limit:" />
+                            <Slider Minimum="0"
+                                    Maximum="{Binding LimitSpan, Converter={StaticResource convertLimitSpanToMaxSlider}}"
+                                    TickFrequency="0.5"
+                                    IsSnapToTickEnabled="True"
+                                    MinWidth="175"
+                                    Name="sliderLimit" />
+                        </StackPanel>
                         <Label Style="{DynamicResource LabelStyle}"
-                               Content="Limit span:" />
-                        <Label Style="{DynamicResource SelectableLabelStyle}"
-                               Content="{Binding LimitSpan}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal"
-                                Grid.Row="1">
-                        <Label Style="{DynamicResource LabelStyle}"
-                               Content="Limit:" />
-                        <Slider Minimum="0"
-                                Maximum="24" 
-                                
-                                TickFrequency="0.5"
-                                IsSnapToTickEnabled="True"
-                                MinWidth="150"
-                                Name="sliderLimit"
-                                />
-                        <Label Style="{DynamicResource LabelStyle}"
-                               Content="{Binding ElementName=sliderLimit,Path=Value}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal"
-                                Grid.Row="2">
-                        <Label Style="{DynamicResource LabelStyle}"
-                               Content="Limit reached action:" />
-                        <Label Style="{DynamicResource SelectableLabelStyle}"
-                               Content="{Binding LimitReachedAction}" />
-                    </StackPanel>
-                </Grid>
+                               Grid.Row="2"
+                               HorizontalAlignment="Center"
+                               Content="{Binding ElementName=sliderLimit,Path=Value, StringFormat=hh\\:mm, Converter={StaticResource convertDoubleToTimespan}}" />
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="3">
+                            <Label Style="{DynamicResource LabelStyle}"
+                                   Content="Limit reached action:" />
+                            <Label Style="{DynamicResource SelectableLabelStyle}"
+                                   Content="{Binding LimitReachedAction}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
             </DataTemplate>
-            
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>    

@@ -1030,6 +1030,74 @@ namespace AppsTracker
         }
     }
 
+    class ConvertDoubleToTimespan : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            double hours = (double)value;
+            var floor = Math.Floor(hours);
+            if (hours == floor)
+                return new TimeSpan((int)floor, 0, 0);
+            else
+                return new TimeSpan((int)floor, 30, 0);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var timespan = (TimeSpan)value;
+            return timespan.TotalHours;
+        }
+    }
+
+
+    class ConvertAppLimitsToBool : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value == null)
+                return true;
+
+            var limitSpan = (LimitSpan)Enum.Parse(typeof(LimitSpan), (string)parameter);
+            var limits = (IEnumerable<AppLimit>)value;
+            return limits.Where(l => l.LimitSpan == limitSpan).Count() == 0;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+    class ConvertLimitSpanToMaxSlider : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var limitSpan = (LimitSpan)value;
+            int hours = 24;
+            switch (limitSpan)
+            {
+                case LimitSpan.Day:
+                    return (double)hours;
+                case LimitSpan.Month:
+                    return (double)(31 * hours);
+                case LimitSpan.Week:
+                    return (double)(7 * hours);
+                default:
+                    return (double)hours;
+            }
+
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+
     class ConvertTopWindowDuration : IValueConverter
     {
 

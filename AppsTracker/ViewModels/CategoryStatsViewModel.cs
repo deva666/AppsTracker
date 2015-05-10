@@ -20,7 +20,7 @@ namespace AppsTracker.ViewModels
     public sealed class CategoryStatsViewModel : ViewModelBase
     {
         private readonly IStatsService statsService;
-        private readonly ILoggingService loggingService;
+        private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
         public override string Title
@@ -69,11 +69,11 @@ namespace AppsTracker.ViewModels
 
         [ImportingConstructor]
         public CategoryStatsViewModel(IStatsService statsService,
-                                      ILoggingService loggingService,
+                                      ITrackingService trackingService,
                                       IMediator mediator)
         {
             this.statsService = statsService;
-            this.loggingService = loggingService;
+            this.trackingService = trackingService;
             this.mediator = mediator;
 
             categoryList = new AsyncProperty<IEnumerable<CategoryDuration>>(GetCategories, this);
@@ -85,7 +85,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<CategoryDuration> GetCategories()
         {
-            return statsService.GetCategoryStats(loggingService.SelectedUserID, loggingService.DateFrom, loggingService.DateTo);
+            return statsService.GetCategoryStats(trackingService.SelectedUserID, trackingService.DateFrom, trackingService.DateTo);
         }
 
 
@@ -95,7 +95,7 @@ namespace AppsTracker.ViewModels
             if (category == null)
                 return null;
 
-            return statsService.GetDailyCategoryStats(loggingService.SelectedUserID, category.Name, loggingService.DateFrom, loggingService.DateTo);
+            return statsService.GetDailyCategoryStats(trackingService.SelectedUserID, category.Name, trackingService.DateFrom, trackingService.DateTo);
         }
 
         private void ReloadAll()

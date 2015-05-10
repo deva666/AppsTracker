@@ -20,7 +20,7 @@ namespace AppsTracker.ViewModels
     public sealed class ScreenshotsStatsViewModel : ViewModelBase
     {
         private readonly IStatsService statsService;
-        private readonly ILoggingService loggingService;
+        private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
 
@@ -71,11 +71,11 @@ namespace AppsTracker.ViewModels
 
         [ImportingConstructor]
         public ScreenshotsStatsViewModel(IStatsService statsService, 
-                                         ILoggingService loggingService, 
+                                         ITrackingService trackingService, 
                                          IMediator mediator)
         {
             this.statsService = statsService;
-            this.loggingService = loggingService;
+            this.trackingService = trackingService;
             this.mediator = mediator;
 
             screenshotList = new AsyncProperty<IEnumerable<ScreenshotModel>>(GetScreenshots, this);
@@ -87,7 +87,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<ScreenshotModel> GetScreenshots()
         {
-            return statsService.GetScreenshots(loggingService.SelectedUserID, loggingService.DateFrom, loggingService.DateTo);
+            return statsService.GetScreenshots(trackingService.SelectedUserID, trackingService.DateFrom, trackingService.DateTo);
         }
 
 
@@ -97,7 +97,7 @@ namespace AppsTracker.ViewModels
             if (model == null)
                 return null;
 
-            return statsService.GetScreenshotsByApp(loggingService.SelectedUserID, model.AppName, loggingService.DateFrom, loggingService.DateTo);
+            return statsService.GetScreenshotsByApp(trackingService.SelectedUserID, model.AppName, trackingService.DateFrom, trackingService.DateTo);
         }
 
         private void ReloadAll()

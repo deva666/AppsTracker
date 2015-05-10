@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Diagnostics.CodeAnalysis;
 
 namespace AppsTracker.MVVM
 {
     public class DelegateCommandAsync : ICommand
     {
-        private Func<Task> _delegate;
-        private Func<object, Task> _parameterizedDelegate;
-        private Func<bool> _canExecute;
+        private readonly Func<Task> _delegate;
+        private readonly Func<object, Task> _parameterizedDelegate;
+        private readonly Func<bool> _canExecute;
 
         public DelegateCommandAsync(Func<Task> @delegate)
         {

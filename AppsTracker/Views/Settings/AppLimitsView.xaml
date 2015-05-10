@@ -3,15 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:AppsTracker.Widgets"
+             xmlns:converters="clr-namespace:AppsTracker"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="300">
+    <UserControl.Resources>
+        <converters:ConvertSelectedIndexToBool x:Key="selectedIndexConverter" />
+        <converters:ConvertAppLimitsToBool x:Key="convertAppLimitsToBool" />
+    </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="220" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="630" />
+                <ColumnDefinition Width="300" />
                 <ColumnDefinition Width="250" />
             </Grid.ColumnDefinitions>
 
@@ -20,6 +26,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -49,6 +56,11 @@
                                       CommandParameter="True" />
                     </Button.InputBindings>
                 </Button>
+                <controls:ScrollingContentControl Grid.Row="3"
+                                                  Margin="0,30,0,0"
+                                                  InfoContent="{Binding InfoMessage}">
+                    <Label Style="{DynamicResource LabelStyle}" />
+                </controls:ScrollingContentControl>
             </Grid>
 
             <Grid Grid.Column="1"
@@ -68,7 +80,7 @@
 
             <Grid Grid.Column="2"
                   Margin="20,0,20,0"
-                  HorizontalAlignment="Left">
+                  HorizontalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -90,12 +102,50 @@
                 </ListBox>
                 <Label Grid.Row="2"
                        Content="add new limit"
-                       Style="{DynamicResource SelectableLabelStyle}">
+                       Style="{DynamicResource SelectableLabelStyle}"
+                       Name="lblAddNew"
+                       IsEnabled="{Binding ElementName=lbApps, Path=SelectedIndex, Converter={StaticResource selectedIndexConverter}}">
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding AddNewLimitCommand}" />
+                                      Command="{Binding OpenAddNewPopupCommand}" />
                     </Label.InputBindings>
                 </Label>
+                <Popup IsOpen="{Binding IsAddNewPopupOpen}"
+                       Placement="Right"
+                       PlacementTarget="{Binding ElementName=lblAddNew}"
+                       PopupAnimation="Slide">
+                    <Border Style="{DynamicResource ThemeBorderStyle}">
+                        <StackPanel Orientation="Vertical">
+                            <Label Style="{DynamicResource SelectableLabelStyle}"
+                                   Content="Daily limit"
+                                   IsEnabled="{Binding SelectedApp.ObservableLimits, Converter={StaticResource convertAppLimitsToBool},ConverterParameter=Day}">
+                                <Label.InputBindings>
+                                    <MouseBinding Gesture="LeftClick"
+                                                  Command="{Binding AddNewLimitCommand}"
+                                                  CommandParameter="DAILY" />
+                                </Label.InputBindings>
+                            </Label>
+                            <Label Style="{DynamicResource SelectableLabelStyle}"
+                                   Content="Weekly limit"
+                                   IsEnabled="{Binding SelectedApp.ObservableLimits, Converter={StaticResource convertAppLimitsToBool},ConverterParameter=Week}">
+                                <Label.InputBindings>
+                                    <MouseBinding Gesture="LeftClick"
+                                                  Command="{Binding AddNewLimitCommand}"
+                                                  CommandParameter="WEEKLY" />
+                                </Label.InputBindings>
+                            </Label>
+                            <Label Style="{DynamicResource SelectableLabelStyle}"
+                                   Content="Monthly limit"
+                                   IsEnabled="{Binding SelectedApp.ObservableLimits, Converter={StaticResource convertAppLimitsToBool},ConverterParameter=Month}">
+                                <Label.InputBindings>
+                                    <MouseBinding Gesture="LeftClick"
+                                                  Command="{Binding AddNewLimitCommand}"
+                                                  CommandParameter="MONTHLY" />
+                                </Label.InputBindings>
+                            </Label>
+                        </StackPanel>
+                    </Border>
+                </Popup>
             </Grid>
         </Grid>
     </ScrollViewer>

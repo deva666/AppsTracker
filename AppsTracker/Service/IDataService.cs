@@ -16,18 +16,42 @@ namespace AppsTracker.Service
 {
     public interface IDataService : IBaseService
     {
-        IEnumerable<T> Get<T>() where T : class;
-      
-        IEnumerable<T> Get<T>(params Expression<Func<T, object>>[] navigations) where T : class;
+        event EventHandler DbSizeCritical;
+
+        bool DBSizeOperational { get; }
         
+        decimal GetDBSize();
+
+        Task<decimal> GetDBSizeAsync();
+
+        IEnumerable<T> Get<T>() where T : class;
+
+        IEnumerable<T> Get<T>(params Expression<Func<T, object>>[] navigations) where T : class;
+
         IEnumerable<T> GetFiltered<T>(Expression<Func<T, bool>> filter) where T : class;
-       
+
         IEnumerable<T> GetFiltered<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class;
-       
+
+        void SaveModifiedEntity<T>(T item) where T : class;
+
+        Task SaveModifiedEntityAsync<T>(T item) where T : class;
+
+        void SaveNewEntity<T>(T item) where T : class;
+
+        Task SaveNewEntityAsync<T>(T item) where T : class;
+
+        void SaveModifiedEntityRange<T>(IEnumerable<T> items) where T : class;
+
+        Task SaveModifiedEntityRangeAsync<T>(IEnumerable<T> items) where T : class;
+
+        void SaveNewEntityRange<T>(IEnumerable<T> items) where T : class;
+
+        Task SaveNewEntityRangeAsync<T>(IEnumerable<T> items) where T : class;
+        
         Task DeleteScreenshotsInLogs(IEnumerable<Log> logs);
-       
+
         int DeleteOldScreenshots(int daysBackwards);
-       
+
         void DeleteOldLogs(int daysTreshold);
 
         Task DeleteScreenshots(IEnumerable<Screenshot> screenshots);

@@ -19,7 +19,7 @@ namespace AppsTracker.ViewModels
     public sealed class DailyAppUsageViewModel : ViewModelBase
     {
         private readonly IStatsService statsService;
-        private readonly ILoggingService loggingService;
+        private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
 
@@ -42,11 +42,11 @@ namespace AppsTracker.ViewModels
 
         [ImportingConstructor]
         public DailyAppUsageViewModel(IStatsService statsService,
-                                      ILoggingService loggingService,
+                                      ITrackingService trackingService,
                                       IMediator mediator)
         {
             this.statsService = statsService;
-            this.loggingService = loggingService;
+            this.trackingService = trackingService;
             this.mediator = mediator;
 
             appsList = new AsyncProperty<IEnumerable<AppDurationOverview>>(GetApps, this);
@@ -57,7 +57,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<AppDurationOverview> GetApps()
         {
-            return statsService.GetAppsUsageSeries(loggingService.SelectedUserID, loggingService.DateFrom, loggingService.DateTo);
+            return statsService.GetAppsUsageSeries(trackingService.SelectedUserID, trackingService.DateFrom, trackingService.DateTo);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace AppsTracker.ViewModels
     public sealed class AppStatsViewModel : ViewModelBase
     {
         private readonly IStatsService statsService;
-        private readonly ILoggingService loggingService;
+        private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
         public override string Title
@@ -72,11 +72,11 @@ namespace AppsTracker.ViewModels
 
         [ImportingConstructor]
         public AppStatsViewModel(IStatsService statsService,
-                                 ILoggingService loggingService,
+                                 ITrackingService trackingService,
                                  IMediator mediator)
         {
             this.statsService = statsService;
-            this.loggingService = loggingService;
+            this.trackingService = trackingService;
             this.mediator = mediator;
 
             appsList = new AsyncProperty<IEnumerable<AppDuration>>(GetApps, this);
@@ -95,7 +95,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<AppDuration> GetApps()
         {
-            return statsService.GetAppsDuration(loggingService.SelectedUserID, loggingService.DateFrom, loggingService.DateTo);
+            return statsService.GetAppsDuration(trackingService.SelectedUserID, trackingService.DateFrom, trackingService.DateTo);
         }
 
 
@@ -105,7 +105,7 @@ namespace AppsTracker.ViewModels
             if (app == null)
                 return null;
 
-            return statsService.GetAppDurationByDate(loggingService.SelectedUserID, app.Name, loggingService.DateFrom, loggingService.DateTo);
+            return statsService.GetAppDurationByDate(trackingService.SelectedUserID, app.Name, trackingService.DateFrom, trackingService.DateTo);
         }
 
 

@@ -30,7 +30,7 @@ namespace AppsTracker.ViewModels
 
         private readonly IDataService dataService;
         private readonly ISqlSettingsService settingsService;
-        private readonly ILoggingService loggingService;
+        private readonly ITrackingService trackingService;
         private readonly IWindowService windowService;
         private readonly IMediator mediator;
 
@@ -114,13 +114,13 @@ namespace AppsTracker.ViewModels
         [ImportingConstructor]
         public ScreenshotsViewModel(IDataService dataService,
                                     ISqlSettingsService settingsService,
-                                    ILoggingService loggingService,
+                                    ITrackingService trackingService,
                                     IWindowService windowService,
                                     IMediator mediator)
         {
             this.dataService = dataService;
             this.settingsService = settingsService;
-            this.loggingService = loggingService;
+            this.trackingService = trackingService;
             this.windowService = windowService;
             this.mediator = mediator;
 
@@ -134,9 +134,9 @@ namespace AppsTracker.ViewModels
         private IEnumerable<Log> GetLogs()
         {
             return dataService.GetFiltered<Log>(l => l.Screenshots.Count > 0
-                                                && l.DateCreated >= loggingService.DateFrom
-                                                && l.DateCreated <= loggingService.DateTo
-                                                && l.Window.Application.UserID == loggingService.SelectedUserID
+                                                && l.DateCreated >= trackingService.DateFrom
+                                                && l.DateCreated <= trackingService.DateTo
+                                                && l.Window.Application.UserID == trackingService.SelectedUserID
                                                 , l => l.Screenshots
                                                 , l => l.Window.Application);
         }

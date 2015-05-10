@@ -19,8 +19,9 @@ namespace AppsTracker.ViewModels
     [Export, PartCreationPolicy(CreationPolicy.Any)]
     public sealed class SettingsScreenshotsViewModel : SettingsBaseViewModel
     {
-        private readonly ILoggingService loggingService;
+        private readonly ITrackingService trackingService;
         private readonly IWindowService windowService;
+        private readonly IDataService dataService;
 
         public override string Title
         {
@@ -43,7 +44,7 @@ namespace AppsTracker.ViewModels
         {
             get
             {
-                return changeScreenshotsCommand ?? (changeScreenshotsCommand = new DelegateCommand(ChangeScreenshots, o => loggingService.DBSizeOperational));
+                return changeScreenshotsCommand ?? (changeScreenshotsCommand = new DelegateCommand(ChangeScreenshots, o => dataService.DBSizeOperational));
             }
         }
 
@@ -94,11 +95,13 @@ namespace AppsTracker.ViewModels
 
         [ImportingConstructor]
         public SettingsScreenshotsViewModel(ISqlSettingsService settingsService, 
-                                            ILoggingService loggingService,
+                                            ITrackingService trackingService,
+                                            IDataService dataService,
                                             IWindowService windowService)
             : base(settingsService)
         {
-            this.loggingService = loggingService;
+            this.trackingService = trackingService;
+            this.dataService = dataService;
             this.windowService = windowService;
         }
 

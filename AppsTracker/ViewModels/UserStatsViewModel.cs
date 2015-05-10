@@ -20,7 +20,7 @@ namespace AppsTracker.ViewModels
     public sealed class UserStatsViewModel : ViewModelBase
     {
         private readonly IStatsService statsService;
-        private readonly ILoggingService loggingService;
+        private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
         public override string Title
@@ -75,11 +75,11 @@ namespace AppsTracker.ViewModels
 
         [ImportingConstructor]
         public UserStatsViewModel(IStatsService statsService,
-                                  ILoggingService loggingService,
+                                  ITrackingService trackingService,
                                   IMediator mediator)
         {
             this.statsService = statsService;
-            this.loggingService = loggingService;
+            this.trackingService = trackingService;
             this.mediator = mediator;
 
             usersList = new AsyncProperty<IEnumerable<UserLoggedTime>>(GetContent, this);
@@ -98,7 +98,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<UserLoggedTime> GetContent()
         {
-            return statsService.GetAllUsers(loggingService.DateFrom, loggingService.DateTo);
+            return statsService.GetAllUsers(trackingService.DateFrom, trackingService.DateTo);
         }
 
 
@@ -108,7 +108,7 @@ namespace AppsTracker.ViewModels
             if (user == null)
                 return null;
 
-            return statsService.GetUsageSeries(user.Username, loggingService.DateFrom, loggingService.DateTo);
+            return statsService.GetUsageSeries(user.Username, trackingService.DateFrom, trackingService.DateTo);
         }
 
 

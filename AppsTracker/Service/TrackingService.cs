@@ -9,9 +9,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Threading;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
@@ -19,12 +17,9 @@ using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Service
 {
-    [Export(typeof(ILoggingService))]
-    public sealed class LoggingService : ILoggingService
+    [Export(typeof(ITrackingService))]
+    public sealed class TrackingService : ITrackingService
     {
-        private const int MEGA_BYTES = 1048576;
-        private const decimal DB_SIZE_LIMIT = 3900m;
-
         private volatile bool isDateRangeFiltered;
 
         private int userID;
@@ -80,15 +75,12 @@ namespace AppsTracker.Service
             }
         }
 
-        public bool DBSizeOperational { get; private set; }
-
         public string SelectedUserName { get; private set; }
 
         public Uzer SelectedUser { get; private set; }
-        
+
         public string UserName { get; private set; }
 
-        public event EventHandler DbSizeCritical;
 
         public void Initialize(Uzer uzer, int usageID)
         {
@@ -115,50 +107,6 @@ namespace AppsTracker.Service
         {
             DateFrom = GetFirstDate(SelectedUserID);
             isDateRangeFiltered = false;
-        }
-
-        public decimal GetDBSize()
-        {
-            try
-            {
-                FileInfo file = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "appsdb.sdf"));
-                decimal size = Math.Round((decimal)file.Length / MEGA_BYTES, 2);
-                if (size >= DB_SIZE_LIMIT)
-                {
-                    DBSizeOperational = false;
-                    DbSizeCritical.InvokeSafely(this, EventArgs.Empty);
-                }
-                else
-                    DBSizeOperational = true;
-                return size;
-            }
-            catch
-            {
-                return -1;
-            }
-        }
-
-        public Task<decimal> GetDBSizeAsync()
-        {
-            return Task<decimal>.Run(new Func<decimal>(GetDBSize));
-        }
-
-        public async Task SaveModifiedLogAsync(Log log)
-        {
-            using (var context = new AppsEntities())
-            {
-                context.Entry<Log>(log).State = System.Data.Entity.EntityState.Modified;
-                await context.SaveChangesAsync();
-            }
-        }
-
-        public async Task SaveNewScreenshotAsync(Screenshot screenshot)
-        {
-            using (var context = new AppsEntities())
-            {
-                context.Screenshots.Add(screenshot);
-                await context.SaveChangesAsync();
-            }
         }
 
         public Log CreateNewLog(string windowTitle, int usageID, int userID, IAppInfo appInfo, out bool newApp)
@@ -259,29 +207,6 @@ namespace AppsTracker.Service
                 }
 
                 return user;
-            }
-        }
-
-        public async Task SaveNewUsageAsync(UsageTypes usagetype, Usage usage)
-        {
-            using (var context = new AppsEntities())
-            {
-                usage.UsageType = usagetype;
-                context.Usages.Add(usage);
-                await context.SaveChangesAsync();
-            }
-        }
-
-        public async Task SaveModifiedUsageAsync(Usage usage)
-        {
-            if (usage == null)
-                return;
-
-            usage.UsageEnd = DateTime.Now;
-            using (var context = new AppsEntities())
-            {
-                context.Entry<Usage>(usage).State = EntityState.Modified;
-                await context.SaveChangesAsync();
             }
         }
 
