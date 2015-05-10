@@ -19,9 +19,9 @@ namespace AppsTracker.ViewModels
 
         private readonly IDataService dataService;
         private readonly ITrackingService trackingService;
-        
-        
-        public override string Title        
+
+
+        public override string Title
         {
             get { return "APP LIMITS"; }
         }
@@ -38,7 +38,7 @@ namespace AppsTracker.ViewModels
                 SetPropertyValue(ref infoMessage, value);
             }
         }
-        
+
 
         private bool isAddNewPopupOpen;
 
@@ -134,7 +134,7 @@ namespace AppsTracker.ViewModels
                 return;
 
             string limit = (string)parameter;
-            var appLimit = new AppLimit() { Application = selectedApp};
+            var appLimit = new AppLimit() { Application = selectedApp };
 
             if (limit.ToUpper() == "DAILY")
                 appLimit.LimitSpan = LimitSpan.Day;
@@ -156,11 +156,10 @@ namespace AppsTracker.ViewModels
                 return;
 
             var appsToSave = apps.Where(a => a.Limits.Count != a.ObservableLimits.Count);
-            foreach (var app in appsToSave)
-            {
-                app.Limits = new HashSet<AppLimit>(app.ObservableLimits);
-            }
-            await dataService.SaveModifiedEntityRangeAsync(appsToSave);
+            var modifiedLimits = appsToSave.SelectMany(a => a.ObservableLimits).Where(l => l.AppLimitID != default(int));
+            var newLimits = appsToSave.SelectMany(a => a.ObservableLimits).Where(l => l.AppLimitID == default(int));
+            await dataService.SaveModifiedEntityRangeAsync(modifiedLimits);
+            await dataService.SaveNewEntityRangeAsync(newLimits);
             InfoMessage = SETTINGS_SAVED_MSG;
         }
 
