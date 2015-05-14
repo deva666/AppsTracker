@@ -17,12 +17,13 @@ namespace AppsTracker.Controllers
     [Export(typeof(ITrackingController))]
     internal sealed class TrackingController : ITrackingController
     {
-#pragma warning disable 0649
+        private readonly IEnumerable<IModule> modules;
 
-        [ImportMany(typeof(IModule))]
-        private List<IModule> modules;
-
-#pragma warning restore 0649
+        [ImportingConstructor]
+        public TrackingController([ImportMany]IEnumerable<IModule> modules)
+        {
+            this.modules = modules;
+        }
 
         public void Initialize(Setting settings)
         {

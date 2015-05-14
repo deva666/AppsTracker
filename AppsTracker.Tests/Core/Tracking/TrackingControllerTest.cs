@@ -1,5 +1,6 @@
 ﻿using System;
 using AppsTracker.Controllers;
+using AppsTracker.Data.Models;
 using AppsTracker.Tracking;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -9,17 +10,24 @@ namespace AppsTracker.Tests.Core.Tracking
     [TestClass]
     public class TrackingControllerTest
     {
-        [TestInitialize]
-        public void Initialize()
+        [TestMethod]
+        public void TestModuleInitialization()
         {
-            
+            var settings = new Setting() { LoggingEnabled = true };
+            var module = new Mock<IModule>();
+            var trackingController = new TrackingController(new IModule[] { module.Object });
+            trackingController.Initialize(settings);
+            module.Verify(m => m.InitializeComponent(settings), Times.Once);
         }
 
         [TestMethod]
-        public void TestMethod1()
+        public void TestSettingsChanging()
         {
+            var settings = new Setting() { LoggingEnabled = true };
             var module = new Mock<IModule>();
-            var trackingController = new TrackingController();
+            var trackingController = new TrackingController(new IModule[] { module.Object });
+            trackingController.SettingsChanging(settings);
+            module.Verify(m => m.SettingsChanged(settings), Times.Once);
 
         }
     }

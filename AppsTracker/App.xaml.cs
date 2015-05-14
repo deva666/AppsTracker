@@ -6,6 +6,7 @@
  */
 #endregion
 
+
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
@@ -14,6 +15,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
@@ -21,6 +23,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using AppsTracker.Controllers;
 using AppsTracker.Service;
+
+[assembly: InternalsVisibleTo("AppsTracker.Tests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 
 namespace AppsTracker
 {
