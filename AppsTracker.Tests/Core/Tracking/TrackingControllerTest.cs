@@ -28,7 +28,15 @@ namespace AppsTracker.Tests.Core.Tracking
             var trackingController = new TrackingController(new IModule[] { module.Object });
             trackingController.SettingsChanging(settings);
             module.Verify(m => m.SettingsChanged(settings), Times.Once);
+        }
 
+        [TestMethod]
+        public void TestDispose()
+        {
+            var module = new Mock<IModule>();
+            var trackingController = new TrackingController(new IModule[] { module.Object });
+            trackingController.Dispose();
+            module.Verify(m => m.Dispose(), Times.Once);   
         }
     }
 }
