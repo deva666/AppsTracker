@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Xml.Linq;
@@ -21,21 +22,51 @@ namespace AppsTracker.Service
         private readonly string settingsPath = Path.Combine(Environment.GetFolderPath
             (Environment.SpecialFolder.CommonApplicationData), "AppService");
 
-        public LogsViewSettings LogsViewSettings { get; private set; }
-        public KeylogsViewSettings KeylogsViewSettings { get; private set; }
-        public ScreenshotsViewSettings ScreenshotsViewSettings { get; private set; }
-        public DaysViewSettings DaysViewSettings { get; private set; }
-        public MainWindowSettings MainWindowSettings { get; private set; }
+        private readonly IList<XmlSettingsBase> settingsContainer = new List<XmlSettingsBase>();
 
-        private XmlSettingsService() { }
+        private LogsViewSettings logsViewSettings = new LogsViewSettings();
+        public LogsViewSettings LogsViewSettings
+        {
+            get { return logsViewSettings; }
+            set { logsViewSettings = value; }
+        }
+
+        private KeylogsViewSettings keylogsViewSettings = new KeylogsViewSettings();
+        public KeylogsViewSettings KeylogsViewSettings
+        {
+            get { return keylogsViewSettings; }
+            set { keylogsViewSettings = value; }
+        }
+
+        private ScreenshotsViewSettings screenshotsViewSettings = new ScreenshotsViewSettings();
+        public ScreenshotsViewSettings ScreenshotsViewSettings
+        {
+            get { return screenshotsViewSettings; }
+            set { screenshotsViewSettings = value; }
+        }
+
+        private DaysViewSettings daysViewSettings = new DaysViewSettings();
+        public DaysViewSettings DaysViewSettings
+        {
+            get { return daysViewSettings; }
+            set { daysViewSettings = value; }
+        }
+
+        private MainWindowSettings mainWindowSettings = new MainWindowSettings();
+        public MainWindowSettings MainWindowSettings
+        {
+            get { return mainWindowSettings; }
+            set { mainWindowSettings = value; }
+        }
+
 
         public void Initialize()
         {
-            LogsViewSettings = new LogsViewSettings();
-            KeylogsViewSettings = new KeylogsViewSettings();
-            ScreenshotsViewSettings = new ScreenshotsViewSettings();
-            DaysViewSettings = new DaysViewSettings();
-            MainWindowSettings = new MainWindowSettings();
+            settingsContainer.Add(logsViewSettings);
+            settingsContainer.Add(keylogsViewSettings);
+            settingsContainer.Add(screenshotsViewSettings);
+            settingsContainer.Add(daysViewSettings);
+            settingsContainer.Add(mainWindowSettings);
 
             if (File.Exists(Path.Combine(settingsPath, SETTINGS_FILE_NAME)) == false)
                 return;
@@ -43,92 +74,36 @@ namespace AppsTracker.Service
             var xml = XDocument.Load(Path.Combine(settingsPath, SETTINGS_FILE_NAME));
             var root = xml.Element("root");
 
-            TrySetLogsViewSettings(root);
-            TrySetKeylogsViewValues(root);
-            TrySetScreenshotsViewValues(root);
-            TrySetDaysViewSettings(root);
-            TrySetMainWindowSettings(root);
+            TryGetValuesFromXml(settingsContainer, root);
         }
 
-        private void TrySetLogsViewSettings(XElement root)
+        private void TryGetValuesFromXml(IEnumerable<XmlSettingsBase> settings, XElement root)
         {
-            var node = root.Element(LogsViewSettings.GetType().Name);
-            if (node == null)
-                return;
+            foreach (var settingsBase in settings)
+            {
+                var node = root.Element(settingsBase.GetType().Name);
+                if (node == null)
+                    return;
 
-            try
-            {
-                LogsViewSettings.SetValues(node);
-            }
-            catch
-            {
-                LogsViewSettings = new LogsViewSettings();
+                try
+                {
+                    settingsBase.SetValues(node);
+                }
+                catch
+                {
+                    SetDefaultPropertyValue(settingsBase.GetType().Name, settingsBase.GetType());
+                }
             }
         }
 
-        private void TrySetKeylogsViewValues(XElement root)
+
+        private void SetDefaultPropertyValue(string propertyName, Type propertyType)
         {
-            var node = root.Element(KeylogsViewSettings.GetType().Name);
-            if (node == null)
-                return;
-
-            try
-            {
-                KeylogsViewSettings.SetValues(node);
-            }
-            catch
-            {
-                KeylogsViewSettings = new KeylogsViewSettings();
-            }
+            var property = this.GetType().GetProperty(propertyName);
+            var newInstance = Activator.CreateInstance(propertyType);
+            property.SetValue(this, newInstance);
         }
 
-        private void TrySetScreenshotsViewValues(XElement root)
-        {
-            var node = root.Element(ScreenshotsViewSettings.GetType().Name);
-            if (node == null)
-                return;
-
-            try
-            {
-                ScreenshotsViewSettings.SetValues(node);
-            }
-            catch
-            {
-                ScreenshotsViewSettings = new ScreenshotsViewSettings();
-            }
-        }
-
-        private void TrySetDaysViewSettings(XElement root)
-        {
-            var node = root.Element(DaysViewSettings.GetType().Name);
-            if (node == null)
-                return;
-
-            try
-            {
-                DaysViewSettings.SetValues(node);
-            }
-            catch
-            {
-                DaysViewSettings = new DaysViewSettings();
-            }
-        }
-
-        private void TrySetMainWindowSettings(XElement root)
-        {
-            var node = root.Element(MainWindowSettings.GetType().Name);
-            if (node == null)
-                return;
-
-            try
-            {
-                MainWindowSettings.SetValues(node);
-            }
-            catch
-            {
-                MainWindowSettings = new MainWindowSettings();
-            }
-        }
 
         public void ShutDown()
         {
