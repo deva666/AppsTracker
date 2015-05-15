@@ -7,12 +7,14 @@
 #endregion
 
 using System;
+using System.ComponentModel.Composition;
 using System.Reflection;
 using AppsTracker.MVVM;
 
-namespace AppsTracker.ServiceLocation
+namespace AppsTracker.ViewModels
 {
-    internal sealed class AboutWindowViewModel : ViewModelBase
+    [Export]
+    public sealed class AboutWindowViewModel : ViewModelBase
     {
         public override string Title { get { return "About"; } }
 

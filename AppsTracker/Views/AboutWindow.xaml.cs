@@ -3,6 +3,7 @@ using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using AppsTracker.ViewModels;
 
 namespace AppsTracker.Widgets
 {
@@ -10,9 +11,11 @@ namespace AppsTracker.Widgets
     [ExportMetadata("ShellUse", "About window")]
     public partial class AboutWindow : Window, IShell
     {
-        public AboutWindow()
+        [ImportingConstructor]
+        public AboutWindow(AboutWindowViewModel viewModel)
         {
             InitializeComponent();
+            this.DataContext = viewModel;
             this.Loaded += (s, e) => ScaleLoaded();
         }
 

@@ -5,12 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
+using AppsTracker.Service;
 
 namespace AppsTracker.Tracking.Helpers
 {
     [Export(typeof(ILimitHandler))]
     internal sealed class LimitHandler : ILimitHandler
     {
+        private readonly IWindowService windowService;
+
+        [ImportingConstructor]
+        public LimitHandler(IWindowService windowService)
+        {
+            this.windowService = windowService;
+        }
+
+
         public void Handle(AppLimit limit)
         {
             switch (limit.LimitReachedAction)
