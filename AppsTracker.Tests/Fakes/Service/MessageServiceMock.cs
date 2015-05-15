@@ -9,22 +9,22 @@ namespace AppsTracker.Tests.Fakes.Service
 {
     class MessageServiceMock : IWindowService
     {
-        public void Show(Exception fail)
+        public void ShowMessage(Exception fail)
         {
             
         }
 
-        public void Show(string message, bool showCancel = true)
+        public void ShowMessage(string message, bool showCancel = true)
         {
             
         }
 
-        public void ShowDialog(Exception fail)
+        public void ShowMessageDialog(Exception fail)
         {
             
         }
 
-        public void ShowDialog(string message, bool showCancel = true)
+        public void ShowMessageDialog(string message, bool showCancel = true)
         {
             
         }
@@ -75,6 +75,17 @@ namespace AppsTracker.Tests.Fakes.Service
         public System.Windows.Forms.FolderBrowserDialog CreateFolderBrowserDialog()
         {
             return new System.Windows.Forms.FolderBrowserDialog();
+        }
+
+
+        public Views.IScreenshotViewShell GetScreenshotShell()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowShell(string shellUse)
+        {
+            throw new NotImplementedException();
         }
     }
 }

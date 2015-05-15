@@ -60,7 +60,7 @@ namespace AppsTracker.ViewModels
 
         private void ShowAboutWindow()
         {
-            windowService.ShowWindow<AboutWindow>();
+            windowService.ShowShell("About window");
         }
 
 
@@ -83,7 +83,7 @@ namespace AppsTracker.ViewModels
             }
             catch (System.Security.SecurityException)
             {
-                windowService.ShowDialog("You don't have administrative privilages to change this option."
+                windowService.ShowMessageDialog("You don't have administrative privilages to change this option."
                                         + Environment.NewLine + "Please try running the app as Administrator." + Environment.NewLine
                                         + "Right click on the app or shortcut and select 'Run as Adminstrator'.", false);
             }

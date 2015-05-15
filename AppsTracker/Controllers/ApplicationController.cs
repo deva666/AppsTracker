@@ -73,7 +73,7 @@ namespace AppsTracker.Controllers
             settings.TakeScreenshots = false;
             await sqlSettingsService.SaveChangesAsync(settings);
 
-            windowService.ShowDialog("Database size has reached the maximum allowed value"
+            windowService.ShowMessageDialog("Database size has reached the maximum allowed value"
                 + Environment.NewLine + "Please run the screenshot cleaner from the settings menu to continue capturing screenshots.", false);
 
             dataService.DbSizeCritical -= OnDbSizeCritical;

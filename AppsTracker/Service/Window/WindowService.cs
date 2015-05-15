@@ -12,8 +12,8 @@ namespace AppsTracker.Service
     {
         private readonly ISqlSettingsService sqlSettingsService;
         private readonly IXmlSettingsService xmlSettingsService;
-        private readonly ITrayIcon trayIcon;        
-        //private readonly ExportFactory<IPasswordWindow> passwordWindowValueFactory;
+        private readonly ITrayIcon trayIcon;
+        private readonly ExportFactory<IScreenshotViewShell> screenshotShellFactory;
         private readonly IEnumerable<ExportFactory<IShell, IShellMetaData>> shellFactories;
 
         private IShell mainWindow;
@@ -23,66 +23,45 @@ namespace AppsTracker.Service
         public WindowService(ISqlSettingsService sqlSettingsService, 
                              IXmlSettingsService xmlSettingsService,
                              ITrayIcon trayIcon, 
-                             //ExportFactory<IPasswordWindow> passwordWindowValueFactory,
+                             ExportFactory<IScreenshotViewShell> screenshotShellFactory,
                              [ImportMany]IEnumerable<ExportFactory<IShell,IShellMetaData>> shellFactories)
         {
             this.sqlSettingsService = sqlSettingsService;
             this.xmlSettingsService = xmlSettingsService;
             this.trayIcon = trayIcon;
-            //this.passwordWindowValueFactory = passwordWindowValueFactory;
+            this.screenshotShellFactory = screenshotShellFactory;
             this.shellFactories = shellFactories;
         }
 
 
-        public void ShowDialog(string message, bool showCancel = true)
+        public void ShowMessageDialog(string message, bool showCancel = true)
         {
             var msgWindow = new MessageWindow(message, showCancel);
             msgWindow.ShowDialog();
         }
 
-        public void ShowDialog(Exception fail)
+        public void ShowMessageDialog(Exception fail)
         {
             var msgWindow = new MessageWindow(fail);
             msgWindow.ShowDialog();
         }
 
-        public void Show(string message, bool showCancel = true)
+        public void ShowMessage(string message, bool showCancel = true)
         {
             var msgWindow = new MessageWindow(message, showCancel);
             msgWindow.Show();
         }
 
-        public void Show(Exception fail)
+        public void ShowMessage(Exception fail)
         {
             var msgWindow = new MessageWindow(fail);
             msgWindow.Show();
         }
 
 
-        public void ShowWindow<T>() where T : System.Windows.Window
+        public void ShowShell(string shellUse) 
         {
-            var instance = Activator.CreateInstance<T>();
-            instance.Show();
-        }
-
-
-        public void ShowWindow<T>(params object[] args) where T : System.Windows.Window
-        {
-            T instance = (T)Activator.CreateInstance(typeof(T), args);
-            instance.Show();
-        }
-
-
-        public bool? ShowDialog<T>() where T : System.Windows.Window
-        {
-            var instance = Activator.CreateInstance<T>();
-            return instance.ShowDialog();
-        }
-
-        public void ShowShell<T>(string windowUse) where T : IShell
-        {
-            var factory = shellFactories.Where(s => s.Metadata.ShellUse == windowUse)
-                                        .Single();
+            var factory = shellFactories.Single(s => s.Metadata.ShellUse == shellUse);                                        
             using (var context = factory.CreateExport())
             {
                 context.Value.Show();
@@ -219,5 +198,14 @@ namespace AppsTracker.Service
             mainWindow = null;
         }
 
+
+
+        public IScreenshotViewShell GetScreenshotShell()
+        {
+            using (var context = screenshotShellFactory.CreateExport())
+            {
+                return context.Value;
+            }
+        }
     }
 }

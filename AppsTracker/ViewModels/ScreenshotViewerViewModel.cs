@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
@@ -15,7 +16,8 @@ using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
-    internal sealed class ScreenshotViewerViewModel : ViewModelBase
+    [Export]
+    public sealed class ScreenshotViewerViewModel : ViewModelBase
     {
         public event EventHandler CloseEvent;
 
@@ -51,19 +53,17 @@ namespace AppsTracker.ViewModels
         public IEnumerable<Screenshot> ScreenshotCollection
         {
             get { return screenshotCollection; }
+            set
+            {
+                screenshotCollection = value;
+                TotalItemCount = screenshotCollection.Count();
+            }
         }
 
 
         public ICommand CloseCommand
         {
             get { return new DelegateCommand(Close); }
-        }
-
-
-        public ScreenshotViewerViewModel(IEnumerable<Screenshot> screenshotCollection)
-        {
-            this.screenshotCollection = screenshotCollection;
-            TotalItemCount = screenshotCollection.Count();
         }
 
 

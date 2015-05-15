@@ -174,7 +174,7 @@ namespace AppsTracker.ViewModels
 
         private void RunDBCleaner()
         {
-            windowService.ShowDialog<DBCleanerWindow>();
+            windowService.ShowShell("DbCleaner window");
         }
     }
 }

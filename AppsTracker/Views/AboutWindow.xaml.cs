@@ -1,22 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.Composition;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace AppsTracker.Widgets
 {
-
-    public partial class AboutWindow : Window
+    [Export(typeof(IShell))]
+    [ExportMetadata("ShellUse", "About window")]
+    public partial class AboutWindow : Window, IShell
     {
         public AboutWindow()
         {
@@ -69,12 +61,12 @@ namespace AppsTracker.Widgets
         }
         #endregion
 
-        private void lblOK_Click( object sender, RoutedEventArgs e )
+        private void lblOK_Click(object sender, RoutedEventArgs e)
         {
             ScaleUnloaded();
         }
 
-        private void TextBlock_MouseLeftButtonUp( object sender, MouseButtonEventArgs e )
+        private void TextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             try
             {

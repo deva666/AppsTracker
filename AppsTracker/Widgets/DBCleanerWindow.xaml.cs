@@ -7,19 +7,21 @@
 #endregion
 
 using System;
+using System.ComponentModel.Composition;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-
 using AppsTracker.Service;
 using AppsTracker.ServiceLocation;
 
 
 namespace AppsTracker.Widgets
 {
-    public partial class DBCleanerWindow : Window
+    [Export(typeof(IShell))]
+    [ExportMetadata("ShellUse", "DbCleaner window")]
+    public partial class DBCleanerWindow : Window, IShell
     {
         public DBCleanerWindow()
         {

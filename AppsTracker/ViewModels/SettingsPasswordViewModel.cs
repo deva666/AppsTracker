@@ -61,7 +61,7 @@ namespace AppsTracker.ViewModels
                 }
                 if (currentPassword != storedPassword)
                 {
-                    windowService.ShowDialog("Wrong current password.", false);
+                    windowService.ShowMessageDialog("Wrong current password.", false);
                     return;
                 }
             }
@@ -69,14 +69,14 @@ namespace AppsTracker.ViewModels
             string confirmPassword = passwords[1].Password;
             if (password != confirmPassword)
             {
-                windowService.ShowDialog("Passwords don't match", false);
+                windowService.ShowMessageDialog("Passwords don't match", false);
                 return;
             }
             if (!string.IsNullOrEmpty(password.Trim()))
             {
                 Settings.IsMasterPasswordSet = true;
                 Settings.WindowOpen = Hash.GetEncryptedString(password);
-                windowService.ShowDialog("Password set.", false);
+                windowService.ShowMessageDialog("Password set.", false);
             }
             else
             {

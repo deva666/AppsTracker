@@ -1,31 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using AppsTracker.ViewModels;
+using AppsTracker.Views;
 
 namespace AppsTracker.Widgets
 {
-    public partial class ScreenshotViewerWindow : Window
+    [Export(typeof(IScreenshotViewShell))]
+    public partial class ScreenshotViewerWindow : Window, IScreenshotViewShell
     {
-        ScreenshotViewerViewModel viewModel;
-        public ScreenshotViewerWindow()
+        private readonly ScreenshotViewerViewModel viewModel;
+
+        [ImportingConstructor]
+        public ScreenshotViewerWindow(ScreenshotViewerViewModel viewModel)
         {
             InitializeComponent();
+            this.viewModel = viewModel;
+            this.viewModel.CloseEvent += viewModel_CloseEvent;
+            this.DataContext = viewModel;
             this.WindowState = System.Windows.WindowState.Maximized;
             this.Loaded += (s, e) => ScaleLoaded();
         }
 
-        public ScreenshotViewerWindow(IEnumerable<AppsTracker.Data.Models.Screenshot> screenshotCollection)
-            : this()
-        {
-            viewModel = new ScreenshotViewerViewModel(screenshotCollection);
-            viewModel.CloseEvent += viewModel_CloseEvent;
-            this.DataContext = viewModel;
-            if (screenshotCollection.Count() > 0) scViewer.lbImages.SelectedIndex = 0;
-        }
 
         void viewModel_CloseEvent(object sender, EventArgs e)
         {
@@ -101,5 +101,15 @@ namespace AppsTracker.Widgets
             e.Handled = true;
         }
 
+
+        public IEnumerable<Data.Models.Screenshot> Screenshots
+        {
+            get { return viewModel.ScreenshotCollection; }
+            set
+            {
+                viewModel.ScreenshotCollection = value;
+                scViewer.lbImages.SelectedIndex = 0;
+            }
+        }
     }
 }
