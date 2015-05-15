@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
+using AppsTracker.Views;
 using AppsTracker.Widgets;
 
 namespace AppsTracker.Service
@@ -9,23 +12,25 @@ namespace AppsTracker.Service
     {
         private readonly ISqlSettingsService sqlSettingsService;
         private readonly IXmlSettingsService xmlSettingsService;
-        private readonly ITrayIcon trayIcon;
-        private readonly ExportFactory<IShell> mainWindowValueFactory;
-        private readonly ExportFactory<IPasswordWindow> passwordWindowValueFactory;
+        private readonly ITrayIcon trayIcon;        
+        //private readonly ExportFactory<IPasswordWindow> passwordWindowValueFactory;
+        private readonly IEnumerable<ExportFactory<IShell, IShellMetaData>> shellFactories;
 
         private IShell mainWindow;
 
 
         [ImportingConstructor]
-        public WindowService(ISqlSettingsService sqlSettingsService, IXmlSettingsService xmlSettingsService,
-                             ITrayIcon trayIcon, ExportFactory<IShell> mainWindowValueFactory,
-                             ExportFactory<IPasswordWindow> passwordWindowValueFactory)
+        public WindowService(ISqlSettingsService sqlSettingsService, 
+                             IXmlSettingsService xmlSettingsService,
+                             ITrayIcon trayIcon, 
+                             //ExportFactory<IPasswordWindow> passwordWindowValueFactory,
+                             [ImportMany]IEnumerable<ExportFactory<IShell,IShellMetaData>> shellFactories)
         {
             this.sqlSettingsService = sqlSettingsService;
             this.xmlSettingsService = xmlSettingsService;
             this.trayIcon = trayIcon;
-            this.mainWindowValueFactory = mainWindowValueFactory;
-            this.passwordWindowValueFactory = passwordWindowValueFactory;
+            //this.passwordWindowValueFactory = passwordWindowValueFactory;
+            this.shellFactories = shellFactories;
         }
 
 
@@ -74,6 +79,16 @@ namespace AppsTracker.Service
             return instance.ShowDialog();
         }
 
+        public void ShowShell<T>(string windowUse) where T : IShell
+        {
+            var factory = shellFactories.Where(s => s.Metadata.ShellUse == windowUse)
+                                        .Single();
+            using (var context = factory.CreateExport())
+            {
+                context.Value.Show();
+            }
+        }
+
 
         public System.Windows.Forms.FolderBrowserDialog CreateFolderBrowserDialog()
         {
@@ -120,7 +135,8 @@ namespace AppsTracker.Service
             {
                 if (mainWindow == null)
                 {
-                    using (var context = mainWindowValueFactory.CreateExport())
+                    var mainWindowFactory = shellFactories.Single(s => s.Metadata.ShellUse == "Main window");
+                    using (var context = mainWindowFactory.CreateExport())
                     {
                         mainWindow = context.Value;
                     }
@@ -167,8 +183,9 @@ namespace AppsTracker.Service
         {
             if (sqlSettingsService.Settings.IsMasterPasswordSet)
             {
-                IPasswordWindow passwordWindow;
-                using (var context = passwordWindowValueFactory.CreateExport())
+                IShell passwordWindow;
+                var passwordWindowFactory = shellFactories.Single(s => s.Metadata.ShellUse == "Password window");
+                using (var context = passwordWindowFactory.CreateExport())
                 {
                     passwordWindow = context.Value;
                 }

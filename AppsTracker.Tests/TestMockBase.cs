@@ -22,6 +22,11 @@ namespace AppsTracker.Tests
         protected Mock<IWindowService> windowService = new Mock<IWindowService>();
         protected Mock<IMediator> mediator = new Mock<IMediator>();
 
+        protected void RecreateServiceMocks()
+        {
+
+        }
+
         protected ExportFactory<AppDetailsViewModel> GetAppDetailsVMFactory()
         {
             var tupleFactory =

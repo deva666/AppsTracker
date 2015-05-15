@@ -190,6 +190,7 @@
     <Compile Include="Tracking\Helpers\IWindowHelper.cs" />
     <Compile Include="Tracking\Helpers\LimitHandler.cs" />
     <Compile Include="Tracking\Helpers\ProducerConsumerQueue.cs" />
+    <Compile Include="Tracking\ILimitObserver.cs" />
     <Compile Include="Tracking\IScreenshotTracker.cs" />
     <Compile Include="Tracking\Helpers\ISyncContext.cs" />
     <Compile Include="Tracking\Helpers\MidnightNotifier.cs" />
@@ -220,6 +221,10 @@
     <Compile Include="ViewModels\SettingsAppCategoriesViewModel.cs" />
     <Compile Include="ViewModels\SettingsLimitsViewModel.cs" />
     <Compile Include="Views\IShell.cs" />
+    <Compile Include="Views\IShellMetaData.cs" />
+    <Compile Include="Views\LimitToastWindow.xaml.cs">
+      <DependentUpon>LimitToastWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Settings\AppCategoriesView.xaml.cs">
       <DependentUpon>AppCategoriesView.xaml</DependentUpon>
     </Compile>
@@ -259,7 +264,6 @@
     <Compile Include="Widgets\Next.xaml.cs">
       <DependentUpon>Next.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\IPasswordWindow.cs" />
     <Compile Include="Widgets\Pause.xaml.cs">
       <DependentUpon>Pause.xaml</DependentUpon>
     </Compile>
@@ -447,6 +451,10 @@
     <Compile Include="Tracking\Helpers\ScreenshotFactory.cs" />
     <Compile Include="Utils\Hash.cs" />
     <Compile Include="Tracking\Hooks\WinHook.cs" />
+    <Page Include="Views\LimitToastWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Settings\AppCategoriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

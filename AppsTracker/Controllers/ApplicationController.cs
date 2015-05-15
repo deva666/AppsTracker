@@ -48,9 +48,11 @@ namespace AppsTracker.Controllers
             trackingController.Initialize(sqlSettingsService.Settings);
 
             if (autoStart == false)
+            {
                 windowService.CreateOrShowMainWindow();
+                windowService.FirstRunWindowSetup();
+            }
 
-            windowService.FirstRunWindowSetup();
             windowService.InitializeTrayIcon();
 
             dataService.DbSizeCritical += OnDbSizeCritical;

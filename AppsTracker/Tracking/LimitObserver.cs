@@ -7,16 +7,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
+using AppsTracker.Hooks;
 using AppsTracker.MVVM;
 using AppsTracker.Service;
 using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
 {
-    internal sealed class LimitObserver
+    [Export(typeof(ILimitObserver))]
+    internal sealed class LimitObserver : ILimitObserver
     {
         private readonly ITrackingService trackingService;
         private readonly IDataService dataService;
+        private readonly IWindowNotifier windowNotifier;
         private readonly IMidnightNotifier midnightNotifier;
         private readonly ILimitHandler limitHandler;
         private readonly IMediator mediator;
@@ -28,41 +31,57 @@ namespace AppsTracker.Tracking
         private readonly Dictionary<Aplication, IEnumerable<AppLimit>> appLimitsMap = new Dictionary<Aplication, IEnumerable<AppLimit>>();
 
         private Aplication currentApp;
-        private AppLimit currentWarning;
+        private AppLimit currentLimit;
 
 
         [ImportingConstructor]
-        public LimitObserver(IMidnightNotifier midnightNotifier,
-                             ILimitHandler limitHandler,
+        public LimitObserver(ITrackingService trackingService,
                              IDataService dataService,
-                             ITrackingService trackingService,
+                             IWindowNotifier windowNotifier,
+                             IMidnightNotifier midnightNotifier,
+                             ILimitHandler limitHandler,
                              IMediator mediator)
         {
             this.trackingService = trackingService;
             this.dataService = dataService;
+            this.windowNotifier = windowNotifier;
             this.midnightNotifier = midnightNotifier;
             this.limitHandler = limitHandler;
             this.mediator = mediator;
 
             Initialize();
 
-            dayTimer = new Timer(TimerCallback, currentWarning, Timeout.Infinite, Timeout.Infinite);
+            dayTimer = new Timer(TimerCallback, currentLimit, Timeout.Infinite, Timeout.Infinite);
             weekTimer = new Timer(TimerCallback);
             monthTimer = new Timer(TimerCallback);
         }
 
 
-        private void Initialize()
+        public void Initialize()
         {
             midnightNotifier.MidnightTick += MidnightTick;
+            windowNotifier.WindowChanged += windowNotifier_WindowChanged;
 
+            LoadAppLimits();
+        }
+
+        private void LoadAppLimits()
+        {
             var appsWithLimits = dataService.GetFiltered<Aplication>(a => a.Limits.Count > 0
                                                                      && a.UserID == trackingService.UserID,
                                                                      a => a.Limits);
+            appLimitsMap.Clear();
+
             foreach (var app in appsWithLimits)
             {
                 appLimitsMap.Add(app, app.Limits);
             }
+        }
+
+        private void windowNotifier_WindowChanged(object sender, WindowChangedArgs e)
+        {
+            var app = trackingService.GetApp(e.AppInfo);
+            AppChanged(app);
         }
 
         private void MidnightTick(object sender, EventArgs e)
@@ -72,12 +91,12 @@ namespace AppsTracker.Tracking
 
         private void TimerCallback(object state)
         {
-            var warning = (AppLimit)state;
-            limitHandler.Handle(warning);
+            var limit = (AppLimit)state;
+            limitHandler.Handle(limit);
         }
 
 
-        public void AppChanged(Aplication app)
+        private void AppChanged(Aplication app)
         {
             currentApp = app;
             StopTimers();
@@ -108,7 +127,7 @@ namespace AppsTracker.Tracking
             }
             else
             {
-                currentWarning = limit;
+                currentLimit = limit;
                 dayTimer.Change(new TimeSpan((limit.Limit - task.Result.Item2)), Timeout.InfiniteTimeSpan);
             }
         }
@@ -170,6 +189,11 @@ namespace AppsTracker.Tracking
                 var loadedApp = context.Applications.Include(a => a.Windows.Select(w => w.Logs)).First(a => a.ApplicationID == app.ApplicationID);
                 return loadedApp.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= monthBegin && l.DateCreated <= monthEnd).Sum(l => l.Duration);
             }
+        }
+
+        public void Dispose()
+        {
+            dayTimer.Dispose();
         }
     }
 }

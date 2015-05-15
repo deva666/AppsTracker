@@ -4,17 +4,19 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using AppsTracker.ViewModels;
+using AppsTracker.Views;
 using AppsTracker.Widgets;
 
 namespace AppsTracker
 {
     [Export(typeof(IShell))]
+    [ExportMetadata("ShellUse", "Main window")]
     public partial class MainWindow : Window, IShell
     {
         [ImportingConstructor]
         public MainWindow(MainViewModel mainViewModel)
         {
-            InitializeComponent();            
+            InitializeComponent();
             this.DataContext = mainViewModel;
             this.Loaded += (s, e) =>
             {
@@ -108,5 +110,6 @@ namespace AppsTracker
         }
 
         #endregion
+
     }
 }

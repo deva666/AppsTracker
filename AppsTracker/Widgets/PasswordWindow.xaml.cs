@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Input;
@@ -10,8 +9,9 @@ using AppsTracker.Widgets;
 
 namespace AppsTracker
 {
-    [Export(typeof(IPasswordWindow))]
-    public partial class PasswordWindow : Window, IPasswordWindow
+    [Export(typeof(IShell))]
+    [ExportMetadata("ShellUse", "Password window")]
+    public partial class PasswordWindow : Window, IShell
     {
         private readonly ISqlSettingsService settingService;
         private readonly IWindowService windowService;

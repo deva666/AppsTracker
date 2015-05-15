@@ -22,6 +22,8 @@ namespace AppsTracker.Widgets
 
         bool Activate();
 
+        bool? ShowDialog();
+
         void Close();
     }
 }
