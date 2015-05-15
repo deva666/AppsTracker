@@ -22,11 +22,15 @@ namespace AppsTracker.Tests.Core.ViewModels
     public class MainViewModelTest : TestMockBase
     {
         private MainViewModel mainViewModel;
-
+        private Setting setting = new Setting() { LoggingEnabled = true };
         [TestInitialize]
         public void Init()
         {
             dataService.Setup(d => d.GetFiltered<Uzer>(u => true)).Returns(new List<Uzer>());
+            trackingService.Setup(t => t.DateFrom).Returns(DateTime.Now.AddDays(-10));
+            trackingService.Setup(t => t.DateTo).Returns(DateTime.Now);
+            settingsService.Setup(s => s.Settings).Returns(setting);
+            settingsService.Setup(s => s.SaveChanges(It.IsAny<Setting>())).Callback<Setting>(s => setting = s);
 
             var dataHostVMFactory = GetDataHostVMFactory();
             var statisticsHostVMFactory = GetStatisticsHostVMFactory();
@@ -38,7 +42,7 @@ namespace AppsTracker.Tests.Core.ViewModels
                 mediator.Object,
                 dataHostVMFactory,
                 statisticsHostVMFactory,
-                settingsHostVMFactory);                
+                settingsHostVMFactory);
         }
 
         [TestMethod]
@@ -60,8 +64,10 @@ namespace AppsTracker.Tests.Core.ViewModels
         {
             mainViewModel.DateFrom = DateTime.Now.AddDays(19);
             Assert.IsTrue(mainViewModel.IsFilterApplied, "Date filter not set");
+            trackingService.VerifySet(t => t.DateFrom = It.IsAny<DateTime>(), "Date should also be set on the tracking service");
             mainViewModel.ClearFilterCommand.Execute(null);
             Assert.IsFalse(mainViewModel.IsFilterApplied, "Date filter should be false after ClearFilterCommand execution");
+            trackingService.VerifySet(t => t.DateFrom = It.IsAny<DateTime>(), "Date should also be set on the tracking service");
         }
 
         [TestMethod]
@@ -69,8 +75,10 @@ namespace AppsTracker.Tests.Core.ViewModels
         {
             mainViewModel.DateTo = DateTime.Now.AddDays(24);
             Assert.IsTrue(mainViewModel.IsFilterApplied, "Date filter not set");
+            trackingService.VerifySet(t => t.DateTo = It.IsAny<DateTime>(), "Date should also be set on the tracking service");
             mainViewModel.ClearFilterCommand.Execute(null);
             Assert.IsFalse(mainViewModel.IsFilterApplied, "Date filter should be false after ClearFilterCommand execution");
+            trackingService.VerifySet(t => t.DateTo = It.IsAny<DateTime>(), "Date should also be set on the tracking service");
         }
 
         [TestMethod]
@@ -79,6 +87,17 @@ namespace AppsTracker.Tests.Core.ViewModels
             var selectedChild = mainViewModel.SelectedChild;
             mainViewModel.GoToSettingsCommand.Execute(null);
             Assert.IsInstanceOfType(selectedChild, mainViewModel.ToSettings, "Navigating to settings should set ToSettings type to type tha navigation came from");
+            mainViewModel.ReturnFromSettingsCommand.Execute(null);
+            Assert.AreSame(selectedChild, mainViewModel.SelectedChild, "Returning from settings should set SelectedChild to viewModel navigation came from");
+        }
+
+        [TestMethod]
+        public void TestChangeTrackingStatus()
+        {
+            var trackingStatus = mainViewModel.UserSettings.LoggingEnabled;
+            mainViewModel.ChangeLoggingStatusCommand.Execute(null);
+            Assert.AreNotEqual(trackingStatus, mainViewModel.UserSettings.LoggingEnabled);
+            settingsService.Verify(s => s.SaveChanges(It.IsAny<Setting>()));
         }
     }
 }
