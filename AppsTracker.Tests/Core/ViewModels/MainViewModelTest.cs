@@ -73,5 +73,12 @@ namespace AppsTracker.Tests.Core.ViewModels
             Assert.IsFalse(mainViewModel.IsFilterApplied, "Date filter should be false after ClearFilterCommand execution");
         }
 
+        [TestMethod]
+        public void TestSettingsNavigation()
+        {
+            var selectedChild = mainViewModel.SelectedChild;
+            mainViewModel.GoToSettingsCommand.Execute(null);
+            Assert.IsInstanceOfType(selectedChild, mainViewModel.ToSettings, "Navigating to settings should set ToSettings type to type tha navigation came from");
+        }
     }
 }
