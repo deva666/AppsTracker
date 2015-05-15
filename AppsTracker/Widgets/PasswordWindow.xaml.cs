@@ -13,14 +13,14 @@ namespace AppsTracker
     [ExportMetadata("ShellUse", "Password window")]
     public partial class PasswordWindow : Window, IShell
     {
-        private readonly ISqlSettingsService settingService;
+        private readonly ISqlSettingsService settingsService;
         private readonly IWindowService windowService;
 
         [ImportingConstructor]
         public PasswordWindow(ISqlSettingsService settingsService, IWindowService windowService)
         {
             InitializeComponent();
-            this.settingService = settingService;
+            this.settingsService = settingsService;
             this.windowService = windowService;
         }
 
@@ -67,7 +67,7 @@ namespace AppsTracker
 
         private void CheckPassword()
         {
-            if (Hashing.Hash.GetEncryptedString(pbPassword.Password) == settingService.Settings.WindowOpen)
+            if (Hashing.Hash.GetEncryptedString(pbPassword.Password) == settingsService.Settings.WindowOpen)
             {
                 this.DialogResult = true;
                 FadeUnloaded();

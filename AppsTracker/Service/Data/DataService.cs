@@ -6,16 +6,16 @@
  */
 #endregion
 
-using AppsTracker.Data.Db;
-using AppsTracker.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.ComponentModel.Composition;
 using System.Threading.Tasks;
-using System.IO;
+using AppsTracker.Data.Db;
+using AppsTracker.Data.Models;
 
 namespace AppsTracker.Service
 {
@@ -237,10 +237,11 @@ namespace AppsTracker.Service
                 }
 
                 var appsInCategories = context.AppCategories.SelectMany(c => c.Applications).ToList();
+                var appsWithLimits = context.Applications.Where(a => a.Limits.Count > 0).ToList();
 
                 foreach (var app in context.Applications.Where(a => a.Windows.Count == 0))
                 {
-                    if (appsInCategories.Contains(app))
+                    if (appsInCategories.Contains(app) || appsWithLimits.Contains(app))
                         continue;
 
                     if (!context.Applications.Local.Any(a => a.ApplicationID == app.ApplicationID))

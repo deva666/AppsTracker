@@ -6,23 +6,22 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.Widgets
 {
-    public partial class ScreenshotViewer : UserControl, INotifyPropertyChanged
+    public partial class ScreenshotViewer : UserControl
     {
-        Storyboard slideOut;
-        Storyboard slideIn;
-        DispatcherTimer timer;
-        
-        static ICommand _previousCommand = new RoutedCommand();
-        static ICommand _pauseCommand = new RoutedCommand();
-        static ICommand _playCommand = new RoutedCommand();
-        static ICommand _forwardCommand = new RoutedCommand();
-        static ICommand _showHideControlsCommand = new RoutedCommand();
-        static ICommand _changeImageViewInfoVisibilityCommand = new RoutedCommand();
-        static ICommand _changeTimerIntervalCommand = new RoutedCommand();
+        private Storyboard slideOut;
+        private Storyboard slideIn;
+        private DispatcherTimer timer;
+
+        private readonly static ICommand _previousCommand = new RoutedCommand();
+        private readonly static ICommand _pauseCommand = new RoutedCommand();
+        private readonly static ICommand _playCommand = new RoutedCommand();
+        private readonly static ICommand _forwardCommand = new RoutedCommand();
+        private readonly static ICommand _showHideControlsCommand = new RoutedCommand();
+        private readonly static ICommand _changeImageViewInfoVisibilityCommand = new RoutedCommand();
+        private readonly static ICommand _changeTimerIntervalCommand = new RoutedCommand();
 
         public static ICommand PreviousCommand { get { return _previousCommand; } }
         public static ICommand PauseCommand { get { return _pauseCommand; } }
@@ -193,14 +192,6 @@ namespace AppsTracker.Widgets
             lbImages.SelectedIndex++;
             lbImages.ScrollIntoView(lbImages.SelectedItem);
             slideIn.Begin();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void PropertyChanging(string propertyName)
-        {
-            if (PropertyChanged != null) 
-                PropertyChanged(new object(), new PropertyChangedEventArgs(propertyName));
         }
 
     }

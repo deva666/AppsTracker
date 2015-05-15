@@ -18,7 +18,6 @@ namespace AppsTracker.Controllers
     internal sealed class TrackingController : ITrackingController
     {
         private readonly IEnumerable<IModule> modules;
-        private readonly ILimitObserver limitObserver;
 
         [ImportingConstructor]
         public TrackingController([ImportMany]IEnumerable<IModule> modules)
