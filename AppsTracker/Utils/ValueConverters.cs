@@ -1070,6 +1070,24 @@ namespace AppsTracker
     }
 
 
+    class ConvertAppLimitToTimeSpan : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var limit = (long)value;
+            var timeSpan = new TimeSpan(limit);
+            return timeSpan.TotalHours;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var totalHours = (double)value;
+            var timeSpan = TimeSpan.FromHours(totalHours);
+            return timeSpan.Ticks;
+        }
+    }
+
     class ConvertLimitSpanToMaxSlider : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

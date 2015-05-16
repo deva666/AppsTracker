@@ -64,6 +64,9 @@ namespace AppsTracker.Data.Models
         }
 
 
+        [NotMapped]
+        public bool HasChanges { get; private set; }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AppLimitID { get; set; }
@@ -71,14 +74,44 @@ namespace AppsTracker.Data.Models
         [Required]
         public int ApplicationID { get; set; }
 
-        [Required]
-        public LimitSpan LimitSpan { get; set; }
+        private LimitSpan limitSpan;
 
         [Required]
-        public long Limit { get; set; }
+        public LimitSpan LimitSpan
+        {
+            get { return limitSpan; }
+            set
+            {
+                limitSpan = value;
+                HasChanges = true;
+            }
+        }
+
+        private long limit;
 
         [Required]
-        public LimitReachedAction LimitReachedAction { get; set; }
+        public long Limit
+        {
+            get { return limit; }
+            set
+            {
+                limit = value;
+                HasChanges = true;
+            }
+        }
+
+        private LimitReachedAction limitReachedAction;
+
+        [Required]
+        public LimitReachedAction LimitReachedAction
+        {
+            get { return limitReachedAction; }
+            set
+            {
+                limitReachedAction = value;
+                HasChanges = true;
+            }
+        }
 
         [ForeignKey("ApplicationID")]
         public virtual Aplication Application { get; set; }

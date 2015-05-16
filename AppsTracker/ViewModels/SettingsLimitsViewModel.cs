@@ -153,8 +153,10 @@ namespace AppsTracker.ViewModels
             if (apps == null)
                 return;
 
-            var appsToSave = apps.Where(a => a.Limits.Count != a.ObservableLimits.Count);
-            var modifiedLimits = appsToSave.SelectMany(a => a.ObservableLimits).Where(l => l.AppLimitID != default(int));
+            var appsToSave = apps.Where(a => a.Limits.Count != a.ObservableLimits.Count ||
+                a.ObservableLimits.Select(l=>l.HasChanges).Any());
+            var modifiedLimits = appsToSave.SelectMany(a => a.ObservableLimits)
+                .Where(l => l.AppLimitID != default(int) && l.HasChanges);
             var newLimits = appsToSave.SelectMany(a => a.ObservableLimits).Where(l => l.AppLimitID == default(int));
             await dataService.SaveModifiedEntityRangeAsync(modifiedLimits);
             await dataService.SaveNewEntityRangeAsync(newLimits);

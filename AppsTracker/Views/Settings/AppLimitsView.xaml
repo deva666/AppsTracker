@@ -88,8 +88,7 @@
                 </Grid.RowDefinitions>
                 <Label Style="{DynamicResource LabelStyle}"
                        Content="Limits for selected app" />
-                <ListBox Name="lbAssignedApps"
-                         Grid.Row="1"
+                <ListBox Grid.Row="1"
                          BorderThickness="0"
                          Margin="10,10,20,50"
                          Background="Transparent"

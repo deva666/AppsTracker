@@ -16,6 +16,7 @@
             <local:ConvertTicksToTimespan x:Key="convertTicksToTimespan" />
             <local:ConvertDoubleToTimespan x:Key="convertDoubleToTimespan" />
             <local:ConvertLimitSpanToMaxSlider x:Key="convertLimitSpanToMaxSlider" />
+            <local:ConvertAppLimitToTimeSpan x:Key="convertAppLimitToTimeSpan" />
 
             <Style x:Key="MinimalChartStyle"
                    TargetType="chart:ChartBase">
@@ -2664,6 +2665,7 @@
                                     Maximum="{Binding LimitSpan, Converter={StaticResource convertLimitSpanToMaxSlider}}"
                                     TickFrequency="0.5"
                                     IsSnapToTickEnabled="True"
+                                    Value="{Binding Limit, Converter={StaticResource convertAppLimitToTimeSpan}, Mode=TwoWay}"
                                     MinWidth="175"
                                     Name="sliderLimit" />
                         </StackPanel>

@@ -87,5 +87,11 @@ namespace AppsTracker.Tests.Fakes.Service
         {
             throw new NotImplementedException();
         }
+
+
+        public void ShowToastWindow(object argument)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
