@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows.Input;
@@ -61,7 +60,7 @@ namespace AppsTracker.Data.Models
 
         private void SetLimitSpan(object parameter)
         {
-            
+
         }
 
 
@@ -81,7 +80,6 @@ namespace AppsTracker.Data.Models
         [Required]
         public LimitReachedAction LimitReachedAction { get; set; }
 
-        [Required]
         [ForeignKey("ApplicationID")]
         public virtual Aplication Application { get; set; }
 

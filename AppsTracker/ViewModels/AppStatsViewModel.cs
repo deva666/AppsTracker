@@ -82,7 +82,7 @@ namespace AppsTracker.ViewModels
             appsList = new AsyncProperty<IEnumerable<AppDuration>>(GetApps, this);
             dailyAppList = new AsyncProperty<IEnumerable<DailyAppDuration>>(GetDailyApp, this);
 
-            this.mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadAll));
+            this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadAll));
         }
 
 

@@ -64,8 +64,8 @@ namespace AppsTracker.ViewModels
         }
 
         [ImportingConstructor]
-        public SettingsLoggingViewModel(ISqlSettingsService settingsService)
-            : base(settingsService)
+        public SettingsLoggingViewModel(ISqlSettingsService settingsService, IMediator mediator)
+            : base(settingsService, mediator)
         {
 
         }

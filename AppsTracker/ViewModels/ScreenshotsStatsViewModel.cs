@@ -81,7 +81,7 @@ namespace AppsTracker.ViewModels
             screenshotList = new AsyncProperty<IEnumerable<ScreenshotModel>>(GetScreenshots, this);
             dailyScreenshotsList = new AsyncProperty<IEnumerable<DailyScreenshotModel>>(GetDailyScreenshots, this);
 
-            this.mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadAll));
+            this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadAll));
         }
 
 

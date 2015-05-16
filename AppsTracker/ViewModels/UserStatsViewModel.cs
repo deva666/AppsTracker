@@ -85,7 +85,7 @@ namespace AppsTracker.ViewModels
             usersList = new AsyncProperty<IEnumerable<UserLoggedTime>>(GetContent, this);
             dailyUsageList = new AsyncProperty<IEnumerable<UsageOverview>>(GetSubContent, this);
 
-            this.mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadAll));
+            this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadAll));
         }
 
 

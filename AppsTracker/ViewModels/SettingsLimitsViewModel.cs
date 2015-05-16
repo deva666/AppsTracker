@@ -113,10 +113,8 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<Aplication> GetApps()
         {
-            var apps = dataService.GetFiltered<Aplication>(a => a.User.UserID == trackingService.SelectedUserID
-                                                             && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= trackingService.DateFrom).Any()
-                                                             && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= trackingService.DateTo).Any(),
-                                                             a => a.Limits)
+            var apps = dataService.GetFiltered<Aplication>(a => a.User.UserID == trackingService.SelectedUserID,
+                                                           a => a.Limits)
                                                         .ToList()
                                                         .Distinct();
             foreach (var app in apps)
@@ -134,7 +132,7 @@ namespace AppsTracker.ViewModels
                 return;
 
             string limit = (string)parameter;
-            var appLimit = new AppLimit() { Application = selectedApp };
+            var appLimit = new AppLimit() { ApplicationID = selectedApp.ApplicationID };
 
             if (limit.ToUpper() == "DAILY")
                 appLimit.LimitSpan = LimitSpan.Day;

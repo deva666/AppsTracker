@@ -160,7 +160,7 @@ namespace AppsTracker.ViewModels
             categoryList = new AsyncProperty<IEnumerable<CategoryDuration>>(GetCategories, this);
             dayDuration = new AsyncProperty<string>(GetDayDuration, this);
 
-            this.mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadContent));
+            this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadContent));
         }
 
 

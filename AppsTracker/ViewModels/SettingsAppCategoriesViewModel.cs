@@ -173,7 +173,7 @@ namespace AppsTracker.ViewModels
             this.mediator = mediator;
 
             LoadContent();
-            this.mediator.Register<Aplication>(MediatorMessages.ApplicationAdded, AppAdded);
+            this.mediator.Register<Aplication>(MediatorMessages.APPLICATION_ADDED, AppAdded);
         }
 
 

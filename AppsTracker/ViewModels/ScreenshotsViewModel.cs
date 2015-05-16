@@ -127,7 +127,7 @@ namespace AppsTracker.ViewModels
             logList = new AsyncProperty<IEnumerable<Log>>(GetLogs, this);
 
             SelectedDate = DateTime.Today;
-            this.mediator.Register(MediatorMessages.RefreshLogs, new Action(logList.Reload));
+            this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(logList.Reload));
         }
 
 

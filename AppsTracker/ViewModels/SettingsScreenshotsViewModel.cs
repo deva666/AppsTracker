@@ -97,8 +97,9 @@ namespace AppsTracker.ViewModels
         public SettingsScreenshotsViewModel(ISqlSettingsService settingsService, 
                                             ITrackingService trackingService,
                                             IDataService dataService,
-                                            IWindowService windowService)
-            : base(settingsService)
+                                            IWindowService windowService, 
+                                            IMediator mediator)
+            : base(settingsService, mediator)
         {
             this.trackingService = trackingService;
             this.dataService = dataService;

@@ -5,8 +5,7 @@ namespace AppsTracker.Service
     public interface IXmlSettingsService : IBaseService
     {     
         LogsViewSettings LogsViewSettings { get; }
-        
-     
+             
         KeylogsViewSettings KeylogsViewSettings { get; }
         
         ScreenshotsViewSettings ScreenshotsViewSettings { get; }

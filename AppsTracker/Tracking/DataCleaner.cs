@@ -16,7 +16,7 @@ namespace AppsTracker.Tracking
     [Export(typeof(IModule))]
     internal sealed class DataCleaner : IModule
     {
-        private ILogCleaner logCleanerInstance;
+        private readonly ILogCleaner logCleanerInstance;
 
         private LazyInit<ILogCleaner> logCleaner;
 

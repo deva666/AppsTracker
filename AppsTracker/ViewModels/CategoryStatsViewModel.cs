@@ -79,7 +79,7 @@ namespace AppsTracker.ViewModels
             categoryList = new AsyncProperty<IEnumerable<CategoryDuration>>(GetCategories, this);
             dailyCategoryList = new AsyncProperty<IEnumerable<DailyCategoryDuration>>(GetDailyCategories, this);
 
-            this.mediator.Register(MediatorMessages.RefreshLogs, new Action(ReloadAll));
+            this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadAll));
         }
 
 

@@ -155,8 +155,8 @@ namespace AppsTracker.ViewModels
             windowSummaryList = new AsyncProperty<IEnumerable<WindowSummary>>(GetWindowSummary, this);
             windowDurationList = new AsyncProperty<IEnumerable<WindowDurationOverview>>(GetWindowDuration, this);
 
-            this.mediator.Register(MediatorMessages.ApplicationAdded, new Action<Aplication>(ApplicationAdded));
-            this.mediator.Register(MediatorMessages.RefreshLogs, new Action(appList.Reload));
+            this.mediator.Register(MediatorMessages.APPLICATION_ADDED, new Action<Aplication>(ApplicationAdded));
+            this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(appList.Reload));
         }
 
 

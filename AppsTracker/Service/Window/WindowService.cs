@@ -58,6 +58,10 @@ namespace AppsTracker.Service
             msgWindow.Show();
         }
 
+        public void ShowToastWindow(object argument)
+        {
+
+        }
 
         public void ShowShell(string shellUse) 
         {
@@ -87,14 +91,14 @@ namespace AppsTracker.Service
 
         private void SetInitialWindowDimensions()
         {
-            var bound = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
+            var bounds = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
             double left, top, width, height;
-            var widthRatio = bound.Width * 0.15d;
-            var heightRatio = bound.Height * 0.15d;
-            left = bound.Left + widthRatio;
-            top = bound.Top + heightRatio;
-            width = bound.Width - widthRatio * 2;
-            height = bound.Height - heightRatio * 2;
+            var widthRatio = bounds.Width * 0.15d;
+            var heightRatio = bounds.Height * 0.15d;
+            left = bounds.Left + widthRatio;
+            top = bounds.Top + heightRatio;
+            width = bounds.Width - widthRatio * 2;
+            height = bounds.Height - heightRatio * 2;
             mainWindow.Left = left;
             mainWindow.Top = top;
             mainWindow.Width = width;

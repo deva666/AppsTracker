@@ -18,9 +18,9 @@ namespace AppsTracker.MVVM
     {
         private const string SETTINGS_SAVED_MSG = "settings saved";
 
-        private ISqlSettingsService settingsService;
-
-        
+        private readonly ISqlSettingsService settingsService;
+        private readonly IMediator mediator;
+                
         private string infoMessage;
 
         public string InfoMessage
@@ -51,16 +51,25 @@ namespace AppsTracker.MVVM
         }
 
 
-        public SettingsBaseViewModel(ISqlSettingsService settingsService)
+        public SettingsBaseViewModel(ISqlSettingsService settingsService, IMediator mediator)
         {
             this.settingsService = settingsService;
+            this.mediator = mediator;
+
+            this.mediator.Register(MediatorMessages.RELOAD_SETTINGS, ReloadSettings);
             Settings = this.settingsService.Settings;
+        }
+
+        private void ReloadSettings()
+        {
+            Settings = settingsService.Settings; ;
         }
 
 
         private void SaveChanges()
         {
             settingsService.SaveChanges(settings);
+            mediator.NotifyColleagues(MediatorMessages.RELOAD_SETTINGS);
             InfoMessage = SETTINGS_SAVED_MSG;
         }
 
@@ -68,6 +77,7 @@ namespace AppsTracker.MVVM
         private async Task SaveChangesAsync()
         {
             await settingsService.SaveChangesAsync(settings);
+            mediator.NotifyColleagues(MediatorMessages.RELOAD_SETTINGS);
             InfoMessage = SETTINGS_SAVED_MSG;
         }
 

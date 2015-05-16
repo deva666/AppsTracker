@@ -51,7 +51,7 @@ namespace AppsTracker.ViewModels
 
             appsList = new AsyncProperty<IEnumerable<AppDurationOverview>>(GetApps, this);
 
-            this.mediator.Register(MediatorMessages.RefreshLogs, new Action(appsList.Reload));
+            this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(appsList.Reload));
         }
 
 
