@@ -158,17 +158,11 @@ namespace AppsTracker.Tracking
         }
 
 
-        private void Finish()
-        {
-            usageProcessor.EndAllUsages();
-        }
-
-
         public void Dispose()
         {
             idleNotifierInstance.Dispose();
             idleNotifier.Enabled = false;
-            Finish();
+            usageProcessor.EndAllUsages();
             Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;
             Microsoft.Win32.SystemEvents.PowerModeChanged -= PowerModeChanged;
         }
