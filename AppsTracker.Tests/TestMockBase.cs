@@ -178,7 +178,8 @@ namespace AppsTracker.Tests
                 new Func<Tuple<SettingsGeneralViewModel, Action>>(
                     () => new Tuple<SettingsGeneralViewModel, Action>(
                         new SettingsGeneralViewModel(windowService.Object,
-                            settingsService.Object),
+                            settingsService.Object,
+                            mediator.Object),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<SettingsGeneralViewModel>(tupleFactory);
@@ -190,7 +191,7 @@ namespace AppsTracker.Tests
             var tupleFactory =
                 new Func<Tuple<SettingsLoggingViewModel, Action>>(
                     () => new Tuple<SettingsLoggingViewModel, Action>(
-                        new SettingsLoggingViewModel(settingsService.Object),
+                        new SettingsLoggingViewModel(settingsService.Object, mediator.Object),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<SettingsLoggingViewModel>(tupleFactory);
@@ -204,7 +205,8 @@ namespace AppsTracker.Tests
                         new SettingsScreenshotsViewModel(settingsService.Object,
                             trackingService.Object,
                             dataService.Object,
-                            windowService.Object),
+                            windowService.Object,
+                            mediator.Object),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<SettingsScreenshotsViewModel>(tupleFactory);
@@ -217,7 +219,8 @@ namespace AppsTracker.Tests
                 new Func<Tuple<SettingsPasswordViewModel, Action>>(
                     () => new Tuple<SettingsPasswordViewModel, Action>(
                         new SettingsPasswordViewModel(windowService.Object,
-                            settingsService.Object),
+                            settingsService.Object,
+                            mediator.Object),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<SettingsPasswordViewModel>(tupleFactory);

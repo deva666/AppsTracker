@@ -9,9 +9,9 @@
 using System;
 using System.ComponentModel.Composition;
 using AppsTracker.Data.Models;
-using AppsTracker.Service;
-using AppsTracker.ServiceLocation;
 using AppsTracker.MVVM;
+using AppsTracker.Service;
+using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
 {
@@ -21,28 +21,23 @@ namespace AppsTracker.Tracking
         private bool isLoggingEnabled;
 
         private readonly ITrackingService trackingService;
-        private readonly IDataService dataService;
         private readonly IMediator mediator;
+        private readonly IUsageProcessor usageProcessor;
         private readonly IIdleNotifier idleNotifierInstance;
 
         private LazyInit<IIdleNotifier> idleNotifier;
-
-        private Usage currentUsageLocked;
-        private Usage currentUsageIdle;
-        private Usage currentUsageLogin;
-        private Usage currentUsageStopped;
 
         private Setting settings;
 
         [ImportingConstructor]
         public UsageTracker(IIdleNotifier idleNotifierInstance,
                             ITrackingService trackingService,
-                            IDataService dataService,
+                            IUsageProcessor usageProcessor,
                             IMediator mediator)
         {
             this.idleNotifierInstance = idleNotifierInstance;
             this.trackingService = trackingService;
-            this.dataService = dataService;
+            this.usageProcessor = usageProcessor;
             this.mediator = mediator;
         }
 
@@ -83,21 +78,16 @@ namespace AppsTracker.Tracking
         private void InitLogin()
         {
             var user = trackingService.GetUzer(Environment.UserName);
-            currentUsageLogin = trackingService.LoginUser(user.UserID);
+            var usageLogin = trackingService.LoginUser(user.UserID);
 
-            trackingService.Initialize(user, currentUsageLogin.UsageID);
+            trackingService.Initialize(user, usageLogin.UsageID);
         }
 
 
         private void IdleStopped(object sender, EventArgs e)
         {
             mediator.NotifyColleagues(MediatorMessages.RESUME_LOGGING);
-            if (currentUsageIdle == null)
-                return;
-
-            currentUsageIdle.UsageEnd = DateTime.Now;
-            AddUsage(UsageTypes.Idle, currentUsageIdle);
-            currentUsageIdle = null;
+            usageProcessor.UsageEnded(UsageTypes.Idle);
         }
 
 
@@ -106,7 +96,7 @@ namespace AppsTracker.Tracking
             if (isLoggingEnabled == false)
                 return;
 
-            currentUsageIdle = new Usage(trackingService.UserID) { SelfUsageID = trackingService.UsageID };
+            usageProcessor.NewUsage(UsageTypes.Idle, trackingService.UserID, trackingService.UsageID);
             mediator.NotifyColleagues(MediatorMessages.STOP_LOGGING);
         }
 
@@ -119,17 +109,13 @@ namespace AppsTracker.Tracking
                     InitLogin();
                     Configure();
                     mediator.NotifyColleagues(MediatorMessages.RESUME_LOGGING);
-                    Microsoft.Win32.SystemEvents.SessionSwitch += SessionSwitch;
                     break;
                 case Microsoft.Win32.PowerModes.StatusChange:
                     break;
                 case Microsoft.Win32.PowerModes.Suspend:
-                    //Session Switch event is fired immediately after the computer is being put to sleep,
-                    //If it's going to sleep, then don't log this as computer locked
                     isLoggingEnabled = false;
-                    Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;
+                    usageProcessor.EndAllUsages();
                     mediator.NotifyColleagues(MediatorMessages.STOP_LOGGING);
-                    Finish();
                     break;
             }
         }
@@ -142,13 +128,8 @@ namespace AppsTracker.Tracking
 
             if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionLock)
             {
-                currentUsageLocked = new Usage(trackingService.UserID) { SelfUsageID = trackingService.UsageID };
-                if (currentUsageIdle != null)
-                {
-                    currentUsageIdle.UsageEnd = DateTime.Now;
-                    AddUsage(UsageTypes.Idle, currentUsageIdle);
-                    currentUsageIdle = null;
-                }
+                usageProcessor.NewUsage(UsageTypes.Locked, trackingService.UserID, trackingService.UsageID);
+                usageProcessor.UsageEnded(UsageTypes.Idle);
                 idleNotifier.Enabled = false;
             }
             else if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionUnlock)
@@ -157,30 +138,8 @@ namespace AppsTracker.Tracking
                 {
                     idleNotifier.Enabled = true;
                 }
-                if (currentUsageLocked != null)
-                {
-                    currentUsageLocked.UsageEnd = DateTime.Now;
-                    AddUsage(UsageTypes.Locked, currentUsageLocked);
-                    currentUsageLocked = null;
-                }
+                usageProcessor.UsageEnded(UsageTypes.Locked);
             }
-        }
-
-
-        private void AddUsage(UsageTypes usagetype, Usage usage)
-        {
-            usage.UsageType = usagetype;
-            dataService.SaveNewEntity(usage);
-        }
-
-
-        private void SaveUsage(Usage usage)
-        {
-            if (usage == null)
-                return;
-
-            usage.UsageEnd = DateTime.Now;
-            dataService.SaveModifiedEntity(usage);
         }
 
 
@@ -192,31 +151,16 @@ namespace AppsTracker.Tracking
 
         private void CheckStoppedUsage()
         {
-            if (isLoggingEnabled == false && currentUsageStopped == null)
-                currentUsageStopped = new Usage(trackingService.UserID) { SelfUsageID = trackingService.UsageID };
-            else if (isLoggingEnabled && currentUsageStopped != null)
-                SaveStoppedUsage();
-        }
-
-
-        private void SaveStoppedUsage()
-        {
-            if (currentUsageStopped != null)
-            {
-                currentUsageStopped.UsageEnd = DateTime.Now;
-                AddUsage(UsageTypes.Stopped, currentUsageStopped);
-                currentUsageStopped = null;
-            }
+            if (isLoggingEnabled == false)
+                usageProcessor.NewUsage(UsageTypes.Stopped, trackingService.UserID, trackingService.UsageID);
+            else if (isLoggingEnabled)
+                usageProcessor.UsageEnded(UsageTypes.Stopped);
         }
 
 
         private void Finish()
         {
-            currentUsageLogin.IsCurrent = false;
-            SaveUsage(currentUsageIdle);
-            SaveUsage(currentUsageLocked);
-            SaveUsage(currentUsageLogin);
-            SaveStoppedUsage();
+            usageProcessor.EndAllUsages();
         }
 
 

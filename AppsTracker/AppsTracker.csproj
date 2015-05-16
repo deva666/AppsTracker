@@ -183,6 +183,8 @@
     <Compile Include="Controllers\ITrackingController.cs" />
     <Compile Include="Controllers\TrackingController.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Tracking\Usage\IUsageProcessor.cs" />
+    <Compile Include="Tracking\Usage\UsageProcessor.cs" />
     <Compile Include="Tracking\Limits\ILimitHandler.cs" />
     <Compile Include="Tracking\Helpers\ILogCleaner.cs" />
     <Compile Include="Tracking\Limits\IMidnightNotifier.cs" />
@@ -198,7 +200,7 @@
     <Compile Include="Tracking\Helpers\SyncContext.cs" />
     <Compile Include="Tracking\Hooks\IWindowNotifier.cs" />
     <Compile Include="Tracking\Limits\LimitObserver.cs" />
-    <Compile Include="Tracking\Helpers\IIdleNotifier.cs" />
+    <Compile Include="Tracking\Usage\IIdleNotifier.cs" />
     <Compile Include="Tracking\TrackingStatus.cs" />
     <Compile Include="ServiceLocation\IServiceResolver.cs" />
     <Compile Include="ServiceLocation\ServiceResolver.cs" />
@@ -302,12 +304,12 @@
     <Compile Include="Tracking\Hooks\EventArgs\WindowChangedArgs.cs" />
     <Compile Include="Tracking\DataCleaner.cs" />
     <Compile Include="Tracking\Helpers\LogCleaner.cs" />
-    <Compile Include="Tracking\Helpers\IdleMonitor.cs" />
-    <Compile Include="Tracking\Helpers\IdleTimeWatcher.cs" />
+    <Compile Include="Tracking\Usage\IdleMonitor.cs" />
+    <Compile Include="Tracking\Usage\IdleTimeWatcher.cs" />
     <Compile Include="Tracking\IModule.cs" />
     <Compile Include="Tracking\Helpers\LazyInit.cs" />
     <Compile Include="Tracking\Helpers\WindowHelper.cs" />
-    <Compile Include="Tracking\UsageTracker.cs" />
+    <Compile Include="Tracking\Usage\UsageTracker.cs" />
     <Compile Include="Tracking\WindowTracker.cs" />
     <Compile Include="MVVM\AsyncProperty.cs" />
     <Compile Include="MVVM\DelegateCommandAsync.cs" />
