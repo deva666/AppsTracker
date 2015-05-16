@@ -63,6 +63,19 @@ namespace AppsTracker
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         }
 
+
+        private CompositionContainer GetCompositionContainer()
+        {
+            var catalog = new AggregateCatalog();
+            catalog.Catalogs.Add(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+            var container = new CompositionContainer(catalog);
+            var batch = new CompositionBatch();
+            batch.AddExportedValue(container);
+            container.Compose(batch);
+            return container;
+        }
+
+
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             try
@@ -77,16 +90,6 @@ namespace AppsTracker
             }
         }
 
-        private CompositionContainer GetCompositionContainer()
-        {
-            var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
-            var container = new CompositionContainer(catalog);
-            var batch = new CompositionBatch();
-            batch.AddExportedValue(container);
-            container.Compose(batch);
-            return container;
-        }
 
         internal void ShutdownApp()
         {

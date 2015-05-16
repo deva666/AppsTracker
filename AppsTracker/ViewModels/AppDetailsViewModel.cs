@@ -94,10 +94,7 @@ namespace AppsTracker.ViewModels
 
         public AppSummary SelectedAppSummary
         {
-            get
-            {
-                return selectedAppSummary;
-            }
+            get { return selectedAppSummary; }
             set
             {
                 SetPropertyValue(ref selectedAppSummary, value);
@@ -127,7 +124,7 @@ namespace AppsTracker.ViewModels
 
         public ICommand SelectedAppsChangingCommand
         {
-            get { return selectedAppsChangingCommand ?? (selectedAppsChangingCommand = new DelegateCommand(OverallAppSelectionChanged)); }
+            get { return selectedAppsChangingCommand ?? (selectedAppsChangingCommand = new DelegateCommand(SelectedAppChanged)); }
         }
 
 
@@ -135,7 +132,7 @@ namespace AppsTracker.ViewModels
 
         public ICommand SelectedWindowsChangingCommand
         {
-            get { return selectedWindowsChangingCommand ?? (selectedWindowsChangingCommand = new DelegateCommand(OverallWindowSelectionChanged)); }
+            get { return selectedWindowsChangingCommand ?? (selectedWindowsChangingCommand = new DelegateCommand(SelectedWindowChanged)); }
         }
 
 
@@ -215,7 +212,7 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private void OverallAppSelectionChanged()
+        private void SelectedAppChanged()
         {
             IsChartVisible = false;
 
@@ -243,7 +240,7 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private void OverallWindowSelectionChanged()
+        private void SelectedWindowChanged()
         {
             if (windowSummaryList.Result == null)
             {
