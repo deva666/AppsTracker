@@ -46,7 +46,7 @@ namespace AppsTracker
                 case UsageTypes.Locked:
                     return "SYSTEM LOCKED";
                 case UsageTypes.Stopped:
-                    return "LOGGING STOPPED";
+                    return "TRACKING STOPPED";
                 default:
                     return string.Empty;
             }

@@ -18,7 +18,7 @@ namespace AppsTracker.Tracking
     [Export(typeof(IModule))]
     internal sealed class UsageTracker : IModule
     {
-        private bool isLoggingEnabled;
+        private bool isTrackingEnabled;
 
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
@@ -68,12 +68,6 @@ namespace AppsTracker.Tracking
             notifier.IdleStoped -= IdleStopped;
         }
 
-        private void Configure()
-        {
-            idleNotifier.Enabled = settings.LoggingEnabled && settings.EnableIdle;
-            isLoggingEnabled = settings.LoggingEnabled;
-            CheckStoppedUsage();
-        }
 
         private void InitLogin()
         {
@@ -84,20 +78,28 @@ namespace AppsTracker.Tracking
         }
 
 
+        private void Configure()
+        {
+            idleNotifier.Enabled = settings.LoggingEnabled && settings.EnableIdle;
+            isTrackingEnabled = settings.LoggingEnabled;
+            CheckStoppedUsage();
+        }
+
+
         private void IdleStopped(object sender, EventArgs e)
         {
-            mediator.NotifyColleagues(MediatorMessages.RESUME_LOGGING);
+            mediator.NotifyColleagues(MediatorMessages.RESUME_TRACKING);
             usageProcessor.UsageEnded(UsageTypes.Idle);
         }
 
 
         private void IdleEntered(object sender, EventArgs e)
         {
-            if (isLoggingEnabled == false)
+            if (isTrackingEnabled == false)
                 return;
 
             usageProcessor.NewUsage(UsageTypes.Idle, trackingService.UserID, trackingService.UsageID);
-            mediator.NotifyColleagues(MediatorMessages.STOP_LOGGING);
+            mediator.NotifyColleagues(MediatorMessages.STOP_TRACKING);
         }
 
 
@@ -108,14 +110,14 @@ namespace AppsTracker.Tracking
                 case Microsoft.Win32.PowerModes.Resume:
                     InitLogin();
                     Configure();
-                    mediator.NotifyColleagues(MediatorMessages.RESUME_LOGGING);
+                    mediator.NotifyColleagues(MediatorMessages.RESUME_TRACKING);
                     break;
                 case Microsoft.Win32.PowerModes.StatusChange:
                     break;
                 case Microsoft.Win32.PowerModes.Suspend:
-                    isLoggingEnabled = false;
+                    isTrackingEnabled = false;
                     usageProcessor.EndAllUsages();
-                    mediator.NotifyColleagues(MediatorMessages.STOP_LOGGING);
+                    mediator.NotifyColleagues(MediatorMessages.STOP_TRACKING);
                     break;
             }
         }
@@ -123,7 +125,7 @@ namespace AppsTracker.Tracking
 
         private void SessionSwitch(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
         {
-            if (isLoggingEnabled == false)
+            if (isTrackingEnabled == false)
                 return;
 
             if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionLock)
@@ -151,9 +153,9 @@ namespace AppsTracker.Tracking
 
         private void CheckStoppedUsage()
         {
-            if (isLoggingEnabled == false)
+            if (isTrackingEnabled == false)
                 usageProcessor.NewUsage(UsageTypes.Stopped, trackingService.UserID, trackingService.UsageID);
-            else if (isLoggingEnabled)
+            else if (isTrackingEnabled)
                 usageProcessor.UsageEnded(UsageTypes.Stopped);
         }
 

@@ -20,7 +20,7 @@ namespace AppsTracker.Tracking
     [Export(typeof(IModule))]
     internal sealed class WindowTracker : IModule
     {
-        private bool isLoggingEnabled;
+        private bool isTrackingEnabled;
 
         private string activeWindowTitle;
 
@@ -82,15 +82,15 @@ namespace AppsTracker.Tracking
 
             ConfigureComponents();
 
-            mediator.Register(MediatorMessages.STOP_LOGGING, new Action(StopLogging));
-            mediator.Register(MediatorMessages.RESUME_LOGGING, new Action(ResumeLogging));
+            mediator.Register(MediatorMessages.STOP_TRACKING, new Action(StopTracking));
+            mediator.Register(MediatorMessages.RESUME_TRACKING, new Action(ResumeTracking));
         }
 
         private async void OnScreenshotTaken(object sender, ScreenshotEventArgs e)
         {
             var screenshot = e.Screenshot;
 
-            if (isLoggingEnabled == false || screenshot == null || currentLog == null)
+            if (isTrackingEnabled == false || screenshot == null || currentLog == null)
                 return;
 
             screenshot.LogID = currentLog.LogID;
@@ -99,7 +99,7 @@ namespace AppsTracker.Tracking
 
         private void ConfigureComponents()
         {
-            isLoggingEnabled =
+            isTrackingEnabled =
                 windowNotifier.Enabled =
                     windowCheckTimer.Enabled =
                         settings.LoggingEnabled;
@@ -107,7 +107,7 @@ namespace AppsTracker.Tracking
 
         private void CheckWindowTitle()
         {
-            if (isLoggingEnabled == false)
+            if (isTrackingEnabled == false)
                 return;
 
             if (activeWindowTitle != windowHelper.GetActiveWindowName())
@@ -116,7 +116,7 @@ namespace AppsTracker.Tracking
 
         private void WindowChanging(object sender, WindowChangedArgs e)
         {
-            if (isLoggingEnabled == false)
+            if (isTrackingEnabled == false)
                 return;
 
             OnWindowChange(e.WindowTitle, e.AppInfo);
@@ -167,15 +167,15 @@ namespace AppsTracker.Tracking
             mediator.NotifyColleagues(MediatorMessages.APPLICATION_ADDED, newApp);
         }
 
-        private void StopLogging()
+        private void StopTracking()
         {
-            isLoggingEnabled = false;
+            isTrackingEnabled = false;
             ExchangeLogs(null);
         }
 
-        private void ResumeLogging()
+        private void ResumeTracking()
         {
-            isLoggingEnabled = settings.LoggingEnabled;
+            isTrackingEnabled = settings.LoggingEnabled;
         }
 
         public void Dispose()
@@ -186,7 +186,7 @@ namespace AppsTracker.Tracking
             windowNotifier.Enabled =
                     windowCheckTimer.Enabled = false;
 
-            StopLogging();
+            StopTracking();
         }
     }
 }

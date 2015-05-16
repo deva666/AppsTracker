@@ -19,12 +19,12 @@ namespace AppsTracker.Controllers
     internal sealed class AppearanceController : IAppearanceController
     {
         private bool isLightTheme;
-        private bool isLoggingEnabled;
+        private bool isTrackingEnabled;
 
         public void Initialize(Setting settings)
         {
             isLightTheme = settings.LightTheme;
-            isLoggingEnabled = settings.LoggingEnabled;
+            isTrackingEnabled = settings.LoggingEnabled;
             Application.Current.Resources.MergedDictionaries.Clear();
             ApplyTheme();
         }
@@ -38,9 +38,9 @@ namespace AppsTracker.Controllers
                 isThemeChanging = true;
             }
 
-            if (isLoggingEnabled != settings.LoggingEnabled)
+            if (isTrackingEnabled != settings.LoggingEnabled)
             {
-                isLoggingEnabled = settings.LoggingEnabled;
+                isTrackingEnabled = settings.LoggingEnabled;
                 isThemeChanging = true;
             }
 
@@ -67,14 +67,14 @@ namespace AppsTracker.Controllers
             ResourceDictionary newDictionary;
             if (isLightTheme)
             {
-                if (isLoggingEnabled)
+                if (isTrackingEnabled)
                     newDictionary = new ResourceDictionary() { Source = new Uri("/Themes/RunningLight.xaml", UriKind.Relative) };
                 else
                     newDictionary = new ResourceDictionary() { Source = new Uri("/Themes/StoppedLight.xaml", UriKind.Relative) };
             }
             else
             {
-                if (isLoggingEnabled)
+                if (isTrackingEnabled)
                     newDictionary = new ResourceDictionary() { Source = new Uri("/Themes/Running.xaml", UriKind.Relative) };
                 else
                     newDictionary = new ResourceDictionary() { Source = new Uri("/Themes/Stopped.xaml", UriKind.Relative) };

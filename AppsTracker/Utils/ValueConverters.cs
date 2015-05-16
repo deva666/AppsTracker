@@ -289,8 +289,8 @@ namespace AppsTracker
         {
             bool loggingEnabled = (bool)value;
 
-            if (loggingEnabled) return "Logging in progress ...";
-            else return "Logging stopped";
+            if (loggingEnabled) return "Tracking in progress ...";
+            else return "Tracking stopped";
 
         }
 
