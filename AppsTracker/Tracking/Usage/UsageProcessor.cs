@@ -12,7 +12,7 @@ namespace AppsTracker.Tracking.Helpers
     internal sealed class UsageProcessor : IUsageProcessor
     {
         private readonly IDataService dataService;
-        private readonly Dictionary<UsageTypes, Usage> usageTypesMap = new Dictionary<UsageTypes, Usage>();
+        private readonly IDictionary<UsageTypes, Usage> usageTypesMap = new Dictionary<UsageTypes, Usage>();
 
         [ImportingConstructor]
         public UsageProcessor(IDataService dataService)
@@ -23,7 +23,7 @@ namespace AppsTracker.Tracking.Helpers
         public void NewUsage(UsageTypes usageType, int userId, int parentUsageId)
         {
             Ensure.Condition<InvalidOperationException>(usageTypesMap.ContainsKey(usageType) == false, "Usage type exists");
-            var usage = new Usage(userId, usageType) { SelfUsageID = parentUsageId, UsageType = usageType };
+            var usage = new Usage(userId, usageType) { SelfUsageID = parentUsageId};
             usageTypesMap.Add(usageType, usage);
         }
 
@@ -57,6 +57,7 @@ namespace AppsTracker.Tracking.Helpers
 
         public void RegisterUsage(Usage usage)
         {
+            Ensure.NotNull(usage, "usage");
             Ensure.Condition<InvalidOperationException>(usageTypesMap.ContainsKey(usage.UsageType) == false, "Usage type exists");
             usageTypesMap.Add(usage.UsageType, usage);
         }
