@@ -33,11 +33,9 @@ namespace AppsTracker.Tracking
         private readonly IMediator mediator;
 
         private LazyInit<IWindowNotifier> windowNotifier;
-
-        private Log currentLog;
-
         private LazyInit<System.Threading.Timer> windowCheckTimer;
 
+        private Log currentLog;
         private Setting settings;
 
         [ImportingConstructor]

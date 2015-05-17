@@ -7,9 +7,9 @@
 #endregion
 
 using System;
-using System.ComponentModel.Composition;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -19,7 +19,6 @@ using System.Windows.Input;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 using AppsTracker.Service;
-using AppsTracker.Widgets;
 
 namespace AppsTracker.ViewModels
 {
@@ -206,7 +205,7 @@ namespace AppsTracker.ViewModels
         private string CorrectPath(string path)
         {
             string newTitle = path;
-            char[] illegalChars = new char[] { '<', '>', ':', '"', '\\','/', '|', '?', '*', '0' };
+            char[] illegalChars = new char[] { '<', '>', ':', '"', '\\', '/', '|', '?', '*', '0' };
             if (path.IndexOfAny(illegalChars) >= 0)
             {
                 foreach (var chr in illegalChars)
