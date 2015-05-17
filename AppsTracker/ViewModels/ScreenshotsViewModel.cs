@@ -54,15 +54,6 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private DateTime selectedDate;
-
-        public DateTime SelectedDate
-        {
-            get { return selectedDate; }
-            set { SetPropertyValue(ref selectedDate, value); }
-        }
-
-
         private Log selectedItem;
 
         public Log SelectedItem
@@ -126,7 +117,6 @@ namespace AppsTracker.ViewModels
 
             logList = new AsyncProperty<IEnumerable<Log>>(GetLogs, this);
 
-            SelectedDate = DateTime.Today;
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(logList.Reload));
         }
 
