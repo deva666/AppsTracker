@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using AppsTracker;
 using AppsTracker.Data.Models;
 using AppsTracker.Tracking;
 
@@ -27,23 +28,17 @@ namespace AppsTracker.Controllers
 
         public void Initialize(Setting settings)
         {
-            ModulesForEach(m => m.InitializeComponent(settings));
+            modules.ForEachAction(m => m.InitializeComponent(settings));
         }
 
         public void SettingsChanging(Setting settings)
         {
-            ModulesForEach(m => m.SettingsChanged(settings));
-        }
-
-        private void ModulesForEach(Action<IModule> action)
-        {
-            foreach (var module in modules)
-                action(module);
+            modules.ForEachAction(m => m.SettingsChanged(settings));
         }
 
         public void Dispose()
         {
-            ModulesForEach(m => m.Dispose());
+            modules.ForEachAction(m => m.Dispose());
         }
     }
 }

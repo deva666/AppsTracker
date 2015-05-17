@@ -7,14 +7,25 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Threading;
+using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 
 namespace AppsTracker
 {
     public static class Extensions
     {
+        public static void ForEachAction<T>(this IEnumerable<T> collection, Action<T> action)
+        {
+            Ensure.NotNull(action, "action");
+            foreach (var item in collection)
+            {
+                action(item);
+            }
+        }
+
         public static string Truncate(this string value, int maxLength)
         {
             if (string.IsNullOrEmpty(value)) return value;
@@ -56,21 +67,6 @@ namespace AppsTracker
         {
             timer.Stop();
             timer.Start();
-        }
-
-        public static bool Running(this TrackingStatus status)
-        {
-            if (status == TrackingStatus.Running)
-                return true;
-            else
-                return false;
-        }
-
-        public static void StopIfInitialized(this System.Threading.Timer timer)
-        {
-            if (timer == null)
-                return;
-            timer.Change(Timeout.Infinite, Timeout.Infinite);
         }
     }
 }
