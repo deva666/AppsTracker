@@ -186,17 +186,16 @@
     <Compile Include="Tracking\Usage\IUsageProcessor.cs" />
     <Compile Include="Tracking\Usage\UsageProcessor.cs" />
     <Compile Include="Tracking\Limits\ILimitHandler.cs" />
-    <Compile Include="Tracking\Helpers\ILogCleaner.cs" />
+    <Compile Include="Tracking\Cleaning\ILogCleaner.cs" />
     <Compile Include="Tracking\Limits\IMidnightNotifier.cs" />
-    <Compile Include="Tracking\Helpers\IScreenshotFactory.cs" />
-    <Compile Include="Tracking\Helpers\IWindowHelper.cs" />
+    <Compile Include="Tracking\Screenshots\IScreenshotFactory.cs" />
+    <Compile Include="Tracking\Windows\IWindowHelper.cs" />
     <Compile Include="Tracking\Limits\LimitHandler.cs" />
-    <Compile Include="Tracking\Helpers\ProducerConsumerQueue.cs" />
     <Compile Include="Tracking\Limits\ILimitObserver.cs" />
-    <Compile Include="Tracking\IScreenshotTracker.cs" />
+    <Compile Include="Tracking\Screenshots\IScreenshotTracker.cs" />
     <Compile Include="Tracking\Helpers\ISyncContext.cs" />
     <Compile Include="Tracking\Limits\MidnightNotifier.cs" />
-    <Compile Include="Tracking\ScreenshotTracker.cs" />
+    <Compile Include="Tracking\Screenshots\ScreenshotTracker.cs" />
     <Compile Include="Tracking\Helpers\SyncContext.cs" />
     <Compile Include="Tracking\Hooks\IWindowNotifier.cs" />
     <Compile Include="Tracking\Limits\LimitObserver.cs" />
@@ -302,15 +301,15 @@
     <Compile Include="Tracking\Hooks\EventArgs\KeyboardHookArgs.cs" />
     <Compile Include="Tracking\Hooks\EventArgs\MouseHookArgs.cs" />
     <Compile Include="Tracking\Hooks\EventArgs\WindowChangedArgs.cs" />
-    <Compile Include="Tracking\DataCleaner.cs" />
-    <Compile Include="Tracking\Helpers\LogCleaner.cs" />
+    <Compile Include="Tracking\Cleaning\DataCleaner.cs" />
+    <Compile Include="Tracking\Cleaning\LogCleaner.cs" />
     <Compile Include="Tracking\Usage\IdleMonitor.cs" />
     <Compile Include="Tracking\Usage\IdleTimeWatcher.cs" />
     <Compile Include="Tracking\IModule.cs" />
     <Compile Include="Tracking\Helpers\LazyInit.cs" />
-    <Compile Include="Tracking\Helpers\WindowHelper.cs" />
+    <Compile Include="Tracking\Windows\WindowHelper.cs" />
     <Compile Include="Tracking\Usage\UsageTracker.cs" />
-    <Compile Include="Tracking\WindowTracker.cs" />
+    <Compile Include="Tracking\Windows\WindowTracker.cs" />
     <Compile Include="MVVM\AsyncProperty.cs" />
     <Compile Include="MVVM\DelegateCommandAsync.cs" />
     <Compile Include="MVVM\HostViewModel.cs" />
@@ -451,7 +450,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Tracking\Helpers\ScreenshotFactory.cs" />
+    <Compile Include="Tracking\Screenshots\ScreenshotFactory.cs" />
     <Compile Include="Utils\Hash.cs" />
     <Compile Include="Tracking\Hooks\WinHook.cs" />
     <Page Include="Views\LimitToastWindow.xaml">
