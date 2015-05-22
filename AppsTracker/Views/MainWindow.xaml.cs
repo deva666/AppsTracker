@@ -111,5 +111,12 @@ namespace AppsTracker
 
         #endregion
 
+
+
+        public object ViewArgument
+        {
+            get;
+            set;
+        }
     }
 }

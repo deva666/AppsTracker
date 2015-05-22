@@ -83,5 +83,12 @@ namespace AppsTracker.Views
             storyBoard.Children.Add(animation);
             storyBoard.Begin(this);
         }
+
+
+        public object ViewArgument
+        {
+            get;
+            set;
+        }
     }
 }

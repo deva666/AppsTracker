@@ -77,5 +77,12 @@ namespace AppsTracker
                 windowService.ShowMessageDialog("Wrong password.", false);
             }
         }
+
+
+        public object ViewArgument
+        {
+            get;
+            set;
+        }
     }
 }

@@ -93,5 +93,12 @@ namespace AppsTracker.Widgets
                 FileLogger.Instance.Log(ex);
             }
         }
+
+
+        public object ViewArgument
+        {
+            get;
+            set;
+        }
     }
 }

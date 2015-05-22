@@ -5,13 +5,15 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using AppsTracker.Data.Models;
 using AppsTracker.ViewModels;
 using AppsTracker.Views;
 
 namespace AppsTracker.Widgets
 {
-    [Export(typeof(IScreenshotViewShell))]
-    public partial class ScreenshotViewerWindow : Window, IScreenshotViewShell
+    [Export(typeof(IShell))]
+    [ExportMetadata("ShellUse", "Screenshot viewer window")]
+    public partial class ScreenshotViewerWindow : System.Windows.Window, IShell
     {
         private readonly ScreenshotViewerViewModel viewModel;
 
@@ -102,12 +104,15 @@ namespace AppsTracker.Widgets
         }
 
 
-        public IEnumerable<Data.Models.Screenshot> Screenshots
+        public object ViewArgument
         {
-            get { return viewModel.ScreenshotCollection; }
+            get
+            {
+                return viewModel.ScreenshotCollection;
+            }
             set
             {
-                viewModel.ScreenshotCollection = value;
+                viewModel.ScreenshotCollection = (IEnumerable<Screenshot>)value;
                 scViewer.lbImages.SelectedIndex = 0;
             }
         }

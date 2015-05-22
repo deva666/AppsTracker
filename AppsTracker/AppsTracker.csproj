@@ -220,7 +220,6 @@
     <Compile Include="ViewModels\CategoryStatsViewModel.cs" />
     <Compile Include="ViewModels\SettingsAppCategoriesViewModel.cs" />
     <Compile Include="ViewModels\SettingsLimitsViewModel.cs" />
-    <Compile Include="Views\IScreenshotViewShell.cs" />
     <Compile Include="Views\IShell.cs" />
     <Compile Include="Views\IShellMetaData.cs" />
     <Compile Include="Views\LimitToastWindow.xaml.cs">

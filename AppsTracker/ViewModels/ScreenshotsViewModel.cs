@@ -137,8 +137,8 @@ namespace AppsTracker.ViewModels
                 return;
             IList collection = parameter as IList;
             var logs = collection.Cast<Log>();
-            var screenshotShell = windowService.GetScreenshotShell();
-            screenshotShell.Screenshots = logs.Where(l => l.Screenshots.Count > 0).SelectMany(l => l.Screenshots);
+            var screenshotShell = windowService.GetShell("Screenshot viewer window");
+            screenshotShell.ViewArgument = logs.Where(l => l.Screenshots.Count > 0).SelectMany(l => l.Screenshots);
             screenshotShell.Show();
         }
 

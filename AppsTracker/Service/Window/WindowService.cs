@@ -13,7 +13,6 @@ namespace AppsTracker.Service
         private readonly ISqlSettingsService sqlSettingsService;
         private readonly IXmlSettingsService xmlSettingsService;
         private readonly ITrayIcon trayIcon;
-        private readonly ExportFactory<IScreenshotViewShell> screenshotShellFactory;
         private readonly IEnumerable<ExportFactory<IShell, IShellMetaData>> shellFactories;
 
         private IShell mainWindow;
@@ -24,13 +23,11 @@ namespace AppsTracker.Service
         public WindowService(ISqlSettingsService sqlSettingsService, 
                              IXmlSettingsService xmlSettingsService,
                              ITrayIcon trayIcon, 
-                             ExportFactory<IScreenshotViewShell> screenshotShellFactory,
                              [ImportMany]IEnumerable<ExportFactory<IShell,IShellMetaData>> shellFactories)
         {
             this.sqlSettingsService = sqlSettingsService;
             this.xmlSettingsService = xmlSettingsService;
             this.trayIcon = trayIcon;
-            this.screenshotShellFactory = screenshotShellFactory;
             this.shellFactories = shellFactories;
 
             var limitWindowFactory = shellFactories.Single(s => s.Metadata.ShellUse == "Limit toast window");
@@ -80,6 +77,15 @@ namespace AppsTracker.Service
             }
         }
 
+
+        public IShell GetShell(string shellUse)
+        {
+            var factory = shellFactories.Single(s => s.Metadata.ShellUse == shellUse);
+            using (var context = factory.CreateExport())
+            {
+                return context.Value;
+            }
+        }
 
         public System.Windows.Forms.FolderBrowserDialog CreateFolderBrowserDialog()
         {
@@ -208,16 +214,6 @@ namespace AppsTracker.Service
             xmlSettingsService.MainWindowSettings.Left = mainWindow.Left;
             xmlSettingsService.MainWindowSettings.Top = mainWindow.Top;
             mainWindow = null;
-        }
-
-
-
-        public IScreenshotViewShell GetScreenshotShell()
-        {
-            using (var context = screenshotShellFactory.CreateExport())
-            {
-                return context.Value;
-            }
         }
     }
 }

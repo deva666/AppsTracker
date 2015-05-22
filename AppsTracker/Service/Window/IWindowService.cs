@@ -1,5 +1,6 @@
 ﻿using System;
 using AppsTracker.Views;
+using AppsTracker.Widgets;
 namespace AppsTracker.Service
 {
     public interface IWindowService : IBaseService
@@ -14,10 +15,10 @@ namespace AppsTracker.Service
 
         void ShowToastWindow(object argument);
 
-        IScreenshotViewShell GetScreenshotShell();
-
         void ShowShell(string shellUse);
-        
+
+        IShell GetShell(string shellUse);
+
         System.Windows.Forms.FolderBrowserDialog CreateFolderBrowserDialog();
         
         void FirstRunWindowSetup();

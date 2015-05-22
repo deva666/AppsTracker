@@ -101,5 +101,12 @@ namespace AppsTracker.Widgets
         {
             return ServiceLocator.Instance.Resolve<IDataService>().DeleteOldScreenshots(days);
         }
+
+
+        public object ViewArgument
+        {
+            get;
+            set;
+        }
     }
 }

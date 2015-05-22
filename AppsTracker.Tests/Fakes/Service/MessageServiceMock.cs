@@ -78,10 +78,6 @@ namespace AppsTracker.Tests.Fakes.Service
         }
 
 
-        public Views.IScreenshotViewShell GetScreenshotShell()
-        {
-            throw new NotImplementedException();
-        }
 
         public void ShowShell(string shellUse)
         {
@@ -90,6 +86,12 @@ namespace AppsTracker.Tests.Fakes.Service
 
 
         public void ShowToastWindow(object argument)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public Widgets.IShell GetShell(string shellUse)
         {
             throw new NotImplementedException();
         }

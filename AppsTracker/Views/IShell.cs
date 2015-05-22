@@ -12,8 +12,11 @@ namespace AppsTracker.Widgets
         event CancelEventHandler Closing;
 
         double Left { get; set; }
+
         double Top { get; set; }
+        
         double Width { get; set; }
+        
         double Height { get; set; }
 
         bool IsLoaded { get; }
@@ -25,5 +28,7 @@ namespace AppsTracker.Widgets
         bool? ShowDialog();
 
         void Close();
+
+        object ViewArgument { get; set; }
     }
 }
