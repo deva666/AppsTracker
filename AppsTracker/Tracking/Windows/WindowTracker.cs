@@ -63,7 +63,7 @@ namespace AppsTracker.Tracking
             screenshotTracker.SettingsChanging(settings);
         }
 
-        public void InitializeComponent(Setting settings)
+        public void Initialize(Setting settings)
         {
             this.settings = settings;
 
@@ -185,6 +185,12 @@ namespace AppsTracker.Tracking
                     windowCheckTimer.Enabled = false;
 
             StopTracking();
+        }
+
+
+        public int InitializationOrder
+        {
+            get { return 1; }
         }
     }
 }

@@ -17,6 +17,7 @@ namespace AppsTracker.Service
         private readonly IEnumerable<ExportFactory<IShell, IShellMetaData>> shellFactories;
 
         private IShell mainWindow;
+        private IShell limitNotifyWindow;
 
 
         [ImportingConstructor]
@@ -31,6 +32,13 @@ namespace AppsTracker.Service
             this.trayIcon = trayIcon;
             this.screenshotShellFactory = screenshotShellFactory;
             this.shellFactories = shellFactories;
+
+            var limitWindowFactory = shellFactories.Single(s => s.Metadata.ShellUse == "Limit toast window");
+            using (var context = limitWindowFactory.CreateExport())
+            {
+                limitNotifyWindow = context.Value;
+                limitNotifyWindow.Show();
+            }
         }
 
 

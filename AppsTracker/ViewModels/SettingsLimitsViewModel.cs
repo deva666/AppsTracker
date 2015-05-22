@@ -19,6 +19,7 @@ namespace AppsTracker.ViewModels
 
         private readonly IDataService dataService;
         private readonly ITrackingService trackingService;
+        private readonly IMediator mediator;
 
 
         public override string Title
@@ -103,12 +104,20 @@ namespace AppsTracker.ViewModels
 
         [ImportingConstructor]
         public SettingsLimitsViewModel(IDataService dataService,
-                                       ITrackingService trackingService)
+                                       ITrackingService trackingService,
+                                       IMediator mediator)
         {
             this.dataService = dataService;
             this.trackingService = trackingService;
+            this.mediator = mediator;
+            mediator.Register(MediatorMessages.APPLICATION_ADDED, new Action<Aplication>(OnAppAdded));
 
             AppList = new AsyncProperty<IEnumerable<Aplication>>(GetApps, this);
+        }
+
+        private void OnAppAdded(Aplication app)
+        {
+            AppList.Reload();   
         }
 
         private IEnumerable<Aplication> GetApps()

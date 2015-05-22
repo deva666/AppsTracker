@@ -256,7 +256,8 @@ namespace AppsTracker.Tests
                 new Func<Tuple<SettingsLimitsViewModel, Action>>(
                     () => new Tuple<SettingsLimitsViewModel, Action>(
                         new SettingsLimitsViewModel(dataService.Object,
-                            trackingService.Object),
+                            trackingService.Object, 
+                            mediator.Object),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<SettingsLimitsViewModel>(tupleFactory);

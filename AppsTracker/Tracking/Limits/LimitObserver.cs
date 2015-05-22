@@ -14,8 +14,8 @@ using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
 {
-    [Export(typeof(ILimitObserver))]
-    internal sealed class LimitObserver : ILimitObserver
+    [Export(typeof(IModule))]
+    internal sealed class LimitObserver : IModule
     {
         private readonly ITrackingService trackingService;
         private readonly IDataService dataService;
@@ -24,13 +24,13 @@ namespace AppsTracker.Tracking
         private readonly ILimitHandler limitHandler;
         private readonly IMediator mediator;
 
+        private readonly IDictionary<string, IEnumerable<AppLimit>> appLimitsMap = new Dictionary<string, IEnumerable<AppLimit>>();
+
         private readonly Timer dayTimer;
         private readonly Timer weekTimer;
-        private readonly Timer monthTimer;
 
-        private readonly Dictionary<Aplication, IEnumerable<AppLimit>> appLimitsMap = new Dictionary<Aplication, IEnumerable<AppLimit>>();
 
-        private Aplication currentApp;
+        private string currentApp;
         private AppLimit currentLimit;
 
 
@@ -49,21 +49,53 @@ namespace AppsTracker.Tracking
             this.limitHandler = limitHandler;
             this.mediator = mediator;
 
-            Initialize();
-
-            dayTimer = new Timer(TimerCallback, currentLimit, Timeout.Infinite, Timeout.Infinite);
+            dayTimer = new Timer(TimerCallback,
+                new Func<AppLimit>(() => Volatile.Read(ref currentLimit)), Timeout.Infinite, Timeout.Infinite);
             weekTimer = new Timer(TimerCallback);
-            monthTimer = new Timer(TimerCallback);
+
+            mediator.Register(MediatorMessages.APP_LIMITS_CHANGIING, LoadAppLimits);
+            mediator.Register(MediatorMessages.STOP_TRACKING, StopTimers);
+            mediator.Register(MediatorMessages.RESUME_TRACKING, CheckLimits);
         }
 
+        private void TimerCallback(object state)
+        {
+            var valueFactory = (Func<AppLimit>)state;
+            limitHandler.Handle(valueFactory.Invoke());
+        }
 
-        public void Initialize()
+        public void SettingsChanged(Setting settings)
+        {
+        }
+
+        public void Initialize(Setting settings)
         {
             midnightNotifier.MidnightTick += MidnightTick;
             windowNotifier.WindowChanged += windowNotifier_WindowChanged;
 
             LoadAppLimits();
         }
+
+
+        private void MidnightTick(object sender, EventArgs e)
+        {
+            StopTimers();
+            CheckLimits();
+        }
+
+        private void CheckLimits()
+        {
+            var limit = Volatile.Read(ref currentLimit);
+            if (limit != null && limit.Application != null)
+                LoadAppDurations(limit.Application);
+        }
+
+        private void windowNotifier_WindowChanged(object sender, WindowChangedArgs e)
+        {
+            var app = trackingService.GetApp(e.AppInfo);
+            LoadAppDurations(app);
+        }
+
 
         private void LoadAppLimits()
         {
@@ -74,43 +106,32 @@ namespace AppsTracker.Tracking
 
             foreach (var app in appsWithLimits)
             {
-                appLimitsMap.Add(app, app.Limits);
+                appLimitsMap.Add(app.Name, app.Limits);
             }
         }
 
-        private void windowNotifier_WindowChanged(object sender, WindowChangedArgs e)
+        private void LoadAppDurations(Aplication app)
         {
-            var app = trackingService.GetApp(e.AppInfo);
-            AppChanged(app);
-        }
-
-        private void MidnightTick(object sender, EventArgs e)
-        {
-            //stop timers, load current app duration
-        }
-
-        private void TimerCallback(object state)
-        {
-            var limit = (AppLimit)state;
-            limitHandler.Handle(limit);
-        }
-
-
-        private void AppChanged(Aplication app)
-        {
-            currentApp = app;
-            StopTimers();
-            if (appLimitsMap.ContainsKey(app))
+            if (app == null)
             {
-                GetAppDuration(app).ContinueWith(GetAppDurationContinuation,
-                    SynchronizationContext.Current, TaskContinuationOptions.OnlyOnRanToCompletion);
+                currentApp = string.Empty;
+                return;
+            }
+
+            currentApp = app.Name;
+            StopTimers();
+            if (appLimitsMap.ContainsKey(app.Name))
+            {
+                var dayDurationTask = GetDayAppDuration(app);
+                dayDurationTask.ContinueWith(GetAppDurationContinuation, CancellationToken.None,
+                    TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
             }
         }
 
-        private void GetAppDurationContinuation(Task<Tuple<Aplication, long>> task, object state)
+        private void GetAppDurationContinuation(Task<Tuple<Aplication, long>> task)
         {
             IEnumerable<AppLimit> limits;
-            if (appLimitsMap.TryGetValue(task.Result.Item1, out limits) == false)
+            if (appLimitsMap.TryGetValue(task.Result.Item1.Name, out limits) == false)
                 return;
 
             var limit = limits.FirstOrDefault(l => l.LimitSpan == LimitSpan.Day);
@@ -121,13 +142,13 @@ namespace AppsTracker.Tracking
             {
                 limitHandler.Handle(limit);
             }
-            else if (currentApp != task.Result.Item1)
+            else if (currentApp != task.Result.Item1.Name)
             {
                 return;
             }
             else
             {
-                currentLimit = limit;
+                Volatile.Write(ref currentLimit, limit);
                 dayTimer.Change(new TimeSpan((limit.Limit - task.Result.Item2)), Timeout.InfiniteTimeSpan);
             }
         }
@@ -136,29 +157,32 @@ namespace AppsTracker.Tracking
         {
             dayTimer.Change(Timeout.Infinite, Timeout.Infinite);
             weekTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            monthTimer.Change(Timeout.Infinite, Timeout.Infinite);
         }
 
-        private async Task<Tuple<Aplication, long>> GetAppDuration(Aplication app)
+        private async Task<Tuple<Aplication, long>> GetDayAppDuration(Aplication app)
         {
-            var duration = await GetTodayDurationAsync(app);
+            var duration = await GetDayDurationAsync(app);
             return new Tuple<Aplication, long>(app, duration);
         }
 
-        private Task<long> GetTodayDurationAsync(Aplication app)
+        private Task<long> GetDayDurationAsync(Aplication app)
         {
-            return Task<long>.Run(() => GetTodayDuration(app));
+            return Task.Run(() => GetDayDuration(app));
         }
 
-        private long GetTodayDuration(Aplication app)
+        private long GetDayDuration(Aplication app)
         {
-            var loadedApp = dataService.GetFiltered<Aplication>(a => a.UserID == trackingService.UserID
-                                                                && a.ApplicationID == app.ApplicationID,
+            var loadedApp = dataService.GetFiltered<Aplication>(a => a.ApplicationID == app.ApplicationID,
                                                                 a => a.Windows.Select(w => w.Logs))
                                                                 .First();
             return loadedApp.Windows.SelectMany(w => w.Logs)
                                     .Where(l => l.DateCreated >= DateTime.Now.Date)
                                     .Sum(l => l.Duration);
+        }
+
+        private Task<long> GetWeekDurationAsync(Aplication app)
+        {
+            return Task.Run(() => GetWeekDuration(app));
         }
 
         private long GetWeekDuration(Aplication app)
@@ -170,30 +194,26 @@ namespace AppsTracker.Tracking
             DateTime weekBegin = now.AddDays(delta);
             DateTime weekEnd = weekBegin.AddDays(6);
 
-            using (var context = new AppsEntities())
-            {
-                var loadedApp = context.Applications.Include(a => a.Windows.Select(w => w.Logs)).First(a => a.ApplicationID == app.ApplicationID);
-                return loadedApp.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= weekBegin && l.DateCreated <= weekEnd).Sum(l => l.Duration);
-            }
+            var loadedApp = dataService.GetFiltered<Aplication>(a => a.ApplicationID == app.ApplicationID,
+                                                                a => a.Windows.Select(w => w.Logs))
+                                                                .First();
+            return loadedApp.Windows
+                            .SelectMany(w => w.Logs)
+                            .Where(l => l.DateCreated >= weekBegin && l.DateCreated <= weekEnd)
+                            .Sum(l => l.Duration);
         }
 
-        private long GetMonthDuration(Aplication app)
-        {
-            DateTime now = DateTime.Now;
-            var monthBegin = new DateTime(now.Year, now.Month, 1);
-            int lastDay = DateTime.DaysInMonth(now.Year, now.Month);
-            var monthEnd = new DateTime(now.Year, now.Month, lastDay);
-
-            using (var context = new AppsEntities())
-            {
-                var loadedApp = context.Applications.Include(a => a.Windows.Select(w => w.Logs)).First(a => a.ApplicationID == app.ApplicationID);
-                return loadedApp.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= monthBegin && l.DateCreated <= monthEnd).Sum(l => l.Duration);
-            }
-        }
 
         public void Dispose()
         {
             dayTimer.Dispose();
+            weekTimer.Dispose();
+        }
+
+
+        public int InitializationOrder
+        {
+            get { return 3; }
         }
     }
 }

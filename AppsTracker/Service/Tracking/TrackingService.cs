@@ -146,6 +146,9 @@ namespace AppsTracker.Service
 
         public Aplication GetApp(IAppInfo appInfo)
         {
+            if (appInfo == null)
+                return null;
+
             using (var context = new AppsEntities())
             {
                 var name = !string.IsNullOrEmpty(appInfo.Name) ? appInfo.Name.Truncate(250) : !string.IsNullOrEmpty(appInfo.FullName) ? appInfo.FullName.Truncate(250) : appInfo.FileName.Truncate(250);

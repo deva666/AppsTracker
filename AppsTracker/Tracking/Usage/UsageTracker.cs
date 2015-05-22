@@ -42,7 +42,7 @@ namespace AppsTracker.Tracking
         }
 
 
-        public void InitializeComponent(Setting settings)
+        public void Initialize(Setting settings)
         {
             this.settings = settings;
 
@@ -167,6 +167,12 @@ namespace AppsTracker.Tracking
             usageProcessor.EndAllUsages();
             Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;
             Microsoft.Win32.SystemEvents.PowerModeChanged -= PowerModeChanged;
+        }
+
+
+        public int InitializationOrder
+        {
+            get { return 0; }
         }
     }
 }

@@ -27,7 +27,7 @@ namespace AppsTracker.Tracking
         }
 
 
-        public void InitializeComponent(Setting settings)
+        public void Initialize(Setting settings)
         {
             logCleaner = new LazyInit<ILogCleaner>(() => logCleanerInstance, l => l.CleanAsync());
 
@@ -44,6 +44,12 @@ namespace AppsTracker.Tracking
 
         public void Dispose()
         {
+        }
+
+
+        public int InitializationOrder
+        {
+            get { return 4; }
         }
     }
 }

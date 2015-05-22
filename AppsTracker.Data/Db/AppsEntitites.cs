@@ -6,7 +6,9 @@
  */
 #endregion
 
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using AppsTracker.Data.Models;
 
@@ -36,8 +38,8 @@ namespace AppsTracker.Data.Db
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
-            modelBuilder.Entity<Aplication>().
-                HasMany(a => a.Categories)
+            modelBuilder.Entity<Aplication>()
+                .HasMany(a => a.Categories)
                 .WithMany(c => c.Applications)
                 .Map(m =>
                 {
@@ -45,6 +47,22 @@ namespace AppsTracker.Data.Db
                     m.MapRightKey("AppCategoryID");
                     m.ToTable("ApplicationCategories");
                 });
+
+            modelBuilder.Entity<Aplication>()
+                .Property(a => a.Name)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("Aplication_Name")));
+
+            modelBuilder.Entity<Window>()
+                .Property(w=>w.ApplicationID)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("Window_ApplicationID")));
+
+            modelBuilder.Entity<Log>()
+                .Property(l=>l.WindowID)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("Log_WindowID")));
+
+            modelBuilder.Entity<AppLimit>()
+                .Property(l=>l.ApplicationID)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("AppLimit_ApplicationID")));
 
             base.OnModelCreating(modelBuilder);
         }

@@ -14,6 +14,7 @@ namespace AppsTracker.Tracking
     interface IModule : IDisposable
     {
         void SettingsChanged(Setting settings);
-        void InitializeComponent(Setting settings);
+        void Initialize(Setting settings);
+        int InitializationOrder { get; }
     }
 }

@@ -17,7 +17,7 @@ namespace AppsTracker.Tests.Core.Tracking
             var module = new Mock<IModule>();
             var trackingController = new TrackingController(new IModule[] { module.Object });
             trackingController.Initialize(settings);
-            module.Verify(m => m.InitializeComponent(settings), Times.Once);
+            module.Verify(m => m.Initialize(settings), Times.Once);
         }
 
         [TestMethod]

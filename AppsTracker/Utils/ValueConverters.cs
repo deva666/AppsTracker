@@ -1014,7 +1014,7 @@ namespace AppsTracker
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return new TimeSpan((long)value);
+            return new TimeSpan((long)value).ToString(@"dd\.hh\:mm\:ss");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

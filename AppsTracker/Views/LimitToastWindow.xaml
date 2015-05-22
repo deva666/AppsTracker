@@ -1,8 +1,149 @@
 ﻿<Window x:Class="AppsTracker.Views.LimitToastWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="LimitToastWindow" Height="300" Width="300">
-    <Grid>
-        
-    </Grid>
+        xmlns:root="clr-namespace:AppsTracker"
+        Title="LimitToastWindow"
+        Height="200"
+        Width="300"
+        WindowStyle="None"
+        Style="{StaticResource WindowStyleWithFade}"
+        ShowInTaskbar="False">
+    <Window.Resources>
+        <root:ConvertTicksToTimespan x:Key="timespanConverter" />
+    </Window.Resources>
+    <Window.RenderTransform>
+        <TranslateTransform />
+    </Window.RenderTransform>
+    <Border Background="{DynamicResource WindowBackgroundBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+
+            <Label Style="{DynamicResource LabelStyle}"
+                   Content="apps tracker"
+                   HorizontalAlignment="Left"
+                   Margin="10,5,0,0"
+                   FontSize="15" />
+            <Separator VerticalAlignment="Bottom"
+                       Grid.Row="0"
+                       Margin="10,0,10,0"
+                       Grid.ColumnSpan="3" />
+
+            <TextBlock Style="{StaticResource ControlBoxStyle}"
+                       x:Name="btnHide"
+                       Text="r"
+                       FontFamily="Webdings"
+                       FontSize="15"
+                       Margin="5,5,10,0"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Top"
+                       MouseLeftButtonDown="btnHide_MouseLeftButtonDown" />
+            <Label Style="{DynamicResource LabelStyle}"
+                   Content="Limit reached warning"
+                   Grid.Row="1" />
+
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="5">
+                <Label Style="{DynamicResource LabelStyle}"
+                       Content="App: "
+                       Margin="0,0,10,0" />
+                <Label Style="{DynamicResource LabelStyle}"
+                       Grid.Row="2"
+                       Content="{Binding Application.Name}">
+                    <Label.ToolTip>
+                        <ToolTip Style="{DynamicResource ToolTipStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Label Style="{DynamicResource LabelStyle}"
+                                       Grid.Row="0"
+                                       Grid.Column="0"
+                                       HorizontalAlignment="Left"
+                                       Content="Company:" />
+                                <Label Style="{DynamicResource LabelStyle}"
+                                       Grid.Row="0"
+                                       Grid.Column="1"
+                                       Content="{Binding Path=Application.Company, Mode=OneWay}" />
+
+                                <Label Style="{DynamicResource LabelStyle}"
+                                       Grid.Row="1"
+                                       Grid.Column="0"
+                                       HorizontalAlignment="Left"
+                                       Content="Version:" />
+                                <Label Style="{DynamicResource LabelStyle}"
+                                       Grid.Row="1"
+                                       Grid.Column="1"
+                                       Content="{Binding Path=Application.Version, Mode=OneWay}" />
+
+                                <Label Style="{DynamicResource LabelStyle}"
+                                       Grid.Row="2"
+                                       Grid.Column="0"
+                                       HorizontalAlignment="Left"
+                                       Content="Description:" />
+                                <Label Style="{DynamicResource LabelStyle}"
+                                       Grid.Row="2"
+                                       Grid.Column="1"
+                                       Content="{Binding Path=Application.Description, Mode=OneWay}" />
+
+                                <Label Style="{DynamicResource LabelStyle}"
+                                       Grid.Row="3"
+                                       Grid.Column="0"
+                                       HorizontalAlignment="Left"
+                                       Content="File name:" />
+                                <Label Style="{DynamicResource LabelStyle}"
+                                       Grid.Row="3"
+                                       Grid.Column="1"
+                                       Content="{Binding Path=Application.FileName, Mode=OneWay}" />
+                            </Grid>
+                        </ToolTip>
+                    </Label.ToolTip>
+                </Label>
+            </StackPanel>
+
+            <StackPanel Grid.Row="3"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="5">
+                <Label Style="{DynamicResource LabelStyle}"
+                       Content="Limit set to: "
+                       Margin="0,0,10,0" />
+                <Label Style="{DynamicResource LabelStyle}"
+                       Content="{Binding Limit, Converter={StaticResource timespanConverter}}" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="4"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="5">
+                <Label Style="{DynamicResource LabelStyle}"
+                       Content="Total duraton: "
+                       Margin="0,0,10,0" />
+
+                <Label Style="{DynamicResource LabelStyle}"
+                       Grid.Row="4"
+                       Name="lblTotalDuration" />
+
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>

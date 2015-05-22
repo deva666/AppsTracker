@@ -1,28 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
+using AppsTracker.MVVM;
 using AppsTracker.Service;
+using AppsTracker.Views;
 
 namespace AppsTracker.Tracking.Helpers
 {
     [Export(typeof(ILimitHandler))]
     internal sealed class LimitHandler : ILimitHandler
     {
-        private readonly IWindowService windowService;
+        private readonly IMediator mediator;
+        private readonly IDataService dataService;
 
         [ImportingConstructor]
-        public LimitHandler(IWindowService windowService)
+        public LimitHandler(IDataService dataService, IMediator mediator)
         {
-            this.windowService = windowService;
+            this.dataService = dataService;
+            this.mediator = mediator;
         }
 
 
         public void Handle(AppLimit limit)
         {
+            Ensure.NotNull(limit, "limit");
+
             switch (limit.LimitReachedAction)
             {
                 case LimitReachedAction.Warn:
@@ -42,12 +50,33 @@ namespace AppsTracker.Tracking.Helpers
 
         private void ShowWarning(AppLimit limit)
         {
-            //display toast window with app name, limit and duration
+            var durationTask = GetTodayDurationAsync(limit.Application);
+            durationTask.ContinueWith(t=> mediator.NotifyColleagues<Tuple<AppLimit, long>>(
+                MediatorMessages.APP_LIMIT_REACHED, new Tuple<AppLimit,long>(limit, t.Result)));
         }
 
         private void ShutdownApp(Aplication app)
         {
-            //kill process
+            var processes = Process.GetProcessesByName(app.WinName);
+            foreach (var proc in processes)
+            {
+                proc.Kill();
+            }
+        }
+
+        private Task<long> GetTodayDurationAsync(Aplication app)
+        {
+            return Task<long>.Run(() => GetTodayDuration(app));
+        }
+
+        private long GetTodayDuration(Aplication app)
+        {
+            var loadedApp = dataService.GetFiltered<Aplication>(a => a.ApplicationID == app.ApplicationID,
+                                                                a => a.Windows.Select(w => w.Logs))
+                                                                .First();
+            return loadedApp.Windows.SelectMany(w => w.Logs)
+                                    .Where(l => l.DateCreated >= DateTime.Now.Date)
+                                    .Sum(l => l.Duration);
         }
     }
 }

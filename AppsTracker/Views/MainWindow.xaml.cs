@@ -28,13 +28,13 @@ namespace AppsTracker
         #region Animations
         private void ScaleLoaded()
         {
-            DoubleAnimation scaleX = new DoubleAnimation(0.0, 1.0, new Duration(TimeSpan.FromSeconds(0.5)));
-            DoubleAnimation scaleY = new DoubleAnimation(0.0, 1.0, new Duration(TimeSpan.FromSeconds(0.5)));
+            var scaleX = new DoubleAnimation(0.0, 1.0, new Duration(TimeSpan.FromSeconds(0.5)));
+            var scaleY = new DoubleAnimation(0.0, 1.0, new Duration(TimeSpan.FromSeconds(0.5)));
 
             scaleX.SetValue(Storyboard.TargetProperty, this);
             scaleY.SetValue(Storyboard.TargetProperty, this);
 
-            Storyboard story = new Storyboard();
+            var story = new Storyboard();
             Storyboard.SetTarget(scaleX, this);
             Storyboard.SetTarget(scaleY, this);
             Storyboard.SetTargetProperty(scaleX, new PropertyPath("RenderTransform.ScaleX"));
@@ -48,13 +48,13 @@ namespace AppsTracker
 
         private void ScaleUnloaded()
         {
-            DoubleAnimation scaleX = new DoubleAnimation(1.0, 0.0, new Duration(TimeSpan.FromSeconds(0.4)));
-            DoubleAnimation scaleY = new DoubleAnimation(1.0, 0.0, new Duration(TimeSpan.FromSeconds(0.4)));
+            var scaleX = new DoubleAnimation(1.0, 0.0, new Duration(TimeSpan.FromSeconds(0.4)));
+            var scaleY = new DoubleAnimation(1.0, 0.0, new Duration(TimeSpan.FromSeconds(0.4)));
 
             scaleX.SetValue(Storyboard.TargetProperty, this);
             scaleY.SetValue(Storyboard.TargetProperty, this);
 
-            Storyboard story = new Storyboard();
+            var story = new Storyboard();
             Storyboard.SetTarget(scaleX, this);
             Storyboard.SetTarget(scaleY, this);
             Storyboard.SetTargetProperty(scaleX, new PropertyPath("RenderTransform.ScaleX"));

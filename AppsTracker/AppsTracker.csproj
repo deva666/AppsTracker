@@ -191,7 +191,6 @@
     <Compile Include="Tracking\Screenshots\IScreenshotFactory.cs" />
     <Compile Include="Tracking\Windows\IWindowHelper.cs" />
     <Compile Include="Tracking\Limits\LimitHandler.cs" />
-    <Compile Include="Tracking\Limits\ILimitObserver.cs" />
     <Compile Include="Tracking\Screenshots\IScreenshotTracker.cs" />
     <Compile Include="Tracking\Helpers\ISyncContext.cs" />
     <Compile Include="Tracking\Limits\MidnightNotifier.cs" />

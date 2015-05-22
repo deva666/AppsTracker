@@ -10,5 +10,7 @@ namespace AppsTracker.MVVM
         public const string STOP_TRACKING = "Stop logging";
         public const string RESUME_TRACKING = "Resume logging";
         public const string RELOAD_SETTINGS = "Reload settings";
+        public const string APP_LIMIT_REACHED = "app limit reached";
+        public const string APP_LIMITS_CHANGIING = "app limits changing";
     }
 }
