@@ -50,19 +50,19 @@ namespace AppsTracker.Data.Db
 
             modelBuilder.Entity<Aplication>()
                 .Property(a => a.Name)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("Aplication_Name")));
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Aplication_Name") { IsUnique = true }));
 
             modelBuilder.Entity<Window>()
                 .Property(w=>w.ApplicationID)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("Window_ApplicationID")));
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Window_ApplicationID")));
 
             modelBuilder.Entity<Log>()
                 .Property(l=>l.WindowID)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("Log_WindowID")));
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Log_WindowID")));
 
             modelBuilder.Entity<AppLimit>()
                 .Property(l=>l.ApplicationID)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("AppLimit_ApplicationID")));
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_AppLimit_ApplicationID")));
 
             base.OnModelCreating(modelBuilder);
         }
