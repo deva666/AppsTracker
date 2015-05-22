@@ -6,13 +6,13 @@
  */
 #endregion
 
-using AppsTracker.Hooks;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Text;
+using AppsTracker.Hooks;
 
 namespace AppsTracker
 {
@@ -470,6 +470,8 @@ namespace AppsTracker
         [DllImport("user32.dll")]
         public static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
 
+        [DllImport("gdi32.dll")]
+        public static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
         #endregion
 
         #region class methods

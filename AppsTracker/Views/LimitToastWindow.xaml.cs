@@ -19,8 +19,8 @@ namespace AppsTracker.Views
         {
             InitializeComponent();
             this.mediator = mediator;
-            this.mediator.Register<Tuple<AppLimit, long>>(MediatorMessages.APP_LIMIT_REACHED, OnAppLimitReached);
-            this.Loaded += (s, e) => HideWindow();
+            this.mediator.Register<Tuple<AppLimit, long>>(MediatorMessages.APP_LIMIT_REACHED, OnAppLimitReached);            
+            HideWindow();
         }
 
         private void OnAppLimitReached(Tuple<AppLimit, long> tuple)
@@ -74,7 +74,7 @@ namespace AppsTracker.Views
 
         private void AnimateWindowTopPosition(double newTop)
         {
-            var fromTop = Double.IsNaN(this.Top) ? -30 : this.Top;
+            var fromTop = Double.IsNaN(this.Top) ? 3000 : this.Top;
             var animation = new DoubleAnimation(fromTop, newTop, new Duration(TimeSpan.FromSeconds(0.5)));
             animation.SetValue(Storyboard.TargetProperty, this);
             var storyBoard = new Storyboard();
