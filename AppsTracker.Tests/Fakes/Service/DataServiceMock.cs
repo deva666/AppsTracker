@@ -120,5 +120,16 @@ namespace AppsTracker.Tests.Fakes.Service
         {
             return System.Threading.Tasks.Task.Delay(50);
         }
+
+
+        public void DeleteEntityRange<T>(IEnumerable<T> range) where T : class
+        {
+            
+        }
+
+        public System.Threading.Tasks.Task DeleteEntityRangeAsync<T>(IEnumerable<T> range) where T : class
+        {
+            return System.Threading.Tasks.Task.Delay(100);
+        }
     }
 }

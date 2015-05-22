@@ -148,6 +148,25 @@ namespace AppsTracker.Service
         }
 
 
+        public void DeleteEntityRange<T>(IEnumerable<T> range) where T : class
+        {
+            using (var context  = new AppsEntities())
+            {
+                context.Set<T>().RemoveRange(range);
+                context.SaveChanges();
+            }
+        }
+
+
+        public async Task DeleteEntityRangeAsync<T>(IEnumerable<T> range) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                context.Set<T>().RemoveRange(range);
+                await context.SaveChangesAsync();
+            }
+        }
+
         public async Task DeleteScreenshotsInLogs(IEnumerable<Log> logs)
         {
             var count = logs.Select(l => l.Screenshots).Count();

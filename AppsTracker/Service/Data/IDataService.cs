@@ -47,6 +47,10 @@ namespace AppsTracker.Service
         void SaveNewEntityRange<T>(IEnumerable<T> items) where T : class;
 
         Task SaveNewEntityRangeAsync<T>(IEnumerable<T> items) where T : class;
+
+        void DeleteEntityRange<T>(IEnumerable<T> range) where T : class;
+
+        Task DeleteEntityRangeAsync<T>(IEnumerable<T> range) where T : class;
         
         Task DeleteScreenshotsInLogs(IEnumerable<Log> logs);
 
