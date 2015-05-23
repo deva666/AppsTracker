@@ -4,7 +4,7 @@
         xmlns:root="clr-namespace:AppsTracker"
         Title="LimitToastWindow"
         Height="250"
-        Width="300"
+        Width="310"
         WindowStyle="None"
         Style="{StaticResource WindowStyleWithFade}"
         ShowInTaskbar="False">
@@ -50,7 +50,8 @@
                    Content="Limit reached warning"
                    Grid.Row="1"
                    Name="lblTitle"
-                   Margin="5"/>
+                   Margin="5,10,5,5"
+                   FontSize="15"/>
 
             <StackPanel Grid.Row="2"
                         Orientation="Horizontal"
@@ -160,9 +161,9 @@
 
             <Button Grid.Row="6"
                     Content="Ok Thanks!" 
-                    Width="75"
+                    Width="100"
                     VerticalAlignment="Center"
-                    Margin="0,10,0,0"
+                    Margin="0,20,0,0"
                     Name="btnOk"
                     Click="btnOk_Click"/>
         </Grid>
