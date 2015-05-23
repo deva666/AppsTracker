@@ -166,11 +166,9 @@ namespace AppsTracker.Service
         {
             using (var context = new AppsEntities())
             {
-                string loginUsage = UsageTypes.Login.ToString();
-
-                if (context.Usages.Where(u => u.IsCurrent && u.UsageType.ToString() == loginUsage).Count() > 0)
+                if (context.Usages.Where(u => u.IsCurrent && u.UsageType == UsageTypes.Login).Count() > 0)
                 {
-                    var failedSaveUsage = context.Usages.Where(u => u.IsCurrent && u.UsageType.ToString() == loginUsage).ToList();
+                    var failedSaveUsage = context.Usages.Where(u => u.IsCurrent && u.UsageType == UsageTypes.Login).ToList();
                     foreach (var usage in failedSaveUsage)
                     {
                         var lastLog = context.Logs.Where(l => l.UsageID == usage.UsageID).OrderByDescending(l => l.DateCreated).FirstOrDefault();

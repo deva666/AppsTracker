@@ -74,7 +74,6 @@ namespace AppsTracker.Hooks
         ~WinHook()
         {
             Dispose(false);
-            Debug.WriteLine("WinEvent Finalizer called");
         }
 
         private void Dispose(bool disposing)
