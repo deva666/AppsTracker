@@ -17,7 +17,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="220" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="450" />
                 <ColumnDefinition Width="250" />
             </Grid.ColumnDefinitions>
 
@@ -85,6 +85,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Label Style="{DynamicResource LabelStyle}"
                        Content="Limits for selected app" />
@@ -105,19 +106,19 @@
                        Content="add new limit"
                        Style="{DynamicResource SelectableLabelStyle}"
                        Name="lblAddNew"
-                       IsEnabled="{Binding ElementName=lbLimits, Path=SelectedIndex, Converter={StaticResource selectedIndexConverter}}">
-                    <Label.InputBindings>
-                        <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding DeleteSelectedLimitCommand}" />
-                    </Label.InputBindings>
-                </Label>
-                <Label Grid.Row="3"
-                       Content="delete selected limit"
-                       Style="{DynamicResource SelectableLabelStyle}"                       
                        IsEnabled="{Binding ElementName=lbApps, Path=SelectedIndex, Converter={StaticResource selectedIndexConverter}}">
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding OpenAddNewPopupCommand}" />
+                    </Label.InputBindings>
+                </Label>
+                <Label Grid.Row="3"
+                       Content="delete selected limit"
+                       Style="{DynamicResource SelectableLabelStyle}"
+                       IsEnabled="{Binding ElementName=lbLimits, Path=SelectedIndex, Converter={StaticResource selectedIndexConverter}}">
+                    <Label.InputBindings>
+                        <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding DeleteSelectedLimitCommand}" />
                     </Label.InputBindings>
                 </Label>
                 <Popup IsOpen="{Binding IsAddNewPopupOpen}"
@@ -143,7 +144,7 @@
                                                   Command="{Binding AddNewLimitCommand}"
                                                   CommandParameter="WEEKLY" />
                                 </Label.InputBindings>
-                            </Label>                           
+                            </Label>
                         </StackPanel>
                     </Border>
                 </Popup>

@@ -16,18 +16,21 @@ namespace AppsTracker.Tracking.Helpers
     [Export(typeof(ILimitHandler))]
     internal sealed class LimitHandler : ILimitHandler
     {
-        private readonly IWindowService windowService;
         private readonly IDataService dataService;
         private readonly ISyncContext syncContext;
+        private readonly IMediator mediator;
+        private readonly IXmlSettingsService xmlSettingsService;
 
         [ImportingConstructor]
-        public LimitHandler(IWindowService windowService,
-                            IDataService dataService,
-                            ISyncContext syncContext)
+        public LimitHandler(IDataService dataService,
+                            ISyncContext syncContext,
+                            IMediator mediator,
+                            IXmlSettingsService xmlSettingsService)
         {
-            this.windowService = windowService;
             this.dataService = dataService;
             this.syncContext = syncContext;
+            this.mediator = mediator;
+            this.xmlSettingsService = xmlSettingsService;
         }
 
 
@@ -54,11 +57,12 @@ namespace AppsTracker.Tracking.Helpers
 
         private void ShowWarning(AppLimit limit)
         {
+            if (xmlSettingsService.LimitsSettings.DontShowLimits.Any(l => l.AppLimitID == limit.AppLimitID))
+                return;
+
             syncContext.Invoke(() =>
             {
-                var toastShell = windowService.GetShell("Limit toast window");
-                toastShell.ViewArgument = limit;
-                toastShell.Show();
+                mediator.NotifyColleagues(MediatorMessages.APP_LIMIT_REACHED, limit);
             });
         }
 

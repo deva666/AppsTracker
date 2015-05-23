@@ -152,7 +152,10 @@ namespace AppsTracker.Service
         {
             using (var context  = new AppsEntities())
             {
-                context.Set<T>().RemoveRange(range);
+                foreach (var item in range)
+                {
+                    context.Entry<T>(item).State = EntityState.Deleted;
+                }
                 context.SaveChanges();
             }
         }
@@ -162,7 +165,10 @@ namespace AppsTracker.Service
         {
             using (var context = new AppsEntities())
             {
-                context.Set<T>().RemoveRange(range);
+                foreach (var item in range)
+                {
+                    context.Entry<T>(item).State = EntityState.Deleted;
+                }
                 await context.SaveChangesAsync();
             }
         }

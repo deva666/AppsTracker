@@ -182,6 +182,7 @@ namespace AppsTracker.ViewModels
                 return;
 
             limitsToDelete.Add(selectedLimit);
+            selectedApp.ObservableLimits.Remove(selectedLimit);
         }
 
 
@@ -198,10 +199,12 @@ namespace AppsTracker.ViewModels
             var newLimits = appsToSave.SelectMany(a => a.ObservableLimits).Where(l => l.AppLimitID == default(int));
             var modifiedTask = dataService.SaveModifiedEntityRangeAsync(modifiedLimits);
             var newTask = dataService.SaveNewEntityRangeAsync(newLimits);
-            var deleteTask = dataService.DeleteEntityRangeAsync(limitsToDelete);
+            var deleteTask = dataService.DeleteEntityRangeAsync(limitsToDelete.Where(l=>l.AppLimitID != default(int)));
 
             await Task.WhenAll(modifiedTask, newTask);
             await deleteTask;
+
+            limitsToDelete.Clear();
 
             InfoMessage = SETTINGS_SAVED_MSG;
             mediator.NotifyColleagues(MediatorMessages.APP_LIMITS_CHANGIING);

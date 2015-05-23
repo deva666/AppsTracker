@@ -16,6 +16,7 @@ namespace AppsTracker.Service
         private readonly IEnumerable<ExportFactory<IShell, IShellMetaData>> shellFactories;
 
         private IShell mainWindow;
+        private IShell limitNotifyWindow;
 
         [ImportingConstructor]
         public WindowService(ISqlSettingsService sqlSettingsService, 
@@ -27,6 +28,9 @@ namespace AppsTracker.Service
             this.xmlSettingsService = xmlSettingsService;
             this.trayIcon = trayIcon;
             this.shellFactories = shellFactories;
+
+            limitNotifyWindow = GetShell("Limit toast window");
+            limitNotifyWindow.Show();
         }
 
 
@@ -52,11 +56,6 @@ namespace AppsTracker.Service
         {
             var msgWindow = new MessageWindow(fail);
             msgWindow.Show();
-        }
-
-        public void ShowToastWindow(object argument)
-        {
-
         }
 
         public void ShowShell(string shellUse) 

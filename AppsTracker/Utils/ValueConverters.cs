@@ -1279,6 +1279,30 @@ namespace AppsTracker
         }
     }
 
+    public class LimitReachedActionToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var limitAction = (LimitReachedAction)value;
+            switch (limitAction)
+            {
+                case LimitReachedAction.Warn:
+                    return "Show warning";
+                case LimitReachedAction.Shutdown:
+                    return "Shutdown app";
+                case LimitReachedAction.WarnAndShutdown:
+                    return "Show warning and shutdown app";
+                case LimitReachedAction.None:
+                    return "None";
+            }
+            return string.Empty;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 
 

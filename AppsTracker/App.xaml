@@ -17,6 +17,7 @@
             <local:ConvertDoubleToTimespan x:Key="convertDoubleToTimespan" />
             <local:ConvertLimitSpanToMaxSlider x:Key="convertLimitSpanToMaxSlider" />
             <local:ConvertAppLimitToTimeSpan x:Key="convertAppLimitToTimeSpan" />
+            <local:LimitReachedActionToStringConverter x:Key="limitReachedActionToStringConverter" />
 
             <Style x:Key="MinimalChartStyle"
                    TargetType="chart:ChartBase">
@@ -2645,7 +2646,8 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition MinWidth="165" />
+                            <ColumnDefinition MinWidth="350"
+                                              />
                         </Grid.ColumnDefinitions>
                         <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Center"
@@ -2667,6 +2669,7 @@
                                     IsSnapToTickEnabled="True"
                                     Value="{Binding Limit, Converter={StaticResource convertAppLimitToTimeSpan}, Mode=TwoWay}"
                                     MinWidth="175"
+                                    Width="250"
                                     Name="sliderLimit" />
                         </StackPanel>
                         <Label Style="{DynamicResource LabelStyle}"
@@ -2678,8 +2681,48 @@
                             <Label Style="{DynamicResource LabelStyle}"
                                    Content="Limit reached action:" />
                             <Label Style="{DynamicResource SelectableLabelStyle}"
-                                   Content="{Binding LimitReachedAction}" />
+                                   Content="{Binding LimitReachedAction, Converter={StaticResource limitReachedActionToStringConverter}}"
+                                   Name="lblLimitAction">
+                                <Label.InputBindings>
+                                    <MouseBinding Gesture="LeftClick"
+                                                  Command="{Binding OpenLimitActionPopupCommand}">
+                                    </MouseBinding>
+                                </Label.InputBindings>
+                            </Label>
                         </StackPanel>
+                        <Popup IsOpen="{Binding IsPopupLimitActionOpen}"
+                               Placement="Right"
+                               PlacementTarget="{Binding ElementName=lblLimitAction}"
+                               PopupAnimation="Slide">
+                            <Border Style="{DynamicResource ThemeBorderStyle}">
+                                <StackPanel Orientation="Vertical">
+                                    <Label Style="{DynamicResource SelectableLabelStyle}"
+                                           Content="Show warning">
+                                        <Label.InputBindings>
+                                            <MouseBinding Gesture="LeftClick"
+                                                          Command="{Binding SetLimitReachedCommand}"
+                                                          CommandParameter="WARN" />
+                                        </Label.InputBindings>
+                                    </Label>
+                                    <Label Style="{DynamicResource SelectableLabelStyle}"
+                                           Content="Shutdown app">
+                                        <Label.InputBindings>
+                                            <MouseBinding Gesture="LeftClick"
+                                                          Command="{Binding SetLimitReachedCommand}"
+                                                          CommandParameter="SHUTDOWN" />
+                                        </Label.InputBindings>
+                                    </Label>
+                                    <Label Style="{DynamicResource SelectableLabelStyle}"
+                                           Content="Show warning and shutdown app">
+                                        <Label.InputBindings>
+                                            <MouseBinding Gesture="LeftClick"
+                                                          Command="{Binding SetLimitReachedCommand}"
+                                                          CommandParameter="BOTH" />
+                                        </Label.InputBindings>
+                                    </Label>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
                     </Grid>
                 </Border>
             </DataTemplate>

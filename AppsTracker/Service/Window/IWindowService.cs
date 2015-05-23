@@ -13,8 +13,6 @@ namespace AppsTracker.Service
 
         void ShowMessageDialog(string message, bool showCancel = true);
 
-        void ShowToastWindow(object argument);
-
         void ShowShell(string shellUse);
 
         IShell GetShell(string shellUse);

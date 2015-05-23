@@ -419,9 +419,6 @@
     <Compile Include="Views\ScreenshotsView.xaml.cs">
       <DependentUpon>ScreenshotsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Settings\BlockedAppsView.xaml.cs">
-      <DependentUpon>BlockedAppsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Settings\GeneralView.xaml.cs">
       <DependentUpon>GeneralView.xaml</DependentUpon>
     </Compile>
@@ -638,10 +635,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsHostView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Settings\BlockedAppsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

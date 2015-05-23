@@ -17,58 +17,54 @@ namespace AppsTracker.Views
     {
         private readonly IXmlSettingsService xmlSettingsService;
         private readonly ITrackingService trackingService;
-        private readonly DispatcherTimer timer;
-        
+        private readonly IMediator mediator;
+
+        private AppLimit currentLimit;
+
         [ImportingConstructor]
         public LimitToastWindow(IXmlSettingsService xmlSettingsService,
-                                ITrackingService trackingService)
+                                ITrackingService trackingService,
+                                IMediator mediator)
         {
             this.xmlSettingsService = xmlSettingsService;
             this.trackingService = trackingService;
+            this.mediator = mediator;
 
             InitializeComponent();
-            
+
+            mediator.Register<AppLimit>(MediatorMessages.APP_LIMIT_REACHED, OnAppLimitReached);
+
             var bounds = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
             this.Left = bounds.Right - this.Width - 5;
             this.Top = bounds.Bottom + 5;
-            this.DataContext = (AppLimit)ViewArgument;
-            lblTitle.Content = ((AppLimit)ViewArgument).LimitSpan == LimitSpan.Day ?
-                "Daily limit reached warning" : "Weekly limit reached warning";
-            this.Loaded += (s, e) => ShowWindow();
-            timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, OnTimerTick, this.Dispatcher);
-            timer.Start();
         }
 
-        private async void OnTimerTick(object sender, EventArgs e)
-        {
-            var appLimit = ViewArgument as AppLimit;
-            if (appLimit == null)
-                return;
 
+        private async void OnAppLimitReached(AppLimit limit)
+        {
+            currentLimit = limit;
             long duration;
-            if (appLimit.LimitSpan == LimitSpan.Day)
-                duration = await Task.Run(() => trackingService.GetDayDuration(appLimit.Application));
+            if (currentLimit.LimitSpan == LimitSpan.Day)
+                duration = await Task.Run(() => trackingService.GetDayDuration(currentLimit.Application));
             else
-                duration = await Task.Run(() => trackingService.GetWeekDuration(appLimit.Application));
-
+                duration = await Task.Run(() => trackingService.GetWeekDuration(currentLimit.Application));
             lblTotalDuration.Content = new TimeSpan(duration).ToString(@"dd\.hh\:mm\:ss");
+            ShowWindow();
         }
 
-        private void btnHide_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            CloseWindow();
-            timer.Stop();
-        }
 
         private void ShowWindow()
         {
+            this.DataContext = currentLimit;
+            lblTitle.Content = currentLimit.LimitSpan == LimitSpan.Day ?
+                "Daily limit reached warning" : "Weekly limit reached warning";
             this.Opacity = 1;
             this.Topmost = true;
             var bounds = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
             var newTop = bounds.Bottom - this.Height - 35;
             this.Left = bounds.Right - this.Width - 5;
 
-            AnimateWindowTopPosition(newTop, false);
+            AnimateWindowTopPosition(newTop);
         }
 
         private void CloseWindow()
@@ -79,13 +75,13 @@ namespace AppsTracker.Views
             this.Left = bounds.Right - this.Width - 5;
             var newTop = bounds.Bottom + 5;
 
-            if(cbDontShow.IsChecked.HasValue && cbDontShow.IsChecked.Value)
-                xmlSettingsService.LimitsSettings.DontShowLimits.Add((AppLimit)ViewArgument);
+            if (cbDontShow.IsChecked.HasValue && cbDontShow.IsChecked.Value)
+                xmlSettingsService.LimitsSettings.DontShowLimits.Add(currentLimit);
 
-            AnimateWindowTopPosition(newTop, true);
+            AnimateWindowTopPosition(newTop);
         }
 
-        private void AnimateWindowTopPosition(double newTop, bool closeWindow)
+        private void AnimateWindowTopPosition(double newTop)
         {
             var fromTop = Double.IsNaN(this.Top) ? System.Windows.Forms.Screen.PrimaryScreen.Bounds.Bottom + 5 : this.Top;
             var animation = new DoubleAnimation(fromTop, newTop, new Duration(TimeSpan.FromSeconds(0.5)));
@@ -94,10 +90,12 @@ namespace AppsTracker.Views
             Storyboard.SetTarget(animation, this);
             Storyboard.SetTargetProperty(animation, new PropertyPath("(Window.Top)"));
             storyBoard.Children.Add(animation);
-            if (closeWindow)
-                storyBoard.Completed += (s, e) => this.Close();
-
             storyBoard.Begin(this);
+        }
+
+        private void btnHide_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            CloseWindow();
         }
 
 
