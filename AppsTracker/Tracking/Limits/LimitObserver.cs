@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
 using AppsTracker.Hooks;
 using AppsTracker.MVVM;
@@ -29,10 +27,10 @@ namespace AppsTracker.Tracking
         private readonly Timer dayTimer;
         private readonly Timer weekTimer;
 
+        private AppLimit currentDayLimit;
+        private AppLimit currentWeekLimit;
 
         private string currentApp;
-        private AppLimit currentLimit;
-
 
         [ImportingConstructor]
         public LimitObserver(ITrackingService trackingService,
@@ -50,8 +48,9 @@ namespace AppsTracker.Tracking
             this.mediator = mediator;
 
             dayTimer = new Timer(TimerCallback,
-                new Func<AppLimit>(() => Volatile.Read(ref currentLimit)), Timeout.Infinite, Timeout.Infinite);
-            weekTimer = new Timer(TimerCallback);
+                new Func<AppLimit>(() => Volatile.Read(ref currentDayLimit)), Timeout.Infinite, Timeout.Infinite);
+            weekTimer = new Timer(TimerCallback,
+                new Func<AppLimit>(() => Volatile.Read(ref currentDayLimit)), Timeout.Infinite, Timeout.Infinite);
 
             mediator.Register(MediatorMessages.APP_LIMITS_CHANGIING, LoadAppLimits);
             mediator.Register(MediatorMessages.STOP_TRACKING, StopTimers);
@@ -83,15 +82,26 @@ namespace AppsTracker.Tracking
             CheckLimits();
         }
 
+        private void StopTimers()
+        {
+            dayTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            weekTimer.Change(Timeout.Infinite, Timeout.Infinite);
+        }
+
+
         private void CheckLimits()
         {
-            var limit = Volatile.Read(ref currentLimit);
-            if (limit != null && limit.Application != null)
-                LoadAppDurations(limit.Application);
+            var dayLimit = Volatile.Read(ref currentDayLimit);
+            var weekLimit = Volatile.Read(ref currentWeekLimit);
+            if (dayLimit != null && dayLimit.Application != null)
+                LoadAppDurations(dayLimit.Application);
+            else if (weekLimit != null && weekLimit.Application != null)
+                LoadAppDurations(weekLimit.Application);
         }
 
         private void windowNotifier_WindowChanged(object sender, WindowChangedArgs e)
         {
+            currentDayLimit = currentWeekLimit = null;
             var app = trackingService.GetApp(e.AppInfo);
             LoadAppDurations(app);
         }
@@ -122,49 +132,50 @@ namespace AppsTracker.Tracking
             StopTimers();
             if (appLimitsMap.ContainsKey(app.Name))
             {
-                var dayDurationTask = GetDayAppDuration(app);
-                dayDurationTask.ContinueWith(GetAppDurationContinuation, CancellationToken.None,
-                    TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
+                var limits = appLimitsMap[app.Name];
+                var dailyLimit = limits.FirstOrDefault(l => l.LimitSpan == LimitSpan.Day);
+                var weeklyLimit = limits.FirstOrDefault(l => l.LimitSpan == LimitSpan.Week);
+                if (dailyLimit != null)
+                {
+                    var dayDurationTask = GetDayDurationAsync(app);
+                    dayDurationTask.ContinueWith(GetAppDurationContinuation, dailyLimit, CancellationToken.None,
+                        TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
+                }
+                if (weeklyLimit != null)
+                {
+                    var weekDurationTask = GetWeekDurationAsync(app);
+                    weekDurationTask.ContinueWith(GetAppDurationContinuation, weeklyLimit, CancellationToken.None,
+                        TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
+                }
             }
         }
 
-        private void GetAppDurationContinuation(Task<Tuple<Aplication, long>> task)
+        private void GetAppDurationContinuation(Task<long> task, object state)
         {
-            IEnumerable<AppLimit> limits;
-            if (appLimitsMap.TryGetValue(task.Result.Item1.Name, out limits) == false)
-                return;
+            var appLimit = (AppLimit)state;
 
-            var limit = limits.FirstOrDefault(l => l.LimitSpan == LimitSpan.Day);
-            if (limit == null)
-                return;
-
-            if (task.Result.Item2 >= limit.Limit)
+            if (task.Result >= appLimit.Limit)
             {
-                limitHandler.Handle(limit);
+                limitHandler.Handle(appLimit);
             }
-            else if (currentApp != task.Result.Item1.Name)
+            else if (currentApp != appLimit.Application.Name)
             {
                 return;
             }
             else
             {
-                Volatile.Write(ref currentLimit, limit);
-                dayTimer.Change(new TimeSpan((limit.Limit - task.Result.Item2)), Timeout.InfiniteTimeSpan);
+                switch (appLimit.LimitSpan)
+                {
+                    case LimitSpan.Day:
+                        Volatile.Write(ref currentDayLimit, appLimit);
+                        dayTimer.Change(new TimeSpan((appLimit.Limit - task.Result)), Timeout.InfiniteTimeSpan);
+                        break;
+                    case LimitSpan.Week:
+                        Volatile.Write(ref currentWeekLimit, appLimit);
+                        weekTimer.Change(new TimeSpan((appLimit.Limit - task.Result)), Timeout.InfiniteTimeSpan);
+                        break;
+                }
             }
-        }
-
-
-        private void StopTimers()
-        {
-            dayTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            weekTimer.Change(Timeout.Infinite, Timeout.Infinite);
-        }
-
-
-        private async Task<Tuple<Aplication, long>> GetDayAppDuration(Aplication app)
-        {
-            var duration = await GetDayDurationAsync(app);
-            return new Tuple<Aplication, long>(app, duration);
         }
 
 
@@ -172,14 +183,14 @@ namespace AppsTracker.Tracking
         {
             return Task.Run(() => trackingService.GetDayDuration(app));
         }
-        
-     
+
+
         private Task<long> GetWeekDurationAsync(Aplication app)
         {
             return Task.Run(() => trackingService.GetWeekDuration(app));
         }
 
-      
+
         public void Dispose()
         {
             dayTimer.Dispose();

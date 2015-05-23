@@ -236,7 +236,7 @@
                                        SelectedItem="{Binding SelectedApp}"
                                        BorderBrush="{x:Null}"
                                        BorderThickness="0"
-                                       Margin="10,20,10,10"
+                                       Margin="10,20,10,0"
                                        SelectionMode="Single">
                 <controls:SortableListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource HeaderStyleWOFilter}">
@@ -263,7 +263,7 @@
                                        ItemContainerStyle="{DynamicResource ListViewItemStyle}"
                                        BorderBrush="{x:Null}"
                                        BorderThickness="0"
-                                       Margin="10,20,10,10"
+                                       Margin="10,20,10,0"
                                        SelectionMode="Multiple">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
@@ -296,7 +296,7 @@
             <Thumb Cursor="SizeNS"
                    Grid.Row="3"
                    Grid.ColumnSpan="3"
-                   Margin="10"
+                   Margin="10,5,10,5"
                    DragDelta="Thumb_DragDelta">
                 <Thumb.Template>
                     <ControlTemplate>

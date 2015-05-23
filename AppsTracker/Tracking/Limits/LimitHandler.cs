@@ -1,33 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 using AppsTracker.Service;
-using AppsTracker.Views;
 
 namespace AppsTracker.Tracking.Helpers
 {
     [Export(typeof(ILimitHandler))]
     internal sealed class LimitHandler : ILimitHandler
     {
-        private readonly IDataService dataService;
         private readonly ISyncContext syncContext;
         private readonly IMediator mediator;
         private readonly IXmlSettingsService xmlSettingsService;
 
         [ImportingConstructor]
-        public LimitHandler(IDataService dataService,
-                            ISyncContext syncContext,
+        public LimitHandler(ISyncContext syncContext,
                             IMediator mediator,
                             IXmlSettingsService xmlSettingsService)
         {
-            this.dataService = dataService;
             this.syncContext = syncContext;
             this.mediator = mediator;
             this.xmlSettingsService = xmlSettingsService;
@@ -68,10 +60,16 @@ namespace AppsTracker.Tracking.Helpers
 
         private void ShutdownApp(Aplication app)
         {
-            var processes = Process.GetProcessesByName(app.WinName);
-            foreach (var proc in processes)
+            try
             {
-                proc.Kill();
+                var processes = Process.GetProcessesByName(app.WinName);
+                foreach (var proc in processes)
+                {
+                    proc.Kill();
+                }
+            }
+            catch
+            {
             }
         }
     }

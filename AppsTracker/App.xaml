@@ -2669,7 +2669,7 @@
                                     IsSnapToTickEnabled="True"
                                     Value="{Binding Limit, Converter={StaticResource convertAppLimitToTimeSpan}, Mode=TwoWay}"
                                     MinWidth="175"
-                                    Width="250"
+                                    Width="275"
                                     Name="sliderLimit" />
                         </StackPanel>
                         <Label Style="{DynamicResource LabelStyle}"
