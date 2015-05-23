@@ -52,16 +52,28 @@ namespace AppsTracker.Data.Db
                 .Property(a => a.Name)
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Aplication_Name") { IsUnique = true }));
 
+            modelBuilder.Entity<Aplication>()
+                .Property(a => a.UserID)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Aplication_UserID")));
+
             modelBuilder.Entity<Window>()
-                .Property(w=>w.ApplicationID)
+                .Property(w => w.ApplicationID)
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Window_ApplicationID")));
 
             modelBuilder.Entity<Log>()
-                .Property(l=>l.WindowID)
+                .Property(l => l.WindowID)
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Log_WindowID")));
 
+            modelBuilder.Entity<Log>()
+                .Property(l => l.DateCreated)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Log_DateCreated")));
+
+            modelBuilder.Entity<Log>()
+                .Property(l => l.DateEnded)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Log_DateEnded")));
+
             modelBuilder.Entity<AppLimit>()
-                .Property(l=>l.ApplicationID)
+                .Property(l => l.ApplicationID)
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_AppLimit_ApplicationID")));
 
             base.OnModelCreating(modelBuilder);
