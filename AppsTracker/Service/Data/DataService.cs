@@ -222,7 +222,6 @@ namespace AppsTracker.Service
                 var logs = context.Logs.Where(l => l.DateCreated < oldDate).ToList();
                 var screenshots = context.Screenshots.Where(s => s.Date < oldDate).ToList();
                 var usages = context.Usages.Where(u => u.UsageStart < oldDate && u.IsCurrent == false).ToList();
-                var blockedApps = context.BlockedApps.Where(b => b.Date < oldDate).ToList();
 
                 var usageLogs = usages.SelectMany(u => u.Logs);
                 logs.AddRange(usageLogs);
@@ -235,7 +234,6 @@ namespace AppsTracker.Service
                 context.Screenshots.RemoveRange(screenshots);
                 context.Logs.RemoveRange(logs);
                 context.Usages.RemoveRange(usages);
-                context.BlockedApps.RemoveRange(blockedApps);
 
                 context.SaveChanges();
             }

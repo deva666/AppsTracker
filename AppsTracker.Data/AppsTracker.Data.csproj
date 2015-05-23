@@ -104,7 +104,6 @@
     <Compile Include="Models\DbModels\Aplication.cs" />
     <Compile Include="Models\DbModels\AppCategory.cs" />
     <Compile Include="Models\DbModels\AppLimit.cs" />
-    <Compile Include="Models\DbModels\BlockedApp.cs" />
     <Compile Include="Models\DbModels\Log.cs" />
     <Compile Include="Models\DbModels\Screenshot.cs" />
     <Compile Include="Models\DbModels\Setting.cs" />

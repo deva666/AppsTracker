@@ -17,7 +17,6 @@ namespace AppsTracker.Data.Models
         public Uzer()
         {
             this.Applications = new HashSet<Aplication>();
-            this.BlockedApps = new HashSet<BlockedApp>();
             this.Usages = new HashSet<Usage>();
         }
 
@@ -30,7 +29,6 @@ namespace AppsTracker.Data.Models
         public string Name { get; set; }
 
         public virtual ICollection<Aplication> Applications { get; set; }
-        public virtual ICollection<BlockedApp> BlockedApps { get; set; }
         public virtual ICollection<Usage> Usages { get; set; }
     }
 }

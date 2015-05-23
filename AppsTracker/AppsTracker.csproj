@@ -395,12 +395,6 @@
     <Compile Include="Views\Statistics\AppByDayView.xaml.cs">
       <DependentUpon>AppByDayView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Statistics\BlockedAppByDayView.xaml.cs">
-      <DependentUpon>BlockedAppByDayView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Statistics\BlockedAppsView.xaml.cs">
-      <DependentUpon>BlockedAppsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Statistics\DailyAppsUsageView.xaml.cs">
       <DependentUpon>DailyAppsUsageView.xaml</DependentUpon>
     </Compile>
@@ -600,14 +594,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Statistics\AppByDayView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Statistics\BlockedAppByDayView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Statistics\BlockedAppsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

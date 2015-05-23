@@ -51,7 +51,6 @@ namespace AppsTracker.Data.Models
 
         public Aplication(string name, string fileName, string version, string description, string company, string realName)
         {
-            this.BlockedApps = new HashSet<BlockedApp>();
             this.Windows = new HashSet<Window>();
             this.Categories = new HashSet<AppCategory>();
             this.Limits = new HashSet<AppLimit>();
@@ -99,7 +98,6 @@ namespace AppsTracker.Data.Models
 
         [ForeignKey("UserID")]
         public virtual Uzer User { get; set; }
-        public virtual ICollection<BlockedApp> BlockedApps { get; set; }
         public virtual ICollection<Window> Windows { get; set; }
         public virtual ICollection<AppCategory> Categories { get; set; }
         public virtual ICollection<AppLimit> Limits { get; set; }
