@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Utils;
 
@@ -38,5 +37,9 @@ namespace AppsTracker.Service
         Uzer GetUzer(string userName);
 
         DateTime GetFirstDate(int userID);
+
+        long GetDayDuration(Aplication app);
+
+        long GetWeekDuration(Aplication app);
     }
 }

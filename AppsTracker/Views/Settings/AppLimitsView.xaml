@@ -96,13 +96,24 @@
                          ItemsSource="{Binding ElementName=lbApps, Path=SelectedItem.ObservableLimits}"
                          ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
                          SelectionMode="Single"
-                         ItemTemplate="{StaticResource AppLimitDataTemplate}">
+                         ItemTemplate="{StaticResource AppLimitDataTemplate}"
+                         SelectedItem="{Binding SelectedLimit, Mode=TwoWay}"
+                         Name="lbLimits">
 
                 </ListBox>
                 <Label Grid.Row="2"
                        Content="add new limit"
                        Style="{DynamicResource SelectableLabelStyle}"
                        Name="lblAddNew"
+                       IsEnabled="{Binding ElementName=lbLimits, Path=SelectedIndex, Converter={StaticResource selectedIndexConverter}}">
+                    <Label.InputBindings>
+                        <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding DeleteSelectedLimitCommand}" />
+                    </Label.InputBindings>
+                </Label>
+                <Label Grid.Row="3"
+                       Content="delete selected limit"
+                       Style="{DynamicResource SelectableLabelStyle}"                       
                        IsEnabled="{Binding ElementName=lbApps, Path=SelectedIndex, Converter={StaticResource selectedIndexConverter}}">
                     <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
@@ -132,16 +143,7 @@
                                                   Command="{Binding AddNewLimitCommand}"
                                                   CommandParameter="WEEKLY" />
                                 </Label.InputBindings>
-                            </Label>
-                            <Label Style="{DynamicResource SelectableLabelStyle}"
-                                   Content="Monthly limit"
-                                   IsEnabled="{Binding SelectedApp.ObservableLimits, Converter={StaticResource convertAppLimitsToBool},ConverterParameter=Month}">
-                                <Label.InputBindings>
-                                    <MouseBinding Gesture="LeftClick"
-                                                  Command="{Binding AddNewLimitCommand}"
-                                                  CommandParameter="MONTHLY" />
-                                </Label.InputBindings>
-                            </Label>
+                            </Label>                           
                         </StackPanel>
                     </Border>
                 </Popup>

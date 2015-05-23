@@ -9,8 +9,7 @@ namespace AppsTracker.Data.Models
     public enum LimitSpan
     {
         Day,
-        Week,
-        Month
+        Week        
     }
 
     public enum LimitReachedAction

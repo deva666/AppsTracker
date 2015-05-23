@@ -59,6 +59,13 @@ namespace AppsTracker.Service
             set { mainWindowSettings = value; }
         }
 
+        private LimitsSettings limitsSettings;
+        public LimitsSettings LimitsSettings
+        {
+            get { return limitsSettings ?? (limitsSettings = new LimitsSettings()); }
+            set { limitsSettings = value; }
+        }
+
 
         public void Initialize()
         {

@@ -11,6 +11,7 @@ using System.ComponentModel.Composition;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading;
+using AppsTracker.Common.Utils;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Utils;
@@ -84,6 +85,8 @@ namespace AppsTracker.Service
 
         public void Initialize(Uzer uzer, int usageID)
         {
+            Ensure.NotNull(uzer, "uzer");
+
             UserID = uzer.UserID;
             UserName = uzer.Name;
             SelectedUserID = UserID;
@@ -95,8 +98,8 @@ namespace AppsTracker.Service
 
         public void ChangeUser(Uzer uzer)
         {
-            if (uzer == null)
-                throw new ArgumentNullException("User");
+            Ensure.NotNull(uzer, "uzer");
+                        
             SelectedUserID = uzer.UserID;
             SelectedUserName = uzer.Name;
             SelectedUser = uzer;
@@ -111,6 +114,8 @@ namespace AppsTracker.Service
 
         public Log CreateNewLog(string windowTitle, int usageID, int userID, IAppInfo appInfo, out bool newApp)
         {
+            Ensure.NotNull(appInfo, "appInfo");
+
             using (var context = new AppsEntities())
             {
                 newApp = false;
@@ -219,6 +224,47 @@ namespace AppsTracker.Service
             {
                 return context.Usages.Count(u => u.UserID == userID) == 0 ? DateTime.Now.Date
                     : context.Usages.Where(u => u.UserID == userID).Select(u => u.UsageStart).Min();
+            }
+        }
+
+
+        public long GetDayDuration(Aplication app)
+        {
+            Ensure.NotNull(app, "app");
+
+            using (var context = new AppsEntities())
+            {
+                var loadedApp = context.Applications
+                                       .Include(a => a.Windows.Select(w => w.Logs))
+                                       .First(a => a.ApplicationID == app.ApplicationID);
+
+                return loadedApp.Windows.SelectMany(w => w.Logs)
+                                        .Where(l => l.DateCreated >= DateTime.Now.Date)
+                                        .Sum(l => l.Duration);
+            }
+        }
+
+
+        public long GetWeekDuration(Aplication app)
+        {
+            Ensure.NotNull(app, "app");
+
+            DateTime now = DateTime.Today;
+            int delta = DayOfWeek.Monday - now.DayOfWeek;
+            if (delta > 0)
+                delta -= 7;
+            DateTime weekBegin = now.AddDays(delta);
+            DateTime weekEnd = weekBegin.AddDays(6);
+
+            using (var context = new AppsEntities())
+            {
+                var loadedApp = context.Applications
+                                       .Include(a => a.Windows.Select(w => w.Logs))
+                                       .First(a => a.ApplicationID == app.ApplicationID);
+                return loadedApp.Windows
+                                .SelectMany(w => w.Logs)
+                                .Where(l => l.DateCreated >= weekBegin && l.DateCreated <= weekEnd)
+                                .Sum(l => l.Duration);
             }
         }
     }

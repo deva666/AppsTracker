@@ -98,5 +98,16 @@ namespace AppsTracker.Tests.Fakes.Service
 
         }
 
+
+
+        public long GetDayDuration(Aplication app)
+        {
+            throw new NotImplementedException();
+        }
+
+        public long GetWeekDuration(Aplication app)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

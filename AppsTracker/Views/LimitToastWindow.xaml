@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:root="clr-namespace:AppsTracker"
         Title="LimitToastWindow"
-        Height="200"
+        Height="250"
         Width="300"
         WindowStyle="None"
         Style="{StaticResource WindowStyleWithFade}"
@@ -48,12 +48,14 @@
                        MouseLeftButtonDown="btnHide_MouseLeftButtonDown" />
             <Label Style="{DynamicResource LabelStyle}"
                    Content="Limit reached warning"
-                   Grid.Row="1" />
+                   Grid.Row="1"
+                   Name="lblTitle"
+                   Margin="5"/>
 
             <StackPanel Grid.Row="2"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"
-                        Margin="5">
+                        Margin="1">
                 <Label Style="{DynamicResource LabelStyle}"
                        Content="App: "
                        Margin="0,0,10,0" />
@@ -123,7 +125,7 @@
             <StackPanel Grid.Row="3"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"
-                        Margin="5">
+                        Margin="1">
                 <Label Style="{DynamicResource LabelStyle}"
                        Content="Limit set to: "
                        Margin="0,0,10,0" />
@@ -134,7 +136,7 @@
             <StackPanel Grid.Row="4"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"
-                        Margin="5">
+                        Margin="1">
                 <Label Style="{DynamicResource LabelStyle}"
                        Content="Total duraton: "
                        Margin="0,0,10,0" />
@@ -144,6 +146,25 @@
                        Name="lblTotalDuration" />
 
             </StackPanel>
+            <StackPanel Grid.Row="5"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="1">
+                <Label Style="{DynamicResource LabelStyle}"
+                       Content="Don't show for this app again : " 
+                       />
+                <CheckBox Name="cbDontShow" 
+                          VerticalAlignment="Center"
+                          />
+            </StackPanel>
+
+            <Button Grid.Row="6"
+                    Content="Ok Thanks!" 
+                    Width="75"
+                    VerticalAlignment="Center"
+                    Margin="0,10,0,0"
+                    Name="btnOk"
+                    Click="btnOk_Click"/>
         </Grid>
     </Border>
 </Window>

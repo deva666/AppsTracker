@@ -1098,8 +1098,6 @@ namespace AppsTracker
             {
                 case LimitSpan.Day:
                     return (double)hours;
-                case LimitSpan.Month:
-                    return (double)(31 * hours);
                 case LimitSpan.Week:
                     return (double)(7 * hours);
                 default:

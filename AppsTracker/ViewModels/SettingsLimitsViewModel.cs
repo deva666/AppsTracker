@@ -21,6 +21,8 @@ namespace AppsTracker.ViewModels
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
+        private readonly IList<AppLimit> limitsToDelete = new List<AppLimit>();
+
 
         public override string Title
         {
@@ -58,12 +60,20 @@ namespace AppsTracker.ViewModels
             set { SetPropertyValue(ref selectedApp, value); }
         }
 
+
+        private AppLimit selectedLimit;
+
+        public AppLimit SelectedLimit
+        {
+            get { return selectedLimit; }
+            set { SetPropertyValue(ref selectedLimit, value); }
+        }
+
         public AsyncProperty<IEnumerable<Aplication>> AppList
         {
             get;
             private set;
         }
-
 
 
         private ICommand addNewLimitCommand;
@@ -102,6 +112,17 @@ namespace AppsTracker.ViewModels
         }
 
 
+        private ICommand deleteSelectedLimitCommand;
+
+        public ICommand DeleteSelectedLimitCommand
+        {
+            get
+            {
+                return deleteSelectedLimitCommand ??
+                    (deleteSelectedLimitCommand = new DelegateCommand(DeleteSelectedLimit));
+            }
+        }
+
         [ImportingConstructor]
         public SettingsLimitsViewModel(IDataService dataService,
                                        ITrackingService trackingService,
@@ -117,7 +138,7 @@ namespace AppsTracker.ViewModels
 
         private void OnAppAdded(Aplication app)
         {
-            AppList.Reload();   
+            AppList.Reload();
         }
 
         private IEnumerable<Aplication> GetApps()
@@ -147,14 +168,22 @@ namespace AppsTracker.ViewModels
                 appLimit.LimitSpan = LimitSpan.Day;
             else if (limit.ToUpper() == "WEEKLY")
                 appLimit.LimitSpan = LimitSpan.Week;
-            else if (limit.ToUpper() == "MONTHLY")
-                appLimit.LimitSpan = LimitSpan.Month;
 
             selectedApp.ObservableLimits.Add(appLimit);
 
             IsAddNewPopupOpen = false;
             PropertyChanging("SelectedApp");
         }
+
+
+        private void DeleteSelectedLimit()
+        {
+            if (selectedLimit == null)
+                return;
+
+            limitsToDelete.Add(selectedLimit);
+        }
+
 
         private async Task SaveChanges()
         {
@@ -163,13 +192,19 @@ namespace AppsTracker.ViewModels
                 return;
 
             var appsToSave = apps.Where(a => a.Limits.Count != a.ObservableLimits.Count ||
-                a.ObservableLimits.Select(l=>l.HasChanges).Any());
+                a.ObservableLimits.Select(l => l.HasChanges).Any());
             var modifiedLimits = appsToSave.SelectMany(a => a.ObservableLimits)
                 .Where(l => l.AppLimitID != default(int) && l.HasChanges);
             var newLimits = appsToSave.SelectMany(a => a.ObservableLimits).Where(l => l.AppLimitID == default(int));
-            await dataService.SaveModifiedEntityRangeAsync(modifiedLimits);
-            await dataService.SaveNewEntityRangeAsync(newLimits);
+            var modifiedTask = dataService.SaveModifiedEntityRangeAsync(modifiedLimits);
+            var newTask = dataService.SaveNewEntityRangeAsync(newLimits);
+            var deleteTask = dataService.DeleteEntityRangeAsync(limitsToDelete);
+
+            await Task.WhenAll(modifiedTask, newTask);
+            await deleteTask;
+
             InfoMessage = SETTINGS_SAVED_MSG;
+            mediator.NotifyColleagues(MediatorMessages.APP_LIMITS_CHANGIING);
         }
 
         private void OpenAddNewPopup()

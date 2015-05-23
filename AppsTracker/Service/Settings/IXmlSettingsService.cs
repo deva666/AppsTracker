@@ -13,6 +13,8 @@ namespace AppsTracker.Service
         DaysViewSettings DaysViewSettings { get; }
         
         MainWindowSettings MainWindowSettings { get; }
+
+        LimitsSettings LimitsSettings { get; }
         
         void Initialize();
         

@@ -16,14 +16,18 @@ namespace AppsTracker.Tracking.Helpers
     [Export(typeof(ILimitHandler))]
     internal sealed class LimitHandler : ILimitHandler
     {
-        private readonly IMediator mediator;
+        private readonly IWindowService windowService;
         private readonly IDataService dataService;
+        private readonly ISyncContext syncContext;
 
         [ImportingConstructor]
-        public LimitHandler(IDataService dataService, IMediator mediator)
+        public LimitHandler(IWindowService windowService,
+                            IDataService dataService,
+                            ISyncContext syncContext)
         {
+            this.windowService = windowService;
             this.dataService = dataService;
-            this.mediator = mediator;
+            this.syncContext = syncContext;
         }
 
 
@@ -50,9 +54,12 @@ namespace AppsTracker.Tracking.Helpers
 
         private void ShowWarning(AppLimit limit)
         {
-            var durationTask = GetTodayDurationAsync(limit.Application);
-            durationTask.ContinueWith(t=> mediator.NotifyColleagues<Tuple<AppLimit, long>>(
-                MediatorMessages.APP_LIMIT_REACHED, new Tuple<AppLimit,long>(limit, t.Result)));
+            syncContext.Invoke(() =>
+            {
+                var toastShell = windowService.GetShell("Limit toast window");
+                toastShell.ViewArgument = limit;
+                toastShell.Show();
+            });
         }
 
         private void ShutdownApp(Aplication app)
@@ -62,21 +69,6 @@ namespace AppsTracker.Tracking.Helpers
             {
                 proc.Kill();
             }
-        }
-
-        private Task<long> GetTodayDurationAsync(Aplication app)
-        {
-            return Task<long>.Run(() => GetTodayDuration(app));
-        }
-
-        private long GetTodayDuration(Aplication app)
-        {
-            var loadedApp = dataService.GetFiltered<Aplication>(a => a.ApplicationID == app.ApplicationID,
-                                                                a => a.Windows.Select(w => w.Logs))
-                                                                .First();
-            return loadedApp.Windows.SelectMany(w => w.Logs)
-                                    .Where(l => l.DateCreated >= DateTime.Now.Date)
-                                    .Sum(l => l.Duration);
         }
     }
 }

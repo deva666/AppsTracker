@@ -118,6 +118,7 @@
     <Compile Include="Utils\IAppInfo.cs" />
     <Compile Include="XmlSettings\DaysViewSettings.cs" />
     <Compile Include="XmlSettings\KeylogsViewSettings.cs" />
+    <Compile Include="XmlSettings\LimitsSettings.cs" />
     <Compile Include="XmlSettings\LogsViewSettings.cs" />
     <Compile Include="XmlSettings\MainWindowSettings.cs" />
     <Compile Include="XmlSettings\ScreenshotsViewSettings.cs" />

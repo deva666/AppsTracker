@@ -38,12 +38,18 @@ namespace AppsTracker.Tests.Fakes.Service
 
         public void Initialize()
         {
-            
+
         }
 
         public void ShutDown()
         {
-            
+
+        }
+
+
+        public Data.XmlSettings.LimitsSettings LimitsSettings
+        {
+            get { return new Data.XmlSettings.LimitsSettings(); }
         }
     }
 }

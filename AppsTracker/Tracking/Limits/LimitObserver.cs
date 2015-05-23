@@ -153,11 +153,13 @@ namespace AppsTracker.Tracking
             }
         }
 
+
         private void StopTimers()
         {
             dayTimer.Change(Timeout.Infinite, Timeout.Infinite);
             weekTimer.Change(Timeout.Infinite, Timeout.Infinite);
         }
+
 
         private async Task<Tuple<Aplication, long>> GetDayAppDuration(Aplication app)
         {
@@ -165,45 +167,19 @@ namespace AppsTracker.Tracking
             return new Tuple<Aplication, long>(app, duration);
         }
 
+
         private Task<long> GetDayDurationAsync(Aplication app)
         {
-            return Task.Run(() => GetDayDuration(app));
+            return Task.Run(() => trackingService.GetDayDuration(app));
         }
-
-        private long GetDayDuration(Aplication app)
-        {
-            var loadedApp = dataService.GetFiltered<Aplication>(a => a.ApplicationID == app.ApplicationID,
-                                                                a => a.Windows.Select(w => w.Logs))
-                                                                .First();
-            return loadedApp.Windows.SelectMany(w => w.Logs)
-                                    .Where(l => l.DateCreated >= DateTime.Now.Date)
-                                    .Sum(l => l.Duration);
-        }
-
+        
+     
         private Task<long> GetWeekDurationAsync(Aplication app)
         {
-            return Task.Run(() => GetWeekDuration(app));
+            return Task.Run(() => trackingService.GetWeekDuration(app));
         }
 
-        private long GetWeekDuration(Aplication app)
-        {
-            DateTime now = DateTime.Today;
-            int delta = DayOfWeek.Monday - now.DayOfWeek;
-            if (delta > 0)
-                delta -= 7;
-            DateTime weekBegin = now.AddDays(delta);
-            DateTime weekEnd = weekBegin.AddDays(6);
-
-            var loadedApp = dataService.GetFiltered<Aplication>(a => a.ApplicationID == app.ApplicationID,
-                                                                a => a.Windows.Select(w => w.Logs))
-                                                                .First();
-            return loadedApp.Windows
-                            .SelectMany(w => w.Logs)
-                            .Where(l => l.DateCreated >= weekBegin && l.DateCreated <= weekEnd)
-                            .Sum(l => l.Duration);
-        }
-
-
+      
         public void Dispose()
         {
             dayTimer.Dispose();
