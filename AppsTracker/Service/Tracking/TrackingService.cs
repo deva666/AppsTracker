@@ -99,7 +99,7 @@ namespace AppsTracker.Service
         public void ChangeUser(Uzer uzer)
         {
             Ensure.NotNull(uzer, "uzer");
-                        
+
             SelectedUserID = uzer.UserID;
             SelectedUserName = uzer.Name;
             SelectedUser = uzer;
@@ -157,7 +157,7 @@ namespace AppsTracker.Service
             using (var context = new AppsEntities())
             {
                 var name = !string.IsNullOrEmpty(appInfo.Name) ? appInfo.Name.Truncate(250) : !string.IsNullOrEmpty(appInfo.FullName) ? appInfo.FullName.Truncate(250) : appInfo.FileName.Truncate(250);
-                var app = context.Applications.First(a => a.Name == name);
+                var app = context.Applications.FirstOrDefault(a => a.Name == name);
                 return app;
             }
         }
@@ -172,10 +172,16 @@ namespace AppsTracker.Service
                     foreach (var usage in failedSaveUsage)
                     {
                         var lastLog = context.Logs.Where(l => l.UsageID == usage.UsageID).OrderByDescending(l => l.DateCreated).FirstOrDefault();
+                        var unfinishedLogs = context.Logs.Where(l => l.Finished == false);
                         var lastUsage = context.Usages.Where(u => u.SelfUsageID == usage.UsageID).OrderByDescending(u => u.UsageEnd).FirstOrDefault();
+                        var lastUnfinishedLog = unfinishedLogs.OrderByDescending(l => l.DateCreated).FirstOrDefault();
+
+                        unfinishedLogs.ForEachAction(l => l.Finished = true);
+                        unfinishedLogs.AttachToContextAsModified(context);
 
                         DateTime lastLogDate = DateTime.MinValue;
                         DateTime lastUsageDate = DateTime.MinValue;
+                        DateTime lastUnfinishedLogDate = DateTime.MinValue;
 
                         if (lastLog != null)
                             lastLogDate = lastLog.DateEnded;
@@ -183,10 +189,14 @@ namespace AppsTracker.Service
                         if (lastUsage != null)
                             lastUsageDate = lastUsage.UsageEnd;
 
+                        if (lastUnfinishedLog != null)
+                            lastUnfinishedLogDate = lastUnfinishedLog.DateEnded;
 
-                        usage.UsageEnd = lastLogDate == lastUsageDate ? usage.UsageEnd : lastUsageDate > lastLogDate ? lastUsageDate : lastLogDate;
+                        var latestDateKnown = new DateTime[] { lastLogDate, lastUsageDate, lastUnfinishedLogDate }.OrderByDescending(d => d.Ticks).FirstOrDefault();
+
+                        usage.UsageEnd = latestDateKnown;
                         usage.IsCurrent = false;
-                        context.Entry(usage).State = EntityState.Modified;
+                        context.Entry(usage).State = EntityState.Modified;                        
                     }
                 }
 

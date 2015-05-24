@@ -68,5 +68,15 @@ namespace AppsTracker
             timer.Stop();
             timer.Start();
         }
+
+        public static void AttachToContextAsModified<T>(this IEnumerable<T> collection, System.Data.Entity.DbContext context) where T : class
+        {
+            Ensure.NotNull(context, "context");
+
+            foreach (var item in collection)
+            {
+                context.Entry(item).State = System.Data.Entity.EntityState.Modified;
+            }
+        }
     }
 }

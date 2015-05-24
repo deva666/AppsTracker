@@ -162,7 +162,8 @@ namespace AppsTracker.Tracking
         private void NewAppAdded(IAppInfo appInfo)
         {
             var newApp = trackingService.GetApp(appInfo);
-            mediator.NotifyColleagues(MediatorMessages.APPLICATION_ADDED, newApp);
+            if (newApp != null)
+                mediator.NotifyColleagues(MediatorMessages.APPLICATION_ADDED, newApp);
         }
 
         private void StopTracking()

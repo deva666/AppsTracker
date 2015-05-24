@@ -19,6 +19,8 @@ namespace AppsTracker.Views
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
+        private readonly DispatcherTimer timer;
+
         private AppLimit currentLimit;
 
         [ImportingConstructor]
@@ -37,19 +39,32 @@ namespace AppsTracker.Views
             var bounds = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
             this.Left = bounds.Right - this.Width - 5;
             this.Top = bounds.Bottom + 5;
+            timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, OnTimerTick, this.Dispatcher);
+        }
+
+        private async void OnTimerTick(object sender, EventArgs e)
+        {
+            if (currentLimit == null)
+                return;
+            await DisplayAppDuration();            
         }
 
 
         private async void OnAppLimitReached(AppLimit limit)
         {
             currentLimit = limit;
+            await DisplayAppDuration();
+            ShowWindow();
+        }
+
+        private async Task DisplayAppDuration()
+        {
             long duration;
             if (currentLimit.LimitSpan == LimitSpan.Day)
                 duration = await Task.Run(() => trackingService.GetDayDuration(currentLimit.Application));
             else
                 duration = await Task.Run(() => trackingService.GetWeekDuration(currentLimit.Application));
             lblTotalDuration.Content = new TimeSpan(duration).ToString(@"dd\.hh\:mm\:ss");
-            ShowWindow();
         }
 
 

@@ -16,14 +16,12 @@ namespace AppsTracker.Data.Models
 {
     public class Log : INotifyPropertyChanged
     {
-        private bool finished = false;
-
         [NotMapped]
         public long Duration
         {
             get
             {
-                return UtcDateEnded.Ticks - UtcDateCreated.Ticks;
+                return Finished ? UtcDateEnded.Ticks - UtcDateCreated.Ticks : DateTime.UtcNow.Ticks - UtcDateCreated.Ticks;
             }
         }
 
@@ -50,6 +48,7 @@ namespace AppsTracker.Data.Models
             this.Screenshots = new HashSet<Screenshot>();
             this.DateCreated = this.DateEnded = DateTime.Now;
             this.UtcDateCreated = this.UtcDateEnded = DateTime.UtcNow;
+            this.Finished = false;
         }
 
         public Log(int windowID)
@@ -73,9 +72,9 @@ namespace AppsTracker.Data.Models
 
         public void Finish()
         {
-            if (!finished)
+            if (!Finished)
             {
-                finished = true;
+                Finished = true;
                 DateEnded = DateTime.Now;
                 UtcDateEnded = DateTime.UtcNow;
             }
@@ -91,16 +90,19 @@ namespace AppsTracker.Data.Models
         public int WindowID { get; set; }
 
         [Required]
-        public System.DateTime DateCreated { get; set; }
+        public bool Finished { get; set; }
 
         [Required]
-        public System.DateTime DateEnded { get; set; }
+        public DateTime DateCreated { get; set; }
 
         [Required]
-        public System.DateTime UtcDateCreated { get; set; }
+        public DateTime DateEnded { get; set; }
 
         [Required]
-        public System.DateTime UtcDateEnded { get; set; }
+        public DateTime UtcDateCreated { get; set; }
+
+        [Required]
+        public DateTime UtcDateEnded { get; set; }
 
         [Required]
         public int UsageID { get; set; }
