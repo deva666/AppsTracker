@@ -1,13 +1,16 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 using AppsTracker.Service;
 using AppsTracker.Widgets;
+
 
 namespace AppsTracker.Views
 {
@@ -40,13 +43,14 @@ namespace AppsTracker.Views
             this.Left = bounds.Right - this.Width - 5;
             this.Top = bounds.Bottom + 5;
             timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, OnTimerTick, this.Dispatcher);
+            Loaded += (s, e) => HideHelper.RemoveFromAltTab(this);
         }
 
         private async void OnTimerTick(object sender, EventArgs e)
         {
             if (currentLimit == null)
                 return;
-            await DisplayAppDuration();            
+            await DisplayAppDuration();
         }
 
 
@@ -119,10 +123,36 @@ namespace AppsTracker.Views
             CloseWindow();
         }
 
+
+
         public object ViewArgument
         {
             get;
             set;
+        }
+
+        private class HideHelper
+        {
+            private const int GwlExstyle = -20;
+            private const int WsExToolwindow = 0x80;
+
+            [DllImport("user32.dll", EntryPoint = "GetWindowLong", CharSet = CharSet.Auto)]
+            private static extern IntPtr GetWindowLong32(IntPtr hWnd, int nIndex);
+
+            [DllImport("user32.dll", EntryPoint = "SetWindowLong", CharSet = CharSet.Auto)]
+            private static extern IntPtr SetWindowLong(IntPtr hWnd, int nIndex, IntPtr value);
+
+            public static void RemoveFromAltTab(IntPtr hwnd)
+            {
+                var windowStyle = (int)GetWindowLong32(hwnd, GwlExstyle);
+                windowStyle |= WsExToolwindow;
+                SetWindowLong(hwnd, GwlExstyle, (IntPtr)windowStyle);
+            }
+
+            public static void RemoveFromAltTab(System.Windows.Window w)
+            {
+                RemoveFromAltTab((new WindowInteropHelper(w)).Handle);
+            }
         }
     }
 }

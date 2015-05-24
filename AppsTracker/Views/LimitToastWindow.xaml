@@ -139,7 +139,7 @@
                         HorizontalAlignment="Center"
                         Margin="1">
                 <Label Style="{DynamicResource LabelStyle}"
-                       Content="Total duraton: "
+                       Content="Total duration: "
                        Margin="0,0,10,0" />
 
                 <Label Style="{DynamicResource LabelStyle}"
