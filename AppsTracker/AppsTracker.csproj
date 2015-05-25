@@ -140,6 +140,9 @@
       <HintPath>..\packages\EntityFramework.SqlServerCompact.6.1.1\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
@@ -183,6 +186,8 @@
     <Compile Include="Controllers\ITrackingController.cs" />
     <Compile Include="Controllers\TrackingController.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Service\Web\FeedbackReportService.cs" />
+    <Compile Include="Service\Web\ReleaseNotesService.cs" />
     <Compile Include="Tracking\Usage\IUsageProcessor.cs" />
     <Compile Include="Tracking\Usage\UsageProcessor.cs" />
     <Compile Include="Tracking\Limits\ILimitHandler.cs" />

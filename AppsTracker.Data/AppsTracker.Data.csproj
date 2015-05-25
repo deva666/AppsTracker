@@ -7,7 +7,7 @@
     <ProjectGuid>{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AppsTracker.Service</RootNamespace>
+    <RootNamespace>AppsTracker.Data</RootNamespace>
     <AssemblyName>AppsTracker.Data</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -110,6 +110,8 @@
     <Compile Include="Models\DbModels\Usage.cs" />
     <Compile Include="Models\DbModels\Uzer.cs" />
     <Compile Include="Models\DbModels\Window.cs" />
+    <Compile Include="Models\Feedback.cs" />
+    <Compile Include="Models\ReleaseNote.cs" />
     <Compile Include="Models\ViewModels\ViewModels.cs" />
     <Compile Include="Models\ViewModels\UsageModels.cs" />
     <Compile Include="Utils\AppInfo.cs" />

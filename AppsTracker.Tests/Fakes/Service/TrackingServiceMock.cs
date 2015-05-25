@@ -14,7 +14,7 @@ namespace AppsTracker.Tests.Fakes.Service
             return new Log(new Window(windowTitle), usageID);
         }
 
-        public Data.Models.Aplication GetApp(Data.Utils.IAppInfo appInfo)
+        public Data.Models.Aplication GetApp(Data.Utils.IAppInfo appInfo, int userId = default(int))
         {
             return new Aplication(appInfo);
         }
