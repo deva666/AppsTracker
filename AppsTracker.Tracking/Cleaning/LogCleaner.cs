@@ -16,7 +16,7 @@ using AppsTracker.Tracking.Helpers;
 namespace AppsTracker.Tracking
 {
     [Export(typeof(ILogCleaner))]
-    internal sealed class LogCleaner : ILogCleaner
+    public sealed class LogCleaner : ILogCleaner
     {
         private int daysTreshold;
 
