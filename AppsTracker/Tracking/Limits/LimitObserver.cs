@@ -50,7 +50,7 @@ namespace AppsTracker.Tracking
             dayTimer = new Timer(TimerCallback,
                 new Func<AppLimit>(() => Volatile.Read(ref currentDayLimit)), Timeout.Infinite, Timeout.Infinite);
             weekTimer = new Timer(TimerCallback,
-                new Func<AppLimit>(() => Volatile.Read(ref currentDayLimit)), Timeout.Infinite, Timeout.Infinite);
+                new Func<AppLimit>(() => Volatile.Read(ref currentWeekLimit)), Timeout.Infinite, Timeout.Infinite);
 
             mediator.Register(MediatorMessages.APP_LIMITS_CHANGIING, LoadAppLimits);
             mediator.Register(MediatorMessages.STOP_TRACKING, StopTimers);

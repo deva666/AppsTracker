@@ -33,18 +33,11 @@ namespace AppsTracker.Hooks
 
         public WinHook()
         {
-            if (App.Current.Dispatcher.Thread != System.Threading.Thread.CurrentThread)
-                App.Current.Dispatcher.Invoke(SetHook);
-            else
-                SetHook();
-        }
-
-        private void SetHook()
-        {
             winHookCallBack = new WinHookCallBack(WinHookCallback);
             hookID = WinAPI.SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, winHookCallBack, 0, 0, WINEVENT_OUTOFCONTEXT);
         }
 
+        
         private Process GetProcessFromHandle(IntPtr hWnd)
         {
             uint processID = 0;
@@ -89,7 +82,6 @@ namespace AppsTracker.Hooks
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
     }
 }
 
