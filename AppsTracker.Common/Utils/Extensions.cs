@@ -44,5 +44,11 @@ namespace AppsTracker.Common.Utils
                 copy(sender, args);
         }
 
+        public static void Reset(this DispatcherTimer timer)
+        {
+            timer.Stop();
+            timer.Start();
+        }
+
     }
 }

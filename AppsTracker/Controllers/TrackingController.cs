@@ -13,6 +13,7 @@ using System.Linq;
 using AppsTracker;
 using AppsTracker.Data.Models;
 using AppsTracker.Tracking;
+using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Controllers
 {
