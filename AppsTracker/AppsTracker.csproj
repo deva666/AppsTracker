@@ -186,42 +186,12 @@
     <Compile Include="Controllers\ITrackingController.cs" />
     <Compile Include="Controllers\TrackingController.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Service\DataService.cs" />
-    <Compile Include="Service\IDataService.cs" />
     <Compile Include="Service\Web\FeedbackReportService.cs" />
     <Compile Include="Service\Web\ReleaseNotesService.cs" />
-    <Compile Include="Tracking\Usage\IUsageProcessor.cs" />
-    <Compile Include="Tracking\Usage\UsageProcessor.cs" />
-    <Compile Include="Tracking\Limits\ILimitHandler.cs" />
-    <Compile Include="Tracking\Cleaning\ILogCleaner.cs" />
-    <Compile Include="Tracking\Limits\IMidnightNotifier.cs" />
-    <Compile Include="Tracking\Screenshots\IScreenshotFactory.cs" />
-    <Compile Include="Tracking\Windows\IWindowHelper.cs" />
-    <Compile Include="Tracking\Limits\LimitHandler.cs" />
-    <Compile Include="Tracking\Screenshots\IScreenshotTracker.cs" />
-    <Compile Include="Tracking\Helpers\ISyncContext.cs" />
-    <Compile Include="Tracking\Limits\MidnightNotifier.cs" />
-    <Compile Include="Tracking\Screenshots\ScreenshotTracker.cs" />
-    <Compile Include="Tracking\Helpers\SyncContext.cs" />
-    <Compile Include="Tracking\Hooks\IWindowNotifier.cs" />
-    <Compile Include="Tracking\Limits\LimitObserver.cs" />
-    <Compile Include="Tracking\Usage\IIdleNotifier.cs" />
-    <Compile Include="Tracking\TrackingStatus.cs" />
+    <Compile Include="Service\Window\IWindowService.cs" />
+    <Compile Include="Service\Window\WindowService.cs" />
     <Compile Include="ServiceLocation\IServiceResolver.cs" />
     <Compile Include="ServiceLocation\ServiceResolver.cs" />
-    <Compile Include="Service\Categories\CategoriesService.cs" />
-    <Compile Include="Service\IBaseService.cs" />
-    <Compile Include="Service\Categories\ICategoriesService.cs" />
-    <Compile Include="Service\Tracking\ITrackingService.cs" />
-    <Compile Include="Service\Window\IWindowService.cs" />
-    <Compile Include="Service\Settings\ISqlSettingsService.cs" />
-    <Compile Include="Service\Stats\IStatsService.cs" />
-    <Compile Include="Service\Settings\IXmlSettingsService.cs" />
-    <Compile Include="Service\Tracking\TrackingService.cs" />
-    <Compile Include="Service\Window\WindowService.cs" />
-    <Compile Include="Service\Settings\SqlSettingsService.cs" />
-    <Compile Include="Service\Stats\StatsService.cs" />
-    <Compile Include="Service\Settings\XmlSettingsService.cs" />
     <Compile Include="ViewModels\CategoryStatsViewModel.cs" />
     <Compile Include="ViewModels\SettingsAppCategoriesViewModel.cs" />
     <Compile Include="ViewModels\SettingsLimitsViewModel.cs" />
@@ -301,29 +271,15 @@
     </Compile>
     <Compile Include="Widgets\ScrollingContentControl.cs" />
     <Compile Include="ErrorLogging\ILogger.cs" />
-    <Compile Include="Tracking\Hooks\EventArgs\KeyboardHookArgs.cs" />
-    <Compile Include="Tracking\Hooks\EventArgs\MouseHookArgs.cs" />
-    <Compile Include="Tracking\Hooks\EventArgs\WindowChangedArgs.cs" />
-    <Compile Include="Tracking\Cleaning\DataCleaner.cs" />
-    <Compile Include="Tracking\Cleaning\LogCleaner.cs" />
-    <Compile Include="Tracking\Usage\IdleMonitor.cs" />
-    <Compile Include="Tracking\Usage\IdleTimeWatcher.cs" />
-    <Compile Include="Tracking\IModule.cs" />
-    <Compile Include="Tracking\Helpers\LazyInit.cs" />
-    <Compile Include="Tracking\Windows\WindowHelper.cs" />
-    <Compile Include="Tracking\Usage\UsageTracker.cs" />
-    <Compile Include="Tracking\Windows\WindowTracker.cs" />
     <Compile Include="MVVM\AsyncProperty.cs" />
     <Compile Include="MVVM\DelegateCommandAsync.cs" />
     <Compile Include="MVVM\HostViewModel.cs" />
-    <Compile Include="MVVM\IMediator.cs" />
     <Compile Include="MVVM\IWorker.cs" />
     <Compile Include="MVVM\SettingsBaseViewModel.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\ListViewItemScroller.cs" />
     <Compile Include="Utils\Validation.cs" />
     <Compile Include="Utils\ValueConverters.cs" />
-    <Compile Include="Utils\WinAPI.cs" />
     <Compile Include="ViewModels\DataHostViewModel.cs" />
     <Compile Include="ViewModels\DaySummaryViewModel.cs" />
     <Compile Include="ViewModels\ScreenshotViewerViewModel.cs" />
@@ -386,14 +342,9 @@
     <Compile Include="ViewModels\AboutWindowViewModel.cs" />
     <Compile Include="MVVM\DelegateCommand.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="MVVM\Mediator.cs" />
-    <Compile Include="MVVM\MediatorMessages.cs" />
-    <Compile Include="MVVM\MessageToActionsMap.cs" />
     <Compile Include="MVVM\ObservableObject.cs" />
     <Compile Include="MVVM\ViewModelBase.cs" />
     <Compile Include="ErrorLogging\Logger.cs" />
-    <Compile Include="Tracking\Hooks\MouseHook.cs" />
-    <Compile Include="MVVM\WeakAction.cs" />
     <Compile Include="ViewModels\AppDetailsViewModel.cs" />
     <Compile Include="ViewModels\ScreenshotsViewModel.cs" />
     <Compile Include="ViewModels\SettingsHostViewModel.cs" />
@@ -444,9 +395,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Tracking\Screenshots\ScreenshotFactory.cs" />
     <Compile Include="Utils\Hash.cs" />
-    <Compile Include="Tracking\Hooks\WinHook.cs" />
     <Page Include="Views\LimitToastWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -582,7 +531,6 @@
     <Compile Include="Widgets\closeBtn.xaml.cs">
       <DependentUpon>closeBtn.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tracking\Hooks\KeyboardHook.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -775,6 +723,10 @@
     <ProjectReference Include="..\AppsTracker.Data\AppsTracker.Data.csproj">
       <Project>{dfff3918-1c83-4acd-9fa3-87cba98db030}</Project>
       <Name>AppsTracker.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppsTracker.Tracking\AppsTracker.Tracking.csproj">
+      <Project>{6279db1c-e26b-4f4b-993e-ec985417a0cf}</Project>
+      <Name>AppsTracker.Tracking</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

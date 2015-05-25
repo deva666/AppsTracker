@@ -5,7 +5,7 @@ using System.Linq;
 using AppsTracker.Views;
 using AppsTracker.Widgets;
 
-namespace AppsTracker.Service
+namespace AppsTracker.Data.Service
 {
     [Export(typeof(IWindowService))]
     public sealed class WindowService : IWindowService

@@ -22,7 +22,7 @@ using System.Windows.Markup;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using AppsTracker.Controllers;
-using AppsTracker.Service;
+using AppsTracker.Data.Service;
 
 [assembly: InternalsVisibleTo("AppsTracker.Tests")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
@@ -68,6 +68,9 @@ namespace AppsTracker
         {
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+            catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Data.Service.IDataService).Assembly));
+            catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Common.Communication.IMediator).Assembly));
+            catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Tracking.IModule).Assembly));
             var container = new CompositionContainer(catalog);
             var batch = new CompositionBatch();
             batch.AddExportedValue(container);

@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
-using AppsTracker.Service;
+using AppsTracker.Data.Service;
 using AppsTracker.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

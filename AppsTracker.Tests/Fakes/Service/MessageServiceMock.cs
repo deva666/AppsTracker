@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AppsTracker.Service;
+using AppsTracker.Data.Service;
 
 namespace AppsTracker.Tests.Fakes.Service
 {

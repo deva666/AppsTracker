@@ -6,11 +6,12 @@
  */
 #endregion
 
+using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
-using AppsTracker.Service;
-using System.ComponentModel.Composition;
+using AppsTracker.Data.Service;
+using AppsTracker.Common.Communication;
 
 namespace AppsTracker.MVVM
 {

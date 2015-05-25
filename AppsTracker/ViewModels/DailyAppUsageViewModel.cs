@@ -11,7 +11,8 @@ using System.ComponentModel.Composition;
 using System.Collections.Generic;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
-using AppsTracker.Service;
+using AppsTracker.Data.Service;
+using AppsTracker.Common.Communication;
 
 namespace AppsTracker.ViewModels
 {

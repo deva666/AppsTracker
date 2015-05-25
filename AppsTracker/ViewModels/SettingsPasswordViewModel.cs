@@ -11,7 +11,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using AppsTracker.Hashing;
 using AppsTracker.MVVM;
-using AppsTracker.Service;
+using AppsTracker.Data.Service;
+using AppsTracker.Common.Communication;
 
 namespace AppsTracker.ViewModels
 {

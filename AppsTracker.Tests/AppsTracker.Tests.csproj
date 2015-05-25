@@ -106,6 +106,10 @@
       <Project>{dfff3918-1c83-4acd-9fa3-87cba98db030}</Project>
       <Name>AppsTracker.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AppsTracker.Tracking\AppsTracker.Tracking.csproj">
+      <Project>{6279db1c-e26b-4f4b-993e-ec985417a0cf}</Project>
+      <Name>AppsTracker.Tracking</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AppsTracker\AppsTracker.csproj">
       <Project>{ed886551-a8b3-492d-acec-fe2df0b484f7}</Project>
       <Name>AppsTracker</Name>

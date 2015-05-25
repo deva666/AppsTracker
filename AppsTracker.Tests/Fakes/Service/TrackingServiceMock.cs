@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using AppsTracker.Data.Models;
-using AppsTracker.Service;
+using AppsTracker.Data.Service;
 
 namespace AppsTracker.Tests.Fakes.Service
 {

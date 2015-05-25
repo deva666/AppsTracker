@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using AppsTracker.Data.Utils;
+using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Data.Models
 {

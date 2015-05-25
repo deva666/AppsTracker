@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition.Hosting;
-using AppsTracker.Service;
+using AppsTracker.Data.Service;
 
 namespace AppsTracker.ServiceLocation
 {

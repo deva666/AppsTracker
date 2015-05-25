@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using AppsTracker.Service;
+using AppsTracker.Data.Service;
 using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.Widgets

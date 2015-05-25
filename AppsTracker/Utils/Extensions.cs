@@ -26,12 +26,6 @@ namespace AppsTracker
             }
         }
 
-        public static string Truncate(this string value, int maxLength)
-        {
-            if (string.IsNullOrEmpty(value)) return value;
-            return value.Length <= maxLength ? value : value.Substring(0, maxLength);
-        }
-
         public static void InvokeSafely<T>(this EventHandler<T> handler, object sender, T args) where T : EventArgs
         {
             var copy = Volatile.Read(ref handler);
@@ -46,37 +40,11 @@ namespace AppsTracker
                 copy(sender, args);
         }
 
-        public static string ToExtendedString(this UsageTypes type)
-        {
-            switch (type)
-            {
-                case UsageTypes.Login:
-                    return "USER LOGGED IN";
-                case UsageTypes.Idle:
-                    return "USER IDLE";
-                case UsageTypes.Locked:
-                    return "SYSTEM LOCKED";
-                case UsageTypes.Stopped:
-                    return "TRACKING STOPPED";
-                default:
-                    return string.Empty;
-            }
-        }
 
         public static void Reset(this DispatcherTimer timer)
         {
             timer.Stop();
             timer.Start();
-        }
-
-        public static void AttachToContextAsModified<T>(this IEnumerable<T> collection, System.Data.Entity.DbContext context) where T : class
-        {
-            Ensure.NotNull(context, "context");
-
-            foreach (var item in collection)
-            {
-                context.Entry(item).State = System.Data.Entity.EntityState.Modified;
-            }
         }
     }
 }

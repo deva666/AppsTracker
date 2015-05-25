@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 
-namespace AppsTracker.Service
+namespace AppsTracker.Data.Service
 {
     public sealed class ReleaseNotesService
     {

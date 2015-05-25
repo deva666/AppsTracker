@@ -6,19 +6,14 @@
  */
 #endregion
 
-
+using System.Collections.Generic;
+using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 
 namespace AppsTracker.Data.Utils
 {
     public static class Extensions
     {
-        public static string Truncate(this string value, int maxLength)
-        {
-            if (string.IsNullOrEmpty(value)) return value;
-            return value.Length <= maxLength ? value : value.Substring(0, maxLength);
-        }
-
         public static string ToExtendedString(this UsageTypes type)
         {
             switch (type)
@@ -33,6 +28,17 @@ namespace AppsTracker.Data.Utils
                     return "LOGGING STOPPED";
                 default:
                     return string.Empty;
+            }
+        }
+
+
+        public static void AttachToContextAsModified<T>(this IEnumerable<T> collection, System.Data.Entity.DbContext context) where T : class
+        {
+            Ensure.NotNull(context, "context");
+
+            foreach (var item in collection)
+            {
+                context.Entry(item).State = System.Data.Entity.EntityState.Modified;
             }
         }
     }

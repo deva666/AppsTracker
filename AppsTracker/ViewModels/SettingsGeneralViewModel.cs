@@ -10,8 +10,10 @@ using System;
 using System.ComponentModel.Composition;
 using System.Windows.Input;
 using AppsTracker.MVVM;
-using AppsTracker.Service;
+using AppsTracker.Data.Service;
 using AppsTracker.Widgets;
+using AppsTracker.Common.Communication;
+using AppsTracker.Common.Communication;
 using Microsoft.Win32;
 
 namespace AppsTracker.ViewModels

@@ -8,9 +8,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
-using AppsTracker.Service;
+using AppsTracker.Data.Service;
 using AppsTracker.Widgets;
-
+using AppsTracker.Common.Communication;
 
 namespace AppsTracker.Views
 {

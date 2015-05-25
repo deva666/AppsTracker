@@ -1,6 +1,6 @@
 ﻿using AppsTracker.Data.Models;
 
-namespace AppsTracker.Service
+namespace AppsTracker.Data.Service
 {
     public sealed class FeedbackReportService
     {

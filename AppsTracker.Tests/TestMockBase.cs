@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppsTracker.MVVM;
-using AppsTracker.Service;
+using AppsTracker.Data.Service;
 using AppsTracker.ViewModels;
+using AppsTracker.Common.Communication;
 using Moq;
 
 namespace AppsTracker.Tests

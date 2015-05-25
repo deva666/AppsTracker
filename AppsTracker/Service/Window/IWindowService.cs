@@ -1,7 +1,7 @@
 ﻿using System;
 using AppsTracker.Views;
 using AppsTracker.Widgets;
-namespace AppsTracker.Service
+namespace AppsTracker.Data.Service
 {
     public interface IWindowService : IBaseService
     {
