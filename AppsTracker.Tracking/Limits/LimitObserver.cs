@@ -13,7 +13,7 @@ using AppsTracker.Tracking.Helpers;
 namespace AppsTracker.Tracking
 {
     [Export(typeof(IModule))]
-    public sealed class LimitObserver : IModule
+    internal sealed class LimitObserver : IModule
     {
         private readonly ITrackingService trackingService;
         private readonly IDataService dataService;

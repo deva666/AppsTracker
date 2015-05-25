@@ -20,6 +20,7 @@ using System.Windows.Data;
 
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
+using AppsTracker.Tracking;
 
 namespace AppsTracker
 {
