@@ -14,7 +14,7 @@ using AppsTracker.Data.Models;
 
 namespace AppsTracker.Service
 {
-    public interface IDataService : IBaseService
+    public interface IDataService 
     {
         event EventHandler DbSizeCritical;
 

@@ -23,9 +23,13 @@ namespace AppsTracker.Widgets
     [ExportMetadata("ShellUse", "DbCleaner window")]
     public partial class DBCleanerWindow : Window, IShell
     {
-        public DBCleanerWindow()
+        private readonly IDataService dataService;
+
+        [ImportingConstructor]
+        public DBCleanerWindow(IDataService dataService)
         {
             InitializeComponent();
+            this.dataService = dataService;
             this.Loaded += (s, e) => ScaleLoaded();
         }
 
@@ -99,7 +103,7 @@ namespace AppsTracker.Widgets
 
         private int DeleteOldScreenshots(int days)
         {
-            return ServiceLocator.Instance.Resolve<IDataService>().DeleteOldScreenshots(days);
+            return dataService.DeleteOldScreenshots(days);
         }
 
 

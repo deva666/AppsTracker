@@ -186,6 +186,8 @@
     <Compile Include="Controllers\ITrackingController.cs" />
     <Compile Include="Controllers\TrackingController.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Service\DataService.cs" />
+    <Compile Include="Service\IDataService.cs" />
     <Compile Include="Service\Web\FeedbackReportService.cs" />
     <Compile Include="Service\Web\ReleaseNotesService.cs" />
     <Compile Include="Tracking\Usage\IUsageProcessor.cs" />
@@ -208,10 +210,8 @@
     <Compile Include="ServiceLocation\IServiceResolver.cs" />
     <Compile Include="ServiceLocation\ServiceResolver.cs" />
     <Compile Include="Service\Categories\CategoriesService.cs" />
-    <Compile Include="Service\Data\DataService.cs" />
     <Compile Include="Service\IBaseService.cs" />
     <Compile Include="Service\Categories\ICategoriesService.cs" />
-    <Compile Include="Service\Data\IDataService.cs" />
     <Compile Include="Service\Tracking\ITrackingService.cs" />
     <Compile Include="Service\Window\IWindowService.cs" />
     <Compile Include="Service\Settings\ISqlSettingsService.cs" />

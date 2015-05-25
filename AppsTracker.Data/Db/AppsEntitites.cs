@@ -50,11 +50,11 @@ namespace AppsTracker.Data.Db
 
             modelBuilder.Entity<Aplication>()
                 .Property(a => a.Name)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Aplication_Name") { IsUnique = true }));
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("UQ_Aplication_Name_UserID", 0) { IsUnique = true }));
 
             modelBuilder.Entity<Aplication>()
                 .Property(a => a.UserID)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Aplication_UserID")));
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("UQ_Aplication_Name_UserID", 1) { IsUnique = true }));
 
             modelBuilder.Entity<Window>()
                 .Property(w => w.ApplicationID)
