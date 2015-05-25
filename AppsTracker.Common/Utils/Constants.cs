@@ -12,7 +12,5 @@ namespace AppsTracker
     {
         public const string APP_NAME = "Apps tracker";
         public const string CMD_ARGS_AUTOSTART = "AUTOSTART";
-        public const int SECONDS_IN_MINUTE = 60;
-        public const int MILISECONDS_IN_SECOND = 1000;
     }
 }

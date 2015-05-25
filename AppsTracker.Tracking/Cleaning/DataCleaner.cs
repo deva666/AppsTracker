@@ -6,7 +6,6 @@
  */
 #endregion
 
-using System;
 using System.ComponentModel.Composition;
 using AppsTracker.Data.Models;
 using AppsTracker.Tracking.Helpers;

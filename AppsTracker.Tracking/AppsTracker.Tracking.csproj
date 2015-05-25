@@ -48,7 +48,6 @@
     <Compile Include="Helpers\LazyInit.cs" />
     <Compile Include="Helpers\SyncContext.cs" />
     <Compile Include="Hooks\EventArgs\KeyboardHookArgs.cs" />
-    <Compile Include="Hooks\EventArgs\MouseHookArgs.cs" />
     <Compile Include="Hooks\EventArgs\WindowChangedArgs.cs" />
     <Compile Include="Hooks\IWindowNotifier.cs" />
     <Compile Include="Hooks\KeyboardHook.cs" />
@@ -66,7 +65,7 @@
     <Compile Include="Screenshots\ScreenshotFactory.cs" />
     <Compile Include="Screenshots\ScreenshotTracker.cs" />
     <Compile Include="TrackingStatus.cs" />
-    <Compile Include="Usage\IdleMonitor.cs" />
+    <Compile Include="Usage\IdleNotifier.cs" />
     <Compile Include="Usage\IdleTimeWatcher.cs" />
     <Compile Include="Usage\IIdleNotifier.cs" />
     <Compile Include="Usage\IUsageProcessor.cs" />

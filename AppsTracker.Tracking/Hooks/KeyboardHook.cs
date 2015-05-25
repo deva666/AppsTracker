@@ -19,15 +19,10 @@ namespace AppsTracker.Hooks
     {
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;
-        private const int WM_KEYUP = 0x0101;
         private const int WM_SYSKEYDOWN = 0x0104;
-        private const int WM_SYSKEYUP = 0x0105;
         private const int VK_SHIFT = 0x10;
-        private const int VK_CONTROL = 0x11;
-        private const int VK_MENU = 0x12;
         private const int VK_CAPITAL = 0x14;
 
-        private bool isHookEnabled = true;
         private bool isDisposed;
 
         public event EventHandler<KeyboardHookArgs> HookProc;
@@ -55,15 +50,9 @@ namespace AppsTracker.Hooks
             }
         }
 
-        public void EnableHook(bool enable)
-        {
-            isHookEnabled = enable;
-        }
-
-
         private IntPtr HookCallback(int code, IntPtr wParam, IntPtr lParam)
         {
-            if (!isHookEnabled || code < 0)
+            if (code < 0)
                 return WinAPI.CallNextHookEx(hookID, code, wParam, lParam);
 
             WinAPI.KBDLLHOOKSTRUCT keybStruct = (WinAPI.KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(WinAPI.KBDLLHOOKSTRUCT));

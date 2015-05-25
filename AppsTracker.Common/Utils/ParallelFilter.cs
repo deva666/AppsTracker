@@ -9,7 +9,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Utils
@@ -20,18 +19,18 @@ namespace AppsTracker.Utils
         {
             Ensure.NotNull(items, "items");
 
-            var procs = Environment.ProcessorCount;
+            var procCount = Environment.ProcessorCount;
             var itemsArray = items.ToArray();
 
-            List<T[]> partitionList = new List<T[]>(procs);
-            if (itemsArray.Length >= procs && procs > 1)
+            var partitionList = new List<T[]>(procCount);
+            if (itemsArray.Length >= procCount && procCount > 1)
             {
-                int cycle = Convert.ToInt32(Math.Floor((double)itemsArray.Length / (double)procs));
-                int rem = itemsArray.Length % procs;
+                int cycle = Convert.ToInt32(Math.Floor((double)itemsArray.Length / (double)procCount));
+                int rem = itemsArray.Length % procCount;
                 if (rem > 0)
                     cycle++;
                 int arraySize = itemsArray.Length;
-                for (int i = 0; i < procs; i++)
+                for (int i = 0; i < procCount; i++)
                 {
                     T[] array = new T[] { };
                     Array.Resize<T>(ref array, cycle > arraySize ? arraySize : cycle);

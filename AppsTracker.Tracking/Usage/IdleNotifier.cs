@@ -10,10 +10,9 @@ using AppsTracker.Common.Utils;
 namespace AppsTracker.Tracking
 {
     [Export(typeof(IIdleNotifier))]
-    public class IdleMonitor : IIdleNotifier
+    public class IdleNotifier : IIdleNotifier
     {
-        private readonly ISqlSettingsService settingsService;
-        
+        private readonly ISqlSettingsService settingsService;        
         private readonly ISyncContext syncContext;
 
         private bool disposed = false;
@@ -32,7 +31,7 @@ namespace AppsTracker.Tracking
         public event EventHandler IdleStoped;
 
         [ImportingConstructor]
-        public IdleMonitor(ISyncContext syncContext, ISqlSettingsService settingsService)
+        public IdleNotifier(ISyncContext syncContext, ISqlSettingsService settingsService)
         {
             this.syncContext = syncContext;
             this.settingsService = settingsService;
@@ -112,7 +111,7 @@ namespace AppsTracker.Tracking
             hooksRemoved = true;
         }
 
-        ~IdleMonitor()
+        ~IdleNotifier()
         {
             Dispose(false);
         }
