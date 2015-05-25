@@ -20,17 +20,17 @@ namespace AppsTracker.Widgets
 
         private void path_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            VisualStateManager.GoToState(this, "MouseEnter", true);
+            VisualStateManager.GoToState(this, "MouseEntered", true);
         }
 
         private void path_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            VisualStateManager.GoToState(this, "MouseLeave", true);
+            VisualStateManager.GoToState(this, "MouseLeft", true);
         }
 
         private void Path_MouseEnter_1(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            VisualStateManager.GoToState(this, "MouseEnter", true);
+            VisualStateManager.GoToState(this, "MouseEntered", true);
         }
     }
 }

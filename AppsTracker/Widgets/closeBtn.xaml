@@ -10,14 +10,14 @@
 	<Grid Width="50" Height="50" ClipToBounds="True">
 		<VisualStateManager.VisualStateGroups>
 			<VisualStateGroup x:Name="MouseGroup">
-				<VisualState x:Name="MouseEnter">
+				<VisualState x:Name="MouseEntered">
 					<Storyboard>
 						<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path">
 							<EasingColorKeyFrame KeyTime="0" Value="#BFB0AEAE"/>
 						</ColorAnimationUsingKeyFrames>
 					</Storyboard>
 				</VisualState>
-				<VisualState x:Name="MouseLeave">
+				<VisualState x:Name="MouseLeft">
 					<Storyboard>
 						<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path">
 							<EasingColorKeyFrame KeyTime="0" Value="#7F818181"/>
