@@ -11,6 +11,5 @@ namespace AppsTracker.Data.Service
 {
     public interface IBaseService
     {
-
     }
 }

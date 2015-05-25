@@ -6,9 +6,9 @@
  */
 #endregion
 
+using System.ComponentModel.Composition;
 using System.Windows.Input;
 using AppsTracker.MVVM;
-using System.ComponentModel.Composition;
 
 namespace AppsTracker.ViewModels
 {
@@ -51,7 +51,7 @@ namespace AppsTracker.ViewModels
         {
             RegisterChild(() => ProduceValue(appDetailsVMFactory));
             RegisterChild(() => ProduceValue(screenshotsVMFactory));
-            RegisterChild(() => ProduceValue(daySummaryVMFactory));        
+            RegisterChild(() => ProduceValue(daySummaryVMFactory));
 
             SelectedChild = GetChild<AppDetailsViewModel>();
         }

@@ -113,9 +113,9 @@
     <Compile Include="Models\ViewModels\UsageModels.cs" />
     <Compile Include="Service\Categories\CategoriesService.cs" />
     <Compile Include="Service\Categories\ICategoriesService.cs" />
-    <Compile Include="Service\DataService.cs" />
+    <Compile Include="Service\Data\DataService.cs" />
     <Compile Include="Service\IBaseService.cs" />
-    <Compile Include="Service\IDataService.cs" />
+    <Compile Include="Service\Data\IDataService.cs" />
     <Compile Include="Service\Settings\ISqlSettingsService.cs" />
     <Compile Include="Service\Settings\IXmlSettingsService.cs" />
     <Compile Include="Service\Settings\SqlSettingsService.cs" />

@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-
 using AppsTracker.Data.Models;
 
 namespace AppsTracker.Data.Service
