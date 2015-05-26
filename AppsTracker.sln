@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTracker", "AppsTracker\AppsTracker.csproj", "{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6279DB1C-E26B-4F4B-993E-EC985417A0CF} = {6279DB1C-E26B-4F4B-993E-EC985417A0CF}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D24EB643-F203-4500-9CBE-4B50EB3361B4}"
 EndProject
