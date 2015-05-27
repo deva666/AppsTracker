@@ -19,7 +19,7 @@ namespace AppsTracker.Tracking
         private bool idleEntered = false;
         private bool hooksRemoved = true;
 
-        private Timer idleTimer;
+        private readonly Timer idleTimer;
 
         private KeyboardHookCallback keyboardHookCallback = null;
         private MouseHookCallback mouseHookCallback = null;
@@ -88,7 +88,7 @@ namespace AppsTracker.Tracking
             if (Volatile.Read(ref idleEntered))
                 return;
 
-            IdleTimeInfo idleInfo = IdleTimeWatcher.GetIdleTimeInfo();
+            var idleInfo = IdleTimeWatcher.GetIdleTimeInfo();
 
             if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(settingsService.Settings.IdleTimer))
             {
