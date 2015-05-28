@@ -15,24 +15,27 @@ namespace AppsTracker.Data.Service
         private readonly ITrayIcon trayIcon;
         private readonly IEnumerable<ExportFactory<IShell, IShellMetaData>> shellFactories;
 
+        private readonly MeasureProvider measureProvider;
+
         private IShell mainWindow;
         private IShell limitNotifyWindow;
 
         [ImportingConstructor]
-        public WindowService(ISqlSettingsService sqlSettingsService, 
+        public WindowService(ISqlSettingsService sqlSettingsService,
                              IXmlSettingsService xmlSettingsService,
-                             ITrayIcon trayIcon, 
-                             [ImportMany]IEnumerable<ExportFactory<IShell,IShellMetaData>> shellFactories)
+                             ITrayIcon trayIcon,
+                             [ImportMany]IEnumerable<ExportFactory<IShell, IShellMetaData>> shellFactories,
+                             MeasureProvider measureProvider)
         {
             this.sqlSettingsService = sqlSettingsService;
             this.xmlSettingsService = xmlSettingsService;
             this.trayIcon = trayIcon;
             this.shellFactories = shellFactories;
+            this.measureProvider = measureProvider;
 
             limitNotifyWindow = GetShell("Limit toast window");
             limitNotifyWindow.Show();
         }
-
 
         public void ShowMessageDialog(string message, bool showCancel = true)
         {
@@ -58,9 +61,9 @@ namespace AppsTracker.Data.Service
             msgWindow.Show();
         }
 
-        public void ShowShell(string shellUse) 
+        public void ShowShell(string shellUse)
         {
-            var factory = shellFactories.Single(s => s.Metadata.ShellUse == shellUse);                                        
+            var factory = shellFactories.Single(s => s.Metadata.ShellUse == shellUse);
             using (var context = factory.CreateExport())
             {
                 context.Value.Show();
@@ -97,12 +100,12 @@ namespace AppsTracker.Data.Service
         {
             var bounds = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
             double left, top, width, height;
-            var widthRatio = bounds.Width * 0.15d;
-            var heightRatio = bounds.Height * 0.15d;
-            left = bounds.Left + widthRatio;
-            top = bounds.Top + heightRatio;
-            width = bounds.Width - widthRatio * 2;
-            height = bounds.Height - heightRatio * 2;
+            var widthRatio = bounds.Width / measureProvider.ScaleX * 0.15d;
+            var heightRatio = bounds.Height / measureProvider.ScaleY * 0.15d;
+            left = bounds.Left / measureProvider.ScaleX + widthRatio;
+            top = bounds.Top / measureProvider.ScaleY + heightRatio;
+            width = bounds.Width / measureProvider.ScaleX - widthRatio * 2;
+            height = bounds.Height / measureProvider.ScaleY - heightRatio * 2;
             mainWindow.Left = left;
             mainWindow.Top = top;
             mainWindow.Width = width;

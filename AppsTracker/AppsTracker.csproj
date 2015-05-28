@@ -214,6 +214,7 @@
     <Compile Include="Widgets\LicenceWindow.xaml.cs">
       <DependentUpon>LicenceWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Widgets\MeasureProvider.cs" />
     <Compile Include="Widgets\ModernButton.cs" />
     <Compile Include="Widgets\Next.xaml.cs">
       <DependentUpon>Next.xaml</DependentUpon>

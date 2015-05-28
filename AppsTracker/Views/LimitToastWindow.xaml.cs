@@ -22,6 +22,7 @@ namespace AppsTracker.Views
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
+        private readonly MeasureProvider measureProvider;
         private readonly DispatcherTimer timer;
 
         private AppLimit currentLimit;
@@ -29,11 +30,13 @@ namespace AppsTracker.Views
         [ImportingConstructor]
         public LimitToastWindow(IXmlSettingsService xmlSettingsService,
                                 ITrackingService trackingService,
-                                IMediator mediator)
+                                IMediator mediator,
+                                MeasureProvider measureProvider)
         {
             this.xmlSettingsService = xmlSettingsService;
             this.trackingService = trackingService;
             this.mediator = mediator;
+            this.measureProvider = measureProvider;
 
             InitializeComponent();
 
@@ -80,8 +83,8 @@ namespace AppsTracker.Views
             this.Opacity = 1;
             this.Topmost = true;
             var bounds = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
-            var newTop = bounds.Bottom - this.Height - 35;
-            this.Left = bounds.Right - this.Width - 5;
+            var newTop = bounds.Height / measureProvider.ScaleY - this.Height - 35;
+            this.Left = bounds.Width / measureProvider.ScaleX - this.Width - 5;
 
             AnimateWindowTopPosition(newTop);
         }
@@ -91,7 +94,6 @@ namespace AppsTracker.Views
             this.Topmost = false;
             this.Opacity = 0.5;
             var bounds = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
-            this.Left = bounds.Right - this.Width - 5;
             var newTop = bounds.Bottom + 5;
 
             if (cbDontShow.IsChecked.HasValue && cbDontShow.IsChecked.Value)

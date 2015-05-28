@@ -477,6 +477,8 @@ namespace AppsTracker.Common.Utils
 
         [DllImport("gdi32.dll")]
         public static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
+
+
         #endregion
 
         #region class methods
