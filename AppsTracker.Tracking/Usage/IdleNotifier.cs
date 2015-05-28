@@ -12,7 +12,10 @@ namespace AppsTracker.Tracking
     [Export(typeof(IIdleNotifier))]
     public class IdleNotifier : IIdleNotifier
     {
-        private readonly ISqlSettingsService settingsService;        
+        private const int TIMER_PERIOD = 5000;
+        private const int TIMER_DELAY = 1 * 60 * 1000;
+
+        private readonly ISqlSettingsService settingsService;
         private readonly ISyncContext syncContext;
 
         private bool disposed = false;
@@ -35,7 +38,7 @@ namespace AppsTracker.Tracking
         {
             this.syncContext = syncContext;
             this.settingsService = settingsService;
-            idleTimer = new Timer(CheckIdleState, null, 1 * 60 * 1000, 1000);
+            idleTimer = new Timer(CheckIdleState, null, TIMER_DELAY, TIMER_PERIOD);
         }
 
         private void SetHooks()
@@ -79,7 +82,7 @@ namespace AppsTracker.Tracking
 
             Volatile.Write(ref idleEntered, false);
             RemoveHooks();
-            idleTimer.Change(1 * 60 * 1000, 1000);
+            idleTimer.Change(TIMER_DELAY, TIMER_PERIOD);
             IdleStoped.InvokeSafely(this, EventArgs.Empty);
         }
 
