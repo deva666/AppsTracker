@@ -6,12 +6,11 @@
  */
 #endregion
 
-using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
-using AppsTracker.Common.Communication;
 
 namespace AppsTracker.MVVM
 {
@@ -21,7 +20,7 @@ namespace AppsTracker.MVVM
 
         private readonly ISqlSettingsService settingsService;
         private readonly IMediator mediator;
-                
+
         private string infoMessage;
 
         public string InfoMessage
@@ -57,11 +56,11 @@ namespace AppsTracker.MVVM
             this.settingsService = settingsService;
             this.mediator = mediator;
 
-            this.mediator.Register(MediatorMessages.RELOAD_SETTINGS, ReloadSettings);
-            Settings = this.settingsService.Settings;
+            this.mediator.Register(MediatorMessages.RELOAD_SETTINGS, LoadSettings);
+            LoadSettings();
         }
 
-        private void ReloadSettings()
+        private void LoadSettings()
         {
             Settings = settingsService.Settings; ;
         }

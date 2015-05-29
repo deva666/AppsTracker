@@ -16,7 +16,7 @@ namespace AppsTracker.MVVM
     {
         private bool working;
 
-        private object _lock = new object();
+        private readonly object _lock = new object();
 
         public abstract string Title { get; }
 

@@ -49,6 +49,5 @@ namespace AppsTracker.Common.Utils
             timer.Stop();
             timer.Start();
         }
-
     }
 }
