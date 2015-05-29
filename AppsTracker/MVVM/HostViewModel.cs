@@ -16,7 +16,7 @@ namespace AppsTracker.MVVM
 {
     public abstract class HostViewModel : ViewModelBase
     {
-        private readonly Dictionary<Type, ViewModelResolver> childrenMap = new Dictionary<Type, ViewModelResolver>();
+        private readonly IDictionary<Type, ViewModelResolver> childrenMap = new Dictionary<Type, ViewModelResolver>();
 
         private ViewModelBase selectedChild;
 
