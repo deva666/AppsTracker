@@ -57,27 +57,29 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
 
-                <Button Content="Create new category"
-                        Name="btnNewCategory"
-                        Grid.Row="2"
-                        Width="140"
-                        Margin="0,50,0,0">
-                    <Button.InputBindings>
+                <Label Content="Create new category"
+                       Name="btnNewCategory"
+                       Grid.Row="2"
+                       Width="140"
+                       Style="{DynamicResource SelectableLabelStyle}"
+                       Margin="0,50,0,0">
+                    <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding ShowNewCategoryCommand}"
                                       CommandParameter="True" />
-                    </Button.InputBindings>
-                </Button>
-                <Button Content="Delete selected category"
-                        Grid.Row="3"
-                        Width="160"
-                        Margin="0,15,0,0"
-                        IsEnabled="{Binding ElementName=lbCategories, Path=SelectedIndex, Converter={StaticResource selectedIndexConverter}}">
-                    <Button.InputBindings>
+                    </Label.InputBindings>
+                </Label>
+                <Label Content="Delete selected category"
+                       Grid.Row="3"
+                       Width="160"
+                       Margin="0,15,0,0"
+                       Style="{DynamicResource SelectableLabelStyle}"
+                       IsEnabled="{Binding ElementName=lbCategories, Path=SelectedIndex, Converter={StaticResource selectedIndexConverter}}">
+                    <Label.InputBindings>
                         <MouseBinding Gesture="LeftClick"
                                       Command="{Binding DeleteCategoryCommand}" />
-                    </Button.InputBindings>
-                </Button>
+                    </Label.InputBindings>
+                </Label>
                 <Button Content="Save changes"
                         Grid.Row="4"
                         Grid.Column="0"
@@ -118,7 +120,7 @@
                                      Width="150"
                                      Text="{Binding NewCategoryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      Background="{DynamicResource WindowBackgroundBrush}"
-                                     MaxLength="20"/>
+                                     MaxLength="20" />
                             <StackPanel Orientation="Horizontal"
                                         Grid.Row="2">
                                 <Button Content="Save">

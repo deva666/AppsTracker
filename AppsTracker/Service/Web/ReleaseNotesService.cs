@@ -1,19 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 
-namespace AppsTracker.Data.Service
+namespace AppsTracker.Service.Web
 {
-    public sealed class ReleaseNotesService
+    [Export(typeof(IReleaseNotesService))]
+    internal sealed class ReleaseNotesService : IReleaseNotesService
     {
+#if DEBUG
+        private const string SERVER_URI = "http://localhost:8000/release_notes";
+#else
         private const string SERVER_URI = "http://www.theappstracker.com/release_notes";
+#endif
+        private readonly ReleaseNotesParser releaseNotesParser;
 
-        public async Task< IEnumerable<ReleaseNote>> GetReleaseNotes()
+        [ImportingConstructor]
+        public ReleaseNotesService(ReleaseNotesParser releaseNotesParser)
+        {
+            this.releaseNotesParser = releaseNotesParser;
+        }
+
+        public async Task<IEnumerable<ReleaseNote>> GetReleaseNotesAsync()
         {
             var httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(SERVER_URI);
             httpWebRequest.Proxy = WebRequest.DefaultWebProxy;
@@ -23,9 +33,11 @@ namespace AppsTracker.Data.Service
             var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
-                //return await streamReader.ReadToEndAsync();
+
+                var json = await streamReader.ReadToEndAsync();
+
+                return releaseNotesParser.ParseJson(json);
             }
-            return null;
         }
     }
 }

@@ -166,6 +166,8 @@
     <Compile Include="Controllers\TrackingController.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Service\Web\FeedbackReportService.cs" />
+    <Compile Include="Service\Web\IReleaseNotesService.cs" />
+    <Compile Include="Service\Web\ReleaseNotesParser.cs" />
     <Compile Include="Service\Web\ReleaseNotesService.cs" />
     <Compile Include="Service\Window\IWindowService.cs" />
     <Compile Include="Service\Window\WindowService.cs" />

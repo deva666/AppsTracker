@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 
 namespace AppsTracker.Data.Models
 {
-    public class ReleaseNote
+    public sealed class ReleaseNote
     {
         public string Version { get; private set; }
-        public string Note { get; private set; }
+        public IEnumerable<string> Notes { get; private set; }
+
+        public ReleaseNote(string version, IEnumerable<string> notes)
+        {
+            Version = version;
+            Notes = notes;
+        }
     }
 }

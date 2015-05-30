@@ -195,6 +195,9 @@ namespace AppsTracker.Data.Service
 
                         var latestDateKnown = new DateTime[] { lastLogDate, lastUsageDate, lastUnfinishedLogDate }.OrderByDescending(d => d.Ticks).FirstOrDefault();
 
+                        if (latestDateKnown == DateTime.MinValue)
+                            latestDateKnown = usage.UsageStart;
+
                         usage.UsageEnd = latestDateKnown;
                         usage.IsCurrent = false;
                         context.Entry(usage).State = EntityState.Modified;
