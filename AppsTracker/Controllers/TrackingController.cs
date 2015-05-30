@@ -20,10 +20,10 @@ namespace AppsTracker.Controllers
     [Export(typeof(ITrackingController))]
     internal sealed class TrackingController : ITrackingController
     {
-        private readonly IEnumerable<IModule> modules;
+        private readonly IEnumerable<ITrackingModule> modules;
 
         [ImportingConstructor]
-        public TrackingController([ImportMany]IEnumerable<IModule> modules)
+        public TrackingController([ImportMany]IEnumerable<ITrackingModule> modules)
         {
             this.modules = modules;
         }

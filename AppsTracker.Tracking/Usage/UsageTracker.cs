@@ -15,8 +15,8 @@ using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
 {
-    [Export(typeof(IModule))]
-    internal sealed class UsageTracker : IModule
+    [Export(typeof(ITrackingModule))]
+    internal sealed class UsageTracker : ITrackingModule
     {
         private bool isTrackingEnabled;
 

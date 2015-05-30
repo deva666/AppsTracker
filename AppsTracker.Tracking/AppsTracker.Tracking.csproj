@@ -49,11 +49,11 @@
     <Compile Include="Helpers\SyncContext.cs" />
     <Compile Include="Hooks\EventArgs\KeyboardHookArgs.cs" />
     <Compile Include="Hooks\EventArgs\WindowChangedArgs.cs" />
-    <Compile Include="Hooks\IWindowNotifier.cs" />
+    <Compile Include="Hooks\IWindowChangedNotifier.cs" />
     <Compile Include="Hooks\KeyboardHook.cs" />
     <Compile Include="Hooks\MouseHook.cs" />
     <Compile Include="Hooks\WinHook.cs" />
-    <Compile Include="IModule.cs" />
+    <Compile Include="ITrackingModule.cs" />
     <Compile Include="Limits\ILimitHandler.cs" />
     <Compile Include="Limits\IMidnightNotifier.cs" />
     <Compile Include="Limits\LimitHandler.cs" />

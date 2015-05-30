@@ -11,7 +11,7 @@ using AppsTracker.Data.Models;
 
 namespace AppsTracker.Tracking
 {
-    public interface IModule : IDisposable
+    public interface ITrackingModule : IDisposable
     {
         void SettingsChanged(Setting settings);
         void Initialize(Setting settings);

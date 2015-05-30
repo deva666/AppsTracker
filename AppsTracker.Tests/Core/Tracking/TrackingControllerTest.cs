@@ -14,8 +14,8 @@ namespace AppsTracker.Tests.Core.Tracking
         public void TestModuleInitialization()
         {
             var settings = new Setting() { LoggingEnabled = true };
-            var module = new Mock<IModule>();
-            var trackingController = new TrackingController(new IModule[] { module.Object });
+            var module = new Mock<ITrackingModule>();
+            var trackingController = new TrackingController(new ITrackingModule[] { module.Object });
             trackingController.Initialize(settings);
             module.Verify(m => m.Initialize(settings), Times.Once);
         }
@@ -24,8 +24,8 @@ namespace AppsTracker.Tests.Core.Tracking
         public void TestSettingsChanging()
         {
             var settings = new Setting() { LoggingEnabled = true };
-            var module = new Mock<IModule>();
-            var trackingController = new TrackingController(new IModule[] { module.Object });
+            var module = new Mock<ITrackingModule>();
+            var trackingController = new TrackingController(new ITrackingModule[] { module.Object });
             trackingController.SettingsChanging(settings);
             module.Verify(m => m.SettingsChanged(settings), Times.Once);
         }
@@ -33,8 +33,8 @@ namespace AppsTracker.Tests.Core.Tracking
         [TestMethod]
         public void TestDispose()
         {
-            var module = new Mock<IModule>();
-            var trackingController = new TrackingController(new IModule[] { module.Object });
+            var module = new Mock<ITrackingModule>();
+            var trackingController = new TrackingController(new ITrackingModule[] { module.Object });
             trackingController.Dispose();
             module.Verify(m => m.Dispose(), Times.Once);   
         }

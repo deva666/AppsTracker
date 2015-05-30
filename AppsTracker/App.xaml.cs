@@ -70,7 +70,7 @@ namespace AppsTracker
             catalog.Catalogs.Add(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Data.Service.IDataService).Assembly));
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Common.Communication.IMediator).Assembly));
-            catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Tracking.IModule).Assembly));
+            catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Tracking.ITrackingModule).Assembly));
             var container = new CompositionContainer(catalog);
             var batch = new CompositionBatch();
             batch.AddExportedValue(container);

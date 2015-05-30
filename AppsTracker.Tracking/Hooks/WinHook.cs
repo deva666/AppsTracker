@@ -15,8 +15,8 @@ using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Hooks
 {
-    [Export(typeof(IWindowNotifier))]
-    public sealed class WinHook : IWindowNotifier
+    [Export(typeof(IWindowChangedNotifier))]
+    public sealed class WinHook : IWindowChangedNotifier
     {
         public event EventHandler<WindowChangedArgs> WindowChanged;
 

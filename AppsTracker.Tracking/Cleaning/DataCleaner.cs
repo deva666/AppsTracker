@@ -12,8 +12,8 @@ using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
 {
-    [Export(typeof(IModule))]
-    internal sealed class DataCleaner : IModule
+    [Export(typeof(ITrackingModule))]
+    internal sealed class DataCleaner : ITrackingModule
     {
         private readonly ILogCleaner logCleanerInstance;
 

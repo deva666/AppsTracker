@@ -17,8 +17,8 @@ using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
 {
-    [Export(typeof(IModule))]
-    internal sealed class WindowTracker : IModule
+    [Export(typeof(ITrackingModule))]
+    internal sealed class WindowTracker : ITrackingModule
     {
         private bool isTrackingEnabled;
 
@@ -26,13 +26,13 @@ namespace AppsTracker.Tracking
 
         private readonly ITrackingService trackingService;
         private readonly IDataService dataService;
-        private readonly IWindowNotifier windowNotifierInstance;
+        private readonly IWindowChangedNotifier windowNotifierInstance;
         private readonly ISyncContext syncContext;
         private readonly IScreenshotTracker screenshotTracker;
         private readonly IWindowHelper windowHelper;
         private readonly IMediator mediator;
 
-        private LazyInit<IWindowNotifier> windowNotifier;
+        private LazyInit<IWindowChangedNotifier> windowNotifier;
         private LazyInit<System.Threading.Timer> windowCheckTimer;
 
         private Log currentLog;
@@ -41,7 +41,7 @@ namespace AppsTracker.Tracking
         [ImportingConstructor]
         public WindowTracker(ITrackingService trackingService,
                              IDataService dataService,
-                             IWindowNotifier windowNotifier,
+                             IWindowChangedNotifier windowNotifier,
                              IScreenshotTracker screenshotTracker,
                              ISyncContext syncContext,
                              IWindowHelper windowHelper,
@@ -70,7 +70,7 @@ namespace AppsTracker.Tracking
             screenshotTracker.Initialize(settings);
             screenshotTracker.ScreenshotTaken += OnScreenshotTaken;
 
-            windowNotifier = new LazyInit<IWindowNotifier>(() => windowNotifierInstance,
+            windowNotifier = new LazyInit<IWindowChangedNotifier>(() => windowNotifierInstance,
                                                            w => w.WindowChanged += WindowChanging,
                                                            w => w.WindowChanged -= WindowChanging);
 

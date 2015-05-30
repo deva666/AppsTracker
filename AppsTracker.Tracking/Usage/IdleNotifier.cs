@@ -41,6 +41,22 @@ namespace AppsTracker.Tracking
             idleTimer = new Timer(CheckIdleState, null, TIMER_DELAY, TIMER_PERIOD);
         }
 
+        private void CheckIdleState(object sender)
+        {
+            if (Volatile.Read(ref idleEntered))
+                return;
+
+            var idleInfo = IdleTimeWatcher.GetIdleTimeInfo();
+
+            if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(settingsService.Settings.IdleTimer))
+            {
+                idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+                Volatile.Write(ref idleEntered, true);
+                syncContext.Invoke(s => SetHooks());
+                syncContext.Invoke(s => IdleEntered.InvokeSafely(this, EventArgs.Empty));
+            }
+        }
+
         private void SetHooks()
         {
             if (keyboardHookHandle == IntPtr.Zero && mouseHookHandle == IntPtr.Zero)
@@ -58,8 +74,7 @@ namespace AppsTracker.Tracking
                 hooksRemoved = false;
             }
         }
-
-
+        
         private IntPtr KeyboardHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0)
@@ -86,21 +101,6 @@ namespace AppsTracker.Tracking
             IdleStoped.InvokeSafely(this, EventArgs.Empty);
         }
 
-        private void CheckIdleState(object sender)
-        {
-            if (Volatile.Read(ref idleEntered))
-                return;
-
-            var idleInfo = IdleTimeWatcher.GetIdleTimeInfo();
-
-            if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(settingsService.Settings.IdleTimer))
-            {
-                idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-                Volatile.Write(ref idleEntered, true);
-                syncContext.Invoke(s => SetHooks());
-                syncContext.Invoke(s => IdleEntered.InvokeSafely(this, EventArgs.Empty));
-            }
-        }
 
         private void RemoveHooks()
         {
