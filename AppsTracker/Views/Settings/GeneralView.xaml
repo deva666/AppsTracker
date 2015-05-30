@@ -35,15 +35,21 @@
                    FontSize="18"
                    HorizontalAlignment="Left"
                    Grid.Row="0" />
-            <Button Grid.Row="1"
-                    Margin="20,10,20,10"
-                    Content="About apps tracker">
-                <Button.InputBindings>
-                    <MouseBinding  Gesture="LeftClick"
-                                   Command="{Binding ShowAboutWindowCommand}" />
-                </Button.InputBindings>
-            </Button>
-
+            <StackPanel Grid.Row="1">
+                <Button Content="About apps tracker" Margin="20,10,20,10">
+                    <Button.InputBindings>
+                        <MouseBinding  Gesture="LeftClick"
+                                       Command="{Binding ShowAboutWindowCommand}" />
+                    </Button.InputBindings>
+                </Button>
+                <Button Content="Release notes"
+                        Margin="20,5,20,10">
+                    <Button.InputBindings>
+                        <MouseBinding  Gesture="LeftClick"
+                                       Command="{Binding ShowReleaseNotesCommand}" />
+                    </Button.InputBindings>
+                </Button>
+            </StackPanel>
             <Label Style="{DynamicResource LabelStyle}"
                    Content="Run apps tracker on Windows startup:"
                    Grid.Row="2"

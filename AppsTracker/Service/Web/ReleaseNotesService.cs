@@ -8,7 +8,7 @@ using AppsTracker.Data.Models;
 namespace AppsTracker.Service.Web
 {
     [Export(typeof(IReleaseNotesService))]
-    internal sealed class ReleaseNotesService : IReleaseNotesService
+    public sealed class ReleaseNotesService : IReleaseNotesService
     {
 #if DEBUG
         private const string SERVER_URI = "http://localhost:8000/release_notes";

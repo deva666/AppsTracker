@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
+
 namespace AppsTracker.Service.Web
 {
-    interface IReleaseNotesService
+    public interface IReleaseNotesService
     {
         Task<IEnumerable<ReleaseNote>> GetReleaseNotesAsync();
     }

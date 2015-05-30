@@ -9,6 +9,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AppsTracker.Common.Utils;
 
 namespace AppsTracker.MVVM
 {
@@ -43,8 +44,22 @@ namespace AppsTracker.MVVM
 
         public AsyncProperty(Func<T> getter, IWorker worker)
         {
+            Ensure.NotNull(getter, "getter");
+            Ensure.NotNull(worker, "worker");
+
             this.worker = worker;
             this.getter = getter;
+        }
+
+        public AsyncProperty(Task<T> future, IWorker worker)
+        {
+            Ensure.NotNull(future, "future");
+            Ensure.NotNull(worker, "worker");
+
+            task = future;
+            this.worker = worker;
+
+            ObserveTask(task);
         }
 
         public void Reset()

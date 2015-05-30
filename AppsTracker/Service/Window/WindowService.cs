@@ -63,10 +63,18 @@ namespace AppsTracker.Data.Service
 
         public void ShowShell(string shellUse)
         {
-            var factory = shellFactories.Single(s => s.Metadata.ShellUse == shellUse);
-            using (var context = factory.CreateExport())
+            try
             {
-                context.Value.Show();
+                var factory = shellFactories.Single(s => s.Metadata.ShellUse == shellUse);
+                using (var context = factory.CreateExport())
+                {
+                    context.Value.Show();
+                }
+            }
+            catch (CompositionException e)
+            {
+
+                Console.WriteLine(e.Message);
             }
         }
 

@@ -174,12 +174,16 @@
     <Compile Include="ServiceLocation\IServiceResolver.cs" />
     <Compile Include="ServiceLocation\ServiceResolver.cs" />
     <Compile Include="ViewModels\CategoryStatsViewModel.cs" />
+    <Compile Include="ViewModels\ReleaseNotesViewModel.cs" />
     <Compile Include="ViewModels\SettingsAppCategoriesViewModel.cs" />
     <Compile Include="ViewModels\SettingsLimitsViewModel.cs" />
     <Compile Include="Views\IShell.cs" />
     <Compile Include="Views\IShellMetaData.cs" />
     <Compile Include="Views\LimitToastWindow.xaml.cs">
       <DependentUpon>LimitToastWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReleaseNotesWindow.xaml.cs">
+      <DependentUpon>ReleaseNotesWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings\AppCategoriesView.xaml.cs">
       <DependentUpon>AppCategoriesView.xaml</DependentUpon>
@@ -378,6 +382,10 @@
     </Compile>
     <Compile Include="Utils\Hash.cs" />
     <Page Include="Views\LimitToastWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReleaseNotesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

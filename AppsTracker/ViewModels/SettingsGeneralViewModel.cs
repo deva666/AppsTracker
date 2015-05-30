@@ -31,6 +31,7 @@ namespace AppsTracker.ViewModels
 
         public ICommand ShowAboutWindowCommand
         {
+
             get { return showAboutWindowCommand ?? (showAboutWindowCommand = new DelegateCommand(ShowAboutWindow)); }
         }
 
@@ -39,7 +40,8 @@ namespace AppsTracker.ViewModels
 
         public ICommand SetStartupCommand
         {
-            get { return setStartupCommand ?? (setStartupCommand = new DelegateCommand(SetStartup)); }
+            get { return setStartupCommand ?? 
+                (setStartupCommand = new DelegateCommand(SetStartup)); }
         }
 
 
@@ -47,7 +49,20 @@ namespace AppsTracker.ViewModels
 
         public ICommand ChangeThemeCommand
         {
-            get { return changeThemeCommand == null ? changeThemeCommand = new DelegateCommand(ChangeTheme) : changeThemeCommand; }
+            get { return changeThemeCommand ?? 
+                (changeThemeCommand = new DelegateCommand(ChangeTheme)); }
+        }
+
+
+        private ICommand showReleaseNotesCommand;
+
+        public ICommand ShowReleaseNotesCommand
+        {
+            get
+            {
+                return showReleaseNotesCommand ??
+                    (showReleaseNotesCommand = new DelegateCommand(ShowReleaseNotes));
+            }
         }
 
 
@@ -100,6 +115,12 @@ namespace AppsTracker.ViewModels
                 Settings.LightTheme = true;
             else if ((parameter as string) == "Dark")
                 Settings.LightTheme = false;
+        }
+
+
+        private void ShowReleaseNotes()
+        {
+            windowService.ShowShell("Release notes window");
         }
     }
 }

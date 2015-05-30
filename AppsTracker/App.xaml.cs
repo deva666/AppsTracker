@@ -57,7 +57,7 @@ namespace AppsTracker
 
             bool autostart = args.Where(a => a.ToUpper().Contains(Constants.CMD_ARGS_AUTOSTART)).Count() > 0;
             applicationController = container.GetExportedValue<IApplicationController>();
-            applicationController.Initialize(autostart);
+            applicationController.Initialize(autostart);           
 
             this.SessionEnding += (s, e) => ShutdownApp();
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
