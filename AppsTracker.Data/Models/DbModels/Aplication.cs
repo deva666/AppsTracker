@@ -101,26 +101,6 @@ namespace AppsTracker.Data.Models
         public virtual Uzer User { get; set; }
         public virtual ICollection<Window> Windows { get; set; }
         public virtual ICollection<AppCategory> Categories { get; set; }
-        public virtual ICollection<AppLimit> Limits { get; set; }
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null || obj.GetType() != typeof(Aplication))
-                return false;
-
-            var comparingApp = (Aplication)obj;
-            return this.ApplicationID == comparingApp.ApplicationID && this.UserID == comparingApp.UserID;
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hash = 17;
-                hash = hash * 23 + ApplicationID.GetHashCode();
-                hash = hash * 23 + UserID.GetHashCode();
-                return hash;
-            }
-        }
+        public virtual ICollection<AppLimit> Limits { get; set; }   
     }
 }
