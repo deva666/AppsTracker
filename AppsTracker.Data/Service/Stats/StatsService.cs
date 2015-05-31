@@ -692,7 +692,7 @@ namespace AppsTracker.Data.Service
                 {
                     dayEnd = "N/A";
                 }
-                else if (loginEnd.IsCurrent && loginEnd.UsageEnd.Date < today)
+                else if (loginEnd.UsageEnd.Date < today)
                 {
                     dayEnd = "24:00";
                 }
