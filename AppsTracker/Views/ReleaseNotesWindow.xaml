@@ -1,22 +1,34 @@
 ﻿<Window x:Class="AppsTracker.Views.ReleaseNotesWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:AppsTracker.Widgets"
+        xmlns:local="clr-namespace:AppsTracker"
         Title="Release notes"
         Style="{StaticResource WindowStyleWithFade}"
         Icon="../Resources/AppsTrackerIcon.ico"
-        MinHeight="400"
-        MinWidth="600"
-        ResizeMode="CanResizeWithGrip">
+        Height="700"
+        Width="700"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local:ConvertBoolToVisibility x:Key="convertVisibility" />
+        <local:ConvertNullToBool x:Key="convertNullToBool" />
+        <local:ConvertNullToBoolBack x:Key="convertNullToBoolBack" />
+        <HierarchicalDataTemplate x:Key="noteTemplate">
+
+        </HierarchicalDataTemplate>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Label Style="{DynamicResource LabelStyle}"
                Content="apps tracker release notes"
                HorizontalAlignment="Left"
-               Margin="10" />
+               Margin="20,10,10,10" />
         <StackPanel Grid.Column="2"
                     Orientation="Horizontal"
                     Margin="0,10,25,0"
@@ -34,13 +46,55 @@
                        VerticalAlignment="Top"
                        MouseLeftButtonDown="CloseButton_MouseLeftButtonDown" />
         </StackPanel>
+
         <Separator Grid.Row="1"
                    Grid.ColumnSpan="3"
                    Margin="30,0,30,0"
                    VerticalAlignment="Top" />
 
-        <TreeView Grid.Row="2"
-                  ItemsSource="{Binding ReleaseNotes.Result}" 
-                  />
+        <controls:FaderContentControl FaderVisibility="{Binding ReleaseNotes.Exception, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNullToBool}}"
+                                      Grid.Row="2">
+            <StackPanel HorizontalAlignment="Left">
+                <Label Style="{DynamicResource LabelStyle}"
+                       Content="An error occurred while trying to contact the server:"
+                       Margin="35,15,35,10" />
+                <Label Style="{DynamicResource LabelStyle}"
+                       Margin="35,5,35,10"
+                       Content="{Binding ReleaseNotes.Exception.Message}" />
+            </StackPanel>
+        </controls:FaderContentControl>
+
+        <controls:FaderContentControl FaderVisibility="{Binding ReleaseNotes.Exception, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNullToBoolBack}}"
+                                      Grid.Row="2">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          Grid.Row="2">
+                <TreeView ItemsSource="{Binding ReleaseNotes.Result}"
+                          Margin="35,15,35,15">
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Notes}">
+                            <Label Style="{DynamicResource LabelStyle}"
+                                   Content="{Binding Path=Version}"
+                                   FontSize="15" />
+                            <HierarchicalDataTemplate.ItemTemplate>
+                                <DataTemplate>
+                                    <Label Style="{DynamicResource LabelStyle}"
+                                           Content="{Binding}" />
+                                </DataTemplate>
+                            </HierarchicalDataTemplate.ItemTemplate>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+            </ScrollViewer>
+        </controls:FaderContentControl>
+
+        <controls:progressBar Visibility="{Binding Working, Converter={StaticResource convertVisibility}}"
+                              Grid.ColumnSpan="4"
+                              Grid.RowSpan="4" />
+        <Button Grid.Row="4"
+                Content="Close"
+                Width="75"
+                Margin="10,10,30,20"
+                HorizontalAlignment="Right" />
     </Grid>
+
 </Window>

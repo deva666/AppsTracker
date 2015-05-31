@@ -1091,6 +1091,13 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+            
+            <Style TargetType="{x:Type TreeView}">
+                <Setter Property="Background"
+                        Value="{DynamicResource WindowBackgroundBrush}" />
+                <Setter Property="BorderBrush"
+                        Value="{x:Null}" />
+            </Style>
 
 
             <SolidColorBrush x:Key="StandardBorderBrush"

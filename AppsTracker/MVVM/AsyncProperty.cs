@@ -18,6 +18,14 @@ namespace AppsTracker.MVVM
         private readonly IWorker worker;
         private readonly Func<T> getter;
 
+        private Exception exception;
+
+        public Exception Exception
+        {
+            get { return exception; }
+            set { SetPropertyValue(ref exception, value); }
+        }
+
         private Task<T> task;
 
         public Task<T> Task
@@ -85,8 +93,9 @@ namespace AppsTracker.MVVM
                 worker.Working = true;
                 result = await task.ConfigureAwait(false);
             }
-            catch
+            catch(Exception fail)
             {
+                this.Exception = fail;
             }
             finally
             {
@@ -97,6 +106,5 @@ namespace AppsTracker.MVVM
                 PropertyChanging("Result");
             }
         }
-
     }
 }
