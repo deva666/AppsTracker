@@ -15,13 +15,64 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="400" />
+                <ColumnDefinition Width="220" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="450" />
             </Grid.ColumnDefinitions>
+            <Grid  Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label Style="{DynamicResource LabelStyle}"
+                       HorizontalAlignment="Center"
+                       Content="Apps" />
+                <ListBox Name="lbApps"
+                         Grid.Row="1"
+                         BorderThickness="0"
+                         Margin="10,10,20,50"
+                         Background="Transparent"
+                         Foreground="{DynamicResource WindowForegroundBrush}"
+                         ItemsSource="{Binding AppList.Result}"
+                         SelectedItem="{Binding SelectedApp, Mode=TwoWay}"
+                         ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
+                         SelectionMode="Single"
+                         ItemTemplate="{StaticResource AppListBoxItemTemplate}" />
+                <Button Content="Save changes"
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="0,30,0,0"
+                        Width="120">
+                    <Button.InputBindings>
+                        <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding SaveChangesCommand}"
+                                      CommandParameter="True" />
+                    </Button.InputBindings>
+                </Button>
+                <controls:ScrollingContentControl Grid.Row="3"
+                                                  Margin="0,30,0,0"
+                                                  InfoContent="{Binding InfoMessage}">
+                    <Label Style="{DynamicResource LabelStyle}" />
+                </controls:ScrollingContentControl>
+            </Grid>
 
-            <Grid Grid.Column="0"                  
+
+            <Grid Grid.Column="1"
+                  Margin="10">
+                <Thumb Cursor="None"
+                       Margin="20">
+                    <Thumb.Template>
+                        <ControlTemplate>
+                            <Border BorderThickness="0.5"
+                                    BorderBrush="{StaticResource 2ndBackgroundBrush}">
+                            </Border>
+                        </ControlTemplate>
+                    </Thumb.Template>
+                </Thumb>
+            </Grid>
+            <Grid Grid.Column="2"
                   HorizontalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -65,22 +116,7 @@
                                       Command="{Binding DeleteSelectedLimitCommand}" />
                     </Label.InputBindings>
                 </Label>
-                <Button Content="Save changes"
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        Margin="0,30,0,0"
-                        Width="120">
-                    <Button.InputBindings>
-                        <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding SaveChangesCommand}"
-                                      CommandParameter="True" />
-                    </Button.InputBindings>
-                </Button>
-                <controls:ScrollingContentControl Grid.Row="5"
-                                                  Margin="0,30,0,0"
-                                                  InfoContent="{Binding InfoMessage}">
-                    <Label Style="{DynamicResource LabelStyle}" />
-                </controls:ScrollingContentControl>
+
                 <Popup IsOpen="{Binding IsAddNewPopupOpen}"
                        Placement="Right"
                        PlacementTarget="{Binding ElementName=lblAddNew}"
@@ -109,46 +145,6 @@
                     </Border>
                 </Popup>
             </Grid>
-            <Grid  Grid.Column="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Label Style="{DynamicResource LabelStyle}"
-                       HorizontalAlignment="Center"
-                       Content="Apps" />
-                <ListBox Name="lbApps"
-                         Grid.Row="1"
-                         BorderThickness="0"
-                         Margin="10,10,20,50"
-                         Background="Transparent"
-                         Foreground="{DynamicResource WindowForegroundBrush}"
-                         ItemsSource="{Binding AppList.Result}"
-                         SelectedItem="{Binding SelectedApp, Mode=TwoWay}"
-                         ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
-                         SelectionMode="Single"
-                         ItemTemplate="{StaticResource AppListBoxItemTemplate}" />                
-            </Grid>
-
-            <Grid Grid.Column="1"
-                  Margin="10">
-                <Thumb Cursor="None"
-                       Margin="20">
-                    <Thumb.Template>
-                        <ControlTemplate>
-                            <Border BorderThickness="0.5"
-                                    BorderBrush="{StaticResource 2ndBackgroundBrush}">
-                            </Border>
-                        </ControlTemplate>
-                    </Thumb.Template>
-                </Thumb>
-
-            </Grid>         
         </Grid>
     </ScrollViewer>
 </UserControl>
