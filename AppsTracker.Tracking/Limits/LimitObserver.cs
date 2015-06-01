@@ -101,6 +101,7 @@ namespace AppsTracker.Tracking
 
         private void OnWindowChanged(object sender, WindowChangedArgs e)
         {
+            StopTimers();
             currentDayLimit = currentWeekLimit = null;
             var app = trackingService.GetApp(e.AppInfo);
             LoadAppDurations(app);
@@ -128,8 +129,7 @@ namespace AppsTracker.Tracking
                 return;
             }
 
-            currentApp = app.Name;
-            StopTimers();
+            currentApp = app.Name;            
             if (appLimitsMap.ContainsKey(app.Name))
             {
                 var limits = appLimitsMap[app.Name];
