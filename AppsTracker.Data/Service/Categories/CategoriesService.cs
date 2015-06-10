@@ -24,6 +24,11 @@ namespace AppsTracker.Data.Service
         private Boolean isDisposed = false;
         private AppsEntities context;
 
+        public Aplication ReloadApp(Aplication app)
+        {
+            context = context ?? new AppsEntities();
+            return context.Applications.First(a => a.ApplicationID == app.ApplicationID);
+        }
 
         public List<Aplication> GetApps()
         {

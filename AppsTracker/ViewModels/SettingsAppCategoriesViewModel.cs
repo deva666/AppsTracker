@@ -231,7 +231,8 @@ namespace AppsTracker.ViewModels
 
         private void AppAdded(Aplication app)
         {
-            Applications.Add(app);
+            var reloadedApp = categoriesService.ReloadApp(app);
+            Applications.Add(reloadedApp);
         }
 
 
