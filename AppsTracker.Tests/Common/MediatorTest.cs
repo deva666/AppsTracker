@@ -12,7 +12,7 @@ using AppsTracker.Tests.Fakes.MVVM;
 using AppsTracker.Common.Communication;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AppsTracker.Tests.Core.MVVM
+namespace AppsTracker.Tests.Common
 {
     [TestClass]
     public class MediatorTest

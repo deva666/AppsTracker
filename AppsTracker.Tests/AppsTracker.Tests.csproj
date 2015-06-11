@@ -77,7 +77,7 @@
   <ItemGroup>
     <Compile Include="Common\EnsureTest.cs" />
     <Compile Include="Core\MVVM\AsyncPropertyTest.cs" />
-    <Compile Include="Core\MVVM\MediatorTest.cs" />
+    <Compile Include="Common\MediatorTest.cs" />
     <Compile Include="Core\Tracking\TrackingControllerTest.cs" />
     <Compile Include="Core\ViewModels\AppDetailsViewModelTest.cs" />
     <Compile Include="Core\ViewModels\MainViewModelTest.cs" />
