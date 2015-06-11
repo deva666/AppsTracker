@@ -30,5 +30,10 @@ namespace AppsTracker.Tests.Fakes.Service
         {
             
         }
+
+        public Data.Models.Aplication ReloadApp(Data.Models.Aplication app)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

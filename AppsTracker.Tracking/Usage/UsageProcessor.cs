@@ -54,12 +54,5 @@ namespace AppsTracker.Tracking.Helpers
                 SaveUsage(usage.UsageType, usage);
             }
         }
-
-        public void RegisterUsage(Usage usage)
-        {
-            Ensure.NotNull(usage, "usage");
-            Ensure.Condition<InvalidOperationException>(usageTypesMap.ContainsKey(usage.UsageType) == false, "Usage type exists");
-            usageTypesMap.Add(usage.UsageType, usage);
-        }
     }
 }
