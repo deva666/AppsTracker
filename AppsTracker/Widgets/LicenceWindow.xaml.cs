@@ -80,9 +80,9 @@ namespace AppsTracker.Widgets
             }
             else
             {
-                MessageWindow messageWindow = new MessageWindow("Invalid license key.");
-                messageWindow.Owner = this;
-                messageWindow.ShowDialog();
+                //MessageWindow messageWindow = new MessageWindow("Invalid license key.");
+                //messageWindow.Owner = this;
+                //messageWindow.ShowDialog();
             }
         }
 

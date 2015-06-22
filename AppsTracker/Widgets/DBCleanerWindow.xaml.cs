@@ -24,12 +24,14 @@ namespace AppsTracker.Widgets
     public partial class DBCleanerWindow : Window, IShell
     {
         private readonly IDataService dataService;
+        private readonly IWindowService windowService;
 
         [ImportingConstructor]
-        public DBCleanerWindow(IDataService dataService)
+        public DBCleanerWindow(IDataService dataService, IWindowService windowService)
         {
             InitializeComponent();
             this.dataService = dataService;
+            this.windowService = windowService;
             this.Loaded += (s, e) => ScaleLoaded();
         }
 
@@ -90,8 +92,7 @@ namespace AppsTracker.Widgets
             overlayGrd.Visibility = System.Windows.Visibility.Visible;
             int count = await Task<int>.Run(() => DeleteOldScreenshots(days));
             overlayGrd.Visibility = System.Windows.Visibility.Collapsed;
-            MessageWindow msgWindow = new MessageWindow(string.Format("Deleted {0} screenshots", count));
-            msgWindow.ShowDialog();
+            windowService.ShowMessageDialog(string.Format("Deleted {0} screenshots", count));
             ScaleUnloaded();
         }
 

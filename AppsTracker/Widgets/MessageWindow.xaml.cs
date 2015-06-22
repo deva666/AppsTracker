@@ -15,24 +15,6 @@ namespace AppsTracker.Widgets
             InitializeComponent();
         }
 
-        public MessageWindow(string message)
-            : this()
-        {
-            tbMessage.Text = message;
-        }
-
-        public MessageWindow(string message, bool displayCancel)
-            : this(message)
-        {
-            if (displayCancel) lblCancel.Visibility = System.Windows.Visibility.Visible;
-        }
-
-        public MessageWindow(Exception fail)
-            : this()
-        {
-            SetMessageText(fail);
-        }
-
         private void SetMessageText(Exception fail)
         {
             var stringBuilder = new StringBuilder("Ooops, this is awkward ... something went wrong.");
@@ -100,11 +82,11 @@ namespace AppsTracker.Widgets
             }
             set
             {
-                if(value is string)
+                if (value is string)
                 {
                     tbMessage.Text = (string)value;
                 }
-                else if(value is Exception)
+                else if (value is Exception)
                 {
                     SetMessageText((Exception)value);
                 }
