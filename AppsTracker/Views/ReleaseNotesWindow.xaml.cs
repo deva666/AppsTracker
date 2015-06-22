@@ -31,5 +31,10 @@ namespace AppsTracker.Views
         {
             this.Close();
         }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

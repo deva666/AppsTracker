@@ -94,7 +94,8 @@
                 Content="Close"
                 Width="75"
                 Margin="10,10,30,20"
-                HorizontalAlignment="Right" />
+                HorizontalAlignment="Right"
+                Name="btnClose" Click="btnClose_Click"/>
     </Grid>
 
 </Window>

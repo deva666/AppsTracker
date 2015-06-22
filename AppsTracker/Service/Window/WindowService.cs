@@ -39,26 +39,39 @@ namespace AppsTracker.Data.Service
 
         public void ShowMessageDialog(string message, bool showCancel = true)
         {
-            var msgWindow = new MessageWindow(message, showCancel);
+            var msgWindow = GetMessageWindow();
+            msgWindow.ViewArgument = message;
             msgWindow.ShowDialog();
         }
 
         public void ShowMessageDialog(Exception fail)
         {
-            var msgWindow = new MessageWindow(fail);
+            var msgWindow = GetMessageWindow();
+            msgWindow.ViewArgument = fail;
             msgWindow.ShowDialog();
         }
 
         public void ShowMessage(string message, bool showCancel = true)
         {
-            var msgWindow = new MessageWindow(message, showCancel);
+            var msgWindow = GetMessageWindow();
+            msgWindow.ViewArgument = message;
             msgWindow.Show();
         }
 
         public void ShowMessage(Exception fail)
         {
-            var msgWindow = new MessageWindow(fail);
+            var msgWindow = GetMessageWindow();
+            msgWindow.ViewArgument = fail;
             msgWindow.Show();
+        }
+
+        private IShell GetMessageWindow()
+        {
+            var factory = shellFactories.Single(s => s.Metadata.ShellUse == "Message window");
+            using (var context = factory.CreateExport())
+            {
+                return context.Value;
+            }
         }
 
         public void ShowShell(string shellUse)
@@ -108,8 +121,8 @@ namespace AppsTracker.Data.Service
         {
             var bounds = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
             double left, top, width, height;
-            var widthRatio = bounds.Width / measureProvider.ScaleX * 0.15d;
-            var heightRatio = bounds.Height / measureProvider.ScaleY * 0.15d;
+            var widthRatio = (bounds.Width / measureProvider.ScaleX) * 0.1d;
+            var heightRatio = (bounds.Height / measureProvider.ScaleY) * 0.1d;
             left = bounds.Left / measureProvider.ScaleX + widthRatio;
             top = bounds.Top / measureProvider.ScaleY + heightRatio;
             width = bounds.Width / measureProvider.ScaleX - widthRatio * 2;

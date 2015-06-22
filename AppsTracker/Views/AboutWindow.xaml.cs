@@ -69,17 +69,6 @@ namespace AppsTracker.Widgets
             ScaleUnloaded();
         }
 
-        private void TextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                System.Diagnostics.Process.Start("mailto:info@theappstracker.com");
-            }
-            catch (Exception ex)
-            {
-                FileLogger.Instance.Log(ex);
-            }
-        }
 
         private void TextBlock_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {

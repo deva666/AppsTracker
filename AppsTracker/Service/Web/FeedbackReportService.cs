@@ -1,14 +1,20 @@
-﻿using System.IO;
+﻿using System.ComponentModel.Composition;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using AppsTracker.Data.Models;
 using AppsTracker.Common.Utils;
+using AppsTracker.Data.Models;
 
-namespace AppsTracker.Data.Service
+namespace AppsTracker.Service.Web
 {
-    public sealed class FeedbackReportService
+    [Export(typeof(IFeedbackReportService))]
+    public sealed class FeedbackReportService : IFeedbackReportService
     {
+#if DEBUG
+        private const string SERVER_URI = "http://localhost:8000/bug";
+#else
         private const string SERVER_URI = "http://www.theappstracker.com/bug";
+#endif
 
         public async Task<bool> SendFeedback(Feedback feedback)
         {
@@ -21,10 +27,9 @@ namespace AppsTracker.Data.Service
 
             using (var streamWriter = new StreamWriter(await httpWebRequest.GetRequestStreamAsync()))
             {
-                //var json = "{\"username\":\"" + settings.UserName + "\"," +
-                //            "\"password\":\"" + settings.Password + "\"," +
-                //            "\"clientid\":\"" + settings.ClientId + "\"}";
-                var json = "";
+                var json = "{\"description\":\"" + feedback.Description + "\"," +
+                            "\"stack_trace\":\"" + feedback.StackTrace + "\"," +
+                            "\"reported_by\":\"" + feedback.ReporterEmail + "\"}";
 
                 streamWriter.Write(json);
                 streamWriter.Flush();
@@ -32,11 +37,16 @@ namespace AppsTracker.Data.Service
             }
 
             var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            httpResponse.Close();
+
+            if (httpResponse.StatusCode == HttpStatusCode.Created)
             {
-               
+                return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
     }
 }

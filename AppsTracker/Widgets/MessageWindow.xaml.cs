@@ -1,11 +1,14 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Text;
 using System.Windows;
 using System.Windows.Media.Animation;
 
 namespace AppsTracker.Widgets
 {
-    public partial class MessageWindow : Window
+    [Export(typeof(IShell))]
+    [ExportMetadata("ShellUse", "Message window")]
+    public partial class MessageWindow : Window, IShell
     {
         public MessageWindow()
         {
@@ -27,7 +30,12 @@ namespace AppsTracker.Widgets
         public MessageWindow(Exception fail)
             : this()
         {
-            StringBuilder stringBuilder = new StringBuilder("Ooops, this is awkward ... something went wrong.");
+            SetMessageText(fail);
+        }
+
+        private void SetMessageText(Exception fail)
+        {
+            var stringBuilder = new StringBuilder("Ooops, this is awkward ... something went wrong.");
             stringBuilder.Append(Environment.NewLine);
             stringBuilder.Append("Error: ");
             stringBuilder.Append(fail.Message);
@@ -38,6 +46,7 @@ namespace AppsTracker.Widgets
                 stringBuilder.Append(fail.InnerException);
             }
             tbMessage.Text = stringBuilder.ToString();
+            lblReport.Visibility = System.Windows.Visibility.Visible;
         }
 
 
@@ -80,6 +89,26 @@ namespace AppsTracker.Widgets
                 //do nothing, window not modal
             }
             FadeUnloaded();
+        }
+
+
+        public object ViewArgument
+        {
+            get
+            {
+                return tbMessage.Text;
+            }
+            set
+            {
+                if(value is string)
+                {
+                    tbMessage.Text = (string)value;
+                }
+                else if(value is Exception)
+                {
+                    SetMessageText((Exception)value);
+                }
+            }
         }
     }
 }

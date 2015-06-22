@@ -30,7 +30,6 @@ namespace AppsTracker.Widgets
             set { notifyIcon.Visible = value; }
         }
 
-        #region Constructor
 
         public TrayIcon()
         {
@@ -45,17 +44,8 @@ namespace AppsTracker.Widgets
             notifyIcon.Text = Constants.APP_NAME;
             notifyIcon.Visible = true;
 
-            #region Event Handlers
-
-            menuItemExit.Click += (s, e) => { (App.Current as App).ShutdownApp(); };
-
-            #endregion
+            menuItemExit.Click += (s, e) => ((App)App.Current).ShutdownApp();
         }
-
-        #endregion
-
-
-        #region IDisposable Members
 
         public void Dispose()
         {
@@ -72,7 +62,5 @@ namespace AppsTracker.Widgets
                 if (notifyIcon != null) { notifyIcon.Dispose(); notifyIcon = null; }
             }
         }
-
-        #endregion
     }
 }

@@ -310,7 +310,7 @@
             <StackPanel Orientation="Horizontal"
                         Grid.Row="5"
                         Grid.ColumnSpan="3">
-                <RadioButton Name="rbTimeSheet"
+                <!--<RadioButton Name="rbTimeSheet"
                              Margin="15,5,0,10"
                              IsChecked="False"
                              HorizontalAlignment="Left"
@@ -322,7 +322,7 @@
                                    FontSize="11" />
                         </ControlTemplate>
                     </RadioButton.Template>
-                </RadioButton>
+                </RadioButton>-->
                 
                 <RadioButton Name="rbUsage"
                              Margin="15,5,0,10"

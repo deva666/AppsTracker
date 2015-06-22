@@ -50,6 +50,7 @@ namespace AppsTracker.MVVM
             SelectedChild = GetChild((Type)parameter);
         }
 
+
         protected T ProduceValue<T>(ExportFactory<T> factory) where T : ViewModelBase
         {
             using (var context = factory.CreateExport())

@@ -35,7 +35,6 @@ namespace AppsTracker.Service.Web
             {
 
                 var json = await streamReader.ReadToEndAsync();
-
                 return releaseNotesParser.ParseJson(json);
             }
         }
