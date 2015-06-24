@@ -10,11 +10,8 @@ namespace AppsTracker.Service.Web
     [Export(typeof(IReleaseNotesService))]
     public sealed class ReleaseNotesService : IReleaseNotesService
     {
-#if DEBUG
-        private const string SERVER_URI = "http://localhost:8000/release_notes";
-#else
         private const string SERVER_URI = "http://www.theappstracker.com/release_notes";
-#endif
+
         private readonly ReleaseNotesParser releaseNotesParser;
 
         [ImportingConstructor]

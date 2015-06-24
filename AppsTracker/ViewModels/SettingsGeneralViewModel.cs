@@ -9,10 +9,9 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Windows.Input;
-using AppsTracker.MVVM;
-using AppsTracker.Data.Service;
-using AppsTracker.Widgets;
 using AppsTracker.Common.Communication;
+using AppsTracker.Data.Service;
+using AppsTracker.MVVM;
 using Microsoft.Win32;
 
 namespace AppsTracker.ViewModels
@@ -40,8 +39,11 @@ namespace AppsTracker.ViewModels
 
         public ICommand SetStartupCommand
         {
-            get { return setStartupCommand ?? 
-                (setStartupCommand = new DelegateCommand(SetStartup)); }
+            get
+            {
+                return setStartupCommand ??
+                    (setStartupCommand = new DelegateCommand(SetStartup));
+            }
         }
 
 
@@ -49,8 +51,11 @@ namespace AppsTracker.ViewModels
 
         public ICommand ChangeThemeCommand
         {
-            get { return changeThemeCommand ?? 
-                (changeThemeCommand = new DelegateCommand(ChangeTheme)); }
+            get
+            {
+                return changeThemeCommand ??
+                    (changeThemeCommand = new DelegateCommand(ChangeTheme));
+            }
         }
 
 
@@ -115,6 +120,8 @@ namespace AppsTracker.ViewModels
                 Settings.LightTheme = true;
             else if ((parameter as string) == "Dark")
                 Settings.LightTheme = false;
+
+            SettingsChanging();
         }
 
 

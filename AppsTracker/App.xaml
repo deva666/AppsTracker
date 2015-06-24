@@ -768,6 +768,8 @@
                 <Setter Property="Template"
                         Value="{DynamicResource VerticalSliderStyle}" />
             </Style>
+            
+            
 
             <Style TargetType="TextBlock"
                    x:Key="ControlBoxStyle">

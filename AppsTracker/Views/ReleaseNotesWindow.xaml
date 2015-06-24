@@ -6,19 +6,16 @@
         Title="Release notes"
         Style="{StaticResource WindowStyleWithFade}"
         Icon="../Resources/AppsTrackerIcon.ico"
-        Height="700"
-        Width="700"
-        ResizeMode="NoResize"
+        MinHeight="500"
+        MinWidth="800"
+        ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <local:ConvertBoolToVisibility x:Key="convertVisibility" />
         <local:ConvertNullToBool x:Key="convertNullToBool" />
         <local:ConvertNullToBoolBack x:Key="convertNullToBoolBack" />
-        <HierarchicalDataTemplate x:Key="noteTemplate">
-
-        </HierarchicalDataTemplate>
     </Window.Resources>
-    <Grid>
+    <Grid ScrollViewer.HorizontalScrollBarVisibility="Disabled">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -66,25 +63,35 @@
 
         <controls:FaderContentControl FaderVisibility="{Binding ReleaseNotes.Exception, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNullToBoolBack}}"
                                       Grid.Row="2">
-            <ScrollViewer VerticalScrollBarVisibility="Auto"
-                          Grid.Row="2">
-                <TreeView ItemsSource="{Binding ReleaseNotes.Result}"
-                          Margin="35,15,35,15">
-                    <TreeView.ItemTemplate>
+            <TreeView ItemsSource="{Binding ReleaseNotes.Result}"
+                      Margin="35,15,35,15"
+                      >
+                <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Notes}">
                             <Label Style="{DynamicResource LabelStyle}"
                                    Content="{Binding Path=Version}"
                                    FontSize="15" />
                             <HierarchicalDataTemplate.ItemTemplate>
                                 <DataTemplate>
-                                    <Label Style="{DynamicResource LabelStyle}"
-                                           Content="{Binding}" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Style="{DynamicResource LabelStyle}"
+                                               Content="-  " />
+                                        <Label Style="{DynamicResource LabelStyle}"
+                                               Content="{Binding}"
+                                                >
+                                            <Label.Resources>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="TextWrapping"
+                                                            Value="Wrap" />
+                                                </Style>
+                                            </Label.Resources>
+                                        </Label>
+                                    </StackPanel>
                                 </DataTemplate>
                             </HierarchicalDataTemplate.ItemTemplate>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
                 </TreeView>
-            </ScrollViewer>
         </controls:FaderContentControl>
 
         <controls:progressBar Visibility="{Binding Working, Converter={StaticResource convertVisibility}}"
