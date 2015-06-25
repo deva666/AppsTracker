@@ -1,6 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using AppsTracker.Data.Models;
 using AppsTracker.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace AppsTracker.Tests.Core.ViewModels
 {
@@ -10,30 +15,25 @@ namespace AppsTracker.Tests.Core.ViewModels
         [TestInitialize]
         public void Init()
         {
-
+            dataService.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>()))
+                .Returns(new List<Aplication>());
         }
 
         [TestMethod]
-        public void TestLoaders()
+        public void TestGetApps()
         {
+            var viewModel = new AppDetailsViewModel(dataService.Object,
+                                                    statsService.Object,
+                                                    trackingService.Object,
+                                                    mediator.Object);
+
+            var apps = viewModel.AppList.Result;
+            while (viewModel.Working)
+            {
+            }
+
+            Assert.IsInstanceOfType(viewModel.AppList.Result, typeof(IEnumerable<Aplication>));
+            dataService.Verify(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>()));
         }
-        //{
-        //    var vm = new AppDetailsViewModel();
-
-        //    var apps = vm.AppList.Result;
-        //    var topApps = vm.AppSummaryList.Result;
-        //    var topWindows = vm.WindowSummaryList.Result;
-        //    var chartList = vm.WindowDurationList.Result;
-
-        //    while (true)
-        //    {
-        //        if (vm.AppList.Task.Status == TaskStatus.RanToCompletion)
-        //            break;
-        //    }
-
-        //    System.Threading.Thread.Sleep(100);
-
-        //    Assert.IsNotNull(vm.AppList.Result, "App list not loaded");
-        //}
     }
 }

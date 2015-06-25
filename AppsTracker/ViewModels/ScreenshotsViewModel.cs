@@ -134,9 +134,10 @@ namespace AppsTracker.ViewModels
 
         private void OpenScreenshotViewer(object parameter)
         {
-            if (parameter == null)
+            var collection = parameter as IList;
+            if (collection == null)
                 return;
-            IList collection = parameter as IList;
+
             var logs = collection.Cast<Log>();
             var screenshotShell = windowService.GetShell("Screenshot viewer window");
             screenshotShell.ViewArgument = logs.Where(l => l.Screenshots.Count > 0).SelectMany(l => l.Screenshots);
@@ -148,6 +149,7 @@ namespace AppsTracker.ViewModels
         {
             if (selectedItem == null)
                 return;
+
             var selectedShots = selectedItem.Screenshots.Where(s => s.IsSelected);
             var count = selectedShots.Count();
             await dataService.DeleteScreenshots(selectedShots);

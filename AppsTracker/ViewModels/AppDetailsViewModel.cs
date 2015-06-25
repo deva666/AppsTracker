@@ -235,7 +235,7 @@ namespace AppsTracker.ViewModels
             if (ticks == 0)
                 return;
 
-            TimeSpan timeSpan = new TimeSpan(ticks);
+            var timeSpan = new TimeSpan(ticks);
             SelectedAppsDuration = string.Format("Selected: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
             windowSummaryList.Reload();
         }
@@ -265,7 +265,7 @@ namespace AppsTracker.ViewModels
             if (ticks == 0)
                 return;
 
-            TimeSpan timeSpan = new TimeSpan(ticks);
+            var timeSpan = new TimeSpan(ticks);
             SelectedWindowsDuration = string.Format("Selected: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
 
             windowDurationList.Reload();
