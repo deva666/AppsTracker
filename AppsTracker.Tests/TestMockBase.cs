@@ -187,15 +187,15 @@ namespace AppsTracker.Tests
         }
 
 
-        protected ExportFactory<SettingsLoggingViewModel> GetSettingsLoggingVMFactory()
+        protected ExportFactory<SettingsTrackingViewModel> GetSettingsLoggingVMFactory()
         {
             var tupleFactory =
-                new Func<Tuple<SettingsLoggingViewModel, Action>>(
-                    () => new Tuple<SettingsLoggingViewModel, Action>(
-                        new SettingsLoggingViewModel(settingsService.Object, mediator.Object),
+                new Func<Tuple<SettingsTrackingViewModel, Action>>(
+                    () => new Tuple<SettingsTrackingViewModel, Action>(
+                        new SettingsTrackingViewModel(settingsService.Object, mediator.Object),
                             ExportFactoryContextRelease));
 
-            return new ExportFactory<SettingsLoggingViewModel>(tupleFactory);
+            return new ExportFactory<SettingsTrackingViewModel>(tupleFactory);
         }
 
         protected ExportFactory<SettingsScreenshotsViewModel> GetSettingsScreenshotsVMFactory()

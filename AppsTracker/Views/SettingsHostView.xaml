@@ -25,8 +25,8 @@
         <DataTemplate DataType="{x:Type viewModels:SettingsGeneralViewModel}">
             <settingsViews:GeneralView />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModels:SettingsLoggingViewModel}">
-            <settingsViews:LoggingView />
+        <DataTemplate DataType="{x:Type viewModels:SettingsTrackingViewModel}">
+            <settingsViews:TrackingView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:SettingsScreenshotsViewModel}">
             <settingsViews:ScreenshotsView />
@@ -62,8 +62,8 @@
                 </Label.InputBindings>
             </Label>
 
-            <Label Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=LOGGING}"
-                   Content="LOGGING"
+            <Label Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=TRACKING}"
+                   Content="TRACKING"
                    FontSize="11"
                    Margin="15,5,15,0"
                    HorizontalAlignment="Left">

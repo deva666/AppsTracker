@@ -73,7 +73,7 @@ namespace AppsTracker.ViewModels
 
         [ImportingConstructor]
         public SettingsHostViewModel(ExportFactory<SettingsGeneralViewModel> generalVMFactory,
-                                     ExportFactory<SettingsLoggingViewModel> loggingVMFactory,
+                                     ExportFactory<SettingsTrackingViewModel> loggingVMFactory,
                                      ExportFactory<SettingsScreenshotsViewModel> screenshotsVMFactory,
                                      ExportFactory<SettingsPasswordViewModel> passwordVMFactory,
                                      ExportFactory<SettingsAppCategoriesViewModel> appCategoriesVMFactory,
@@ -98,7 +98,7 @@ namespace AppsTracker.ViewModels
 
         private void GoToLogging()
         {
-            SelectedChild = GetChild<SettingsLoggingViewModel>();
+            SelectedChild = GetChild<SettingsTrackingViewModel>();
         }
 
 

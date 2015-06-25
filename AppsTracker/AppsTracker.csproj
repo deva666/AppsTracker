@@ -275,7 +275,7 @@
     <Compile Include="ViewModels\DaySummaryViewModel.cs" />
     <Compile Include="ViewModels\ScreenshotViewerViewModel.cs" />
     <Compile Include="ViewModels\SettingsGeneralViewModel.cs" />
-    <Compile Include="ViewModels\SettingsLoggingViewModel.cs" />
+    <Compile Include="ViewModels\SettingsTrackingViewModel.cs" />
     <Compile Include="ViewModels\SettingsPasswordViewModel.cs" />
     <Compile Include="ViewModels\SettingsScreenshotsViewModel.cs" />
     <Compile Include="ViewModels\StatisticsHostViewModel.cs" />
@@ -369,8 +369,8 @@
     <Compile Include="Views\Settings\GeneralView.xaml.cs">
       <DependentUpon>GeneralView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Settings\LoggingView.xaml.cs">
-      <DependentUpon>LoggingView.xaml</DependentUpon>
+    <Compile Include="Views\Settings\TrackingView.xaml.cs">
+      <DependentUpon>TrackingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings\MasterPasswordView.xaml.cs">
       <DependentUpon>MasterPasswordView.xaml</DependentUpon>
@@ -594,7 +594,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Settings\LoggingView.xaml">
+    <Page Include="Views\Settings\TrackingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

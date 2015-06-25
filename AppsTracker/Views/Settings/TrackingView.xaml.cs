@@ -2,9 +2,9 @@
 
 namespace AppsTracker.Widgets.SettingsViews
 {
-    public partial class GeneralView : UserControl
+    public partial class TrackingView : UserControl
     {
-        public GeneralView()
+        public TrackingView()
         {
             InitializeComponent();
         }

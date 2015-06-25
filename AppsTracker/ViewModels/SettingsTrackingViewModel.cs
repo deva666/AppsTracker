@@ -15,11 +15,11 @@ using AppsTracker.Common.Communication;
 namespace AppsTracker.ViewModels
 {
     [Export, PartCreationPolicy(CreationPolicy.Any)]
-    public sealed class SettingsLoggingViewModel : SettingsBaseViewModel
+    public sealed class SettingsTrackingViewModel : SettingsBaseViewModel
     {
         public override string Title
         {
-            get { return "Logging"; }
+            get { return "Tracking"; }
         }
 
 
@@ -65,7 +65,7 @@ namespace AppsTracker.ViewModels
         }
 
         [ImportingConstructor]
-        public SettingsLoggingViewModel(ISqlSettingsService settingsService, IMediator mediator)
+        public SettingsTrackingViewModel(ISqlSettingsService settingsService, IMediator mediator)
             : base(settingsService, mediator)
         {
 
