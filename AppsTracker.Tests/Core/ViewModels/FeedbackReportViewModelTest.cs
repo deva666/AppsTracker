@@ -17,7 +17,8 @@ namespace AppsTracker.Tests.Core.ViewModels
         public void Initialize()
         {
             feedbackServiceMock = new Mock<IFeedbackReportService>();
-            feedbackServiceMock.Setup(f => f.SendFeedback(It.IsAny<Feedback>())).Returns(() => Task.FromResult(true));
+            feedbackServiceMock.Setup(f => f.SendFeedback(It.IsAny<Feedback>()))
+                .Returns(() => Task.FromResult(true));
         }
 
 
@@ -27,6 +28,7 @@ namespace AppsTracker.Tests.Core.ViewModels
             var viewModel = new FeedbackReportViewModel(feedbackServiceMock.Object);
             viewModel.SendFeedbackCommand.Execute(null);
             feedbackServiceMock.Verify(f => f.SendFeedback(It.IsAny<Feedback>()));
+            Assert.AreEqual(viewModel.InfoMessage, "Feedback sent");
         }
     }
 }

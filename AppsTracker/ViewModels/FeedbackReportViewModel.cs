@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
@@ -81,7 +77,7 @@ namespace AppsTracker.ViewModels
             {
                 success = false;
             }
-            InfoMessage = success ? "Report sent" : "Failed to send report. Please try again.";
+            InfoMessage = success ? "Feedback sent" : "Failed to send report. Please try again.";
             Working = false;
         }
     }
