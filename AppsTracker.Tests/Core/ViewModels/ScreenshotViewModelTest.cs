@@ -6,40 +6,47 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using AppsTracker.Data.Models;
 using AppsTracker.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace AppsTracker.Tests.Core.ViewModels
 {
     [TestClass]
-    public class ScreenshotViewModelTest : TestBase
+    public class ScreenshotViewModelTest : TestMockBase
     {
-        private volatile bool _loaded = false;
-
         [TestInitialize]
         public void Init()
         {
-            base.Initialize();
+            dataService.Setup(d => d.GetFiltered<Log>(It.IsAny<Expression<Func<Log, bool>>>(),
+                 It.IsAny<Expression<Func<Log, object>>>(),
+                 It.IsAny<Expression<Func<Log, object>>>()))
+                .Returns(new List<Log>());
         }
 
         [TestMethod]
-        public void TestScreenshotLoader()
+        public void TestGetLogs()
         {
-            //var vm = new ScreenshotsViewModel();
-            //vm.LogList.PropertyChanged += LogList_PropertyChanged;
-            //var r = vm.LogList.Result;
+            var viewModel = new ScreenshotsViewModel(dataService.Object,
+                                                     settingsService.Object,
+                                                     trackingService.Object,
+                                                     windowService.Object,
+                                                     mediator.Object);
 
-            //while (_loaded == false)
-            //{
-            //}
 
-            //Assert.IsNotNull(vm.LogList.Result, "Content not loaded");
-        }
+            var result = viewModel.LogList.Result;
+            while (viewModel.Working)
+            {
+            }
 
-        void LogList_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "Result")
-                _loaded = true;
+            Assert.IsInstanceOfType(viewModel.LogList.Result, typeof(IEnumerable<Log>));
+            dataService.Verify(d => d.GetFiltered<Log>(It.IsAny<Expression<Func<Log, bool>>>(),
+                 It.IsAny<Expression<Func<Log, object>>>(),
+                 It.IsAny<Expression<Func<Log, object>>>()));
         }
     }
 }
