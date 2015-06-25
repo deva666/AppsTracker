@@ -71,6 +71,18 @@ namespace AppsTracker.ViewModels
         }
 
 
+        private ICommand showFeedbackCommand;
+
+        public ICommand ShowFeedbackCommand
+        {
+            get
+            {
+                return showFeedbackCommand ??
+                    (showFeedbackCommand = new DelegateCommand(ShowFeedback));
+            }
+        }
+
+
         [ImportingConstructor]
         public SettingsGeneralViewModel(IWindowService windowService,
                                         ISqlSettingsService settingsService,
@@ -128,6 +140,12 @@ namespace AppsTracker.ViewModels
         private void ShowReleaseNotes()
         {
             windowService.ShowShell("Release notes window");
+        }
+
+
+        private void ShowFeedback()
+        {
+            windowService.ShowShell("Feedback window");
         }
     }
 }

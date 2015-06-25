@@ -9,15 +9,12 @@
         ShowInTaskbar="False"
         WindowStartupLocation="CenterScreen"
         BorderBrush="{DynamicResource WindowBorderBrush}"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        >
-
+        xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
-            
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -53,10 +50,6 @@
                        FontSize="12"
                        Text="{Binding AppVersion, StringFormat=Version: {0}}"
                        Foreground="{DynamicResource HighlightBrush}" />
-            <!--<TextBlock Margin="20,0,20,10"
-                       FontSize="12"
-                       Text="{Binding License}"
-                       Foreground="{DynamicResource HighlightBrush}" />-->
             <TextBlock
                 Margin="20,0,20,10"
                 FontSize="12"

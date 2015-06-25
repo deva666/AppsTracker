@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,15 +12,26 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using AppsTracker.Service.Web;
+using AppsTracker.ViewModels;
 using AppsTracker.Widgets;
 
 namespace AppsTracker.Views
 {
+    [Export(typeof(IShell))]
+    [ExportMetadata("ShellUse", "Feedback window")]
     public partial class FeedbackWindow : Window, IShell
     {
-        public FeedbackWindow()
+        private readonly IFeedbackReportService feedbackReportService;
+
+        [ImportingConstructor]
+        public FeedbackWindow(FeedbackReportViewModel viewModel,
+                              IFeedbackReportService feedbackReportService)
         {
             InitializeComponent();
+
+            this.feedbackReportService = feedbackReportService;
+            DataContext = viewModel;
         }
 
 
@@ -27,6 +39,16 @@ namespace AppsTracker.Views
         {
             get;
             set;
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnSend_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

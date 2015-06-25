@@ -79,6 +79,9 @@ namespace AppsTracker.Data.Service
             var factory = shellFactories.Single(s => s.Metadata.ShellUse == shellUse);
             using (var context = factory.CreateExport())
             {
+                var owner = mainWindow as System.Windows.Window;
+                if (owner != null)
+                    context.Value.Owner = owner;
                 context.Value.Show();
             }
         }
@@ -89,6 +92,9 @@ namespace AppsTracker.Data.Service
             var factory = shellFactories.Single(s => s.Metadata.ShellUse == shellUse);
             using (var context = factory.CreateExport())
             {
+                var owner = mainWindow as System.Windows.Window;
+                if (owner != null)
+                    context.Value.Owner = owner;
                 return context.Value;
             }
         }

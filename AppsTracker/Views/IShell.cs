@@ -30,5 +30,7 @@ namespace AppsTracker.Widgets
         void Close();
 
         object ViewArgument { get; set; }
+
+        System.Windows.Window Owner { get; set; }
     }
 }

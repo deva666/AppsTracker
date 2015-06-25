@@ -8,10 +8,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using AppsTracker.Data.Models;
-using AppsTracker.MVVM;
-using AppsTracker.Data.Service;
 using AppsTracker.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -23,6 +20,8 @@ namespace AppsTracker.Tests.Core.ViewModels
     {
         private MainViewModel mainViewModel;
         private Setting setting = new Setting() { LoggingEnabled = true };
+
+
         [TestInitialize]
         public void Init()
         {

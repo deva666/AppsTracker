@@ -176,6 +176,7 @@
     <Compile Include="ServiceLocation\IServiceResolver.cs" />
     <Compile Include="ServiceLocation\ServiceResolver.cs" />
     <Compile Include="ViewModels\CategoryStatsViewModel.cs" />
+    <Compile Include="ViewModels\FeedbackReportViewModel.cs" />
     <Compile Include="ViewModels\ReleaseNotesViewModel.cs" />
     <Compile Include="ViewModels\SettingsAppCategoriesViewModel.cs" />
     <Compile Include="ViewModels\SettingsLimitsViewModel.cs" />
