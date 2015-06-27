@@ -10,8 +10,8 @@ using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Text;
-using AppsTracker.Data.Utils;
 using AppsTracker.Common.Utils;
+using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Hooks
 {
@@ -25,7 +25,8 @@ namespace AppsTracker.Hooks
 
         private bool isDisposed;
 
-        private WinHookCallBack winHookCallBack;
+        private readonly WinHookCallBack winHookCallBack;
+        private readonly StringBuilder windowTitleBuilder = new StringBuilder();
 
         private IntPtr hookID = IntPtr.Zero;
 
@@ -35,7 +36,7 @@ namespace AppsTracker.Hooks
             hookID = WinAPI.SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, winHookCallBack, 0, 0, WINEVENT_OUTOFCONTEXT);
         }
 
-        
+
         private Process GetProcessFromHandle(IntPtr hWnd)
         {
             uint processID = 0;
@@ -54,7 +55,8 @@ namespace AppsTracker.Hooks
             if (hWnd == IntPtr.Zero)
                 return;
 
-            StringBuilder windowTitleBuilder = new StringBuilder(WinAPI.GetWindowTextLength(hWnd) + 1);
+            windowTitleBuilder.Clear();
+            windowTitleBuilder.Capacity = WinAPI.GetWindowTextLength(hWnd) + 1;
             WinAPI.GetWindowText(hWnd, windowTitleBuilder, windowTitleBuilder.Capacity);
             var process = GetProcessFromHandle(hWnd);
             var title = string.IsNullOrEmpty(windowTitleBuilder.ToString()) ? "No Title" : windowTitleBuilder.ToString();
@@ -69,7 +71,7 @@ namespace AppsTracker.Hooks
 
         private void Dispose(bool disposing)
         {
-            if (isDisposed) 
+            if (isDisposed)
                 return;
             WinAPI.UnhookWinEvent(hookID);
             isDisposed = true;
