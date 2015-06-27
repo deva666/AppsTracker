@@ -198,11 +198,11 @@ namespace AppsTracker.ViewModels
             var modifiedLimits = appsToSave.SelectMany(a => a.ObservableLimits)
                 .Where(l => l.AppLimitID != default(int) && l.HasChanges);
             var newLimits = appsToSave.SelectMany(a => a.ObservableLimits).Where(l => l.AppLimitID == default(int));
-            var modifiedTask = dataService.SaveModifiedEntityRangeAsync(modifiedLimits);
-            var newTask = dataService.SaveNewEntityRangeAsync(newLimits);
+            var saveModifiedTask = dataService.SaveModifiedEntityRangeAsync(modifiedLimits);
+            var saveNewTask = dataService.SaveNewEntityRangeAsync(newLimits);
             var deleteTask = dataService.DeleteEntityRangeAsync(limitsToDelete.Where(l=>l.AppLimitID != default(int)));
 
-            await Task.WhenAll(modifiedTask, newTask);
+            await Task.WhenAll(saveModifiedTask, saveNewTask);
             await deleteTask;
 
             limitsToDelete.Clear();

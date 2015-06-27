@@ -9,14 +9,16 @@ namespace AppsTracker.ViewModels
 {
     [Export]
     [PartCreationPolicy(CreationPolicy.Any)]
-    public class FeedbackReportViewModel : ViewModelBase
+    public sealed class FeedbackReportViewModel : ViewModelBase
     {
+        private readonly IFeedbackReportService feedbackReportService;
+
+
         public override string Title
         {
             get { return "feedback report"; }
         }
 
-        private readonly IFeedbackReportService feedbackReportService;
 
         private string feedbackText;
 
@@ -66,7 +68,7 @@ namespace AppsTracker.ViewModels
 
         private async Task SendFeedback()
         {
-            var feedback = new Feedback("", "", "");
+            var feedback = new Feedback(feedbackText, "", email);
             Working = true;
             bool success = false;
             try
