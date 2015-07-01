@@ -122,7 +122,10 @@ namespace AppsTracker.Tracking
 
         private void OnWindowChange(string windowTitle, IAppInfo appInfo)
         {
-            if (appInfo == null || (appInfo != null && string.IsNullOrEmpty(appInfo.Name)))
+            if (appInfo == null || (appInfo != null
+                && string.IsNullOrEmpty(appInfo.Name)
+                && string.IsNullOrEmpty(appInfo.FullName)
+                && string.IsNullOrEmpty(appInfo.FileName)))
             {
                 ExchangeLogs(null);
                 return;
