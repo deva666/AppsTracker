@@ -84,6 +84,7 @@
     <Compile Include="Core\ViewModels\ScreenshotViewModelTest.cs" />
     <Compile Include="Core\ViewModels\FeedbackReportViewModelTest.cs" />
     <Compile Include="Core\ViewModels\ReleaseNotesViewModelTest.cs" />
+    <Compile Include="Core\ViewModels\DataHostViewModelTest.cs" />
     <Compile Include="Fakes\Logging\DisposableMock.cs" />
     <Compile Include="Fakes\Logging\Helpers\SyncContextMock.cs" />
     <Compile Include="Fakes\MVVM\MediatorParamMock.cs" />
