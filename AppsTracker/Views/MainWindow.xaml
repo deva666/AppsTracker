@@ -288,19 +288,19 @@
                                           Command="{Binding ThisMonthCommand}" />
                         </Label.InputBindings>
                     </Label>
-                    <Label Style="{DynamicResource SelectableLabelStyle}"
+                    <Button
                            Content="OK"
                            Grid.Row="4"
                            Grid.ColumnSpan="2"
                            HorizontalAlignment="Right"
-                           Margin="0,0,10,0"
+                           Margin="10"
                            Name="lblOK"
-                           FontWeight="Black">
-                        <Label.InputBindings>
+                           >
+                        <Button.InputBindings>
                             <MouseBinding Gesture="LeftClick"
                                           Command="{Binding GetLogsByDateCommand}" />
-                        </Label.InputBindings>
-                    </Label>
+                        </Button.InputBindings>
+                    </Button>
 
                 </Grid>
             </Popup>
@@ -348,19 +348,18 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <Label Style="{DynamicResource SelectableLabelStyle}"
+                    <Button 
                            Content="OK"
-                           FontWeight="Black"
                            Grid.Row="2"
                            Grid.ColumnSpan="2"
                            HorizontalAlignment="Right"
-                           Margin="0,0,10,0">
-                        <Label.InputBindings>
+                           Margin="10">
+                        <Button.InputBindings>
                             <MouseBinding Gesture="LeftClick"
                                           Command="{Binding OpenPopupCommand}"
                                           CommandParameter="Users" />
-                        </Label.InputBindings>
-                    </Label>
+                        </Button.InputBindings>
+                    </Button>
                 </Grid>
             </Popup>
 
