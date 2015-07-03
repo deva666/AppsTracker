@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Windows.Input;
+using System.Linq;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 using AppsTracker.Data.Service;
@@ -49,6 +50,14 @@ namespace AppsTracker.ViewModels
         {
             get { return isFilterApplied; }
             set { SetPropertyValue(ref isFilterApplied, value); }
+        }
+
+
+        private bool multipleUsers;
+
+        public bool MultipleUsers
+        {
+            get { return multipleUsers; }
         }
 
 
@@ -250,6 +259,8 @@ namespace AppsTracker.ViewModels
             RegisterChild(() => ProduceValue(settingsVMFactory));
 
             SelectedChild = GetChild<DataHostViewModel>();
+
+            multipleUsers = dataService.GetFiltered<Uzer>(u => u.UserID > 0).Count() > 1;
         }
 
 

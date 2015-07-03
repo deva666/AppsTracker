@@ -668,7 +668,7 @@ namespace AppsTracker.Data.Service
                 DateTime nextDay = fromDay.AddDays(1d);
                 DateTime today = DateTime.Now.Date;
 
-                var usageQuery = context.Usages.Where(u => u.User.UserID == userID
+                var loginsQuery = context.Usages.Where(u => u.User.UserID == userID
                                                      && ((u.UsageStart >= fromDay
                                                      && u.UsageStart <= nextDay)
                                                         || (u.IsCurrent && u.UsageStart < fromDay && today >= fromDay)
@@ -679,7 +679,7 @@ namespace AppsTracker.Data.Service
                 var durationQuery = context.Logs.Where(l => l.DateCreated >= dateFrom
                     && l.DateCreated <= nextDay).ToList();
 
-                var logins = BreakUsagesByDay(usageQuery);
+                var logins = BreakUsagesByDay(loginsQuery);
 
                 var loginBegin = logins.Where(l => l.UsageStart >= fromDay).OrderBy(l => l.UsageStart).FirstOrDefault();
 
@@ -692,10 +692,10 @@ namespace AppsTracker.Data.Service
                 {
                     dayEnd = "N/A";
                 }
-                else if (loginEnd.UsageEnd.Date < today)
-                {
-                    dayEnd = "24:00";
-                }
+                //else if (loginEnd.UsageEnd.Date < today)
+                //{
+                //    dayEnd = "24:00";
+                //}
                 else
                 {
                     dayEnd = loginEnd.GetDisplayedEnd(fromDay).ToShortTimeString();

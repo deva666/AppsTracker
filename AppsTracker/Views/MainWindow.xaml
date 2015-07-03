@@ -23,6 +23,7 @@
         <local:ConvertLoggingStatus x:Key="convertLoggingStatus" />
         <local:ConvertLoggingVisibiltyPlay x:Key="convertLoggingPlay" />
         <local:ConvertLoggingVisibiltyStop x:Key="convertLoggingStop" />
+        <local:ConvertBoolToVisibility x:Key="convertBoolToVisibility" />
 
         <Storyboard x:Key="themeChangeAnimation">
             <ColorAnimation AutoReverse="False"
@@ -199,7 +200,8 @@
                 </customControls:Calendar.InputBindings>
             </customControls:Calendar>
 
-            <customControls:PersonIcon x:Name="personIcon">
+            <customControls:PersonIcon x:Name="personIcon"
+                                       Visibility="{Binding MultipleUsers, Converter={StaticResource convertBoolToVisibility}}">
                 <customControls:PersonIcon.ToolTip>
                     <ToolTip Style="{DynamicResource ToolTipStyle}"
                              Foreground="{DynamicResource HighlightBrush}">
