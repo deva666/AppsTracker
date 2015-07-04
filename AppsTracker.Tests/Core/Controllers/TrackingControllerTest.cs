@@ -1,11 +1,10 @@
-﻿using System;
-using AppsTracker.Controllers;
+﻿using AppsTracker.Controllers;
 using AppsTracker.Data.Models;
 using AppsTracker.Tracking;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace AppsTracker.Tests.Core.Tracking
+namespace AppsTracker.Tests.Core.Controllers
 {
     [TestClass]
     public class TrackingControllerTest
@@ -36,7 +35,7 @@ namespace AppsTracker.Tests.Core.Tracking
             var module = new Mock<ITrackingModule>();
             var trackingController = new TrackingController(new ITrackingModule[] { module.Object });
             trackingController.Dispose();
-            module.Verify(m => m.Dispose(), Times.Once);   
+            module.Verify(m => m.Dispose(), Times.Once);
         }
     }
 }

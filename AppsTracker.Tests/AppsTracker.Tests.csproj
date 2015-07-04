@@ -78,7 +78,7 @@
     <Compile Include="Common\EnsureTest.cs" />
     <Compile Include="Core\MVVM\AsyncPropertyTest.cs" />
     <Compile Include="Common\MediatorTest.cs" />
-    <Compile Include="Core\Tracking\TrackingControllerTest.cs" />
+    <Compile Include="Core\Controllers\TrackingControllerTest.cs" />
     <Compile Include="Core\ViewModels\AppDetailsViewModelTest.cs" />
     <Compile Include="Core\ViewModels\MainViewModelTest.cs" />
     <Compile Include="Core\ViewModels\ScreenshotViewModelTest.cs" />
@@ -99,6 +99,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="TestMockBase.cs" />
+    <Compile Include="Core\ViewModels\StatisticsHostViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AppsTracker.Common\AppsTracker.Common.csproj">
@@ -119,7 +120,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Core\Controllers\" />
+    <Folder Include="Core\Tracking\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
