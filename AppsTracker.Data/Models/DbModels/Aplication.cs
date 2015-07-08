@@ -101,6 +101,20 @@ namespace AppsTracker.Data.Models
         public virtual Uzer User { get; set; }
         public virtual ICollection<Window> Windows { get; set; }
         public virtual ICollection<AppCategory> Categories { get; set; }
-        public virtual ICollection<AppLimit> Limits { get; set; }   
+        public virtual ICollection<AppLimit> Limits { get; set; }
+
+        public override int GetHashCode()
+        {
+            return ApplicationID.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as Aplication;
+            if (other == null)
+                return false;
+
+            return ApplicationID == other.ApplicationID;
+        }
     }
 }

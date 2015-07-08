@@ -22,7 +22,7 @@ namespace AppsTracker.Tracking
         private readonly ILimitHandler limitHandler;
         private readonly IMediator mediator;
 
-        private readonly IDictionary<string, IEnumerable<AppLimit>> appLimitsMap = new Dictionary<string, IEnumerable<AppLimit>>();
+        private readonly IDictionary<Aplication, IEnumerable<AppLimit>> appLimitsMap = new Dictionary<Aplication, IEnumerable<AppLimit>>();
 
         private readonly Timer dayTimer;
         private readonly Timer weekTimer;
@@ -30,7 +30,7 @@ namespace AppsTracker.Tracking
         private AppLimit currentDayLimit;
         private AppLimit currentWeekLimit;
 
-        private string currentApp;
+        private int currentAppId;
 
         [ImportingConstructor]
         public LimitObserver(ITrackingService trackingService,
@@ -117,7 +117,7 @@ namespace AppsTracker.Tracking
 
             foreach (var app in appsWithLimits)
             {
-                appLimitsMap.Add(app.Name, app.Limits);
+                appLimitsMap.Add(app, app.Limits);
             }
         }
 
@@ -125,14 +125,14 @@ namespace AppsTracker.Tracking
         {
             if (app == null)
             {
-                currentApp = string.Empty;
+                currentAppId = -1;
                 return;
             }
 
-            currentApp = app.Name;            
-            if (appLimitsMap.ContainsKey(app.Name))
+            currentAppId = app.ApplicationID;            
+            if (appLimitsMap.ContainsKey(app))
             {
-                var limits = appLimitsMap[app.Name];
+                var limits = appLimitsMap[app];
                 var dailyLimit = limits.FirstOrDefault(l => l.LimitSpan == LimitSpan.Day);
                 var weeklyLimit = limits.FirstOrDefault(l => l.LimitSpan == LimitSpan.Week);
                 if (dailyLimit != null)
@@ -158,7 +158,7 @@ namespace AppsTracker.Tracking
             {
                 limitHandler.Handle(appLimit);
             }
-            else if (currentApp != appLimit.Application.Name)
+            else if (currentAppId != appLimit.ApplicationID)
             {
                 return;
             }
