@@ -22,7 +22,8 @@ namespace AppsTracker.Tracking
         private Setting settings;
 
         [ImportingConstructor]
-        public ScreenshotTracker(IScreenshotFactory screenshotFactory, ISyncContext syncContext,
+        public ScreenshotTracker(IScreenshotFactory screenshotFactory,
+                                 ISyncContext syncContext,
                                  IDataService dataService)
         {
             this.screenshotFactory = screenshotFactory;

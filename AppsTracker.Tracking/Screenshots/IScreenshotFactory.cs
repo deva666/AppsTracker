@@ -2,7 +2,7 @@
 
 namespace AppsTracker.Tracking.Helpers
 {
-    interface IScreenshotFactory
+    public interface IScreenshotFactory
     {
         AppsTracker.Data.Models.Screenshot CreateScreenshot();
     }

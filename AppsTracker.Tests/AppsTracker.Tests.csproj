@@ -80,6 +80,7 @@
     <Compile Include="Common\MediatorTest.cs" />
     <Compile Include="Core\Controllers\TrackingControllerTest.cs" />
     <Compile Include="Core\Tracking\LimitObserverTest.cs" />
+    <Compile Include="Core\Tracking\ScreenshotTrackerTest.cs" />
     <Compile Include="Core\ViewModels\AppDetailsViewModelTest.cs" />
     <Compile Include="Core\ViewModels\MainViewModelTest.cs" />
     <Compile Include="Core\ViewModels\ScreenshotViewModelTest.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Fakes\Service\StatsServiceMock.cs" />
     <Compile Include="Fakes\Service\SqlSettingsServiceMock.cs" />
     <Compile Include="Fakes\Service\XmlSettingsServiceMock.cs" />
+    <Compile Include="Fakes\SyncContextFake.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="TestMockBase.cs" />
