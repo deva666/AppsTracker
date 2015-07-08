@@ -1,7 +1,8 @@
 ﻿using System;
+
 namespace AppsTracker.Tracking.Helpers
 {
-    interface IMidnightNotifier
+    public interface IMidnightNotifier
     {
         event EventHandler MidnightTick;
     }

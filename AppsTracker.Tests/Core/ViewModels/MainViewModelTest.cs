@@ -38,7 +38,7 @@ namespace AppsTracker.Tests.Core.ViewModels
             mainViewModel = new MainViewModel(dataService.Object,
                 settingsService.Object,
                 trackingService.Object,
-                mediator.Object,
+                mediator,
                 dataHostVMFactory,
                 statisticsHostVMFactory,
                 settingsHostVMFactory);

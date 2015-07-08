@@ -35,7 +35,7 @@ namespace AppsTracker.Tests.Core.ViewModels
                                                      settingsService.Object,
                                                      trackingService.Object,
                                                      windowService.Object,
-                                                     mediator.Object);
+                                                     mediator);
 
 
             var result = viewModel.LogList.Result;

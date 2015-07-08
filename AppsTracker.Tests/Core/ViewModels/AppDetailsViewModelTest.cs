@@ -25,7 +25,7 @@ namespace AppsTracker.Tests.Core.ViewModels
             var viewModel = new AppDetailsViewModel(dataService.Object,
                                                     statsService.Object,
                                                     trackingService.Object,
-                                                    mediator.Object);
+                                                    mediator);
 
             var apps = viewModel.AppList.Result;
             while (viewModel.Working)

@@ -9,6 +9,8 @@ using AppsTracker.Data.Service;
 using AppsTracker.ViewModels;
 using AppsTracker.Common.Communication;
 using Moq;
+using AppsTracker.Hooks;
+using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tests
 {
@@ -21,8 +23,11 @@ namespace AppsTracker.Tests
         protected Mock<IStatsService> statsService = new Mock<IStatsService>();
         protected Mock<ICategoriesService> categoriesService = new Mock<ICategoriesService>();
         protected Mock<IWindowService> windowService = new Mock<IWindowService>();
-        protected Mock<IMediator> mediator = new Mock<IMediator>();
+        protected Mock<IWindowChangedNotifier> windowChangedNotifier = new Mock<IWindowChangedNotifier>();
+        protected Mock<ILimitHandler> limitHandler = new Mock<ILimitHandler>();
+        protected Mock<IMidnightNotifier> midnightNotifier = new Mock<IMidnightNotifier>();
 
+        protected readonly IMediator mediator = new Mediator();
 
         protected ExportFactory<AppDetailsViewModel> GetAppDetailsVMFactory()
         {
@@ -32,7 +37,7 @@ namespace AppsTracker.Tests
                         new AppDetailsViewModel(dataService.Object,
                             statsService.Object,
                             trackingService.Object,
-                            mediator.Object),
+                            mediator),
                             ExportFactoryContextRelease));
             return new ExportFactory<AppDetailsViewModel>(tupleFactory);
         }
@@ -46,7 +51,7 @@ namespace AppsTracker.Tests
                             settingsService.Object,
                             trackingService.Object,
                             windowService.Object,
-                            mediator.Object),
+                            mediator),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<ScreenshotsViewModel>(tupleFactory);
@@ -60,7 +65,7 @@ namespace AppsTracker.Tests
                         new DaySummaryViewModel(dataService.Object,
                             statsService.Object,
                             trackingService.Object,
-                            mediator.Object),
+                            mediator),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<DaySummaryViewModel>(tupleFactory);
@@ -89,7 +94,7 @@ namespace AppsTracker.Tests
                     () => new Tuple<UserStatsViewModel, Action>(
                         new UserStatsViewModel(statsService.Object,
                             trackingService.Object,
-                            mediator.Object),
+                            mediator),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<UserStatsViewModel>(tupleFactory);
@@ -102,7 +107,7 @@ namespace AppsTracker.Tests
                     () => new Tuple<AppStatsViewModel, Action>(
                         new AppStatsViewModel(statsService.Object,
                             trackingService.Object,
-                            mediator.Object),
+                            mediator),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<AppStatsViewModel>(tupleFactory);
@@ -115,7 +120,7 @@ namespace AppsTracker.Tests
                     () => new Tuple<DailyAppUsageViewModel, Action>(
                         new DailyAppUsageViewModel(statsService.Object,
                             trackingService.Object,
-                            mediator.Object),
+                            mediator),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<DailyAppUsageViewModel>(tupleFactory);
@@ -129,7 +134,7 @@ namespace AppsTracker.Tests
                     () => new Tuple<ScreenshotsStatsViewModel, Action>(
                         new ScreenshotsStatsViewModel(statsService.Object,
                             trackingService.Object,
-                            mediator.Object),
+                            mediator),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<ScreenshotsStatsViewModel>(tupleFactory);
@@ -142,7 +147,7 @@ namespace AppsTracker.Tests
                     () => new Tuple<CategoryStatsViewModel, Action>(
                         new CategoryStatsViewModel(statsService.Object,
                             trackingService.Object,
-                            mediator.Object),
+                            mediator),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<CategoryStatsViewModel>(tupleFactory);
@@ -176,7 +181,7 @@ namespace AppsTracker.Tests
                     () => new Tuple<SettingsGeneralViewModel, Action>(
                         new SettingsGeneralViewModel(windowService.Object,
                             settingsService.Object,
-                            mediator.Object),
+                            mediator),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<SettingsGeneralViewModel>(tupleFactory);
@@ -188,7 +193,7 @@ namespace AppsTracker.Tests
             var tupleFactory =
                 new Func<Tuple<SettingsTrackingViewModel, Action>>(
                     () => new Tuple<SettingsTrackingViewModel, Action>(
-                        new SettingsTrackingViewModel(settingsService.Object, mediator.Object),
+                        new SettingsTrackingViewModel(settingsService.Object, mediator),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<SettingsTrackingViewModel>(tupleFactory);
@@ -203,7 +208,7 @@ namespace AppsTracker.Tests
                             trackingService.Object,
                             dataService.Object,
                             windowService.Object,
-                            mediator.Object),
+                            mediator),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<SettingsScreenshotsViewModel>(tupleFactory);
@@ -217,7 +222,7 @@ namespace AppsTracker.Tests
                     () => new Tuple<SettingsPasswordViewModel, Action>(
                         new SettingsPasswordViewModel(windowService.Object,
                             settingsService.Object,
-                            mediator.Object),
+                            mediator),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<SettingsPasswordViewModel>(tupleFactory);
@@ -240,7 +245,7 @@ namespace AppsTracker.Tests
                 new Func<Tuple<SettingsAppCategoriesViewModel, Action>>(
                     () => new Tuple<SettingsAppCategoriesViewModel, Action>(
                         new SettingsAppCategoriesViewModel(categoriesFactory,
-                            mediator.Object),
+                            mediator),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<SettingsAppCategoriesViewModel>(tupleFactory);
@@ -254,7 +259,7 @@ namespace AppsTracker.Tests
                     () => new Tuple<SettingsLimitsViewModel, Action>(
                         new SettingsLimitsViewModel(dataService.Object,
                             trackingService.Object, 
-                            mediator.Object),
+                            mediator),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<SettingsLimitsViewModel>(tupleFactory);

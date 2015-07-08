@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppsTracker.Data.Models;
+﻿using AppsTracker.Data.Models;
 
 namespace AppsTracker.Tracking.Helpers
 {
-    interface ILimitHandler
+    public interface ILimitHandler
     {
         void Handle(AppLimit warning);
     }

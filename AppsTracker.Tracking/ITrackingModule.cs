@@ -7,7 +7,10 @@
 #endregion
 
 using System;
+using System.Runtime.CompilerServices;
 using AppsTracker.Data.Models;
+
+[assembly: InternalsVisibleTo("AppsTracker.Tests")]
 
 namespace AppsTracker.Tracking
 {
