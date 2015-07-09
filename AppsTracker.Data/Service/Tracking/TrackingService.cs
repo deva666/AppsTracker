@@ -112,7 +112,7 @@ namespace AppsTracker.Data.Service
             isDateRangeFiltered = false;
         }
 
-        public Log CreateNewLog(string windowTitle, int usageID, int userID, IAppInfo appInfo, out bool newApp)
+        public Log CreateNewLog(string windowTitle, int usageID, int userID, AppInfo appInfo, out bool newApp)
         {
             Ensure.NotNull(appInfo, "appInfo");
 
@@ -149,7 +149,7 @@ namespace AppsTracker.Data.Service
         }
 
 
-        public Aplication GetApp(IAppInfo appInfo, int userId = default(int))
+        public Aplication GetApp(AppInfo appInfo, int userId = default(int))
         {
             if (appInfo == null)
                 return null;

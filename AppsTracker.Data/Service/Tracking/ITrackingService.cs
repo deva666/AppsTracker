@@ -28,9 +28,9 @@ namespace AppsTracker.Data.Service
 
         void ClearDateFilter();
 
-        Log CreateNewLog(string windowTitle, int usageID, int userID, AppsTracker.Data.Utils.IAppInfo appInfo, out bool newApp);
+        Log CreateNewLog(string windowTitle, int usageID, int userID, AppInfo appInfo, out bool newApp);
 
-        Aplication GetApp(IAppInfo appInfo, int userId = default(int));
+        Aplication GetApp(AppInfo appInfo, int userId = default(int));
 
         Usage LoginUser(int userID);
 

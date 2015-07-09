@@ -126,7 +126,6 @@
     <Compile Include="Service\Tracking\TrackingService.cs" />
     <Compile Include="Utils\AppInfo.cs" />
     <Compile Include="Utils\DelegateCommand.cs" />
-    <Compile Include="Utils\IAppInfo.cs" />
     <Compile Include="XmlSettings\DaysViewSettings.cs" />
     <Compile Include="XmlSettings\KeylogsViewSettings.cs" />
     <Compile Include="XmlSettings\LimitsSettings.cs" />

@@ -65,7 +65,7 @@ namespace AppsTracker.Data.Models
         }
 
 
-        public Aplication(IAppInfo appInfo)
+        public Aplication(AppInfo appInfo)
             : this(appInfo.Name, appInfo.FileName, appInfo.Version, appInfo.Description, appInfo.Company, appInfo.FullName)
         {
 

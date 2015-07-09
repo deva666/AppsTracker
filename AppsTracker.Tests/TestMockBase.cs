@@ -9,7 +9,7 @@ using AppsTracker.Data.Service;
 using AppsTracker.ViewModels;
 using AppsTracker.Common.Communication;
 using Moq;
-using AppsTracker.Hooks;
+using AppsTracker.Tracking.Hooks;
 using AppsTracker.Tracking.Helpers;
 using AppsTracker.Tests.Fakes;
 
@@ -24,7 +24,7 @@ namespace AppsTracker.Tests
         protected Mock<IStatsService> statsService = new Mock<IStatsService>();
         protected Mock<ICategoriesService> categoriesService = new Mock<ICategoriesService>();
         protected Mock<IWindowService> windowService = new Mock<IWindowService>();
-        protected Mock<IWindowChangedNotifier> windowChangedNotifier = new Mock<IWindowChangedNotifier>();
+        protected Mock<IAppChangedNotifier> windowChangedNotifier = new Mock<IAppChangedNotifier>();
         protected Mock<ILimitHandler> limitHandler = new Mock<ILimitHandler>();
         protected Mock<IMidnightNotifier> midnightNotifier = new Mock<IMidnightNotifier>();
         protected Mock<IScreenshotFactory> screenshotFactory = new Mock<IScreenshotFactory>();

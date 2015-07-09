@@ -8,13 +8,13 @@ namespace AppsTracker.Tests.Fakes.Service
     [Export(typeof(ITrackingService))]
     class TrackingServiceMock : ITrackingService
     {
-        public Data.Models.Log CreateNewLog(string windowTitle, int usageID, int userID, Data.Utils.IAppInfo appInfo, out bool newApp)
+        public Data.Models.Log CreateNewLog(string windowTitle, int usageID, int userID, Data.Utils.AppInfo appInfo, out bool newApp)
         {
             newApp = false;
             return new Log(new Window(windowTitle), usageID);
         }
 
-        public Data.Models.Aplication GetApp(Data.Utils.IAppInfo appInfo, int userId = default(int))
+        public Data.Models.Aplication GetApp(Data.Utils.AppInfo appInfo, int userId = default(int))
         {
             return new Aplication(appInfo);
         }

@@ -8,26 +8,39 @@
 
 using System;
 using System.Diagnostics;
+using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Data.Utils
 {
-    public class AppInfo : IAppInfo
+    public class AppInfo 
     {
-        public string Name { get; private set; }
+        public virtual string Name { get; private set; }
         public string Version { get; private set; }
         public string Company { get; private set; }
         public string Description { get; private set; }
         public string FileName { get; private set; }
         public string FullName { get; private set; }
 
-        private AppInfo() { }
-
-        public static AppInfo GetAppInfo(Process process)
+        private static Process GetProcessFromHandle(IntPtr hWnd)
         {
+            uint processID = 0;
+            if (hWnd != IntPtr.Zero)
+            {
+                WinAPI.GetWindowThreadProcessId(hWnd, out processID);
+                if (processID != 0)
+                    return System.Diagnostics.Process.GetProcessById(checked((int)processID));
+            }
+            return null;
+        }
+
+        public static AppInfo GetAppInfo(IntPtr hWnd)
+        {
+            var process = GetProcessFromHandle(hWnd);
+
             if (process == null)
                 return null;
 
-            AppInfo appInfo = new AppInfo();
+            var appInfo = new AppInfo();
 
             try
             {
@@ -82,6 +95,54 @@ namespace AppsTracker.Data.Utils
             }
 
             return appInfo;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hash = 17;
+                hash = hash * 23 + Name.GetHashCode();
+                hash = hash * 23 + FullName.GetHashCode();
+                hash = hash * 23 + FileName.GetHashCode();
+                hash = hash * 23 + Company.GetHashCode();
+                hash = hash * 23 + Description.GetHashCode();
+
+                return hash;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as AppInfo;
+            if (other == null)
+                return false;
+
+            return this.Name == other.Name &&
+                   this.FullName == other.FullName &&
+                   this.FileName == other.FileName &&
+                   this.Company == other.Company &&
+                   this.Description == other.Description;
+        }
+
+        public static bool operator ==(AppInfo first, AppInfo second)
+        {
+            if (object.ReferenceEquals(null, first))
+            {
+                return object.ReferenceEquals(null, second);
+            }
+
+            return first.Equals(second);
+        }
+
+        public static bool operator !=(AppInfo first, AppInfo second)
+        {
+            if (object.ReferenceEquals(null, first))
+            {
+                return !object.ReferenceEquals(null, second);
+            }
+
+            return !first.Equals(second);
         }
     }
 }

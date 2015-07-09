@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Utils;
-using AppsTracker.Hooks;
+using AppsTracker.Tracking.Hooks;
 using AppsTracker.Tracking;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -20,7 +20,7 @@ namespace AppsTracker.Tests.Tracking
         {
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(0);
-            var appInfo = new Mock<IAppInfo>();
+            var appInfo = new Mock<AppInfo>();
 
             appInfo.Setup(a => a.Name).Returns(app.Name);
             dataService.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
@@ -30,7 +30,7 @@ namespace AppsTracker.Tests.Tracking
             trackingService.Setup(t => t.GetApp(appInfo.Object, 0)).Returns(app);
 
             observer.Initialize(null);
-            windowChangedNotifier.Raise(w => w.WindowChanged += null, new WindowChangedArgs("", appInfo.Object));
+            windowChangedNotifier.Raise(w => w.AppChanged += null, new AppChangedArgs("", appInfo.Object));
             ;
 
             limitHandler.Verify(h => h.Handle(app.Limits.First()), Times.Once);
@@ -42,7 +42,7 @@ namespace AppsTracker.Tests.Tracking
         {
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(1000);
-            var appInfo = new Mock<IAppInfo>();
+            var appInfo = new Mock<AppInfo>();
 
             appInfo.Setup(a => a.Name).Returns(app.Name);
             dataService.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
@@ -52,8 +52,7 @@ namespace AppsTracker.Tests.Tracking
             trackingService.Setup(t => t.GetApp(appInfo.Object, 0)).Returns(app);
 
             observer.Initialize(null);
-            windowChangedNotifier.Raise(w => w.WindowChanged += null, new WindowChangedArgs("", appInfo.Object));
-            ;
+            windowChangedNotifier.Raise(w => w.AppChanged += null, new AppChangedArgs("", appInfo.Object));
 
             limitHandler.Verify(h => h.Handle(app.Limits.First()), Times.Never);
 
@@ -67,7 +66,7 @@ namespace AppsTracker.Tests.Tracking
         {
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(1000);
-            var appInfo = new Mock<IAppInfo>();
+            var appInfo = new Mock<AppInfo>();
 
             appInfo.Setup(a => a.Name).Returns(app.Name);
             dataService.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
@@ -77,7 +76,7 @@ namespace AppsTracker.Tests.Tracking
             trackingService.Setup(t => t.GetApp(appInfo.Object, 0)).Returns(app);
 
             observer.Initialize(null);
-            windowChangedNotifier.Raise(w => w.WindowChanged += null, new WindowChangedArgs("", appInfo.Object));
+            windowChangedNotifier.Raise(w => w.AppChanged += null, new AppChangedArgs("", appInfo.Object));
 
             limitHandler.Verify(h => h.Handle(app.Limits.First()), Times.Never);
 

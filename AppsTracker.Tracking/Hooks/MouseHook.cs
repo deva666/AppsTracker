@@ -11,7 +11,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using AppsTracker.Common.Utils;
 
-namespace AppsTracker.Hooks
+namespace AppsTracker.Tracking.Hooks
 {
     public enum MouseButton
     {

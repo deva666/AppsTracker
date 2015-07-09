@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppsTracker.Hooks
+namespace AppsTracker.Tracking.Hooks
 {
     public sealed class KeyboardHookArgs : EventArgs
     {

@@ -10,7 +10,7 @@ using System;
 using System.ComponentModel.Composition;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Utils;
-using AppsTracker.Hooks;
+using AppsTracker.Tracking.Hooks;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Service;
 using AppsTracker.Tracking.Helpers;
@@ -26,14 +26,12 @@ namespace AppsTracker.Tracking
 
         private readonly ITrackingService trackingService;
         private readonly IDataService dataService;
-        private readonly IWindowChangedNotifier windowNotifierInstance;
+        private readonly IAppChangedNotifier appNotifierInstance;
         private readonly ISyncContext syncContext;
         private readonly IScreenshotTracker screenshotTracker;
-        private readonly IWindowHelper windowHelper;
         private readonly IMediator mediator;
 
-        private LazyInit<IWindowChangedNotifier> windowNotifier;
-        private LazyInit<System.Threading.Timer> windowCheckTimer;
+        private LazyInit<IAppChangedNotifier> appChangedNotifier;
 
         private Log currentLog;
         private Setting settings;
@@ -41,18 +39,16 @@ namespace AppsTracker.Tracking
         [ImportingConstructor]
         public WindowTracker(ITrackingService trackingService,
                              IDataService dataService,
-                             IWindowChangedNotifier windowNotifier,
+                             IAppChangedNotifier appChangedNotifier,
                              IScreenshotTracker screenshotTracker,
                              ISyncContext syncContext,
-                             IWindowHelper windowHelper,
                              IMediator mediator)
         {
             this.trackingService = trackingService;
             this.dataService = dataService;
-            this.windowNotifierInstance = windowNotifier;
+            this.appNotifierInstance = appChangedNotifier;
             this.screenshotTracker = screenshotTracker;
             this.syncContext = syncContext;
-            this.windowHelper = windowHelper;
             this.mediator = mediator;
         }
 
@@ -70,13 +66,9 @@ namespace AppsTracker.Tracking
             screenshotTracker.Initialize(settings);
             screenshotTracker.ScreenshotTaken += OnScreenshotTaken;
 
-            windowNotifier = new LazyInit<IWindowChangedNotifier>(() => windowNotifierInstance,
-                                                           w => w.WindowChanged += WindowChanging,
-                                                           w => w.WindowChanged -= WindowChanging);
-
-            windowCheckTimer = new LazyInit<System.Threading.Timer>(() => new System.Threading.Timer(s => syncContext.Invoke(CheckWindowTitle))
-                                                                        , t => t.Change(1000, 1000)
-                                                                        , t => t.Dispose());
+            appChangedNotifier = new LazyInit<IAppChangedNotifier>(() => appNotifierInstance,
+                                                           a => a.AppChanged += AppChanging,
+                                                           a => a.AppChanged -= AppChanging);
 
             ConfigureComponents();
 
@@ -98,29 +90,19 @@ namespace AppsTracker.Tracking
         private void ConfigureComponents()
         {
             isTrackingEnabled =
-                windowNotifier.Enabled =
-                    windowCheckTimer.Enabled =
+                appChangedNotifier.Enabled =
                         settings.LoggingEnabled;
         }
 
-        private void CheckWindowTitle()
+        private void AppChanging(object sender, AppChangedArgs e)
         {
             if (isTrackingEnabled == false)
                 return;
 
-            if (activeWindowTitle != windowHelper.GetActiveWindowName())
-                OnWindowChange(windowHelper.GetActiveWindowName(), windowHelper.GetActiveWindowAppInfo());
+            OnAppChange(e.WindowTitle, e.AppInfo);
         }
 
-        private void WindowChanging(object sender, WindowChangedArgs e)
-        {
-            if (isTrackingEnabled == false)
-                return;
-
-            OnWindowChange(e.WindowTitle, e.AppInfo);
-        }
-
-        private void OnWindowChange(string windowTitle, IAppInfo appInfo)
+        private void OnAppChange(string windowTitle, AppInfo appInfo)
         {
             if (appInfo == null || (appInfo != null
                 && string.IsNullOrEmpty(appInfo.Name)
@@ -140,7 +122,7 @@ namespace AppsTracker.Tracking
         }
 
 
-        private void SaveCreateLog(string windowTitle, int usageID, int userID, IAppInfo appInfo, out bool newApp)
+        private void SaveCreateLog(string windowTitle, int usageID, int userID, AppInfo appInfo, out bool newApp)
         {
             var newLog = trackingService.CreateNewLog(windowTitle, usageID, userID, appInfo, out newApp);
             ExchangeLogs(newLog);
@@ -162,7 +144,7 @@ namespace AppsTracker.Tracking
             dataService.SaveModifiedEntityAsync(tempLog);
         }
 
-        private void NewAppAdded(IAppInfo appInfo)
+        private void NewAppAdded(AppInfo appInfo)
         {
             var newApp = trackingService.GetApp(appInfo);
             if (newApp != null)
@@ -182,11 +164,10 @@ namespace AppsTracker.Tracking
 
         public void Dispose()
         {
-            windowNotifierInstance.Dispose();
+            appNotifierInstance.Dispose();
             screenshotTracker.Dispose();
 
-            windowNotifier.Enabled =
-                    windowCheckTimer.Enabled = false;
+            appChangedNotifier.Enabled = false;
 
             StopTracking();
         }

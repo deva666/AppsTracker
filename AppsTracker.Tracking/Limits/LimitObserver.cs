@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
-using AppsTracker.Hooks;
+using AppsTracker.Tracking.Hooks;
 using AppsTracker.Tracking.Helpers;
+using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Tracking
 {
@@ -17,7 +18,7 @@ namespace AppsTracker.Tracking
     {
         private readonly ITrackingService trackingService;
         private readonly IDataService dataService;
-        private readonly IWindowChangedNotifier windowChangedNotifier;
+        private readonly IAppChangedNotifier appChangedNotifier;
         private readonly IMidnightNotifier midnightNotifier;
         private readonly ILimitHandler limitHandler;
         private readonly IMediator mediator;
@@ -30,19 +31,20 @@ namespace AppsTracker.Tracking
         private AppLimit currentDayLimit;
         private AppLimit currentWeekLimit;
 
-        private int currentAppId;
+        private int activeAppId;
+        private AppInfo activeAppInfo;
 
         [ImportingConstructor]
         public LimitObserver(ITrackingService trackingService,
                              IDataService dataService,
-                             IWindowChangedNotifier windowChangedNotifier,
+                             IAppChangedNotifier appChangedNotifier,
                              IMidnightNotifier midnightNotifier,
                              ILimitHandler limitHandler,
                              IMediator mediator)
         {
             this.trackingService = trackingService;
             this.dataService = dataService;
-            this.windowChangedNotifier = windowChangedNotifier;
+            this.appChangedNotifier = appChangedNotifier;
             this.midnightNotifier = midnightNotifier;
             this.limitHandler = limitHandler;
             this.mediator = mediator;
@@ -70,7 +72,7 @@ namespace AppsTracker.Tracking
         public void Initialize(Setting settings)
         {
             midnightNotifier.MidnightTick += OnMidnightTick;
-            windowChangedNotifier.WindowChanged += OnWindowChanged;
+            appChangedNotifier.AppChanged += OnAppChanged;
 
             LoadAppLimits();
         }
@@ -112,8 +114,12 @@ namespace AppsTracker.Tracking
         }
 
 
-        private void OnWindowChanged(object sender, WindowChangedArgs e)
+        private void OnAppChanged(object sender, AppChangedArgs e)
         {
+            if (activeAppInfo == e.AppInfo)
+                return;
+
+            activeAppInfo = e.AppInfo;
             StopTimers();
             currentDayLimit = currentWeekLimit = null;
             var app = trackingService.GetApp(e.AppInfo);
@@ -125,11 +131,11 @@ namespace AppsTracker.Tracking
         {
             if (app == null)
             {
-                currentAppId = -1;
+                activeAppId = -1;
                 return;
             }
 
-            currentAppId = app.ApplicationID;
+            activeAppId = app.ApplicationID;
             if (appLimitsMap.ContainsKey(app))
             {
                 var limits = appLimitsMap[app];
@@ -161,7 +167,7 @@ namespace AppsTracker.Tracking
             {
                 limitHandler.Handle(appLimit);
             }
-            else if (currentAppId != appLimit.ApplicationID)
+            else if (activeAppId != appLimit.ApplicationID)
             {
                 return;
             }
