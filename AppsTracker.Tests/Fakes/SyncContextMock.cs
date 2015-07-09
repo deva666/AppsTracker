@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tests.Fakes
 {
-    public sealed class SyncContextFake : ISyncContext
+    public sealed class SyncContextMock : ISyncContext
     {
         public System.Threading.SynchronizationContext Context
         {

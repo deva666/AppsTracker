@@ -30,7 +30,7 @@ namespace AppsTracker.Tests
         protected Mock<IScreenshotFactory> screenshotFactory = new Mock<IScreenshotFactory>();
 
         protected readonly IMediator mediator = new Mediator();
-        protected readonly ISyncContext syncContext = new SyncContextFake();
+        protected readonly ISyncContext syncContext = new SyncContextMock();
 
         protected ExportFactory<AppDetailsViewModel> GetAppDetailsVMFactory()
         {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Utils;
 using AppsTracker.Hooks;
@@ -11,7 +10,7 @@ using AppsTracker.Tracking;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace AppsTracker.Tests.Core.Tracking
+namespace AppsTracker.Tests.Tracking
 {
     [TestClass]
     public class LimitObserverTest : TestMockBase
@@ -79,7 +78,6 @@ namespace AppsTracker.Tests.Core.Tracking
 
             observer.Initialize(null);
             windowChangedNotifier.Raise(w => w.WindowChanged += null, new WindowChangedArgs("", appInfo.Object));
-            ;
 
             limitHandler.Verify(h => h.Handle(app.Limits.First()), Times.Never);
 

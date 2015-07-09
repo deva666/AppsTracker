@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Tracking;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AppsTracker.Tests.Core.Tracking
+namespace AppsTracker.Tests.Tracking
 {
     [TestClass]
     public class ScreenshotTrackerTest : TestMockBase

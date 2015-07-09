@@ -1,75 +1,73 @@
-﻿using System;
-using System.Threading;
-using AppsTracker.ServiceLocation;
+﻿using System.Threading;
+using AppsTracker.MVVM;
 using AppsTracker.Tests.Fakes.MVVM;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using AppsTracker.MVVM;
 
 namespace AppsTracker.Tests.Core.MVVM
 {
     [TestClass]
     public class AsyncPropertyTest
     {
-        private volatile bool _propertyChanged = false;
-        private IWorker _worker;
-        private AsyncProperty<int> _prop;
+        private volatile bool propertyChanged = false;
+        private IWorker worker;
+        private AsyncProperty<int> asyncProperty;
 
 
         [TestInitialize]
         public void Init()
         {
-            _worker = new ViewModelMock();
-            _prop = new AsyncProperty<int>(FakeGet, _worker);
-            _prop.PropertyChanged += prop_PropertyChanged;
+            worker = new ViewModelMock();
+            asyncProperty = new AsyncProperty<int>(FakeGet, worker);
+            asyncProperty.PropertyChanged += OnPropertyChanged;
         }
 
-        void prop_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Result")
-                _propertyChanged = true;
+                propertyChanged = true;
         }
 
         [TestMethod]
         public void TestAsyncGet()
         {
-            _propertyChanged = false;
-            var result = _prop.Result;
+            propertyChanged = false;
+            var result = asyncProperty.Result;
             Assert.IsTrue(result == default(int), "Default result value");
-            while (_propertyChanged == false) { }
-            result = _prop.Result;
+            while (propertyChanged == false) { }
+            result = asyncProperty.Result;
             Assert.IsTrue(result == 1, "Result value mismatch");
         }
 
         [TestMethod]
         public void TestAsyncReset()
         {
-            _propertyChanged = false;
-            _prop.Reset();
-            var result = _prop.Result;
+            propertyChanged = false;
+            asyncProperty.Reset();
+            var result = asyncProperty.Result;
             Assert.IsTrue(result == default(int), "Default result value");
         }
 
         [TestMethod]
         public void TestAsyncReload()
         {
-            _propertyChanged = false;
-            _prop.Reload();
-            var result = _prop.Result;
+            propertyChanged = false;
+            asyncProperty.Reload();
+            var result = asyncProperty.Result;
             Assert.IsTrue(result == default(int), "Default result value");
-            while (_propertyChanged == false) { }
-            result = _prop.Result;
+            while (propertyChanged == false) { }
+            result = asyncProperty.Result;
             Assert.IsTrue(result == 1, "Result value mismatch");
         }
 
         [TestMethod]
         public void TestVMHostWorker()
         {
-            _propertyChanged = false;
-            Assert.IsFalse(_worker.Working, "Host VM should not be working");
-            _prop.Reload();
-            Assert.IsTrue(_worker.Working, "Host VM should be working");
-            while (_propertyChanged == false) { }
-            Assert.IsFalse(_worker.Working, "Host VM should not be working");
+            propertyChanged = false;
+            Assert.IsFalse(worker.Working, "Host VM should not be working");
+            asyncProperty.Reload();
+            Assert.IsTrue(worker.Working, "Host VM should be working");
+            while (propertyChanged == false) { }
+            Assert.IsFalse(worker.Working, "Host VM should not be working");
         }
 
         private int FakeGet()
