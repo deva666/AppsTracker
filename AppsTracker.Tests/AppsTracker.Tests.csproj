@@ -79,7 +79,7 @@
     <Compile Include="Core\MVVM\AsyncPropertyTest.cs" />
     <Compile Include="Common\MediatorTest.cs" />
     <Compile Include="Core\Controllers\TrackingControllerTest.cs" />
-    <Compile Include="Hooks\AppChangedNotifierTests.cs" />
+    <Compile Include="Tracking\Hooks\AppChangedNotifierTests.cs" />
     <Compile Include="Tracking\LimitObserverTest.cs" />
     <Compile Include="Tracking\ScreenshotTrackerTest.cs" />
     <Compile Include="Core\ViewModels\AppDetailsViewModelTest.cs" />
