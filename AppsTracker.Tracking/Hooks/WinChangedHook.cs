@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Text;
 using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Tracking.Hooks
 {
-    internal sealed class WinChangedHook : WinHookBase
+    [Export(typeof(IWinChanged))]
+    internal sealed class WinChangedHook : WinHookBase, IWinChanged
     {
         public event EventHandler<WinChangedArgs> ActiveWindowChanged;
 

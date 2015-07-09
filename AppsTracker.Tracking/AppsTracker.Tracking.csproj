@@ -51,6 +51,8 @@
     <Compile Include="Hooks\EventArgs\WinChangedArgs.cs" />
     <Compile Include="Hooks\EventArgs\AppChangedArgs.cs" />
     <Compile Include="Hooks\IAppChangedNotifier.cs" />
+    <Compile Include="Hooks\ITitleChanged.cs" />
+    <Compile Include="Hooks\IWinChanged.cs" />
     <Compile Include="Hooks\KeyboardHook.cs" />
     <Compile Include="Hooks\MouseHook.cs" />
     <Compile Include="Hooks\TitleChangedHook.cs" />

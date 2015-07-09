@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Text;
 using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Tracking.Hooks
 {
-    public sealed class TitleChangedHook : WinHookBase
+    [Export(typeof(ITitleChanged))]
+    public sealed class TitleChangedHook : WinHookBase, ITitleChanged
     {
         public event EventHandler<WinChangedArgs> TitleChanged;
 

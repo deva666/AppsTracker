@@ -19,20 +19,21 @@ namespace AppsTracker.Tracking.Hooks
     {
         public event EventHandler<AppChangedArgs> AppChanged;
 
-        private readonly WinChangedHook winChangedHook;
-        private readonly TitleChangedHook titleChangedHook;
+        private readonly IWinChanged winChangedHook;
+        private readonly ITitleChanged titleChangedHook;
 
         private IntPtr activeWindowHandle;
         private String activeWindowTitle;
 
 
-        public AppChangedNotifier()
+        [ImportingConstructor]
+        public AppChangedNotifier(IWinChanged winChangedHook, ITitleChanged titleChangedHook)
         {
-            winChangedHook = new WinChangedHook();
-            titleChangedHook = new TitleChangedHook();
+            this.winChangedHook = winChangedHook;
+            this.titleChangedHook = titleChangedHook;
 
-            winChangedHook.ActiveWindowChanged += OnActiveWindowChanged;
-            titleChangedHook.TitleChanged += OnTitleChanged;
+            this.winChangedHook.ActiveWindowChanged += OnActiveWindowChanged;
+            this.titleChangedHook.TitleChanged += OnTitleChanged;
         }
 
 
