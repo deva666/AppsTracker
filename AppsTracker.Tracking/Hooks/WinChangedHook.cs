@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using AppsTracker.Common.Utils;
-using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Tracking.Hooks
 {

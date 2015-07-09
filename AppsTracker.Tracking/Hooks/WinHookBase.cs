@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Tracking.Hooks
@@ -14,7 +10,7 @@ namespace AppsTracker.Tracking.Hooks
         private bool isDisposed;
 
         private readonly WinHookCallBack winHookCallBack;
-        
+
         private IntPtr hookID = IntPtr.Zero;
 
         public WinHookBase(uint minEvent, uint maxEvent)

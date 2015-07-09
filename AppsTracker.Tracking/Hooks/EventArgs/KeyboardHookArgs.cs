@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppsTracker.Tracking.Hooks
 {
@@ -18,7 +14,7 @@ namespace AppsTracker.Tracking.Hooks
 
         public KeyboardHookArgs(int keyCode)
         {
-            _keyCode = keyCode;            
+            _keyCode = keyCode;
         }
 
         public KeyboardHookArgs(int keyCode, string keyText, string keyTextRaw)
