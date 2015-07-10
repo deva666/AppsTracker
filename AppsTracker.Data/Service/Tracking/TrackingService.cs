@@ -120,7 +120,7 @@ namespace AppsTracker.Data.Service
             {
                 newApp = false;
                 string appName = (!string.IsNullOrEmpty(appInfo.Name) ? appInfo.Name : !string.IsNullOrEmpty(appInfo.FullName) ? appInfo.FullName : appInfo.FileName);
-                Aplication app = context.Applications.FirstOrDefault(a => a.UserID == userID
+                var app = context.Applications.FirstOrDefault(a => a.UserID == userID
                                                         && a.Name == appName);
 
                 if (app == null)
@@ -131,7 +131,7 @@ namespace AppsTracker.Data.Service
                     newApp = true;
                 }
 
-                Window window = context.Windows.FirstOrDefault(w => w.Title == windowTitle
+                var window = context.Windows.FirstOrDefault(w => w.Title == windowTitle
                                                      && w.Application.ApplicationID == app.ApplicationID);
 
                 if (window == null)
@@ -143,7 +143,7 @@ namespace AppsTracker.Data.Service
                 var log = new Log(window, usageID);
                 context.Logs.Add(log);
                 context.SaveChanges();
-
+              
                 return log;
             }
         }

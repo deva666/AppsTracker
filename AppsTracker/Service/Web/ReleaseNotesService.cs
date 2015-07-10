@@ -14,10 +14,9 @@ namespace AppsTracker.Service.Web
 
         private readonly ReleaseNotesParser releaseNotesParser;
 
-        [ImportingConstructor]
-        public ReleaseNotesService(ReleaseNotesParser releaseNotesParser)
+        public ReleaseNotesService()
         {
-            this.releaseNotesParser = releaseNotesParser;
+            releaseNotesParser = new ReleaseNotesParser();
         }
 
         public async Task<IEnumerable<ReleaseNote>> GetReleaseNotesAsync()

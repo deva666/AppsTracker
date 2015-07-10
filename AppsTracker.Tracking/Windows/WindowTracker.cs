@@ -31,7 +31,7 @@ namespace AppsTracker.Tracking
 
         private LazyInit<IAppChangedNotifier> appChangedNotifier;
 
-        private Log currentLog;
+        private Log activeLog;
         private Setting settings;
 
         [ImportingConstructor]
@@ -62,7 +62,7 @@ namespace AppsTracker.Tracking
             this.settings = settings;
 
             screenshotTracker.Initialize(settings);
-            screenshotTracker.ScreenshotTaken += OnScreenshotTaken;
+            screenshotTracker.ScreenshotTaken += ScreenshotTaken;
 
             appChangedNotifier = new LazyInit<IAppChangedNotifier>(() => appNotifierInstance,
                                                            a => a.AppChanged += AppChanging,
@@ -74,14 +74,14 @@ namespace AppsTracker.Tracking
             mediator.Register(MediatorMessages.RESUME_TRACKING, new Action(ResumeTracking));
         }
 
-        private async void OnScreenshotTaken(object sender, ScreenshotEventArgs e)
+        private async void ScreenshotTaken(object sender, ScreenshotEventArgs e)
         {
             var screenshot = e.Screenshot;
 
-            if (isTrackingEnabled == false || screenshot == null || currentLog == null)
+            if (isTrackingEnabled == false || screenshot == null || activeLog == null)
                 return;
 
-            screenshot.LogID = currentLog.LogID;
+            screenshot.LogID = activeLog.LogID;
             await dataService.SaveNewEntityAsync(screenshot);
         }
 
@@ -97,40 +97,32 @@ namespace AppsTracker.Tracking
             if (isTrackingEnabled == false)
                 return;
 
-            OnAppChange(e.WindowTitle, e.AppInfo);
-        }
-
-        private void OnAppChange(string windowTitle, AppInfo appInfo)
-        {
-            if (appInfo == null || (appInfo != null
-                && string.IsNullOrEmpty(appInfo.Name)
-                && string.IsNullOrEmpty(appInfo.FullName)
-                && string.IsNullOrEmpty(appInfo.FileName)))
+            if (e.AppInfo == null || (e.AppInfo != null
+                && string.IsNullOrEmpty(e.AppInfo.Name)
+                && string.IsNullOrEmpty(e.AppInfo.FullName)
+                && string.IsNullOrEmpty(e.AppInfo.FileName)))
             {
-                ExchangeLogs(null);
+                SaveActiveLog(null);
                 return;
             }
 
             bool newApp = false;
-            SaveCreateLog(windowTitle, trackingService.UsageID, trackingService.UserID, appInfo, out newApp);
+            SaveCreateLog(e.WindowTitle, trackingService.UsageID, trackingService.UserID, e.AppInfo, out newApp);
 
             if (newApp)
-                NewAppAdded(appInfo);
+                NewAppAdded(e.AppInfo);
         }
-
 
         private void SaveCreateLog(string windowTitle, int usageID, int userID, AppInfo appInfo, out bool newApp)
         {
             var newLog = trackingService.CreateNewLog(windowTitle, usageID, userID, appInfo, out newApp);
-            ExchangeLogs(newLog);
+            SaveActiveLog(newLog);
         }
 
-        private void ExchangeLogs(Log newLog)
+        private void SaveActiveLog(Log newLog)
         {
-            Log tempLog;
-
-            tempLog = currentLog;
-            currentLog = newLog;
+            var tempLog = activeLog;
+            activeLog = newLog;
 
             if (tempLog == null)
                 return;
@@ -149,7 +141,7 @@ namespace AppsTracker.Tracking
         private void StopTracking()
         {
             isTrackingEnabled = false;
-            ExchangeLogs(null);
+            SaveActiveLog(null);
         }
 
         private void ResumeTracking()
@@ -171,6 +163,17 @@ namespace AppsTracker.Tracking
         public int InitializationOrder
         {
             get { return 1; }
+        }
+
+        private struct LogInfo
+        {
+            public DateTime Start { get; set; }
+            public DateTime End { get; set; }
+            public DateTime UtcStart { get; set; }
+            public DateTime UtcEnd { get; set; }
+            public AppInfo AppInfo { get; set; }
+            public String WindowTitle { get; set; }
+            public Screenshot Screenshot { get; set; }
         }
     }
 }

@@ -38,14 +38,7 @@ namespace AppsTracker.Service.Web
             var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
             httpResponse.Close();
 
-            if (httpResponse.StatusCode == HttpStatusCode.Created)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return httpResponse.StatusCode == HttpStatusCode.Created;
         }
     }
 }

@@ -56,6 +56,7 @@
     <Compile Include="Utils\Ensure.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\ParallelFilter.cs" />
+    <Compile Include="Utils\ProducerConsumerQueue.cs" />
     <Compile Include="Utils\WinAPI.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -7,7 +7,6 @@ using Newtonsoft.Json.Linq;
 
 namespace AppsTracker.Service.Web
 {
-    [Export]
     public sealed class ReleaseNotesParser
     {
         public IEnumerable<ReleaseNote> ParseJson(string json)
