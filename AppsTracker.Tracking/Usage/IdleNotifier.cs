@@ -2,17 +2,16 @@
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Threading;
-using AppsTracker.Data.Service;
-using AppsTracker.Tracking.Hooks;
-using AppsTracker.Tracking.Helpers;
 using AppsTracker.Common.Utils;
+using AppsTracker.Data.Service;
+using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
 {
     [Export(typeof(IIdleNotifier))]
     public class IdleNotifier : IIdleNotifier
     {
-        private const int TIMER_PERIOD = 5000;
+        private const int TIMER_PERIOD = 2 * 1000;
         private const int TIMER_DELAY = 1 * 60 * 1000;
 
         private readonly ISqlSettingsService settingsService;
@@ -63,9 +62,9 @@ namespace AppsTracker.Tracking
             {
                 keyboardHookCallback = new KeyboardHookCallback(KeyboardHookCallback);
                 mouseHookCallback = new MouseHookCallback(MouseHookCallback);
-                using (Process process = Process.GetCurrentProcess())
+                using (var process = Process.GetCurrentProcess())
                 {
-                    using (ProcessModule module = process.MainModule)
+                    using (var module = process.MainModule)
                     {
                         keyboardHookHandle = WinAPI.SetWindowsHookEx(13, keyboardHookCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
                         mouseHookHandle = WinAPI.SetWindowsHookEx(14, mouseHookCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
@@ -74,7 +73,7 @@ namespace AppsTracker.Tracking
                 hooksRemoved = false;
             }
         }
-        
+
         private IntPtr KeyboardHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0)

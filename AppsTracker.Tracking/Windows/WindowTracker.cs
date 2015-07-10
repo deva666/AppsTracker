@@ -8,12 +8,12 @@
 
 using System;
 using System.ComponentModel.Composition;
-using AppsTracker.Data.Models;
-using AppsTracker.Data.Utils;
-using AppsTracker.Tracking.Hooks;
 using AppsTracker.Common.Communication;
+using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
+using AppsTracker.Data.Utils;
 using AppsTracker.Tracking.Helpers;
+using AppsTracker.Tracking.Hooks;
 
 namespace AppsTracker.Tracking
 {

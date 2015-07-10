@@ -27,28 +27,24 @@ namespace AppsTracker.Tracking.Hooks
 
         public event EventHandler<KeyboardHookArgs> HookProc;
 
-        private KeyboardHookCallback hookCallBack;
+        private readonly KeyboardHookCallback hookCallBack;
         private IntPtr hookID = IntPtr.Zero;
 
         private readonly KeycodeMap keycodeMap = new KeycodeMap();
 
         public KeyBoardHook()
         {
-            SetHook();
-        }
-
-        private void SetHook()
-        {
             hookCallBack = new KeyboardHookCallback(HookCallback);
-            using (Process process = Process.GetCurrentProcess())
+            using (var process = Process.GetCurrentProcess())
             {
-                using (ProcessModule module = process.MainModule)
+                using (var module = process.MainModule)
                 {
                     hookID = WinAPI.SetWindowsHookEx(WH_KEYBOARD_LL, hookCallBack, WinAPI.GetModuleHandle(module.ModuleName), 0);
-                    Ensure.Condition<InvalidOperationException>(hookID != IntPtr.Zero, "Failed to set keyboardhook");
+                    Debug.Assert(hookID != IntPtr.Zero, "Failed to set keyboardhook");
                 }
             }
         }
+
 
         private IntPtr HookCallback(int code, IntPtr wParam, IntPtr lParam)
         {

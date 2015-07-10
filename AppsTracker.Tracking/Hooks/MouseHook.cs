@@ -13,25 +13,10 @@ using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Tracking.Hooks
 {
-    public enum MouseButton
-    {
-        LeftDown,
-        RightDown,
-        LeftUp,
-        RightUp,
-        None
-    }
-
-
     internal sealed class MouseHook : IDisposable
     {
         private bool isDisposed;
         private bool isHookEnabled = true;
-
-        internal const int WM_LBUTTONDOWN = 0x0201;
-        internal const int WM_RBUTTONDOWN = 0x0204;
-        internal const int WM_LBUTTONUP = 0x0202;
-        internal const int WM_RBUTTONUP = 0x0205;
 
         private const int WH_MOUSE_LL = 14;
 
@@ -39,16 +24,24 @@ namespace AppsTracker.Tracking.Hooks
 
         private WinAPI.MSLLHOOKSTRUCT mouseStruct;
 
-        private MouseHookCallback hookCallBack;
+        private readonly MouseHookCallback hookCallBack;
 
         private IntPtr hookID = IntPtr.Zero;
 
         public MouseHook()
         {
-            SetHook();
+            hookCallBack = new MouseHookCallback(MouseHookCallback);
+            using (var process = Process.GetCurrentProcess())
+            {
+                using (var module = process.MainModule)
+                {
+                    hookID = WinAPI.SetWindowsHookEx(WH_MOUSE_LL, hookCallBack, WinAPI.GetModuleHandle(module.ModuleName), 0);
+                    Debug.Assert(hookID != IntPtr.Zero, "Failed to set MouseHooke");
+                }
+            }
         }
 
-        IntPtr MouseHookCallback(int code, IntPtr wParam, IntPtr lParam)
+        private IntPtr MouseHookCallback(int code, IntPtr wParam, IntPtr lParam)
         {
             if (code < 0 || !isHookEnabled)
                 return WinAPI.CallNextHookEx(IntPtr.Zero, code, wParam, lParam);
@@ -67,8 +60,9 @@ namespace AppsTracker.Tracking.Hooks
 
         private void Dispose(bool disposing)
         {
-            System.Diagnostics.Debug.WriteLine("Disposing " + this.GetType().Name + " " + this.GetType().FullName);
-            if (isDisposed) return;
+            if (isDisposed)
+                return;
+            Debug.WriteLine("Disposing " + this.GetType().Name + " " + this.GetType().FullName);
             WinAPI.UnhookWindowsHookEx(hookID);
             isDisposed = true;
         }
@@ -77,24 +71,6 @@ namespace AppsTracker.Tracking.Hooks
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        private void SetHook()
-        {
-            hookCallBack = new MouseHookCallback(MouseHookCallback);
-            using (Process process = Process.GetCurrentProcess())
-            {
-                using (ProcessModule module = process.MainModule)
-                {
-                    hookID = WinAPI.SetWindowsHookEx(WH_MOUSE_LL, hookCallBack, WinAPI.GetModuleHandle(module.ModuleName), 0);
-                    Debug.Assert(hookID != IntPtr.Zero, "Failed to set MouseHooke");
-                }
-            }
-        }
-
-        public void EnableHook(bool enable)
-        {
-            isHookEnabled = enable;
         }
     }
 }
