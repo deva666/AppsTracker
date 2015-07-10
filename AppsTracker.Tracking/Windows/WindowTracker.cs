@@ -22,8 +22,6 @@ namespace AppsTracker.Tracking
     {
         private bool isTrackingEnabled;
 
-        private string activeWindowTitle;
-
         private readonly ITrackingService trackingService;
         private readonly IDataService dataService;
         private readonly IAppChangedNotifier appNotifierInstance;
@@ -115,7 +113,6 @@ namespace AppsTracker.Tracking
 
             bool newApp = false;
             SaveCreateLog(windowTitle, trackingService.UsageID, trackingService.UserID, appInfo, out newApp);
-            activeWindowTitle = windowTitle;
 
             if (newApp)
                 NewAppAdded(appInfo);
@@ -131,8 +128,6 @@ namespace AppsTracker.Tracking
         private void ExchangeLogs(Log newLog)
         {
             Log tempLog;
-
-            activeWindowTitle = string.Empty;
 
             tempLog = currentLog;
             currentLog = newLog;
