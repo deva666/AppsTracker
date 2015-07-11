@@ -77,6 +77,7 @@
     <Compile Include="Usage\IUsageProcessor.cs" />
     <Compile Include="Usage\UsageProcessor.cs" />
     <Compile Include="Usage\UsageTracker.cs" />
+    <Compile Include="Windows\LogProcessor.cs" />
     <Compile Include="Windows\WindowTracker.cs" />
   </ItemGroup>
   <ItemGroup>

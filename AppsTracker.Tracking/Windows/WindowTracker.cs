@@ -14,6 +14,7 @@ using AppsTracker.Data.Service;
 using AppsTracker.Data.Utils;
 using AppsTracker.Tracking.Helpers;
 using AppsTracker.Tracking.Hooks;
+using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Tracking
 {
@@ -28,11 +29,13 @@ namespace AppsTracker.Tracking
         private readonly ISyncContext syncContext;
         private readonly IScreenshotTracker screenshotTracker;
         private readonly IMediator mediator;
+        private readonly IWorkQueue workQueue;
 
         private LazyInit<IAppChangedNotifier> appChangedNotifier;
 
-        private Log activeLog;
+        //private Log activeLog;
         private Setting settings;
+        private LogInfo activeLogInfo;
 
         [ImportingConstructor]
         public WindowTracker(ITrackingService trackingService,
@@ -40,7 +43,8 @@ namespace AppsTracker.Tracking
                              IAppChangedNotifier appChangedNotifier,
                              IScreenshotTracker screenshotTracker,
                              ISyncContext syncContext,
-                             IMediator mediator)
+                             IMediator mediator,
+                             IWorkQueue workQueue)
         {
             this.trackingService = trackingService;
             this.dataService = dataService;
@@ -48,6 +52,9 @@ namespace AppsTracker.Tracking
             this.screenshotTracker = screenshotTracker;
             this.syncContext = syncContext;
             this.mediator = mediator;
+            this.workQueue = workQueue;
+
+            activeLogInfo = LogInfo.EmptyLog;
         }
 
         public void SettingsChanged(Setting settings)
@@ -74,15 +81,14 @@ namespace AppsTracker.Tracking
             mediator.Register(MediatorMessages.RESUME_TRACKING, new Action(ResumeTracking));
         }
 
-        private async void ScreenshotTaken(object sender, ScreenshotEventArgs e)
+        private void ScreenshotTaken(object sender, ScreenshotEventArgs e)
         {
             var screenshot = e.Screenshot;
 
-            if (isTrackingEnabled == false || screenshot == null || activeLog == null)
+            if (isTrackingEnabled == false || screenshot == null)
                 return;
 
-            screenshot.LogID = activeLog.LogID;
-            await dataService.SaveNewEntityAsync(screenshot);
+            activeLogInfo.Screenshots.Add(screenshot);
         }
 
         private void ConfigureComponents()
@@ -94,41 +100,31 @@ namespace AppsTracker.Tracking
 
         private void AppChanging(object sender, AppChangedArgs e)
         {
-            if (isTrackingEnabled == false)
-                return;
-
-            if (e.AppInfo == null || (e.AppInfo != null
+            SaveActiveLog(false);
+            
+            if (!isTrackingEnabled || e.AppInfo == null || 
+                (e.AppInfo != null
                 && string.IsNullOrEmpty(e.AppInfo.Name)
                 && string.IsNullOrEmpty(e.AppInfo.FullName)
                 && string.IsNullOrEmpty(e.AppInfo.FileName)))
             {
-                SaveActiveLog(null);
                 return;
             }
 
-            bool newApp = false;
-            SaveCreateLog(e.WindowTitle, trackingService.UsageID, trackingService.UserID, e.AppInfo, out newApp);
-
-            if (newApp)
-                NewAppAdded(e.AppInfo);
+            activeLogInfo = new LogInfo(e.AppInfo, e.WindowTitle);
         }
 
-        private void SaveCreateLog(string windowTitle, int usageID, int userID, AppInfo appInfo, out bool newApp)
+        private void SaveActiveLog(bool shuttingDown)
         {
-            var newLog = trackingService.CreateNewLog(windowTitle, usageID, userID, appInfo, out newApp);
-            SaveActiveLog(newLog);
-        }
-
-        private void SaveActiveLog(Log newLog)
-        {
-            var tempLog = activeLog;
-            activeLog = newLog;
-
-            if (tempLog == null)
+            var logCopy = activeLogInfo;
+            if (logCopy.IsFinished)
                 return;
 
-            tempLog.Finish();
-            dataService.SaveModifiedEntityAsync(tempLog);
+            logCopy.Finish();
+            if (shuttingDown)
+                trackingService.CreateLogEntry(logCopy);
+            else
+                workQueue.EnqueueWork(() => trackingService.CreateLogEntry(logCopy));
         }
 
         private void NewAppAdded(AppInfo appInfo)
@@ -141,7 +137,7 @@ namespace AppsTracker.Tracking
         private void StopTracking()
         {
             isTrackingEnabled = false;
-            SaveActiveLog(null);
+            SaveActiveLog(true);
         }
 
         private void ResumeTracking()
@@ -151,12 +147,13 @@ namespace AppsTracker.Tracking
 
         public void Dispose()
         {
-            appNotifierInstance.Dispose();
+            StopTracking();
+            //appNotifierInstance.Dispose();
             screenshotTracker.Dispose();
 
             appChangedNotifier.Enabled = false;
 
-            StopTracking();
+            workQueue.Dispose();
         }
 
 
@@ -165,15 +162,5 @@ namespace AppsTracker.Tracking
             get { return 1; }
         }
 
-        private struct LogInfo
-        {
-            public DateTime Start { get; set; }
-            public DateTime End { get; set; }
-            public DateTime UtcStart { get; set; }
-            public DateTime UtcEnd { get; set; }
-            public AppInfo AppInfo { get; set; }
-            public String WindowTitle { get; set; }
-            public Screenshot Screenshot { get; set; }
-        }
     }
 }

@@ -46,8 +46,8 @@ namespace AppsTracker.Data.Models
         public Log()
         {
             this.Screenshots = new HashSet<Screenshot>();
-            this.DateCreated = this.DateEnded = DateTime.Now;
-            this.UtcDateCreated = this.UtcDateEnded = DateTime.UtcNow;
+            //this.DateCreated = this.DateEnded = DateTime.Now;
+            //this.UtcDateCreated = this.UtcDateEnded = DateTime.UtcNow;
             this.Finished = false;
         }
 

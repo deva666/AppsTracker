@@ -143,11 +143,52 @@ namespace AppsTracker.Data.Service
                 var log = new Log(window, usageID);
                 context.Logs.Add(log);
                 context.SaveChanges();
-              
+
                 return log;
             }
         }
 
+
+        public void CreateLogEntry(LogInfo logInfo)
+        {
+            using (var context = new AppsEntities())
+            {
+                var appInfo = logInfo.AppInfo;
+                var newApp = false;
+                string appName = (!string.IsNullOrEmpty(appInfo.Name) ? appInfo.Name : !string.IsNullOrEmpty(appInfo.FullName) ? appInfo.FullName : appInfo.FileName);
+                var app = context.Applications.FirstOrDefault(a => a.UserID == userID
+                                                        && a.Name == appName);
+
+                if (app == null)
+                {
+                    app = new Aplication(appInfo) { UserID = userID };
+                    context.Applications.Add(app);
+
+                    newApp = true;
+                }
+
+                var window = context.Windows.FirstOrDefault(w => w.Title == logInfo.WindowTitle
+                                                     && w.Application.ApplicationID == app.ApplicationID);
+
+                if (window == null)
+                {
+                    window = new Window(logInfo.WindowTitle) { Application = app };
+                    context.Windows.Add(window);
+                }
+
+                var log = new Log(window, usageID)
+                {
+                    DateCreated = logInfo.Start,
+                    UtcDateCreated = logInfo.UtcStart,
+                    DateEnded = logInfo.End,
+                    UtcDateEnded = logInfo.UtcEnd,
+                    Screenshots = logInfo.Screenshots,
+                    Finished = true
+                };
+                context.Logs.Add(log);
+                context.SaveChanges();
+            }
+        }
 
         public Aplication GetApp(AppInfo appInfo, int userId = default(int))
         {

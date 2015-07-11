@@ -30,6 +30,8 @@ namespace AppsTracker.Data.Service
 
         Log CreateNewLog(string windowTitle, int usageID, int userID, AppInfo appInfo, out bool newApp);
 
+        void CreateLogEntry(LogInfo logInfo);
+
         Aplication GetApp(AppInfo appInfo, int userId = default(int));
 
         Usage LoginUser(int userID);

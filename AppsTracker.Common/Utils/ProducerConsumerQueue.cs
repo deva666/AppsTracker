@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -8,40 +10,52 @@ using System.Threading.Tasks;
 
 namespace AppsTracker.Common.Utils
 {
-    public class ProducerConsumerQueue
+    [Export(typeof(IWorkQueue))]
+    public class ProducerConsumerQueue : IWorkQueue
     {
-        private readonly ConcurrentQueue<Action> queue;
-        private readonly AutoResetEvent waitHandle;
+        private bool isDisposed;
 
-        public ProducerConsumerQueue(int workers = 1)
+        private readonly BlockingCollection<Action> queue;
+
+        public ProducerConsumerQueue()
         {
-            for (int i = 0; i < workers; i++)
-            {
-                Task.Factory.StartNew(StartWork, CancellationToken.None, 
-                    TaskCreationOptions.LongRunning, TaskScheduler.Default);
-            }
+            queue = new BlockingCollection<Action>();
+            Task.Factory.StartNew(StartWork, CancellationToken.None,
+                TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
 
-        public void Enqueue(Action work)
+        public void EnqueueWork(Action work)
         {
-            queue.Enqueue(work);
-            waitHandle.Set();
+            if (queue.IsAddingCompleted)
+            {
+                Debug.WriteLine("Tried to add work item when queue is completed");
+                return;
+            }
+            queue.Add(work);
         }
 
         private void StartWork()
         {
-            while (true)
+            foreach (var work in queue.GetConsumingEnumerable())
             {
-                Action work;
-                if (queue.TryDequeue(out work))
-                {
-                    work.Invoke();
-                }
-                else
-                {
-                    waitHandle.WaitOne();
-                }
+                work.Invoke();
             }
+        }
+
+        public void Dispose()
+        {
+            if (isDisposed)
+                return;
+            
+            var timeout = TimeSpan.FromMilliseconds(5 * 1000);
+            Action work;
+            while (queue.TryTake(out work, timeout))
+            {
+                work.Invoke();
+            }
+            
+            queue.CompleteAdding();
+            isDisposed = true;
         }
     }
 }

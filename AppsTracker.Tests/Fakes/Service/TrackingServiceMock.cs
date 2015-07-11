@@ -109,5 +109,10 @@ namespace AppsTracker.Tests.Fakes.Service
         {
             throw new NotImplementedException();
         }
+
+
+        public void CreateLogEntry(Data.Utils.LogInfo logInfo)
+        {
+        }
     }
 }
