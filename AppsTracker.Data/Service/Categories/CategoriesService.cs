@@ -30,17 +30,19 @@ namespace AppsTracker.Data.Service
             return context.Applications.First(a => a.ApplicationID == app.ApplicationID);
         }
 
-        public List<Aplication> GetApps()
+        public List<Aplication> GetApps(int userId)
         {
             context = context ?? new AppsEntities();
-            var apps = context.Applications;
+            var apps = context.Applications.Where(a => a.UserID == userId);
             return apps.ToList();
         }
 
-        public ObservableCollection<AppCategory> GetCategories()
+        public ObservableCollection<AppCategory> GetCategories(int userId)
         {
             context = context ?? new AppsEntities();
-            var categories = context.AppCategories.Include(c => c.Applications);
+            var categories = context.AppCategories
+                                    .Include(c => c.Applications)
+                                    .Where(c => c.Applications.Where(a => a.UserID == userId).Any());
             foreach (var cat in categories)
             {
                 cat.ObservableApplications = new ObservableCollection<Aplication>(cat.Applications);

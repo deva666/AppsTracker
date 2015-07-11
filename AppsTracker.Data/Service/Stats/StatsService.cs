@@ -718,6 +718,7 @@ namespace AppsTracker.Data.Service
                 var categories = context.AppCategories.Include(c => c.Applications)
                     .Include(c => c.Applications.Select(a => a.Windows.Select(w => w.Logs)))
                     .Where(c => c.Applications.Count > 0 &&
+                           c.Applications.Where(a => a.UserID == userID).Any() &&
                            c.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated >= dateFrom).Any() &&
                            c.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated <= dateTo).Any());
 
@@ -740,13 +741,16 @@ namespace AppsTracker.Data.Service
         {
             using (var context = new AppsEntities())
             {
-                List<CategoryDuration> categoryModels = new List<CategoryDuration>();
+                var categoryModels = new List<CategoryDuration>();
 
                 var categories = context.AppCategories.Include(c => c.Applications)
                     .Include(c => c.Applications.Select(a => a.Windows.Select(w => w.Logs)))
                     .Where(c => c.Applications.Count > 0 &&
-                           c.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated >= dateFrom).Any() &&
-                           c.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated <= dateTo).Any());
+                           c.Applications.Where(a => a.UserID == userId).Any() &&
+                           c.Applications.SelectMany(a => a.Windows)
+                           .SelectMany(w => w.Logs).Where(l => l.DateCreated >= dateFrom).Any() &&
+                           c.Applications.SelectMany(a => a.Windows)
+                           .SelectMany(w => w.Logs).Where(l => l.DateCreated <= dateTo).Any());
 
                 foreach (var cat in categories)
                 {
@@ -772,6 +776,7 @@ namespace AppsTracker.Data.Service
             using (var context = new AppsEntities())
             {
                 var logs = context.Logs.Where(l => l.Window.Application.Categories.Any(c => c.Name == categoryName)
+                                                && l.Window.Application.UserID == userId
                                                 && l.DateCreated >= dateFrom
                                                 && l.DateCreated <= dateTo)
                                         .ToList();

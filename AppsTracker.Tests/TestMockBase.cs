@@ -248,7 +248,8 @@ namespace AppsTracker.Tests
                 new Func<Tuple<SettingsAppCategoriesViewModel, Action>>(
                     () => new Tuple<SettingsAppCategoriesViewModel, Action>(
                         new SettingsAppCategoriesViewModel(categoriesFactory,
-                            mediator),
+                            mediator,
+                            trackingService.Object),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<SettingsAppCategoriesViewModel>(tupleFactory);

@@ -9,9 +9,9 @@ namespace AppsTracker.Data.Service
     {
         Aplication ReloadApp(Aplication app);
 
-        List<Aplication> GetApps();
+        List<Aplication> GetApps(int userId);
        
-        ObservableCollection<AppCategory> GetCategories();
+        ObservableCollection<AppCategory> GetCategories(int userId);
       
         void SaveChanges(IEnumerable<AppCategory> categoriesToDelete, IEnumerable<AppCategory> modifiedCategories);
     }

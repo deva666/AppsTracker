@@ -24,6 +24,7 @@ namespace AppsTracker.ViewModels
         private const string SETTINGS_SAVED_MSG = "settings saved";
 
         private readonly ICategoriesService categoriesService;
+        private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
         private readonly List<AppCategory> categoriesToDelete = new List<AppCategory>();
 
@@ -165,13 +166,16 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public SettingsAppCategoriesViewModel(ExportFactory<ICategoriesService> categoriesFactory, IMediator mediator)
+        public SettingsAppCategoriesViewModel(ExportFactory<ICategoriesService> categoriesFactory,
+            IMediator mediator,
+            ITrackingService trackingService)
         {
             using (var context = categoriesFactory.CreateExport())
             {
                 this.categoriesService = context.Value;
             }
             this.mediator = mediator;
+            this.trackingService = trackingService;
 
             LoadContent();
             this.mediator.Register<Aplication>(MediatorMessages.APPLICATION_ADDED, AppAdded);
@@ -190,13 +194,13 @@ namespace AppsTracker.ViewModels
 
         private List<Aplication> GetApps()
         {
-            return categoriesService.GetApps();
+            return categoriesService.GetApps(trackingService.SelectedUserID);
         }
 
 
         private ObservableCollection<AppCategory> GetCategories()
         {
-            return categoriesService.GetCategories();
+            return categoriesService.GetCategories(trackingService.SelectedUserID);
         }
 
 
