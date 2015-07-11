@@ -94,10 +94,9 @@ namespace AppsTracker.Tracking
 
         private void AppChanging(object sender, AppChangedArgs e)
         {
-            if (isTrackingEnabled == false)
-                return;
-
-            if (e.AppInfo == null || (e.AppInfo != null
+            if (isTrackingEnabled == false ||
+                e.AppInfo == null ||
+                (e.AppInfo != null
                 && string.IsNullOrEmpty(e.AppInfo.Name)
                 && string.IsNullOrEmpty(e.AppInfo.FullName)
                 && string.IsNullOrEmpty(e.AppInfo.FileName)))
@@ -113,22 +112,22 @@ namespace AppsTracker.Tracking
                 NewAppAdded(e.AppInfo);
         }
 
-        private void SaveCreateLog(string windowTitle, int usageID, int userID, AppInfo appInfo, out bool newApp)
-        {
-            var newLog = trackingService.CreateNewLog(windowTitle, usageID, userID, appInfo, out newApp);
-            SaveActiveLog(newLog);
-        }
-
         private void SaveActiveLog(Log newLog)
         {
             var tempLog = activeLog;
             activeLog = newLog;
 
-            if (tempLog == null)
+            if (tempLog == null || tempLog.Finished)
                 return;
 
             tempLog.Finish();
             dataService.SaveModifiedEntityAsync(tempLog);
+        }
+
+        private void SaveCreateLog(string windowTitle, int usageID, int userID, AppInfo appInfo, out bool newApp)
+        {
+            var newLog = trackingService.CreateNewLog(windowTitle, usageID, userID, appInfo, out newApp);
+            SaveActiveLog(newLog);
         }
 
         private void NewAppAdded(AppInfo appInfo)
@@ -151,7 +150,6 @@ namespace AppsTracker.Tracking
 
         public void Dispose()
         {
-            appNotifierInstance.Dispose();
             screenshotTracker.Dispose();
 
             appChangedNotifier.Enabled = false;
@@ -163,17 +161,6 @@ namespace AppsTracker.Tracking
         public int InitializationOrder
         {
             get { return 1; }
-        }
-
-        private struct LogInfo
-        {
-            public DateTime Start { get; set; }
-            public DateTime End { get; set; }
-            public DateTime UtcStart { get; set; }
-            public DateTime UtcEnd { get; set; }
-            public AppInfo AppInfo { get; set; }
-            public String WindowTitle { get; set; }
-            public Screenshot Screenshot { get; set; }
         }
     }
 }

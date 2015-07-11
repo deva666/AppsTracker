@@ -23,6 +23,7 @@ namespace AppsTracker.Tracking.Hooks
 
         ~WinHookBase()
         {
+            System.Diagnostics.Debug.WriteLine("WinHook finalizer called");
             Dispose(false);
         }
 
