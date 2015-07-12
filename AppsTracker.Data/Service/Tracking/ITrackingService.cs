@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Utils;
 
@@ -30,7 +31,9 @@ namespace AppsTracker.Data.Service
 
         Log CreateNewLog(string windowTitle, int usageID, int userID, AppInfo appInfo, out bool newApp);
 
-        void CreateLogEntry(LogInfo logInfo);
+        Task<Log> CreateLogEntryAsync(LogInfo logInfo);
+
+        Task EndLogEntry(LogInfo logInfo);
 
         Aplication GetApp(AppInfo appInfo, int userId = default(int));
 

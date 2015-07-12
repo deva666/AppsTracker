@@ -25,7 +25,8 @@ namespace AppsTracker.Data.Models
             }
         }
 
-        bool isSelected;
+        private bool isSelected;
+
         [NotMapped]
         public bool IsSelected
         {
@@ -42,6 +43,9 @@ namespace AppsTracker.Data.Models
             }
         }
 
+
+        [NotMapped]
+        public Guid LogInfoGuid { get; private set; }
 
         public Log()
         {
@@ -63,11 +67,12 @@ namespace AppsTracker.Data.Models
             this.UsageID = usageID;
         }
 
-        public Log(Window window, int usageID)
+        public Log(Window window, int usageID, Guid guid)
             : this()
         {
             this.Window = window;
             this.UsageID = usageID;
+            this.LogInfoGuid = guid;
         }
 
         public void Finish()

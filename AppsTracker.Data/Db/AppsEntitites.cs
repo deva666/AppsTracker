@@ -31,7 +31,7 @@ namespace AppsTracker.Data.Db
 
         private void FlushSql(string s)
         {
-            // Debug.WriteLine(s);
+            System.Diagnostics.Debug.WriteLine(s);
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

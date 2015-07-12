@@ -7,14 +7,15 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.Data.Utils;
 using AppsTracker.Tracking.Helpers;
 using AppsTracker.Tracking.Hooks;
-using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Tracking
 {
@@ -29,11 +30,11 @@ namespace AppsTracker.Tracking
         private readonly ISyncContext syncContext;
         private readonly IScreenshotTracker screenshotTracker;
         private readonly IMediator mediator;
-        private readonly IWorkQueue workQueue;
+
+        private readonly IDictionary<Guid, LogInfo> unsavedLogsMap = new Dictionary<Guid, LogInfo>();
 
         private LazyInit<IAppChangedNotifier> appChangedNotifier;
 
-        //private Log activeLog;
         private Setting settings;
         private LogInfo activeLogInfo;
 
@@ -43,8 +44,7 @@ namespace AppsTracker.Tracking
                              IAppChangedNotifier appChangedNotifier,
                              IScreenshotTracker screenshotTracker,
                              ISyncContext syncContext,
-                             IMediator mediator,
-                             IWorkQueue workQueue)
+                             IMediator mediator)
         {
             this.trackingService = trackingService;
             this.dataService = dataService;
@@ -52,7 +52,6 @@ namespace AppsTracker.Tracking
             this.screenshotTracker = screenshotTracker;
             this.syncContext = syncContext;
             this.mediator = mediator;
-            this.workQueue = workQueue;
 
             activeLogInfo = LogInfo.EmptyLog;
         }
@@ -79,6 +78,9 @@ namespace AppsTracker.Tracking
 
             mediator.Register(MediatorMessages.STOP_TRACKING, new Action(StopTracking));
             mediator.Register(MediatorMessages.RESUME_TRACKING, new Action(ResumeTracking));
+
+            if (settings.LoggingEnabled)
+                appChangedNotifier.Component.CheckActiveApp();
         }
 
         private void ScreenshotTaken(object sender, ScreenshotEventArgs e)
@@ -98,11 +100,11 @@ namespace AppsTracker.Tracking
                         settings.LoggingEnabled;
         }
 
-        private void AppChanging(object sender, AppChangedArgs e)
+        private async void AppChanging(object sender, AppChangedArgs e)
         {
-            SaveActiveLog(false);
-            
-            if (!isTrackingEnabled || e.AppInfo == null || 
+            var saveTask = EndActiveLog();
+
+            if (!isTrackingEnabled || e.AppInfo == null ||
                 (e.AppInfo != null
                 && string.IsNullOrEmpty(e.AppInfo.Name)
                 && string.IsNullOrEmpty(e.AppInfo.FullName)
@@ -112,32 +114,56 @@ namespace AppsTracker.Tracking
             }
 
             activeLogInfo = new LogInfo(e.AppInfo, e.WindowTitle);
+            var log = await trackingService.CreateLogEntryAsync(activeLogInfo);
+            if (log.LogInfoGuid != activeLogInfo.Guid || isTrackingEnabled == false)
+            {
+                System.Diagnostics.Debug.WriteLine("Unsaved log try get out");
+                LogInfo loginfo;
+                if (!unsavedLogsMap.TryGetValue(log.LogInfoGuid, out loginfo))
+                {
+                    System.Diagnostics.Debug.WriteLine("Failed try get out, loginfo not in unsaved map");
+                }
+                loginfo.Log = log;
+                unsavedLogsMap.Remove(loginfo.Guid);
+                await trackingService.EndLogEntry(loginfo);
+            }
+            else
+            {
+                activeLogInfo.Log = log;
+            }
+
+            await saveTask;
         }
 
-        private void SaveActiveLog(bool shuttingDown)
+        private async Task EndActiveLog()
         {
             var logCopy = activeLogInfo;
             if (logCopy.IsFinished)
                 return;
 
             logCopy.Finish();
-            if (shuttingDown)
-                trackingService.CreateLogEntry(logCopy);
-            else
-                workQueue.EnqueueWork(() => trackingService.CreateLogEntry(logCopy));
-        }
 
-        private void NewAppAdded(AppInfo appInfo)
-        {
-            var newApp = trackingService.GetApp(appInfo);
-            if (newApp != null)
-                mediator.NotifyColleagues(MediatorMessages.APPLICATION_ADDED, newApp);
+            if (logCopy.Log == null)
+            {
+                unsavedLogsMap.Add(logCopy.Guid, logCopy);
+                System.Diagnostics.Debug.WriteLine("Adding log to unsaved map");
+                return;
+            }
+            else
+            {
+                await trackingService.EndLogEntry(logCopy);
+            }
         }
 
         private void StopTracking()
         {
             isTrackingEnabled = false;
-            SaveActiveLog(true);
+            var dummy = EndActiveLog();
+            if (unsavedLogsMap.Count > 0)
+            {
+                System.Diagnostics.Debug.WriteLine("Stoping tracking, unsaved logs present");
+            }
+            //unsavedLogsMap.Values.ForEachAction(async l => await EndLog(l));
         }
 
         private void ResumeTracking()
@@ -147,13 +173,9 @@ namespace AppsTracker.Tracking
 
         public void Dispose()
         {
-            StopTracking();
-            //appNotifierInstance.Dispose();
-            screenshotTracker.Dispose();
-
             appChangedNotifier.Enabled = false;
-
-            workQueue.Dispose();
+            StopTracking();
+            screenshotTracker.Dispose();
         }
 
 

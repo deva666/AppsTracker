@@ -92,13 +92,6 @@
     <Compile Include="Fakes\Logging\Helpers\SyncContextMock.cs" />
     <Compile Include="Fakes\MVVM\MediatorParamMock.cs" />
     <Compile Include="Fakes\MVVM\ViewModelMock.cs" />
-    <Compile Include="Fakes\Service\CategoriesServiceMock.cs" />
-    <Compile Include="Fakes\Service\DataServiceMock.cs" />
-    <Compile Include="Fakes\Service\TrackingServiceMock.cs" />
-    <Compile Include="Fakes\Service\MessageServiceMock.cs" />
-    <Compile Include="Fakes\Service\StatsServiceMock.cs" />
-    <Compile Include="Fakes\Service\SqlSettingsServiceMock.cs" />
-    <Compile Include="Fakes\Service\XmlSettingsServiceMock.cs" />
     <Compile Include="Fakes\SyncContextMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBase.cs" />

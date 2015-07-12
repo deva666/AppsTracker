@@ -9,6 +9,16 @@ namespace AppsTracker.Data.Utils
         private bool isFinished;
         public bool IsFinished { get { return isFinished; } }
 
+        private Guid guid;
+        public Guid Guid { get { return guid; } }
+
+        private Log log;
+        public Log Log
+        {
+            get { return log; }
+            set { log = value; }
+        }
+
         private DateTime start;
         public DateTime Start { get { return start; } }
 
@@ -46,14 +56,14 @@ namespace AppsTracker.Data.Utils
 
         public LogInfo(AppInfo _appInfo, String _windowTitle)
         {
-            start = DateTime.Now;
-            utcStart = DateTime.UtcNow;
+            start = end= DateTime.Now;
+            utcStart = utcEnd = DateTime.UtcNow;
             screenshots = null;
+            log = null;
             appInfo = _appInfo;
             windowTitle = _windowTitle;
             isFinished = false;
-            end = DateTime.MinValue;
-            utcEnd = DateTime.MinValue;
+            guid = Guid.NewGuid();
         }
 
         public void Finish()
@@ -61,24 +71,6 @@ namespace AppsTracker.Data.Utils
             end = DateTime.Now;
             utcEnd = DateTime.UtcNow;
             isFinished = true;
-        }
-
-        public static bool operator ==(LogInfo first, LogInfo second)
-        {
-            return first.AppInfo == second.AppInfo
-                && first.WindowTitle == second.WindowTitle
-                && first.Start == second.Start
-                && first.End == second.End
-                && first.IsFinished == first.IsFinished;
-        }
-
-        public static bool operator !=(LogInfo first, LogInfo second)
-        {
-            return !(first.AppInfo == second.AppInfo
-                && first.WindowTitle == second.WindowTitle
-                && first.Start == second.Start
-                && first.End == second.End
-                && first.IsFinished == first.IsFinished);
         }
     }
 }

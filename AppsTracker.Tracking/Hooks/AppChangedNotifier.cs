@@ -8,6 +8,7 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Text;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Utils;
 
@@ -61,6 +62,23 @@ namespace AppsTracker.Tracking.Hooks
 
             activeWindowTitle = e.Title;
             RaiseAppChanged();
+        }
+
+        public void CheckActiveApp()
+        {
+            var hWnd = WinAPI.GetForegroundWindow();
+            if (hWnd == IntPtr.Zero)
+                return;
+
+            var windowTitleBuilder = new StringBuilder();
+            windowTitleBuilder.Clear();
+            windowTitleBuilder.Capacity = WinAPI.GetWindowTextLength(hWnd) + 1;
+            WinAPI.GetWindowText(hWnd, windowTitleBuilder, windowTitleBuilder.Capacity);
+            var title = string.IsNullOrEmpty(windowTitleBuilder.ToString()) ?
+                "No Title" : windowTitleBuilder.ToString();
+            var appInfo = AppInfo.GetAppInfo(hWnd);
+
+            AppChanged.InvokeSafely(this, new AppChangedArgs(title, appInfo));
         }
 
         private void RaiseAppChanged()
