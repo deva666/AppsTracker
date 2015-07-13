@@ -49,5 +49,13 @@ namespace AppsTracker.Common.Utils
             timer.Stop();
             timer.Start();
         }
+
+        public static void SetPropertyValue(this object _object, string propertyName, object propertyValue)
+        {
+            var propertyInfo = _object.GetType().GetProperty(propertyName, System.Reflection.BindingFlags.NonPublic);
+
+            if (propertyInfo != null)
+                propertyInfo.SetValue(_object, propertyValue);
+        }
     }
 }

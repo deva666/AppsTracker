@@ -10,9 +10,9 @@ namespace AppsTracker.Tracking
 
         public static IdleTimeInfo GetIdleTimeInfo()
         {
-            int systemUptime = Environment.TickCount,
-                lastInputTicks = 0,
-                idleTicks = 0;
+            int systemUptime = Environment.TickCount;
+            int lastInputTicks = 0;
+            int idleTicks = 0;
 
             WinAPI.LASTINPUTINFO lastInputInfo = new WinAPI.LASTINPUTINFO();
             lastInputInfo.cbSize = (uint)Marshal.SizeOf(lastInputInfo);
@@ -21,7 +21,6 @@ namespace AppsTracker.Tracking
             if (WinAPI.GetLastInputInfo(ref lastInputInfo))
             {
                 lastInputTicks = (int)lastInputInfo.dwTime;
-
                 idleTicks = systemUptime - lastInputTicks;
             }
 

@@ -46,17 +46,18 @@ namespace AppsTracker.Data.Utils
             }
         }
 
-        public static LogInfo EmptyLog { get { return new LogInfo(true); } }
+        private readonly static LogInfo emptyLog = new LogInfo(true);
+        public static LogInfo EmptyLog { get { return emptyLog; } }
 
         private LogInfo(bool finished)
-            : this(null, null)
+            : this(AppInfo.EmptyAppInfo, null)
         {
             isFinished = finished;
         }
 
         public LogInfo(AppInfo _appInfo, String _windowTitle)
         {
-            start = end= DateTime.Now;
+            start = end = DateTime.Now;
             utcStart = utcEnd = DateTime.UtcNow;
             screenshots = null;
             log = null;

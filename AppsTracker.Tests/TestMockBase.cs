@@ -12,6 +12,7 @@ using Moq;
 using AppsTracker.Tracking.Hooks;
 using AppsTracker.Tracking.Helpers;
 using AppsTracker.Tests.Fakes;
+using AppsTracker.Tracking;
 
 namespace AppsTracker.Tests
 {
@@ -28,6 +29,8 @@ namespace AppsTracker.Tests
         protected Mock<ILimitHandler> limitHandler = new Mock<ILimitHandler>();
         protected Mock<IMidnightNotifier> midnightNotifier = new Mock<IMidnightNotifier>();
         protected Mock<IScreenshotFactory> screenshotFactory = new Mock<IScreenshotFactory>();
+        protected readonly Mock<IAppChangedNotifier> appChangedNotifier = new Mock<IAppChangedNotifier>();
+        protected readonly Mock<IScreenshotTracker> screenshotTracker = new Mock<IScreenshotTracker>();
 
         protected readonly IMediator mediator = new Mediator();
         protected readonly ISyncContext syncContext = new SyncContextMock();

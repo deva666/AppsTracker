@@ -171,7 +171,7 @@ namespace AppsTracker.Data.Service
                 var appInfo = logInfo.AppInfo;
                 var newApp = false;
                 string appName = (!string.IsNullOrEmpty(appInfo.Name) ? appInfo.Name : !string.IsNullOrEmpty(appInfo.FullName) ? appInfo.FullName : appInfo.FileName);
-                var app = context.Applications.AsNoTracking().FirstOrDefault(a => a.UserID == userID
+                var app = context.Applications.FirstOrDefault(a => a.UserID == userID
                                                         && a.Name == appName);
 
                 if (app == null)
@@ -182,8 +182,7 @@ namespace AppsTracker.Data.Service
                     newApp = true;
                 }
 
-                var window = context.Windows.AsNoTracking()
-                                            .FirstOrDefault(w => w.Title == logInfo.WindowTitle
+                var window = context.Windows.FirstOrDefault(w => w.Title == logInfo.WindowTitle
                                             && w.Application.ApplicationID == app.ApplicationID);
 
                 if (window == null)
@@ -199,11 +198,11 @@ namespace AppsTracker.Data.Service
                     DateEnded = logInfo.End,
                     UtcDateEnded = logInfo.UtcEnd,
                 };
-                
+
                 context.Logs.Add(log);
                 context.SaveChanges();
                 context.Entry(log).State = EntityState.Detached;
-                
+
                 if (newApp)
                     mediator.NotifyColleagues(MediatorMessages.APPLICATION_ADDED, app);
 
@@ -217,6 +216,10 @@ namespace AppsTracker.Data.Service
             {
                 var log = logInfo.Log;
                 context.Logs.Attach(log);
+                if (log.Window != null)
+                    context.Windows.Attach(log.Window);
+                if (log.Window != null && log.Window.Application != null)
+                    context.Applications.Attach(log.Window.Application);
                 log.DateEnded = logInfo.End;
                 log.UtcDateEnded = logInfo.UtcEnd;
                 log.Finished = true;

@@ -104,9 +104,8 @@ namespace AppsTracker.Tracking
         {
             var saveTask = EndActiveLog();
 
-            if (!isTrackingEnabled || e.AppInfo == null ||
-                (e.AppInfo != null
-                && string.IsNullOrEmpty(e.AppInfo.Name)
+            if (!isTrackingEnabled || e.AppInfo == AppInfo.EmptyAppInfo ||
+                ( string.IsNullOrEmpty(e.AppInfo.Name)
                 && string.IsNullOrEmpty(e.AppInfo.FullName)
                 && string.IsNullOrEmpty(e.AppInfo.FileName)))
             {
@@ -119,13 +118,12 @@ namespace AppsTracker.Tracking
             {
                 System.Diagnostics.Debug.WriteLine("Unsaved log try get out");
                 LogInfo loginfo;
-                if (!unsavedLogsMap.TryGetValue(log.LogInfoGuid, out loginfo))
+                if (unsavedLogsMap.TryGetValue(log.LogInfoGuid, out loginfo))
                 {
-                    System.Diagnostics.Debug.WriteLine("Failed try get out, loginfo not in unsaved map");
+                    loginfo.Log = log;
+                    unsavedLogsMap.Remove(loginfo.Guid);
+                    await trackingService.EndLogEntry(loginfo);
                 }
-                loginfo.Log = log;
-                unsavedLogsMap.Remove(loginfo.Guid);
-                await trackingService.EndLogEntry(loginfo);
             }
             else
             {
@@ -138,6 +136,7 @@ namespace AppsTracker.Tracking
         private async Task EndActiveLog()
         {
             var logCopy = activeLogInfo;
+            activeLogInfo = LogInfo.EmptyLog;
             if (logCopy.IsFinished)
                 return;
 
@@ -161,14 +160,15 @@ namespace AppsTracker.Tracking
             var dummy = EndActiveLog();
             if (unsavedLogsMap.Count > 0)
             {
-                System.Diagnostics.Debug.WriteLine("Stoping tracking, unsaved logs present");
+                System.Diagnostics.Debug.Fail("Stoping tracking, unsaved logs present");
             }
-            //unsavedLogsMap.Values.ForEachAction(async l => await EndLog(l));
         }
 
         private void ResumeTracking()
         {
             isTrackingEnabled = settings.LoggingEnabled;
+            if (isTrackingEnabled)
+                appChangedNotifier.Component.CheckActiveApp();
         }
 
         public void Dispose()
@@ -178,11 +178,9 @@ namespace AppsTracker.Tracking
             screenshotTracker.Dispose();
         }
 
-
         public int InitializationOrder
         {
             get { return 1; }
         }
-
     }
 }

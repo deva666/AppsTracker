@@ -31,7 +31,7 @@ namespace AppsTracker.Data.Db
 
         private void FlushSql(string s)
         {
-            System.Diagnostics.Debug.WriteLine(s);
+           // System.Diagnostics.Debug.WriteLine(s);
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -58,7 +58,11 @@ namespace AppsTracker.Data.Db
 
             modelBuilder.Entity<Window>()
                 .Property(w => w.ApplicationID)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Window_ApplicationID")));
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("UQ_Window_Title_ApplicationID", 0) { IsUnique = true }));
+
+            modelBuilder.Entity<Window>()
+               .Property(w => w.Title)
+               .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("UQ_Window_Title_ApplicationID", 1) { IsUnique = true }));
 
             modelBuilder.Entity<Log>()
                 .Property(l => l.WindowID)
