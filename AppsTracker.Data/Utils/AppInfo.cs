@@ -21,7 +21,15 @@ namespace AppsTracker.Data.Utils
         public string FileName { get; private set; }
         public string FullName { get; private set; }
 
-        private static AppInfo emptyAppInfo = new AppInfo();
+        private static AppInfo emptyAppInfo = new AppInfo()
+        {
+            Name = string.Empty,
+            Company = string.Empty,
+            Version = string.Empty,
+            FileName = string.Empty,
+            Description = string.Empty,
+            FullName = string.Empty
+        };
 
         public static AppInfo EmptyAppInfo { get { return emptyAppInfo; } }
 
@@ -49,7 +57,8 @@ namespace AppsTracker.Data.Utils
 
             try
             {
-                if (process.MainModule.FileVersionInfo.CompanyName != null && process.MainModule.FileVersionInfo.CompanyName.ToLower().Contains("microsoft"))
+                if (process.MainModule.FileVersionInfo.CompanyName != null 
+                    && process.MainModule.FileVersionInfo.CompanyName.ToLower().Contains("microsoft"))
                 {
                     appInfo.Version = process.MainModule.FileVersionInfo.ProductVersion ?? "";
                     appInfo.Company = process.MainModule.FileVersionInfo.CompanyName ?? "";

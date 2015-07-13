@@ -11,7 +11,7 @@ namespace AppsTracker.Tracking.Hooks
 
         private readonly WinHookCallBack winHookCallBack;
 
-        private IntPtr hookID = IntPtr.Zero;
+        private readonly IntPtr hookID = IntPtr.Zero;
 
         public WinHookBase(uint minEvent, uint maxEvent)
         {
@@ -19,7 +19,9 @@ namespace AppsTracker.Tracking.Hooks
             hookID = WinAPI.SetWinEventHook(minEvent, maxEvent, IntPtr.Zero, winHookCallBack, 0, 0, WINEVENT_OUTOFCONTEXT);
         }
 
-        protected abstract void WinHookCallback(IntPtr hWinEventHook, uint eventType, IntPtr hWnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
+        protected abstract void WinHookCallback(IntPtr hWinEventHook, 
+            uint eventType, IntPtr hWnd, int idObject, 
+            int idChild, uint dwEventThread, uint dwmsEventTime);
 
         ~WinHookBase()
         {

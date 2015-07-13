@@ -55,6 +55,7 @@ namespace AppsTracker.Common.Utils
             }
             
             queue.CompleteAdding();
+            queue.Dispose();
             isDisposed = true;
         }
     }

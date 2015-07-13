@@ -17,10 +17,11 @@ namespace AppsTracker.Tracking.Hooks
         public WinChangedHook()
             : base(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND)
         {
-
         }
 
-        protected override void WinHookCallback(IntPtr hWinEventHook, uint eventType, IntPtr hWnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
+        protected override void WinHookCallback(IntPtr hWinEventHook,
+            uint eventType, IntPtr hWnd, int idObject,
+            int idChild, uint dwEventThread, uint dwmsEventTime)
         {
             if (hWnd == IntPtr.Zero)
                 return;

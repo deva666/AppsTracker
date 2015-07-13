@@ -116,7 +116,6 @@ namespace AppsTracker.Tracking
             var log = await trackingService.CreateLogEntryAsync(activeLogInfo);
             if (log.LogInfoGuid != activeLogInfo.Guid || isTrackingEnabled == false)
             {
-                System.Diagnostics.Debug.WriteLine("Unsaved log try get out");
                 LogInfo loginfo;
                 if (unsavedLogsMap.TryGetValue(log.LogInfoGuid, out loginfo))
                 {
@@ -145,7 +144,6 @@ namespace AppsTracker.Tracking
             if (logCopy.Log == null)
             {
                 unsavedLogsMap.Add(logCopy.Guid, logCopy);
-                System.Diagnostics.Debug.WriteLine("Adding log to unsaved map");
                 return;
             }
             else
