@@ -58,7 +58,7 @@ namespace AppsTracker.Data.Models
         {
             this.IsMasterPasswordSet = false;
             this.LightTheme = false;
-            this.LoggingEnabled = true;
+            this.TrackingEnabled = true;
             this.DeleteOldLogs = true;
             this.OldLogDeleteDays = 15;
             this.RunAtStartup = false;
@@ -118,7 +118,7 @@ namespace AppsTracker.Data.Models
         public bool FirstRun { get; set; }
 
         [Required]
-        public bool LoggingEnabled { get; set; }
+        public bool TrackingEnabled { get; set; }
 
         [Required]
         public double TimerInterval { get; set; }

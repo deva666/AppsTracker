@@ -111,7 +111,7 @@ namespace AppsTracker.Data.Utils
             return appInfo;
         }
 
-        public static AppInfo GetAppInfo(string appName)
+        public static AppInfo Create(string appName)
         {
             return new AppInfo()
             {

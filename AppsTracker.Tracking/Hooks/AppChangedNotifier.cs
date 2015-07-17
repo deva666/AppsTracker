@@ -76,15 +76,17 @@ namespace AppsTracker.Tracking.Hooks
             WinAPI.GetWindowText(hWnd, windowTitleBuilder, windowTitleBuilder.Capacity);
             var title = string.IsNullOrEmpty(windowTitleBuilder.ToString()) ?
                 "No Title" : windowTitleBuilder.ToString();
+            activeWindowTitle = title;
             var appInfo = AppInfo.GetAppInfo(hWnd);
-
-            AppChanged.InvokeSafely(this, new AppChangedArgs(title, appInfo));
+            var logInfo = LogInfo.Create(appInfo, title);
+            AppChanged.InvokeSafely(this, new AppChangedArgs(logInfo));
         }
 
         private void RaiseAppChanged()
         {
             var appInfo = AppInfo.GetAppInfo(activeWindowHandle);
-            AppChanged.InvokeSafely(this, new AppChangedArgs(activeWindowTitle, appInfo));
+            var logInfo = LogInfo.Create(appInfo, activeWindowTitle);
+            AppChanged.InvokeSafely(this, new AppChangedArgs(logInfo));
         }
 
         public void Dispose()

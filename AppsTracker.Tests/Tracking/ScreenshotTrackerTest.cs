@@ -16,7 +16,7 @@ namespace AppsTracker.Tests.Tracking
             var settings = new Setting()
             {
                 TimerInterval = 500,
-                LoggingEnabled = true,
+                TrackingEnabled = true,
                 TakeScreenshots = true
             };
             var eventRaised = 0;
@@ -43,7 +43,7 @@ namespace AppsTracker.Tests.Tracking
             var settings = new Setting()
             {
                 TimerInterval = 100,
-                LoggingEnabled = true,
+                TrackingEnabled = true,
                 TakeScreenshots = false
             };
             var screenshot = new Screenshot() { ScreenshotID = 10 };
@@ -66,7 +66,7 @@ namespace AppsTracker.Tests.Tracking
             var settings = new Setting()
             {
                 TimerInterval = 100,
-                LoggingEnabled = false,
+                TrackingEnabled = false,
                 TakeScreenshots = true
             };
             var screenshot = new Screenshot() { ScreenshotID = 10 };

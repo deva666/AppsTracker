@@ -9,6 +9,8 @@ namespace AppsTracker.Data.Utils
         private bool isFinished;
         public bool IsFinished { get { return isFinished; } }
 
+        public bool HasScreenshots { get { return screenshots != null; } }
+
         private Guid guid;
         public Guid Guid { get { return guid; } }
 
@@ -50,12 +52,18 @@ namespace AppsTracker.Data.Utils
         public static LogInfo EmptyLog { get { return emptyLog; } }
 
         private LogInfo(bool finished)
-            : this(AppInfo.EmptyAppInfo, null)
+            : this(AppInfo.EmptyAppInfo, string.Empty)
         {
             isFinished = finished;
         }
 
-        public LogInfo(AppInfo _appInfo, String _windowTitle)
+
+        public static LogInfo Create(AppInfo _appInfo, String _windowTitle)
+        {
+            return new LogInfo(_appInfo, _windowTitle);
+        }
+
+        private LogInfo(AppInfo _appInfo, String _windowTitle)
         {
             start = end = DateTime.Now;
             utcStart = utcEnd = DateTime.UtcNow;

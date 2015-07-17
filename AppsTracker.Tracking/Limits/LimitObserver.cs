@@ -116,13 +116,13 @@ namespace AppsTracker.Tracking
 
         private void OnAppChanged(object sender, AppChangedArgs e)
         {
-            if (activeAppInfo == e.AppInfo)
+            if (activeAppInfo == e.LogInfo.AppInfo)
                 return;
 
-            activeAppInfo = e.AppInfo;
+            activeAppInfo = e.LogInfo.AppInfo;
             StopTimers();
             currentDayLimit = currentWeekLimit = null;
-            var app = trackingService.GetApp(e.AppInfo);
+            var app = trackingService.GetApp(e.LogInfo.AppInfo);
             LoadAppDurations(app);
         }
 

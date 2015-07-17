@@ -53,7 +53,25 @@ namespace AppsTracker.Tracking
             Microsoft.Win32.SystemEvents.SessionSwitch += SessionSwitch;
             Microsoft.Win32.SystemEvents.PowerModeChanged += PowerModeChanged;
 
+            mediator.Register<Boolean>(MediatorMessages.TRACKING_ENABLED_CHANGING, TrackingEnabledChanging);
+
             Configure();
+            if (settings.TrackingEnabled == false)
+                TrackingEnabledChanging(settings.TrackingEnabled);
+        }
+
+        private void TrackingEnabledChanging(Boolean enabled)
+        {
+            isTrackingEnabled = enabled;
+            if (enabled)
+            {
+                usageProcessor.UsageEnded(UsageTypes.Stopped);
+            }
+            else
+            {
+                usageProcessor.EndAllUsages();
+                usageProcessor.NewUsage(UsageTypes.Stopped, trackingService.UserID, trackingService.UsageID);
+            }
         }
 
         private void OnIdleNotifierInit(IIdleNotifier notifier)
@@ -80,9 +98,8 @@ namespace AppsTracker.Tracking
 
         private void Configure()
         {
-            idleNotifier.Enabled = settings.LoggingEnabled && settings.EnableIdle;
-            isTrackingEnabled = settings.LoggingEnabled;
-            CheckStoppedUsage();
+            idleNotifier.Enabled = settings.TrackingEnabled && settings.EnableIdle;
+            isTrackingEnabled = settings.TrackingEnabled;
         }
 
 
@@ -136,7 +153,7 @@ namespace AppsTracker.Tracking
             }
             else if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionUnlock)
             {
-                if (settings.EnableIdle && settings.LoggingEnabled)
+                if (settings.EnableIdle && settings.TrackingEnabled)
                 {
                     idleNotifier.Enabled = true;
                 }
@@ -149,14 +166,6 @@ namespace AppsTracker.Tracking
         {
             this.settings = settings;
             Configure();
-        }
-
-        private void CheckStoppedUsage()
-        {
-            if (isTrackingEnabled == false)
-                usageProcessor.NewUsage(UsageTypes.Stopped, trackingService.UserID, trackingService.UsageID);
-            else if (isTrackingEnabled)
-                usageProcessor.UsageEnded(UsageTypes.Stopped);
         }
 
 

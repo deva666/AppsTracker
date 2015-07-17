@@ -84,9 +84,9 @@ namespace AppsTracker.Tracking
 
         private void ConfigureComponents()
         {
-            screenshotTimer.Enabled = (settings.TakeScreenshots && settings.LoggingEnabled);
+            screenshotTimer.Enabled = (settings.TakeScreenshots && settings.TrackingEnabled);
 
-            if ((settings.TakeScreenshots && settings.LoggingEnabled) && settings.TimerInterval != screenshotTimer.Component.Interval)
+            if ((settings.TakeScreenshots && settings.TrackingEnabled) && settings.TimerInterval != screenshotTimer.Component.Interval)
                 screenshotTimer.Component.Interval = settings.TimerInterval;
         }
 

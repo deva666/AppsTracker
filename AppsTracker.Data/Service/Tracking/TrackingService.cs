@@ -224,12 +224,15 @@ namespace AppsTracker.Data.Service
                 log.UtcDateEnded = logInfo.UtcEnd;
                 log.Finished = true;
 
-                foreach (var screenshot in logInfo.Screenshots)
+                if (logInfo.HasScreenshots)
                 {
-                    screenshot.LogID = log.LogID;
+                    foreach (var screenshot in logInfo.Screenshots)
+                    {
+                        screenshot.LogID = log.LogID;
+                    }
+                    context.Screenshots.AddRange(logInfo.Screenshots);
                 }
 
-                context.Screenshots.AddRange(logInfo.Screenshots);
                 context.Entry(log).State = EntityState.Modified;
 
                 await context.SaveChangesAsync();

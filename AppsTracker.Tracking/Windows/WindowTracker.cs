@@ -79,7 +79,7 @@ namespace AppsTracker.Tracking
             mediator.Register(MediatorMessages.STOP_TRACKING, new Action(StopTracking));
             mediator.Register(MediatorMessages.RESUME_TRACKING, new Action(ResumeTracking));
 
-            if (settings.LoggingEnabled)
+            if (settings.TrackingEnabled)
                 appChangedNotifier.Component.CheckActiveApp();
         }
 
@@ -97,22 +97,22 @@ namespace AppsTracker.Tracking
         {
             isTrackingEnabled =
                 appChangedNotifier.Enabled =
-                        settings.LoggingEnabled;
+                        settings.TrackingEnabled;
         }
 
         private async void AppChanging(object sender, AppChangedArgs e)
         {
             var saveTask = EndActiveLog();
-
-            if (!isTrackingEnabled || e.AppInfo == AppInfo.EmptyAppInfo ||
-                ( string.IsNullOrEmpty(e.AppInfo.Name)
-                && string.IsNullOrEmpty(e.AppInfo.FullName)
-                && string.IsNullOrEmpty(e.AppInfo.FileName)))
+            
+            if (!isTrackingEnabled || e.LogInfo.AppInfo == AppInfo.EmptyAppInfo ||
+                (string.IsNullOrEmpty(e.LogInfo.AppInfo.Name)
+                && string.IsNullOrEmpty(e.LogInfo.AppInfo.FullName)
+                && string.IsNullOrEmpty(e.LogInfo.AppInfo.FileName)))
             {
                 return;
             }
 
-            activeLogInfo = new LogInfo(e.AppInfo, e.WindowTitle);
+            activeLogInfo = e.LogInfo;//new LogInfo(e.AppInfo, e.WindowTitle);
             var log = await trackingService.CreateLogEntryAsync(activeLogInfo);
             if (log.LogInfoGuid != activeLogInfo.Guid || isTrackingEnabled == false)
             {
@@ -122,6 +122,10 @@ namespace AppsTracker.Tracking
                     loginfo.Log = log;
                     unsavedLogsMap.Remove(loginfo.Guid);
                     await trackingService.EndLogEntry(loginfo);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.Fail("Failed to get loginfo from unsavedMap");
                 }
             }
             else
@@ -164,7 +168,7 @@ namespace AppsTracker.Tracking
 
         private void ResumeTracking()
         {
-            isTrackingEnabled = settings.LoggingEnabled;
+            isTrackingEnabled = settings.TrackingEnabled;
             if (isTrackingEnabled)
                 appChangedNotifier.Component.CheckActiveApp();
         }

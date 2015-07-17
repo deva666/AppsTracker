@@ -16,12 +16,12 @@ namespace AppsTracker.Data.Db
 {
     internal sealed class AppsEntities : DbContext
     {
-        private static string _connectionString = DbConnectionFactory.ConnectionString;
+        private static string connectionString = DbConnectionFactory.ConnectionString;
 
-        public static string ConnectionString { get { return _connectionString; } }
+        public static string ConnectionString { get { return connectionString; } }
 
         public AppsEntities()
-            : base(_connectionString)
+            : base(connectionString)
         {
             Database.SetInitializer<AppsEntities>(new DropCreateDatabaseIfModelChanges<AppsEntities>());
 #if DEBUG
