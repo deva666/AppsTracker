@@ -20,18 +20,16 @@ namespace AppsTracker.Tests.Tracking
         {
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(0);
-            var appInfo = new Mock<AppInfo>();
+            var appInfo = AppInfo.Create(app.Name);
 
-            appInfo.Setup(a => a.Name).Returns(app.Name);
             dataService.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
                 It.IsAny<Expression<Func<Aplication, object>>>()))
                 .Returns(new List<Aplication> { app });
             trackingService.Setup(t => t.GetDayDuration(app)).Returns(0);
-            trackingService.Setup(t => t.GetApp(appInfo.Object, 0)).Returns(app);
+            trackingService.Setup(t => t.GetApp(appInfo, 0)).Returns(app);
 
             observer.Initialize(null);
-            windowChangedNotifier.Raise(w => w.AppChanged += null, new AppChangedArgs("", appInfo.Object));
-            ;
+            windowChangedNotifier.Raise(w => w.AppChanged += null, new AppChangedArgs(LogInfo.Create(appInfo, "")));
 
             limitHandler.Verify(h => h.Handle(app.Limits.First()), Times.Once);
         }
@@ -42,17 +40,16 @@ namespace AppsTracker.Tests.Tracking
         {
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(1000);
-            var appInfo = new Mock<AppInfo>();
+            var appInfo = AppInfo.Create(app.Name);
 
-            appInfo.Setup(a => a.Name).Returns(app.Name);
             dataService.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
                 It.IsAny<Expression<Func<Aplication, object>>>()))
                 .Returns(new List<Aplication> { app });
             trackingService.Setup(t => t.GetDayDuration(app)).Returns(0);
-            trackingService.Setup(t => t.GetApp(appInfo.Object, 0)).Returns(app);
+            trackingService.Setup(t => t.GetApp(appInfo, 0)).Returns(app);
 
             observer.Initialize(null);
-            windowChangedNotifier.Raise(w => w.AppChanged += null, new AppChangedArgs("", appInfo.Object));
+            windowChangedNotifier.Raise(w => w.AppChanged += null, new AppChangedArgs(LogInfo.Create(appInfo, "")));
 
             limitHandler.Verify(h => h.Handle(app.Limits.First()), Times.Never);
 
@@ -66,17 +63,16 @@ namespace AppsTracker.Tests.Tracking
         {
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(1000);
-            var appInfo = new Mock<AppInfo>();
+            var appInfo = AppInfo.Create(app.Name);
 
-            appInfo.Setup(a => a.Name).Returns(app.Name);
             dataService.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
                 It.IsAny<Expression<Func<Aplication, object>>>()))
                 .Returns(new List<Aplication> { app });
             trackingService.Setup(t => t.GetDayDuration(app)).Returns(0);
-            trackingService.Setup(t => t.GetApp(appInfo.Object, 0)).Returns(app);
+            trackingService.Setup(t => t.GetApp(appInfo, 0)).Returns(app);
 
             observer.Initialize(null);
-            windowChangedNotifier.Raise(w => w.AppChanged += null, new AppChangedArgs("", appInfo.Object));
+            windowChangedNotifier.Raise(w => w.AppChanged += null, new AppChangedArgs(LogInfo.Create(appInfo, "")));
 
             limitHandler.Verify(h => h.Handle(app.Limits.First()), Times.Never);
 

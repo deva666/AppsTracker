@@ -11,6 +11,8 @@ using System.ComponentModel.Composition;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using AppsTracker.Common.Communication;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
@@ -21,6 +23,8 @@ namespace AppsTracker.Data.Service
     [Export(typeof(ITrackingService))]
     public sealed class TrackingService : ITrackingService
     {
+        private readonly IMediator mediator;
+
         private volatile bool isDateRangeFiltered;
 
         private int userID;
@@ -83,6 +87,12 @@ namespace AppsTracker.Data.Service
         public string UserName { get; private set; }
 
 
+        [ImportingConstructor]
+        public TrackingService(IMediator mediator)
+        {
+            this.mediator = mediator;
+        }
+
         public void Initialize(Uzer uzer, int usageID)
         {
             Ensure.NotNull(uzer, "uzer");
@@ -140,14 +150,94 @@ namespace AppsTracker.Data.Service
                     context.Windows.Add(window);
                 }
 
-                var log = new Log(window, usageID);
+                var log = new Log(window, usageID, new Guid());
                 context.Logs.Add(log);
                 context.SaveChanges();
-              
+
                 return log;
             }
         }
 
+
+        public Task<Log> CreateLogEntryAsync(LogInfo logInfo)
+        {
+            return Task.Run(() => CreateLogEntry(logInfo));
+        }
+
+        private Log CreateLogEntry(LogInfo logInfo)
+        {
+            using (var context = new AppsEntities())
+            {
+                var appInfo = logInfo.AppInfo;
+                var newApp = false;
+                string appName = (!string.IsNullOrEmpty(appInfo.Name) ? appInfo.Name : !string.IsNullOrEmpty(appInfo.FullName) ? appInfo.FullName : appInfo.FileName);
+                var app = context.Applications.FirstOrDefault(a => a.UserID == userID
+                                                        && a.Name == appName);
+
+                if (app == null)
+                {
+                    app = new Aplication(appInfo) { UserID = userID };
+                    context.Applications.Add(app);
+
+                    newApp = true;
+                }
+
+                var window = context.Windows.FirstOrDefault(w => w.Title == logInfo.WindowTitle
+                                            && w.Application.ApplicationID == app.ApplicationID);
+
+                if (window == null)
+                {
+                    window = new Window(logInfo.WindowTitle) { Application = app };
+                    context.Windows.Add(window);
+                }
+
+                var log = new Log(window, usageID, logInfo.Guid)
+                {
+                    DateCreated = logInfo.Start,
+                    UtcDateCreated = logInfo.UtcStart,
+                    DateEnded = logInfo.End,
+                    UtcDateEnded = logInfo.UtcEnd,
+                };
+
+                context.Logs.Add(log);
+                context.SaveChanges();
+                context.Entry(log).State = EntityState.Detached;
+
+                if (newApp)
+                    mediator.NotifyColleagues(MediatorMessages.APPLICATION_ADDED, app);
+
+                return log;
+            }
+        }
+
+        public async Task EndLogEntry(LogInfo logInfo)
+        {
+            using (var context = new AppsEntities())
+            {
+                var log = logInfo.Log;
+                context.Logs.Attach(log);
+                if (log.Window != null)
+                    context.Windows.Attach(log.Window);
+                if (log.Window != null && log.Window.Application != null)
+                    context.Applications.Attach(log.Window.Application);
+                log.DateEnded = logInfo.End;
+                log.UtcDateEnded = logInfo.UtcEnd;
+                log.Finished = true;
+
+                if (logInfo.HasScreenshots)
+                {
+                    foreach (var screenshot in logInfo.Screenshots)
+                    {
+                        screenshot.LogID = log.LogID;
+                    }
+                    context.Screenshots.AddRange(logInfo.Screenshots);
+                }
+
+                context.Entry(log).State = EntityState.Modified;
+
+                await context.SaveChangesAsync();
+            }
+        }
 
         public Aplication GetApp(AppInfo appInfo, int userId = default(int))
         {

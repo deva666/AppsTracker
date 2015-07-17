@@ -12,14 +12,26 @@ using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Data.Utils
 {
-    public class AppInfo 
+    public struct AppInfo
     {
-        public virtual string Name { get; private set; }
+        public string Name { get; private set; }
         public string Version { get; private set; }
         public string Company { get; private set; }
         public string Description { get; private set; }
         public string FileName { get; private set; }
         public string FullName { get; private set; }
+
+        private static AppInfo emptyAppInfo = new AppInfo()
+        {
+            Name = string.Empty,
+            Company = string.Empty,
+            Version = string.Empty,
+            FileName = string.Empty,
+            Description = string.Empty,
+            FullName = string.Empty
+        };
+
+        public static AppInfo EmptyAppInfo { get { return emptyAppInfo; } }
 
         private static Process GetProcessFromHandle(IntPtr hWnd)
         {
@@ -33,18 +45,20 @@ namespace AppsTracker.Data.Utils
             return null;
         }
 
+
         public static AppInfo GetAppInfo(IntPtr hWnd)
         {
             var process = GetProcessFromHandle(hWnd);
 
             if (process == null)
-                return null;
+                return emptyAppInfo;
 
             var appInfo = new AppInfo();
 
             try
             {
-                if (process.MainModule.FileVersionInfo.CompanyName != null && process.MainModule.FileVersionInfo.CompanyName.ToLower().Contains("microsoft"))
+                if (process.MainModule.FileVersionInfo.CompanyName != null 
+                    && process.MainModule.FileVersionInfo.CompanyName.ToLower().Contains("microsoft"))
                 {
                     appInfo.Version = process.MainModule.FileVersionInfo.ProductVersion ?? "";
                     appInfo.Company = process.MainModule.FileVersionInfo.CompanyName ?? "";
@@ -74,7 +88,7 @@ namespace AppsTracker.Data.Utils
             }
             catch (InvalidOperationException)
             {
-                return null;
+                return emptyAppInfo;
             }
             catch (Exception)
             {
@@ -90,11 +104,24 @@ namespace AppsTracker.Data.Utils
                 catch (Exception)
                 {
 
-                    return null;
+                    return emptyAppInfo;
                 }
             }
 
             return appInfo;
+        }
+
+        public static AppInfo Create(string appName)
+        {
+            return new AppInfo()
+            {
+                Name = appName,
+                Company = string.Empty,
+                Version = string.Empty,
+                FileName = string.Empty,
+                Description = string.Empty,
+                FullName = string.Empty
+            };
         }
 
         public override int GetHashCode()
@@ -114,10 +141,16 @@ namespace AppsTracker.Data.Utils
 
         public override bool Equals(object obj)
         {
-            var other = obj as AppInfo;
-            if (other == null)
+            if (obj is AppInfo == false)
                 return false;
 
+            var other = (AppInfo)obj;
+
+            return Equals(other);
+        }
+
+        private bool Equals(AppInfo other)
+        {
             return this.Name == other.Name &&
                    this.FullName == other.FullName &&
                    this.FileName == other.FileName &&
@@ -127,21 +160,11 @@ namespace AppsTracker.Data.Utils
 
         public static bool operator ==(AppInfo first, AppInfo second)
         {
-            if (object.ReferenceEquals(null, first))
-            {
-                return object.ReferenceEquals(null, second);
-            }
-
             return first.Equals(second);
         }
 
         public static bool operator !=(AppInfo first, AppInfo second)
         {
-            if (object.ReferenceEquals(null, first))
-            {
-                return !object.ReferenceEquals(null, second);
-            }
-
             return !first.Equals(second);
         }
     }

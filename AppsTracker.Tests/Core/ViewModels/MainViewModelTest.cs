@@ -19,7 +19,7 @@ namespace AppsTracker.Tests.Core.ViewModels
     public class MainViewModelTest : TestMockBase
     {
         private MainViewModel mainViewModel;
-        private Setting setting = new Setting() { LoggingEnabled = true };
+        private Setting setting = new Setting() { TrackingEnabled = true };
 
 
         [TestInitialize]
@@ -93,9 +93,9 @@ namespace AppsTracker.Tests.Core.ViewModels
         [TestMethod]
         public void TestChangeTrackingStatus()
         {
-            var trackingStatus = mainViewModel.UserSettings.LoggingEnabled;
+            var trackingStatus = mainViewModel.UserSettings.TrackingEnabled;
             mainViewModel.ChangeLoggingStatusCommand.Execute(null);
-            Assert.AreNotEqual(trackingStatus, mainViewModel.UserSettings.LoggingEnabled);
+            Assert.AreNotEqual(trackingStatus, mainViewModel.UserSettings.TrackingEnabled);
             settingsService.Verify(s => s.SaveChanges(It.IsAny<Setting>()));
         }
     }

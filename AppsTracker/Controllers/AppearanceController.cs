@@ -24,7 +24,7 @@ namespace AppsTracker.Controllers
         public void Initialize(Setting settings)
         {
             isLightTheme = settings.LightTheme;
-            isTrackingEnabled = settings.LoggingEnabled;
+            isTrackingEnabled = settings.TrackingEnabled;
             Application.Current.Resources.MergedDictionaries.Clear();
             ApplyTheme();
         }
@@ -38,9 +38,9 @@ namespace AppsTracker.Controllers
                 isThemeChanging = true;
             }
 
-            if (isTrackingEnabled != settings.LoggingEnabled)
+            if (isTrackingEnabled != settings.TrackingEnabled)
             {
-                isTrackingEnabled = settings.LoggingEnabled;
+                isTrackingEnabled = settings.TrackingEnabled;
                 isThemeChanging = true;
             }
 

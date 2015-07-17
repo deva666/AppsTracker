@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Utils;
 
@@ -29,6 +30,10 @@ namespace AppsTracker.Data.Service
         void ClearDateFilter();
 
         Log CreateNewLog(string windowTitle, int usageID, int userID, AppInfo appInfo, out bool newApp);
+
+        Task<Log> CreateLogEntryAsync(LogInfo logInfo);
+
+        Task EndLogEntry(LogInfo logInfo);
 
         Aplication GetApp(AppInfo appInfo, int userId = default(int));
 

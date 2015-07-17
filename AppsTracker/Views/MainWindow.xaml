@@ -389,7 +389,7 @@
             </Grid.ColumnDefinitions>
             <Label Name="lblStatus"
                    Style="{DynamicResource LabelStyle}"
-                   Content="{Binding UserSettings.LoggingEnabled, Converter={StaticResource convertLoggingStatus}, Mode=OneWay}"
+                   Content="{Binding UserSettings.TrackingEnabled, Converter={StaticResource convertLoggingStatus}, Mode=OneWay}"
                    FontSize="11"
                    Foreground="White"
                    Grid.Column="0"
@@ -402,7 +402,7 @@
                      VerticalAlignment="Center"
                      Stretch="Uniform"
                      Margin="0"
-                     Visibility="{Binding UserSettings.LoggingEnabled, Converter={StaticResource convertLoggingPlay}, Mode=OneWay}"
+                     Visibility="{Binding UserSettings.TrackingEnabled, Converter={StaticResource convertLoggingPlay}, Mode=OneWay}"
                      RenderTransformOrigin="0.5,0.5"
                      Cursor="Hand"
                      Grid.Column="1">
@@ -419,7 +419,7 @@
                        Height="10"
                        HorizontalAlignment="Left"
                        Margin="0"
-                       Visibility="{Binding UserSettings.LoggingEnabled, Converter={StaticResource convertLoggingStop}, Mode=OneWay}"
+                       Visibility="{Binding UserSettings.TrackingEnabled, Converter={StaticResource convertLoggingStop}, Mode=OneWay}"
                        RenderTransformOrigin="0.5,0.5"
                        Cursor="Hand"
                        Grid.Column="1">

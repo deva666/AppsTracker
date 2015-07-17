@@ -12,7 +12,7 @@ namespace AppsTracker.Tests.Core.Controllers
         [TestMethod]
         public void TestModuleInitialization()
         {
-            var settings = new Setting() { LoggingEnabled = true };
+            var settings = new Setting() { TrackingEnabled = true };
             var module = new Mock<ITrackingModule>();
             var trackingController = new TrackingController(new ITrackingModule[] { module.Object });
             trackingController.Initialize(settings);
@@ -22,7 +22,7 @@ namespace AppsTracker.Tests.Core.Controllers
         [TestMethod]
         public void TestSettingsChanging()
         {
-            var settings = new Setting() { LoggingEnabled = true };
+            var settings = new Setting() { TrackingEnabled = true };
             var module = new Mock<ITrackingModule>();
             var trackingController = new TrackingController(new ITrackingModule[] { module.Object });
             trackingController.SettingsChanging(settings);

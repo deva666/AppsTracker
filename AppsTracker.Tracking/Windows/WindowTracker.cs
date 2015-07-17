@@ -7,7 +7,9 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
@@ -29,10 +31,12 @@ namespace AppsTracker.Tracking
         private readonly IScreenshotTracker screenshotTracker;
         private readonly IMediator mediator;
 
+        private readonly IDictionary<Guid, LogInfo> unsavedLogsMap = new Dictionary<Guid, LogInfo>();
+
         private LazyInit<IAppChangedNotifier> appChangedNotifier;
 
-        private Log activeLog;
         private Setting settings;
+        private LogInfo activeLogInfo;
 
         [ImportingConstructor]
         public WindowTracker(ITrackingService trackingService,
@@ -48,6 +52,8 @@ namespace AppsTracker.Tracking
             this.screenshotTracker = screenshotTracker;
             this.syncContext = syncContext;
             this.mediator = mediator;
+
+            activeLogInfo = LogInfo.EmptyLog;
         }
 
         public void SettingsChanged(Setting settings)
@@ -72,91 +78,107 @@ namespace AppsTracker.Tracking
 
             mediator.Register(MediatorMessages.STOP_TRACKING, new Action(StopTracking));
             mediator.Register(MediatorMessages.RESUME_TRACKING, new Action(ResumeTracking));
+
+            if (settings.TrackingEnabled)
+                appChangedNotifier.Component.CheckActiveApp();
         }
 
-        private async void ScreenshotTaken(object sender, ScreenshotEventArgs e)
+        private void ScreenshotTaken(object sender, ScreenshotEventArgs e)
         {
             var screenshot = e.Screenshot;
 
-            if (isTrackingEnabled == false || screenshot == null || activeLog == null)
+            if (isTrackingEnabled == false || screenshot == null)
                 return;
 
-            screenshot.LogID = activeLog.LogID;
-            await dataService.SaveNewEntityAsync(screenshot);
+            activeLogInfo.Screenshots.Add(screenshot);
         }
 
         private void ConfigureComponents()
         {
             isTrackingEnabled =
                 appChangedNotifier.Enabled =
-                        settings.LoggingEnabled;
+                        settings.TrackingEnabled;
         }
 
-        private void AppChanging(object sender, AppChangedArgs e)
+        private async void AppChanging(object sender, AppChangedArgs e)
         {
-            if (isTrackingEnabled == false ||
-                e.AppInfo == null ||
-                (e.AppInfo != null
-                && string.IsNullOrEmpty(e.AppInfo.Name)
-                && string.IsNullOrEmpty(e.AppInfo.FullName)
-                && string.IsNullOrEmpty(e.AppInfo.FileName)))
+            var saveTask = EndActiveLog();
+            
+            if (!isTrackingEnabled || e.LogInfo.AppInfo == AppInfo.EmptyAppInfo ||
+                (string.IsNullOrEmpty(e.LogInfo.AppInfo.Name)
+                && string.IsNullOrEmpty(e.LogInfo.AppInfo.FullName)
+                && string.IsNullOrEmpty(e.LogInfo.AppInfo.FileName)))
             {
-                SaveActiveLog(null);
                 return;
             }
 
-            bool newApp = false;
-            SaveCreateLog(e.WindowTitle, trackingService.UsageID, trackingService.UserID, e.AppInfo, out newApp);
+            activeLogInfo = e.LogInfo;//new LogInfo(e.AppInfo, e.WindowTitle);
+            var log = await trackingService.CreateLogEntryAsync(activeLogInfo);
+            if (log.LogInfoGuid != activeLogInfo.Guid || isTrackingEnabled == false)
+            {
+                LogInfo loginfo;
+                if (unsavedLogsMap.TryGetValue(log.LogInfoGuid, out loginfo))
+                {
+                    loginfo.Log = log;
+                    unsavedLogsMap.Remove(loginfo.Guid);
+                    await trackingService.EndLogEntry(loginfo);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.Fail("Failed to get loginfo from unsavedMap");
+                }
+            }
+            else
+            {
+                activeLogInfo.Log = log;
+            }
 
-            if (newApp)
-                NewAppAdded(e.AppInfo);
+            await saveTask;
         }
 
-        private void SaveActiveLog(Log newLog)
+        private async Task EndActiveLog()
         {
-            var tempLog = activeLog;
-            activeLog = newLog;
-
-            if (tempLog == null || tempLog.Finished)
+            var logCopy = activeLogInfo;
+            activeLogInfo = LogInfo.EmptyLog;
+            if (logCopy.IsFinished)
                 return;
 
-            tempLog.Finish();
-            dataService.SaveModifiedEntityAsync(tempLog);
-        }
+            logCopy.Finish();
 
-        private void SaveCreateLog(string windowTitle, int usageID, int userID, AppInfo appInfo, out bool newApp)
-        {
-            var newLog = trackingService.CreateNewLog(windowTitle, usageID, userID, appInfo, out newApp);
-            SaveActiveLog(newLog);
-        }
-
-        private void NewAppAdded(AppInfo appInfo)
-        {
-            var newApp = trackingService.GetApp(appInfo);
-            if (newApp != null)
-                mediator.NotifyColleagues(MediatorMessages.APPLICATION_ADDED, newApp);
+            if (logCopy.Log == null)
+            {
+                unsavedLogsMap.Add(logCopy.Guid, logCopy);
+                return;
+            }
+            else
+            {
+                await trackingService.EndLogEntry(logCopy);
+            }
         }
 
         private void StopTracking()
         {
             isTrackingEnabled = false;
-            SaveActiveLog(null);
+            var dummy = EndActiveLog();
+            if (unsavedLogsMap.Count > 0)
+            {
+                System.Diagnostics.Debug.Fail("Stoping tracking, unsaved logs present");
+            }
         }
 
         private void ResumeTracking()
         {
-            isTrackingEnabled = settings.LoggingEnabled;
+            isTrackingEnabled = settings.TrackingEnabled;
+            if (isTrackingEnabled)
+                appChangedNotifier.Component.CheckActiveApp();
         }
 
         public void Dispose()
         {
-            screenshotTracker.Dispose();
-
             appChangedNotifier.Enabled = false;
-
             StopTracking();
+            screenshotTracker.Dispose();
         }
-
 
         public int InitializationOrder
         {

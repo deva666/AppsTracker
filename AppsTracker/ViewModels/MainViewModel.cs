@@ -273,8 +273,10 @@ namespace AppsTracker.ViewModels
         private void ChangeLoggingStatus()
         {
             var settings = UserSettings;
-            settings.LoggingEnabled = !settings.LoggingEnabled;
+            settings.TrackingEnabled = !settings.TrackingEnabled;
             settingsService.SaveChanges(settings);
+            mediator.NotifyColleagues(MediatorMessages.TRACKING_ENABLED_CHANGING, settings.TrackingEnabled);
+            mediator.NotifyColleagues(settings.TrackingEnabled ? MediatorMessages.RESUME_TRACKING : MediatorMessages.STOP_TRACKING);
             PropertyChanging("UserSettings");
         }
 

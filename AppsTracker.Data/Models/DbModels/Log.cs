@@ -25,7 +25,8 @@ namespace AppsTracker.Data.Models
             }
         }
 
-        bool isSelected;
+        private bool isSelected;
+
         [NotMapped]
         public bool IsSelected
         {
@@ -43,11 +44,12 @@ namespace AppsTracker.Data.Models
         }
 
 
+        [NotMapped]
+        public Guid LogInfoGuid { get; private set; }
+
         public Log()
         {
             this.Screenshots = new HashSet<Screenshot>();
-            this.DateCreated = this.DateEnded = DateTime.Now;
-            this.UtcDateCreated = this.UtcDateEnded = DateTime.UtcNow;
             this.Finished = false;
         }
 
@@ -63,21 +65,17 @@ namespace AppsTracker.Data.Models
             this.UsageID = usageID;
         }
 
-        public Log(Window window, int usageID)
+        public Log(Window window, int usageID, Guid guid)
             : this()
         {
             this.Window = window;
             this.UsageID = usageID;
+            this.LogInfoGuid = guid;
         }
 
-        public void Finish()
+        public Log(Guid guid)
         {
-            if (!Finished)
-            {
-                Finished = true;
-                DateEnded = DateTime.Now;
-                UtcDateEnded = DateTime.UtcNow;
-            }
+            this.LogInfoGuid = guid;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

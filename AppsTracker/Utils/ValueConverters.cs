@@ -247,9 +247,9 @@ namespace AppsTracker
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            bool loggingEnabled = (bool)value;
+            bool trackingEnabled = (bool)value;
 
-            if (loggingEnabled) return System.Windows.Visibility.Collapsed;
+            if (trackingEnabled) return System.Windows.Visibility.Collapsed;
             else return System.Windows.Visibility.Visible;
 
         }
@@ -269,8 +269,8 @@ namespace AppsTracker
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            bool loggingEnabled = (bool)value;
-            if (loggingEnabled) return System.Windows.Visibility.Visible;
+            bool trackingEnabled = (bool)value;
+            if (trackingEnabled) return System.Windows.Visibility.Visible;
             else return System.Windows.Visibility.Collapsed;
         }
 
@@ -288,9 +288,9 @@ namespace AppsTracker
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            bool loggingEnabled = (bool)value;
+            bool trackingEnabled = (bool)value;
 
-            if (loggingEnabled) return "Tracking in progress ...";
+            if (trackingEnabled) return "Tracking in progress ...";
             else return "Tracking stopped";
 
         }

@@ -16,12 +16,12 @@ namespace AppsTracker.Data.Db
 {
     internal sealed class AppsEntities : DbContext
     {
-        private static string _connectionString = DbConnectionFactory.ConnectionString;
+        private static string connectionString = DbConnectionFactory.ConnectionString;
 
-        public static string ConnectionString { get { return _connectionString; } }
+        public static string ConnectionString { get { return connectionString; } }
 
         public AppsEntities()
-            : base(_connectionString)
+            : base(connectionString)
         {
             Database.SetInitializer<AppsEntities>(new DropCreateDatabaseIfModelChanges<AppsEntities>());
 #if DEBUG
@@ -31,7 +31,7 @@ namespace AppsTracker.Data.Db
 
         private void FlushSql(string s)
         {
-            // Debug.WriteLine(s);
+           // System.Diagnostics.Debug.WriteLine(s);
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -58,7 +58,11 @@ namespace AppsTracker.Data.Db
 
             modelBuilder.Entity<Window>()
                 .Property(w => w.ApplicationID)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Window_ApplicationID")));
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("UQ_Window_Title_ApplicationID", 0) { IsUnique = true }));
+
+            modelBuilder.Entity<Window>()
+               .Property(w => w.Title)
+               .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("UQ_Window_Title_ApplicationID", 1) { IsUnique = true }));
 
             modelBuilder.Entity<Log>()
                 .Property(l => l.WindowID)

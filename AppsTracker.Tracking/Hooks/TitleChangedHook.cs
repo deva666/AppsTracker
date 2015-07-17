@@ -17,11 +17,12 @@ namespace AppsTracker.Tracking.Hooks
         public TitleChangedHook()
             : base(EVENT_OBJECT_NAMECHANGE, EVENT_OBJECT_NAMECHANGE)
         {
-
         }
 
 
-        protected override void WinHookCallback(IntPtr hWinEventHook, uint eventType, IntPtr hWnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
+        protected override void WinHookCallback(IntPtr hWinEventHook, 
+            uint eventType, IntPtr hWnd, int idObject, 
+            int idChild, uint dwEventThread, uint dwmsEventTime)
         {
             if (hWnd == IntPtr.Zero || idChild < 0 || idObject != 0)
                 return;

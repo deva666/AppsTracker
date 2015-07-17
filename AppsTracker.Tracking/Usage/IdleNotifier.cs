@@ -23,8 +23,8 @@ namespace AppsTracker.Tracking
 
         private readonly Timer idleTimer;
 
-        private KeyboardHookCallback keyboardHookCallback = null;
-        private MouseHookCallback mouseHookCallback = null;
+        private readonly KeyboardHookCallback keyboardHookCallback;
+        private readonly MouseHookCallback mouseHookCallback;
 
         private IntPtr keyboardHookHandle = IntPtr.Zero;
         private IntPtr mouseHookHandle = IntPtr.Zero;
@@ -37,6 +37,8 @@ namespace AppsTracker.Tracking
         {
             this.syncContext = syncContext;
             this.settingsService = settingsService;
+            keyboardHookCallback = new KeyboardHookCallback(KeyboardHookProc);
+            mouseHookCallback = new MouseHookCallback(MouseHookProc);
             idleTimer = new Timer(CheckIdleState, null, TIMER_DELAY, TIMER_PERIOD);
         }
 
@@ -49,6 +51,9 @@ namespace AppsTracker.Tracking
 
             if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(settingsService.Settings.IdleTimer))
             {
+                Console.WriteLine("IdleTime = " + idleInfo.IdleTime);
+                Console.WriteLine("Settings idle = " + TimeSpan.FromMilliseconds(settingsService.Settings.IdleTimer));
+                Console.WriteLine("Idle entered");
                 idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
                 Volatile.Write(ref idleEntered, true);
                 syncContext.Invoke(s => SetHooks());
@@ -60,8 +65,6 @@ namespace AppsTracker.Tracking
         {
             if (keyboardHookHandle == IntPtr.Zero && mouseHookHandle == IntPtr.Zero)
             {
-                keyboardHookCallback = new KeyboardHookCallback(KeyboardHookCallback);
-                mouseHookCallback = new MouseHookCallback(MouseHookCallback);
                 using (var process = Process.GetCurrentProcess())
                 {
                     using (var module = process.MainModule)
@@ -74,7 +77,7 @@ namespace AppsTracker.Tracking
             }
         }
 
-        private IntPtr KeyboardHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
+        private IntPtr KeyboardHookProc(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0)
                 Reset();
@@ -82,7 +85,7 @@ namespace AppsTracker.Tracking
         }
 
 
-        private IntPtr MouseHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
+        private IntPtr MouseHookProc(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0)
                 Reset();
@@ -108,8 +111,6 @@ namespace AppsTracker.Tracking
 
             keyboardHookHandle = IntPtr.Zero;
             mouseHookHandle = IntPtr.Zero;
-            keyboardHookCallback = null;
-            mouseHookCallback = null;
             hooksRemoved = true;
         }
 
