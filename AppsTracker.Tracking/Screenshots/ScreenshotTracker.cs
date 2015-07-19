@@ -58,22 +58,17 @@ namespace AppsTracker.Tracking
             timer.Elapsed -= TimerTick;
         }
 
-        private void TimerTick(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            syncContext.Invoke(async () =>
-            {               
-                await TakeScreenshot();
-            });
-        }
-
-        private async Task TakeScreenshot()
+        private async void TimerTick(object sender, System.Timers.ElapsedEventArgs e)
         {
             var dbSizeTask = dataService.GetDBSizeAsync();
             var screenshot = screenshotFactory.CreateScreenshot();
 
-            ScreenshotTaken.InvokeSafely(this, new ScreenshotEventArgs(screenshot));
-
             await dbSizeTask;
+
+            syncContext.Invoke(() =>
+            {
+                ScreenshotTaken.InvokeSafely(this, new ScreenshotEventArgs(screenshot));
+            });
         }
 
         public void SettingsChanging(Setting settings)
@@ -86,7 +81,8 @@ namespace AppsTracker.Tracking
         {
             screenshotTimer.Enabled = (settings.TakeScreenshots && settings.TrackingEnabled);
 
-            if ((settings.TakeScreenshots && settings.TrackingEnabled) && settings.TimerInterval != screenshotTimer.Component.Interval)
+            if ((settings.TakeScreenshots && settings.TrackingEnabled) 
+                && settings.TimerInterval != screenshotTimer.Component.Interval)
                 screenshotTimer.Component.Interval = settings.TimerInterval;
         }
 
