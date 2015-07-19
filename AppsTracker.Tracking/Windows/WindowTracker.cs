@@ -14,7 +14,6 @@ using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.Data.Utils;
-using AppsTracker.Tracking.Helpers;
 using AppsTracker.Tracking.Hooks;
 
 namespace AppsTracker.Tracking
@@ -25,9 +24,7 @@ namespace AppsTracker.Tracking
         private bool isTrackingEnabled;
 
         private readonly ITrackingService trackingService;
-        private readonly IDataService dataService;
         private readonly IAppChangedNotifier appNotifierInstance;
-        private readonly ISyncContext syncContext;
         private readonly IScreenshotTracker screenshotTracker;
         private readonly IMediator mediator;
 
@@ -40,17 +37,13 @@ namespace AppsTracker.Tracking
 
         [ImportingConstructor]
         public WindowTracker(ITrackingService trackingService,
-                             IDataService dataService,
                              IAppChangedNotifier appChangedNotifier,
                              IScreenshotTracker screenshotTracker,
-                             ISyncContext syncContext,
                              IMediator mediator)
         {
             this.trackingService = trackingService;
-            this.dataService = dataService;
             this.appNotifierInstance = appChangedNotifier;
             this.screenshotTracker = screenshotTracker;
-            this.syncContext = syncContext;
             this.mediator = mediator;
 
             activeLogInfo = LogInfo.EmptyLog;
@@ -103,7 +96,7 @@ namespace AppsTracker.Tracking
         private async void AppChanging(object sender, AppChangedArgs e)
         {
             var saveTask = EndActiveLog();
-            
+
             if (!isTrackingEnabled || e.LogInfo.AppInfo == AppInfo.EmptyAppInfo ||
                 (string.IsNullOrEmpty(e.LogInfo.AppInfo.Name)
                 && string.IsNullOrEmpty(e.LogInfo.AppInfo.FullName)
@@ -112,7 +105,7 @@ namespace AppsTracker.Tracking
                 return;
             }
 
-            activeLogInfo = e.LogInfo;//new LogInfo(e.AppInfo, e.WindowTitle);
+            activeLogInfo = e.LogInfo;
             var log = await trackingService.CreateLogEntryAsync(activeLogInfo);
             if (log.LogInfoGuid != activeLogInfo.Guid || isTrackingEnabled == false)
             {
