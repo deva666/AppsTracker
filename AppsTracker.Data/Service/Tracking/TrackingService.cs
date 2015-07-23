@@ -14,9 +14,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using AppsTracker.Common.Communication;
 using AppsTracker.Common.Utils;
+using AppsTracker.Communication;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Utils;
+
 
 namespace AppsTracker.Data.Service
 {
@@ -24,6 +26,7 @@ namespace AppsTracker.Data.Service
     public sealed class TrackingService : ITrackingService
     {
         private readonly IMediator mediator;
+        private readonly ISyncContext syncContext;
 
         private volatile bool isDateRangeFiltered;
 
@@ -88,9 +91,10 @@ namespace AppsTracker.Data.Service
 
 
         [ImportingConstructor]
-        public TrackingService(IMediator mediator)
+        public TrackingService(IMediator mediator, ISyncContext syncContext)
         {
             this.mediator = mediator;
+            this.syncContext = syncContext;
         }
 
         public void Initialize(Uzer uzer, int usageID)
@@ -177,9 +181,13 @@ namespace AppsTracker.Data.Service
                 if (app == null)
                 {
                     app = new Aplication(appInfo) { UserID = userID };
-                    context.Applications.Add(app);
+                    context.Entry(app).State = EntityState.Added;
 
                     newApp = true;
+                }
+                else
+                {
+                    context.Entry(app).State = EntityState.Unchanged;
                 }
 
                 var window = context.Windows.FirstOrDefault(w => w.Title == logInfo.WindowTitle
@@ -188,7 +196,11 @@ namespace AppsTracker.Data.Service
                 if (window == null)
                 {
                     window = new Window(logInfo.WindowTitle) { Application = app };
-                    context.Windows.Add(window);
+                    context.Entry(window).State = EntityState.Added;
+                }
+                else
+                {
+                    context.Entry(window).State = EntityState.Unchanged;
                 }
 
                 var log = new Log(window, usageID, logInfo.Guid)
@@ -204,7 +216,7 @@ namespace AppsTracker.Data.Service
                 context.Entry(log).State = EntityState.Detached;
 
                 if (newApp)
-                    mediator.NotifyColleagues(MediatorMessages.APPLICATION_ADDED, app);
+                    syncContext.Invoke(() => mediator.NotifyColleagues(MediatorMessages.APPLICATION_ADDED, app));
 
                 return log;
             }
@@ -239,8 +251,15 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public Aplication GetApp(AppInfo appInfo, int userId = default(int))
+        public Task<Aplication> GetAppAsync(AppInfo appInfo, Int32 userId = default(Int32))
         {
+            return Task.Run(() => GetApp(appInfo, userId));
+        }
+
+        public Aplication GetApp(AppInfo appInfo, Int32 userId = default(Int32))
+        {
+            var sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
             if (appInfo == null)
                 return null;
 
@@ -249,6 +268,10 @@ namespace AppsTracker.Data.Service
                 var name = !string.IsNullOrEmpty(appInfo.Name) ? appInfo.Name.Truncate(250) : !string.IsNullOrEmpty(appInfo.FullName) ? appInfo.FullName.Truncate(250) : appInfo.FileName.Truncate(250);
                 var requestedUserId = userId == default(int) ? this.userID : userID;
                 var app = context.Applications.FirstOrDefault(a => a.Name == name && a.UserID == requestedUserId);
+                if (app != null)
+                    app.AppInfo = appInfo;
+                sw.Stop();
+                Console.WriteLine("Get app took " + sw.Elapsed);
                 return app;
             }
         }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using AppsTracker.Tracking.Helpers;
+using AppsTracker.Communication;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AppsTracker.Tests

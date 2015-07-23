@@ -29,8 +29,19 @@ namespace AppsTracker.Data.Models
 
 
         [NotMapped]
-        public ObservableCollection<AppLimit> ObservableLimits { get; set; }
+        public ObservableCollection<AppLimit> ObservableLimits
+        {
+            get;
+            set;
+        }
 
+
+        [NotMapped]
+        public AppInfo AppInfo
+        {
+            get;
+            set;
+        }
 
         private TimeSpan GetAppDuration()
         {

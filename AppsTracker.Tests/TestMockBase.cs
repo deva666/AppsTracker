@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppsTracker.MVVM;
-using AppsTracker.Data.Service;
-using AppsTracker.ViewModels;
 using AppsTracker.Common.Communication;
-using Moq;
-using AppsTracker.Tracking.Hooks;
-using AppsTracker.Tracking.Helpers;
+using AppsTracker.Communication;
+using AppsTracker.Data.Service;
 using AppsTracker.Tests.Fakes;
 using AppsTracker.Tracking;
+using AppsTracker.Tracking.Helpers;
+using AppsTracker.Tracking.Hooks;
+using AppsTracker.ViewModels;
+using Moq;
 
 namespace AppsTracker.Tests
 {
@@ -265,7 +261,7 @@ namespace AppsTracker.Tests
                 new Func<Tuple<SettingsLimitsViewModel, Action>>(
                     () => new Tuple<SettingsLimitsViewModel, Action>(
                         new SettingsLimitsViewModel(dataService.Object,
-                            trackingService.Object, 
+                            trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));
 

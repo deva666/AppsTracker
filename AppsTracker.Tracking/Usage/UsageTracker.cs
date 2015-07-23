@@ -46,7 +46,9 @@ namespace AppsTracker.Tracking
         {
             this.settings = settings;
 
-            idleNotifier = new LazyInit<IIdleNotifier>(() => idleNotifierInstance, OnIdleNotifierInit, OnIdleNotifierDispose);
+            idleNotifier = new LazyInit<IIdleNotifier>(() => idleNotifierInstance
+                                                        ,OnIdleNotifierInit
+                                                        ,OnIdleNotifierDispose);
 
             InitLogin();
 

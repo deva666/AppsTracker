@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppsTracker.Tracking.Helpers;
+using AppsTracker.Communication;
 
 namespace AppsTracker.Tests.Fakes.Logging.Helpers
 {

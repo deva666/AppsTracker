@@ -1,5 +1,5 @@
 ﻿using System;
-using AppsTracker.Tracking.Helpers;
+using AppsTracker.Communication;
 
 namespace AppsTracker.Tests.Fakes
 {

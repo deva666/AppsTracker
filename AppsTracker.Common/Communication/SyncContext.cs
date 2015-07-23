@@ -2,7 +2,7 @@
 using System.ComponentModel.Composition;
 using System.Threading;
 
-namespace AppsTracker.Tracking.Helpers
+namespace AppsTracker.Communication
 {
     [Export(typeof(ISyncContext))]
     internal sealed class SyncContext : ISyncContext

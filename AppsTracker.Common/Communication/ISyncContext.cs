@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace AppsTracker.Tracking.Helpers
+namespace AppsTracker.Communication
 {
     public interface ISyncContext
     {

@@ -5,6 +5,7 @@ using AppsTracker.Common.Utils;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
+using AppsTracker.Communication;
 
 namespace AppsTracker.Tracking.Helpers
 {

@@ -22,6 +22,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -58,14 +59,25 @@
                     </Button.InputBindings>
                 </Button>
             </StackPanel>
+
+            <Label Style="{DynamicResource LabelStyle}"
+                   Grid.Row="2"
+                   Grid.ColumnSpan="2"
+                   Content="General settings"
+                   Foreground="{DynamicResource WindowForegroundBrush}"
+                   FontFamily="Tahoma"
+                   FontSize="14"
+                   Margin="0,0,0,20"
+                   HorizontalAlignment="Left" />
+
             <Label Style="{DynamicResource LabelStyle}"
                    Content="Run apps tracker on Windows startup:"
-                   Grid.Row="2"
+                   Grid.Row="3"
                    Grid.Column="0"
                    Margin="0,20,0,0"
                    HorizontalAlignment="Left" />
             <CheckBox x:Name="cbStartup"
-                      Grid.Row="2"
+                      Grid.Row="3"
                       Grid.Column="1"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"
@@ -79,10 +91,10 @@
 
             <Label Style="{DynamicResource LabelStyle}"
                    Content="Theme:"
-                   Grid.Row="3"
+                   Grid.Row="4"
                    HorizontalAlignment="Left"
                    Margin="0,10,0,0" />
-            <ComboBox Grid.Row="3"
+            <ComboBox Grid.Row="4"
                       Grid.Column="1"
                       IsSynchronizedWithCurrentItem="False"
                       SelectedValue="{Binding Settings.LightTheme, Converter={StaticResource convertBoolToThemeString}, Mode=OneWay}"
@@ -104,7 +116,7 @@
             </ComboBox>
 
             <Button Content="Save Changes"
-                    Grid.Row="4"
+                    Grid.Row="5"
                     Margin="0,30,0,0"
                     Width="100">
                 <Button.InputBindings>
@@ -113,7 +125,7 @@
                 </Button.InputBindings>
             </Button>
 
-            <controls:ScrollingContentControl Grid.Row="5"
+            <controls:ScrollingContentControl Grid.Row="6"
                                               Margin="0,30,0,0"
                                               InfoContent="{Binding InfoMessage}">
                 <Label Style="{DynamicResource LabelStyle}" />

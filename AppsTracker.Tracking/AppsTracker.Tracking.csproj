@@ -44,9 +44,7 @@
     <Compile Include="Cleaning\DataCleaner.cs" />
     <Compile Include="Cleaning\ILogCleaner.cs" />
     <Compile Include="Cleaning\LogCleaner.cs" />
-    <Compile Include="Helpers\ISyncContext.cs" />
     <Compile Include="Helpers\LazyInit.cs" />
-    <Compile Include="Helpers\SyncContext.cs" />
     <Compile Include="Hooks\EventArgs\KeyboardHookArgs.cs" />
     <Compile Include="Hooks\EventArgs\WinChangedArgs.cs" />
     <Compile Include="Hooks\EventArgs\AppChangedArgs.cs" />

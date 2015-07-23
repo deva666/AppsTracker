@@ -38,9 +38,16 @@ namespace AppsTracker.Data.Utils
             uint processID = 0;
             if (hWnd != IntPtr.Zero)
             {
-                WinAPI.GetWindowThreadProcessId(hWnd, out processID);
-                if (processID != 0)
-                    return System.Diagnostics.Process.GetProcessById(checked((int)processID));
+                try
+                {
+                    WinAPI.GetWindowThreadProcessId(hWnd, out processID);
+                    if (processID != 0)
+                        return System.Diagnostics.Process.GetProcessById(checked((int)processID));
+                }
+                catch 
+                {
+                    return null;
+                }
             }
             return null;
         }
@@ -57,7 +64,7 @@ namespace AppsTracker.Data.Utils
 
             try
             {
-                if (process.MainModule.FileVersionInfo.CompanyName != null 
+                if (process.MainModule.FileVersionInfo.CompanyName != null
                     && process.MainModule.FileVersionInfo.CompanyName.ToLower().Contains("microsoft"))
                 {
                     appInfo.Version = process.MainModule.FileVersionInfo.ProductVersion ?? "";

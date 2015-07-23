@@ -31,7 +31,7 @@ namespace AppsTracker.Tracking
         private AppLimit currentDayLimit;
         private AppLimit currentWeekLimit;
 
-        private int activeAppId;
+        private Int32 activeAppId;
         private AppInfo activeAppInfo;
 
         [ImportingConstructor]
@@ -114,7 +114,7 @@ namespace AppsTracker.Tracking
         }
 
 
-        private void OnAppChanged(object sender, AppChangedArgs e)
+        private async void OnAppChanged(object sender, AppChangedArgs e)
         {
             if (activeAppInfo == e.LogInfo.AppInfo)
                 return;
@@ -122,8 +122,9 @@ namespace AppsTracker.Tracking
             activeAppInfo = e.LogInfo.AppInfo;
             StopTimers();
             currentDayLimit = currentWeekLimit = null;
-            var app = trackingService.GetApp(e.LogInfo.AppInfo);
-            LoadAppDurations(app);
+            var app = await trackingService.GetAppAsync(e.LogInfo.AppInfo);
+            if (app != null && app.AppInfo == activeAppInfo)
+                LoadAppDurations(app);
         }
 
 
