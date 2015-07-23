@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using AppsTracker.Common.Communication;
+using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.Data.Utils;
@@ -27,6 +28,7 @@ namespace AppsTracker.Tracking
         private readonly IAppChangedNotifier appNotifierInstance;
         private readonly IScreenshotTracker screenshotTracker;
         private readonly IMediator mediator;
+        private readonly IWorkQueue workQueue;
 
         private readonly IDictionary<Guid, LogInfo> unsavedLogsMap = new Dictionary<Guid, LogInfo>();
 
@@ -39,12 +41,14 @@ namespace AppsTracker.Tracking
         public WindowTracker(ITrackingService trackingService,
                              IAppChangedNotifier appChangedNotifier,
                              IScreenshotTracker screenshotTracker,
-                             IMediator mediator)
+                             IMediator mediator,
+                             IWorkQueue workQueue)
         {
             this.trackingService = trackingService;
             this.appNotifierInstance = appChangedNotifier;
             this.screenshotTracker = screenshotTracker;
             this.mediator = mediator;
+            this.workQueue = workQueue;
 
             activeLogInfo = LogInfo.EmptyLog;
         }
@@ -106,7 +110,8 @@ namespace AppsTracker.Tracking
             }
 
             activeLogInfo = e.LogInfo;
-            var log = await trackingService.CreateLogEntryAsync(activeLogInfo);
+            var valueFactory = new Func<Object>(() => trackingService.CreateLogEntry(activeLogInfo));
+            var log = (Log)await workQueue.EnqueueWork(valueFactory);
             if (log.LogInfoGuid != activeLogInfo.Guid || isTrackingEnabled == false)
             {
                 LogInfo loginfo;
@@ -171,6 +176,7 @@ namespace AppsTracker.Tracking
             appChangedNotifier.Enabled = false;
             StopTracking();
             screenshotTracker.Dispose();
+            workQueue.Dispose();
         }
 
         public int InitializationOrder

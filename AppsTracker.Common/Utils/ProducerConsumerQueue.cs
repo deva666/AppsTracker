@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,30 +12,46 @@ namespace AppsTracker.Common.Utils
     {
         private bool isDisposed;
 
-        private readonly BlockingCollection<Action> queue;
+        private readonly BlockingCollection<WorkItem> queue;
 
         public ProducerConsumerQueue()
         {
-            queue = new BlockingCollection<Action>();
+            queue = new BlockingCollection<WorkItem>();
             Task.Factory.StartNew(StartWork, CancellationToken.None,
                 TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
 
-        public void EnqueueWork(Action work)
+        public Task EnqueueWork(Action work)
         {
-            if (queue.IsAddingCompleted)
-            {
-                Debug.WriteLine("Tried to add work item when queue is completed");
-                return;
-            }
-            queue.Add(work);
+            var taskSource = new TaskCompletionSource<Object>();
+            queue.Add(new WorkItem(work, taskSource));
+            return taskSource.Task;
+        }
+
+        public Task<Object> EnqueueWork(Func<Object> work)
+        {
+            var taskSource = new TaskCompletionSource<Object>();
+            queue.Add(new WorkItem(work, taskSource));
+            return taskSource.Task;
         }
 
         private void StartWork()
         {
             foreach (var work in queue.GetConsumingEnumerable())
             {
-                work.Invoke();
+                try
+                {
+                    object result = null;
+                    if (work.Action != null)
+                        work.Action();
+                    else
+                        result = work.ValueFactory.Invoke();
+                    work.TaskSource.SetResult(result);
+                }
+                catch (Exception ex)
+                {
+                    work.TaskSource.SetException(ex);
+                }
             }
         }
 
@@ -46,17 +59,28 @@ namespace AppsTracker.Common.Utils
         {
             if (isDisposed)
                 return;
-            
-            var timeout = TimeSpan.FromMilliseconds(5 * 1000);
-            Action work;
-            while (queue.TryTake(out work, timeout))
-            {
-                work.Invoke();
-            }
-            
+
             queue.CompleteAdding();
-            queue.Dispose();
             isDisposed = true;
+        }
+
+        private class WorkItem
+        {
+            public Action Action { get; set; }
+            public Func<Object> ValueFactory { get; set; }
+            public TaskCompletionSource<Object> TaskSource { get; set; }
+
+            public WorkItem(Action action, TaskCompletionSource<Object> taskSource)
+            {
+                Action = action;
+                TaskSource = taskSource;
+            }
+
+            public WorkItem(Func<Object> valueFactory, TaskCompletionSource<Object> taskSource)
+            {
+                ValueFactory = valueFactory;
+                TaskSource = taskSource;
+            }
         }
     }
 }

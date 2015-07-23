@@ -168,7 +168,7 @@ namespace AppsTracker.Data.Service
             return Task.Run(() => CreateLogEntry(logInfo));
         }
 
-        private Log CreateLogEntry(LogInfo logInfo)
+        public Log CreateLogEntry(LogInfo logInfo)
         {
             using (var context = new AppsEntities())
             {
