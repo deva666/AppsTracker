@@ -5,7 +5,6 @@ using System.Threading;
 using AppsTracker.Common.Utils;
 using AppsTracker.Communication;
 using AppsTracker.Data.Service;
-using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
 {
@@ -24,13 +23,13 @@ namespace AppsTracker.Tracking
         private bool hooksRemoved = true;
         private Int32 idleEntered = 0;
 
+        private IntPtr keyboardHookHandle = IntPtr.Zero;
+        private IntPtr mouseHookHandle = IntPtr.Zero;
+
         private readonly Timer idleTimer;
 
         private readonly KeyboardHookCallback keyboardHookCallback;
         private readonly MouseHookCallback mouseHookCallback;
-
-        private IntPtr keyboardHookHandle = IntPtr.Zero;
-        private IntPtr mouseHookHandle = IntPtr.Zero;
 
         public event EventHandler IdleEntered;
         public event EventHandler IdleStoped;
