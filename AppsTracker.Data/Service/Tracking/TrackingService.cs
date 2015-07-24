@@ -258,8 +258,6 @@ namespace AppsTracker.Data.Service
 
         public Aplication GetApp(AppInfo appInfo, Int32 userId = default(Int32))
         {
-            var sw = new System.Diagnostics.Stopwatch();
-            sw.Start();
             if (appInfo == null)
                 return null;
 
@@ -270,8 +268,6 @@ namespace AppsTracker.Data.Service
                 var app = context.Applications.FirstOrDefault(a => a.Name == name && a.UserID == requestedUserId);
                 if (app != null)
                     app.AppInfo = appInfo;
-                sw.Stop();
-                Console.WriteLine("Get app took " + sw.Elapsed);
                 return app;
             }
         }
