@@ -158,10 +158,10 @@ namespace AppsTracker.Tracking
         {
             isTrackingEnabled = false;
             var dummy = EndActiveLog();
-            if (unsavedLogsMap.Count > 0)
-            {
-                System.Diagnostics.Debug.Fail("Stoping tracking, unsaved logs present");
-            }
+            //if (unsavedLogsMap.Count > 0)
+            //{
+            //    System.Diagnostics.Debug.Fail("Stoping tracking, unsaved logs present");
+            //}
         }
 
         private void ResumeTracking()
