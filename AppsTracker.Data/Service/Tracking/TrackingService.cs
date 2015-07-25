@@ -263,7 +263,9 @@ namespace AppsTracker.Data.Service
 
             using (var context = new AppsEntities())
             {
-                var name = !string.IsNullOrEmpty(appInfo.Name) ? appInfo.Name.Truncate(250) : !string.IsNullOrEmpty(appInfo.FullName) ? appInfo.FullName.Truncate(250) : appInfo.FileName.Truncate(250);
+                var name = !string.IsNullOrEmpty(appInfo.Name) 
+                    ? appInfo.Name.Truncate(250) : !string.IsNullOrEmpty(appInfo.FullName) 
+                    ? appInfo.FullName.Truncate(250) : appInfo.FileName.Truncate(250);
                 var requestedUserId = userId == default(int) ? this.userID : userID;
                 var app = context.Applications.FirstOrDefault(a => a.Name == name && a.UserID == requestedUserId);
                 if (app != null)

@@ -5,11 +5,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AppsTracker.Common.Communication;
+using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
-using AppsTracker.Tracking.Hooks;
-using AppsTracker.Tracking.Helpers;
 using AppsTracker.Data.Utils;
+using AppsTracker.Tracking.Helpers;
+using AppsTracker.Tracking.Hooks;
 
 namespace AppsTracker.Tracking
 {
@@ -22,8 +23,10 @@ namespace AppsTracker.Tracking
         private readonly IMidnightNotifier midnightNotifier;
         private readonly ILimitHandler limitHandler;
         private readonly IMediator mediator;
+        private readonly IWorkQueue workQueue;
 
-        private readonly IDictionary<Aplication, IEnumerable<AppLimit>> appLimitsMap = new Dictionary<Aplication, IEnumerable<AppLimit>>();
+        private readonly IDictionary<Aplication, IEnumerable<AppLimit>> appLimitsMap
+            = new Dictionary<Aplication, IEnumerable<AppLimit>>();
 
         private readonly Timer dayTimer;
         private readonly Timer weekTimer;
@@ -40,7 +43,8 @@ namespace AppsTracker.Tracking
                              IAppChangedNotifier appChangedNotifier,
                              IMidnightNotifier midnightNotifier,
                              ILimitHandler limitHandler,
-                             IMediator mediator)
+                             IMediator mediator,
+                             IWorkQueue workQueue)
         {
             this.trackingService = trackingService;
             this.dataService = dataService;
@@ -48,6 +52,7 @@ namespace AppsTracker.Tracking
             this.midnightNotifier = midnightNotifier;
             this.limitHandler = limitHandler;
             this.mediator = mediator;
+            this.workQueue = workQueue;
 
             dayTimer = new Timer(TimerCallback,
                 new Func<AppLimit>(() => Volatile.Read(ref currentDayLimit)), Timeout.Infinite, Timeout.Infinite);
@@ -116,13 +121,15 @@ namespace AppsTracker.Tracking
 
         private async void OnAppChanged(object sender, AppChangedArgs e)
         {
-            if (activeAppInfo == e.LogInfo.AppInfo)
+            if (activeAppInfo == e.LogInfo.AppInfo
+                || appLimitsMap.Count == 0)
                 return;
 
             activeAppInfo = e.LogInfo.AppInfo;
             StopTimers();
             currentDayLimit = currentWeekLimit = null;
-            var app = await trackingService.GetAppAsync(e.LogInfo.AppInfo);
+            var valueFactory = new Func<Object>(() => trackingService.GetApp(e.LogInfo.AppInfo));
+            var app = (Aplication)await workQueue.EnqueueWork(valueFactory);
             if (app != null && app.AppInfo == activeAppInfo)
                 LoadAppDurations(app);
         }

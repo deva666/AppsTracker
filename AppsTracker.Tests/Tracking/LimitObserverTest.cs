@@ -9,6 +9,7 @@ using AppsTracker.Tracking.Hooks;
 using AppsTracker.Tracking;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using AppsTracker.Tests.Fakes;
 
 namespace AppsTracker.Tests.Tracking
 {
@@ -21,6 +22,7 @@ namespace AppsTracker.Tests.Tracking
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(0);
             var appInfo = AppInfo.Create(app.Name);
+            app.AppInfo = appInfo;
 
             dataService.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
                 It.IsAny<Expression<Func<Aplication, object>>>()))
@@ -41,6 +43,7 @@ namespace AppsTracker.Tests.Tracking
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(1000);
             var appInfo = AppInfo.Create(app.Name);
+            app.AppInfo = appInfo;
 
             dataService.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
                 It.IsAny<Expression<Func<Aplication, object>>>()))
@@ -64,6 +67,7 @@ namespace AppsTracker.Tests.Tracking
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(1000);
             var appInfo = AppInfo.Create(app.Name);
+            app.AppInfo = appInfo;
 
             dataService.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
                 It.IsAny<Expression<Func<Aplication, object>>>()))
@@ -91,7 +95,8 @@ namespace AppsTracker.Tests.Tracking
                                      windowChangedNotifier.Object,
                                      midnightNotifier.Object,
                                      limitHandler.Object,
-                                     mediator);
+                                     mediator,
+                                     new WorkQueueMock());
         }
 
         private Aplication CreateAppDailyLimit(int limitAmount)

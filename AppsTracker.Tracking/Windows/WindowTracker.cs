@@ -28,7 +28,7 @@ namespace AppsTracker.Tracking
         private readonly IAppChangedNotifier appNotifierInstance;
         private readonly IScreenshotTracker screenshotTracker;
         private readonly IMediator mediator;
-        private readonly IWorkQueue<Log> workQueue;
+        private readonly IWorkQueue workQueue;
 
         private readonly IDictionary<Guid, LogInfo> unsavedLogsMap = new Dictionary<Guid, LogInfo>();
 
@@ -42,7 +42,7 @@ namespace AppsTracker.Tracking
                              IAppChangedNotifier appChangedNotifier,
                              IScreenshotTracker screenshotTracker,
                              IMediator mediator,
-                             IWorkQueue<Log> workQueue)
+                             IWorkQueue workQueue)
         {
             this.trackingService = trackingService;
             this.appNotifierInstance = appChangedNotifier;
@@ -110,8 +110,8 @@ namespace AppsTracker.Tracking
             }
 
             activeLogInfo = e.LogInfo;
-            var valueFactory = new Func<Log>(() => trackingService.CreateLogEntry(activeLogInfo));
-            var log = await workQueue.EnqueueWork(valueFactory);
+            var valueFactory = new Func<Object>(() => trackingService.CreateLogEntry(activeLogInfo));
+            var log = (Log)await workQueue.EnqueueWork(valueFactory);
             if (log.LogInfoGuid != activeLogInfo.Guid || isTrackingEnabled == false)
             {
                 LogInfo loginfo;
@@ -158,10 +158,6 @@ namespace AppsTracker.Tracking
         {
             isTrackingEnabled = false;
             var dummy = EndActiveLog();
-            //if (unsavedLogsMap.Count > 0)
-            //{
-            //    System.Diagnostics.Debug.Fail("Stoping tracking, unsaved logs present");
-            //}
         }
 
         private void ResumeTracking()

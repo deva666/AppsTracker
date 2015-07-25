@@ -53,7 +53,7 @@ namespace AppsTracker.Data.Utils
         }
 
 
-        public static AppInfo GetAppInfo(IntPtr hWnd)
+        public static AppInfo Create(IntPtr hWnd)
         {
             var process = GetProcessFromHandle(hWnd);
 
