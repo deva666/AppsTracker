@@ -173,6 +173,7 @@ namespace AppsTracker.Tracking
 
         public void Dispose()
         {
+            Console.WriteLine("Disposing window tracker");
             appChangedNotifier.Enabled = false;
             StopTracking();
             screenshotTracker.Dispose();

@@ -23,6 +23,10 @@ namespace AppsTracker.Tracking
                 lastInputTicks = (int)lastInputInfo.dwTime;
                 idleTicks = systemUptime - lastInputTicks;
             }
+            else
+            {
+                System.Diagnostics.Debug.Fail("WinAPI.GetLastInputInfo failed");
+            }
 
             return new IdleTimeInfo
             {

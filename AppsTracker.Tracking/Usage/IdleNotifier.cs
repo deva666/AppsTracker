@@ -15,18 +15,20 @@ namespace AppsTracker.Tracking
         private const int TIMER_DELAY = 1 * 60 * 1000;
         private const int WH_KEYBOARD_LL = 13;
         private const int WH_MOUSE_LL = 14;
+        private const int IDLE_ON = 1;
+        private const int IDLE_OFF = 0;
 
         private readonly ISqlSettingsService settingsService;
         private readonly ISyncContext syncContext;
 
         private bool disposed = false;
         private bool hooksRemoved = true;
-        private Int32 idleEntered = 0;
+        private int idleEntered = 0;
 
         private IntPtr keyboardHookHandle = IntPtr.Zero;
         private IntPtr mouseHookHandle = IntPtr.Zero;
 
-        private readonly Timer idleTimer;
+        private Timer idleTimer;
 
         private readonly KeyboardHookCallback keyboardHookCallback;
         private readonly MouseHookCallback mouseHookCallback;
@@ -41,15 +43,23 @@ namespace AppsTracker.Tracking
             this.settingsService = settingsService;
             keyboardHookCallback = new KeyboardHookCallback(KeyboardHookProc);
             mouseHookCallback = new MouseHookCallback(MouseHookProc);
-            idleTimer = new Timer(CheckIdleState, null, TIMER_PERIOD, TIMER_PERIOD);
+            idleTimer = new Timer(CheckIdleState, null, TIMER_DELAY, TIMER_PERIOD);
         }
+
+        private IntPtr KeyboardHookProc(int nCode, IntPtr wParam, IntPtr lParam)
+        {
+            if (nCode >= 0)
+                Reset();
+            return WinAPI.CallNextHookEx(keyboardHookHandle, nCode, wParam, lParam);
+        }
+
 
         private void CheckIdleState(object sender)
         {
             var idleInfo = IdleTimeWatcher.GetIdleTimeInfo();
             if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(settingsService.Settings.IdleTimer))
             {
-                Interlocked.Exchange(ref idleEntered, 1);
+                Interlocked.Exchange(ref idleEntered, IDLE_ON);
                 idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
                 syncContext.Invoke(s => SetHooks());
                 syncContext.Invoke(s => IdleEntered.InvokeSafely(this, EventArgs.Empty));
@@ -72,13 +82,6 @@ namespace AppsTracker.Tracking
             }
         }
 
-        private IntPtr KeyboardHookProc(int nCode, IntPtr wParam, IntPtr lParam)
-        {
-            if (nCode >= 0)
-                Reset();
-            return WinAPI.CallNextHookEx(keyboardHookHandle, nCode, wParam, lParam);
-        }
-
 
         private IntPtr MouseHookProc(int nCode, IntPtr wParam, IntPtr lParam)
         {
@@ -89,12 +92,12 @@ namespace AppsTracker.Tracking
 
         private void Reset()
         {
-            if (idleEntered == 0)
+            if (idleEntered == IDLE_OFF)
                 return;
 
-            Interlocked.Exchange(ref idleEntered, 0);
+            Interlocked.Exchange(ref idleEntered, IDLE_OFF);
             RemoveHooks();
-            idleTimer.Change(TIMER_PERIOD, TIMER_PERIOD);
+            idleTimer.Change(TIMER_DELAY, TIMER_PERIOD);
             IdleStoped.InvokeSafely(this, EventArgs.Empty);
         }
 
@@ -128,6 +131,7 @@ namespace AppsTracker.Tracking
 
                 idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
                 idleTimer.Dispose();
+                idleTimer = null;
 
                 Delegate[] delegateBuffer = null;
                 if (IdleEntered != null)

@@ -151,13 +151,13 @@ namespace AppsTracker.Tracking
             {
                 usageProcessor.NewUsage(UsageTypes.Locked, trackingService.UserID, trackingService.UsageID);
                 usageProcessor.UsageEnded(UsageTypes.Idle);
-                idleNotifier.Enabled = false;
+                isTrackingEnabled = false;
             }
             else if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionUnlock)
             {
                 if (settings.EnableIdle && settings.TrackingEnabled)
                 {
-                    idleNotifier.Enabled = true;
+                    isTrackingEnabled = true;
                 }
                 usageProcessor.UsageEnded(UsageTypes.Locked);
             }
