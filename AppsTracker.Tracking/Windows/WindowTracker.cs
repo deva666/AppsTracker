@@ -106,13 +106,15 @@ namespace AppsTracker.Tracking
                 && string.IsNullOrEmpty(e.LogInfo.AppInfo.FullName)
                 && string.IsNullOrEmpty(e.LogInfo.AppInfo.FileName)))
             {
+                await saveTask;
                 return;
             }
 
             activeLogInfo = e.LogInfo;
             var valueFactory = new Func<Object>(() => trackingService.CreateLogEntry(activeLogInfo));
             var log = (Log)await workQueue.EnqueueWork(valueFactory);
-            if (log.LogInfoGuid != activeLogInfo.Guid || isTrackingEnabled == false)
+            if (activeLogInfo.Guid != LogInfo.EmptyLog.Guid 
+                && log.LogInfoGuid != activeLogInfo.Guid)
             {
                 LogInfo loginfo;
                 if (unsavedLogsMap.TryGetValue(log.LogInfoGuid, out loginfo))
@@ -123,7 +125,8 @@ namespace AppsTracker.Tracking
                 }
                 else
                 {
-                    System.Diagnostics.Debug.Fail("Failed to get loginfo from unsavedMap");
+                    //System.Diagnostics.Debug.Fail("Failed to get loginfo from unsavedMap");
+                    throw new InvalidProgramException("Failed to get loginfo from unsavedMap");
                 }
             }
             else
@@ -169,7 +172,6 @@ namespace AppsTracker.Tracking
 
         public void Dispose()
         {
-            Console.WriteLine("Disposing window tracker");
             appChangedNotifier.Enabled = false;
             StopTracking();
             screenshotTracker.Dispose();
