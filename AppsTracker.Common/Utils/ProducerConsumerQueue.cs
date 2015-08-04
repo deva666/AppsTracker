@@ -64,19 +64,21 @@ namespace AppsTracker.Common.Utils
             isDisposed = true;
         }
 
-        private class WorkItem
+        private struct WorkItem
         {
-            public Action Action { get; set; }
-            public Func<Object> ValueFactory { get; set; }
-            public TaskCompletionSource<Object> TaskSource { get; set; }
+            public Action Action { get; private set; }
+            public Func<Object> ValueFactory { get; private set; }
+            public TaskCompletionSource<Object> TaskSource { get; private set; }
 
-            public WorkItem(Action action, TaskCompletionSource<Object> taskSource)
+            public WorkItem(Action action, TaskCompletionSource<Object> taskSource) 
+                : this()
             {
                 Action = action;
                 TaskSource = taskSource;
             }
 
             public WorkItem(Func<Object> valueFactory, TaskCompletionSource<Object> taskSource)
+                : this()
             {
                 ValueFactory = valueFactory;
                 TaskSource = taskSource;

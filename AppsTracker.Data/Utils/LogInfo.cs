@@ -49,10 +49,10 @@ namespace AppsTracker.Data.Utils
         }
 
         private readonly static LogInfo emptyLog = new LogInfo(true);
-        public static LogInfo EmptyLog { get { return emptyLog; } }
+        public static LogInfo Empty { get { return emptyLog; } }
 
         private LogInfo(bool finished)
-            : this(AppInfo.EmptyAppInfo, string.Empty)
+            : this(AppInfo.Empty, string.Empty)
         {
             isFinished = finished;
         }

@@ -31,7 +31,7 @@ namespace AppsTracker.Data.Utils
             FullName = string.Empty
         };
 
-        public static AppInfo EmptyAppInfo { get { return emptyAppInfo; } }
+        public static AppInfo Empty { get { return emptyAppInfo; } }
 
         private static Process GetProcessFromHandle(IntPtr hWnd)
         {
