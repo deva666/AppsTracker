@@ -114,9 +114,18 @@ namespace AppsTracker.Tracking
             }
 
             var valueFactory = new Func<Object>(() => trackingService.CreateLogEntry(activeLogInfo));
-            var task = workQueue.EnqueueWork(valueFactory);
-            var scheduler = TaskScheduler.Current;
-            task.ContinueWith(CreateLogContinuation, scheduler);
+            var log = (Log)await workQueue.EnqueueWork(valueFactory);
+            LogInfo loginfo;
+            if (unsavedLogInfos.TryGetValue(log.LogInfoGuid, out loginfo))
+            {
+                unsavedLogInfos.Remove(log.LogInfoGuid);
+                loginfo.Log = log;
+                await trackingService.EndLogEntry(loginfo);
+            }
+            else
+            {
+                createdLogs.Add(log.LogInfoGuid, log);
+            }
             await saveTask;
         }
 

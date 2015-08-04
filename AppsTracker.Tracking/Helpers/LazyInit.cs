@@ -22,7 +22,7 @@ namespace AppsTracker.Tracking
             {
                 enabled = value;
                 if (enabled)
-                    LazyInitValue();
+                    component = LazyInitValue();
                 else
                     DisposeComponent();
             }
