@@ -78,6 +78,13 @@ namespace AppsTracker.Data.Models
             this.LogInfoGuid = guid;
         }
 
+        public void Finish()
+        {
+            DateEnded = DateTime.Now;
+            UtcDateEnded = DateTime.UtcNow;
+            Finished = true;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [Key]

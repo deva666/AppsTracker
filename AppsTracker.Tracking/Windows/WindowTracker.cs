@@ -71,8 +71,8 @@ namespace AppsTracker.Tracking
             screenshotTracker.ScreenshotTaken += ScreenshotTaken;
 
             appChangedNotifier = new LazyInit<IAppChangedNotifier>(() => appNotifierInstance,
-                                                           a => a.AppChanged += AppChanging,
-                                                           a => a.AppChanged -= AppChanging);
+                                                           a => a.AppChanged += OnAppChanging,
+                                                           a => a.AppChanged -= OnAppChanging);
 
             ConfigureComponents();
 
@@ -98,6 +98,49 @@ namespace AppsTracker.Tracking
             isTrackingEnabled =
                 appChangedNotifier.Enabled =
                         settings.TrackingEnabled;
+        }
+
+        private void OnAppChanging(Object sender, AppChangedArgs e)
+        {
+            if (isTrackingEnabled == false)
+            {
+                return;
+            }
+
+            if (e.LogInfo.AppInfo == AppInfo.Empty ||
+               (string.IsNullOrEmpty(e.LogInfo.AppInfo.Name)
+               && string.IsNullOrEmpty(e.LogInfo.AppInfo.FullName)
+               && string.IsNullOrEmpty(e.LogInfo.AppInfo.FileName)))
+            {
+                SwapLogs(LogInfo.Empty);
+                return;
+            }
+
+            var valueFactory = new Func<Object>(() => trackingService.CreateLogEntry(e.LogInfo));
+            var createTask = workQueue.EnqueueWork(valueFactory);
+            var scheduler = TaskScheduler.Current;
+            createTask.ContinueWith(CreateLogContinuation, scheduler);
+            SwapLogs(e.LogInfo);
+        }
+
+        private void SwapLogs(LogInfo logInfo)
+        {
+            if (activeLogInfo.IsFinished == false)
+            {
+                activeLogInfo.Finish();
+                Log log;
+                if (createdLogs.TryGetValue(activeLogInfo.Guid, out log))
+                {
+                    createdLogs.Remove(activeLogInfo.Guid);
+                    activeLogInfo.Log = log;
+                    trackingService.EndLogEntry(activeLogInfo);
+                }
+                else
+                {
+                    unsavedLogInfos.Add(activeLogInfo.Guid, activeLogInfo);
+                }
+            }
+            activeLogInfo = logInfo;
         }
 
         private async void AppChanging(object sender, AppChangedArgs e)
@@ -132,6 +175,13 @@ namespace AppsTracker.Tracking
         private void CreateLogContinuation(Task<Object> task)
         {
             var log = (Log)task.Result;
+
+            if (isTrackingEnabled == false)
+            {
+                trackingService.EndLogEntry(log);
+                return;
+            }
+
             LogInfo loginfo;
             if (unsavedLogInfos.TryGetValue(log.LogInfoGuid, out loginfo))
             {
@@ -170,7 +220,7 @@ namespace AppsTracker.Tracking
         private void StopTracking()
         {
             isTrackingEnabled = false;
-            var dummy = EndActiveLog(LogInfo.Empty);
+            SwapLogs(LogInfo.Empty);
         }
 
         private void ResumeTracking()

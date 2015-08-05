@@ -232,9 +232,7 @@ namespace AppsTracker.Data.Service
                     context.Windows.Attach(log.Window);
                 if (log.Window != null && log.Window.Application != null)
                     context.Applications.Attach(log.Window.Application);
-                log.DateEnded = logInfo.End;
-                log.UtcDateEnded = logInfo.UtcEnd;
-                log.Finished = true;
+                log.Finish();
 
                 if (logInfo.HasScreenshots)
                 {
@@ -251,6 +249,21 @@ namespace AppsTracker.Data.Service
             }
         }
 
+        public async Task EndLogEntry(Log log)
+        {
+            using (var context = new AppsEntities())
+            {
+                context.Logs.Attach(log);
+                if (log.Window != null)
+                    context.Windows.Attach(log.Window);
+                if (log.Window != null && log.Window.Application != null)
+                    context.Applications.Attach(log.Window.Application);
+                log.Finish();
+                context.Entry(log).State = EntityState.Modified;
+                await context.SaveChangesAsync();
+            }
+        }
+
         public Task<Aplication> GetAppAsync(AppInfo appInfo, Int32 userId = default(Int32))
         {
             return Task.Run(() => GetApp(appInfo, userId));
@@ -263,8 +276,8 @@ namespace AppsTracker.Data.Service
 
             using (var context = new AppsEntities())
             {
-                var name = !string.IsNullOrEmpty(appInfo.Name) 
-                    ? appInfo.Name.Truncate(250) : !string.IsNullOrEmpty(appInfo.FullName) 
+                var name = !string.IsNullOrEmpty(appInfo.Name)
+                    ? appInfo.Name.Truncate(250) : !string.IsNullOrEmpty(appInfo.FullName)
                     ? appInfo.FullName.Truncate(250) : appInfo.FileName.Truncate(250);
                 var requestedUserId = userId == default(int) ? this.userID : userID;
                 var app = context.Applications.FirstOrDefault(a => a.Name == name && a.UserID == requestedUserId);
