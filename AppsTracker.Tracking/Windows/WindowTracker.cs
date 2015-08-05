@@ -109,8 +109,7 @@ namespace AppsTracker.Tracking
 
             var valueFactory = new Func<Object>(() => trackingService.CreateLogEntry(e.LogInfo));
             var createTask = workQueue.EnqueueWork(valueFactory);
-            var scheduler = TaskScheduler.Current;
-            createTask.ContinueWith(CreateLogContinuation, scheduler);
+            createTask.ContinueWith(CreateLogContinuation, TaskScheduler.Current);
             SwapLogs(e.LogInfo);
         }
 
@@ -134,35 +133,6 @@ namespace AppsTracker.Tracking
             activeLogInfo = logInfo;
         }
 
-        private async void AppChanging(object sender, AppChangedArgs e)
-        {
-            var saveTask = EndActiveLog(e.LogInfo);
-
-            if (!isTrackingEnabled || e.LogInfo.AppInfo == AppInfo.Empty ||
-                (string.IsNullOrEmpty(e.LogInfo.AppInfo.Name)
-                && string.IsNullOrEmpty(e.LogInfo.AppInfo.FullName)
-                && string.IsNullOrEmpty(e.LogInfo.AppInfo.FileName)))
-            {
-                await saveTask;
-                return;
-            }
-
-            var valueFactory = new Func<Object>(() => trackingService.CreateLogEntry(activeLogInfo));
-            var log = (Log)await workQueue.EnqueueWork(valueFactory);
-            LogInfo loginfo;
-            if (unsavedLogInfos.TryGetValue(log.LogInfoGuid, out loginfo))
-            {
-                unsavedLogInfos.Remove(log.LogInfoGuid);
-                loginfo.Log = log;
-                await trackingService.EndLogEntry(loginfo);
-            }
-            else
-            {
-                createdLogs.Add(log.LogInfoGuid, log);
-            }
-            await saveTask;
-        }
-
         private void CreateLogContinuation(Task<Object> task)
         {
             var log = (Log)task.Result;
@@ -183,28 +153,6 @@ namespace AppsTracker.Tracking
             else
             {
                 createdLogs.Add(log.LogInfoGuid, log);
-            }
-        }
-
-        private async Task EndActiveLog(LogInfo newLogInfo)
-        {
-            var logInfoCopy = activeLogInfo;
-            activeLogInfo = newLogInfo;
-            if (logInfoCopy.IsFinished)
-                return;
-
-            logInfoCopy.Finish();
-
-            Log log;
-            if (createdLogs.TryGetValue(logInfoCopy.Guid, out log))
-            {
-                createdLogs.Remove(logInfoCopy.Guid);
-                logInfoCopy.Log = log;
-                await trackingService.EndLogEntry(logInfoCopy);
-            }
-            else
-            {
-                unsavedLogInfos.Add(logInfoCopy.Guid, logInfoCopy);
             }
         }
 
