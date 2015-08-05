@@ -15,7 +15,6 @@ using AppsTracker.Data.Utils;
 namespace AppsTracker.Tracking.Hooks
 {
     [Export(typeof(IAppChangedNotifier))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     public sealed class AppChangedNotifier : IAppChangedNotifier
     {
         public event EventHandler<AppChangedArgs> AppChanged;

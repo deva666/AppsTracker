@@ -25,34 +25,31 @@ namespace AppsTracker.Tracking
         private bool isTrackingEnabled;
 
         private readonly ITrackingService trackingService;
-        private readonly IAppChangedNotifier appNotifierInstance;
+        private readonly IAppChangedNotifier appChangedNotifier;
         private readonly IScreenshotTracker screenshotTracker;
         private readonly IMediator mediator;
         private readonly IWorkQueue workQueue;
 
-        private readonly IDictionary<Guid, LogInfo> unsavedLogsMap = new Dictionary<Guid, LogInfo>();
-
         private readonly IDictionary<Guid, LogInfo> unsavedLogInfos = new Dictionary<Guid, LogInfo>();
         private readonly IDictionary<Guid, Log> createdLogs = new Dictionary<Guid, Log>();
-
-        private LazyInit<IAppChangedNotifier> appChangedNotifier;
 
         private Setting settings;
         private LogInfo activeLogInfo;
 
         [ImportingConstructor]
-        public WindowTracker(ITrackingService trackingService,
-                             IAppChangedNotifier appChangedNotifier,
+        public WindowTracker(IAppChangedNotifier appChangedNotifier,
+                             ITrackingService trackingService,
                              IScreenshotTracker screenshotTracker,
                              IMediator mediator,
                              IWorkQueue workQueue)
         {
             this.trackingService = trackingService;
-            this.appNotifierInstance = appChangedNotifier;
+            this.appChangedNotifier = appChangedNotifier;
             this.screenshotTracker = screenshotTracker;
             this.mediator = mediator;
             this.workQueue = workQueue;
 
+            appChangedNotifier.AppChanged += OnAppChanging;
             activeLogInfo = LogInfo.Empty;
         }
 
@@ -70,17 +67,13 @@ namespace AppsTracker.Tracking
             screenshotTracker.Initialize(settings);
             screenshotTracker.ScreenshotTaken += ScreenshotTaken;
 
-            appChangedNotifier = new LazyInit<IAppChangedNotifier>(() => appNotifierInstance,
-                                                           a => a.AppChanged += OnAppChanging,
-                                                           a => a.AppChanged -= OnAppChanging);
-
             ConfigureComponents();
 
             mediator.Register(MediatorMessages.STOP_TRACKING, new Action(StopTracking));
             mediator.Register(MediatorMessages.RESUME_TRACKING, new Action(ResumeTracking));
 
             if (settings.TrackingEnabled)
-                appChangedNotifier.Component.CheckActiveApp();
+                appChangedNotifier.CheckActiveApp();
         }
 
         private void ScreenshotTaken(object sender, ScreenshotEventArgs e)
@@ -95,9 +88,7 @@ namespace AppsTracker.Tracking
 
         private void ConfigureComponents()
         {
-            isTrackingEnabled =
-                appChangedNotifier.Enabled =
-                        settings.TrackingEnabled;
+            isTrackingEnabled = settings.TrackingEnabled;
         }
 
         private void OnAppChanging(Object sender, AppChangedArgs e)
@@ -227,12 +218,12 @@ namespace AppsTracker.Tracking
         {
             isTrackingEnabled = settings.TrackingEnabled;
             if (isTrackingEnabled)
-                appChangedNotifier.Component.CheckActiveApp();
+                appChangedNotifier.CheckActiveApp();
         }
 
         public void Dispose()
         {
-            appChangedNotifier.Enabled = false;
+            appChangedNotifier.Dispose();
             StopTracking();
             screenshotTracker.Dispose();
             workQueue.Dispose();

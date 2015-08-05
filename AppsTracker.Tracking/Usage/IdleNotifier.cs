@@ -9,6 +9,7 @@ using AppsTracker.Data.Service;
 namespace AppsTracker.Tracking
 {
     [Export(typeof(IIdleNotifier))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class IdleNotifier : IIdleNotifier
     {
         private const int TIMER_PERIOD = 1 * 1000;
@@ -57,7 +58,7 @@ namespace AppsTracker.Tracking
         private void CheckIdleState(object sender)
         {
             var idleInfo = IdleTimeWatcher.GetIdleTimeInfo();
-            if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(settingsService.Settings.IdleTimer))
+            if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(1000 * 20))
             {
                 Interlocked.Exchange(ref idleEntered, IDLE_ON);
                 idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);

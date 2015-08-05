@@ -23,19 +23,19 @@ namespace AppsTracker.Tracking
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
         private readonly IUsageProcessor usageProcessor;
-        private readonly IIdleNotifier idleNotifierInstance;
+        private readonly ExportFactory<IIdleNotifier> idleNotifierFactory;
 
         private LazyInit<IIdleNotifier> idleNotifier;
 
         private Setting settings;
 
         [ImportingConstructor]
-        public UsageTracker(IIdleNotifier idleNotifierInstance,
+        public UsageTracker(ExportFactory<IIdleNotifier> idleNotifierFactory,
                             ITrackingService trackingService,
                             IUsageProcessor usageProcessor,
                             IMediator mediator)
         {
-            this.idleNotifierInstance = idleNotifierInstance;
+            this.idleNotifierFactory = idleNotifierFactory;
             this.trackingService = trackingService;
             this.usageProcessor = usageProcessor;
             this.mediator = mediator;
@@ -46,9 +46,9 @@ namespace AppsTracker.Tracking
         {
             this.settings = settings;
 
-            idleNotifier = new LazyInit<IIdleNotifier>(() => idleNotifierInstance
-                                                        ,OnIdleNotifierInit
-                                                        ,OnIdleNotifierDispose);
+            idleNotifier = new LazyInit<IIdleNotifier>(CreateIdleNotifiier,
+                                                       OnIdleNotifierInit,
+                                                       OnIdleNotifierDispose);
 
             InitLogin();
 
@@ -74,6 +74,12 @@ namespace AppsTracker.Tracking
                 usageProcessor.EndAllUsages();
                 usageProcessor.NewUsage(UsageTypes.Stopped, trackingService.UserID, trackingService.UsageID);
             }
+        }
+
+        private IIdleNotifier CreateIdleNotifiier()
+        {
+            var context = idleNotifierFactory.CreateExport();
+            return context.Value;
         }
 
         private void OnIdleNotifierInit(IIdleNotifier notifier)
@@ -173,7 +179,6 @@ namespace AppsTracker.Tracking
 
         public void Dispose()
         {
-            idleNotifierInstance.Dispose();
             idleNotifier.Enabled = false;
             usageProcessor.EndAllUsages();
             Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;
