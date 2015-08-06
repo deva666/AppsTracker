@@ -106,10 +106,9 @@ namespace AppsTracker.Tracking
                 SwapLogs(LogInfo.Empty);
                 return;
             }
-
             var valueFactory = new Func<Object>(() => trackingService.CreateLogEntry(e.LogInfo));
             var createTask = workQueue.EnqueueWork(valueFactory);
-            createTask.ContinueWith(CreateLogContinuation, TaskScheduler.Current);
+            createTask.ContinueWith(CreateLogContinuation, TaskScheduler.FromCurrentSynchronizationContext());
             SwapLogs(e.LogInfo);
         }
 
@@ -140,6 +139,8 @@ namespace AppsTracker.Tracking
             if (isTrackingEnabled == false)
             {
                 trackingService.EndLogEntry(log);
+                if (unsavedLogInfos.ContainsKey(log.LogInfoGuid))
+                    unsavedLogInfos.Remove(log.LogInfoGuid);
                 return;
             }
 
