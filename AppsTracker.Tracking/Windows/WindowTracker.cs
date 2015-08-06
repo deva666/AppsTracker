@@ -161,6 +161,8 @@ namespace AppsTracker.Tracking
         {
             isTrackingEnabled = false;
             SwapLogs(LogInfo.Empty);
+            System.Diagnostics.Debug.Assert(unsavedLogInfos.Count <= 1, "Unsaved loginfos count > 1)");
+            System.Diagnostics.Debug.Assert(unsavedLogInfos.Count <= 1, "Created logs count > 1)");
         }
 
         private void ResumeTracking()

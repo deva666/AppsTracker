@@ -157,6 +157,7 @@ namespace AppsTracker.Tracking
                     return;
                 usageProcessor.NewUsage(UsageTypes.Locked, trackingService.UserID, trackingService.UsageID);
                 usageProcessor.UsageEnded(UsageTypes.Idle);
+                mediator.NotifyColleagues(MediatorMessages.STOP_TRACKING);
                 isTrackingEnabled = false;
             }
             else if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionUnlock)
@@ -166,6 +167,7 @@ namespace AppsTracker.Tracking
                     isTrackingEnabled = true;
                 }
                 usageProcessor.UsageEnded(UsageTypes.Locked);
+                mediator.NotifyColleagues(MediatorMessages.RESUME_TRACKING);
             }
         }
 

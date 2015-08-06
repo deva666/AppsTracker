@@ -17,7 +17,7 @@ namespace AppsTracker.Tracking.Helpers
     [Export(typeof(IScreenshotFactory))]
     internal sealed class ScreenshotFactory : IScreenshotFactory
     {
-        private Bitmap TakeScreenshot(out Size size)
+        private Bitmap CaptureScreen(out Size size)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace AppsTracker.Tracking.Helpers
             Size size;
             Screenshot screenshot;
 
-            using (Bitmap screenshotImage = TakeScreenshot(out size))
+            using (Bitmap screenshotImage = CaptureScreen(out size))
             {
                 if (screenshotImage == null)
                     return null;
