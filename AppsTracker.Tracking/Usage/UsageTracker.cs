@@ -150,11 +150,11 @@ namespace AppsTracker.Tracking
 
         private void SessionSwitch(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
         {
-            if (isTrackingEnabled == false)
-                return;
 
             if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionLock)
             {
+                if (isTrackingEnabled == false)
+                    return;
                 usageProcessor.NewUsage(UsageTypes.Locked, trackingService.UserID, trackingService.UsageID);
                 usageProcessor.UsageEnded(UsageTypes.Idle);
                 isTrackingEnabled = false;
