@@ -58,7 +58,7 @@ namespace AppsTracker.Tracking
         private void CheckIdleState(object sender)
         {
             var idleInfo = IdleTimeWatcher.GetIdleTimeInfo();
-            if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(1000 * 20))
+            if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(settingsService.Settings.IdleTimer))
             {
                 Interlocked.Exchange(ref idleEntered, IDLE_ON);
                 idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
