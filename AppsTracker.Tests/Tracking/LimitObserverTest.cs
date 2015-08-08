@@ -33,7 +33,7 @@ namespace AppsTracker.Tests.Tracking
             observer.Initialize(null);
             windowChangedNotifier.Raise(w => w.AppChanged += null, new AppChangedArgs(LogInfo.Create(appInfo, "")));
 
-            limitHandler.Verify(h => h.Handle(app.Limits.First()), Times.Once);
+            limitHandler.Verify(h => h.Handle(It.IsAny<AppLimit>()), Times.Once);
         }
 
 
