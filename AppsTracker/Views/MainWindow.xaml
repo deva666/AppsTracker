@@ -5,6 +5,7 @@
         xmlns:local="clr-namespace:AppsTracker"
         xmlns:viewModels="clr-namespace:AppsTracker.ViewModels"
         xmlns:views="clr-namespace:AppsTracker.Widgets"
+        xmlns:utils="clr-namespace:AppsTracker.Widgets.Utils"
         Title="apps tracker"
         Style="{StaticResource WindowStyleWithFade}"
         Icon="../Resources/AppsTrackerIcon.ico"
@@ -12,7 +13,7 @@
         MinWidth="600"
         ResizeMode="CanResizeWithGrip"
         MouseLeftButtonDown="Window_MouseLeftButtonDown_1"
-        Closing="Window_Closing">
+        utils:WindowClose.WindowClose="{Binding WindowClose}">
     <Window.Resources>
         <local:ConvertDateFilter x:Key="convertDateFilter" />
         <local:ConvertPageNameToVisibility x:Key="convertPageNameToVisibility" />
@@ -99,8 +100,12 @@
                        FontSize="15"
                        Margin="5,0,0,0"
                        HorizontalAlignment="Right"
-                       VerticalAlignment="Top"
-                       MouseLeftButtonDown="CloseButton_MouseLeftButtonUp_1" />
+                       VerticalAlignment="Top">
+                <TextBlock.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding CloseWindowCommand}" />
+                </TextBlock.InputBindings>
+            </TextBlock>
         </StackPanel>
 
         <Label Name="lblTitle"

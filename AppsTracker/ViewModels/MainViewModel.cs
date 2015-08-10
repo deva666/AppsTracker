@@ -18,7 +18,8 @@ using AppsTracker.Common.Communication;
 
 namespace AppsTracker.ViewModels
 {
-    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    [Export] 
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class MainViewModel : HostViewModel
     {
         private readonly IDataService dataService;

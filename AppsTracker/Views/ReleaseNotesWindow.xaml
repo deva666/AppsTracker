@@ -3,13 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:AppsTracker.Widgets"
         xmlns:local="clr-namespace:AppsTracker"
+        xmlns:utils="clr-namespace:AppsTracker.Widgets.Utils"
         Title="Release notes"
         Style="{StaticResource WindowStyleWithFade}"
         Icon="../Resources/AppsTrackerIcon.ico"
+        ShowInTaskbar="False"
         MinHeight="500"
         MinWidth="800"
         ResizeMode="CanResizeWithGrip"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        utils:WindowClose.WindowClose="{Binding WindowClose}">
     <Window.Resources>
         <local:ConvertBoolToVisibility x:Key="convertVisibility" />
         <local:ConvertNullToBool x:Key="convertNullToBool" />
@@ -101,8 +104,12 @@
                 Content="Close"
                 Width="75"
                 Margin="10,10,30,20"
-                HorizontalAlignment="Right"
-                Name="btnClose" Click="btnClose_Click"/>
+                HorizontalAlignment="Right">
+            <Button.InputBindings>
+                <MouseBinding Gesture="LeftClick"
+                              Command="{Binding CloseWindowCommand}" />
+            </Button.InputBindings>
+        </Button>
     </Grid>
 
 </Window>

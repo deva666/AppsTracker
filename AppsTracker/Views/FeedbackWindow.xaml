@@ -2,90 +2,99 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:AppsTracker.Widgets"
+        xmlns:utils="clr-namespace:AppsTracker.Widgets.Utils"
         Style="{StaticResource WindowStyleWithFade}"
         Title="Apps tracker feedback"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize"
+        ResizeMode="CanResizeWithGrip"
+        ShowInTaskbar="False"
         BorderBrush="{DynamicResource WindowBorderBrush}"
-        Height="350"
-        Width="450">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="120" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="0.4*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+        MinHeight="255"
+        Height="255"
+        Width="450"
+        utils:WindowClose.WindowClose="{Binding WindowClose}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <Label Style="{DynamicResource LabelStyle}"
-               Grid.Row="0"
-               HorizontalAlignment="Left"
-               Content="apps tracker feedback"
-               FontSize="15"
-               Margin="15,5,0,5" />
+            <Label Style="{DynamicResource LabelStyle}"
+                   Grid.Row="0"
+                   HorizontalAlignment="Left"
+                   Content="apps tracker feedback"
+                   FontSize="15"
+                   Margin="15,5,0,5" />
 
-        <Separator Grid.Row="0"
-                   VerticalAlignment="Bottom"
-                   Margin="10,0,10,0" />
-        <Label Grid.Row="1"
-               Style="{DynamicResource LabelStyle}"
-               Content="Feedback:"
-               HorizontalAlignment="Left"
-               Margin="20,10,0,0" />
+            <Separator Grid.Row="0"
+                       VerticalAlignment="Bottom"
+                       Margin="10,0,10,0" />
+            <Label Grid.Row="1"
+                   Style="{DynamicResource LabelStyle}"
+                   Content="Feedback:"
+                   HorizontalAlignment="Left"
+                   Margin="20,10,0,0" />
 
-        <TextBox Name="tbMessage"
-                 Grid.Row="2"
-                 Margin="25,5,25,00"
-                 FontSize="12"
-                 Foreground="{DynamicResource HighlightBrush}"
-                 TextWrapping="Wrap"
-                 AcceptsReturn="True"
-                 VerticalAlignment="Top"
-                 VerticalContentAlignment="Top"
-                 HorizontalContentAlignment="Left"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 Height="100"/>
+            <TextBox Name="tbMessage"
+                     Grid.Row="2"
+                     Margin="25,5,25,00"
+                     FontSize="12"
+                     Foreground="{DynamicResource HighlightBrush}"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True"
+                     VerticalAlignment="Top"
+                     VerticalContentAlignment="Top"
+                     HorizontalContentAlignment="Left"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
 
-        <Label Grid.Row="3"
-               Style="{DynamicResource LabelStyle}"
-               Content="Email:"
-               HorizontalAlignment="Left"
-               Margin="20,10,0,0" />
-        <TextBox Name="tbEmail"
-                 Grid.Row="4"
-                 Margin="25,5,25,10"
-                 FontSize="12"
-                 Foreground="{DynamicResource HighlightBrush}"
-                 TextWrapping="Wrap"
-                 AcceptsReturn="True" />
-        <StackPanel Grid.Row="5"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal">
+            <Label Grid.Row="3"
+                   Style="{DynamicResource LabelStyle}"
+                   Content="Email:"
+                   HorizontalAlignment="Left"
+                   Margin="20,10,0,0" />
+            <TextBox Name="tbEmail"
+                     Grid.Row="4"
+                     Margin="25,5,25,10"
+                     FontSize="12"
+                     Foreground="{DynamicResource HighlightBrush}"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True" />
+            <StackPanel Grid.Row="5"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
 
-            <Button Content="Send"
-                    Margin="0,20,20,20"
-                    Name="btnSend"
-                    Click="btnSend_Click">
-            </Button>
-            <Button Name="btnCancel"
-                    HorizontalAlignment="Right"
-                    Content="Cancel"
-                    Margin="0,20,45,20"
-                    Click="btnCancel_Click" />
+                <Button Content="Send"
+                        Margin="0,20,20,20"
+                        Name="btnSend"
+                        >
+                </Button>
+                <Button Name="btnCancel"
+                        HorizontalAlignment="Right"
+                        Content="Cancel"
+                        Margin="0,20,45,20">
+                    <Button.InputBindings>
+                        <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding CloseWindowCommand}" />
+                    </Button.InputBindings>
+                </Button>
 
-        </StackPanel>
+            </StackPanel>
 
-        <Grid Name="grdOverlay"
-              Grid.RowSpan="4"
-              Visibility="Collapsed">
-            <Border Background="Black"
-                    Opacity="0.35">
-                <controls:progressBar Visibility="{Binding ElementName=grdOverlay, Path=Visibility}" />
-            </Border>
+            <Grid Name="grdOverlay"
+                  Grid.RowSpan="4"
+                  Visibility="Collapsed">
+                <Border Background="Black"
+                        Opacity="0.35">
+                    <controls:progressBar Visibility="{Binding ElementName=grdOverlay, Path=Visibility}" />
+                </Border>
+            </Grid>
+
         </Grid>
-
-    </Grid>
+    </ScrollViewer>
 </Window>

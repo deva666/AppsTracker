@@ -11,6 +11,7 @@ namespace AppsTracker
 {
     [Export(typeof(IShell))]
     [ExportMetadata("ShellUse", "Main window")]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class MainWindow : Window, IShell
     {
         [ImportingConstructor]
@@ -20,62 +21,9 @@ namespace AppsTracker
             this.DataContext = mainViewModel;
             this.Loaded += (s, e) =>
             {
-                ScaleLoaded();
-                this.MaxHeight = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height + 7;
+                this.MaxHeight = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height;
             };
         }
-
-        #region Animations
-        private void ScaleLoaded()
-        {
-            var scaleX = new DoubleAnimation(0.0, 1.0, new Duration(TimeSpan.FromSeconds(0.5)));
-            var scaleY = new DoubleAnimation(0.0, 1.0, new Duration(TimeSpan.FromSeconds(0.5)));
-
-            scaleX.SetValue(Storyboard.TargetProperty, this);
-            scaleY.SetValue(Storyboard.TargetProperty, this);
-
-            var story = new Storyboard();
-            Storyboard.SetTarget(scaleX, this);
-            Storyboard.SetTarget(scaleY, this);
-            Storyboard.SetTargetProperty(scaleX, new PropertyPath("RenderTransform.ScaleX"));
-            Storyboard.SetTargetProperty(scaleY, new PropertyPath("RenderTransform.ScaleY"));
-
-            this.RenderTransformOrigin = new System.Windows.Point(0.5, 0.5);
-            story.Children.Add(scaleX);
-            story.Children.Add(scaleY);
-            story.Begin(this);
-        }
-
-        private void ScaleUnloaded()
-        {
-            var scaleX = new DoubleAnimation(1.0, 0.0, new Duration(TimeSpan.FromSeconds(0.4)));
-            var scaleY = new DoubleAnimation(1.0, 0.0, new Duration(TimeSpan.FromSeconds(0.4)));
-
-            scaleX.SetValue(Storyboard.TargetProperty, this);
-            scaleY.SetValue(Storyboard.TargetProperty, this);
-
-            var story = new Storyboard();
-            Storyboard.SetTarget(scaleX, this);
-            Storyboard.SetTarget(scaleY, this);
-            Storyboard.SetTargetProperty(scaleX, new PropertyPath("RenderTransform.ScaleX"));
-            Storyboard.SetTargetProperty(scaleY, new PropertyPath("RenderTransform.ScaleY"));
-
-            this.RenderTransformOrigin = new System.Windows.Point(0.5, 0.5);
-            story.Children.Add(scaleX);
-            story.Children.Add(scaleY);
-            story.Completed += (s, e) => { this.Close(); };
-            story.Begin(this);
-        }
-        #endregion
-
-        #region Event Handlers
-
-
-        private void Label_MouseLeftButtonDown_2(object sender, MouseButtonEventArgs e)
-        {
-            e.Handled = true;
-        }
-
 
 
         private void Window_MouseLeftButtonDown_1(object sender, MouseButtonEventArgs e)
@@ -84,11 +32,6 @@ namespace AppsTracker
                 this.DragMove();
         }
 
-        private void CloseButton_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
-        {
-            ScaleUnloaded();
-            e.Handled = true;
-        }
 
         private void MaximizeButton_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
         {
@@ -104,13 +47,6 @@ namespace AppsTracker
         {
             WindowState = System.Windows.WindowState.Normal;
         }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-        }
-
-        #endregion
-
 
 
         public object ViewArgument

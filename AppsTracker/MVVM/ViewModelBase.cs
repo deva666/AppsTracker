@@ -8,6 +8,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Windows.Input;
 using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.MVVM
@@ -35,6 +36,31 @@ namespace AppsTracker.MVVM
                 }
             }
         }
+        
+
+        private bool windowClose;
+
+        public bool WindowClose
+        {
+            get { return windowClose; }
+            set { SetPropertyValue(ref windowClose, value); }
+        }
+
+
+
+        private ICommand closeWindowCommand;
+
+        public ICommand CloseWindowCommand
+        {
+            get { return closeWindowCommand ?? (closeWindowCommand = new DelegateCommand(CloseWindow)); }
+        }
+
+
+        private void CloseWindow()
+        {
+            WindowClose = true;
+        }
+
 
 #if DEBUG
         ~ViewModelBase()

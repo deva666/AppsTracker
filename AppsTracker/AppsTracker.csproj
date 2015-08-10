@@ -328,6 +328,7 @@
     <Compile Include="Widgets\TrayIcon.cs" />
     <Compile Include="Widgets\UIHelper.cs" />
     <Compile Include="Widgets\Utils\KeyboardFocus.cs" />
+    <Compile Include="Widgets\Utils\WindowClose.cs" />
     <Compile Include="Widgets\WPFHelper.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="ViewModels\AboutWindowViewModel.cs" />

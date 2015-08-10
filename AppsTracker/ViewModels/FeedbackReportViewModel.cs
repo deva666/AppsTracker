@@ -8,7 +8,7 @@ using AppsTracker.Service.Web;
 namespace AppsTracker.ViewModels
 {
     [Export]
-    [PartCreationPolicy(CreationPolicy.Any)]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class FeedbackReportViewModel : ViewModelBase
     {
         private readonly IFeedbackReportService feedbackReportService;

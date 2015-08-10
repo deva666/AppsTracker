@@ -68,35 +68,28 @@ namespace AppsTracker.Data.Service
         private IShell GetMessageWindow()
         {
             var factory = shellFactories.Single(s => s.Metadata.ShellUse == "Message window");
-            using (var context = factory.CreateExport())
-            {
-                return context.Value;
-            }
+            return factory.CreateExport().Value;
         }
 
         public void ShowShell(string shellUse)
         {
             var factory = shellFactories.Single(s => s.Metadata.ShellUse == shellUse);
-            using (var context = factory.CreateExport())
-            {
-                var owner = mainWindow as System.Windows.Window;
-                if (owner != null)
-                    context.Value.Owner = owner;
-                context.Value.Show();
-            }
+            var context = factory.CreateExport();
+            var owner = mainWindow as System.Windows.Window;
+            if (owner != null)
+                context.Value.Owner = owner;
+            context.Value.Show();
         }
 
 
         public IShell GetShell(string shellUse)
         {
             var factory = shellFactories.Single(s => s.Metadata.ShellUse == shellUse);
-            using (var context = factory.CreateExport())
-            {
-                var owner = mainWindow as System.Windows.Window;
-                if (owner != null)
-                    context.Value.Owner = owner;
-                return context.Value;
-            }
+            var context = factory.CreateExport();
+            var owner = mainWindow as System.Windows.Window;
+            if (owner != null)
+                context.Value.Owner = owner;
+            return context.Value;
         }
 
         public System.Windows.Forms.FolderBrowserDialog CreateFolderBrowserDialog()
@@ -145,10 +138,8 @@ namespace AppsTracker.Data.Service
                 if (mainWindow == null)
                 {
                     var mainWindowFactory = shellFactories.Single(s => s.Metadata.ShellUse == "Main window");
-                    using (var context = mainWindowFactory.CreateExport())
-                    {
-                        mainWindow = context.Value;
-                    }
+                    var context = mainWindowFactory.CreateExport();
+                    mainWindow = context.Value;
                     ShowMainWindow();
                 }
                 else
@@ -192,16 +183,13 @@ namespace AppsTracker.Data.Service
         {
             if (sqlSettingsService.Settings.IsMasterPasswordSet)
             {
-                IShell passwordWindow;
                 var passwordWindowFactory = shellFactories.Single(s => s.Metadata.ShellUse == "Password window");
-                using (var context = passwordWindowFactory.CreateExport())
-                {
-                    passwordWindow = context.Value;
-                }
+                var context = passwordWindowFactory.CreateExport();
+                var passwordWindow = context.Value;
                 bool? dialog = passwordWindow.ShowDialog();
-                if (dialog.Value)
+                if (dialog.HasValue)
                 {
-                    return true;
+                    return dialog.Value;
                 }
                 return false;
             }
