@@ -17,7 +17,8 @@ using AppsTracker.Common.Communication;
 
 namespace AppsTracker.ViewModels
 {
-    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    [Export]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class ScreenshotsStatsViewModel : ViewModelBase
     {
         private readonly IStatsService statsService;
@@ -71,8 +72,8 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public ScreenshotsStatsViewModel(IStatsService statsService, 
-                                         ITrackingService trackingService, 
+        public ScreenshotsStatsViewModel(IStatsService statsService,
+                                         ITrackingService trackingService,
                                          IMediator mediator)
         {
             this.statsService = statsService;

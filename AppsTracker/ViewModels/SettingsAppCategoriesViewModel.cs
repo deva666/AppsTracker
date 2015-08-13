@@ -18,7 +18,8 @@ using AppsTracker.Common.Communication;
 
 namespace AppsTracker.ViewModels
 {
-    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    [Export] 
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class SettingsAppCategoriesViewModel : ViewModelBase
     {
         private const string SETTINGS_SAVED_MSG = "settings saved";

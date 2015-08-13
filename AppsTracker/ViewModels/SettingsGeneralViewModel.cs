@@ -16,7 +16,8 @@ using Microsoft.Win32;
 
 namespace AppsTracker.ViewModels
 {
-    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    [Export] 
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class SettingsGeneralViewModel : SettingsBaseViewModel
     {
         public override string Title

@@ -18,6 +18,7 @@ using AppsTracker.MVVM;
 namespace AppsTracker.ViewModels
 {
     [Export]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class ScreenshotViewerViewModel : ViewModelBase
     {
         public event EventHandler CloseEvent;

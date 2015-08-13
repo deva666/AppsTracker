@@ -12,7 +12,8 @@ using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
-    [Export, PartCreationPolicy(CreationPolicy.Any)]
+    [Export] 
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class SettingsHostViewModel : HostViewModel
     {
         public override string Title
