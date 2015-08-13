@@ -7,7 +7,7 @@ using AppsTracker.ViewModels;
 using AppsTracker.Views;
 using AppsTracker.Widgets;
 
-namespace AppsTracker
+namespace AppsTracker.Views
 {
     [Export(typeof(IShell))]
     [ExportMetadata("ShellUse", "Main window")]

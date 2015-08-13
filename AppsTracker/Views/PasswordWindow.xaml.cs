@@ -4,13 +4,13 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using AppsTracker.Data.Service;
-using AppsTracker.ServiceLocation;
 using AppsTracker.Widgets;
 
-namespace AppsTracker
+namespace AppsTracker.Views
 {
     [Export(typeof(IShell))]
     [ExportMetadata("ShellUse", "Password window")]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class PasswordWindow : Window, IShell
     {
         private readonly ISqlSettingsService settingsService;

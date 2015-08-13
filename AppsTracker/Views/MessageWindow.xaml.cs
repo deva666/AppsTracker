@@ -6,7 +6,7 @@ using System.Windows.Media.Animation;
 using AppsTracker.Data.Models;
 using AppsTracker.Service.Web;
 
-namespace AppsTracker.Widgets
+namespace AppsTracker.Views
 {
     [Export(typeof(IShell))]
     [ExportMetadata("ShellUse", "Message window")]
@@ -39,21 +39,6 @@ namespace AppsTracker.Widgets
         }
 
 
-        private void FadeUnloaded()
-        {
-            DoubleAnimation fadeOut = new DoubleAnimation(1.0, 0.0, new Duration(TimeSpan.FromSeconds(0.6)));
-
-            fadeOut.SetValue(Storyboard.TargetProperty, this);
-
-            Storyboard story = new Storyboard();
-            Storyboard.SetTarget(fadeOut, this);
-            Storyboard.SetTargetProperty(fadeOut, new PropertyPath("Opacity"));
-
-            story.Children.Add(fadeOut);
-            story.Completed += (s, e) => { this.Close(); };
-            story.Begin(this);
-        }
-
         private void lblOK_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -64,7 +49,7 @@ namespace AppsTracker.Widgets
             {
                 //do nothing, window not modal
             }
-            FadeUnloaded();
+            Close();
         }
 
         private void lblCancel_Click(object sender, RoutedEventArgs e)
@@ -77,7 +62,7 @@ namespace AppsTracker.Widgets
             {
                 //do nothing, window not modal
             }
-            FadeUnloaded();
+            Close();
         }
 
         private async void lblReport_Click(object sender, RoutedEventArgs e)

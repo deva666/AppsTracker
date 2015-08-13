@@ -4,7 +4,7 @@ using System.Windows.Input;
 using AppsTracker.Data.Service;
 using AppsTracker.ServiceLocation;
 
-namespace AppsTracker.Widgets
+namespace AppsTracker.Views
 {
     public partial class AppDetailsView : UserControl
     {

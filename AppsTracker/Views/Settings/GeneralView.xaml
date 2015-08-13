@@ -4,7 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:AppsTracker.Widgets"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
-             x:Class="AppsTracker.Widgets.SettingsViews.GeneralView"
+             x:Class="AppsTracker.Views.SettingsViews.GeneralView"
              xmlns:local="clr-namespace:AppsTracker"
              mc:Ignorable="d"
              d:DesignHeight="300"

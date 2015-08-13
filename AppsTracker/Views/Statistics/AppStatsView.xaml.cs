@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace AppsTracker.Widgets.Statistics
+namespace AppsTracker.Views.Statistics
 {
     public partial class AppStatsView : UserControl
     {

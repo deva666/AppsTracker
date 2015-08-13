@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace AppsTracker.Widgets
+namespace AppsTracker.Views
 {
     public partial class DataHostView : UserControl
     {

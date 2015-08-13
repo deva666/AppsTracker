@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Animation;
 using AppsTracker.Data.Models;
 using AppsTracker.ViewModels;
-using AppsTracker.Views;
+using AppsTracker.Widgets;
 
-namespace AppsTracker.Widgets
+namespace AppsTracker.Views
 {
     [Export(typeof(IShell))]
     [ExportMetadata("ShellUse", "Screenshot viewer window")]
@@ -25,55 +22,13 @@ namespace AppsTracker.Widgets
             this.viewModel.CloseEvent += viewModel_CloseEvent;
             this.DataContext = viewModel;
             this.WindowState = System.Windows.WindowState.Maximized;
-            this.Loaded += (s, e) => ScaleLoaded();
         }
 
 
         void viewModel_CloseEvent(object sender, EventArgs e)
         {
             viewModel.CloseEvent -= viewModel_CloseEvent;
-            ScaleUnloaded();
-        }
-
-        private void ScaleLoaded()
-        {
-            DoubleAnimation scaleX = new DoubleAnimation(0.3, 1.0, new Duration(TimeSpan.FromSeconds(0.5)));
-            DoubleAnimation scaleY = new DoubleAnimation(0.3, 1.0, new Duration(TimeSpan.FromSeconds(0.5)));
-
-            scaleX.SetValue(Storyboard.TargetProperty, this);
-            scaleY.SetValue(Storyboard.TargetProperty, this);
-
-            Storyboard story = new Storyboard();
-            Storyboard.SetTarget(scaleX, this);
-            Storyboard.SetTarget(scaleY, this);
-            Storyboard.SetTargetProperty(scaleX, new PropertyPath("RenderTransform.ScaleX"));
-            Storyboard.SetTargetProperty(scaleY, new PropertyPath("RenderTransform.ScaleY"));
-
-            this.RenderTransformOrigin = new System.Windows.Point(0.5, 0.5);
-            story.Children.Add(scaleX);
-            story.Children.Add(scaleY);
-            story.Begin(this);
-        }
-
-        private void ScaleUnloaded()
-        {
-            DoubleAnimation scaleX = new DoubleAnimation(1.0, 0.1, new Duration(TimeSpan.FromSeconds(0.4)));
-            DoubleAnimation scaleY = new DoubleAnimation(1.0, 0.1, new Duration(TimeSpan.FromSeconds(0.4)));
-
-            scaleX.SetValue(Storyboard.TargetProperty, this);
-            scaleY.SetValue(Storyboard.TargetProperty, this);
-
-            Storyboard story = new Storyboard();
-            Storyboard.SetTarget(scaleX, this);
-            Storyboard.SetTarget(scaleY, this);
-            Storyboard.SetTargetProperty(scaleX, new PropertyPath("RenderTransform.ScaleX"));
-            Storyboard.SetTargetProperty(scaleY, new PropertyPath("RenderTransform.ScaleY"));
-
-            this.RenderTransformOrigin = new System.Windows.Point(0.5, 0.5);
-            story.Children.Add(scaleX);
-            story.Children.Add(scaleY);
-            story.Completed += (s, e) => { this.Close(); };
-            story.Begin(this);
+            Close();
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -99,7 +54,7 @@ namespace AppsTracker.Widgets
 
         private void CloseButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ScaleUnloaded();
+            Close();
             e.Handled = true;
         }
 

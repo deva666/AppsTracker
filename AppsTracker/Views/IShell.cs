@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppsTracker.Widgets
+namespace AppsTracker.Views
 {
     public interface IShell 
     {

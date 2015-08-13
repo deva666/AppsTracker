@@ -210,7 +210,7 @@
     <Compile Include="Widgets\ArrowRight.xaml.cs">
       <DependentUpon>ArrowRight.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\DBCleanerWindow.xaml.cs">
+    <Compile Include="Views\DBCleanerWindow.xaml.cs">
       <DependentUpon>DBCleanerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Widgets\Forward.xaml.cs">
@@ -222,9 +222,6 @@
     <Compile Include="Widgets\ITrayIcon.cs" />
     <Compile Include="Widgets\KeystrokeViewer.xaml.cs">
       <DependentUpon>KeystrokeViewer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\LicenceWindow.xaml.cs">
-      <DependentUpon>LicenceWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Widgets\MeasureProvider.cs" />
     <Compile Include="Widgets\ModernButton.cs" />
@@ -307,16 +304,13 @@
     <Compile Include="Widgets\Calendar.xaml.cs">
       <DependentUpon>Calendar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EULAWindow.xaml.cs">
-      <DependentUpon>EULAWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Widgets\FaderContentControl.cs" />
     <Compile Include="Widgets\FaderLabel.cs" />
     <Compile Include="Widgets\FadingUC.xaml.cs">
       <DependentUpon>FadingUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Widgets\FilterableListView.cs" />
-    <Compile Include="Widgets\MessageWindow.xaml.cs">
+    <Compile Include="Views\MessageWindow.xaml.cs">
       <DependentUpon>MessageWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Widgets\PBAssistant.cs" />
@@ -379,7 +373,7 @@
     <Compile Include="Views\Settings\ScreenshotsView.xaml.cs">
       <DependentUpon>ScreenshotsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\PasswordWindow.xaml.cs">
+    <Compile Include="Views\PasswordWindow.xaml.cs">
       <DependentUpon>PasswordWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -440,11 +434,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\DBCleanerWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EULAWindow.xaml">
+    <Page Include="Views\DBCleanerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -464,11 +454,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\LicenceWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\MessageWindow.xaml">
+    <Page Include="Views\MessageWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -611,7 +597,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\PasswordWindow.xaml">
+    <Page Include="Views\PasswordWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

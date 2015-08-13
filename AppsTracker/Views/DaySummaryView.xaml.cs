@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using AppsTracker.Data.Service;
 using AppsTracker.ServiceLocation;
 
-namespace AppsTracker.Widgets
+namespace AppsTracker.Views
 {
     public partial class DaySummaryView : UserControl
     {

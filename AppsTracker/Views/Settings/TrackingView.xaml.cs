@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace AppsTracker.Widgets.SettingsViews
+namespace AppsTracker.Views.SettingsViews
 {
     public partial class TrackingView : UserControl
     {
