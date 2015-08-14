@@ -26,9 +26,12 @@ namespace AppsTracker.Controllers
         private readonly IWindowService windowService;
 
         [ImportingConstructor]
-        public ApplicationController(IAppearanceController appearanceController, ITrackingController trackingController,
-                                     ISqlSettingsService sqlSettingsService, IXmlSettingsService xmlSettingsService,
-                                     IDataService dataService, IWindowService windowService)
+        public ApplicationController(IAppearanceController appearanceController, 
+                                     ITrackingController trackingController,
+                                     ISqlSettingsService sqlSettingsService, 
+                                     IXmlSettingsService xmlSettingsService,
+                                     IDataService dataService, 
+                                     IWindowService windowService)
         {
             this.appearanceController = appearanceController;
             this.trackingController = trackingController;

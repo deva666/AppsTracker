@@ -1,23 +1,19 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows;
 using AppsTracker.ViewModels;
-using AppsTracker.Widgets;
 
 namespace AppsTracker.Views
 {
     [Export(typeof(IShell))]
     [ExportMetadata("ShellUse", "Release notes window")]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class ReleaseNotesWindow : Window, IShell
     {
         [ImportingConstructor]
-        public ReleaseNotesWindow(ExportFactory<ReleaseNotesViewModel> viewModelFactory)
+        public ReleaseNotesWindow(ReleaseNotesViewModel viewModel)
         {
             InitializeComponent();
-
-            using (var context = viewModelFactory.CreateExport())
-            {
-                DataContext = context.Value;
-            }
+            DataContext = viewModel;
         }
 
 
@@ -25,16 +21,6 @@ namespace AppsTracker.Views
         {
             get;
             set;
-        }
-
-        private void CloseButton_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void btnClose_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
     }
 }

@@ -23,22 +23,7 @@ namespace AppsTracker.Views
             this.settingsService = settingsService;
             this.windowService = windowService;
         }
-
-        private void FadeUnloaded()
-        {
-            DoubleAnimation fadeOut = new DoubleAnimation(1.0, 0.0, new Duration(TimeSpan.FromSeconds(0.6)));
-
-            fadeOut.SetValue(Storyboard.TargetProperty, this);
-
-            Storyboard story = new Storyboard();
-            Storyboard.SetTarget(fadeOut, this);
-            Storyboard.SetTargetProperty(fadeOut, new PropertyPath("Opacity"));
-
-            story.Children.Add(fadeOut);
-            story.Completed += (s, e) => { this.Close(); };
-            story.Begin(this);
-        }
-
+      
         private void lblOK_Click(object sender, RoutedEventArgs e)
         {
             CheckPassword();
@@ -47,7 +32,7 @@ namespace AppsTracker.Views
         private void lblCancel_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = false;
-            FadeUnloaded();
+            Close();
         }
 
         private void Window_PreviewKeyUp_1(object sender, KeyEventArgs e)
@@ -60,7 +45,7 @@ namespace AppsTracker.Views
 
             if (e.Key == Key.Escape)
             {
-                FadeUnloaded();
+                Close();
                 e.Handled = true;
             }
         }
@@ -70,7 +55,7 @@ namespace AppsTracker.Views
             if (Hashing.Hash.GetEncryptedString(pbPassword.Password) == settingsService.Settings.WindowOpen)
             {
                 this.DialogResult = true;
-                FadeUnloaded();
+                Close();
             }
             else
             {

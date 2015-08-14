@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
@@ -12,6 +13,7 @@ namespace AppsTracker.ViewModels
     public sealed class FeedbackReportViewModel : ViewModelBase
     {
         private readonly IFeedbackReportService feedbackReportService;
+        private readonly ILogger logger;
 
 
         public override string Title
@@ -60,9 +62,11 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public FeedbackReportViewModel(IFeedbackReportService _feedbackReportService)
+        public FeedbackReportViewModel(IFeedbackReportService _feedbackReportService,
+                                       ILogger _logger)
         {
             feedbackReportService = _feedbackReportService;
+            logger = _logger;
         }
 
 
@@ -75,9 +79,10 @@ namespace AppsTracker.ViewModels
             {
                 success = await feedbackReportService.SendFeedback(feedback);
             }
-            catch
+            catch (Exception ex)
             {
                 success = false;
+                logger.Log(ex);
             }
             InfoMessage = success ? "Feedback sent" : "Failed to send report. Please try again.";
             Working = false;

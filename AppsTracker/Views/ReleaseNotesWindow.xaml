@@ -43,8 +43,12 @@
                        FontSize="15"
                        Margin="5,0,0,0"
                        HorizontalAlignment="Right"
-                       VerticalAlignment="Top"
-                       MouseLeftButtonDown="CloseButton_MouseLeftButtonDown" />
+                       VerticalAlignment="Top">
+                <TextBlock.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding CloseWindowCommand}" />
+                </TextBlock.InputBindings>
+            </TextBlock>
         </StackPanel>
 
         <Separator Grid.Row="1"

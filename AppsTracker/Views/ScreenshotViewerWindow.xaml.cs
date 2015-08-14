@@ -10,6 +10,7 @@ namespace AppsTracker.Views
 {
     [Export(typeof(IShell))]
     [ExportMetadata("ShellUse", "Screenshot viewer window")]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class ScreenshotViewerWindow : System.Windows.Window, IShell
     {
         private readonly ScreenshotViewerViewModel viewModel;
@@ -19,16 +20,8 @@ namespace AppsTracker.Views
         {
             InitializeComponent();
             this.viewModel = viewModel;
-            this.viewModel.CloseEvent += viewModel_CloseEvent;
             this.DataContext = viewModel;
             this.WindowState = System.Windows.WindowState.Maximized;
-        }
-
-
-        void viewModel_CloseEvent(object sender, EventArgs e)
-        {
-            viewModel.CloseEvent -= viewModel_CloseEvent;
-            Close();
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -51,13 +44,6 @@ namespace AppsTracker.Views
         {
             WindowState = System.Windows.WindowState.Maximized;
         }
-
-        private void CloseButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Close();
-            e.Handled = true;
-        }
-
 
         public object ViewArgument
         {

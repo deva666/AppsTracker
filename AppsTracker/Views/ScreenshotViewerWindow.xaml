@@ -4,6 +4,7 @@
         xmlns:controls="clr-namespace:AppsTracker.Widgets"
         xmlns:views="clr-namespace:AppsTracker.Views"
         xmlns:local="clr-namespace:AppsTracker"
+        xmlns:utils="clr-namespace:AppsTracker.Widgets.Utils"
         Title="ScreenshotViewerWindow"
         Height="300"
         Width="300"
@@ -14,7 +15,7 @@
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         MinHeight="600"
         MinWidth="850"
-        >
+        utils:WindowClose.WindowClose="{Binding WindowClose}">
     <Window.Resources>
         <local:ConvertChildControlDimension x:Key="convertDimensions" />
     </Window.Resources>
@@ -54,15 +55,19 @@
                                HorizontalAlignment="Right"
                                VerticalAlignment="Top"
                                MouseLeftButtonDown="MaximizeButton_MouseLeftButtonDown" />
-                    <TextBlock Style="{StaticResource ControlBoxStyle}"
-                               x:Name="CloseButton"
-                               Text="r"
-                               FontFamily="Webdings"
-                               FontSize="15"
-                               Margin="5,0,0,0"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Top"
-                               MouseLeftButtonDown="CloseButton_MouseLeftButtonDown" />
+                <TextBlock Style="{StaticResource ControlBoxStyle}"
+                           x:Name="CloseButton"
+                           Text="r"
+                           FontFamily="Webdings"
+                           FontSize="15"
+                           Margin="5,0,0,0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Top">
+                    <TextBlock.InputBindings>
+                        <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding CloseWindowCommand}" />
+                    </TextBlock.InputBindings>
+                </TextBlock>
                 </StackPanel>
 
  

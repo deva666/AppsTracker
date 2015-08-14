@@ -50,7 +50,7 @@
             <Button Content="Report"
                     Margin="0,10,20,10"
                     Name="lblReport"
-                    Visibility="Visible"
+                    Visibility="Collapsed"
                     Click="lblReport_Click">
                 <Button.ToolTip>
                     <ToolTip Style="{DynamicResource ToolTipStyle}"

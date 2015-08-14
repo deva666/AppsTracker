@@ -6,12 +6,9 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Windows.Input;
-using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 
@@ -21,8 +18,6 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class ScreenshotViewerViewModel : ViewModelBase
     {
-        public event EventHandler CloseEvent;
-
         private int currentIndex;
         private int totalItemCount;
         private IEnumerable<Screenshot> screenshotCollection;
@@ -54,24 +49,15 @@ namespace AppsTracker.ViewModels
 
         public IEnumerable<Screenshot> ScreenshotCollection
         {
-            get { return screenshotCollection; }
+            get
+            {
+                return screenshotCollection;
+            }
             set
             {
                 screenshotCollection = value;
                 TotalItemCount = screenshotCollection.Count();
             }
-        }
-
-
-        public ICommand CloseCommand
-        {
-            get { return new DelegateCommand(Close); }
-        }
-
-
-        private void Close()
-        {
-            CloseEvent.InvokeSafely(this, EventArgs.Empty);
         }
     }
 }

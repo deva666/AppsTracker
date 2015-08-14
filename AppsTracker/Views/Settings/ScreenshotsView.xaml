@@ -35,7 +35,7 @@
                    Content="Screenshots"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
-                   FontFamily="Tahoma" />
+                   FontFamily="SegoeUI" />
 
             <CheckBox Name="cbScreenShots"
                       HorizontalAlignment="Center"

@@ -6,11 +6,10 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
-using AppsTracker.MVVM;
 using AppsTracker.Data.Service;
 using AppsTracker.Widgets;
-using AppsTracker.Common.Communication;
 
 namespace AppsTracker.Views
 {

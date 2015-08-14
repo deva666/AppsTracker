@@ -44,15 +44,14 @@
                    HorizontalAlignment="Left"
                    Content="Tracking settings"
                    FontSize="18"
-                   FontFamily="Tahoma"
+                   FontFamily="SegoeUI"
                    Margin="0,0,250,20" />
 
             <Label Style="{DynamicResource LabelStyle}"
                    Grid.Row="1"
                    Grid.ColumnSpan="2"
                    Content="Database cleanup"
-                   Foreground="{DynamicResource WindowForegroundBrush}"
-                   FontFamily="Tahoma"
+                   Foreground="{DynamicResource WindowForegroundBrush}"                 
                    FontSize="14"
                    Margin="0,0,0,20"
                    HorizontalAlignment="Left" />
@@ -101,13 +100,12 @@
                    Content="Idle"
                    HorizontalAlignment="Left"
                    Margin="0,25,0,5"
-                   FontFamily="Tahoma" />
+                   />
             <Label Style="{DynamicResource LabelStyle}"
                    Grid.Row="6"
                    Grid.ColumnSpan="2"
                    Content="Track user inactivity"
-                   Foreground="{DynamicResource WindowForegroundBrush}"
-                   FontFamily="Tahoma"
+                   Foreground="{DynamicResource WindowForegroundBrush}"                 
                    FontSize="14"
                    Margin="0,0,0,20"
                    HorizontalAlignment="Left" />
