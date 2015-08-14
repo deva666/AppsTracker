@@ -5,7 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using AppsTracker.ViewModels;
 
-namespace AppsTracker.Widgets
+namespace AppsTracker.Views
 {
     [Export(typeof(IShell))]
     [ExportMetadata("ShellUse", "About window")]
