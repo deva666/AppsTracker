@@ -411,11 +411,11 @@
         <ControlTemplate.Triggers>
             <Trigger Property="ToggleButton.IsMouseOver"
                      Value="True">
-       
+
                 <!--Setter TargetName="Arrow"
                         Property="Fill"
                         Value="{DynamicResource WindowBorderBrush}" /-->
-          
+
                 <Setter TargetName="Border"
                         Property="BorderBrush"
                         Value="{DynamicResource WindowBorderBrush}" />
@@ -457,16 +457,16 @@
     <Style x:Key="ListBoxItemStyle"
            TargetType="ListBoxItem">
         <Style.Resources>
-      
+
             <!--SelectedItem with focus-->
-      
+
             <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
                              Color="{DynamicResource 2ndBackgroundColor}" />
             <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
                              Color="White" />
-    
+
             <!--SelectedItem without focus-->
-    
+
             <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
                              Color="{DynamicResource 2ndBackgroundColor}" />
             <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
@@ -480,15 +480,15 @@
     <Style x:Key="ListBoxItemStyleNoHL"
            TargetType="ListBoxItem">
         <Style.Resources>
-       
+
             <!--SelectedItem with focus-->
             <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
                              Color="Transparent" />
             <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
                              Color="WhiteSmoke" />
-     
+
             <!--SelectedItem without focus-->
-  
+
             <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
                              Color="Transparent" />
             <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
@@ -527,9 +527,8 @@
                                 Margin="0">
 
                         </Border>
-                        <ScrollViewer VerticalAlignment="Center"
-                                      Margin="2,0,0,0"
-                                      x:Name="PART_ContentHost" />
+                        <ScrollViewer                                       Margin="2,3,0,0"
+                                                                            x:Name="PART_ContentHost" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver"

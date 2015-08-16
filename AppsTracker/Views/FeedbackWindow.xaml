@@ -10,8 +10,8 @@
         ResizeMode="NoResize"
         ShowInTaskbar="False"
         BorderBrush="{DynamicResource WindowBorderBrush}"
-        MinHeight="310"
-        Height="310"
+        MinHeight="320"
+        Height="320"
         Width="440"
         utils:WindowClose.WindowClose="{Binding WindowClose}">
     <Window.Resources>
@@ -51,15 +51,13 @@
                          Margin="25,5,25,00"
                          FontSize="12"
                          Foreground="{DynamicResource HighlightBrush}"
+                         AcceptsReturn="True"
                          TextWrapping="Wrap"
-                         AcceptsReturn="True"                         
                          MinHeight="80"
                          HorizontalAlignment="Stretch"
-                         VerticalAlignment="Top"
                          VerticalContentAlignment="Top"
-                         HorizontalContentAlignment="Left"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+                         VerticalAlignment="Top"
+                         TextAlignment="Left" />
 
                 <Label Grid.Row="3"
                        Style="{DynamicResource LabelStyle}"
@@ -80,10 +78,12 @@
                        Content="{Binding InfoMessage}" />
                 <StackPanel Grid.Row="6"
                             HorizontalAlignment="Right"
-                            Orientation="Horizontal">
+                            Orientation="Horizontal"
+                            Margin="0,20,0,0">
 
                     <Button Content="Send"
-                            Margin="0,20,20,20">
+                            Margin="0,0,20,0"
+                            VerticalAlignment="Bottom">
                         <Button.InputBindings>
                             <MouseBinding Gesture="LeftClick"
                                           Command="{Binding SendFeedbackCommand}" />
@@ -91,8 +91,9 @@
                     </Button>
                     <Button Name="btnCancel"
                             HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
                             Content="Cancel"
-                            Margin="0,20,45,20">
+                            Margin="0,0,45,0">
                         <Button.InputBindings>
                             <MouseBinding Gesture="LeftClick"
                                           Command="{Binding CloseWindowCommand}" />
