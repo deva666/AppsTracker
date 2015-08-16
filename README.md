@@ -1,5 +1,3 @@
-apps tracker
-by Marko Devcic, madevcic@gmail.com
-Copyright Marko Devcic
+# Apps tracker #
 
-Licence : http://creativecommons.org/licenses/by-nc-nd/4.0/
+Activity tracking app for Windows, more info [here](http://www.theappstracker.com/).
