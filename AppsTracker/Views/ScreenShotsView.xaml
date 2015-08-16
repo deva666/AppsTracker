@@ -211,30 +211,18 @@
         <Thumb Grid.Row="2"
                Background="Transparent"
                DragDelta="Thumb_DragDelta_1"
-               Margin="10,0,10,0">
+               Margin="10,0,10,0"
+               Cursor="SizeNS">
             <Thumb.Template>
                 <ControlTemplate>
-                    <Grid Cursor="SizeNS"
-                          Background="{DynamicResource WindowBorderBrush}"
-                          Margin="0"
-                          Height="20">
-                        <Grid.Effect>
-                            <DropShadowEffect />
-                        </Grid.Effect>
-
-                    </Grid>
+                    <Border BorderThickness="1.5"
+                            BorderBrush="{StaticResource 2ndBackgroundBrush}">
+                    </Border>
                 </ControlTemplate>
             </Thumb.Template>
 
         </Thumb>
-        <Label Style="{DynamicResource LabelStyle}"
-               Content="Screenshots"
-               Foreground="White"
-               Grid.Row="2"
-               Margin="0"
-               FontSize="16"
-               IsHitTestVisible="False" />
-
+       
         <controls:FaderContentControl FadeVertically="True"
                                       Visibility="{Binding ElementName=mainContentHolder, Path=SelectedIndex, Converter={StaticResource convertIntToVisBack}}"
                                       Grid.Row="3"
