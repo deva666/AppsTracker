@@ -18,6 +18,7 @@ namespace AppsTracker.Tests.Core.ViewModels
         public void Initialize()
         {
             feedbackServiceMock = new Mock<IFeedbackReportService>();
+            loggerMock = new Mock<ILogger>();
             feedbackServiceMock.Setup(f => f.SendFeedback(It.IsAny<Feedback>()))
                 .Returns(() => Task.FromResult(true));
         }
