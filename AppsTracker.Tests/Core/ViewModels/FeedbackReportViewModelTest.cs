@@ -12,6 +12,7 @@ namespace AppsTracker.Tests.Core.ViewModels
     public class FeedbackReportViewModelTest
     {
         private Mock<IFeedbackReportService> feedbackServiceMock;
+        private Mock<ILogger> loggerMock;
 
         [TestInitialize]
         public void Initialize()
@@ -25,7 +26,7 @@ namespace AppsTracker.Tests.Core.ViewModels
         [TestMethod]
         public void TestSendFeedback()
         {
-            var viewModel = new FeedbackReportViewModel(feedbackServiceMock.Object);
+            var viewModel = new FeedbackReportViewModel(feedbackServiceMock.Object, loggerMock.Object);
             viewModel.SendFeedbackCommand.Execute(null);
             feedbackServiceMock.Verify(f => f.SendFeedback(It.IsAny<Feedback>()));
             Assert.AreEqual(viewModel.InfoMessage, "Feedback sent");
