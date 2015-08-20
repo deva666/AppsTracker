@@ -222,7 +222,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public async Task EndLogEntry(LogInfo logInfo)
+        public async Task EndLogEntryAsync(LogInfo logInfo)
         {
             using (var context = new AppsEntities())
             {
@@ -249,7 +249,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public async Task EndLogEntry(Log log)
+        public async Task EndLogEntryAsync(Log log)
         {
             using (var context = new AppsEntities())
             {
@@ -261,6 +261,48 @@ namespace AppsTracker.Data.Service
                 log.Finish();
                 context.Entry(log).State = EntityState.Modified;
                 await context.SaveChangesAsync();
+            }
+        }
+
+        public void EndLogEntry(LogInfo logInfo)
+        {
+            using (var context = new AppsEntities())
+            {
+                var log = logInfo.Log;
+                context.Logs.Attach(log);
+                if (log.Window != null)
+                    context.Windows.Attach(log.Window);
+                if (log.Window != null && log.Window.Application != null)
+                    context.Applications.Attach(log.Window.Application);
+                log.Finish();
+
+                if (logInfo.HasScreenshots)
+                {
+                    foreach (var screenshot in logInfo.Screenshots)
+                    {
+                        screenshot.LogID = log.LogID;
+                    }
+                    context.Screenshots.AddRange(logInfo.Screenshots);
+                }
+
+                context.Entry(log).State = EntityState.Modified;
+
+                context.SaveChanges();
+            }
+        }
+
+        public void EndLogEntry(Log log)
+        {
+            using (var context = new AppsEntities())
+            {
+                context.Logs.Attach(log);
+                if (log.Window != null)
+                    context.Windows.Attach(log.Window);
+                if (log.Window != null && log.Window.Application != null)
+                    context.Applications.Attach(log.Window.Application);
+                log.Finish();
+                context.Entry(log).State = EntityState.Modified;
+                context.SaveChanges();
             }
         }
 

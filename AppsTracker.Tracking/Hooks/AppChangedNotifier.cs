@@ -39,11 +39,11 @@ namespace AppsTracker.Tracking.Hooks
 
         private void OnActiveWindowChanged(object sender, WinChangedArgs e)
         {
-            if (activeWindowHandle == e.Handle)
-                return;
+            //if (activeWindowHandle == e.Handle)
+            //    return;
 
-            if (activeWindowTitle == e.Title)
-                return;
+            //if (activeWindowTitle == e.Title)
+            //    return;
 
             activeWindowHandle = e.Handle;
             activeWindowTitle = e.Title;

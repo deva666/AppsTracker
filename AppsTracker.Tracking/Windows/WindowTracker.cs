@@ -120,9 +120,10 @@ namespace AppsTracker.Tracking
                 Log log;
                 if (createdLogs.TryGetValue(activeLogInfo.Guid, out log))
                 {
+                    var logCopy = activeLogInfo;
                     createdLogs.Remove(activeLogInfo.Guid);
-                    activeLogInfo.Log = log;
-                    trackingService.EndLogEntry(activeLogInfo);
+                    logCopy.Log = log;
+                    workQueue.EnqueueWork(() => trackingService.EndLogEntry(logCopy));
                 }
                 else
                 {
@@ -132,13 +133,14 @@ namespace AppsTracker.Tracking
             activeLogInfo = logInfo;
         }
 
+
         private void CreateLogContinuation(Task<Object> task)
         {
             var log = (Log)task.Result;
 
             if (isTrackingEnabled == false)
             {
-                trackingService.EndLogEntry(log);
+                workQueue.EnqueueWork(() => trackingService.EndLogEntryAsync(log));
                 if (unsavedLogInfos.ContainsKey(log.LogInfoGuid))
                     unsavedLogInfos.Remove(log.LogInfoGuid);
                 return;
@@ -149,7 +151,7 @@ namespace AppsTracker.Tracking
             {
                 unsavedLogInfos.Remove(log.LogInfoGuid);
                 loginfo.Log = log;
-                trackingService.EndLogEntry(loginfo);
+                workQueue.EnqueueWork(() => trackingService.EndLogEntry(loginfo));
             }
             else
             {

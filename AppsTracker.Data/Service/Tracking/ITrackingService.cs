@@ -35,9 +35,13 @@ namespace AppsTracker.Data.Service
 
         Log CreateLogEntry(LogInfo logInfo);
 
-        Task EndLogEntry(LogInfo logInfo);
+        Task EndLogEntryAsync(LogInfo logInfo);
 
-        Task EndLogEntry(Log log);
+        Task EndLogEntryAsync(Log log);
+
+        void EndLogEntry(LogInfo logInfo);
+
+        void EndLogEntry(Log log);
 
         Aplication GetApp(AppInfo appInfo, Int32 userId = default(Int32));
 
