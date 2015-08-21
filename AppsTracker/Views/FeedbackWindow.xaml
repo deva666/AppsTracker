@@ -57,7 +57,8 @@
                          HorizontalAlignment="Stretch"
                          VerticalContentAlignment="Top"
                          VerticalAlignment="Top"
-                         TextAlignment="Left" />
+                         TextAlignment="Left" 
+                         Text="{Binding FeedbackText}"/>
 
                 <Label Grid.Row="3"
                        Style="{DynamicResource LabelStyle}"
@@ -71,7 +72,9 @@
                          Foreground="{DynamicResource HighlightBrush}"
                          TextWrapping="Wrap"
                          AcceptsReturn="True"                          
-                         HorizontalAlignment="Stretch"/>
+                         HorizontalAlignment="Stretch"
+                         Text="{Binding Email}"/>
+                
                 <Label Style="{DynamicResource LabelStyle}"
                        Grid.Row="5"
                        HorizontalAlignment="Center"

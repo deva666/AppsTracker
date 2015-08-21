@@ -86,6 +86,12 @@ namespace AppsTracker.ViewModels
             }
             InfoMessage = success ? "Feedback sent" : "Failed to send report. Please try again.";
             Working = false;
+
+            if (success)
+            {
+                await Task.Delay(1000);
+                WindowClose = true;
+            }
         }
     }
 }
