@@ -1,0 +1,62 @@
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.DAL.AppsDBConfiguration: type is not visible to exported or assembly(AppsTracker.DAL.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.Data.Models.ScreenShotInterval: type is a value type.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.Data.Models.EmailInterval: type is a value type.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.Data.Models.UsageTypes: type is a value type.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.DAL.Service.AppsService: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.DAL.Service.ServiceFactory: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.DAL.Service.SqlSettingsService: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for AppsTracker.DAL.Service.XmlSettingsService: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for <>f__AnonymousType0`3: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for <>f__AnonymousType1`2: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for <>f__AnonymousType2`4: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate stub for <>f__AnonymousType3`3: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.AppsDBConfiguration: type is not visible to exported or assembly(AppsTracker.DAL.Fakes).
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.Data.Models.ScreenShotInterval: type is an enum.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.Data.Models.EmailInterval: type is an enum.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.Data.Models.UsageTypes: type is an enum.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.IBaseService: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.IAppsService: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.AppsService+<>c__DisplayClass0: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.AppsService+<>c__DisplayClass2: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.AppsService+<>c__DisplayClass4: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.AppsService+<>c__DisplayClass6: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.AppsService+<>c__DisplayClass8: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.AppsService+<>c__DisplayClasse: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.IChartService: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass113: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass115: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass117: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass11d: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass11f: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass16: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass18: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass2d: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass33: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass41: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass4f: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass51: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass5f: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass61: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass6f: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass71: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass8e: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass97: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClass9c: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClassa6: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClassb1: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClassbe: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClassc9: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClassdc: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClasse1: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClassea: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClassf5: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClassfd: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ChartService+<>c__DisplayClassff: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.ISqlSettingsService: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.IXmlSettingsService: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.SqlSettingsService+<>c__DisplayClass1: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for AppsTracker.DAL.Service.SqlSettingsService+<SaveChangesAsync>d__3: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for <>f__AnonymousType0`3: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for <>f__AnonymousType1`2: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for <>f__AnonymousType2`4: type is not supported because of internal limitations.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.DAL.fakes : warning : Cannot generate shim for <>f__AnonymousType3`3: type is not supported because of internal limitations.

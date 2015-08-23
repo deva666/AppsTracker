@@ -1,0 +1,16 @@
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.Models.fakes : warning : Cannot generate stub for AppsTracker.Models.EntityModels.ScreenShotInterval: type is a value type.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.Models.fakes : warning : Cannot generate stub for AppsTracker.Models.EntityModels.EmailInterval: type is a value type.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.Models.fakes : warning : Cannot generate stub for AppsTracker.Models.EntityModels.UsageTypes: type is a value type.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.Models.fakes : warning : Cannot generate stub for AppsTracker.Models.Proxy.AppInfo: type has no family visible contructors.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.Models.fakes : warning : Cannot generate stub for AppsTracker.Models.Proxy.DummySettings: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.Models.fakes : warning : Cannot generate stub for AppsTracker.Models.Utils.Extensions: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.Models.fakes : warning : Cannot generate stub for AppsTracker.Models.XmlSettings.DaysViewSettings: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.Models.fakes : warning : Cannot generate stub for AppsTracker.Models.XmlSettings.KeylogsViewSettings: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.Models.fakes : warning : Cannot generate stub for AppsTracker.Models.XmlSettings.LogsViewSettings: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.Models.fakes : warning : Cannot generate stub for AppsTracker.Models.XmlSettings.ScreenshotsViewSettings: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.Models.fakes : warning : Cannot generate stub for AppsTracker.Models.XmlSettings.SettingsNodeAttribute: type is sealed.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.Models.fakes : warning : Cannot generate shim for AppsTracker.Models.EntityModels.ScreenShotInterval: type is an enum.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.Models.fakes : warning : Cannot generate shim for AppsTracker.Models.EntityModels.EmailInterval: type is an enum.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.Models.fakes : warning : Cannot generate shim for AppsTracker.Models.Proxy.ISettings: type is an interface.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.Models.fakes : warning : Cannot generate shim for AppsTracker.Models.EntityModels.UsageTypes: type is an enum.
+F:\Repos\AppsTracker\AppsTracker.Tests\Fakes\AppsTracker.Models.fakes : warning : Cannot generate shim for AppsTracker.Models.Proxy.IAppInfo: type is an interface.
