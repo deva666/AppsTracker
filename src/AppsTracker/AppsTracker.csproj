@@ -641,9 +641,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="wix.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -679,9 +676,6 @@
     <Resource Include="Resources\icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="EULA.rtf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Resources\icon1.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -695,9 +689,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="De.TorstenMandelkow.MetroChart.dll" />
-    <None Include="installer.wxs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Resource Include="Resources\down.png" />
   </ItemGroup>
   <ItemGroup>
