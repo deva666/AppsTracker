@@ -149,20 +149,18 @@ namespace AppsTracker.Tracking
                 var limits = appLimitsMap[app];
                 var dailyLimit = limits.FirstOrDefault(l => l.LimitSpan == LimitSpan.Day);
                 var weeklyLimit = limits.FirstOrDefault(l => l.LimitSpan == LimitSpan.Week);
-
-                var scheduler = TaskScheduler.Current;
-
+                
                 if (dailyLimit != null)
                 {
                     var dayDurationTask = GetDayDurationAsync(app);
                     dayDurationTask.ContinueWith(GetAppDurationContinuation, dailyLimit, CancellationToken.None,
-                        TaskContinuationOptions.OnlyOnRanToCompletion, scheduler);
+                        TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
                 }
                 if (weeklyLimit != null)
                 {
                     var weekDurationTask = GetWeekDurationAsync(app);
                     weekDurationTask.ContinueWith(GetAppDurationContinuation, weeklyLimit, CancellationToken.None,
-                        TaskContinuationOptions.OnlyOnRanToCompletion, scheduler);
+                        TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
                 }
             }
         }
