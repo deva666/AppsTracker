@@ -72,7 +72,7 @@ namespace AppsTracker.Tracking
             else
             {
                 usageProcessor.EndAllUsages();
-                usageProcessor.NewUsage(UsageTypes.Stopped, trackingService.UserID, trackingService.UsageID);
+                usageProcessor.NewUsage(UsageTypes.Stopped);
             }
         }
 
@@ -123,7 +123,7 @@ namespace AppsTracker.Tracking
             if (isTrackingEnabled == false)
                 return;
 
-            usageProcessor.NewUsage(UsageTypes.Idle, trackingService.UserID, trackingService.UsageID);
+            usageProcessor.NewUsage(UsageTypes.Idle);
             mediator.NotifyColleagues(MediatorMessages.STOP_TRACKING);
         }
 
@@ -155,7 +155,7 @@ namespace AppsTracker.Tracking
             {
                 if (isTrackingEnabled == false)
                     return;
-                usageProcessor.NewUsage(UsageTypes.Locked, trackingService.UserID, trackingService.UsageID);
+                usageProcessor.NewUsage(UsageTypes.Locked);
                 usageProcessor.UsageEnded(UsageTypes.Idle);
                 mediator.NotifyColleagues(MediatorMessages.STOP_TRACKING);
                 isTrackingEnabled = false;
