@@ -36,6 +36,7 @@ namespace AppsTracker.Tracking
 
         private Int32 activeAppId;
         private AppInfo activeAppInfo;
+        private String activeWindowTitle;
 
         [ImportingConstructor]
         public LimitObserver(ITrackingService trackingService,
@@ -121,11 +122,12 @@ namespace AppsTracker.Tracking
 
         private async void OnAppChanged(object sender, AppChangedArgs e)
         {
-            if (activeAppInfo == e.LogInfo.AppInfo
+            if ((activeAppInfo == e.LogInfo.AppInfo && activeWindowTitle == e.LogInfo.WindowTitle)
                 || appLimitsMap.Count == 0)
                 return;
 
             activeAppInfo = e.LogInfo.AppInfo;
+            activeWindowTitle = e.LogInfo.WindowTitle;
             StopTimers();
             currentDayLimit = currentWeekLimit = null;
             var valueFactory = new Func<Object>(() => trackingService.GetApp(e.LogInfo.AppInfo));
@@ -152,24 +154,25 @@ namespace AppsTracker.Tracking
                 
                 if (dailyLimit != null)
                 {
-                    var dayDurationTask = GetDayDurationAsync(app);
-                    dayDurationTask.ContinueWith(GetAppDurationContinuation, dailyLimit, CancellationToken.None,
-                        TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
+                    var dayDurationTask = workQueue.EnqueueWork(() => trackingService.GetDayDuration(app));
+                    dayDurationTask.ContinueWith(GetAppDurationContinuation, dailyLimit, 
+                        TaskContinuationOptions.OnlyOnRanToCompletion);
                 }
                 if (weeklyLimit != null)
                 {
-                    var weekDurationTask = GetWeekDurationAsync(app);
-                    weekDurationTask.ContinueWith(GetAppDurationContinuation, weeklyLimit, CancellationToken.None,
-                        TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
+                    var weekDurationTask = workQueue.EnqueueWork(() => trackingService.GetWeekDuration(app));
+                    weekDurationTask.ContinueWith(GetAppDurationContinuation, weeklyLimit, 
+                        TaskContinuationOptions.OnlyOnRanToCompletion);
                 }
             }
         }
 
-        private void GetAppDurationContinuation(Task<long> task, object state)
+        private void GetAppDurationContinuation(Task<Object> task, object state)
         {
             var appLimit = (AppLimit)state;
-
-            if (task.Result >= appLimit.Limit)
+            var duration = (Int64)task.Result;
+ 
+            if (duration >= appLimit.Limit)
             {
                 limitHandler.Handle(appLimit);
             }
@@ -183,28 +186,15 @@ namespace AppsTracker.Tracking
                 {
                     case LimitSpan.Day:
                         Volatile.Write(ref currentDayLimit, appLimit);
-                        dayTimer.Change(new TimeSpan((appLimit.Limit - task.Result)), Timeout.InfiniteTimeSpan);
+                        dayTimer.Change(new TimeSpan((appLimit.Limit - duration)), Timeout.InfiniteTimeSpan);
                         break;
                     case LimitSpan.Week:
                         Volatile.Write(ref currentWeekLimit, appLimit);
-                        weekTimer.Change(new TimeSpan((appLimit.Limit - task.Result)), Timeout.InfiniteTimeSpan);
+                        weekTimer.Change(new TimeSpan((appLimit.Limit - duration)), Timeout.InfiniteTimeSpan);
                         break;
                 }
             }
-        }
-
-
-        private Task<long> GetDayDurationAsync(Aplication app)
-        {
-            return Task.Run(() => trackingService.GetDayDuration(app));
-        }
-
-
-        private Task<long> GetWeekDurationAsync(Aplication app)
-        {
-            return Task.Run(() => trackingService.GetWeekDuration(app));
-        }
-
+        }      
 
         public void Dispose()
         {
