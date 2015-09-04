@@ -10,6 +10,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Reflection;
 using System.Windows.Input;
+using AppsTracker.Common.Logging;
 using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels

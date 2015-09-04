@@ -96,7 +96,8 @@ namespace AppsTracker.Tests.Tracking
                                      midnightNotifier.Object,
                                      limitHandler.Object,
                                      mediator,
-                                     new WorkQueueMock());
+                                     new WorkQueueMock(),
+                                     syncContext);
         }
 
         private Aplication CreateAppDailyLimit(int limitAmount)

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using AppsTracker.Common.Logging;
 using AppsTracker.Data.Models;
 using AppsTracker.Service.Web;
 using AppsTracker.ViewModels;

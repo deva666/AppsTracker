@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
 using AppsTracker.Common.Communication;
+using AppsTracker.Common.Logging;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
@@ -13,13 +15,16 @@ namespace AppsTracker.Tracking.Helpers
     {
         private readonly IMediator mediator;
         private readonly IXmlSettingsService xmlSettingsService;
+        private readonly ILogger logger;
 
         [ImportingConstructor]
         public LimitHandler(IMediator mediator,
-                            IXmlSettingsService xmlSettingsService)
+                            IXmlSettingsService xmlSettingsService,
+                            ILogger logger)
         {
             this.mediator = mediator;
             this.xmlSettingsService = xmlSettingsService;
+            this.logger = logger;
         }
 
 
@@ -62,8 +67,9 @@ namespace AppsTracker.Tracking.Helpers
                     proc.Kill();
                 }
             }
-            catch
+            catch (Exception fail)
             {
+                logger.Log(fail);
             }
         }
     }

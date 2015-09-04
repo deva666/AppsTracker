@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using AppsTracker.Common.Logging;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 using AppsTracker.Service.Web;

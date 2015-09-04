@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AppsTracker
+namespace AppsTracker.Common.Logging
 {
     public interface ILogger
     {

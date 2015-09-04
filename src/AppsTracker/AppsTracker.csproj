@@ -259,7 +259,6 @@
       <DependentUpon>ScreenshotViewerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Widgets\ScrollingContentControl.cs" />
-    <Compile Include="ErrorLogging\ILogger.cs" />
     <Compile Include="MVVM\AsyncProperty.cs" />
     <Compile Include="MVVM\DelegateCommandAsync.cs" />
     <Compile Include="MVVM\HostViewModel.cs" />
@@ -330,7 +329,6 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="MVVM\ObservableObject.cs" />
     <Compile Include="MVVM\ViewModelBase.cs" />
-    <Compile Include="ErrorLogging\Logger.cs" />
     <Compile Include="ViewModels\AppDetailsViewModel.cs" />
     <Compile Include="ViewModels\ScreenshotsViewModel.cs" />
     <Compile Include="ViewModels\SettingsHostViewModel.cs" />
