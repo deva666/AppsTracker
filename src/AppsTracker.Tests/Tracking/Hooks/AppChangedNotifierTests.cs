@@ -23,21 +23,6 @@ namespace AppsTracker.Tracking.Hooks.Tests
         }
 
         [TestMethod()]
-        public void WinChangedEventNotRaisedTest()
-        {
-            var winChanged = new Mock<IWinChanged>();
-            var titleChanged = new Mock<ITitleChanged>();
-            var notifier = new AppChangedNotifier(winChanged.Object, titleChanged.Object);
-            var eventRaised = false;
-
-            notifier.AppChanged += (s, e) => eventRaised = true;
-
-            winChanged.Raise(w => w.ActiveWindowChanged += null,
-                new WinChangedArgs("title", default(IntPtr)));
-            Assert.IsFalse(eventRaised, "app changed event should not be raised if event window handle is same as active handle");
-        }
-
-        [TestMethod()]
         public void TitleChangedEventNotRaisedTest()
         {
             var winChanged = new Mock<IWinChanged>();

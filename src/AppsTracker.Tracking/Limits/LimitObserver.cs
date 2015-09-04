@@ -153,9 +153,9 @@ namespace AppsTracker.Tracking
             }
 
             activeAppId = app.ApplicationID;
-            if (appLimitsMap.ContainsKey(app))
+            IEnumerable<AppLimit> limits;
+            if (appLimitsMap.TryGetValue(app, out limits))
             {
-                var limits = appLimitsMap[app];
                 var dailyLimit = limits.FirstOrDefault(l => l.LimitSpan == LimitSpan.Day);
                 var weeklyLimit = limits.FirstOrDefault(l => l.LimitSpan == LimitSpan.Week);
 
