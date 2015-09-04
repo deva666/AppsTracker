@@ -81,16 +81,11 @@ namespace AppsTracker
 
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            try
-            {
-                var fail = (Exception)e.ExceptionObject;
-                container.GetExportedValue<ILogger>().Log(fail);
-                container.GetExportedValue<IWindowService>().ShowMessageDialog(fail);
-            }
-            finally
-            {
-                ShutdownApp();
-            }
+            var fail = (Exception)e.ExceptionObject;
+            container.GetExportedValue<ILogger>().Log(fail);
+            container.GetExportedValue<IWindowService>().ShowMessageDialog(fail);
+
+            ShutdownApp();
         }
 
 

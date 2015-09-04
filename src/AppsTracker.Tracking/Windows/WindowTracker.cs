@@ -108,7 +108,7 @@ namespace AppsTracker.Tracking
             }
             var valueFactory = new Func<Object>(() => trackingService.CreateLogEntry(e.LogInfo));
             var createTask = workQueue.EnqueueWork(valueFactory);
-            createTask.ContinueWith(CreateLogContinuation, TaskScheduler.FromCurrentSynchronizationContext());
+            createTask.ContinueWith(OnLogCreated, TaskScheduler.FromCurrentSynchronizationContext());
             SwapLogs(e.LogInfo);
         }
 
@@ -134,7 +134,7 @@ namespace AppsTracker.Tracking
         }
 
 
-        private void CreateLogContinuation(Task<Object> task)
+        private void OnLogCreated(Task<Object> task)
         {
             var log = (Log)task.Result;
 

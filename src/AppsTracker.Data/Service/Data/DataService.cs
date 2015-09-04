@@ -97,27 +97,6 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public async Task SaveNewEntityAsync<T>(T item) where T : class
-        {
-            using (var context = new AppsEntities())
-            {
-                context.Set<T>().Add(item);
-                await context.SaveChangesAsync();
-            }
-        }
-
-        public void SaveModifiedEntityRange<T>(IEnumerable<T> items) where T : class
-        {
-            using (var context = new AppsEntities())
-            {
-                foreach (var item in items)
-                {
-                    context.Entry(item).State = EntityState.Modified;
-                }
-                context.SaveChanges();
-            }
-        }
-
         public async Task SaveModifiedEntityRangeAsync<T>(IEnumerable<T> items) where T : class
         {
             using (var context = new AppsEntities())
@@ -130,15 +109,6 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public void SaveNewEntityRange<T>(IEnumerable<T> items) where T : class
-        {
-            using (var context = new AppsEntities())
-            {
-                context.Set<T>().AddRange(items);
-                context.SaveChanges();
-            }
-        }
-
         public async Task SaveNewEntityRangeAsync<T>(IEnumerable<T> items) where T : class
         {
             using (var context = new AppsEntities())
@@ -147,20 +117,6 @@ namespace AppsTracker.Data.Service
                 await context.SaveChangesAsync();
             }
         }
-
-
-        public void DeleteEntityRange<T>(IEnumerable<T> range) where T : class
-        {
-            using (var context  = new AppsEntities())
-            {
-                foreach (var item in range)
-                {
-                    context.Entry<T>(item).State = EntityState.Deleted;
-                }
-                context.SaveChanges();
-            }
-        }
-
 
         public async Task DeleteEntityRangeAsync<T>(IEnumerable<T> range) where T : class
         {
@@ -173,27 +129,6 @@ namespace AppsTracker.Data.Service
                 await context.SaveChangesAsync();
             }
         }
-
-        public async Task DeleteScreenshotsInLogs(IEnumerable<Log> logs)
-        {
-            var count = logs.Select(l => l.Screenshots).Count();
-            using (var context = new AppsEntities())
-            {
-                foreach (var log in logs)
-                {
-                    foreach (var screenshot in log.Screenshots.ToList())
-                    {
-                        if (!context.Screenshots.Local.Any(s => s.ScreenshotID == screenshot.ScreenshotID))
-                        {
-                            context.Screenshots.Attach(screenshot);
-                        }
-                        context.Screenshots.Remove(screenshot);
-                    }
-                }
-                await context.SaveChangesAsync();
-            }
-        }
-
 
         public async Task DeleteScreenshots(IEnumerable<Screenshot> screenshots)
         {

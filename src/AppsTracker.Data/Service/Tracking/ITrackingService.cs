@@ -29,23 +29,13 @@ namespace AppsTracker.Data.Service
 
         void ClearDateFilter();
 
-        Log CreateNewLog(string windowTitle, int usageID, int userID, AppInfo appInfo, out bool newApp);
-
-        Task<Log> CreateLogEntryAsync(LogInfo logInfo);
-
         Log CreateLogEntry(LogInfo logInfo);
-
-        Task EndLogEntryAsync(LogInfo logInfo);
 
         Task EndLogEntryAsync(Log log);
 
         void EndLogEntry(LogInfo logInfo);
 
-        void EndLogEntry(Log log);
-
         Aplication GetApp(AppInfo appInfo, Int32 userId = default(Int32));
-
-        Task<Aplication> GetAppAsync(AppInfo appInfo, Int32 userId = default(Int32));
 
         Usage LoginUser(int userID);
 
