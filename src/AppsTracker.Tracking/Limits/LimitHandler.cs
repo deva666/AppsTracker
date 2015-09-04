@@ -1,27 +1,23 @@
 ﻿using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
-using AppsTracker.Common.Utils;
 using AppsTracker.Common.Communication;
+using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
-using AppsTracker.Communication;
 
 namespace AppsTracker.Tracking.Helpers
 {
     [Export(typeof(ILimitHandler))]
     internal sealed class LimitHandler : ILimitHandler
     {
-        private readonly ISyncContext syncContext;
         private readonly IMediator mediator;
         private readonly IXmlSettingsService xmlSettingsService;
 
         [ImportingConstructor]
-        public LimitHandler(ISyncContext syncContext,
-                            IMediator mediator,
+        public LimitHandler(IMediator mediator,
                             IXmlSettingsService xmlSettingsService)
         {
-            this.syncContext = syncContext;
             this.mediator = mediator;
             this.xmlSettingsService = xmlSettingsService;
         }
@@ -53,10 +49,7 @@ namespace AppsTracker.Tracking.Helpers
             if (xmlSettingsService.LimitsSettings.DontShowLimits.Any(l => l.AppLimitID == limit.AppLimitID))
                 return;
 
-            syncContext.Invoke(() =>
-            {
-                mediator.NotifyColleagues(MediatorMessages.APP_LIMIT_REACHED, limit);
-            });
+            mediator.NotifyColleagues(MediatorMessages.APP_LIMIT_REACHED, limit);
         }
 
         private void ShutdownApp(Aplication app)
