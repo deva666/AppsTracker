@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AppsTracker.Common.Communication;
 using AppsTracker.Common.Utils;
+using AppsTracker.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.Data.Utils;
@@ -24,6 +25,7 @@ namespace AppsTracker.Tracking
         private readonly ILimitHandler limitHandler;
         private readonly IMediator mediator;
         private readonly IWorkQueue workQueue;
+        private readonly ISyncContext syncContext;
 
         private readonly IDictionary<Aplication, IEnumerable<AppLimit>> appLimitsMap
             = new Dictionary<Aplication, IEnumerable<AppLimit>>();
@@ -45,7 +47,8 @@ namespace AppsTracker.Tracking
                              IMidnightNotifier midnightNotifier,
                              ILimitHandler limitHandler,
                              IMediator mediator,
-                             IWorkQueue workQueue)
+                             IWorkQueue workQueue,
+                             ISyncContext syncContext)
         {
             this.trackingService = trackingService;
             this.dataService = dataService;
@@ -54,11 +57,12 @@ namespace AppsTracker.Tracking
             this.limitHandler = limitHandler;
             this.mediator = mediator;
             this.workQueue = workQueue;
+            this.syncContext = syncContext;
 
             dayTimer = new Timer(TimerCallback,
-                new Func<AppLimit>(() => Volatile.Read(ref currentDayLimit)), Timeout.Infinite, Timeout.Infinite);
+                new Func<AppLimit>(() => currentDayLimit), Timeout.Infinite, Timeout.Infinite);
             weekTimer = new Timer(TimerCallback,
-                new Func<AppLimit>(() => Volatile.Read(ref currentWeekLimit)), Timeout.Infinite, Timeout.Infinite);
+                new Func<AppLimit>(() => currentWeekLimit), Timeout.Infinite, Timeout.Infinite);
 
             mediator.Register(MediatorMessages.APP_LIMITS_CHANGIING, LoadAppLimits);
             mediator.Register(MediatorMessages.STOP_TRACKING, StopTimers);
@@ -67,8 +71,13 @@ namespace AppsTracker.Tracking
 
         private void TimerCallback(object state)
         {
-            var valueFactory = (Func<AppLimit>)state;
-            limitHandler.Handle(valueFactory.Invoke());
+            syncContext.Invoke(() =>
+            {
+                var valueFactory = (Func<AppLimit>)state;
+                var limit = valueFactory.Invoke();
+                if (limit != null)
+                    limitHandler.Handle(limit);
+            });
         }
 
         public void SettingsChanged(Setting settings)
@@ -111,12 +120,10 @@ namespace AppsTracker.Tracking
 
         private void CheckLimits()
         {
-            var dayLimit = Volatile.Read(ref currentDayLimit);
-            var weekLimit = Volatile.Read(ref currentWeekLimit);
-            if (dayLimit != null && dayLimit.Application != null)
-                LoadAppDurations(dayLimit.Application);
-            else if (weekLimit != null && weekLimit.Application != null)
-                LoadAppDurations(weekLimit.Application);
+            if (currentDayLimit != null && currentDayLimit.Application != null)
+                LoadAppDurations(currentDayLimit.Application);
+            else if (currentWeekLimit != null && currentWeekLimit.Application != null)
+                LoadAppDurations(currentWeekLimit.Application);
         }
 
 
@@ -151,27 +158,27 @@ namespace AppsTracker.Tracking
                 var limits = appLimitsMap[app];
                 var dailyLimit = limits.FirstOrDefault(l => l.LimitSpan == LimitSpan.Day);
                 var weeklyLimit = limits.FirstOrDefault(l => l.LimitSpan == LimitSpan.Week);
-                
+
                 if (dailyLimit != null)
                 {
                     var dayDurationTask = workQueue.EnqueueWork(() => trackingService.GetDayDuration(app));
-                    dayDurationTask.ContinueWith(GetAppDurationContinuation, dailyLimit, 
-                        TaskContinuationOptions.OnlyOnRanToCompletion);
+                    dayDurationTask.ContinueWith(OnGetAppDuration, dailyLimit, CancellationToken.None,
+                        TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
                 }
                 if (weeklyLimit != null)
                 {
                     var weekDurationTask = workQueue.EnqueueWork(() => trackingService.GetWeekDuration(app));
-                    weekDurationTask.ContinueWith(GetAppDurationContinuation, weeklyLimit, 
-                        TaskContinuationOptions.OnlyOnRanToCompletion);
+                    weekDurationTask.ContinueWith(OnGetAppDuration, weeklyLimit, CancellationToken.None,
+                        TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
                 }
             }
         }
 
-        private void GetAppDurationContinuation(Task<Object> task, object state)
+        private void OnGetAppDuration(Task<Object> task, object state)
         {
             var appLimit = (AppLimit)state;
             var duration = (Int64)task.Result;
- 
+
             if (duration >= appLimit.Limit)
             {
                 limitHandler.Handle(appLimit);
@@ -185,16 +192,16 @@ namespace AppsTracker.Tracking
                 switch (appLimit.LimitSpan)
                 {
                     case LimitSpan.Day:
-                        Volatile.Write(ref currentDayLimit, appLimit);
+                        currentDayLimit = appLimit;
                         dayTimer.Change(new TimeSpan((appLimit.Limit - duration)), Timeout.InfiniteTimeSpan);
                         break;
                     case LimitSpan.Week:
-                        Volatile.Write(ref currentWeekLimit, appLimit);
+                        currentWeekLimit = appLimit;
                         weekTimer.Change(new TimeSpan((appLimit.Limit - duration)), Timeout.InfiniteTimeSpan);
                         break;
                 }
             }
-        }      
+        }
 
         public void Dispose()
         {

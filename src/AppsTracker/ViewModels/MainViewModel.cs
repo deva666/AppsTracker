@@ -357,7 +357,7 @@ namespace AppsTracker.ViewModels
         private void ReturnFromSettings()
         {
             if (toSettings == null)
-                throw new InvalidOperationException("to settings should be assigned a value");
+                SelectedChild = GetChild<DataHostViewModel>();
 
             SelectedChild = GetChild(toSettings);
             toSettings = null;
