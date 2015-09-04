@@ -264,7 +264,6 @@
     <Compile Include="MVVM\HostViewModel.cs" />
     <Compile Include="MVVM\IWorker.cs" />
     <Compile Include="MVVM\SettingsBaseViewModel.cs" />
-    <Compile Include="Utils\ListViewItemScroller.cs" />
     <Compile Include="Utils\Validation.cs" />
     <Compile Include="Utils\ValueConverters.cs" />
     <Compile Include="ViewModels\DataHostViewModel.cs" />
