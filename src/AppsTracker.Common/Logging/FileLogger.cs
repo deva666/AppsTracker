@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Text;
 
 namespace AppsTracker.Common.Logging
 {
@@ -12,17 +13,28 @@ namespace AppsTracker.Common.Logging
             if (fail == null)
                 throw new ArgumentNullException("fail");
 
-            string errorLog = string.Format("*** ERROR on {0} ***\n\n{1}\n\n*** ERROR ***\n\n*** INNER EXCEPTION ***\n\n{2}\n\n*** INNER EXCEPTION ***\n\n*** STACK TRACE ***\n\n{3}\n\n*** STACK TRACE ***\n\n",
-              DateTime.Now, fail.Message, fail.InnerException, fail.StackTrace);
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine();
+            stringBuilder.AppendLine(String.Format("*** ERROR on {0} ***", DateTime.Now.ToString()));
+            stringBuilder.AppendLine();
+            stringBuilder.AppendLine(fail.Message);
+            if (fail.InnerException != null)
+            {
+                stringBuilder.AppendLine(String.Format("Inner exception: {0}", fail.InnerException.Message));
+            }
+            stringBuilder.AppendLine("Stack trace: ");
+            stringBuilder.AppendLine(fail.StackTrace);
+            stringBuilder.AppendLine();
+
             FileStream stream = null;
-            
+
             try
             {
                 stream = new FileStream("ErrorLog.log", FileMode.Append, FileAccess.Write, FileShare.Read);
                 using (StreamWriter writer = new StreamWriter(stream))
                 {
                     stream = null;
-                    writer.Write(errorLog);
+                    writer.Write(stringBuilder.ToString());
                 }
             }
             finally

@@ -53,13 +53,13 @@ namespace AppsTracker.Common.Utils
             isDisposed = true;
         }
 
-        private class WorkItem<T>
+        private class WorkItem<TItem>
         {
-            public Func<T> ValueFactory { get; set; }
-            public TaskCompletionSource<T> TaskSource { get; set; }
+            public Func<TItem> ValueFactory { get; set; }
+            public TaskCompletionSource<TItem> TaskSource { get; set; }
 
 
-            public WorkItem(Func<T> valueFactory, TaskCompletionSource<T> taskSource)
+            public WorkItem(Func<TItem> valueFactory, TaskCompletionSource<TItem> taskSource)
             {
                 ValueFactory = valueFactory;
                 TaskSource = taskSource;
