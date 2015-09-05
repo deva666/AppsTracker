@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using AppsTracker.Data.Service;
 using AppsTracker.Widgets;
+using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Views
 {
@@ -52,7 +53,7 @@ namespace AppsTracker.Views
 
         private void CheckPassword()
         {
-            if (Hashing.Hash.GetEncryptedString(pbPassword.Password) == settingsService.Settings.WindowOpen)
+            if (Hash.GetEncryptedString(pbPassword.Password) == settingsService.Settings.WindowOpen)
             {
                 this.DialogResult = true;
                 Close();

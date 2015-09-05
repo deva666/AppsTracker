@@ -9,14 +9,14 @@
 using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using System.Windows.Input;
-using AppsTracker.Hashing;
-using AppsTracker.MVVM;
-using AppsTracker.Data.Service;
 using AppsTracker.Common.Communication;
+using AppsTracker.Common.Utils;
+using AppsTracker.Data.Service;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
-    [Export] 
+    [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class SettingsPasswordViewModel : SettingsBaseViewModel
     {
@@ -30,8 +30,8 @@ namespace AppsTracker.ViewModels
 
         [ImportingConstructor]
         public SettingsPasswordViewModel(IWindowService windowService,
-                                         ISqlSettingsService settingsService, 
-                                         IMediator mediator) 
+                                         ISqlSettingsService settingsService,
+                                         IMediator mediator)
             : base(settingsService, mediator)
         {
             this.windowService = windowService;

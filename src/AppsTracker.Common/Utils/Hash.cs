@@ -9,9 +9,9 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace AppsTracker.Hashing
+namespace AppsTracker.Common.Utils
 {
-    internal static class Hash
+    public static class Hash
     {
         private static byte[] GetHashSHA2(string inputString)
         {
