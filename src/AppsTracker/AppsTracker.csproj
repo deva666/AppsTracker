@@ -265,6 +265,7 @@
     <Compile Include="MVVM\IWorker.cs" />
     <Compile Include="MVVM\SettingsBaseViewModel.cs" />
     <Compile Include="Widgets\Utils\Validation.cs" />
+    <Compile Include="Widgets\Utils\ValidationHasErrors.cs" />
     <Compile Include="Widgets\Utils\ValueConverters.cs" />
     <Compile Include="ViewModels\DataHostViewModel.cs" />
     <Compile Include="ViewModels\DaySummaryViewModel.cs" />

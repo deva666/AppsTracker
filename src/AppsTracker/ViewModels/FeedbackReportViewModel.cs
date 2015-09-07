@@ -23,6 +23,15 @@ namespace AppsTracker.ViewModels
         }
 
 
+        private bool hasError;
+
+        public bool HasError
+        {
+            get { return hasError; }
+            set { SetPropertyValue(ref hasError, value); }
+        }
+
+
         private string feedbackText;
 
         public string FeedbackText

@@ -1305,19 +1305,46 @@ namespace AppsTracker
         }
     }
 
+    class BooleanOrConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            foreach (var value in values)
+            {
+                if (value == DependencyProperty.UnsetValue)
+                    continue;
 
+                if ((Boolean)value)
+                    return true;
+            }
+            return false;
+        }
 
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
+    class MultiControlHasErrorsToBoolConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            foreach (var value in values)
+            {
+                var control = value as Control;
+                if (control == null)
+                    return false;
 
+                if (Validation.GetHasError(control) == true)
+                    return false;
+            }
+            return true;
+        }
 
-
-
-
-
-
-
-
-
-
-
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

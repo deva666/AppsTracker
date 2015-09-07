@@ -10,12 +10,12 @@ using System;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
 
-namespace AppsTracker
+namespace AppsTracker.Widgets.Utils
 {
     public class EmailValidation : ValidationRule
     {
-        readonly string regexText = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
-        readonly string errorMessage = "Invalid email address";
+        private readonly string regexText = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
+        private readonly string errorMessage = "Invalid email address";
 
         public EmailValidation()
         {
@@ -39,8 +39,8 @@ namespace AppsTracker
 
     public class NumberValidation : ValidationRule
     {
-        readonly string regexText = @"^[0-9]+$";
-        readonly string errorMessage = "Input only numbers";
+        private readonly string regexText = @"^[0-9]+$";
+        private readonly string errorMessage = "Input only numbers";
 
         public NumberValidation()
         {
@@ -65,15 +65,17 @@ namespace AppsTracker
 
     public class LengthValidation : ValidationRule
     {
+        private string errorMessage = "{0} more characters to go";
+
         public int MinimumLength { get; set; }
-        public string ErrorMessage { get; set; }
 
         public override ValidationResult Validate(object value, System.Globalization.CultureInfo cultureInfo)
         {
             ValidationResult result = new ValidationResult(true, null);
-            if ((value ?? string.Empty).ToString().Length < MinimumLength)
+            var length = (value ?? string.Empty).ToString().Length;
+            if (length < MinimumLength)
             {
-                result = new ValidationResult(false, ErrorMessage);
+                result = new ValidationResult(false, String.Format(errorMessage, MinimumLength - length));
             }
             return result;
         }

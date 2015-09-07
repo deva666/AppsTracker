@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using AppsTracker.ViewModels;
 using AppsTracker.Widgets;
+using System.Windows.Controls;
 
 namespace AppsTracker.Views
 {
@@ -14,6 +15,11 @@ namespace AppsTracker.Views
         {
             InitializeComponent();
             DataContext = viewModel;
+            Loaded += (s, e) =>
+            {
+                tbMessage.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+                tbEmail.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+            };
         }
 
 

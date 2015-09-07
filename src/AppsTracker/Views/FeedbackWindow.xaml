@@ -10,129 +10,152 @@
         ResizeMode="NoResize"
         ShowInTaskbar="False"
         BorderBrush="{DynamicResource WindowBorderBrush}"
-        MinHeight="290"
+        MinHeight="330"
         Height="290"
         Width="400"
         utils:WindowClose.WindowClose="{Binding WindowClose}">
-    <Window.Resources>
-        <converters:ConvertBoolToVisibility x:Key="visibilityConverter" />
-    </Window.Resources>
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />                    
-                </Grid.RowDefinitions>
+   <Window.Resources>
+      <converters:ConvertBoolToVisibility x:Key="visibilityConverter" />
+      <converters:MultiControlHasErrorsToBoolConverter x:Key="hasErrorConverter" />
+      <converters:ConvertBoolToReverseBool x:Key="boolReverseConverter" />
+   </Window.Resources>
+   <ScrollViewer VerticalScrollBarVisibility="Auto">
+      <Grid FocusManager.FocusedElement="{Binding ElementName=tbMessage}">
+         <Grid>
+            <Grid.RowDefinitions>
+               <RowDefinition Height="Auto" />
+               <RowDefinition Height="Auto" />
+               <RowDefinition Height="Auto" />
+               <RowDefinition Height="Auto" />
+               <RowDefinition Height="Auto" />
+               <RowDefinition Height="Auto" />
+               <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-                <Label Style="{DynamicResource LabelStyle}"
-                       Grid.Row="0"
-                       HorizontalAlignment="Left"
-                       Content="apps tracker feedback"
+            <Label Style="{DynamicResource LabelStyle}"
+                   Grid.Row="0"
+                   HorizontalAlignment="Left"
+                   Content="apps tracker feedback"
+                   FontSize="15"
+                   Margin="15,5,0,5" />
+
+            <TextBlock Style="{StaticResource ControlBoxStyle}"
+                       x:Name="CloseButton"
+                       Text="r"
+                       FontFamily="Webdings"
                        FontSize="15"
-                       Margin="15,5,0,5" />
+                       Margin="5,10,10,0"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Top">
+               <TextBlock.InputBindings>
+                  <MouseBinding Gesture="LeftClick"
+                                Command="{Binding CloseWindowCommand}" />
+               </TextBlock.InputBindings>
+            </TextBlock>
 
-                <TextBlock Style="{StaticResource ControlBoxStyle}"
-                           x:Name="CloseButton"
-                           Text="r"
-                           FontFamily="Webdings"
-                           FontSize="15"
-                           Margin="5,10,10,0"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Top">
-                    <TextBlock.InputBindings>
-                        <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding CloseWindowCommand}" />
-                    </TextBlock.InputBindings>
-                </TextBlock>
+            <Separator Grid.Row="0"
+                       VerticalAlignment="Bottom"
+                       Margin="10,0,10,0" />
+            <Label Grid.Row="1"
+                   Style="{DynamicResource LabelStyle}"
+                   Content="Feedback:"
+                   HorizontalAlignment="Left"
+                   Margin="20,10,0,0" />
 
-                <Separator Grid.Row="0"
-                           VerticalAlignment="Bottom"
-                           Margin="10,0,10,0" />
-                <Label Grid.Row="1"
-                       Style="{DynamicResource LabelStyle}"
-                       Content="Feedback:"
-                       HorizontalAlignment="Left"
-                       Margin="20,10,0,0" />
+            <TextBox Name="tbMessage"
+                     Grid.Row="2"
+                     Margin="25,5,25,20"
+                     FontSize="12"
+                     Foreground="{DynamicResource HighlightBrush}"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     MinHeight="80"
+                     HorizontalAlignment="Stretch"
+                     VerticalContentAlignment="Top"
+                     VerticalAlignment="Top"
+                     TextAlignment="Left"
+                     Validation.ErrorTemplate="{StaticResource errorTemplateStyle}"
+                     utils:ValidationHasErrors.HasError="{Binding HasError}"                    
+                     >
+               <TextBox.Text>
+                  <Binding Path="FeedbackText"
+                           UpdateSourceTrigger="PropertyChanged">
+                     <Binding.ValidationRules>
+                        <utils:LengthValidation MinimumLength="15" />
+                     </Binding.ValidationRules>
+                  </Binding>
+               </TextBox.Text>
+            </TextBox>
 
-                <TextBox Name="tbMessage"
-                         Grid.Row="2"
-                         Margin="25,5,25,00"
-                         FontSize="12"
-                         Foreground="{DynamicResource HighlightBrush}"
-                         AcceptsReturn="True"
-                         TextWrapping="Wrap"
-                         MinHeight="80"
-                         HorizontalAlignment="Stretch"
-                         VerticalContentAlignment="Top"
-                         VerticalAlignment="Top"
-                         TextAlignment="Left" 
-                         Text="{Binding FeedbackText}"/>
+            <Label Grid.Row="3"
+                   Style="{DynamicResource LabelStyle}"
+                   Content="Email:"
+                   HorizontalAlignment="Left"
+                   Margin="20,10,0,0" />
+            <TextBox Grid.Row="4"
+                     Margin="25,5,25,25"
+                     FontSize="12"
+                     Foreground="{DynamicResource HighlightBrush}"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True"
+                     HorizontalAlignment="Stretch"
+                     Name="tbEmail"
+                     Validation.ErrorTemplate="{StaticResource errorTemplateStyle}">
+               <TextBox.Text>
+                  <Binding Path="Email"
+                           UpdateSourceTrigger="PropertyChanged">
+                     <Binding.ValidationRules>
+                        <utils:EmailValidation />
+                     </Binding.ValidationRules>
+                  </Binding>
+               </TextBox.Text>
+            </TextBox>
 
-                <Label Grid.Row="3"
-                       Style="{DynamicResource LabelStyle}"
-                       Content="Email:"
-                       HorizontalAlignment="Left"
-                       Margin="20,10,0,0" />
-                <TextBox Grid.Row="4"
-                         Margin="25,5,25,10"
-                         FontSize="12"
-                         Foreground="{DynamicResource HighlightBrush}"
-                         TextWrapping="Wrap"
-                         AcceptsReturn="True"                          
-                         HorizontalAlignment="Stretch"                         
-                         Text="{Binding Email}"/>
-                
-                <Label Style="{DynamicResource LabelStyle}"
-                       Grid.Row="5"
-                       HorizontalAlignment="Center"
-                       Content="{Binding InfoMessage}" />
-                <StackPanel Grid.Row="6"
-                            HorizontalAlignment="Right"
-                            Orientation="Horizontal"
-                            >
+            <Label Style="{DynamicResource LabelStyle}"
+                   Grid.Row="5"
+                   HorizontalAlignment="Center"
+                   Content="{Binding InfoMessage}" />
+            <StackPanel Grid.Row="6"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
 
-                    <Button Content="Send"
-                            Margin="0,0,20,0"
-                            VerticalAlignment="Bottom">
-                        <Button.InputBindings>
-                            <MouseBinding Gesture="LeftClick"
-                                          Command="{Binding SendFeedbackCommand}" />
-                        </Button.InputBindings>
-                    </Button>
-                    <Button Name="btnCancel"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Content="Close"
-                            Margin="0,0,30,0">
-                        <Button.InputBindings>
-                            <MouseBinding Gesture="LeftClick"
-                                          Command="{Binding CloseWindowCommand}" />
-                        </Button.InputBindings>
-                    </Button>
+               <Button Content="Send"
+                       Margin="0,0,20,0"
+                       VerticalAlignment="Bottom"
+                       IsEnabled="{Binding HasError, Converter={StaticResource boolReverseConverter}}">
+                  <Button.InputBindings>
+                     <MouseBinding Gesture="LeftClick"
+                                   Command="{Binding SendFeedbackCommand}" />
+                  </Button.InputBindings>                  
+               </Button>
+               <Button Name="btnCancel"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Bottom"
+                       Content="Close"
+                       Margin="0,0,30,0">
+                  <Button.InputBindings>
+                     <MouseBinding Gesture="LeftClick"
+                                   Command="{Binding CloseWindowCommand}" />
+                  </Button.InputBindings>
+               </Button>
 
-                </StackPanel>
+            </StackPanel>
 
-                <Grid Name="grdOverlay"
-                      Grid.RowSpan="4"
-                      Visibility="Collapsed">
-                    <Border Background="Black"
-                            Opacity="0.35">
-                        <controls:progressBar Visibility="{Binding ElementName=grdOverlay, Path=Visibility}" />
-                    </Border>
-                </Grid>
-
+            <Grid Name="grdOverlay"
+                  Grid.RowSpan="4"
+                  Visibility="Collapsed">
+               <Border Background="Black"
+                       Opacity="0.35">
+                  <controls:progressBar Visibility="{Binding ElementName=grdOverlay, Path=Visibility}" />
+               </Border>
             </Grid>
-            <Grid Opacity="0.3"
-                  Background="Black"
-                  Visibility="{Binding Working, Converter={StaticResource visibilityConverter}}">
-                <controls:progressBar Visibility="{Binding Working, Converter={StaticResource visibilityConverter}}" />
-            </Grid>
-        </Grid>
-    </ScrollViewer>
+
+         </Grid>
+         <Grid Opacity="0.3"
+               Background="Black"
+               Visibility="{Binding Working, Converter={StaticResource visibilityConverter}}">
+            <controls:progressBar Visibility="{Binding Working, Converter={StaticResource visibilityConverter}}" />
+         </Grid>
+      </Grid>
+   </ScrollViewer>
 </Window>

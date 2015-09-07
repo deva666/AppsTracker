@@ -18,8 +18,9 @@
             <local:ConvertLimitSpanToMaxSlider x:Key="convertLimitSpanToMaxSlider" />
             <local:ConvertAppLimitToTimeSpan x:Key="convertAppLimitToTimeSpan" />
             <local:LimitReachedActionToStringConverter x:Key="limitReachedActionToStringConverter" />
+         <local:BooleanOrConverter x:Key="booleanOrConverter" />
 
-            <Style x:Key="MinimalChartStyle"
+         <Style x:Key="MinimalChartStyle"
                    TargetType="chart:ChartBase">
 
                 <Setter Property="Background"
@@ -2747,131 +2748,126 @@
                     </Grid>
                 </Border>
             </DataTemplate>
-            
 
-            <!--<ControlTemplate x:Uid="ControlTemplate_12"
-                             x:Key="errorTemplateStyle">
-                <StackPanel x:Uid="StackPanel_2"
-                            Orientation="Horizontal">
-                    <Border x:Uid="Border_5"
-                            BorderThickness="1.5"
-                            BorderBrush="#FFdc000c"
-                            CornerRadius="0.7"
-                            VerticalAlignment="Top">
-                        <Grid x:Uid="Grid_6">
-                            <Polygon x:Uid="toolTipCorner"
-                                     x:Name="toolTipCorner"
-                                     Grid.ZIndex="2"
-                                     Margin="-1"
-                                     Points="6,6 6,0 0,0"
-                                     Fill="#FFdc000c"
-                                     HorizontalAlignment="Right"
-                                     VerticalAlignment="Top"
-                                     IsHitTestVisible="True" />
-                            <Polyline x:Uid="Polyline_1"
-                                      Grid.ZIndex="3"
-                                      Points="7,7 0,0"
-                                      Margin="-1"
-                                      HorizontalAlignment="Right"
-                                      StrokeThickness="1.5"
-                                      StrokeEndLineCap="Round"
-                                      StrokeStartLineCap="Round"
-                                      Stroke="White"
-                                      VerticalAlignment="Top"
-                                      IsHitTestVisible="True" />
-                            <AdornedElementPlaceholder x:Uid="adorner"
-                                                       x:Name="adorner" />
-                        </Grid>
-                    </Border>
-                    <Border x:Uid="errorBorder"
-                            x:Name="errorBorder"
-                            Background="#FFdc000c"
-                            Margin="1,0,0,0"
-                            Opacity="0"
-                            CornerRadius="1.5"
-                            IsHitTestVisible="False"
-                            MinHeight="25"
-                            MaxWidth="267">
-                        <Border.Effect>
-                            <DropShadowEffect x:Uid="DropShadowEffect_1"
-                                              ShadowDepth="2.25"
-                                              Color="Black"
-                                              Opacity="0.4"
-                                              Direction="315"
-                                              BlurRadius="4" />
-                        </Border.Effect>
-                        <TextBlock x:Uid="TextBlock_1"
-                                   Text="{Binding ElementName=adorner,
+
+         <ControlTemplate x:Uid="ControlTemplate_12"
+                          x:Key="errorTemplateStyle">
+            <StackPanel x:Uid="StackPanel_2"
+                        Orientation="Vertical">
+               <Border x:Uid="Border_5"
+                       BorderThickness="2"
+                       BorderBrush="#FFdc000c"
+                       CornerRadius="0.7"
+                       VerticalAlignment="Top">
+                  <Grid x:Uid="Grid_6">
+                     <!--<Polygon x:Uid="toolTipCorner"
+                              x:Name="toolTipCorner"
+                              Grid.ZIndex="2"
+                              Margin="-1"
+                              Points="6,6 6,0 0,0"
+                              Fill="#FFdc000c"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Bottom"
+                              IsHitTestVisible="True" />
+                     <Polyline x:Uid="Polyline_1"
+                               Grid.ZIndex="3"
+                               Points="7,7 0,0"
+                               Margin="-1"
+                               HorizontalAlignment="Center"
+                               StrokeThickness="1.5"
+                               StrokeEndLineCap="Round"
+                               StrokeStartLineCap="Round"
+                               Stroke="White"
+                               VerticalAlignment="Bottom"
+                               IsHitTestVisible="True" />-->
+                     <AdornedElementPlaceholder x:Uid="adorner"
+                                                x:Name="adorner" />
+                  </Grid>
+               </Border>
+               <Border x:Uid="errorBorder"
+                       x:Name="errorBorder"
+                       Background="#FFdc000c"
+                       Margin="1,0,0,0"
+                       Opacity="0"
+                       CornerRadius="1.5"
+                       IsHitTestVisible="False"
+                       MinHeight="25"
+                       MaxWidth="267">
+                  <Border.Effect>
+                     <DropShadowEffect x:Uid="DropShadowEffect_1"
+                                       ShadowDepth="2.25"
+                                       Color="Black"
+                                       Opacity="0.4"
+                                       Direction="315"
+                                       BlurRadius="4" />
+                  </Border.Effect>
+                  <TextBlock x:Uid="TextBlock_1"
+                             Text="{Binding ElementName=adorner,
                                    Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"
-                                   Foreground="White"
-                                   Margin="8,3,8,3"
-                                   TextWrapping="Wrap" />
-                    </Border>
-                </StackPanel>
-                <ControlTemplate.Triggers>
-                    <DataTrigger x:Uid="DataTrigger_1"
-                                 Value="True">
-                        <DataTrigger.Binding>
-                            <MultiBinding x:Uid="MultiBinding_1"
-                                          Converter="{StaticResource BooleanOrConverter}">
-                                <Binding x:Uid="Binding_1"
-                                         ElementName="adorner"
-                                         Path="AdornedElement.IsKeyboardFocused" />
-                                <Binding x:Uid="Binding_2"
-                                         ElementName="toolTipCorner"
-                                         Path="IsMouseOver" />
-                            </MultiBinding>
-                        </DataTrigger.Binding>
-                        <DataTrigger.EnterActions>
-                            <BeginStoryboard x:Uid="fadeInStoryboard"
-                                             x:Name="fadeInStoryboard">
-                                <Storyboard x:Uid="Storyboard_1">
-                                    <DoubleAnimation x:Uid="DoubleAnimation_1"
-                                                     Duration="00:00:00.35"
-                                                     Storyboard.TargetName="errorBorder"
-                                                     Storyboard.TargetProperty="Opacity"
-                                                     To="1" />
-                                    <ThicknessAnimation x:Uid="ThicknessAnimation_1"
-                                                        Duration="00:00:00.35"
-                                                        Storyboard.TargetName="errorBorder"
-                                                        Storyboard.TargetProperty="Margin"
-                                                        FillBehavior="HoldEnd"
-                                                        From="55,0,0,0"
-                                                        To="5,0,0,0">
-                                        <ThicknessAnimation.EasingFunction>
-                                            <BackEase x:Uid="BackEase_1"
-                                                      EasingMode="EaseOut"
-                                                      Amplitude="1" />
-                                        </ThicknessAnimation.EasingFunction>
-                                    </ThicknessAnimation>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.EnterActions>
-                        <DataTrigger.ExitActions>
-                            <StopStoryboard x:Uid="StopStoryboard_1"
-                                            BeginStoryboardName="fadeInStoryboard" />
-                            <BeginStoryboard x:Uid="fadeOutStoryBoard"
-                                             x:Name="fadeOutStoryBoard">
-                                <Storyboard x:Uid="Storyboard_2">
-                                    <DoubleAnimation x:Uid="DoubleAnimation_2"
-                                                     Duration="00:00:00.35"
-                                                     Storyboard.TargetName="errorBorder"
-                                                     Storyboard.TargetProperty="Opacity"
-                                                     To="0" />
-                                    <ThicknessAnimation x:Uid="ThicknessAnimation_2"
-                                                        Duration="00:00:00.35"
-                                                        Storyboard.TargetName="errorBorder"
-                                                        Storyboard.TargetProperty="Margin"
-                                                        FillBehavior="HoldEnd"
-                                                        From="5,0,0,0"
-                                                        To="55,0,0,0" />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.ExitActions>
-                    </DataTrigger>
-                </ControlTemplate.Triggers>
-            </ControlTemplate>-->
-        </ResourceDictionary>
+                             Foreground="White"
+                             Margin="8,3,8,3"
+                             TextWrapping="Wrap" 
+                             />
+               </Border>
+            </StackPanel>
+            <ControlTemplate.Triggers>
+               <DataTrigger Value="True">
+                  <DataTrigger.Binding>
+                     <MultiBinding Converter="{StaticResource booleanOrConverter}">
+                        <Binding ElementName="adorner"
+                                 Path="AdornedElement.IsKeyboardFocused" />
+                        <Binding ElementName="toolTipCorner"
+                                 Path="IsMouseOver" />
+                     </MultiBinding>
+                  </DataTrigger.Binding>
+                  <DataTrigger.EnterActions>
+                     <BeginStoryboard x:Name="fadeInStoryboard">
+                        <Storyboard >
+                           <DoubleAnimation x:Uid="DoubleAnimation_1"
+                                            Duration="00:00:00.35"
+                                            Storyboard.TargetName="errorBorder"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1" />
+                           <ThicknessAnimation Duration="00:00:00.35"
+                                               Storyboard.TargetName="errorBorder"
+                                               Storyboard.TargetProperty="Margin"
+                                               FillBehavior="HoldEnd"
+                                               From="55,0,0,0"
+                                               To="5,0,0,0">
+                              <ThicknessAnimation.EasingFunction>
+                                 <BackEase x:Uid="BackEase_1"
+                                           EasingMode="EaseOut"
+                                           Amplitude="1" />
+                              </ThicknessAnimation.EasingFunction>
+                           </ThicknessAnimation>
+                        </Storyboard>
+                     </BeginStoryboard>
+                  </DataTrigger.EnterActions>
+                  <DataTrigger.ExitActions>
+                     <StopStoryboard x:Uid="StopStoryboard_1"
+                                     BeginStoryboardName="fadeInStoryboard" />
+                     <BeginStoryboard x:Uid="fadeOutStoryBoard"
+                                      x:Name="fadeOutStoryBoard">
+                        <Storyboard x:Uid="Storyboard_2">
+                           <DoubleAnimation x:Uid="DoubleAnimation_2"
+                                            Duration="00:00:00.35"
+                                            Storyboard.TargetName="errorBorder"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0" />
+                           <ThicknessAnimation x:Uid="ThicknessAnimation_2"
+                                               Duration="00:00:00.35"
+                                               Storyboard.TargetName="errorBorder"
+                                               Storyboard.TargetProperty="Margin"
+                                               FillBehavior="HoldEnd"
+                                               From="5,0,0,0"
+                                               To="55,0,0,0" />
+                        </Storyboard>
+                     </BeginStoryboard>
+                  </DataTrigger.ExitActions>
+               </DataTrigger>
+            </ControlTemplate.Triggers>
+         </ControlTemplate>
+      </ResourceDictionary>
     </Application.Resources>
 </Application>    
     
