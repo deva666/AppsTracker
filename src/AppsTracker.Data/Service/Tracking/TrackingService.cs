@@ -196,6 +196,21 @@ namespace AppsTracker.Data.Service
             }
         }
 
+        public void EndLogEntry(Log log)
+        {
+            using (var context = new AppsEntities())
+            {
+                context.Logs.Attach(log);
+                if (log.Window != null)
+                    context.Windows.Attach(log.Window);
+                if (log.Window != null && log.Window.Application != null)
+                    context.Applications.Attach(log.Window.Application);
+                log.Finish();
+                context.Entry(log).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+        }
+
         public void EndLogEntry(LogInfo logInfo)
         {
             using (var context = new AppsEntities())

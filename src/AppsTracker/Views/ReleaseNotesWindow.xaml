@@ -98,6 +98,12 @@
                             </HierarchicalDataTemplate.ItemTemplate>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
+            <TreeView.ItemContainerStyle>
+               <Style TargetType="TreeViewItem">
+                  <Setter Property="IsExpanded"
+                          Value="True" />
+               </Style>
+            </TreeView.ItemContainerStyle>
                 </TreeView>
         </controls:FaderContentControl>
 

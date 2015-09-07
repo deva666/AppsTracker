@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Threading.Tasks;
 using AppsTracker.Common.Communication;
 using AppsTracker.Common.Utils;
@@ -140,7 +141,7 @@ namespace AppsTracker.Tracking
 
             if (isTrackingEnabled == false)
             {
-                workQueue.EnqueueWork(() => trackingService.EndLogEntryAsync(log));
+                workQueue.EnqueueWork(() => trackingService.EndLogEntry(log));
                 if (unsavedLogInfos.ContainsKey(log.LogInfoGuid))
                     unsavedLogInfos.Remove(log.LogInfoGuid);
                 return;
@@ -163,8 +164,21 @@ namespace AppsTracker.Tracking
         {
             isTrackingEnabled = false;
             SwapLogs(LogInfo.Empty);
-            System.Diagnostics.Debug.Assert(unsavedLogInfos.Count <= 1, "Unsaved loginfos count > 1)");
-            System.Diagnostics.Debug.Assert(createdLogs.Count < 1, "Created logs count >= 1)");
+
+            if (createdLogs.Count > 0)
+            {
+                foreach (var pair in createdLogs.ToList())
+                {
+                    trackingService.EndLogEntry(pair.Value);
+                    createdLogs.Remove(pair.Key);
+                }
+            }
+
+            if (createdLogs.Count > 0)
+                throw new InvalidProgramException("Created logs count > 0");
+
+            if (unsavedLogInfos.Count > 0)
+                throw new InvalidProgramException("Unsaved log infos count > 0");
         }
 
         private void ResumeTracking()
