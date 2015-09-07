@@ -57,5 +57,13 @@ namespace AppsTracker.Common.Utils
             if (propertyInfo != null)
                 propertyInfo.SetValue(_object, propertyValue);
         }
+
+        public static T ThrowIfNull<T>(this T argument, String argumentName) where T : class
+        {
+            if (argument == null)
+                throw new ArgumentNullException(argumentName);
+
+            return argument;
+        }
     }
 }
