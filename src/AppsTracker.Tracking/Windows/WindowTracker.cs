@@ -174,6 +174,15 @@ namespace AppsTracker.Tracking
                 }
             }
 
+            if (unsavedLogInfos.Count > 0)
+            {
+                foreach (var pair in unsavedLogInfos.ToList())
+                {
+                    trackingService.EndLogEntry(pair.Value);
+                    unsavedLogInfos.Remove(pair.Key);
+                }
+            }
+
             if (createdLogs.Count > 0)
                 throw new InvalidProgramException("Created logs count > 0");
 
