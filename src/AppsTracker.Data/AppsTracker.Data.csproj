@@ -95,7 +95,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Db\AppsDBConfiguration.cs" />
     <Compile Include="Db\AppsEntitites.cs" />
     <Compile Include="Db\DbConnectionFactory.cs" />
     <Compile Include="Models\DbModels\Aplication.cs" />
