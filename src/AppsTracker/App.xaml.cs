@@ -40,6 +40,8 @@ namespace AppsTracker
             ProfileOptimization.SetProfileRoot(Assembly.GetEntryAssembly().Location);
             ProfileOptimization.StartProfile("AppsTrackerProfile");
 
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+
             InitializeComponent();
 
             this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
@@ -61,7 +63,6 @@ namespace AppsTracker
             applicationController.Initialize(autostart);
 
             this.SessionEnding += (s, e) => ShutdownApp();
-            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         }
 
 

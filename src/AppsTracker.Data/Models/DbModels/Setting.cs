@@ -68,18 +68,20 @@ namespace AppsTracker.Data.Models
             this.EnableIdle = true;
             this.IdleTimer = 2 * 60 * 1000;
             this.FirstRun = true;
-            if (ScreenshotFolderCreated())
-                this.DefaultScreenshotSavePath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Screenshots");
+            if (TryCreateScreenshotFolder())
+                this.DefaultScreenshotSavePath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "Screenshots");
             else
                 this.DefaultScreenshotSavePath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         }
 
-        private bool ScreenshotFolderCreated()
+        private bool TryCreateScreenshotFolder()
         {
             try
             {
-                if (!System.IO.Directory.Exists(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Screenshots")))
-                    System.IO.Directory.CreateDirectory(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Screenshots"));
+                if (!System.IO.Directory.Exists(System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "Screenshots")))
+                    System.IO.Directory.CreateDirectory(System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AppService", "Screenshots"));
                 return true;
             }
             catch

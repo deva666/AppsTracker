@@ -53,8 +53,7 @@
             <File Id="ApplicationFile6" Source="EntityFramework.SqlServerCompact.dll"/>
             <File Id="ApplicationFile8" Source="System.Windows.Interactivity.dll"/>
             <File Id="ApplicationFile10" Source="De.TorstenMandelkow.MetroChart.dll"/>
-            <File Id="ApplicationFile11" Source="System.Data.SqlServerCe.dll" />
-			<File Id="ApplicationFile12" Source="System.Data.SqlServerCe.Entity.dll" />
+            <File Id="ApplicationFile11" Source="System.Data.SqlServerCe.dll" />			
             <File Id="ApplicationFile_json" Source="Newtonsoft.Json.dll"/>
           </Component>
           <Component Id="ApplicationFilesVital" Guid="3d88719f-8065-456f-95c1-981c28952bff" >
