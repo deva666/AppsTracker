@@ -50,12 +50,11 @@
             <File Id="ApplicationFile3" Source="AppsTracker.Data.dll"/>
             <File Id="ApplicationFile_common" Source="AppsTracker.Common.dll"/>
             <File Id="ApplicationFile4" Source="EntityFramework.dll"/>
-            <File Id="ApplicationFile5" Source="EntityFramework.SqlServer.dll"/>
             <File Id="ApplicationFile6" Source="EntityFramework.SqlServerCompact.dll"/>
-            <File Id="ApplicationFile7" Source="Apps tracker.exe.manifest"/>
             <File Id="ApplicationFile8" Source="System.Windows.Interactivity.dll"/>
             <File Id="ApplicationFile10" Source="De.TorstenMandelkow.MetroChart.dll"/>
-            <File Id="ApplicationFile11" Source="System.Data.SqlServerCe" />
+            <File Id="ApplicationFile11" Source="System.Data.SqlServerCe.dll" />
+			<File Id="ApplicationFile12" Source="System.Data.SqlServerCe.Entity.dll" />
             <File Id="ApplicationFile_json" Source="Newtonsoft.Json.dll"/>
           </Component>
           <Component Id="ApplicationFilesVital" Guid="3d88719f-8065-456f-95c1-981c28952bff" >
