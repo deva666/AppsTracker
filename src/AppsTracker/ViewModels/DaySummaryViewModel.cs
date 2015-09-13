@@ -79,12 +79,12 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private readonly AsyncProperty<string> dayDuration;
+        //private readonly AsyncProperty<string> dayDuration;
 
-        public AsyncProperty<string> DayDuration
-        {
-            get { return dayDuration; }
-        }
+        //public AsyncProperty<string> DayDuration
+        //{
+        //    get { return dayDuration; }
+        //}
 
 
         private readonly AsyncProperty<IEnumerable<AppSummary>> appsList;
