@@ -160,7 +160,7 @@ namespace AppsTracker.ViewModels
             usageList = new AsyncProperty<IEnumerable<UsageByTime>>(GetUsageSummary, this);
             windowsList = new AsyncProperty<IEnumerable<WindowSummary>>(GetWindowsSummary, this);
             categoryList = new AsyncProperty<IEnumerable<CategoryDuration>>(GetCategories, this);
-            dayDuration = new AsyncProperty<string>(GetDayDuration, this);
+            //dayDuration = new AsyncProperty<string>(GetDayDuration, this);
 
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadContent));
         }
@@ -171,7 +171,7 @@ namespace AppsTracker.ViewModels
             logsList.Reload();
             appsList.Reload();
             usageList.Reload();
-            dayDuration.Reload();
+            //dayDuration.Reload();
             windowsList.Reload();
             categoryList.Reload();
         }

@@ -9,8 +9,8 @@
              xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
              xmlns:logging="clr-namespace:AppsTracker.Data.Models;assembly=AppsTracker.Data"
              mc:Ignorable="d"
-             d:DesignHeight="300"
-             d:DesignWidth="300">
+             d:DesignHeight="900"
+             d:DesignWidth="900">
     <UserControl.Resources>
         <logging:Log x:Key="logData" />
         <local:ConvertDuration x:Key="convertDuration" />
@@ -220,10 +220,10 @@
                        Margin="40,0,0,0"
                        Content="{Binding DayOfWeek}" />
                 
-                <Label Style="{DynamicResource LabelStyle}"
+                <!--<Label Style="{DynamicResource LabelStyle}"
                        FontSize="15"
                        Margin="5,0,0,0"
-                       Content="{Binding DayDuration.Result}" />
+                       Content="{Binding DayDuration.Result}" />-->
 
             </StackPanel>
 
@@ -310,20 +310,6 @@
             <StackPanel Orientation="Horizontal"
                         Grid.Row="5"
                         Grid.ColumnSpan="3">
-                <!--<RadioButton Name="rbTimeSheet"
-                             Margin="15,5,0,10"
-                             IsChecked="False"
-                             HorizontalAlignment="Left"
-                             GroupName="menu">
-                    <RadioButton.Template>
-                        <ControlTemplate>
-                            <Label Style="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Converter={StaticResource convertStyle}}"
-                                   Content="TIME SHEET"
-                                   FontSize="11" />
-                        </ControlTemplate>
-                    </RadioButton.Template>
-                </RadioButton>-->
-                
                 <RadioButton Name="rbUsage"
                              Margin="15,5,0,10"
                              IsChecked="True"
