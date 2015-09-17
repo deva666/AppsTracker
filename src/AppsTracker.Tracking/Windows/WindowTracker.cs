@@ -178,16 +178,17 @@ namespace AppsTracker.Tracking
             {
                 foreach (var pair in unsavedLogInfos.ToList())
                 {
-                    trackingService.EndLogEntry(pair.Value);
+                    //trackingService.EndLogEntry(pair.Value);
                     unsavedLogInfos.Remove(pair.Key);
                 }
             }
-
+#if DEBUG
             if (createdLogs.Count > 0)
                 throw new InvalidProgramException("Created logs count > 0");
 
             if (unsavedLogInfos.Count > 0)
                 throw new InvalidProgramException("Unsaved log infos count > 0");
+#endif
         }
 
         private void ResumeTracking()
