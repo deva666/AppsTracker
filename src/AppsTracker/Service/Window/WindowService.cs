@@ -4,8 +4,9 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using AppsTracker.Views;
 using AppsTracker.Widgets;
+using AppsTracker.Data.Service;
 
-namespace AppsTracker.Data.Service
+namespace AppsTracker.Service
 {
     [Export(typeof(IWindowService))]
     public sealed class WindowService : IWindowService
@@ -124,12 +125,6 @@ namespace AppsTracker.Data.Service
             mainWindow.Height = height;
         }
 
-
-        public void InitializeTrayIcon()
-        {
-            trayIcon.ShowApp.Click += (s, e) => CreateOrShowMainWindow();
-            trayIcon.IsVisible = true;
-        }
 
         public void CreateOrShowMainWindow()
         {

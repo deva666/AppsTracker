@@ -6,8 +6,10 @@
  */
 #endregion
 
+using AppsTracker.Service;
 using System;
 using System.ComponentModel.Composition;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace AppsTracker.Widgets
@@ -15,15 +17,14 @@ namespace AppsTracker.Widgets
     [Export(typeof(ITrayIcon))]
     public class TrayIcon : IDisposable, ITrayIcon
     {
-        private NotifyIcon notifyIcon;
-        private ContextMenuStrip iconMenu;
-        private ToolStripMenuItem menuItemShowApp;
-        private ToolStripMenuItem menuItemExit;
+        [Import]
+        private Lazy<IWindowService> windowService = null;
 
-        public ToolStripMenuItem ShowApp
-        {
-            get { return menuItemShowApp; }
-        }
+        private readonly NotifyIcon notifyIcon;
+        private readonly ContextMenuStrip iconMenu;
+        private readonly ToolStripMenuItem menuItemShowApp;
+        private readonly ToolStripMenuItem menuItemExit;
+
         public bool IsVisible
         {
             get { return notifyIcon.Visible; }
@@ -36,6 +37,7 @@ namespace AppsTracker.Widgets
             notifyIcon = new NotifyIcon();
             iconMenu = new ContextMenuStrip();
             menuItemShowApp = new ToolStripMenuItem(string.Format("Open {0}", Constants.APP_NAME));
+            menuItemShowApp.Click += (s, e) => windowService.Value.CreateOrShowMainWindow();
             menuItemExit = new ToolStripMenuItem("Exit");
             iconMenu.Items.Add(menuItemShowApp);
             iconMenu.Items.Add(menuItemExit);
@@ -44,7 +46,15 @@ namespace AppsTracker.Widgets
             notifyIcon.Text = Constants.APP_NAME;
             notifyIcon.Visible = true;
 
+            notifyIcon.Click += (s, e) =>
+            {
+                notifyIcon.GetType().InvokeMember("ShowContextMenu",
+                    BindingFlags.InvokeMethod | BindingFlags.Instance | BindingFlags.NonPublic, null, notifyIcon, null);
+            };
+            notifyIcon.DoubleClick += (s, e) => windowService.Value.CreateOrShowMainWindow();
             menuItemExit.Click += (s, e) => ((App)App.Current).ShutdownApp();
+
+            IsVisible = true;
         }
 
         public void Dispose()
@@ -56,10 +66,10 @@ namespace AppsTracker.Widgets
         {
             if (disposing)
             {
-                if (menuItemExit != null) { menuItemExit.Dispose(); menuItemExit = null; }
-                if (menuItemShowApp != null) { menuItemShowApp.Dispose(); menuItemShowApp = null; }
-                if (iconMenu != null) { iconMenu.Dispose(); iconMenu = null; }
-                if (notifyIcon != null) { notifyIcon.Dispose(); notifyIcon = null; }
+                menuItemExit.Dispose();
+                menuItemShowApp.Dispose();
+                iconMenu.Dispose();
+                notifyIcon.Dispose();
             }
         }
     }

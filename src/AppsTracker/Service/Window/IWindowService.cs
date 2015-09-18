@@ -1,9 +1,10 @@
 ﻿using System;
 using AppsTracker.Views;
 using AppsTracker.Widgets;
-namespace AppsTracker.Data.Service
+
+namespace AppsTracker.Service
 {
-    public interface IWindowService : IBaseService
+    public interface IWindowService 
     {
         void ShowMessage(Exception fail);
 
@@ -20,9 +21,7 @@ namespace AppsTracker.Data.Service
         System.Windows.Forms.FolderBrowserDialog CreateFolderBrowserDialog();
         
         void FirstRunWindowSetup();
-        
-        void InitializeTrayIcon();
-        
+                
         void CreateOrShowMainWindow();
         
         void CloseMainWindow();

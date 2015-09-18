@@ -6,6 +6,7 @@ using System.Windows.Media.Animation;
 using AppsTracker.Data.Service;
 using AppsTracker.Widgets;
 using AppsTracker.Common.Utils;
+using AppsTracker.Service;
 
 namespace AppsTracker.Views
 {

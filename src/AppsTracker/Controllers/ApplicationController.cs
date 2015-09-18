@@ -12,6 +12,7 @@ using System.ComponentModel.Composition;
 using AppsTracker.Data.Service;
 using AppsTracker.Widgets;
 using Microsoft.Win32;
+using AppsTracker.Service;
 
 namespace AppsTracker.Controllers
 {
@@ -54,8 +55,6 @@ namespace AppsTracker.Controllers
                 windowService.CreateOrShowMainWindow();
                 windowService.FirstRunWindowSetup();
             }
-
-            windowService.InitializeTrayIcon();
 
             dataService.DbSizeCritical += OnDbSizeCritical;
             dataService.GetDBSize();

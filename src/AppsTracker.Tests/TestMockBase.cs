@@ -9,6 +9,7 @@ using AppsTracker.Tracking.Helpers;
 using AppsTracker.Tracking.Hooks;
 using AppsTracker.ViewModels;
 using Moq;
+using AppsTracker.Service;
 
 namespace AppsTracker.Tests
 {
