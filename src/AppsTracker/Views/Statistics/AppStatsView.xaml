@@ -26,7 +26,7 @@
                 <chart:PieChart ChartTitle="Most used apps"
                                 ChartSubTitle="Usage time in hours (select item to view details)"
                                 Style="{StaticResource MinimalChartStyle}"
-                            SelectedItem="{Binding SelectedApp, Mode=TwoWay}"
+                                SelectedItem="{Binding SelectedApp, Mode=TwoWay}"
                                 BorderBrush="{DynamicResource WindowBorderBrush}"
                                 BorderThickness="1"
                                 Margin="10,10,10,20"
