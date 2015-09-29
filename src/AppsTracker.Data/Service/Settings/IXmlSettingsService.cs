@@ -3,7 +3,9 @@
 namespace AppsTracker.Data.Service
 {
     public interface IXmlSettingsService : IBaseService
-    {     
+    {
+        AppSettings AppSettings { get; }
+
         LogsViewSettings LogsViewSettings { get; }
              
         KeylogsViewSettings KeylogsViewSettings { get; }

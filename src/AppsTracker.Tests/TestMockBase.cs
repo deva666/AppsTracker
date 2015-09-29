@@ -10,24 +10,26 @@ using AppsTracker.Tracking.Hooks;
 using AppsTracker.ViewModels;
 using Moq;
 using AppsTracker.Service;
+using AppsTracker.Service.Web;
 
 namespace AppsTracker.Tests
 {
     public abstract class TestMockBase
     {
-        protected Mock<IDataService> dataService = new Mock<IDataService>();
-        protected Mock<ITrackingService> trackingService = new Mock<ITrackingService>();
-        protected Mock<ISqlSettingsService> settingsService = new Mock<ISqlSettingsService>();
-        protected Mock<IXmlSettingsService> xmlSettingsService = new Mock<IXmlSettingsService>();
-        protected Mock<IStatsService> statsService = new Mock<IStatsService>();
-        protected Mock<ICategoriesService> categoriesService = new Mock<ICategoriesService>();
-        protected Mock<IWindowService> windowService = new Mock<IWindowService>();
-        protected Mock<IAppChangedNotifier> windowChangedNotifier = new Mock<IAppChangedNotifier>();
-        protected Mock<ILimitHandler> limitHandler = new Mock<ILimitHandler>();
-        protected Mock<IMidnightNotifier> midnightNotifier = new Mock<IMidnightNotifier>();
-        protected Mock<IScreenshotFactory> screenshotFactory = new Mock<IScreenshotFactory>();
+        protected readonly Mock<IDataService> dataService = new Mock<IDataService>();
+        protected readonly Mock<ITrackingService> trackingService = new Mock<ITrackingService>();
+        protected readonly Mock<ISqlSettingsService> settingsService = new Mock<ISqlSettingsService>();
+        protected readonly Mock<IXmlSettingsService> xmlSettingsService = new Mock<IXmlSettingsService>();
+        protected readonly Mock<IStatsService> statsService = new Mock<IStatsService>();
+        protected readonly Mock<ICategoriesService> categoriesService = new Mock<ICategoriesService>();
+        protected readonly Mock<IWindowService> windowService = new Mock<IWindowService>();
+        protected readonly Mock<IAppChangedNotifier> windowChangedNotifier = new Mock<IAppChangedNotifier>();
+        protected readonly Mock<ILimitHandler> limitHandler = new Mock<ILimitHandler>();
+        protected readonly Mock<IMidnightNotifier> midnightNotifier = new Mock<IMidnightNotifier>();
+        protected readonly Mock<IScreenshotFactory> screenshotFactory = new Mock<IScreenshotFactory>();
         protected readonly Mock<IAppChangedNotifier> appChangedNotifier = new Mock<IAppChangedNotifier>();
         protected readonly Mock<IScreenshotTracker> screenshotTracker = new Mock<IScreenshotTracker>();
+        protected readonly Mock<IReleaseNotesService> releaseNotesService = new Mock<IReleaseNotesService>();
 
         protected readonly IMediator mediator = new Mediator();
         protected readonly ISyncContext syncContext = new SyncContextMock();

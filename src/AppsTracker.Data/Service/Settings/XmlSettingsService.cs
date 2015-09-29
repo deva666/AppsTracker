@@ -24,51 +24,60 @@ namespace AppsTracker.Data.Service
 
         private readonly IList<XmlSettingsBase> settingsContainer = new List<XmlSettingsBase>();
 
-        private LogsViewSettings logsViewSettings = new LogsViewSettings();
+        private readonly AppSettings appSettings = new AppSettings();
+
+        public AppSettings AppSettings
+        {
+            get { return appSettings; }
+        }
+
+        private readonly LogsViewSettings logsViewSettings = new LogsViewSettings();
+
         public LogsViewSettings LogsViewSettings
         {
             get { return logsViewSettings; }
-            set { logsViewSettings = value; }
         }
 
-        private KeylogsViewSettings keylogsViewSettings = new KeylogsViewSettings();
+
+        private readonly KeylogsViewSettings keylogsViewSettings = new KeylogsViewSettings();
+
         public KeylogsViewSettings KeylogsViewSettings
         {
             get { return keylogsViewSettings; }
-            set { keylogsViewSettings = value; }
         }
 
-        private ScreenshotsViewSettings screenshotsViewSettings = new ScreenshotsViewSettings();
+        private readonly ScreenshotsViewSettings screenshotsViewSettings = new ScreenshotsViewSettings();
+        
         public ScreenshotsViewSettings ScreenshotsViewSettings
         {
             get { return screenshotsViewSettings; }
-            set { screenshotsViewSettings = value; }
         }
 
-        private DaysViewSettings daysViewSettings = new DaysViewSettings();
+        private readonly DaysViewSettings daysViewSettings = new DaysViewSettings();
+
         public DaysViewSettings DaysViewSettings
         {
             get { return daysViewSettings; }
-            set { daysViewSettings = value; }
         }
 
-        private MainWindowSettings mainWindowSettings = new MainWindowSettings();
+        private readonly MainWindowSettings mainWindowSettings = new MainWindowSettings();
+
         public MainWindowSettings MainWindowSettings
         {
             get { return mainWindowSettings; }
-            set { mainWindowSettings = value; }
         }
 
-        private LimitsSettings limitsSettings;
+        private  LimitsSettings limitsSettings;
+
         public LimitsSettings LimitsSettings
         {
             get { return limitsSettings ?? (limitsSettings = new LimitsSettings()); }
-            set { limitsSettings = value; }
         }
 
 
         public void Initialize()
         {
+            settingsContainer.Add(appSettings);
             settingsContainer.Add(logsViewSettings);
             settingsContainer.Add(keylogsViewSettings);
             settingsContainer.Add(screenshotsViewSettings);
@@ -118,11 +127,12 @@ namespace AppsTracker.Data.Service
                 Directory.CreateDirectory(settingsPath);
 
             var xml = new XElement("root");
-            xml.Add(LogsViewSettings.GetXML());
-            xml.Add(KeylogsViewSettings.GetXML());
-            xml.Add(ScreenshotsViewSettings.GetXML());
-            xml.Add(DaysViewSettings.GetXML());
-            xml.Add(MainWindowSettings.GetXML());
+            xml.Add(appSettings.GetXML());
+            xml.Add(logsViewSettings.GetXML());
+            xml.Add(keylogsViewSettings.GetXML());
+            xml.Add(screenshotsViewSettings.GetXML());
+            xml.Add(daysViewSettings.GetXML());
+            xml.Add(mainWindowSettings.GetXML());
 
             xml.Save(Path.Combine(settingsPath, SETTINGS_FILE_NAME), SaveOptions.None);
         }

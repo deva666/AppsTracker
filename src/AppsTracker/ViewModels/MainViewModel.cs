@@ -15,10 +15,13 @@ using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 using AppsTracker.Data.Service;
 using AppsTracker.Common.Communication;
+using AppsTracker.Service.Web;
+using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace AppsTracker.ViewModels
 {
-    [Export] 
+    [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class MainViewModel : HostViewModel
     {
@@ -26,6 +29,7 @@ namespace AppsTracker.ViewModels
         private readonly ISqlSettingsService settingsService;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
+        private readonly IReleaseNotesService releaseNotesService;
 
         private bool isPopupCalendarOpen = false;
 
@@ -245,6 +249,7 @@ namespace AppsTracker.ViewModels
         public MainViewModel(IDataService dataService,
                              ISqlSettingsService settingsService,
                              ITrackingService trackingService,
+                             IReleaseNotesService releaseNotesService,
                              IMediator mediator,
                              ExportFactory<DataHostViewModel> dataVMFactory,
                              ExportFactory<StatisticsHostViewModel> statisticsVMFactory,
@@ -253,7 +258,8 @@ namespace AppsTracker.ViewModels
             this.dataService = dataService;
             this.settingsService = settingsService;
             this.trackingService = trackingService;
-            this.mediator = mediator;         
+            this.releaseNotesService = releaseNotesService;
+            this.mediator = mediator;
 
             RegisterChild(() => ProduceValue(dataVMFactory));
             RegisterChild(() => ProduceValue(statisticsVMFactory));
@@ -262,8 +268,31 @@ namespace AppsTracker.ViewModels
             SelectedChild = GetChild<DataHostViewModel>();
 
             multipleUsers = dataService.GetFiltered<Uzer>(u => u.UserID > 0).Count() > 1;
+
+            releaseNotesService.GetReleaseNotesAsync()
+                .ContinueWith(OnGetReleaseNotes, TaskContinuationOptions.NotOnFaulted);
         }
 
+
+        private void OnGetReleaseNotes(Task<IEnumerable<ReleaseNote>> preceedingTask)
+        {
+            var notes = preceedingTask.Result;
+            var versions = new List<Version>(notes.Count());
+            foreach (var note in notes)
+            {
+                Version version;
+                if (Version.TryParse(note.Version, out version))
+                    versions.Add(version);
+            }
+            var latestVersion = versions.OrderBy(v => v).FirstOrDefault();
+            if (latestVersion == null)
+                return;
+            var currentVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            if (latestVersion >= currentVersion)
+            {
+                System.Windows.Forms.MessageBox.Show("New version available");
+            }
+        }
 
         private void GetUsers()
         {

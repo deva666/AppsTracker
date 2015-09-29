@@ -38,6 +38,7 @@ namespace AppsTracker.Tests.Core.ViewModels
             mainViewModel = new MainViewModel(dataService.Object,
                 settingsService.Object,
                 trackingService.Object,
+                releaseNotesService.Object,
                 mediator,
                 dataHostVMFactory,
                 statisticsHostVMFactory,
