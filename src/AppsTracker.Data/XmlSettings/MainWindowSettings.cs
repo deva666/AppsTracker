@@ -1,12 +1,7 @@
-﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿﻿
 namespace AppsTracker.Data.XmlSettings
 {
-    public class MainWindowSettings : XmlSettingsBase
+    public sealed class MainWindowSettings : XmlSettingsBase
     {
         [SettingsNode]
         public double Left { get; set; }

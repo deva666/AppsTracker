@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using AppsTracker.Data.Models;
 
 namespace AppsTracker.Data.XmlSettings
 {
-    public class LimitsSettings
+    public sealed class LimitsSettings
     {
         private IList<AppLimit> dontShowLimits;
 
