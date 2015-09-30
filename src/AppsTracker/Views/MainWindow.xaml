@@ -474,12 +474,13 @@
                 Grid.Column="7">
          </Label>
       </Grid>
+      
       <Popup Style="{DynamicResource PopupStyle}"
              IsOpen="{Binding NewVersionAvailable}"
              StaysOpen="True"
              Placement="Center"
              PopupAnimation="Slide">
-         <Border Background="{DynamicResource ChildWindowBackgroungBrush}"
+         <Border Background="{DynamicResource BackgroundBrush}"
                  BorderBrush="{DynamicResource WindowBorderBrush}"
                  BorderThickness="1"
                  Padding="10">
@@ -512,7 +513,7 @@
                            Grid.Row="2"
                            HorizontalAlignment="Center">
                   <TextBlock Text="Don't bother me again with this" />
-                  <CheckBox IsChecked="{Binding DisableNotifyForNewVersion}" Margin="20,0,0,0"/>
+                  <CheckBox IsChecked="{Binding DisableNotifyForNewVersion}" Margin="10,0,0,0"/>
                </StackPanel>
                <Button Content="Close"
                        Grid.Row="3"
@@ -526,5 +527,6 @@
             </Grid>
          </Border>
       </Popup>
+      
    </Grid>
 </Window>
