@@ -9,15 +9,15 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Windows.Input;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 using AppsTracker.Data.Service;
 using AppsTracker.Common.Communication;
 using AppsTracker.Service.Web;
-using System.Threading.Tasks;
-using System.Diagnostics;
 
 namespace AppsTracker.ViewModels
 {
@@ -27,9 +27,10 @@ namespace AppsTracker.ViewModels
     {
         private readonly IDataService dataService;
         private readonly ISqlSettingsService settingsService;
+        private readonly IXmlSettingsService xmlSettingsService;
         private readonly ITrackingService trackingService;
-        private readonly IMediator mediator;
         private readonly IReleaseNotesService releaseNotesService;
+        private readonly IMediator mediator;
 
         private bool isPopupCalendarOpen = false;
 
@@ -65,6 +66,21 @@ namespace AppsTracker.ViewModels
             get { return multipleUsers; }
         }
 
+
+        private bool newVersionAvailable;
+
+        public bool NewVersionAvailable
+        {
+            get { return newVersionAvailable; }
+            set { SetPropertyValue(ref newVersionAvailable, value); }
+        }
+
+
+        public bool DisableNotifyForNewVersion
+        {
+            get { return xmlSettingsService.AppSettings.DisableNotifyForNewVersion; }
+            set { xmlSettingsService.AppSettings.DisableNotifyForNewVersion = value; }
+        }
 
         public override string Title
         {
@@ -244,10 +260,26 @@ namespace AppsTracker.ViewModels
         }
 
 
+        private ICommand closeNewVersionNotifierCommand;
+
+        public ICommand CloseNewVersionNotifierCommand
+        {
+            get { return closeNewVersionNotifierCommand ?? (closeNewVersionNotifierCommand = new DelegateCommand(CloseNewVersionNotifier)); }
+        }
+
+
+        private ICommand showWebCommand;
+
+        public ICommand ShowWebCommand
+        {
+            get { return showWebCommand ?? (showWebCommand = new DelegateCommand(ShowWeb)); }
+        }
+
 
         [ImportingConstructor]
         public MainViewModel(IDataService dataService,
                              ISqlSettingsService settingsService,
+                             IXmlSettingsService xmlSettingsService,
                              ITrackingService trackingService,
                              IReleaseNotesService releaseNotesService,
                              IMediator mediator,
@@ -257,6 +289,7 @@ namespace AppsTracker.ViewModels
         {
             this.dataService = dataService;
             this.settingsService = settingsService;
+            this.xmlSettingsService = xmlSettingsService;
             this.trackingService = trackingService;
             this.releaseNotesService = releaseNotesService;
             this.mediator = mediator;
@@ -269,8 +302,11 @@ namespace AppsTracker.ViewModels
 
             multipleUsers = dataService.GetFiltered<Uzer>(u => u.UserID > 0).Count() > 1;
 
-            releaseNotesService.GetReleaseNotesAsync()
-                .ContinueWith(OnGetReleaseNotes, TaskContinuationOptions.NotOnFaulted);
+            if (!xmlSettingsService.AppSettings.DisableNotifyForNewVersion)
+            {
+                releaseNotesService.GetReleaseNotesAsync()
+                    .ContinueWith(OnGetReleaseNotes, TaskContinuationOptions.NotOnFaulted);
+            }
         }
 
 
@@ -284,14 +320,17 @@ namespace AppsTracker.ViewModels
                 if (Version.TryParse(note.Version, out version))
                     versions.Add(version);
             }
-            var latestVersion = versions.OrderBy(v => v).FirstOrDefault();
+            var latestVersion = versions.OrderByDescending(v => v).FirstOrDefault();
             if (latestVersion == null)
-                return;
-            var currentVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            if (latestVersion >= currentVersion)
             {
-                System.Windows.Forms.MessageBox.Show("New version available");
+                return;
             }
+            var currentVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            if (latestVersion > currentVersion)
+            {
+                NewVersionAvailable = true;
+            }
+
         }
 
         private void GetUsers()
@@ -390,6 +429,22 @@ namespace AppsTracker.ViewModels
 
             SelectedChild = GetChild(toSettings);
             toSettings = null;
+        }
+
+        private void CloseNewVersionNotifier()
+        {
+            NewVersionAvailable = false;
+        }
+
+        private void ShowWeb()
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("http://www.theappstracker.com");
+            }
+            catch
+            {
+            }
         }
     }
 }

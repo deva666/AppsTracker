@@ -3,7 +3,7 @@ namespace AppsTracker.Data.XmlSettings
 {
     public sealed class AppSettings : XmlSettingsBase
     {
-        [SettingsNode(true)]
-        public bool NotifyForNewVersion { get; set; }
+        [SettingsNode(false)]
+        public bool DisableNotifyForNewVersion { get; set; }
     }
 }

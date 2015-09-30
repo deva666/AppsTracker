@@ -14,468 +14,517 @@
         ResizeMode="CanResizeWithGrip"
         MouseLeftButtonDown="Window_MouseLeftButtonDown_1"
         utils:WindowClose.WindowClose="{Binding WindowClose}">
-    <Window.Resources>
-        <local:ConvertDateFilter x:Key="convertDateFilter" />
-        <local:ConvertPageNameToVisibility x:Key="convertPageNameToVisibility" />
-        <local:ConvertPageNameToVisibilityB x:Key="convertPageNameToVisibilityB" />
-        <local:ConvertPageNameToStyle x:Key="convertPageNameToSyle"
-                                      SelectedLabelStyle="{StaticResource SelectedLabelStyle}"
-                                      SelectableLabelStyle="{StaticResource SelectableLabelStyle}" />
-        <local:ConvertLoggingStatus x:Key="convertLoggingStatus" />
-        <local:ConvertLoggingVisibiltyPlay x:Key="convertLoggingPlay" />
-        <local:ConvertLoggingVisibiltyStop x:Key="convertLoggingStop" />
-        <local:ConvertBoolToVisibility x:Key="convertBoolToVisibility" />
+   <Window.Resources>
+      <local:ConvertDateFilter x:Key="convertDateFilter" />
+      <local:ConvertPageNameToVisibility x:Key="convertPageNameToVisibility" />
+      <local:ConvertPageNameToVisibilityB x:Key="convertPageNameToVisibilityB" />
+      <local:ConvertPageNameToStyle x:Key="convertPageNameToSyle"
+                                    SelectedLabelStyle="{StaticResource SelectedLabelStyle}"
+                                    SelectableLabelStyle="{StaticResource SelectableLabelStyle}" />
+      <local:ConvertLoggingStatus x:Key="convertLoggingStatus" />
+      <local:ConvertLoggingVisibiltyPlay x:Key="convertLoggingPlay" />
+      <local:ConvertLoggingVisibiltyStop x:Key="convertLoggingStop" />
+      <local:ConvertBoolToVisibility x:Key="convertBoolToVisibility" />
 
-        <Storyboard x:Key="themeChangeAnimation">
-            <ColorAnimation AutoReverse="False"
-                            Duration="00:00:01"
-                            Storyboard.TargetProperty="(Window.Background).(SolidColorBrush.Color)"
-                            To="{DynamicResource WindowBackgroundColor}" />
-        </Storyboard>
+      <Storyboard x:Key="themeChangeAnimation">
+         <ColorAnimation AutoReverse="False"
+                         Duration="00:00:01"
+                         Storyboard.TargetProperty="(Window.Background).(SolidColorBrush.Color)"
+                         To="{DynamicResource WindowBackgroundColor}" />
+      </Storyboard>
 
-        <DataTemplate DataType="{x:Type viewModels:DataHostViewModel}">
-            <views:DataHostView />
-        </DataTemplate>
+      <DataTemplate DataType="{x:Type viewModels:DataHostViewModel}">
+         <views:DataHostView />
+      </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModels:StatisticsHostViewModel}">
-            <views:StatisticsHostView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModels:SettingsHostViewModel}">
-            <views:SettingsHostView />
-        </DataTemplate>
-    </Window.Resources>
-    <Window.RenderTransform>
-        <ScaleTransform />
-    </Window.RenderTransform>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <StackPanel Grid.Column="2"
-                    Orientation="Horizontal"
-                    Margin="0,10,25,0"
+      <DataTemplate DataType="{x:Type viewModels:StatisticsHostViewModel}">
+         <views:StatisticsHostView />
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type viewModels:SettingsHostViewModel}">
+         <views:SettingsHostView />
+      </DataTemplate>
+   </Window.Resources>
+   <Window.RenderTransform>
+      <ScaleTransform />
+   </Window.RenderTransform>
+   <Grid>
+      <Grid.ColumnDefinitions>
+         <ColumnDefinition />
+         <ColumnDefinition />
+         <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+         <RowDefinition Height="Auto" />
+         <RowDefinition Height="Auto" />
+         <RowDefinition Height="Auto" />
+         <RowDefinition Height="*" />
+         <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <StackPanel Grid.Column="2"
+                  Orientation="Horizontal"
+                  Margin="0,10,25,0"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Top"
+                  Background="Transparent">
+         <TextBlock Style="{StaticResource ControlBoxStyle}"
+                    x:Name="ChangeViewButton"
+                    Text="2"
+                    FontFamily="Webdings"
+                    FontSize="15"
+                    Margin="0"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    MouseLeftButtonDown="ChangeViewButton_MouseLeftButtonUp_1" />
+         <TextBlock Style="{StaticResource ControlBoxStyle}"
+                    x:Name="MinimizeButton"
+                    Text="0"
+                    FontFamily="Webdings"
+                    FontSize="15"
+                    Margin="5,0,0,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
-                    Background="Transparent">
-            <TextBlock Style="{StaticResource ControlBoxStyle}"
-                       x:Name="ChangeViewButton"
-                       Text="2"
-                       FontFamily="Webdings"
-                       FontSize="15"
-                       Margin="0"
-                       VerticalAlignment="Top"
-                       HorizontalAlignment="Right"
-                       MouseLeftButtonDown="ChangeViewButton_MouseLeftButtonUp_1" />
-            <TextBlock Style="{StaticResource ControlBoxStyle}"
-                       x:Name="MinimizeButton"
-                       Text="0"
-                       FontFamily="Webdings"
-                       FontSize="15"
-                       Margin="5,0,0,0"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Top"
-                       MouseLeftButtonDown="MinimizeButton_MouseLeftButtonUp_1" />
-            <TextBlock Style="{StaticResource ControlBoxStyle}"
-                       x:Name="MaximizeButton"
-                       Text="1"
-                       FontFamily="Webdings"
-                       FontSize="15"
-                       Margin="5,0,0,0"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Top"
-                       MouseLeftButtonDown="MaximizeButton_MouseLeftButtonUp_1" />
-            <TextBlock Style="{StaticResource ControlBoxStyle}"
-                       x:Name="CloseButton"
-                       Text="r"
-                       FontFamily="Webdings"
-                       FontSize="15"
-                       Margin="5,0,0,0"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Top">
-                <TextBlock.InputBindings>
-                    <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding CloseWindowCommand}" />
-                </TextBlock.InputBindings>
-            </TextBlock>
-        </StackPanel>
+                    MouseLeftButtonDown="MinimizeButton_MouseLeftButtonUp_1" />
+         <TextBlock Style="{StaticResource ControlBoxStyle}"
+                    x:Name="MaximizeButton"
+                    Text="1"
+                    FontFamily="Webdings"
+                    FontSize="15"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    MouseLeftButtonDown="MaximizeButton_MouseLeftButtonUp_1" />
+         <TextBlock Style="{StaticResource ControlBoxStyle}"
+                    x:Name="CloseButton"
+                    Text="r"
+                    FontFamily="Webdings"
+                    FontSize="15"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top">
+            <TextBlock.InputBindings>
+               <MouseBinding Gesture="LeftClick"
+                             Command="{Binding CloseWindowCommand}" />
+            </TextBlock.InputBindings>
+         </TextBlock>
+      </StackPanel>
 
-        <Label Name="lblTitle"
-               Content="apps tracker"
-               Style="{DynamicResource LabelStyle}"
-               FontSize="15"
-               VerticalAlignment="Top"
-               HorizontalAlignment="Left"
-               Margin="30,10,0,0" />
-        <Label Name="lblSettings"
-               Content="SETTINGS"
-               FontSize="12"
-               FontStretch="Condensed"
-               Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=settings}"
-               Grid.Column="2"
-               HorizontalAlignment="Right"
-               Margin="0,10,190,0">
-            <Label.InputBindings>
-                <MouseBinding Gesture="LeftClick"
-                              Command="{Binding GoToSettingsCommand}" />
-            </Label.InputBindings>
-        </Label>
+      <Label Name="lblTitle"
+             Content="apps tracker"
+             Style="{DynamicResource LabelStyle}"
+             FontSize="15"
+             VerticalAlignment="Top"
+             HorizontalAlignment="Left"
+             Margin="30,10,0,0" />
+      <Label Name="lblSettings"
+             Content="SETTINGS"
+             FontSize="12"
+             FontStretch="Condensed"
+             Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=settings}"
+             Grid.Column="2"
+             HorizontalAlignment="Right"
+             Margin="0,10,190,0">
+         <Label.InputBindings>
+            <MouseBinding Gesture="LeftClick"
+                          Command="{Binding GoToSettingsCommand}" />
+         </Label.InputBindings>
+      </Label>
 
-        <Separator Grid.Row="1"
-                   Grid.ColumnSpan="3"
-                   Margin="30,10,30,0"
-                   VerticalAlignment="Top" />
-        <StackPanel Name="mainMenu"
-                    Grid.Row="1"
-                    Orientation="Horizontal"
-                    Margin="10,20,0,0">
+      <Separator Grid.Row="1"
+                 Grid.ColumnSpan="3"
+                 Margin="30,10,30,0"
+                 VerticalAlignment="Top" />
+      <StackPanel Name="mainMenu"
+                  Grid.Row="1"
+                  Orientation="Horizontal"
+                  Margin="10,20,0,0">
 
-            <customControls:FadingUC StringContent="data"
-                                     Margin="20,0,0,0"
-                                     LabelFontSize="20"
-                                     Visibility="{Binding SelectedChild, Converter={StaticResource convertPageNameToVisibilityB}, ConverterParameter=settings}"
-                                     Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=data}">
-                <customControls:FadingUC.InputBindings>
-                    <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding GoToDataCommand}" />
-                </customControls:FadingUC.InputBindings>
-            </customControls:FadingUC>
-            <customControls:FadingUC StringContent="statistics"
-                                     LabelFontSize="20"
-                                     Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=statistics}"
-                                     Visibility="{Binding SelectedChild, Converter={StaticResource convertPageNameToVisibilityB}, ConverterParameter=settings}">
-                <customControls:FadingUC.InputBindings>
-                    <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding GoToStatsCommand}" />
-                </customControls:FadingUC.InputBindings>
-            </customControls:FadingUC>
-            <customControls:BackButton Style="{DynamicResource BackBtnStyle}"
-                                       EllipseBackgroundBrush="{DynamicResource WindowBackgroundBrush}"
-                                       Visibility="{Binding SelectedChild, Converter={StaticResource convertPageNameToVisibility}, ConverterParameter=settings}"
-                                       Margin="30,4,0,0">
-                <customControls:BackButton.InputBindings>
-                    <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding ReturnFromSettingsCommand}" />
-                </customControls:BackButton.InputBindings>
-            </customControls:BackButton>
+         <customControls:FadingUC StringContent="data"
+                                  Margin="20,0,0,0"
+                                  LabelFontSize="20"
+                                  Visibility="{Binding SelectedChild, Converter={StaticResource convertPageNameToVisibilityB}, ConverterParameter=settings}"
+                                  Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=data}">
+            <customControls:FadingUC.InputBindings>
+               <MouseBinding Gesture="LeftClick"
+                             Command="{Binding GoToDataCommand}" />
+            </customControls:FadingUC.InputBindings>
+         </customControls:FadingUC>
+         <customControls:FadingUC StringContent="statistics"
+                                  LabelFontSize="20"
+                                  Style="{Binding SelectedChild, Converter={StaticResource convertPageNameToSyle}, ConverterParameter=statistics}"
+                                  Visibility="{Binding SelectedChild, Converter={StaticResource convertPageNameToVisibilityB}, ConverterParameter=settings}">
+            <customControls:FadingUC.InputBindings>
+               <MouseBinding Gesture="LeftClick"
+                             Command="{Binding GoToStatsCommand}" />
+            </customControls:FadingUC.InputBindings>
+         </customControls:FadingUC>
+         <customControls:BackButton Style="{DynamicResource BackBtnStyle}"
+                                    EllipseBackgroundBrush="{DynamicResource WindowBackgroundBrush}"
+                                    Visibility="{Binding SelectedChild, Converter={StaticResource convertPageNameToVisibility}, ConverterParameter=settings}"
+                                    Margin="30,4,0,0">
+            <customControls:BackButton.InputBindings>
+               <MouseBinding Gesture="LeftClick"
+                             Command="{Binding ReturnFromSettingsCommand}" />
+            </customControls:BackButton.InputBindings>
+         </customControls:BackButton>
 
-        </StackPanel>
+      </StackPanel>
 
-        <StackPanel Name="utilityMenu"
-                    Grid.Column="3"
-                    Grid.Row="1"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal"
-                    Margin="100,15,0,0">
+      <StackPanel Name="utilityMenu"
+                  Grid.Column="3"
+                  Grid.Row="1"
+                  VerticalAlignment="Center"
+                  Orientation="Horizontal"
+                  Margin="100,15,0,0">
 
-            <customControls:Calendar Margin="0,0,30,0"
-                                     x:Name="Calendar">
-                <customControls:Calendar.ToolTip>
-                    <ToolTip Style="{DynamicResource ToolTipStyle}"
-                             Foreground="{DynamicResource HighlightBrush}">
-                        Filter logs by date
-                    </ToolTip>
-                </customControls:Calendar.ToolTip>
-                <customControls:Calendar.Style>
-                    <Style>
+         <customControls:Calendar Margin="0,0,30,0"
+                                  x:Name="Calendar">
+            <customControls:Calendar.ToolTip>
+               <ToolTip Style="{DynamicResource ToolTipStyle}"
+                        Foreground="{DynamicResource HighlightBrush}">
+                  Filter logs by date
+               </ToolTip>
+            </customControls:Calendar.ToolTip>
+            <customControls:Calendar.Style>
+               <Style>
+                  <Setter Property="UserControl.Foreground"
+                          Value="{DynamicResource WindowForegroundBrush}" />
+                  <Style.Triggers>
+                     <Trigger Property="UserControl.IsMouseOver"
+                              Value="true">
                         <Setter Property="UserControl.Foreground"
-                                Value="{DynamicResource WindowForegroundBrush}" />
-                        <Style.Triggers>
-                            <Trigger Property="UserControl.IsMouseOver"
-                                     Value="true">
-                                <Setter Property="UserControl.Foreground"
-                                        Value="{DynamicResource HighlightBrush}" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </customControls:Calendar.Style>
+                                Value="{DynamicResource HighlightBrush}" />
+                     </Trigger>
+                  </Style.Triggers>
+               </Style>
+            </customControls:Calendar.Style>
 
-                <customControls:Calendar.InputBindings>
-                    <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding OpenPopupCommand}"
-                                  CommandParameter="Calendar" />
-                </customControls:Calendar.InputBindings>
-            </customControls:Calendar>
+            <customControls:Calendar.InputBindings>
+               <MouseBinding Gesture="LeftClick"
+                             Command="{Binding OpenPopupCommand}"
+                             CommandParameter="Calendar" />
+            </customControls:Calendar.InputBindings>
+         </customControls:Calendar>
 
-            <customControls:PersonIcon x:Name="personIcon"
-                                       Visibility="{Binding MultipleUsers, Converter={StaticResource convertBoolToVisibility}}">
-                <customControls:PersonIcon.ToolTip>
-                    <ToolTip Style="{DynamicResource ToolTipStyle}"
-                             Foreground="{DynamicResource HighlightBrush}">
-                        View logs of another user
-                    </ToolTip>
-                </customControls:PersonIcon.ToolTip>
-                <customControls:PersonIcon.Style>
-                    <Style>
+         <customControls:PersonIcon x:Name="personIcon"
+                                    Visibility="{Binding MultipleUsers, Converter={StaticResource convertBoolToVisibility}}">
+            <customControls:PersonIcon.ToolTip>
+               <ToolTip Style="{DynamicResource ToolTipStyle}"
+                        Foreground="{DynamicResource HighlightBrush}">
+                  View logs of another user
+               </ToolTip>
+            </customControls:PersonIcon.ToolTip>
+            <customControls:PersonIcon.Style>
+               <Style>
+                  <Setter Property="UserControl.Foreground"
+                          Value="{DynamicResource WindowForegroundBrush}" />
+                  <Style.Triggers>
+                     <Trigger Property="UserControl.IsMouseOver"
+                              Value="true">
                         <Setter Property="UserControl.Foreground"
-                                Value="{DynamicResource WindowForegroundBrush}" />
-                        <Style.Triggers>
-                            <Trigger Property="UserControl.IsMouseOver"
-                                     Value="true">
-                                <Setter Property="UserControl.Foreground"
-                                        Value="{DynamicResource HighlightBrush}" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </customControls:PersonIcon.Style>
-                <customControls:PersonIcon.InputBindings>
-                    <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding OpenPopupCommand}"
-                                  CommandParameter="Users" />
-                </customControls:PersonIcon.InputBindings>
-            </customControls:PersonIcon>
+                                Value="{DynamicResource HighlightBrush}" />
+                     </Trigger>
+                  </Style.Triggers>
+               </Style>
+            </customControls:PersonIcon.Style>
+            <customControls:PersonIcon.InputBindings>
+               <MouseBinding Gesture="LeftClick"
+                             Command="{Binding OpenPopupCommand}"
+                             CommandParameter="Users" />
+            </customControls:PersonIcon.InputBindings>
+         </customControls:PersonIcon>
 
 
-            <Popup Name="popupFilterDate"
-                   Style="{DynamicResource PopupStyle}"
-                   StaysOpen="True"
-                   PopupAnimation="Slide"
-                   PlacementTarget="{Binding ElementName=Calendar}"
-                   Placement="Bottom"
-                   IsOpen="{Binding IsPopupCalendarOpen}">
-                <Grid Background="{DynamicResource WindowBackgroundBrush}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Border BorderBrush="{DynamicResource WindowBorderBrush}"
-                            BorderThickness="1"
-                            Grid.ColumnSpan="2"
-                            Grid.RowSpan="5" />
-                    <Label Style="{DynamicResource LabelStyle}"
-                           Content="Filter logs by Date"
-                           Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           FontWeight="Black"
-                           Margin="0,10,0,0" />
-                    <DatePicker Name="date1"
-                                Grid.Column="0"
-                                Grid.Row="1"
-                                Margin="10"
-                                SelectedDate="{Binding DateFrom, Mode=TwoWay}" />
-                    <DatePicker Name="date2"
-                                Grid.Column="1"
-                                Grid.Row="1"
-                                Margin="10"
-                                SelectedDate="{Binding DateTo, Mode=TwoWay}" />
-                    <Label Style="{StaticResource SelectableLabelStyle}"
-                           Content="This week"
-                           Grid.Row="2"
-                           Grid.ColumnSpan="2"
-                           HorizontalAlignment="Center">
-                        <Label.InputBindings>
-                            <MouseBinding Gesture="LeftClick"
-                                          Command="{Binding ThisWeekCommand}" />
-                        </Label.InputBindings>
-                    </Label>
-                    <Label Style="{StaticResource SelectableLabelStyle}"
-                           Content="This month"
-                           Grid.Row="3"
-                           Grid.ColumnSpan="2"
-                           HorizontalAlignment="Center">
-                        <Label.InputBindings>
-                            <MouseBinding Gesture="LeftClick"
-                                          Command="{Binding ThisMonthCommand}" />
-                        </Label.InputBindings>
-                    </Label>
-                    <Button
-                           Content="OK"
-                           Grid.Row="4"
-                           Grid.ColumnSpan="2"
-                           HorizontalAlignment="Right"
+         <Popup Name="popupFilterDate"
+                Style="{DynamicResource PopupStyle}"
+                StaysOpen="True"
+                PopupAnimation="Slide"
+                PlacementTarget="{Binding ElementName=Calendar}"
+                Placement="Bottom"
+                IsOpen="{Binding IsPopupCalendarOpen}">
+            <Grid Background="{DynamicResource WindowBackgroundBrush}">
+               <Grid.ColumnDefinitions>
+                  <ColumnDefinition />
+                  <ColumnDefinition />
+               </Grid.ColumnDefinitions>
+               <Grid.RowDefinitions>
+                  <RowDefinition />
+                  <RowDefinition />
+                  <RowDefinition />
+                  <RowDefinition />
+                  <RowDefinition />
+               </Grid.RowDefinitions>
+               <Border BorderBrush="{DynamicResource WindowBorderBrush}"
+                       BorderThickness="1"
+                       Grid.ColumnSpan="2"
+                       Grid.RowSpan="5" />
+               <Label Style="{DynamicResource LabelStyle}"
+                      Content="Filter logs by Date"
+                      Grid.Row="0"
+                      Grid.ColumnSpan="2"
+                      FontWeight="Black"
+                      Margin="0,10,0,0" />
+               <DatePicker Name="date1"
+                           Grid.Column="0"
+                           Grid.Row="1"
                            Margin="10"
-                           Name="lblOK"
-                           >
-                        <Button.InputBindings>
-                            <MouseBinding Gesture="LeftClick"
-                                          Command="{Binding GetLogsByDateCommand}" />
-                        </Button.InputBindings>
-                    </Button>
+                           SelectedDate="{Binding DateFrom, Mode=TwoWay}" />
+               <DatePicker Name="date2"
+                           Grid.Column="1"
+                           Grid.Row="1"
+                           Margin="10"
+                           SelectedDate="{Binding DateTo, Mode=TwoWay}" />
+               <Label Style="{StaticResource SelectableLabelStyle}"
+                      Content="This week"
+                      Grid.Row="2"
+                      Grid.ColumnSpan="2"
+                      HorizontalAlignment="Center">
+                  <Label.InputBindings>
+                     <MouseBinding Gesture="LeftClick"
+                                   Command="{Binding ThisWeekCommand}" />
+                  </Label.InputBindings>
+               </Label>
+               <Label Style="{StaticResource SelectableLabelStyle}"
+                      Content="This month"
+                      Grid.Row="3"
+                      Grid.ColumnSpan="2"
+                      HorizontalAlignment="Center">
+                  <Label.InputBindings>
+                     <MouseBinding Gesture="LeftClick"
+                                   Command="{Binding ThisMonthCommand}" />
+                  </Label.InputBindings>
+               </Label>
+               <Button Content="OK"
+                       Grid.Row="4"
+                       Grid.ColumnSpan="2"
+                       HorizontalAlignment="Right"
+                       Margin="10"
+                       Name="lblOK">
+                  <Button.InputBindings>
+                     <MouseBinding Gesture="LeftClick"
+                                   Command="{Binding GetLogsByDateCommand}" />
+                  </Button.InputBindings>
+               </Button>
 
-                </Grid>
-            </Popup>
+            </Grid>
+         </Popup>
 
-            <Popup Style="{DynamicResource PopupStyle}"
-                   StaysOpen="True"
-                   PopupAnimation="Slide"
-                   PlacementTarget="{Binding ElementName=personIcon}"
-                   Placement="Bottom"
-                   IsOpen="{Binding IsPopupUsersOpen}">
-                <Grid Background="{DynamicResource WindowBackgroundBrush}">
+         <Popup Style="{DynamicResource PopupStyle}"
+                StaysOpen="True"
+                PopupAnimation="Slide"
+                PlacementTarget="{Binding ElementName=personIcon}"
+                Placement="Bottom"
+                IsOpen="{Binding IsPopupUsersOpen}">
+            <Grid Background="{DynamicResource WindowBackgroundBrush}">
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Border BorderBrush="{DynamicResource WindowBorderBrush}"
-                            BorderThickness="1"
-                            Grid.ColumnSpan="2"
-                            Grid.RowSpan="5" />
-                    <Label Style="{DynamicResource LabelStyle}"
-                           Content="Display logs for User:"
-                           Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Margin="20,10,20,0"
-                           FontWeight="Black" />
+               <Grid.RowDefinitions>
+                  <RowDefinition />
+                  <RowDefinition />
+                  <RowDefinition />
+               </Grid.RowDefinitions>
+               <Border BorderBrush="{DynamicResource WindowBorderBrush}"
+                       BorderThickness="1"
+                       Grid.ColumnSpan="2"
+                       Grid.RowSpan="5" />
+               <Label Style="{DynamicResource LabelStyle}"
+                      Content="Display logs for User:"
+                      Grid.Row="0"
+                      Grid.ColumnSpan="2"
+                      Margin="20,10,20,0"
+                      FontWeight="Black" />
 
-                    <ListBox ItemsSource="{Binding UserCollection, Mode=OneTime}"
-                             SelectedItem="{Binding User, Mode=TwoWay}"
-                             SelectedValue="{Binding UserName, Mode=TwoWay}"
-                             SelectedValuePath="Name"
-                             Margin="20"
-                             Grid.Row="1"
-                             BorderThickness="0"
-                             Background="Transparent"
-                             Foreground="{DynamicResource WindowForegroundBrush}"
-                             ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Label Style="{DynamicResource LabelStyle}"
-                                       Content="{Binding Path=Name}"
-                                       FontSize="11" />
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+               <ListBox ItemsSource="{Binding UserCollection, Mode=OneTime}"
+                        SelectedItem="{Binding User, Mode=TwoWay}"
+                        SelectedValue="{Binding UserName, Mode=TwoWay}"
+                        SelectedValuePath="Name"
+                        Margin="20"
+                        Grid.Row="1"
+                        BorderThickness="0"
+                        Background="Transparent"
+                        Foreground="{DynamicResource WindowForegroundBrush}"
+                        ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
+                  <ListBox.ItemTemplate>
+                     <DataTemplate>
+                        <Label Style="{DynamicResource LabelStyle}"
+                               Content="{Binding Path=Name}"
+                               FontSize="11" />
+                     </DataTemplate>
+                  </ListBox.ItemTemplate>
+               </ListBox>
 
-                    <Button 
-                           Content="OK"
-                           Grid.Row="2"
-                           Grid.ColumnSpan="2"
-                           HorizontalAlignment="Right"
-                           Margin="10">
-                        <Button.InputBindings>
-                            <MouseBinding Gesture="LeftClick"
-                                          Command="{Binding OpenPopupCommand}"
-                                          CommandParameter="Users" />
-                        </Button.InputBindings>
-                    </Button>
-                </Grid>
-            </Popup>
+               <Button Content="OK"
+                       Grid.Row="2"
+                       Grid.ColumnSpan="2"
+                       HorizontalAlignment="Right"
+                       Margin="10">
+                  <Button.InputBindings>
+                     <MouseBinding Gesture="LeftClick"
+                                   Command="{Binding OpenPopupCommand}"
+                                   CommandParameter="Users" />
+                  </Button.InputBindings>
+               </Button>
+            </Grid>
+         </Popup>
 
-        </StackPanel>
+      </StackPanel>
 
-        <customControls:FaderContentControl Content="{Binding SelectedChild}"
-                                            Grid.Row="2"
-                                            Grid.Column="0"
-                                            Grid.ColumnSpan="6"
-                                            Grid.RowSpan="2"
-                                            Padding="10,10,30,10" />
+      <customControls:FaderContentControl Content="{Binding SelectedChild}"
+                                          Grid.Row="2"
+                                          Grid.Column="0"
+                                          Grid.ColumnSpan="6"
+                                          Grid.RowSpan="2"
+                                          Padding="10,10,30,10" />
 
-        <Grid Name="statusContentHolder"
-              Grid.Row="4"
-              Grid.ColumnSpan="5"
-              Background="{DynamicResource WindowBorderBrush}"
-              Height="25">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Label Name="lblStatus"
+      <Grid Name="statusContentHolder"
+            Grid.Row="4"
+            Grid.ColumnSpan="5"
+            Background="{DynamicResource WindowBorderBrush}"
+            Height="25">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+         </Grid.ColumnDefinitions>
+         <Label Name="lblStatus"
+                Style="{DynamicResource LabelStyle}"
+                Content="{Binding UserSettings.TrackingEnabled, Converter={StaticResource convertLoggingStatus}, Mode=OneWay}"
+                FontSize="11"
+                Foreground="White"
+                Grid.Column="0"
+                Margin="10,0,0,0" />
+         <Polygon Name="btnResume"
+                  Points="0,0 8,5 0,10"
+                  Stroke="White"
+                  Fill="Green"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Center"
+                  Stretch="Uniform"
+                  Margin="0"
+                  Visibility="{Binding UserSettings.TrackingEnabled, Converter={StaticResource convertLoggingPlay}, Mode=OneWay}"
+                  RenderTransformOrigin="0.5,0.5"
+                  Cursor="Hand"
+                  Grid.Column="1">
+            <Polygon.InputBindings>
+               <MouseBinding Gesture="LeftClick"
+                             Command="{Binding ChangeLoggingStatusCommand}" />
+            </Polygon.InputBindings>
+         </Polygon>
+
+         <Rectangle Name="btnStop"
+                    Stroke="White"
+                    Fill="Red"
+                    Width="10"
+                    Height="10"
+                    HorizontalAlignment="Left"
+                    Margin="0"
+                    Visibility="{Binding UserSettings.TrackingEnabled, Converter={StaticResource convertLoggingStop}, Mode=OneWay}"
+                    RenderTransformOrigin="0.5,0.5"
+                    Cursor="Hand"
+                    Grid.Column="1">
+            <Rectangle.InputBindings>
+               <MouseBinding Gesture="LeftClick"
+                             Command="{Binding ChangeLoggingStatusCommand}" />
+            </Rectangle.InputBindings>
+         </Rectangle>
+         <Label Margin="50,0,0,0"
+                Style="{DynamicResource LabelStyle}"
+                ContentStringFormat="Displaying logs for user: {0}"
+                Content="{Binding UserName,Mode=OneWay}"
+                FontSize="11"
+                Foreground="White"
+                Grid.Column="2" />
+         <customControls:FaderContentControl Grid.Column="3"
+                                             FaderVisibility="True">
+            <Label Margin="20,0,0,0"
                    Style="{DynamicResource LabelStyle}"
-                   Content="{Binding UserSettings.TrackingEnabled, Converter={StaticResource convertLoggingStatus}, Mode=OneWay}"
-                   FontSize="11"
                    Foreground="White"
-                   Grid.Column="0"
-                   Margin="10,0,0,0" />
-            <Polygon Name="btnResume"
-                     Points="0,0 8,5 0,10"
-                     Stroke="White"
-                     Fill="Green"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Center"
-                     Stretch="Uniform"
-                     Margin="0"
-                     Visibility="{Binding UserSettings.TrackingEnabled, Converter={StaticResource convertLoggingPlay}, Mode=OneWay}"
-                     RenderTransformOrigin="0.5,0.5"
-                     Cursor="Hand"
-                     Grid.Column="1">
-                <Polygon.InputBindings>
-                    <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding ChangeLoggingStatusCommand}" />
-                </Polygon.InputBindings>
-            </Polygon>
-
-            <Rectangle Name="btnStop"
-                       Stroke="White"
-                       Fill="Red"
-                       Width="10"
-                       Height="10"
-                       HorizontalAlignment="Left"
-                       Margin="0"
-                       Visibility="{Binding UserSettings.TrackingEnabled, Converter={StaticResource convertLoggingStop}, Mode=OneWay}"
-                       RenderTransformOrigin="0.5,0.5"
-                       Cursor="Hand"
-                       Grid.Column="1">
-                <Rectangle.InputBindings>
-                    <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding ChangeLoggingStatusCommand}" />
-                </Rectangle.InputBindings>
-            </Rectangle>
-            <Label Margin="50,0,0,0"
-                   Style="{DynamicResource LabelStyle}"
-                   ContentStringFormat="Displaying logs for user: {0}"
-                   Content="{Binding UserName,Mode=OneWay}"
-                   FontSize="11"
-                   Foreground="White"
-                   Grid.Column="2" />
-            <customControls:FaderContentControl Grid.Column="3"
-                                                FaderVisibility="True">
-                <Label Margin="20,0,0,0"
-                       Style="{DynamicResource LabelStyle}"
-                       Foreground="White"
-                       FontSize="11">
-                    <Label.Content>
-                        <MultiBinding Converter="{StaticResource convertDateFilter}">
-                            <Binding Path="DateFrom" />
-                            <Binding Path="DateTo" />
-                        </MultiBinding>
-                    </Label.Content>
-                </Label>
-            </customControls:FaderContentControl>
-            <customControls:FaderContentControl Grid.Column="4"
-                                                FaderVisibility="{Binding IsFilterApplied}">
-                <Label Margin="20,0,0,0"
-                       FontSize="11"
-                       Style="{StaticResource TrayLabelStyle}"
-                       Content="Clear filter">
-                    <Label.InputBindings>
-                        <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding ClearFilterCommand}" />
-                    </Label.InputBindings>
-                </Label>
-            </customControls:FaderContentControl>
-
-            <Label ContentStringFormat="DB Size: {0} MB"
-                   Style="{DynamicResource LabelStyle}"
-                   Foreground="White"
-                   FontSize="11"
-                   Margin="10,0,20,0"
-                   HorizontalAlignment="Left"
-                   Content="{Binding DBSize}"
-                   Grid.Column="7">
+                   FontSize="11">
+               <Label.Content>
+                  <MultiBinding Converter="{StaticResource convertDateFilter}">
+                     <Binding Path="DateFrom" />
+                     <Binding Path="DateTo" />
+                  </MultiBinding>
+               </Label.Content>
             </Label>
-        </Grid>
-    </Grid>
+         </customControls:FaderContentControl>
+         <customControls:FaderContentControl Grid.Column="4"
+                                             FaderVisibility="{Binding IsFilterApplied}">
+            <Label Margin="20,0,0,0"
+                   FontSize="11"
+                   Style="{StaticResource TrayLabelStyle}"
+                   Content="Clear filter">
+               <Label.InputBindings>
+                  <MouseBinding Gesture="LeftClick"
+                                Command="{Binding ClearFilterCommand}" />
+               </Label.InputBindings>
+            </Label>
+         </customControls:FaderContentControl>
+
+         <Label ContentStringFormat="DB Size: {0} MB"
+                Style="{DynamicResource LabelStyle}"
+                Foreground="White"
+                FontSize="11"
+                Margin="10,0,20,0"
+                HorizontalAlignment="Left"
+                Content="{Binding DBSize}"
+                Grid.Column="7">
+         </Label>
+      </Grid>
+      <Popup Style="{DynamicResource PopupStyle}"
+             IsOpen="{Binding NewVersionAvailable}"
+             StaysOpen="True"
+             Placement="Center"
+             PopupAnimation="Slide">
+         <Border Background="{DynamicResource ChildWindowBackgroungBrush}"
+                 BorderBrush="{DynamicResource WindowBorderBrush}"
+                 BorderThickness="1"
+                 Padding="10">
+            <Grid>
+               <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="Auto" />
+               </Grid.RowDefinitions>
+               <Label Style="{DynamicResource LabelStyle}"
+                      Content="New version available"
+                      FontSize="15"
+                      Grid.Row="0"
+                      Margin="10"
+                      HorizontalAlignment="Center" />
+               <TextBlock Margin="15,0,15,10"
+                          FontSize="12"
+                          Grid.Row="1">
+                  New stable version available for download at
+                <Hyperlink>www.theappstracker.com
+                <Hyperlink.InputBindings>
+                    
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding ShowWebCommand}" />
+                </Hyperlink.InputBindings>
+                </Hyperlink>
+               </TextBlock>
+               <StackPanel Orientation="Horizontal"
+                           Grid.Row="2"
+                           HorizontalAlignment="Center">
+                  <TextBlock Text="Don't bother me again with this" />
+                  <CheckBox IsChecked="{Binding DisableNotifyForNewVersion}" Margin="20,0,0,0"/>
+               </StackPanel>
+               <Button Content="Close"
+                       Grid.Row="3"
+                       HorizontalAlignment="Right"
+                       Margin="0,5,25,5">
+                  <Button.InputBindings>
+                     <MouseBinding Gesture="LeftClick"
+                                   Command="{Binding CloseNewVersionNotifierCommand}" />
+                  </Button.InputBindings>
+               </Button>
+            </Grid>
+         </Border>
+      </Popup>
+   </Grid>
 </Window>
