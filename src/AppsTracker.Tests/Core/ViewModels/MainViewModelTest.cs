@@ -30,6 +30,7 @@ namespace AppsTracker.Tests.Core.ViewModels
             trackingService.Setup(t => t.DateTo).Returns(DateTime.Now);
             settingsService.Setup(s => s.Settings).Returns(setting);
             settingsService.Setup(s => s.SaveChanges(It.IsAny<Setting>())).Callback<Setting>(s => setting = s);
+            xmlSettingsService.Setup(x => x.AppSettings).Returns(new Data.XmlSettings.AppSettings());
 
             var dataHostVMFactory = GetDataHostVMFactory();
             var statisticsHostVMFactory = GetStatisticsHostVMFactory();
