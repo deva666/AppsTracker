@@ -15,10 +15,10 @@ namespace AppsTracker.Widgets
 
         private DispatcherTimer centerTimer;
 
-        private Storyboard scrollIn;
-        private Storyboard scrollOut;
+        private readonly Storyboard scrollIn;
+        private readonly Storyboard scrollOut;
 
-        private Queue<string> requests = new Queue<string>();
+        private readonly Queue<string> requests = new Queue<string>();
 
         private Label child;
 
@@ -36,19 +36,22 @@ namespace AppsTracker.Widgets
             get { return (string)GetValue(InfoContentProperty); }
             set { SetValue(InfoContentProperty, value); }
         }
+
         public static readonly DependencyProperty InfoContentProperty =
             DependencyProperty.Register("InfoContent", typeof(string), typeof(ScrollingContentControl), new PropertyMetadata(string.Empty, InfoContentCallback));
 
         private static void InfoContentCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ScrollingContentControl control = d as ScrollingContentControl;
+
             if (!string.IsNullOrEmpty(e.NewValue as string))
                 control.EnqueueNewInfo(e.NewValue as string);
         }
 
         public ScrollingContentControl()
         {
-            InitStoryboards();
+            scrollIn = (Storyboard)FindResource("scrollIn");
+            scrollOut = (Storyboard)FindResource("scrollOut");
             this.RenderTransform = new TranslateTransform();
             this.Visibility = System.Windows.Visibility.Collapsed;
             this.Loaded += (s, e) =>
@@ -58,12 +61,7 @@ namespace AppsTracker.Widgets
             };
         }
 
-        private void InitStoryboards()
-        {
-            scrollIn = FindResource("scrollIn") as Storyboard;
-            scrollOut = FindResource("scrollOut") as Storyboard;
-        }
-
+        
         private void EnqueueNewInfo(string info)
         {
             if (string.IsNullOrWhiteSpace(info))
@@ -87,6 +85,7 @@ namespace AppsTracker.Widgets
             var scrollInClone = scrollIn.Clone();
             scrollInClone.Completed += (s, e) =>
             {
+                centerTimer.Tick -= TimerTick;
                 centerTimer.Tick += TimerTick;
                 centerTimer.Start();
             };
@@ -100,9 +99,10 @@ namespace AppsTracker.Widgets
             centerTimer.Stop();
 
             var scrollOutClone = scrollOut.Clone();
-            scrollOutClone.Completed += (snd, ear) =>
+            scrollOutClone.Completed += (snd, args) =>
             {
                 this.Visibility = System.Windows.Visibility.Collapsed;
+                child.Content = String.Empty;
                 if (requests.Count == 0)
                     isQueing = false;
                 else

@@ -251,7 +251,8 @@ namespace AppsTracker.Tests
                     () => new Tuple<SettingsAppCategoriesViewModel, Action>(
                         new SettingsAppCategoriesViewModel(categoriesFactory,
                             mediator,
-                            trackingService.Object),
+                            trackingService.Object,
+                            new WorkQueueMock()),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<SettingsAppCategoriesViewModel>(tupleFactory);
@@ -265,7 +266,8 @@ namespace AppsTracker.Tests
                     () => new Tuple<SettingsLimitsViewModel, Action>(
                         new SettingsLimitsViewModel(dataService.Object,
                             trackingService.Object,
-                            mediator),
+                            mediator, 
+                            new WorkQueueMock()),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<SettingsLimitsViewModel>(tupleFactory);

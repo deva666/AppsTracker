@@ -20,8 +20,6 @@ namespace AppsTracker.MVVM
 
         private ViewModelBase selectedChild;
 
-        private ICommand changePageCommand;
-
 
         public ViewModelBase SelectedChild
         {
@@ -35,22 +33,7 @@ namespace AppsTracker.MVVM
             }
         }
 
-
-        public virtual ICommand ChangePageCommand
-        {
-            get
-            {
-                return changePageCommand ?? (changePageCommand = new DelegateCommand(ChangePage));
-            }
-        }
-
-
-        protected virtual void ChangePage(object parameter)
-        {
-            SelectedChild = GetChild((Type)parameter);
-        }
-
-
+      
         protected T ProduceValue<T>(ExportFactory<T> factory) where T : ViewModelBase
         {
             using (var context = factory.CreateExport())
@@ -92,7 +75,7 @@ namespace AppsTracker.MVVM
         }
 
 
-        private static ViewModelBase GetChildInternal(ViewModelResolver resolver)
+        private ViewModelBase GetChildInternal(ViewModelResolver resolver)
         {
             ViewModelBase viewModel = null;
             resolver.Reference.TryGetTarget(out viewModel);

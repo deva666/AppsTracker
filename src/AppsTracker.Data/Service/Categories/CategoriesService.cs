@@ -55,15 +55,22 @@ namespace AppsTracker.Data.Service
             context = context ?? new AppsEntities();
             foreach (var cat in categoriesToDelete)
             {
-                context.Entry(cat).State = EntityState.Deleted;
+                if (cat.AppCategoryID != default(int))
+                {
+                    context.Entry(cat).State = EntityState.Deleted;
+                }
             }
 
             foreach (var cat in modifiedCategories)
             {
                 if (cat.AppCategoryID == default(int))
+                {
                     context.Entry(cat).State = System.Data.Entity.EntityState.Added;
+                }
                 else
+                {
                     context.Entry(cat).State = System.Data.Entity.EntityState.Modified;
+                }
 
                 SetApplications(cat);
             }

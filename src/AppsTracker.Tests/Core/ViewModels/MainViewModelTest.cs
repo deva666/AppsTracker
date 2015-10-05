@@ -53,14 +53,7 @@ namespace AppsTracker.Tests.Core.ViewModels
             Assert.IsInstanceOfType(mainViewModel.UserCollection, typeof(List<Uzer>), "UserCollection types don't match");
             Assert.IsInstanceOfType(mainViewModel.SelectedChild, typeof(DataHostViewModel), "Selected child types don't match");
         }
-
-        [TestMethod]
-        public void TestChangePageCommand()
-        {
-            mainViewModel.ChangePageCommand.Execute(typeof(StatisticsHostViewModel));
-            Assert.IsInstanceOfType(mainViewModel.SelectedChild, typeof(StatisticsHostViewModel), "Change page is not working");
-        }
-
+       
         [TestMethod]
         public void TestChangeFirstDate()
         {
