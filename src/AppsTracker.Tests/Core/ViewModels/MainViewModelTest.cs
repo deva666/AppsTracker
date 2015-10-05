@@ -12,6 +12,7 @@ using AppsTracker.Data.Models;
 using AppsTracker.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Threading.Tasks;
 
 namespace AppsTracker.Tests.Core.ViewModels
 {
@@ -30,7 +31,8 @@ namespace AppsTracker.Tests.Core.ViewModels
             trackingService.Setup(t => t.DateTo).Returns(DateTime.Now);
             settingsService.Setup(s => s.Settings).Returns(setting);
             settingsService.Setup(s => s.SaveChanges(It.IsAny<Setting>())).Callback<Setting>(s => setting = s);
-            xmlSettingsService.Setup(x => x.AppSettings).Returns(new Data.XmlSettings.AppSettings());
+            xmlSettingsService.Setup(x => x.AppSettings).Returns(new Data.XmlSettings.AppSettings() { DisableNotifyForNewVersion = false });
+            
 
             var dataHostVMFactory = GetDataHostVMFactory();
             var statisticsHostVMFactory = GetStatisticsHostVMFactory();
@@ -47,13 +49,60 @@ namespace AppsTracker.Tests.Core.ViewModels
                 settingsHostVMFactory);
         }
 
+        private MainViewModel CreateViewModel()
+        {
+            var dataHostVMFactory = GetDataHostVMFactory();
+            var statisticsHostVMFactory = GetStatisticsHostVMFactory();
+            var settingsHostVMFactory = GetSettingsHostVMFactory();
+
+            return new MainViewModel(dataService.Object,
+                settingsService.Object,
+                xmlSettingsService.Object,
+                trackingService.Object,
+                releaseNotesService.Object,
+                mediator,
+                dataHostVMFactory,
+                statisticsHostVMFactory,
+                settingsHostVMFactory);
+        }
+
+        [TestMethod]
+        public async Task TestFailedVersionGet()
+        {
+            releaseNotesService.Setup(s => s.GetReleaseNotesAsync())
+                .ThrowsAsync(new Exception("Fail"));
+            var viewModel = CreateViewModel();
+            await Task.Delay(300);
+            Assert.IsFalse(viewModel.NewVersionAvailable);
+        }
+
+        [TestMethod]
+        public async Task TestNoNewVersion()
+        {
+            releaseNotesService.Setup(s => s.GetReleaseNotesAsync())
+                .ReturnsAsync(new List<ReleaseNote>() { new ReleaseNote("0.0.0.1", new List<String>()) });
+            var viewModel = CreateViewModel();
+            await Task.Delay(300);
+            Assert.IsFalse(viewModel.NewVersionAvailable);
+        }
+
+        [TestMethod]
+        public async Task TestNewVersionAvailable()
+        {
+            releaseNotesService.Setup(s => s.GetReleaseNotesAsync())
+                .ReturnsAsync(new List<ReleaseNote>() { new ReleaseNote("99.99.99.99", new List<String>()) });
+            var viewModel = CreateViewModel();
+            await Task.Delay(300);
+            Assert.IsTrue(viewModel.NewVersionAvailable);
+        }
+
         [TestMethod]
         public void TestChildTypes()
         {
             Assert.IsInstanceOfType(mainViewModel.UserCollection, typeof(List<Uzer>), "UserCollection types don't match");
             Assert.IsInstanceOfType(mainViewModel.SelectedChild, typeof(DataHostViewModel), "Selected child types don't match");
         }
-       
+
         [TestMethod]
         public void TestChangeFirstDate()
         {
