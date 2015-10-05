@@ -33,14 +33,18 @@ namespace AppsTracker.Data.Service
         IEnumerable<T> GetFiltered<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class;
 
         void SaveModifiedEntity<T>(T item) where T : class;
-
-        Task SaveModifiedEntityAsync<T>(T item) where T : class;
-
+       
         void SaveNewEntity<T>(T item) where T : class;
 
+        void SaveModifiedEntityRange<T>(IEnumerable<T> items) where T : class;
+        
         Task SaveModifiedEntityRangeAsync<T>(IEnumerable<T> items) where T : class;
 
+        void SaveNewEntityRange<T>(IEnumerable<T> items) where T : class;
+        
         Task SaveNewEntityRangeAsync<T>(IEnumerable<T> items) where T : class;
+
+        void DeleteEntityRange<T>(IEnumerable<T> range) where T : class;
 
         Task DeleteEntityRangeAsync<T>(IEnumerable<T> range) where T : class;
 

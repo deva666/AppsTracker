@@ -9,6 +9,7 @@ using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 using AppsTracker.Data.Service;
 using AppsTracker.Common.Communication;
+using AppsTracker.Common.Utils;
 
 namespace AppsTracker.ViewModels
 {
@@ -21,6 +22,7 @@ namespace AppsTracker.ViewModels
         private readonly IDataService dataService;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
+        private readonly IWorkQueue workQueue;
 
         private readonly IList<AppLimit> limitsToDelete = new List<AppLimit>();
 
@@ -127,11 +129,14 @@ namespace AppsTracker.ViewModels
         [ImportingConstructor]
         public SettingsLimitsViewModel(IDataService dataService,
                                        ITrackingService trackingService,
-                                       IMediator mediator)
+                                       IMediator mediator,
+                                       IWorkQueue workQueue)
         {
             this.dataService = dataService;
             this.trackingService = trackingService;
             this.mediator = mediator;
+            this.workQueue = workQueue;
+
             mediator.Register(MediatorMessages.APPLICATION_ADDED, new Action<Aplication>(OnAppAdded));
 
             AppList = new AsyncProperty<IEnumerable<Aplication>>(GetApps, this);
@@ -198,12 +203,11 @@ namespace AppsTracker.ViewModels
             var modifiedLimits = appsToSave.SelectMany(a => a.ObservableLimits)
                 .Where(l => l.AppLimitID != default(int) && l.HasChanges);
             var newLimits = appsToSave.SelectMany(a => a.ObservableLimits).Where(l => l.AppLimitID == default(int));
-            var saveModifiedTask = dataService.SaveModifiedEntityRangeAsync(modifiedLimits);
-            var saveNewTask = dataService.SaveNewEntityRangeAsync(newLimits);
-            var deleteTask = dataService.DeleteEntityRangeAsync(limitsToDelete.Where(l=>l.AppLimitID != default(int)));
+            var saveModifiedTask = workQueue.EnqueueWork(() => dataService.SaveModifiedEntityRange(modifiedLimits));
+            var saveNewTask = workQueue.EnqueueWork(() => dataService.SaveNewEntityRange(newLimits));
+            var deleteTask = workQueue.EnqueueWork(() => dataService.DeleteEntityRange(limitsToDelete.Where(l => l.AppLimitID != default(int))));
 
-            await Task.WhenAll(saveModifiedTask, saveNewTask);
-            await deleteTask;
+            await Task.WhenAll(saveModifiedTask, saveNewTask, deleteTask);
 
             limitsToDelete.Clear();
 

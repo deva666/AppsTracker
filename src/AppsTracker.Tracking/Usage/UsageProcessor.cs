@@ -13,14 +13,17 @@ namespace AppsTracker.Tracking.Helpers
     {
         private readonly IDataService dataService;
         private readonly ITrackingService trackingService;
+        private readonly IWorkQueue workQueue;
         private readonly IDictionary<UsageTypes, Usage> usageTypesMap = new Dictionary<UsageTypes, Usage>();
 
         [ImportingConstructor]
         public UsageProcessor(IDataService dataService,
-                              ITrackingService trackingService)
+                              ITrackingService trackingService,
+                              IWorkQueue workQueue)
         {
             this.dataService = dataService;
             this.trackingService = trackingService;
+            this.workQueue = workQueue;
         }
 
         public void NewUsage(UsageTypes usageType)
@@ -44,7 +47,7 @@ namespace AppsTracker.Tracking.Helpers
             usage.UsageEnd = DateTime.Now;
             usage.IsCurrent = false;
             usageTypesMap.Remove(usageType);
-            dataService.SaveNewEntity(usage);
+            workQueue.EnqueueWork(() => dataService.SaveNewEntity(usage));
         }
 
 

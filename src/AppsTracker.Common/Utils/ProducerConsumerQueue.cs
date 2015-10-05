@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppsTracker.Common.Logging;
+using System;
 using System.Collections.Concurrent;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
@@ -12,10 +13,14 @@ namespace AppsTracker.Common.Utils
     {
         private bool isDisposed;
 
+        private readonly ILogger logger;
         private readonly BlockingCollection<WorkItem> queue;
-
-        public ProducerConsumerQueue()
+        
+        [ImportingConstructor]
+        public ProducerConsumerQueue(ILogger logger)
         {
+            this.logger = logger;
+
             queue = new BlockingCollection<WorkItem>();
             Task.Factory.StartNew(StartWork, CancellationToken.None,
                 TaskCreationOptions.LongRunning, TaskScheduler.Default);
@@ -50,6 +55,7 @@ namespace AppsTracker.Common.Utils
                 }
                 catch (Exception ex)
                 {
+                    logger.Log(ex);
                     work.TaskSource.SetException(ex);
                 }
             }

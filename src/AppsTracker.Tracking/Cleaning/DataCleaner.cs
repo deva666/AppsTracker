@@ -28,7 +28,7 @@ namespace AppsTracker.Tracking
 
         public void Initialize(Setting settings)
         {
-            logCleaner = new LazyInit<ILogCleaner>(() => logCleanerInstance, l => l.CleanAsync());
+            logCleaner = new LazyInit<ILogCleaner>(() => logCleanerInstance, l => l.Clean());
 
             logCleanerInstance.Days = settings.OldLogDeleteDays;
             logCleaner.Enabled = settings.DeleteOldLogs;

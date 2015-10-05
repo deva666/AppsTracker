@@ -97,6 +97,18 @@ namespace AppsTracker.Data.Service
             }
         }
 
+        public void SaveModifiedEntityRange<T>(IEnumerable<T> items) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                foreach (var item in items)
+                {
+                    context.Entry(item).State = EntityState.Modified;
+                }
+                context.SaveChanges();
+            }
+        }
+
         public async Task SaveModifiedEntityRangeAsync<T>(IEnumerable<T> items) where T : class
         {
             using (var context = new AppsEntities())
@@ -109,12 +121,33 @@ namespace AppsTracker.Data.Service
             }
         }
 
+        public void SaveNewEntityRange<T>(IEnumerable<T> items) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                context.Set<T>().AddRange(items);
+                context.SaveChanges();
+            }
+        }
+
         public async Task SaveNewEntityRangeAsync<T>(IEnumerable<T> items) where T : class
         {
             using (var context = new AppsEntities())
             {
                 context.Set<T>().AddRange(items);
                 await context.SaveChangesAsync();
+            }
+        }
+
+        public void DeleteEntityRange<T>(IEnumerable<T> range) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                foreach (var item in range)
+                {
+                    context.Entry<T>(item).State = EntityState.Deleted;
+                }
+                context.SaveChanges();
             }
         }
 

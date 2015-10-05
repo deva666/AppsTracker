@@ -16,6 +16,7 @@ using System.Windows.Media.Animation;
 using AppsTracker.Data.Service;
 using AppsTracker.Widgets;
 using AppsTracker.Service;
+using AppsTracker.Common.Utils;
 
 
 namespace AppsTracker.Views
@@ -27,13 +28,17 @@ namespace AppsTracker.Views
     {
         private readonly IDataService dataService;
         private readonly IWindowService windowService;
+        private readonly IWorkQueue workQueue;
 
         [ImportingConstructor]
-        public DBCleanerWindow(IDataService dataService, IWindowService windowService)
+        public DBCleanerWindow(IDataService dataService,
+                               IWindowService windowService,
+                               IWorkQueue workQueue)
         {
             InitializeComponent();
             this.dataService = dataService;
             this.windowService = windowService;
+            this.workQueue = workQueue;
         }
 
         private void lblCancel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -48,7 +53,7 @@ namespace AppsTracker.Views
                 return;
 
             overlayGrd.Visibility = System.Windows.Visibility.Visible;
-            int count = await Task<int>.Run(() => DeleteOldScreenshots(days));
+            int count = (int)await workQueue.EnqueueWork(new Func<Object>(() => dataService.DeleteOldScreenshots(days)));
             overlayGrd.Visibility = System.Windows.Visibility.Collapsed;
             windowService.ShowMessageDialog(string.Format("Deleted {0} screenshots", count));
             Close();
@@ -59,13 +64,7 @@ namespace AppsTracker.Views
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-
-        private int DeleteOldScreenshots(int days)
-        {
-            return dataService.DeleteOldScreenshots(days);
-        }
-
-
+      
         public object ViewArgument
         {
             get;

@@ -21,6 +21,7 @@ namespace AppsTracker.Tracking
         private int daysTreshold;
 
         private readonly IDataService dataService;
+        private readonly IWorkQueue workQueue;
 
         public int Days
         {
@@ -33,19 +34,16 @@ namespace AppsTracker.Tracking
         }
 
         [ImportingConstructor]
-        public LogCleaner(IDataService dataService)
+        public LogCleaner(IDataService dataService,
+                          IWorkQueue workQueue)
         {
             this.dataService = dataService;
+            this.workQueue = workQueue;
         }
 
         public void Clean()
         {
-            dataService.DeleteOldLogs(daysTreshold);
-        }
-
-        public Task CleanAsync()
-        {
-            return Task.Run(new Action(Clean));
+            workQueue.EnqueueWork(() => dataService.DeleteOldLogs(daysTreshold));
         }
 
         public void Dispose()
