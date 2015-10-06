@@ -54,7 +54,7 @@ namespace AppsTracker.Views
 
         private void CheckPassword()
         {
-            if (Hash.GetEncryptedString(pbPassword.Password) == settingsService.Settings.WindowOpen)
+            if (Hashing.EncryptString(pbPassword.Password) == settingsService.Settings.WindowOpen)
             {
                 this.DialogResult = true;
                 Close();

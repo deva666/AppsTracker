@@ -59,7 +59,7 @@
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\Ensure.cs" />
     <Compile Include="Utils\Extensions.cs" />
-    <Compile Include="Utils\Hash.cs" />
+    <Compile Include="Utils\Hashing.cs" />
     <Compile Include="Utils\IWorkQueue.cs" />
     <Compile Include="Utils\IWorkQueue~.cs" />
     <Compile Include="Utils\ParallelFilter.cs" />

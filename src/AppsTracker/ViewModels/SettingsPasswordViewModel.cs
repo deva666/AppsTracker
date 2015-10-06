@@ -55,7 +55,7 @@ namespace AppsTracker.ViewModels
 
             if (Settings.IsMasterPasswordSet)
             {
-                string currentPassword = Hash.GetEncryptedString(passwords[2].Password);
+                string currentPassword = Hashing.EncryptString(passwords[2].Password);
                 string storedPassword = Settings.WindowOpen;
                 if (storedPassword == null)
                 {
@@ -80,7 +80,7 @@ namespace AppsTracker.ViewModels
             if (!string.IsNullOrEmpty(password.Trim()))
             {
                 Settings.IsMasterPasswordSet = true;
-                Settings.WindowOpen = Hash.GetEncryptedString(password);
+                Settings.WindowOpen = Hashing.EncryptString(password);
                 windowService.ShowMessageDialog("Password set.", false);
             }
             else
