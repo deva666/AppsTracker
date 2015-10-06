@@ -76,6 +76,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Common\EnsureTest.cs" />
+    <Compile Include="Core\Controllers\ApplicationControllerTest.cs" />
     <Compile Include="Core\MVVM\AsyncPropertyTest.cs" />
     <Compile Include="Common\MediatorTest.cs" />
     <Compile Include="Core\Controllers\TrackingControllerTest.cs" />

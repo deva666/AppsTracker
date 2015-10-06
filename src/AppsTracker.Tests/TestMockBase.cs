@@ -11,6 +11,7 @@ using AppsTracker.ViewModels;
 using Moq;
 using AppsTracker.Service;
 using AppsTracker.Service.Web;
+using AppsTracker.Controllers;
 
 namespace AppsTracker.Tests
 {
@@ -30,6 +31,8 @@ namespace AppsTracker.Tests
         protected readonly Mock<IAppChangedNotifier> appChangedNotifier = new Mock<IAppChangedNotifier>();
         protected readonly Mock<IScreenshotTracker> screenshotTracker = new Mock<IScreenshotTracker>();
         protected readonly Mock<IReleaseNotesService> releaseNotesService = new Mock<IReleaseNotesService>();
+        protected readonly Mock<IAppearanceController> appearanceController = new Mock<IAppearanceController>();
+        protected readonly Mock<ITrackingController> trackingController = new Mock<ITrackingController>();
 
         protected readonly IMediator mediator = new Mediator();
         protected readonly ISyncContext syncContext = new SyncContextMock();
