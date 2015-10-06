@@ -24,9 +24,13 @@ namespace AppsTracker.Data.Service
     {
         private IEnumerable<Log> _cachedLogs = null;
 
-        private string _cachedLogsForApp;
+        private String _cachedLogsForApp;
 
-        public IEnumerable<AppSummary> GetAppSummary(int userID, int appID, string appName, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<AppSummary> GetAppSummary(Int32 userID, 
+                                                     Int32 appID, 
+                                                     String appName, 
+                                                     DateTime dateFrom, 
+                                                     DateTime dateTo)
         {
             using (var context = new AppsEntities())
             {
@@ -49,7 +53,7 @@ namespace AppsTracker.Data.Service
                                     .Select(g => new
                                     {
                                         Date = new DateTime(g.Key.year, g.Key.month, g.Key.day),
-                                        Duration = (double)g.Sum(l => l.Duration)
+                                        Duration = (Double)g.Sum(l => l.Duration)
                                     });
 
 
@@ -67,9 +71,13 @@ namespace AppsTracker.Data.Service
                               .Select(g => new AppSummary
                                    {
                                        AppName = g.Key.name,
-                                       Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString() + " " + new DateTime(g.Key.year, g.Key.month, g.Key.day).DayOfWeek.ToString(),
+                                       Date = new DateTime(g.Key.year, g.Key.month, g.Key.day)
+                                       .ToShortDateString() 
+                                       + " " + new DateTime(g.Key.year, g.Key.month, g.Key.day)
+                                       .DayOfWeek.ToString(),
                                        DateTime = new DateTime(g.Key.year, g.Key.month, g.Key.day),
-                                       Usage = g.Sum(l => l.Duration) / totalDuration.First(t => t.Date == new DateTime(g.Key.year, g.Key.month, g.Key.day)).Duration,
+                                       Usage = g.Sum(l => l.Duration) / totalDuration
+                                       .First(t => t.Date == new DateTime(g.Key.year, g.Key.month, g.Key.day)).Duration,
                                        Duration = g.Sum(l => l.Duration)
                                    })
                               .OrderByDescending(t => t.DateTime)
@@ -84,10 +92,10 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<WindowSummary> GetWindowsSummary(int userID, string appName, IEnumerable<DateTime> days)
+        public IEnumerable<WindowSummary> GetWindowsSummary(Int32 userID, String appName, IEnumerable<DateTime> days)
         {
 
-            if (_cachedLogs == null || (_cachedLogs != null && string.Equals(_cachedLogsForApp, appName) == false))
+            if (_cachedLogs == null || (_cachedLogs != null && String.Equals(_cachedLogsForApp, appName) == false))
             {
                 CacheLogs(userID, appName);
             }
@@ -96,7 +104,7 @@ namespace AppsTracker.Data.Service
 
             var totalFiltered = logs.Where(l => days.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)));
 
-            double totalDuration = totalFiltered.Sum(l => l.Duration);
+            var totalDuration = totalFiltered.Sum(l => l.Duration);
 
             var result = (from l in totalFiltered
                           group l by l.Window.Title into grp
@@ -112,7 +120,7 @@ namespace AppsTracker.Data.Service
             return result;
         }
 
-        private void CacheLogs(int userID, string appName)
+        private void CacheLogs(Int32 userID, String appName)
         {
             using (var context = new AppsEntities())
             {
@@ -124,7 +132,10 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<WindowDurationOverview> GetWindowDurationOverview(int userID, string appName, IEnumerable<string> selectedWindows, IEnumerable<DateTime> days)
+        public IEnumerable<WindowDurationOverview> GetWindowDurationOverview(Int32 userID,
+                                                                             String appName,
+                                                                             IEnumerable<String> selectedWindows, 
+                                                                             IEnumerable<DateTime> days)
         {
 
             if (selectedWindows.Count() == 0)
@@ -139,7 +150,7 @@ namespace AppsTracker.Data.Service
 
             var totalFiltered = logs.Where(l => days.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)) && selectedWindows.Contains(l.Window.Title));
 
-            IList<WindowDurationOverview> result = new List<WindowDurationOverview>();
+            var result = new List<WindowDurationOverview>();
 
             var projected = from l in totalFiltered
                             group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day } into grp
@@ -149,11 +160,11 @@ namespace AppsTracker.Data.Service
             {
                 var projected2 = grp.GroupBy(g => g.Window.Title);
                 var date = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day);
-                WindowDurationOverview series = new WindowDurationOverview()
+                var series = new WindowDurationOverview()
                 {
                     Date = date.ToShortDateString() + " " + date.DayOfWeek.ToString()
                 };
-                List<WindowDuration> modelList = new List<WindowDuration>();
+                var modelList = new List<WindowDuration>();
                 foreach (var grp2 in projected2)
                 {
                     WindowDuration model = new WindowDuration() { Title = grp2.Key, Duration = Math.Round(new TimeSpan(grp2.Sum(l => l.Duration)).TotalMinutes, 2) };
@@ -166,12 +177,12 @@ namespace AppsTracker.Data.Service
             return result;
         }
 
-        public IEnumerable<LogSummary> GetLogSummary(int userID, DateTime dateFrom)
+        public IEnumerable<LogSummary> GetLogSummary(Int32 userID, DateTime dateFrom)
         {
             using (var context = new AppsEntities())
             {
-                string ignore = UsageTypes.Login.ToString();
-                DateTime dateTo = dateFrom.AddDays(1);
+                var ignore = UsageTypes.Login.ToString();
+                var dateTo = dateFrom.AddDays(1);
 
                 IEnumerable<Log> logs = null;
                 IEnumerable<Usage> usages = null;
@@ -222,19 +233,19 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<AppSummary> GetAllAppSummaries(int userID, DateTime dateFrom)
+        public IEnumerable<AppSummary> GetAllAppSummaries(Int32 userID, DateTime dateFrom)
         {
             using (var context = new AppsEntities())
             {
-                DateTime dateTo = dateFrom.AddDays(1);
+                var dateTo = dateFrom.AddDays(1);
                 var logs = context.Logs.Where(l => l.Window.Application.User.UserID == userID
                                                 && l.DateCreated >= dateFrom
                                                 && l.DateCreated <= dateTo)
                                         .Include(l => l.Window.Application)
                                         .ToList();
 
-                double totalDuration = (from l in logs
-                                        select (double?)l.Duration).Sum() ?? 0;
+                Double totalDuration = (from l in logs
+                                        select (Double?)l.Duration).Sum() ?? 0;
 
                 var result = (from l in logs
                               group l by l.Window.Application.Name into grp
@@ -257,7 +268,9 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<WindowSummary> GetWindowsSummary(int userID, string appName, DateTime dateFrom)
+        public IEnumerable<WindowSummary> GetWindowsSummary(Int32 userID, 
+                                                            String appName, 
+                                                            DateTime dateFrom)
         {
             if (appName == null)
                 return null;
@@ -272,7 +285,7 @@ namespace AppsTracker.Data.Service
                                                 .Include(l => l.Window)
                                                 .ToList();
 
-                double totalDuration = total.Sum(l => l.Duration);
+                var totalDuration = total.Sum(l => l.Duration);
 
                 return total.GroupBy(l => l.Window.Title)
                                       .Select(g => new WindowSummary
@@ -286,13 +299,13 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<UsageByTime> GetUsageSummary(int userID, DateTime dateFrom)
+        public IEnumerable<UsageByTime> GetUsageSummary(Int32 userID, DateTime dateFrom)
         {
             using (var context = new AppsEntities())
             {
-                DateTime fromDay = dateFrom.Date;
-                DateTime nextDay = fromDay.AddDays(1d);
-                DateTime today = DateTime.Now.Date;
+                var fromDay = dateFrom.Date;
+                var nextDay = fromDay.AddDays(1d);
+                var today = DateTime.Now.Date;
 
                 List<Usage> logins;
                 List<Usage> idles = null;
@@ -340,12 +353,12 @@ namespace AppsTracker.Data.Service
 
                 });
 
-                List<UsageByTime> collection = new List<UsageByTime>();
+                var usages = new List<UsageByTime>();
 
                 foreach (var login in logins)
                 {
-                    UsageByTime series = new UsageByTime() { Time = login.GetDisplayedStart(fromDay).ToString("HH:mm:ss") };
-                    ObservableCollection<UsageSummary> observableCollection = new ObservableCollection<UsageSummary>();
+                    var series = new UsageByTime() { Time = login.GetDisplayedStart(fromDay).ToString("HH:mm:ss") };
+                    var observableCollection = new ObservableCollection<UsageSummary>();
 
                     long idleTime = 0;
                     long lockedTime = 0;
@@ -373,13 +386,13 @@ namespace AppsTracker.Data.Service
 
                     series.UsageSummaryCollection = observableCollection;
 
-                    collection.Add(series);
+                    usages.Add(series);
                 }
 
                 if (logins.Count > 1)
                 {
-                    UsageByTime seriesTotal = new UsageByTime() { Time = "TOTAL" };
-                    ObservableCollection<UsageSummary> observableTotal = new ObservableCollection<UsageSummary>();
+                    var seriesTotal = new UsageByTime() { Time = "TOTAL" };
+                    var observableTotal = new ObservableCollection<UsageSummary>();
 
                     long idleTimeTotal = 0;
                     long lockedTimeTotal = 0;
@@ -403,14 +416,14 @@ namespace AppsTracker.Data.Service
 
                     seriesTotal.UsageSummaryCollection = observableTotal;
 
-                    collection.Add(seriesTotal);
+                    usages.Add(seriesTotal);
                 }
 
-                return collection;
+                return usages;
             }
         }
 
-        public IEnumerable<AppDuration> GetAppsDuration(int userID, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<AppDuration> GetAppsDuration(Int32 userID, DateTime dateFrom, DateTime dateTo)
         {
             using (var context = new AppsEntities())
             {
@@ -431,7 +444,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<DailyAppDuration> GetAppDurationByDate(int userID, string appName, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<DailyAppDuration> GetAppDurationByDate(Int32 userID, String appName, DateTime dateFrom, DateTime dateTo)
         {
             using (var context = new AppsEntities())
             {
@@ -457,11 +470,11 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<AppDurationOverview> GetAppsUsageSeries(int userID, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<AppDurationOverview> GetAppsUsageSeries(Int32 userID, DateTime dateFrom, DateTime dateTo)
         {
             using (var context = new AppsEntities())
             {
-                List<AppDurationOverview> dailyUsedAppsSeries = new List<AppDurationOverview>();
+                var dailyUsedAppsSeries = new List<AppDurationOverview>();
 
                 var logs = context.Logs.Include(l => l.Window.Application)
                                     .Include(l => l.Window.Application.User)
@@ -513,7 +526,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<ScreenshotModel> GetScreenshots(int userID, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<ScreenshotModel> GetScreenshots(Int32 userID, DateTime dateFrom, DateTime dateTo)
         {
             using (var context = new AppsEntities())
             {
@@ -531,7 +544,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<DailyScreenshotModel> GetScreenshotsByApp(int userID, string appName, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<DailyScreenshotModel> GetScreenshotsByApp(Int32 userID, String appName, DateTime dateFrom, DateTime dateTo)
         {
             using (var context = new AppsEntities())
             {
@@ -577,7 +590,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public IEnumerable<UsageOverview> GetUsageSeries(string username, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<UsageOverview> GetUsageSeries(String username, DateTime dateFrom, DateTime dateTo)
         {
             using (var context = new AppsEntities())
             {
@@ -624,13 +637,13 @@ namespace AppsTracker.Data.Service
 
                     var day = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day);
 
-                    UsageOverview series = new UsageOverview()
+                    var series = new UsageOverview()
                     {
                         DateInstance = day,
                         Date = day.ToShortDateString()
                     };
 
-                    ObservableCollection<UsageSummary> observableCollection = new ObservableCollection<UsageSummary>();
+                    var usages = new ObservableCollection<UsageSummary>();
 
                     long idleTime = 0;
                     long lockedTime = 0;
@@ -639,20 +652,20 @@ namespace AppsTracker.Data.Service
 
                     idleTime = idles.Sum(l => l.GetDisplayedTicks(day));
                     if (idleTime > 0)
-                        observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(idleTime).TotalHours, 2), UsageType = "Idle" });
+                        usages.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(idleTime).TotalHours, 2), UsageType = "Idle" });
 
                     lockedTime = lockeds.Sum(l => l.GetDisplayedTicks(day));
                     if (lockedTime > 0)
-                        observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Computer locked" });
+                        usages.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Computer locked" });
 
                     stoppedTime = stoppeds.Sum(l => l.GetDisplayedTicks(day));
                     if (stoppedTime > 0)
-                        observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Stopped logging" });
+                        usages.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Stopped logging" });
 
                     loginTime = grp.Sum(l => l.GetDisplayedTicks(day)) - lockedTime - idleTime - stoppedTime;
-                    observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(loginTime).TotalHours, 2), UsageType = "Work" });
+                    usages.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(loginTime).TotalHours, 2), UsageType = "Work" });
 
-                    series.UsageCollection = observableCollection;
+                    series.UsageCollection = usages;
                     collection.Add(series);
                 }
 
@@ -660,13 +673,13 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public Tuple<string, string, string> GetDayInfo(int userID, DateTime dateFrom)
+        public Tuple<String, String, String> GetDayInfo(Int32 userID, DateTime dateFrom)
         {
             using (var context = new AppsEntities())
             {
-                DateTime fromDay = dateFrom.Date;
-                DateTime nextDay = fromDay.AddDays(1d);
-                DateTime today = DateTime.Now.Date;
+                var fromDay = dateFrom.Date;
+                var nextDay = fromDay.AddDays(1d);
+                var today = DateTime.Now.Date;
 
                 var loginsQuery = context.Usages.Where(u => u.User.UserID == userID
                                                      && ((u.UsageStart >= fromDay
@@ -685,35 +698,31 @@ namespace AppsTracker.Data.Service
 
                 var loginEnd = logins.Where(l => l.UsageEnd <= nextDay).OrderByDescending(l => l.UsageEnd).FirstOrDefault();
 
-                string dayBegin = loginBegin == null ? "N/A" : loginBegin.GetDisplayedStart(fromDay).ToShortTimeString();
-                string dayEnd;
+                String dayBegin = loginBegin == null ? "N/A" : loginBegin.GetDisplayedStart(fromDay).ToShortTimeString();
+                String dayEnd;
 
                 if (loginEnd == null || loginEnd.UsageEnd.Date == today)
                 {
                     dayEnd = "N/A";
                 }
-                //else if (loginEnd.UsageEnd.Date < today)
-                //{
-                //    dayEnd = "24:00";
-                //}
                 else
                 {
                     dayEnd = loginEnd.GetDisplayedEnd(fromDay).ToShortTimeString();
                 }
 
                 var durationSpan = new TimeSpan(durationQuery.Sum(l => l.Duration));
-                var duration = durationSpan.Days > 0 ? string.Format("{0:D2}:{1:D2}:{2:D2}", durationSpan.Days, durationSpan.Hours, durationSpan.Minutes) : string.Format("{0:D2}:{1:D2}", durationSpan.Hours, durationSpan.Minutes);
+                var duration = durationSpan.Days > 0 ? String.Format("{0:D2}:{1:D2}:{2:D2}", durationSpan.Days, durationSpan.Hours, durationSpan.Minutes) : String.Format("{0:D2}:{1:D2}", durationSpan.Hours, durationSpan.Minutes);
 
-                return new Tuple<string, string, string>(dayBegin, dayEnd, duration);
+                return new Tuple<String, String, String>(dayBegin, dayEnd, duration);
             }
         }
 
-        public IEnumerable<CategoryDuration> GetCategories(int userID, DateTime dateFrom)
+        public IEnumerable<CategoryDuration> GetCategories(Int32 userID, DateTime dateFrom)
         {
             using (var context = new AppsEntities())
             {
-                DateTime dateTo = dateFrom.AddDays(1);
-                List<CategoryDuration> categoryModels = new List<CategoryDuration>();
+                var dateTo = dateFrom.AddDays(1);
+                var categoryModels = new List<CategoryDuration>();
 
                 var categories = context.AppCategories.Include(c => c.Applications)
                     .Include(c => c.Applications.Select(a => a.Windows.Select(w => w.Logs)))
@@ -737,7 +746,9 @@ namespace AppsTracker.Data.Service
         }
 
 
-        public IEnumerable<CategoryDuration> GetCategoryStats(int userId, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<CategoryDuration> GetCategoryStats(Int32 userId, 
+                                                              DateTime dateFrom, 
+                                                              DateTime dateTo)
         {
             using (var context = new AppsEntities())
             {
@@ -771,7 +782,10 @@ namespace AppsTracker.Data.Service
         }
 
 
-        public IEnumerable<DailyCategoryDuration> GetDailyCategoryStats(int userId, string categoryName, DateTime dateFrom, DateTime dateTo)
+        public IEnumerable<DailyCategoryDuration> GetDailyCategoryStats(Int32 userId, 
+                                                                        String categoryName, 
+                                                                        DateTime dateFrom, 
+                                                                        DateTime dateTo)
         {
             using (var context = new AppsEntities())
             {
@@ -799,7 +813,7 @@ namespace AppsTracker.Data.Service
 
         private IList<Usage> BreakUsagesByDay(IEnumerable<Usage> usages)
         {
-            List<Usage> tempUsages = new List<Usage>();
+            var tempUsages = new List<Usage>();
 
             foreach (var usage in usages)
             {
@@ -819,7 +833,7 @@ namespace AppsTracker.Data.Service
 
                     var span = dayEnd - dayBegin;
 
-                    for (int i = 0; i <= span; i++)
+                    for (Int32 i = 0; i <= span; i++)
                     {
                         Usage tempUsage = new Usage(usage);
                         tempUsage.UsageStart = usage.GetDisplayedStart(usage.UsageStart.Date.AddDays(i));
@@ -840,7 +854,7 @@ namespace AppsTracker.Data.Service
 
                     var span = dayEnd - dayBegin;
 
-                    for (int i = 0; i <= span; i++)
+                    for (Int32 i = 0; i <= span; i++)
                     {
                         Usage tempUsage = new Usage(usage);
                         tempUsage.UsageStart = usage.GetDisplayedStart(usage.UsageStart.Date.AddDays(i));
@@ -853,7 +867,7 @@ namespace AppsTracker.Data.Service
             return tempUsages;
         }
 
-        private int GetDaysInYear(int year)
+        private Int32 GetDaysInYear(Int32 year)
         {
             var thisYear = new DateTime(year, 1, 1);
             var nextYear = new DateTime(year + 1, 1, 1);
