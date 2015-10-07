@@ -1,26 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows;
-using WPFHelper;
 
 namespace AppsTracker.Widgets
 {
     public class SortableListView : ListView
     {
-        #region Fields
+        private SortableGridViewColumn lastSortedColumn = null;
+        private GridViewColumnHeader lastSortedColumnHeader = null;
+        private ListSortDirection lastDirection = ListSortDirection.Ascending;
 
-        SortableGridViewColumn lastSortedColumn = null;
-        GridViewColumnHeader lastSortedColumnHeader = null;
-        ListSortDirection lastDirection = ListSortDirection.Ascending; 
-        
-        #endregion
-        
-        #region Dependency Properties
         public string ColumnHeaderAscendingTemplate
         {
             get { return (string)GetValue(ColumnHeaderAscendingTemplateProperty); }
@@ -50,13 +41,12 @@ namespace AppsTracker.Widgets
         }
 
         public static readonly DependencyProperty ColumnHeaderNotSortedTemplateProperty =
-            DependencyProperty.Register("ColumnHeaderNotSortedTemplate", typeof(string), typeof(SortableListView), new UIPropertyMetadata("")); 
-        #endregion
+            DependencyProperty.Register("ColumnHeaderNotSortedTemplate", typeof(string), typeof(SortableListView), new UIPropertyMetadata(""));
 
         protected override void OnInitialized(EventArgs e)
         {
             this.AddHandler(GridViewColumnHeader.ClickEvent, new RoutedEventHandler(GridViewColumnHeaderClickedHandler));
-            GridView gridView = this.View as GridView;
+            var gridView = this.View as GridView;
 
             if (gridView != null)
             {
@@ -78,12 +68,6 @@ namespace AppsTracker.Widgets
                 {
                     lastSortedColumn = sortableGridViewColumn;
                     Sort(sortableGridViewColumn.SortPropertyName, ListSortDirection.Ascending);
-
-                    //if (!String.IsNullOrEmpty(this.ColumnHeaderAscendingTemplate))
-                    //{
-                    //    sortableGridViewColumn.HeaderTemplate = this.TryFindResource(ColumnHeaderAscendingTemplate) as DataTemplate;
-                    //}
-
                     this.SelectedIndex = 0;
                 }
             }
@@ -92,11 +76,11 @@ namespace AppsTracker.Widgets
 
         private void GridViewColumnHeaderClickedHandler(object sender, RoutedEventArgs e)
         {
-            GridViewColumnHeader headerClicked = e.OriginalSource as GridViewColumnHeader;
+            var headerClicked = e.OriginalSource as GridViewColumnHeader;
             if (headerClicked != null && headerClicked.Role != GridViewColumnHeaderRole.Padding)
             {
-                SortableGridViewColumn sortableGridViewColumn = headerClicked.Column as SortableGridViewColumn;
-                if (sortableGridViewColumn != null && ! string.IsNullOrEmpty(sortableGridViewColumn.SortPropertyName))
+                var sortableGridViewColumn = headerClicked.Column as SortableGridViewColumn;
+                if (sortableGridViewColumn != null && !string.IsNullOrEmpty(sortableGridViewColumn.SortPropertyName))
                 {
                     ListSortDirection direction;
                     if (lastSortedColumn == null
@@ -121,15 +105,16 @@ namespace AppsTracker.Widgets
                     lastSortedColumn = sortableGridViewColumn;
                     lastSortedColumnHeader = headerClicked;
                 }
-              
-
             }
         }
 
         private void Sort(string sortBy, ListSortDirection direction)
         {
             lastDirection = direction;
-            ICollectionView dataView = CollectionViewSource.GetDefaultView(this.ItemsSource);
+            var dataView = CollectionViewSource.GetDefaultView(this.ItemsSource);
+
+            if (dataView == null || dataView.SortDescriptions == null)
+                return;
 
             dataView.SortDescriptions.Clear();
             SortDescription sd = new SortDescription(sortBy, direction);
