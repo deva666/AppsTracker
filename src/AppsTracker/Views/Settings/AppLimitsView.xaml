@@ -12,7 +12,8 @@
         <converters:ConvertSelectedIndexToBool x:Key="selectedIndexConverter" />
         <converters:ConvertAppLimitsToBool x:Key="convertAppLimitsToBool" />
     </UserControl.Resources>
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

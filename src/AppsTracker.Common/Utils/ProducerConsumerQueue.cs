@@ -64,10 +64,12 @@ namespace AppsTracker.Common.Utils
         public void Dispose()
         {
             if (isDisposed)
+            {
                 return;
+            }
 
             queue.CompleteAdding();
-            queue.Dispose();
+            queue.WaitUntilEmpty();
             isDisposed = true;
         }
 

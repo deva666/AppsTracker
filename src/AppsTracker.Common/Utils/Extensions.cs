@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Threading;
@@ -64,6 +65,15 @@ namespace AppsTracker.Common.Utils
                 throw new ArgumentNullException(argumentName);
 
             return argument;
+        }
+
+        public static void WaitUntilEmpty<T>(this BlockingCollection<T> collection)
+        {
+            var timeStamp = DateTime.Now;
+            while (collection.Count > 0 || DateTime.Now > timeStamp.AddSeconds(5))
+            {
+                Thread.Sleep(100);
+            }
         }
     }
 }

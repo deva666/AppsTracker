@@ -13,7 +13,8 @@
         <converters:ConvertSelectedIndexToBool x:Key="selectedIndexConverter" />
         <converters:MultiSelectedIndexBooleanConverter x:Key="multiSelectedIndexConverter" />
     </UserControl.Resources>
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
