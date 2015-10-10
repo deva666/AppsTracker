@@ -47,7 +47,8 @@ namespace AppsTracker.MVVM
 
         public ICommand SaveChangesCommand
         {
-            get { return saveChangesCommand ?? (saveChangesCommand = new DelegateCommandAsync(SaveChangesAsync)); }
+            get { return saveChangesCommand ?? 
+                    (saveChangesCommand = new DelegateCommandAsync(SaveChangesAsync)); }
         }
 
 
@@ -62,7 +63,7 @@ namespace AppsTracker.MVVM
 
         private void LoadSettings()
         {
-            Settings = settingsService.Settings; ;
+            Settings = settingsService.Settings;
         }
 
 

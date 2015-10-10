@@ -33,7 +33,8 @@ namespace AppsTracker.ViewModels
         public ICommand ShowAboutWindowCommand
         {
 
-            get { return showAboutWindowCommand ?? (showAboutWindowCommand = new DelegateCommand(ShowAboutWindow)); }
+            get { return showAboutWindowCommand 
+                    ?? (showAboutWindowCommand = new DelegateCommand(ShowAboutWindow)); }
         }
 
 
