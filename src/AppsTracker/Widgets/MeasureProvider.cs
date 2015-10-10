@@ -20,14 +20,14 @@ namespace AppsTracker.Widgets
         {
             var graphics = Graphics.FromHwnd(IntPtr.Zero);
             var deviceContext = graphics.GetHdc();
-            return WinAPI.GetDeviceCaps(deviceContext, LOGPIXELSX) / DPI;
+            return NativeMethods.GetDeviceCaps(deviceContext, LOGPIXELSX) / DPI;
         }
 
         private double GetScaleY()
         {
             var graphics = Graphics.FromHwnd(IntPtr.Zero);
             var deviceContext = graphics.GetHdc();
-            return WinAPI.GetDeviceCaps(deviceContext, LOGPIXELSY) / DPI;
+            return NativeMethods.GetDeviceCaps(deviceContext, LOGPIXELSY) / DPI;
         }
     }
 }

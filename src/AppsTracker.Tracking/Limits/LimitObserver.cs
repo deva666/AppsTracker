@@ -207,6 +207,7 @@ namespace AppsTracker.Tracking
         {
             dayTimer.Dispose();
             weekTimer.Dispose();
+            midnightNotifier.Dispose();
         }
 
 

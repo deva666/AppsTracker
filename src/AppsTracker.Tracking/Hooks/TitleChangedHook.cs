@@ -28,8 +28,8 @@ namespace AppsTracker.Tracking.Hooks
                 return;
 
             windowTitleBuilder.Clear();
-            windowTitleBuilder.Capacity = WinAPI.GetWindowTextLength(hWnd) + 1;
-            WinAPI.GetWindowText(hWnd, windowTitleBuilder, windowTitleBuilder.Capacity);
+            windowTitleBuilder.Capacity = NativeMethods.GetWindowTextLength(hWnd) + 1;
+            NativeMethods.GetWindowText(hWnd, windowTitleBuilder, windowTitleBuilder.Capacity);
             var title = string.IsNullOrEmpty(windowTitleBuilder.ToString()) ?
                 "No Title" : windowTitleBuilder.ToString();
             TitleChanged.InvokeSafely(this, new WinChangedArgs(title, hWnd));

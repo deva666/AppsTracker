@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AppsTracker.Common.Utils
 {
     [Export(typeof(IWorkQueue))]
-    public class ProducerConsumerQueue : IWorkQueue
+    public sealed class ProducerConsumerQueue : IWorkQueue
     {
         private bool isDisposed;
 
@@ -67,6 +67,7 @@ namespace AppsTracker.Common.Utils
                 return;
 
             queue.CompleteAdding();
+            queue.Dispose();
             isDisposed = true;
         }
 

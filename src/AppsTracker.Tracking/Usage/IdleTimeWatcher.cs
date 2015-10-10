@@ -14,11 +14,11 @@ namespace AppsTracker.Tracking
             int lastInputTicks = 0;
             int idleTicks = 0;
 
-            WinAPI.LASTINPUTINFO lastInputInfo = new WinAPI.LASTINPUTINFO();
+            NativeMethods.LASTINPUTINFO lastInputInfo = new NativeMethods.LASTINPUTINFO();
             lastInputInfo.cbSize = (uint)Marshal.SizeOf(lastInputInfo);
             lastInputInfo.dwTime = 0;
 
-            if (WinAPI.GetLastInputInfo(ref lastInputInfo))
+            if (NativeMethods.GetLastInputInfo(ref lastInputInfo))
             {
                 lastInputTicks = (int)lastInputInfo.dwTime;
                 idleTicks = systemUptime - lastInputTicks;

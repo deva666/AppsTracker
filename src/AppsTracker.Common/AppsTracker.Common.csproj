@@ -65,7 +65,7 @@
     <Compile Include="Utils\ParallelFilter.cs" />
     <Compile Include="Utils\ProducerConsumerQueue.cs" />
     <Compile Include="Utils\ProducerConsumerQueue~.cs" />
-    <Compile Include="Utils\WinAPI.cs" />
+    <Compile Include="Utils\NativeMethods.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -22,12 +22,12 @@ namespace AppsTracker.Tracking.Helpers
             try
             {
                 size = Size.Empty;
-                WinAPI.RECT rect = new WinAPI.RECT();
-                IntPtr hForWnd = WinAPI.GetForegroundWindow();
+                NativeMethods.RECT rect = new NativeMethods.RECT();
+                IntPtr hForWnd = NativeMethods.GetForegroundWindow();
                 if (hForWnd == IntPtr.Zero) 
                     return null;
-                WinAPI.GetWindowRect(hForWnd, ref rect);
-                IntPtr hwnd = WinAPI.GetDC(IntPtr.Zero);
+                NativeMethods.GetWindowRect(hForWnd, ref rect);
+                IntPtr hwnd = NativeMethods.GetDC(IntPtr.Zero);
                 if (hwnd == IntPtr.Zero)
                     return null;
                 

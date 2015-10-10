@@ -40,7 +40,7 @@ namespace AppsTracker.Data.Utils
             {
                 try
                 {
-                    WinAPI.GetWindowThreadProcessId(hWnd, out processID);
+                    NativeMethods.GetWindowThreadProcessId(hWnd, out processID);
                     if (processID != 0)
                         return System.Diagnostics.Process.GetProcessById(checked((int)processID));
                 }

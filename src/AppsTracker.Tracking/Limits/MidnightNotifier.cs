@@ -29,5 +29,10 @@ namespace AppsTracker.Tracking.Helpers
             MidnightTick.InvokeSafely(this, EventArgs.Empty);
             InitializeTimer();
         }
+
+        public void Dispose()
+        {
+            timer.Dispose();
+        }
     }
 }

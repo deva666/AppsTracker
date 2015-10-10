@@ -51,7 +51,7 @@ namespace AppsTracker.Tracking
         {
             if (nCode >= 0)
                 Reset();
-            return WinAPI.CallNextHookEx(keyboardHookHandle, nCode, wParam, lParam);
+            return NativeMethods.CallNextHookEx(keyboardHookHandle, nCode, wParam, lParam);
         }
 
 
@@ -75,8 +75,8 @@ namespace AppsTracker.Tracking
                 {
                     using (var module = process.MainModule)
                     {
-                        keyboardHookHandle = WinAPI.SetWindowsHookEx(WH_KEYBOARD_LL, keyboardHookCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
-                        mouseHookHandle = WinAPI.SetWindowsHookEx(WH_MOUSE_LL, mouseHookCallback, WinAPI.GetModuleHandle(module.ModuleName), 0);
+                        keyboardHookHandle = NativeMethods.SetWindowsHookEx(WH_KEYBOARD_LL, keyboardHookCallback, NativeMethods.GetModuleHandle(module.ModuleName), 0);
+                        mouseHookHandle = NativeMethods.SetWindowsHookEx(WH_MOUSE_LL, mouseHookCallback, NativeMethods.GetModuleHandle(module.ModuleName), 0);
                     }
                 }
                 hooksRemoved = false;
@@ -88,7 +88,7 @@ namespace AppsTracker.Tracking
         {
             if (nCode >= 0)
                 Reset();
-            return WinAPI.CallNextHookEx(mouseHookHandle, nCode, wParam, lParam);
+            return NativeMethods.CallNextHookEx(mouseHookHandle, nCode, wParam, lParam);
         }
 
         private void Reset()
@@ -105,8 +105,8 @@ namespace AppsTracker.Tracking
 
         private void RemoveHooks()
         {
-            WinAPI.UnhookWindowsHookEx(keyboardHookHandle);
-            WinAPI.UnhookWindowsHookEx(mouseHookHandle);
+            NativeMethods.UnhookWindowsHookEx(keyboardHookHandle);
+            NativeMethods.UnhookWindowsHookEx(mouseHookHandle);
 
             keyboardHookHandle = IntPtr.Zero;
             mouseHookHandle = IntPtr.Zero;

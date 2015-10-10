@@ -20,7 +20,7 @@ namespace AppsTracker.Common.Utils
     public delegate IntPtr MouseHookCallback(int code, IntPtr wParam, IntPtr lParam);
     public delegate void WinHookCallBack(IntPtr hWinEventHook, uint eventType, IntPtr hWnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
 
-    public class WinAPI
+    public class NativeMethods
     {
 
         #region custom struct

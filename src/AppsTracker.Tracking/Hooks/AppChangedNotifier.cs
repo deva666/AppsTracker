@@ -50,7 +50,7 @@ namespace AppsTracker.Tracking.Hooks
         {
             syncContext.Invoke(() =>
             {
-                var hWnd = WinAPI.GetForegroundWindow();
+                var hWnd = NativeMethods.GetForegroundWindow();
                 if(hWnd != IntPtr.Zero && hWnd != activeWindowHandle)
                 {
                     SetActiveWindow(hWnd);
@@ -84,7 +84,7 @@ namespace AppsTracker.Tracking.Hooks
 
         public void CheckActiveApp()
         {
-            var hWnd = WinAPI.GetForegroundWindow();
+            var hWnd = NativeMethods.GetForegroundWindow();
             if (hWnd == IntPtr.Zero)
                 return;
 
@@ -95,8 +95,8 @@ namespace AppsTracker.Tracking.Hooks
         {
             activeWindowHandle = hWnd;
             var windowTitleBuilder = new StringBuilder();
-            windowTitleBuilder.Capacity = WinAPI.GetWindowTextLength(hWnd) + 1;
-            WinAPI.GetWindowText(hWnd, windowTitleBuilder, windowTitleBuilder.Capacity);
+            windowTitleBuilder.Capacity = NativeMethods.GetWindowTextLength(hWnd) + 1;
+            NativeMethods.GetWindowText(hWnd, windowTitleBuilder, windowTitleBuilder.Capacity);
             var title = string.IsNullOrEmpty(windowTitleBuilder.ToString()) ?
                 "No Title" : windowTitleBuilder.ToString();
             activeWindowTitle = title;

@@ -16,7 +16,7 @@ namespace AppsTracker.Tracking.Hooks
         public WinHookBase(uint minEvent, uint maxEvent)
         {
             winHookCallBack = new WinHookCallBack(WinHookCallback);
-            hookID = WinAPI.SetWinEventHook(minEvent, maxEvent, IntPtr.Zero, winHookCallBack, 0, 0, WINEVENT_OUTOFCONTEXT);
+            hookID = NativeMethods.SetWinEventHook(minEvent, maxEvent, IntPtr.Zero, winHookCallBack, 0, 0, WINEVENT_OUTOFCONTEXT);
         }
 
         protected abstract void WinHookCallback(IntPtr hWinEventHook, 
@@ -33,7 +33,7 @@ namespace AppsTracker.Tracking.Hooks
         {
             if (isDisposed)
                 return;
-            WinAPI.UnhookWinEvent(hookID);
+            NativeMethods.UnhookWinEvent(hookID);
             isDisposed = true;
         }
 

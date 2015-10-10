@@ -2,7 +2,7 @@
 
 namespace AppsTracker.Tracking.Helpers
 {
-    public interface IMidnightNotifier
+    public interface IMidnightNotifier : IDisposable
     {
         event EventHandler MidnightTick;
     }

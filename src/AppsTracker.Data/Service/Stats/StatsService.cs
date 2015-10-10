@@ -20,7 +20,7 @@ using AppsTracker.Data.Utils;
 namespace AppsTracker.Data.Service
 {
     [Export(typeof(IStatsService))]
-    public class StatsService : IStatsService
+    public sealed class StatsService : IStatsService
     {
         private IEnumerable<Log> _cachedLogs = null;
 
