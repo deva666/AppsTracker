@@ -10,6 +10,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Data.Entity.Validation;
+using System.Linq;
 using AppsTracker.Data.Models;
 
 namespace AppsTracker.Data.Db
@@ -29,9 +31,30 @@ namespace AppsTracker.Data.Db
 #endif
         }
 
+        public override int SaveChanges()
+        {
+            try
+            {
+                return base.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var errorMessages = ex.EntityValidationErrors
+                                    .SelectMany(x => x.ValidationErrors)
+                                    .Select(x => x.ErrorMessage);
+
+                var fullErrorMessage = string.Join("; ", errorMessages);
+                var exceptionMessage = string.Concat(ex.Message,
+                    "Validation errors: ", fullErrorMessage);
+
+                throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
+            }
+        }
+
+
         private void FlushSql(string s)
         {
-           // System.Diagnostics.Debug.WriteLine(s);
+            // System.Diagnostics.Debug.WriteLine(s);
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
