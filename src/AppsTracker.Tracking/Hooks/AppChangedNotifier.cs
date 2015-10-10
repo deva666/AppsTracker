@@ -9,7 +9,9 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Text;
+using System.Threading;
 using AppsTracker.Common.Utils;
+using AppsTracker.Communication;
 using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Tracking.Hooks
@@ -19,31 +21,48 @@ namespace AppsTracker.Tracking.Hooks
     {
         public event EventHandler<AppChangedArgs> AppChanged;
 
-        private readonly IWinChanged winChangedHook;
+        private readonly IWindowChanged windowChangedHook;
         private readonly ITitleChanged titleChangedHook;
+        private readonly ISyncContext syncContext;
+
+        private readonly Timer windowCheckTimer;
 
         private IntPtr activeWindowHandle;
         private String activeWindowTitle;
 
 
         [ImportingConstructor]
-        public AppChangedNotifier(IWinChanged winChangedHook, ITitleChanged titleChangedHook)
+        public AppChangedNotifier(IWindowChanged windowChangedHook,
+                                  ITitleChanged titleChangedHook,
+                                  ISyncContext syncContext)
         {
-            this.winChangedHook = winChangedHook;
+            this.windowChangedHook = windowChangedHook;
             this.titleChangedHook = titleChangedHook;
+            this.syncContext = syncContext;
 
-            this.winChangedHook.ActiveWindowChanged += OnActiveWindowChanged;
+            windowCheckTimer = new Timer(OnWindowChangedTick, null, 5 * 1000, 5 * 1000);
+
+            this.windowChangedHook.ActiveWindowChanged += OnActiveWindowChanged;
             this.titleChangedHook.TitleChanged += OnTitleChanged;
         }
 
+        private void OnWindowChangedTick(Object state)
+        {
+            syncContext.Invoke(() =>
+            {
+                var hWnd = WinAPI.GetForegroundWindow();
+                if(hWnd != IntPtr.Zero && hWnd != activeWindowHandle)
+                {
+                    SetActiveWindow(hWnd);
+                }
+            });
+        }
 
         private void OnActiveWindowChanged(object sender, WinChangedArgs e)
         {
-            //if (activeWindowHandle == e.Handle)
-            //    return;
-
-            //if (activeWindowTitle == e.Title)
-            //    return;
+            if (activeWindowHandle == e.Handle ||
+                activeWindowTitle == e.Title)
+                return;
 
             activeWindowHandle = e.Handle;
             activeWindowTitle = e.Title;
@@ -69,16 +88,20 @@ namespace AppsTracker.Tracking.Hooks
             if (hWnd == IntPtr.Zero)
                 return;
 
+            SetActiveWindow(hWnd);
+        }
+
+        private void SetActiveWindow(IntPtr hWnd)
+        {
+            activeWindowHandle = hWnd;
             var windowTitleBuilder = new StringBuilder();
-            windowTitleBuilder.Clear();
             windowTitleBuilder.Capacity = WinAPI.GetWindowTextLength(hWnd) + 1;
             WinAPI.GetWindowText(hWnd, windowTitleBuilder, windowTitleBuilder.Capacity);
             var title = string.IsNullOrEmpty(windowTitleBuilder.ToString()) ?
                 "No Title" : windowTitleBuilder.ToString();
             activeWindowTitle = title;
-            var appInfo = AppInfo.Create(hWnd);
-            var logInfo = LogInfo.Create(appInfo, title);
-            AppChanged.InvokeSafely(this, new AppChangedArgs(logInfo));
+
+            RaiseAppChanged();
         }
 
         private void RaiseAppChanged()
@@ -90,7 +113,8 @@ namespace AppsTracker.Tracking.Hooks
 
         public void Dispose()
         {
-            winChangedHook.Dispose();
+            windowCheckTimer.Dispose();
+            windowChangedHook.Dispose();
             titleChangedHook.Dispose();
         }
     }

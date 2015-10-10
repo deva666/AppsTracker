@@ -5,8 +5,8 @@ using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Tracking.Hooks
 {
-    [Export(typeof(IWinChanged))]
-    internal sealed class WinChangedHook : WinHookBase, IWinChanged
+    [Export(typeof(IWindowChanged))]
+    internal sealed class WinChangedHook : WinHookBase, IWindowChanged
     {
         public event EventHandler<WinChangedArgs> ActiveWindowChanged;
 

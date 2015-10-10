@@ -1,4 +1,5 @@
 ﻿using System;
+using AppsTracker.Tests.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -10,9 +11,10 @@ namespace AppsTracker.Tracking.Hooks.Tests
         [TestMethod()]
         public void WinChangedEventTest()
         {
-            var winChanged = new Mock<IWinChanged>();
+            var winChanged = new Mock<IWindowChanged>();
             var titleChanged = new Mock<ITitleChanged>();
-            var notifier = new AppChangedNotifier(winChanged.Object, titleChanged.Object);
+            var syncContext = new SyncContextMock();
+            var notifier = new AppChangedNotifier(winChanged.Object, titleChanged.Object, syncContext);
             var eventRaised = false;
 
             notifier.AppChanged += (s, e) => eventRaised = true;
@@ -25,9 +27,10 @@ namespace AppsTracker.Tracking.Hooks.Tests
         [TestMethod()]
         public void TitleChangedEventNotRaisedTest()
         {
-            var winChanged = new Mock<IWinChanged>();
+            var winChanged = new Mock<IWindowChanged>();
             var titleChanged = new Mock<ITitleChanged>();
-            var notifier = new AppChangedNotifier(winChanged.Object, titleChanged.Object);
+            var syncContext = new SyncContextMock();
+            var notifier = new AppChangedNotifier(winChanged.Object, titleChanged.Object, syncContext);
             var eventRaised = false;
 
             notifier.AppChanged += (s, e) => eventRaised = true;
@@ -40,9 +43,10 @@ namespace AppsTracker.Tracking.Hooks.Tests
         [TestMethod()]
         public void TitleChangedEventRaisedTest()
         {
-            var winChanged = new Mock<IWinChanged>();
+            var winChanged = new Mock<IWindowChanged>();
             var titleChanged = new Mock<ITitleChanged>();
-            var notifier = new AppChangedNotifier(winChanged.Object, titleChanged.Object);
+            var syncContext = new SyncContextMock();
+            var notifier = new AppChangedNotifier(winChanged.Object, titleChanged.Object, syncContext);
             var eventRaised = false;
 
             winChanged.Raise(w => w.ActiveWindowChanged += null,
