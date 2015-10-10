@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
@@ -18,9 +17,11 @@ namespace AppsTracker.Service.Web
             foreach (var item in jArray)
             {
                 var version = (string)item["version_number"];
-                var notes = item.SelectToken("release_notes").Where(s => s != null).Select(s => (string)s);
+                var notes = item.SelectToken("release_notes")
+                                .Where(s => s != null)
+                                .Select(s => (string)s);
                 releaseNotes.Add(new ReleaseNote(version, notes));
-            }            
+            }
 
             return releaseNotes;
         }

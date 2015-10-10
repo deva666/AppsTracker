@@ -21,7 +21,7 @@ namespace AppsTracker.Service.Web
 
         public async Task<IEnumerable<ReleaseNote>> GetReleaseNotesAsync()
         {
-            var httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(SERVER_URI);
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(SERVER_URI);
             httpWebRequest.Proxy = WebRequest.DefaultWebProxy;
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "GET";

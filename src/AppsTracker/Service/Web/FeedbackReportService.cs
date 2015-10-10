@@ -17,9 +17,9 @@ namespace AppsTracker.Service.Web
         {
             Ensure.NotNull(feedback, "feedback");
 
-            System.Net.ServicePointManager.Expect100Continue = false;
+            ServicePointManager.Expect100Continue = false;
 
-            var httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(SERVER_URI);
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(SERVER_URI);
             httpWebRequest.Proxy = WebRequest.DefaultWebProxy;
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
