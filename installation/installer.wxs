@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <?define RTMProductVersion="3.0.0.0" ?>
-<?define ProductVersion = "3.0.0.0"?>
+<?define ProductVersion = "3.0.1.0"?>
 <?define ProductUpgradeCode = "07e55424-57ab-4a89-bb89-28fde0f528ef"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
 		xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
@@ -75,9 +75,6 @@
               <File Id="SqlCe64File6" Name="sqlcese40.dll"/>
             </Component>
           </Directory>
-          <Directory Id="ScreenshotsDir" Name="Screenshots">
-
-          </Directory>
           <Directory Id="SqlCe86" Name="x86" FileSource="x86">
             <Directory Id="SqlCe86Misc" Name="Microsoft.VC90.CRT" FileSource="x86\Microsoft.VC90.CRT">
               <Component Id="SqlCe86MiscFiles" Guid="75857f3a-47ef-4bcb-b997-825403c1d0e8">
@@ -147,14 +144,16 @@
 
         </Directory>
 
-      </Directory>
-
-      <Directory Id="CommonAppDataFolder">
+		 <Directory Id="CommonAppDataFolder">
         <Directory Id="AppServiceFolder" Name="AppService" FileSource="AppService">
-          <Component Id="AppServiceFiles" Guid="c73013a2-1f09-4ef3-8c93-ae4393cd12af" KeyPath="yes">
-            <RemoveFile Id="RemoveDBfile" Name="appsdb.sdf" On="uninstall"/>
+          <Component Id="AppServiceFiles" Guid="c73013a2-1f09-4ef3-8c93-ae4393cd12af" KeyPath="yes"  NeverOverwrite="yes" Permanent="yes">
+			 <RemoveFile Id="RemoveDBfile" Name="appsdb.sdf" On="uninstall"/>
+				<Condition>
+					NOT UPGRADINGPRODUCTCODE
+				</Condition>
           </Component>
         </Directory>
+      </Directory>
       </Directory>
 
       <Directory Id="ProgramMenuFolder">
@@ -170,14 +169,10 @@
       </Directory>
     </Directory>
 
+	
     <MajorUpgrade
-		Schedule="afterInstallFinalize"
 		DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit."/>
-    <!--
-      <InstallExecuteSequence>
-		 <InstallExecute After="RemoveExistingProducts" />  
-      </InstallExecuteSequence>
- -->
+	
 
     <Feature Id="DefaultFeature" Level="1">
       <ComponentRef Id="ApplicationFiles"/>
