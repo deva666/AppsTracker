@@ -65,11 +65,11 @@ namespace AppsTracker.Data.Service
             {
                 if (cat.AppCategoryID == default(int))
                 {
-                    context.Entry(cat).State = System.Data.Entity.EntityState.Added;
+                    context.Entry(cat).State = EntityState.Added;
                 }
                 else
                 {
-                    context.Entry(cat).State = System.Data.Entity.EntityState.Modified;
+                    context.Entry(cat).State = EntityState.Modified;
                 }
 
                 SetApplications(cat);

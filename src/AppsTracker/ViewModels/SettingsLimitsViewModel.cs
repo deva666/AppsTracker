@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using AppsTracker.Data.Models;
-using AppsTracker.MVVM;
-using AppsTracker.Data.Service;
 using AppsTracker.Common.Communication;
 using AppsTracker.Common.Utils;
+using AppsTracker.Data.Models;
+using AppsTracker.Data.Service;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
@@ -24,7 +24,7 @@ namespace AppsTracker.ViewModels
         private readonly IMediator mediator;
         private readonly IWorkQueue workQueue;
 
-        private readonly IList<AppLimit> limitsToDelete = new List<AppLimit>();
+        private readonly ICollection<AppLimit> limitsToDelete = new List<AppLimit>();
 
 
         public override string Title
@@ -155,7 +155,7 @@ namespace AppsTracker.ViewModels
                                                         .Distinct();
             foreach (var app in apps)
             {
-                app.ObservableLimits = new System.Collections.ObjectModel.ObservableCollection<AppLimit>(app.Limits);
+                app.ObservableLimits = new ObservableCollection<AppLimit>(app.Limits);
             }
 
             return apps;
@@ -167,12 +167,12 @@ namespace AppsTracker.ViewModels
             if (selectedApp == null)
                 return;
 
-            string limit = (string)parameter;
+            string limitSpan = (string)parameter;
             var appLimit = new AppLimit() { ApplicationID = selectedApp.ApplicationID };
 
-            if (limit.ToUpper() == "DAILY")
+            if (limitSpan.ToUpper() == "DAILY")
                 appLimit.LimitSpan = LimitSpan.Day;
-            else if (limit.ToUpper() == "WEEKLY")
+            else if (limitSpan.ToUpper() == "WEEKLY")
                 appLimit.LimitSpan = LimitSpan.Week;
 
             selectedApp.ObservableLimits.Add(appLimit);

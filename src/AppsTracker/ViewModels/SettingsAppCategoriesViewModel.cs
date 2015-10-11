@@ -10,13 +10,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Windows.Input;
-using AppsTracker.Data.Models;
-using AppsTracker.MVVM;
-using AppsTracker.Data.Service;
-using AppsTracker.Common.Communication;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using AppsTracker.Common.Communication;
 using AppsTracker.Common.Utils;
+using AppsTracker.Data.Models;
+using AppsTracker.Data.Service;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
@@ -102,7 +102,11 @@ namespace AppsTracker.ViewModels
 
         public ICommand AddNewCategoryCommand
         {
-            get { return addNewCategoryCommand ?? (addNewCategoryCommand = new DelegateCommand(AddNewCategory)); }
+            get
+            {
+                return addNewCategoryCommand
+                  ?? (addNewCategoryCommand = new DelegateCommand(AddNewCategory));
+            }
         }
 
 
@@ -110,7 +114,11 @@ namespace AppsTracker.ViewModels
 
         public ICommand ShowNewCategoryCommand
         {
-            get { return showNewCategoryCommand ?? (showNewCategoryCommand = new DelegateCommand(ShowNewCategory)); }
+            get
+            {
+                return showNewCategoryCommand
+                  ?? (showNewCategoryCommand = new DelegateCommand(ShowNewCategory));
+            }
         }
 
 
@@ -118,7 +126,11 @@ namespace AppsTracker.ViewModels
 
         public ICommand SaveChangesCommand
         {
-            get { return saveChangesCommand ?? (saveChangesCommand = new DelegateCommandAsync(SaveChanges)); }
+            get
+            {
+                return saveChangesCommand
+                  ?? (saveChangesCommand = new DelegateCommandAsync(SaveChanges));
+            }
         }
 
 
@@ -126,7 +138,11 @@ namespace AppsTracker.ViewModels
 
         public ICommand AssignAppCommand
         {
-            get { return assignAppCommand ?? (assignAppCommand = new DelegateCommand(AssignApp)); }
+            get
+            {
+                return assignAppCommand
+                  ?? (assignAppCommand = new DelegateCommand(AssignApp));
+            }
         }
 
 
@@ -134,7 +150,11 @@ namespace AppsTracker.ViewModels
 
         public ICommand RemoveAppCommand
         {
-            get { return removeAppCommand ?? (removeAppCommand = new DelegateCommand(RemoveApp)); }
+            get
+            {
+                return removeAppCommand
+                  ?? (removeAppCommand = new DelegateCommand(RemoveApp));
+            }
         }
 
 
@@ -142,31 +162,11 @@ namespace AppsTracker.ViewModels
 
         public ICommand DeleteCategoryCommand
         {
-            get { return deleteCategoryCommand ?? (deleteCategoryCommand = new DelegateCommand(DeleteCategory)); }
-        }
-
-
-        private void ShowNewCategory(object parameter)
-        {
-            bool open;
-            if (bool.TryParse(parameter as string, out open) == false)
-                return;
-
-            IsNewCategoryOpen = open;
-        }
-
-
-        private void AddNewCategory(object parameter)
-        {
-            var categoryName = parameter as string;
-
-            if (Categories.Any(c => c.Name == categoryName))
-                return;
-
-            var category = new AppCategory() { Name = categoryName, ObservableApplications = new ObservableCollection<Aplication>() };
-            Categories.Add(category);
-            IsNewCategoryOpen = false;
-            NewCategoryName = null;
+            get
+            {
+                return deleteCategoryCommand
+                  ?? (deleteCategoryCommand = new DelegateCommand(DeleteCategory));
+            }
         }
 
 
@@ -199,6 +199,34 @@ namespace AppsTracker.ViewModels
         }
 
 
+        private void ShowNewCategory(object parameter)
+        {
+            bool open;
+            if (bool.TryParse(parameter as string, out open) == false)
+                return;
+
+            IsNewCategoryOpen = open;
+        }
+
+
+        private void AddNewCategory(object parameter)
+        {
+            var categoryName = (string)parameter;
+
+            if (Categories.Any(c => c.Name == categoryName))
+                return;
+
+            var category = new AppCategory()
+            {
+                Name = categoryName,
+                ObservableApplications = new ObservableCollection<Aplication>()
+            };
+            Categories.Add(category);
+            IsNewCategoryOpen = false;
+            NewCategoryName = null;
+        }
+
+
         private void AssignApp()
         {
             if (UnassignedSelectedApp == null || SelectedCategory == null)
@@ -221,9 +249,10 @@ namespace AppsTracker.ViewModels
 
         private void DeleteCategory()
         {
-            if (SelectedCategory == null && SelectedCategory.AppCategoryID != default(int))
+            if (SelectedCategory == null)
                 return;
-            categoriesToDelete.Add(SelectedCategory);
+            if (SelectedCategory.AppCategoryID != default(int))
+                categoriesToDelete.Add(SelectedCategory);
             Categories.Remove(SelectedCategory);
         }
 
@@ -238,6 +267,7 @@ namespace AppsTracker.ViewModels
         private async Task SaveChanges()
         {
             await workQueue.EnqueueWork(() => categoriesService.SaveChanges(categoriesToDelete, Categories));
+            categoriesToDelete.Clear();
             InfoMessage = SETTINGS_SAVED_MSG;
         }
 
