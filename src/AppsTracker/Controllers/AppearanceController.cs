@@ -101,7 +101,7 @@ namespace AppsTracker.Controllers
             var animation = new ColorAnimation();
             animation.From = (Color)oldDictionary["WindowBackgroundColor"];
             animation.To = (Color)newDictionary["WindowBackgroundColor"];
-            animation.Duration = new Duration(TimeSpan.FromSeconds(0.6d));
+            animation.Duration = new Duration(TimeSpan.FromSeconds(0.5d));
 
             var mainWindow = (System.Windows.Window)windowService.GetMainShell();
             Storyboard.SetTarget(animation, mainWindow);

@@ -9,8 +9,8 @@
         Title="apps tracker"
         Style="{StaticResource WindowStyleWithFade}"
         Icon="../Resources/AppsTrackerIcon.ico"
-        MinHeight="400"
-        MinWidth="600"
+        MinHeight="500"
+        MinWidth="700"
         ResizeMode="CanResizeWithGrip"
         MouseLeftButtonDown="Window_MouseLeftButtonDown_1"
         utils:WindowClose.WindowClose="{Binding WindowClose}">
@@ -25,14 +25,7 @@
       <local:ConvertLoggingVisibiltyPlay x:Key="convertLoggingPlay" />
       <local:ConvertLoggingVisibiltyStop x:Key="convertLoggingStop" />
       <local:ConvertBoolToVisibility x:Key="convertBoolToVisibility" />
-
-      <Storyboard x:Key="themeChangeAnimation">
-         <ColorAnimation AutoReverse="False"
-                         Duration="00:00:01"
-                         Storyboard.TargetProperty="(Window.Background).(SolidColorBrush.Color)"
-                         To="{DynamicResource WindowBackgroundColor}" />
-      </Storyboard>
-
+    
       <DataTemplate DataType="{x:Type viewModels:DataHostViewModel}">
          <views:DataHostView />
       </DataTemplate>
@@ -44,9 +37,7 @@
          <views:SettingsHostView />
       </DataTemplate>
    </Window.Resources>
-   <Window.RenderTransform>
-      <ScaleTransform />
-   </Window.RenderTransform>
+   
    <Grid>
       <Grid.ColumnDefinitions>
          <ColumnDefinition />
