@@ -93,6 +93,11 @@ namespace AppsTracker.Service
             return context.Value;
         }
 
+        public IShell GetMainShell()
+        {
+            return mainWindow;
+        }
+
         public System.Windows.Forms.FolderBrowserDialog CreateFolderBrowserDialog()
         {
             return new System.Windows.Forms.FolderBrowserDialog();

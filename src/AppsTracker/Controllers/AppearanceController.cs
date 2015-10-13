@@ -10,8 +10,10 @@ using System;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using AppsTracker.Data.Models;
+using AppsTracker.Service;
 
 namespace AppsTracker.Controllers
 {
@@ -21,6 +23,16 @@ namespace AppsTracker.Controllers
         private bool isLightTheme;
         private bool isTrackingEnabled;
 
+        private readonly IWindowService windowService;
+
+
+        [ImportingConstructor]
+        public AppearanceController(IWindowService windowService)
+        {
+            this.windowService = windowService;
+        }
+
+
         public void Initialize(Setting settings)
         {
             isLightTheme = settings.LightTheme;
@@ -28,6 +40,7 @@ namespace AppsTracker.Controllers
             Application.Current.Resources.MergedDictionaries.Clear();
             ApplyTheme();
         }
+
 
         public void SettingsChanging(Setting settings)
         {
@@ -47,6 +60,7 @@ namespace AppsTracker.Controllers
             if (isThemeChanging)
                 ApplyTheme();
         }
+
 
         private void ApplyTheme()
         {
@@ -84,18 +98,19 @@ namespace AppsTracker.Controllers
 
         private void AnimateThemeChange(ResourceDictionary newDictionary, ResourceDictionary oldDictionary)
         {
-            ColorAnimation animation = new ColorAnimation();
-            animation.From = (System.Windows.Media.Color)oldDictionary["WindowBackgroundColor"];
-            animation.To = (System.Windows.Media.Color)newDictionary["WindowBackgroundColor"];
-            animation.Duration = new Duration(TimeSpan.FromSeconds(0.5d));
+            var animation = new ColorAnimation();
+            animation.From = (Color)oldDictionary["WindowBackgroundColor"];
+            animation.To = (Color)newDictionary["WindowBackgroundColor"];
+            animation.Duration = new Duration(TimeSpan.FromSeconds(0.6d));
 
-            Storyboard.SetTarget(animation, App.Current.MainWindow);
+            var mainWindow = (System.Windows.Window)windowService.GetMainShell();
+            Storyboard.SetTarget(animation, mainWindow);
             Storyboard.SetTargetProperty(animation, new PropertyPath("Background.Color"));
 
             Application.Current.Resources.MergedDictionaries.Add(newDictionary);
             Application.Current.Resources.MergedDictionaries.Remove(oldDictionary);
 
-            Storyboard storyboard = new Storyboard();
+            var storyboard = new Storyboard();
             storyboard.Children.Add(animation);
             storyboard.Begin();
         }

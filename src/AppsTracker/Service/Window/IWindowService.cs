@@ -18,6 +18,8 @@ namespace AppsTracker.Service
 
         IShell GetShell(string shellUse);
 
+        IShell GetMainShell();
+
         System.Windows.Forms.FolderBrowserDialog CreateFolderBrowserDialog();
         
         void FirstRunWindowSetup();
