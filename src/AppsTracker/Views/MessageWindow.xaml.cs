@@ -68,7 +68,8 @@ namespace AppsTracker.Views
         private async void lblReport_Click(object sender, RoutedEventArgs e)
         {
             var fail = (Exception)ViewArgument;
-            var description = fail.Message;
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            var description = String.Format("{0}{1}VERSION: {2}", fail.Message, Environment.NewLine, version);
             var stackTrace = fail.StackTrace;
             var email = "info@theappstracker.com";
             var feedback = new Feedback(description, stackTrace, email);
