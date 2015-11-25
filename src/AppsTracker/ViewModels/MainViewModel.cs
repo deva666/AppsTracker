@@ -416,8 +416,10 @@ namespace AppsTracker.ViewModels
 
         private void GoToSettings()
         {
-            if (ToSettings != SelectedChild.GetType())
-                ToSettings = SelectedChild.GetType();
+            if (toSettings != SelectedChild.GetType())
+            {
+                toSettings = SelectedChild.GetType();
+            }
             SelectedChild = GetChild<SettingsHostViewModel>();
         }
 
@@ -425,10 +427,10 @@ namespace AppsTracker.ViewModels
         private void ReturnFromSettings()
         {
             if (toSettings == null)
+            {
                 SelectedChild = GetChild<DataHostViewModel>();
-
+            }
             SelectedChild = GetChild(toSettings);
-            toSettings = null;
         }
 
         private void CloseNewVersionNotifier()

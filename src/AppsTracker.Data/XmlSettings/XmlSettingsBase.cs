@@ -28,10 +28,11 @@ namespace AppsTracker.Data.XmlSettings
         public virtual void SetValues(XElement xml)
         {
             if (xml == null)
+            {
                 throw new ArgumentNullException("xml");
+            }
 
             var properties = GetSettingsProperties();
-
             foreach (var prop in properties)
             {
                 var node = xml.Element(prop.Name);
@@ -40,8 +41,9 @@ namespace AppsTracker.Data.XmlSettings
                     var settingsNode = (SettingsNodeAttribute)prop.GetCustomAttributes(typeof(SettingsNodeAttribute), true)[0];
 
                     if (settingsNode.DefaultValue != null)
+                    {
                         prop.SetValue(this, settingsNode.DefaultValue);
-
+                    }
                     continue;
                 }
 
@@ -51,8 +53,8 @@ namespace AppsTracker.Data.XmlSettings
 
         private IEnumerable<PropertyInfo> GetSettingsProperties()
         {
-            return this.GetType().GetProperties()
-                .Where(p => Attribute.IsDefined(p, typeof(SettingsNodeAttribute)));
+            return GetType().GetProperties()
+                .Where(p => Attribute.IsDefined(p, typeof(SettingsNodeAttribute)) && p.CanWrite);
         }
 
         private object GetNodeValue(PropertyInfo property, XElement node)
