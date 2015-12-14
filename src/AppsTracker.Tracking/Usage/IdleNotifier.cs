@@ -24,7 +24,7 @@ namespace AppsTracker.Tracking
 
         private bool disposed = false;
         private bool hooksRemoved = true;
-        private int idleEntered = 0;
+        private bool idleEntered = false;
 
         private IntPtr keyboardHookHandle = IntPtr.Zero;
         private IntPtr mouseHookHandle = IntPtr.Zero;
@@ -57,14 +57,17 @@ namespace AppsTracker.Tracking
 
         private void CheckIdleState(object sender)
         {
-            var idleInfo = IdleTimeWatcher.GetIdleTimeInfo();
-            if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(settingsService.Settings.IdleTimer))
+            syncContext.Invoke(s =>
             {
-                Interlocked.Exchange(ref idleEntered, IDLE_ON);
-                idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-                syncContext.Invoke(s => SetHooks());
-                syncContext.Invoke(s => IdleEntered.InvokeSafely(this, EventArgs.Empty));
-            }
+                var idleInfo = IdleTimeWatcher.GetIdleTimeInfo();
+                if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(settingsService.Settings.IdleTimer))
+                {
+                    idleEntered = false;
+                    idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+                    SetHooks();
+                    IdleEntered.InvokeSafely(this, EventArgs.Empty);
+                }
+            });
         }
 
         private void SetHooks()
@@ -93,10 +96,10 @@ namespace AppsTracker.Tracking
 
         private void Reset()
         {
-            if (idleEntered == IDLE_OFF)
+            if (!idleEntered)
                 return;
 
-            Interlocked.Exchange(ref idleEntered, IDLE_OFF);
+            idleEntered = false;
             RemoveHooks();
             idleTimer.Change(TIMER_DELAY, TIMER_PERIOD);
             IdleStoped.InvokeSafely(this, EventArgs.Empty);
