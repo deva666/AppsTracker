@@ -7,9 +7,7 @@ namespace AppsTracker.Data.Service
         AppSettings AppSettings { get; }
 
         LogsViewSettings LogsViewSettings { get; }
-             
-        KeylogsViewSettings KeylogsViewSettings { get; }
-        
+                     
         ScreenshotsViewSettings ScreenshotsViewSettings { get; }
         
         DaysViewSettings DaysViewSettings { get; }
