@@ -8,11 +8,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AppsTracker.Data.Models;
+using AppsTracker.Data.XmlSettings;
 using AppsTracker.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Threading.Tasks;
 
 namespace AppsTracker.Tests.Core.ViewModels
 {
@@ -31,8 +32,8 @@ namespace AppsTracker.Tests.Core.ViewModels
             trackingService.Setup(t => t.DateTo).Returns(DateTime.Now);
             settingsService.Setup(s => s.Settings).Returns(setting);
             settingsService.Setup(s => s.SaveChanges(It.IsAny<Setting>())).Callback<Setting>(s => setting = s);
-            xmlSettingsService.Setup(x => x.AppSettings).Returns(new Data.XmlSettings.AppSettings() { DisableNotifyForNewVersion = false });
-            
+            xmlSettingsService.Setup(x => x.AppSettings).Returns(new AppSettings() { DisableNotifyForNewVersion = false });
+
 
             var dataHostVMFactory = GetDataHostVMFactory();
             var statisticsHostVMFactory = GetStatisticsHostVMFactory();

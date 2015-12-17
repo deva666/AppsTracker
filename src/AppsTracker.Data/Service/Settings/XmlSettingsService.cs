@@ -22,7 +22,6 @@ namespace AppsTracker.Data.Service
         private readonly string settingsPath = Path.Combine(Environment.GetFolderPath
             (Environment.SpecialFolder.CommonApplicationData), "AppService");
 
-        private readonly IList<XmlSettingsBase> settingsContainer = new List<XmlSettingsBase>();
 
         public AppSettings AppSettings
         {
@@ -69,6 +68,7 @@ namespace AppsTracker.Data.Service
         {
             LimitsSettings = new LimitsSettings();
 
+            var settingsContainer = new List<XmlSettingsBase>();
             settingsContainer.Add(AppSettings = new AppSettings());
             settingsContainer.Add(LogsViewSettings = new LogsViewSettings());
             settingsContainer.Add(ScreenshotsViewSettings = new ScreenshotsViewSettings());

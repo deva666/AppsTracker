@@ -71,7 +71,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -81,6 +83,7 @@
     <Compile Include="Core\MVVM\AsyncPropertyTest.cs" />
     <Compile Include="Common\MediatorTest.cs" />
     <Compile Include="Core\Controllers\TrackingControllerTest.cs" />
+    <Compile Include="Data\XmlSettingsServiceTests.cs" />
     <Compile Include="Fakes\WorkQueueMock.cs" />
     <Compile Include="Tracking\Hooks\AppChangedNotifierTests.cs" />
     <Compile Include="Tracking\LimitObserverTest.cs" />
