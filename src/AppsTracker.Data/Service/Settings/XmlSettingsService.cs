@@ -67,6 +67,8 @@ namespace AppsTracker.Data.Service
 
         public void Initialize()
         {
+            LimitsSettings = new LimitsSettings();
+
             settingsContainer.Add(AppSettings = new AppSettings());
             settingsContainer.Add(LogsViewSettings = new LogsViewSettings());
             settingsContainer.Add(ScreenshotsViewSettings = new ScreenshotsViewSettings());
