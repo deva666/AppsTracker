@@ -2,16 +2,17 @@
 using System.ComponentModel.Composition;
 using AppsTracker.Common.Communication;
 using AppsTracker.Communication;
+using AppsTracker.Controllers;
 using AppsTracker.Data.Service;
+using AppsTracker.Service;
+using AppsTracker.Service.Web;
 using AppsTracker.Tests.Fakes;
 using AppsTracker.Tracking;
 using AppsTracker.Tracking.Helpers;
 using AppsTracker.Tracking.Hooks;
+using AppsTracker.Tracking.Limits;
 using AppsTracker.ViewModels;
 using Moq;
-using AppsTracker.Service;
-using AppsTracker.Service.Web;
-using AppsTracker.Controllers;
 
 namespace AppsTracker.Tests
 {
@@ -269,7 +270,7 @@ namespace AppsTracker.Tests
                     () => new Tuple<SettingsLimitsViewModel, Action>(
                         new SettingsLimitsViewModel(dataService.Object,
                             trackingService.Object,
-                            mediator, 
+                            mediator,
                             new WorkQueueMock()),
                             ExportFactoryContextRelease));
 

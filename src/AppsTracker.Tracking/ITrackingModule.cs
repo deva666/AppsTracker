@@ -11,6 +11,8 @@ using System.Runtime.CompilerServices;
 using AppsTracker.Data.Models;
 
 [assembly: InternalsVisibleTo("AppsTracker.Tests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+
 
 namespace AppsTracker.Tracking
 {

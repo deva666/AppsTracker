@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AppsTracker.Tracking.Helpers
+namespace AppsTracker.Tracking.Limits
 {
     public interface IMidnightNotifier : IDisposable
     {

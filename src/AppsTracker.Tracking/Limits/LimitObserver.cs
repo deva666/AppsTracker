@@ -10,10 +10,9 @@ using AppsTracker.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.Data.Utils;
-using AppsTracker.Tracking.Helpers;
 using AppsTracker.Tracking.Hooks;
 
-namespace AppsTracker.Tracking
+namespace AppsTracker.Tracking.Limits
 {
     [Export(typeof(ITrackingModule))]
     internal sealed class LimitObserver : ITrackingModule

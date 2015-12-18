@@ -59,9 +59,11 @@
     <Compile Include="ITrackingModule.cs" />
     <Compile Include="Limits\ILimitHandler.cs" />
     <Compile Include="Limits\IMidnightNotifier.cs" />
+    <Compile Include="Limits\IShutdownService.cs" />
     <Compile Include="Limits\LimitHandler.cs" />
     <Compile Include="Limits\LimitObserver.cs" />
     <Compile Include="Limits\MidnightNotifier.cs" />
+    <Compile Include="Limits\ShutdownService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screenshots\IScreenshotFactory.cs" />
     <Compile Include="Screenshots\IScreenshotTracker.cs" />

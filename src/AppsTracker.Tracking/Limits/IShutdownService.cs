@@ -2,8 +2,8 @@
 
 namespace AppsTracker.Tracking.Limits
 {
-    public interface ILimitHandler
+    internal interface IShutdownService
     {
-        void Handle(AppLimit warning);
+        void Shutdown(Aplication app);
     }
 }

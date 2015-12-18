@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.Composition;
-using System.Diagnostics;
+﻿using System.ComponentModel.Composition;
 using System.Linq;
 using AppsTracker.Common.Communication;
 using AppsTracker.Common.Logging;
@@ -8,7 +6,7 @@ using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 
-namespace AppsTracker.Tracking.Helpers
+namespace AppsTracker.Tracking.Limits
 {
     [Export(typeof(ILimitHandler))]
     internal sealed class LimitHandler : ILimitHandler
@@ -16,15 +14,18 @@ namespace AppsTracker.Tracking.Helpers
         private readonly IMediator mediator;
         private readonly IXmlSettingsService xmlSettingsService;
         private readonly ILogger logger;
+        private readonly IShutdownService shutdownService;
 
         [ImportingConstructor]
         public LimitHandler(IMediator mediator,
                             IXmlSettingsService xmlSettingsService,
-                            ILogger logger)
+                            ILogger logger,
+                            IShutdownService shutdownService)
         {
             this.mediator = mediator;
             this.xmlSettingsService = xmlSettingsService;
             this.logger = logger;
+            this.shutdownService = shutdownService;
         }
 
 
@@ -59,18 +60,7 @@ namespace AppsTracker.Tracking.Helpers
 
         private void ShutdownApp(Aplication app)
         {
-            try
-            {
-                var processes = Process.GetProcessesByName(app.WinName);
-                foreach (var proc in processes)
-                {
-                    proc.Kill();
-                }
-            }
-            catch (Exception fail)
-            {
-                logger.Log(fail);
-            }
+            shutdownService.Shutdown(app);
         }
     }
 }

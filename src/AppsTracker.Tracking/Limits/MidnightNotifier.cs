@@ -3,7 +3,7 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using AppsTracker.Common.Utils;
 
-namespace AppsTracker.Tracking.Helpers
+namespace AppsTracker.Tracking.Limits
 {
     [Export(typeof(IMidnightNotifier))]
     internal sealed class MidnightNotifier : IMidnightNotifier
