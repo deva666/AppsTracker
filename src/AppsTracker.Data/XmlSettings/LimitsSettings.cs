@@ -5,11 +5,11 @@ namespace AppsTracker.Data.XmlSettings
 {
     public sealed class LimitsSettings
     {
-        private IList<AppLimit> dontShowLimits;
+        private IList<int> dontShowLimits;
 
-        public IList<AppLimit> DontShowLimits
+        public IList<int> DontShowLimits
         {
-            get { return dontShowLimits ?? (dontShowLimits = new List<AppLimit>()); }
+            get { return dontShowLimits ?? (dontShowLimits = new List<int>()); }
             set { dontShowLimits = value; }
         }
 

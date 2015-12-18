@@ -52,7 +52,7 @@ namespace AppsTracker.Tracking.Limits
 
         private void ShowWarning(AppLimit limit)
         {
-            if (xmlSettingsService.LimitsSettings.DontShowLimits.Any(l => l.AppLimitID == limit.AppLimitID))
+            if (xmlSettingsService.LimitsSettings.DontShowLimits.Any(l => l == limit.AppLimitID))
                 return;
 
             mediator.NotifyColleagues(MediatorMessages.APP_LIMIT_REACHED, limit);

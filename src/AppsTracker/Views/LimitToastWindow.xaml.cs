@@ -96,7 +96,7 @@ namespace AppsTracker.Views
             var newTop = bounds.Bottom + 5;
 
             if (cbDontShow.IsChecked.HasValue && cbDontShow.IsChecked.Value)
-                xmlSettingsService.LimitsSettings.DontShowLimits.Add(currentLimit);
+                xmlSettingsService.LimitsSettings.DontShowLimits.Add(currentLimit.AppLimitID);
 
             AnimateWindowTopPosition(newTop);
         }
