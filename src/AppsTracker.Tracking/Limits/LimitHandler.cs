@@ -60,7 +60,7 @@ namespace AppsTracker.Tracking.Limits
 
         private void ShutdownApp(Aplication app)
         {
-            shutdownService.Shutdown(app);
+            shutdownService.Shutdown(app.WinName);
         }
     }
 }

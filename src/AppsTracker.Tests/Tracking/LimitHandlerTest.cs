@@ -22,12 +22,12 @@ namespace AppsTracker.Tests.Tracking
             var shutdownService = new Mock<IShutdownService>();
 
             var limitHandler = new LimitHandler(mediator.Object, xmlSettings, logger.Object, shutdownService.Object);
-            var app = new Aplication() { Name = "test app" };
+            var app = new Aplication() { WinName = "test app" };
             var limit = new AppLimit() { LimitReachedAction = LimitReachedAction.Warn, Application = app };
 
             limitHandler.Handle(limit);
             mediator.Verify(m => m.NotifyColleagues(MediatorMessages.APP_LIMIT_REACHED, limit), Times.Once());
-            shutdownService.Verify(s => s.Shutdown(app), Times.Never());
+            shutdownService.Verify(s => s.Shutdown(app.WinName), Times.Never());
         }
 
         [TestMethod]
@@ -41,12 +41,12 @@ namespace AppsTracker.Tests.Tracking
             var shutdownService = new Mock<IShutdownService>();
 
             var limitHandler = new LimitHandler(mediator.Object, xmlSettings, logger.Object, shutdownService.Object);
-            var app = new Aplication() { Name = "test app" };
+            var app = new Aplication() { WinName = "test app" };
             var limit = new AppLimit() { LimitReachedAction = LimitReachedAction.Shutdown, Application = app };
 
             limitHandler.Handle(limit);
             mediator.Verify(m => m.NotifyColleagues(MediatorMessages.APP_LIMIT_REACHED, limit), Times.Never());
-            shutdownService.Verify(s => s.Shutdown(app), Times.Once());
+            shutdownService.Verify(s => s.Shutdown(app.WinName), Times.Once());
         }
 
         [TestMethod]
@@ -60,12 +60,12 @@ namespace AppsTracker.Tests.Tracking
             var shutdownService = new Mock<IShutdownService>();
 
             var limitHandler = new LimitHandler(mediator.Object, xmlSettings, logger.Object, shutdownService.Object);
-            var app = new Aplication() { Name = "test app" };
+            var app = new Aplication() { WinName = "test app" };
             var limit = new AppLimit() { LimitReachedAction = LimitReachedAction.WarnAndShutdown, Application = app };
 
             limitHandler.Handle(limit);
             mediator.Verify(m => m.NotifyColleagues(MediatorMessages.APP_LIMIT_REACHED, limit), Times.Once());
-            shutdownService.Verify(s => s.Shutdown(app), Times.Once());
+            shutdownService.Verify(s => s.Shutdown(app.WinName), Times.Once());
         }
 
         [TestMethod]
@@ -79,7 +79,7 @@ namespace AppsTracker.Tests.Tracking
             var shutdownService = new Mock<IShutdownService>();
 
             var limitHandler = new LimitHandler(mediator.Object, xmlSettings, logger.Object, shutdownService.Object);
-            var app = new Aplication() { Name = "test app" };
+            var app = new Aplication() { WinName = "test app" };
             var limit = new AppLimit() { LimitReachedAction = LimitReachedAction.Shutdown, Application = app };
             xmlSettings.LimitsSettings.DontShowLimits.Add(limit);
 

@@ -4,6 +4,6 @@ namespace AppsTracker.Tracking.Limits
 {
     internal interface IShutdownService
     {
-        void Shutdown(Aplication app);
+        void Shutdown(string appName);
     }
 }

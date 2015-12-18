@@ -17,11 +17,11 @@ namespace AppsTracker.Tracking.Limits
             this.logger = logger;
         }
 
-        public void Shutdown(Aplication app)
+        public void Shutdown(string appName)
         {
             try
             {
-                var processes = Process.GetProcessesByName(app.WinName);
+                var processes = Process.GetProcessesByName(appName);
                 foreach (var proc in processes)
                 {
                     proc.Kill();
