@@ -178,7 +178,6 @@ namespace AppsTracker.Tracking
             {
                 foreach (var pair in unsavedLogInfos.ToList())
                 {
-                    //trackingService.EndLogEntry(pair.Value);
                     unsavedLogInfos.Remove(pair.Key);
                 }
             }
