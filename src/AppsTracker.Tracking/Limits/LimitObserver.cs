@@ -24,16 +24,12 @@ namespace AppsTracker.Tracking.Limits
         private readonly ILimitHandler limitHandler;
         private readonly IMediator mediator;
         private readonly IWorkQueue workQueue;
-        private readonly ISyncContext syncContext;
 
         private readonly IDictionary<Aplication, IEnumerable<AppLimit>> appLimitsMap
             = new Dictionary<Aplication, IEnumerable<AppLimit>>();
 
-        private readonly Timer dayTimer;
-        private readonly Timer weekTimer;
-
-        private AppLimit currentDayLimit;
-        private AppLimit currentWeekLimit;
+        private readonly ICollection<LimitNotifier> limitNotifiers
+            = new List<LimitNotifier>();
 
         private Int32 activeAppId;
         private AppInfo activeAppInfo;
@@ -56,32 +52,31 @@ namespace AppsTracker.Tracking.Limits
             this.limitHandler = limitHandler;
             this.mediator = mediator;
             this.workQueue = workQueue;
-            this.syncContext = syncContext;
 
-            dayTimer = new Timer(TimerCallback,
-                new Func<AppLimit>(() => currentDayLimit), Timeout.Infinite, Timeout.Infinite);
-            weekTimer = new Timer(TimerCallback,
-                new Func<AppLimit>(() => currentWeekLimit), Timeout.Infinite, Timeout.Infinite);
+            limitNotifiers.Add(new LimitNotifier(syncContext, LimitSpan.Day));
+            limitNotifiers.Add(new LimitNotifier(syncContext, LimitSpan.Week));
 
+            foreach (var notifier in limitNotifiers)
+            {
+                notifier.LimitReached += OnLimitReached;
+            }
+            
             mediator.Register(MediatorMessages.APP_LIMITS_CHANGIING, LoadAppLimits);
             mediator.Register(MediatorMessages.STOP_TRACKING, StopTimers);
             mediator.Register(MediatorMessages.RESUME_TRACKING, CheckLimits);
         }
 
-        private void TimerCallback(object state)
+        private void OnLimitReached(object sender, LimitReachedArgs args)
         {
-            syncContext.Invoke(() =>
-            {
-                var valueFactory = (Func<AppLimit>)state;
-                var limit = valueFactory.Invoke();
-                if (limit != null)
-                    limitHandler.Handle(limit);
-            });
+            if (args.Limit != null)
+                limitHandler.Handle(args.Limit);
         }
 
+        
         public void SettingsChanged(Setting settings)
         {
         }
+
 
         public void Initialize(Setting settings)
         {
@@ -112,17 +107,19 @@ namespace AppsTracker.Tracking.Limits
 
         private void StopTimers()
         {
-            dayTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            weekTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            foreach (var notifer in limitNotifiers)
+            {
+                notifer.StopTimer();
+            }
         }
 
 
         private void CheckLimits()
         {
-            if (currentDayLimit != null && currentDayLimit.Application != null)
-                LoadAppDurations(currentDayLimit.Application);
-            else if (currentWeekLimit != null && currentWeekLimit.Application != null)
-                LoadAppDurations(currentWeekLimit.Application);
+            foreach (var notifier in limitNotifiers.Where(l => l.Limit != null))
+            {
+                LoadAppDurations(notifier.Limit.Application);
+            }
         }
 
 
@@ -134,12 +131,22 @@ namespace AppsTracker.Tracking.Limits
 
             activeAppInfo = e.LogInfo.AppInfo;
             activeWindowTitle = e.LogInfo.WindowTitle;
+            
             StopTimers();
-            currentDayLimit = currentWeekLimit = null;
+            ClearLimits();
+
             var valueFactory = new Func<Object>(() => trackingService.GetApp(e.LogInfo.AppInfo));
             var app = (Aplication)await workQueue.EnqueueWork(valueFactory);
             if (app != null && app.AppInfo == activeAppInfo)
                 LoadAppDurations(app);
+        }
+
+        private void ClearLimits()
+        {
+            foreach (var notifier in limitNotifiers)
+            {
+                notifier.Limit = null;
+            }
         }
 
 
@@ -147,27 +154,19 @@ namespace AppsTracker.Tracking.Limits
         {
             if (app == null)
             {
-                activeAppId = -1;
+                activeAppId = Int32.MinValue;
                 return;
             }
 
             activeAppId = app.ApplicationID;
+            
             IEnumerable<AppLimit> limits;
             if (appLimitsMap.TryGetValue(app, out limits))
             {
-                var dailyLimit = limits.FirstOrDefault(l => l.LimitSpan == LimitSpan.Day);
-                var weeklyLimit = limits.FirstOrDefault(l => l.LimitSpan == LimitSpan.Week);
-
-                if (dailyLimit != null)
+                foreach (var limit in limits)
                 {
-                    var dayDurationTask = workQueue.EnqueueWork(() => trackingService.GetDayDuration(app));
-                    dayDurationTask.ContinueWith(OnGetAppDuration, dailyLimit, CancellationToken.None,
-                        TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
-                }
-                if (weeklyLimit != null)
-                {
-                    var weekDurationTask = workQueue.EnqueueWork(() => trackingService.GetWeekDuration(app));
-                    weekDurationTask.ContinueWith(OnGetAppDuration, weeklyLimit, CancellationToken.None,
+                    var durationTask = workQueue.EnqueueWork(() => trackingService.GetDuration(app, limit.LimitSpan));
+                    durationTask.ContinueWith(OnGetAppDuration, limit, CancellationToken.None, 
                         TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
                 }
             }
@@ -188,24 +187,19 @@ namespace AppsTracker.Tracking.Limits
             }
             else
             {
-                switch (appLimit.LimitSpan)
-                {
-                    case LimitSpan.Day:
-                        currentDayLimit = appLimit;
-                        dayTimer.Change(new TimeSpan((appLimit.Limit - duration)), Timeout.InfiniteTimeSpan);
-                        break;
-                    case LimitSpan.Week:
-                        currentWeekLimit = appLimit;
-                        weekTimer.Change(new TimeSpan((appLimit.Limit - duration)), Timeout.InfiniteTimeSpan);
-                        break;
-                }
+                var notifer = limitNotifiers.Single(l => l.LimitSpan == appLimit.LimitSpan);
+                notifer.Limit = appLimit;
+                notifer.SetupTimer(new TimeSpan(appLimit.Limit - duration));
             }
         }
 
         public void Dispose()
         {
-            dayTimer.Dispose();
-            weekTimer.Dispose();
+            foreach (var notifier in limitNotifiers)
+            {
+                notifier.Dispose();
+            }
+
             midnightNotifier.Dispose();
         }
 

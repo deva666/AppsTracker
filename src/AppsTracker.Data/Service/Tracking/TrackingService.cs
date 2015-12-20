@@ -332,6 +332,18 @@ namespace AppsTracker.Data.Service
             }
         }
 
+        public long GetDuration(Aplication app, LimitSpan limitSpan)
+        {
+            switch (limitSpan)
+            {
+                case LimitSpan.Day:
+                    return GetDayDuration(app);
+                case LimitSpan.Week:
+                    return GetWeekDuration(app);
+                default:
+                    return -1;
+            }
+        }
 
         public long GetDayDuration(Aplication app)
         {
@@ -354,11 +366,11 @@ namespace AppsTracker.Data.Service
         {
             Ensure.NotNull(app, "app");
 
-            DateTime now = DateTime.Today;
-            int delta = DayOfWeek.Monday - now.DayOfWeek;
+            DateTime today = DateTime.Today;
+            int delta = DayOfWeek.Monday - today.DayOfWeek;
             if (delta > 0)
                 delta -= 7;
-            DateTime weekBegin = now.AddDays(delta);
+            DateTime weekBegin = today.AddDays(delta);
             DateTime weekEnd = weekBegin.AddDays(6);
 
             using (var context = new AppsEntities())

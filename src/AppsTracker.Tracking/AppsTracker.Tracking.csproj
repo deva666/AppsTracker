@@ -61,7 +61,9 @@
     <Compile Include="Limits\IMidnightNotifier.cs" />
     <Compile Include="Limits\IShutdownService.cs" />
     <Compile Include="Limits\LimitHandler.cs" />
+    <Compile Include="Limits\LimitNotifier.cs" />
     <Compile Include="Limits\LimitObserver.cs" />
+    <Compile Include="Limits\LimitReachedArgs.cs" />
     <Compile Include="Limits\MidnightNotifier.cs" />
     <Compile Include="Limits\ShutdownService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
