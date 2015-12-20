@@ -102,6 +102,7 @@
     <Compile Include="TestMockBase.cs" />
     <Compile Include="Core\ViewModels\StatisticsHostViewModelTests.cs" />
     <Compile Include="Tracking\LimitHandlerTest.cs" />
+    <Compile Include="Tracking\LimitNotifierTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AppsTracker.Common\AppsTracker.Common.csproj">

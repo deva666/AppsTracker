@@ -46,9 +46,5 @@ namespace AppsTracker.Data.Service
         DateTime GetFirstDate(int userID);
 
         long GetDuration(Aplication app, LimitSpan limitSpan);
-
-        long GetDayDuration(Aplication app);
-
-        long GetWeekDuration(Aplication app);
     }
 }

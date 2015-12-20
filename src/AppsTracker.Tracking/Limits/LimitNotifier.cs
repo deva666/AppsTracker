@@ -39,12 +39,12 @@ namespace AppsTracker.Tracking.Limits
             });
         }
 
-        public void SetupTimer(TimeSpan duration)
+        public void Setup(TimeSpan duration)
         {
             timer.Change(duration, Timeout.InfiniteTimeSpan);
         }
 
-        public void StopTimer()
+        public void Stop()
         {
             timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
         }

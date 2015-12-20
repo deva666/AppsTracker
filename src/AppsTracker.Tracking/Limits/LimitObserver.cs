@@ -69,7 +69,9 @@ namespace AppsTracker.Tracking.Limits
         private void OnLimitReached(object sender, LimitReachedArgs args)
         {
             if (args.Limit != null)
+            {
                 limitHandler.Handle(args.Limit);
+            }
         }
 
         
@@ -80,10 +82,10 @@ namespace AppsTracker.Tracking.Limits
 
         public void Initialize(Setting settings)
         {
+            LoadAppLimits();
+
             midnightNotifier.MidnightTick += OnMidnightTick;
             appChangedNotifier.AppChanged += OnAppChanged;
-
-            LoadAppLimits();
         }
 
         private void LoadAppLimits()
@@ -109,7 +111,7 @@ namespace AppsTracker.Tracking.Limits
         {
             foreach (var notifer in limitNotifiers)
             {
-                notifer.StopTimer();
+                notifer.Stop();
             }
         }
 
@@ -131,14 +133,21 @@ namespace AppsTracker.Tracking.Limits
 
             activeAppInfo = e.LogInfo.AppInfo;
             activeWindowTitle = e.LogInfo.WindowTitle;
-            
+
             StopTimers();
             ClearLimits();
 
             var valueFactory = new Func<Object>(() => trackingService.GetApp(e.LogInfo.AppInfo));
             var app = (Aplication)await workQueue.EnqueueWork(valueFactory);
+
             if (app != null && app.AppInfo == activeAppInfo)
+            {
                 LoadAppDurations(app);
+            }
+            else
+            {
+                activeAppId = Int32.MinValue;
+            }
         }
 
         private void ClearLimits()
@@ -152,12 +161,6 @@ namespace AppsTracker.Tracking.Limits
 
         private void LoadAppDurations(Aplication app)
         {
-            if (app == null)
-            {
-                activeAppId = Int32.MinValue;
-                return;
-            }
-
             activeAppId = app.ApplicationID;
             
             IEnumerable<AppLimit> limits;
@@ -189,7 +192,7 @@ namespace AppsTracker.Tracking.Limits
             {
                 var notifer = limitNotifiers.Single(l => l.LimitSpan == appLimit.LimitSpan);
                 notifer.Limit = appLimit;
-                notifer.SetupTimer(new TimeSpan(appLimit.Limit - duration));
+                notifer.Setup(new TimeSpan(appLimit.Limit - duration));
             }
         }
 

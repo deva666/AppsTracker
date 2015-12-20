@@ -345,7 +345,7 @@ namespace AppsTracker.Data.Service
             }
         }
 
-        public long GetDayDuration(Aplication app)
+        private long GetDayDuration(Aplication app)
         {
             Ensure.NotNull(app, "app");
 
@@ -362,7 +362,7 @@ namespace AppsTracker.Data.Service
         }
 
 
-        public long GetWeekDuration(Aplication app)
+        private long GetWeekDuration(Aplication app)
         {
             Ensure.NotNull(app, "app");
 

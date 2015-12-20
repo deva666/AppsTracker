@@ -52,6 +52,7 @@ namespace AppsTracker.Views
         {
             if (currentLimit == null)
                 return;
+
             await DisplayAppDuration();
         }
 
@@ -65,11 +66,7 @@ namespace AppsTracker.Views
 
         private async Task DisplayAppDuration()
         {
-            long duration;
-            if (currentLimit.LimitSpan == LimitSpan.Day)
-                duration = await Task.Run(() => trackingService.GetDayDuration(currentLimit.Application));
-            else
-                duration = await Task.Run(() => trackingService.GetWeekDuration(currentLimit.Application));
+            long duration = await Task.Run(() => trackingService.GetDuration(currentLimit.Application, currentLimit.LimitSpan));
             lblTotalDuration.Content = new TimeSpan(duration).ToString(@"dd\.hh\:mm\:ss");
         }
 
