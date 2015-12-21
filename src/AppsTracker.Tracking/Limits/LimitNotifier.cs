@@ -21,7 +21,7 @@ namespace AppsTracker.Tracking.Limits
         public AppLimit Limit
         {
             get;
-            set;
+            private set;
         }
 
         public LimitNotifier(ISyncContext syncContext, LimitSpan limitSpan)
@@ -39,13 +39,15 @@ namespace AppsTracker.Tracking.Limits
             });
         }
 
-        public void Setup(TimeSpan duration)
+        public void Setup(AppLimit limit, TimeSpan duration)
         {
+            Limit = limit;
             timer.Change(duration, Timeout.InfiniteTimeSpan);
         }
 
         public void Stop()
         {
+            Limit = null;
             timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
         }
 

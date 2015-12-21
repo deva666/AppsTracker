@@ -19,18 +19,40 @@ namespace AppsTracker.Tests.Tracking
             AppLimit limitInEvent = null;
             var eventFired = false;
 
-            notifier.Limit = limit;
             notifier.LimitReached += (s, e) =>
             {
                 Volatile.Write(ref eventFired, true);
                 Volatile.Write(ref limitInEvent, e.Limit);
             };
-            notifier.Setup(TimeSpan.FromMilliseconds(100));
+            notifier.Setup(limit, TimeSpan.FromMilliseconds(100));
 
             await Task.Delay(150);
 
             Assert.IsTrue(Volatile.Read(ref eventFired));
             Assert.AreSame(Volatile.Read(ref limitInEvent), limit);
+        }
+
+        [TestMethod]
+        public async Task TestStoppedNotifier()
+        {
+            var notifier = new LimitNotifier(syncContext, LimitSpan.Day);
+            var limit = new AppLimit();
+            AppLimit limitInEvent = null;
+            var eventFired = false;
+
+            notifier.LimitReached += (s, e) =>
+            {
+                Volatile.Write(ref eventFired, true);
+                Volatile.Write(ref limitInEvent, e.Limit);
+            };
+            notifier.Setup(limit, TimeSpan.FromMilliseconds(100));
+
+            await Task.Delay(50);
+
+            notifier.Stop();
+
+            Assert.IsFalse(Volatile.Read(ref eventFired));
+            Assert.AreSame(Volatile.Read(ref limitInEvent), null);
         }
     }
 }

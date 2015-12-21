@@ -62,7 +62,7 @@ namespace AppsTracker.Tracking.Limits
             }
             
             mediator.Register(MediatorMessages.APP_LIMITS_CHANGIING, LoadAppLimits);
-            mediator.Register(MediatorMessages.STOP_TRACKING, StopTimers);
+            mediator.Register(MediatorMessages.STOP_TRACKING, StopNotifiers);
             mediator.Register(MediatorMessages.RESUME_TRACKING, CheckLimits);
         }
 
@@ -103,11 +103,11 @@ namespace AppsTracker.Tracking.Limits
 
         private void OnMidnightTick(object sender, EventArgs e)
         {
-            StopTimers();
+            StopNotifiers();
             CheckLimits();
         }
 
-        private void StopTimers()
+        private void StopNotifiers()
         {
             foreach (var notifer in limitNotifiers)
             {
@@ -134,8 +134,7 @@ namespace AppsTracker.Tracking.Limits
             activeAppInfo = e.LogInfo.AppInfo;
             activeWindowTitle = e.LogInfo.WindowTitle;
 
-            StopTimers();
-            ClearLimits();
+            StopNotifiers();
 
             var valueFactory = new Func<Object>(() => trackingService.GetApp(e.LogInfo.AppInfo));
             var app = (Aplication)await workQueue.EnqueueWork(valueFactory);
@@ -149,16 +148,7 @@ namespace AppsTracker.Tracking.Limits
                 activeAppId = Int32.MinValue;
             }
         }
-
-        private void ClearLimits()
-        {
-            foreach (var notifier in limitNotifiers)
-            {
-                notifier.Limit = null;
-            }
-        }
-
-
+    
         private void LoadAppDurations(Aplication app)
         {
             activeAppId = app.ApplicationID;
@@ -191,8 +181,7 @@ namespace AppsTracker.Tracking.Limits
             else
             {
                 var notifer = limitNotifiers.Single(l => l.LimitSpan == appLimit.LimitSpan);
-                notifer.Limit = appLimit;
-                notifer.Setup(new TimeSpan(appLimit.Limit - duration));
+                notifer.Setup(appLimit, new TimeSpan(appLimit.Limit - duration));
             }
         }
 
