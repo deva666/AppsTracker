@@ -37,7 +37,7 @@ namespace AppsTracker.Widgets
             notifyIcon = new NotifyIcon();
             iconMenu = new ContextMenuStrip();
             menuItemShowApp = new ToolStripMenuItem(string.Format("Open {0}", Constants.APP_NAME));
-            menuItemShowApp.Click += (s, e) => windowService.Value.CreateOrShowMainWindow();
+            menuItemShowApp.Click += (s, e) => windowService.Value.OpenMainWindow();
             menuItemExit = new ToolStripMenuItem("Exit");
             iconMenu.Items.Add(menuItemShowApp);
             iconMenu.Items.Add(menuItemExit);
@@ -51,7 +51,7 @@ namespace AppsTracker.Widgets
                 notifyIcon.GetType().InvokeMember("ShowContextMenu",
                     BindingFlags.InvokeMethod | BindingFlags.Instance | BindingFlags.NonPublic, null, notifyIcon, null);
             };
-            notifyIcon.DoubleClick += (s, e) => windowService.Value.CreateOrShowMainWindow();
+            notifyIcon.DoubleClick += (s, e) => windowService.Value.OpenMainWindow();
             menuItemExit.Click += (s, e) => ((App)App.Current).ShutdownApp();
 
             IsVisible = true;

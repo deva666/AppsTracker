@@ -52,14 +52,14 @@ namespace AppsTracker.Controllers
 
             if (autoStart == false)
             {
-                windowService.CreateOrShowMainWindow();
+                windowService.OpenMainWindow();
                 windowService.FirstRunWindowSetup();
             }
 
             dataService.DbSizeCritical += OnDbSizeCritical;
             dataService.GetDBSize();
 
-            EntryPoint.SingleInstanceManager.SecondInstanceActivating += (s, e) => windowService.CreateOrShowMainWindow();
+            EntryPoint.SingleInstanceManager.SecondInstanceActivating += (s, e) => windowService.OpenMainWindow();
         }
 
         private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)

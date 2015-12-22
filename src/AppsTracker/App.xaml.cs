@@ -23,7 +23,6 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using AppsTracker.Common.Logging;
 using AppsTracker.Controllers;
-using AppsTracker.Data.Service;
 using AppsTracker.Service;
 
 [assembly: InternalsVisibleTo("AppsTracker.Tests")]

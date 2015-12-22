@@ -131,7 +131,7 @@ namespace AppsTracker.Service
         }
 
 
-        public void CreateOrShowMainWindow()
+        public void OpenMainWindow()
         {
             if (CanOpenMainWindow())
             {

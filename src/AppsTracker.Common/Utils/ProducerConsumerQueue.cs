@@ -1,10 +1,9 @@
-﻿using AppsTracker.Common.Logging;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using AppsTracker.Common.Logging;
 
 namespace AppsTracker.Common.Utils
 {
@@ -15,7 +14,7 @@ namespace AppsTracker.Common.Utils
 
         private readonly ILogger logger;
         private readonly BlockingCollection<WorkItem> queue;
-        
+
         [ImportingConstructor]
         public ProducerConsumerQueue(ILogger logger)
         {
@@ -48,9 +47,13 @@ namespace AppsTracker.Common.Utils
                 {
                     object result = null;
                     if (work.Action != null)
+                    {
                         work.Action();
-                    else
+                    }
+                    else if (work.ValueFactory != null)
+                    {
                         result = work.ValueFactory.Invoke();
+                    }
                     work.TaskSource.SetResult(result);
                 }
                 catch (Exception ex)
@@ -79,7 +82,7 @@ namespace AppsTracker.Common.Utils
             public Func<Object> ValueFactory { get; private set; }
             public TaskCompletionSource<Object> TaskSource { get; private set; }
 
-            public WorkItem(Action action, TaskCompletionSource<Object> taskSource) 
+            public WorkItem(Action action, TaskCompletionSource<Object> taskSource)
                 : this()
             {
                 Action = action;

@@ -24,7 +24,7 @@ namespace AppsTracker.Service
         
         void FirstRunWindowSetup();
                 
-        void CreateOrShowMainWindow();
+        void OpenMainWindow();
         
         void CloseMainWindow();
         

@@ -2,7 +2,6 @@
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using AppsTracker.Common.Logging;
-using AppsTracker.Data.Models;
 
 namespace AppsTracker.Tracking.Limits
 {

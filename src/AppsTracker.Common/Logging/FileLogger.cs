@@ -2,16 +2,16 @@
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Text;
+using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Common.Logging
 {
     [Export(typeof(ILogger))]
     public class FileLogger : ILogger
     {
-        public void Log(System.Exception fail)
+        public void Log(Exception fail)
         {
-            if (fail == null)
-                throw new ArgumentNullException("fail");
+            Ensure.NotNull(fail, "fail");
 
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine();

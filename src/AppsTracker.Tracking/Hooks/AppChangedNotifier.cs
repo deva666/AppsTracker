@@ -40,13 +40,13 @@ namespace AppsTracker.Tracking.Hooks
             this.titleChangedHook = titleChangedHook;
             this.syncContext = syncContext;
 
-            windowCheckTimer = new Timer(OnWindowChangedTick, null, 5 * 1000, 5 * 1000);
+            windowCheckTimer = new Timer(OnTimerTick, null, 5 * 1000, 5 * 1000);
 
             this.windowChangedHook.ActiveWindowChanged += OnActiveWindowChanged;
             this.titleChangedHook.TitleChanged += OnTitleChanged;
         }
 
-        private void OnWindowChangedTick(Object state)
+        private void OnTimerTick(Object state)
         {
             syncContext.Invoke(() =>
             {

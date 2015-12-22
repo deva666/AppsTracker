@@ -19,7 +19,7 @@ namespace AppsTracker.Tests.Core.Controllers
 
             xmlSettingsService.Verify(x => x.Initialize(), Times.Once());
             appearanceController.Verify(a => a.Initialize(It.IsAny<Setting>()), Times.Once());
-            windowService.Verify(w => w.CreateOrShowMainWindow(), Times.Never());
+            windowService.Verify(w => w.OpenMainWindow(), Times.Never());
             windowService.Verify(w => w.FirstRunWindowSetup(), Times.Never());
         }
 
@@ -33,7 +33,7 @@ namespace AppsTracker.Tests.Core.Controllers
 
             xmlSettingsService.Verify(x => x.Initialize(), Times.Once());
             appearanceController.Verify(a => a.Initialize(It.IsAny<Setting>()), Times.Once());
-            windowService.Verify(w => w.CreateOrShowMainWindow(), Times.Once());
+            windowService.Verify(w => w.OpenMainWindow(), Times.Once());
             windowService.Verify(w => w.FirstRunWindowSetup(), Times.Once());
         }
 

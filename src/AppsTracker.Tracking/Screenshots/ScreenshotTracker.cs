@@ -1,11 +1,10 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.Threading.Tasks;
+using AppsTracker.Common.Utils;
+using AppsTracker.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.Tracking.Helpers;
-using AppsTracker.Common.Utils;
-using AppsTracker.Communication;
 
 namespace AppsTracker.Tracking
 {
@@ -82,7 +81,7 @@ namespace AppsTracker.Tracking
         {
             screenshotTimer.Enabled = (settings.TakeScreenshots && settings.TrackingEnabled);
 
-            if ((settings.TakeScreenshots && settings.TrackingEnabled) 
+            if ((settings.TakeScreenshots && settings.TrackingEnabled)
                 && settings.TimerInterval != screenshotTimer.Component.Interval)
                 screenshotTimer.Component.Interval = settings.TimerInterval;
         }
