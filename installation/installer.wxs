@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <?define RTMProductVersion="3.0.0.0" ?>
-<?define ProductVersion = "3.0.2.0"?>
+<?define ProductVersion = "3.0.3.0"?>
 <?define ProductUpgradeCode = "07e55424-57ab-4a89-bb89-28fde0f528ef"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
 		xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
