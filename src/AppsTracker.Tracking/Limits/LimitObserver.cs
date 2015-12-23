@@ -60,10 +60,10 @@ namespace AppsTracker.Tracking.Limits
             {
                 notifier.LimitReached += OnLimitReached;
             }
-            
+
             mediator.Register(MediatorMessages.APP_LIMITS_CHANGIING, LoadAppLimits);
             mediator.Register(MediatorMessages.STOP_TRACKING, StopNotifiers);
-            mediator.Register(MediatorMessages.RESUME_TRACKING, CheckLimits);
+            mediator.Register(MediatorMessages.RESUME_TRACKING, async () => await CheckLimits());
         }
 
         private void OnLimitReached(object sender, LimitReachedArgs args)
@@ -74,7 +74,7 @@ namespace AppsTracker.Tracking.Limits
             }
         }
 
-        
+
         public void SettingsChanged(Setting settings)
         {
         }
@@ -101,10 +101,10 @@ namespace AppsTracker.Tracking.Limits
             }
         }
 
-        private void OnMidnightTick(object sender, EventArgs e)
+        private async void OnMidnightTick(object sender, EventArgs e)
         {
             StopNotifiers();
-            CheckLimits();
+            await CheckLimits();
         }
 
         private void StopNotifiers()
@@ -116,11 +116,11 @@ namespace AppsTracker.Tracking.Limits
         }
 
 
-        private void CheckLimits()
+        private async Task CheckLimits()
         {
             foreach (var notifier in limitNotifiers.Where(l => l.Limit != null))
             {
-                LoadAppDurations(notifier.Limit.Application);
+                await LoadAppDurations(notifier.Limit.Application);
             }
         }
 
@@ -141,27 +141,46 @@ namespace AppsTracker.Tracking.Limits
 
             if (app != null && app.AppInfo == activeAppInfo)
             {
-                LoadAppDurations(app);
+                await LoadAppDurations(app);
             }
             else
             {
                 activeAppId = Int32.MinValue;
             }
         }
-    
-        private void LoadAppDurations(Aplication app)
+
+        private async Task LoadAppDurations(Aplication app)
         {
             activeAppId = app.ApplicationID;
-            
+
             IEnumerable<AppLimit> limits;
             if (appLimitsMap.TryGetValue(app, out limits))
             {
                 foreach (var limit in limits)
                 {
                     var durationTask = workQueue.EnqueueWork(() => trackingService.GetDuration(app, limit.LimitSpan));
-                    durationTask.ContinueWith(OnGetAppDuration, limit, CancellationToken.None, 
-                        TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
+                    var duration = (Int64)await workQueue.EnqueueWork(() => trackingService.GetDuration(app, limit.LimitSpan));
+                    CheckDuration(limit, duration);
+                    //durationTask.ContinueWith(OnGetAppDuration, limit, CancellationToken.None, 
+                    //    TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
                 }
+            }
+        }
+
+        private void CheckDuration(AppLimit limit, Int64 duration)
+        {
+            if (duration >= limit.Limit)
+            {
+                limitHandler.Handle(limit);
+            }
+            else if (activeAppId != limit.ApplicationID)
+            {
+                return;
+            }
+            else
+            {
+                var notifer = limitNotifiers.Single(l => l.LimitSpan == limit.LimitSpan);
+                notifer.Setup(limit, new TimeSpan(limit.Limit - duration));
             }
         }
 

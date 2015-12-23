@@ -47,7 +47,6 @@ namespace AppsTracker.Tracking.Limits
 
         public void Stop()
         {
-            Limit = null;
             timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
         }
 

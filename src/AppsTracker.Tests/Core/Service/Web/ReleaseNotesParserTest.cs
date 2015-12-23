@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using AppsTracker.Service.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
