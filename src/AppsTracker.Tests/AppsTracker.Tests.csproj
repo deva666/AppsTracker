@@ -103,6 +103,7 @@
     <Compile Include="Core\ViewModels\StatisticsHostViewModelTests.cs" />
     <Compile Include="Tracking\LimitHandlerTest.cs" />
     <Compile Include="Tracking\LimitNotifierTest.cs" />
+    <Compile Include="Tracking\DataCleanerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AppsTracker.Common\AppsTracker.Common.csproj">

@@ -63,7 +63,7 @@ namespace AppsTracker.Tracking
                 if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(settingsService.Settings.IdleTimer))
                 {
                     idleEntered = false;
-                    idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+                    idleTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     SetHooks();
                     IdleEntered.InvokeSafely(this, EventArgs.Empty);
                 }
