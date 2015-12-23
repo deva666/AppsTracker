@@ -72,7 +72,7 @@ namespace AppsTracker.Tests.Core.MVVM
 
         private int FakeGet()
         {
-            Thread.Sleep(1100);
+            Thread.Sleep(200);
             return 1;
         }
     }

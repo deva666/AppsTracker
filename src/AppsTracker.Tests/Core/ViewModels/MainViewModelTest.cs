@@ -73,7 +73,7 @@ namespace AppsTracker.Tests.Core.ViewModels
             releaseNotesService.Setup(s => s.GetReleaseNotesAsync())
                 .ThrowsAsync(new Exception("Fail"));
             var viewModel = CreateViewModel();
-            await Task.Delay(300);
+            await Task.Delay(200);
             Assert.IsFalse(viewModel.NewVersionAvailable);
         }
 
@@ -83,7 +83,7 @@ namespace AppsTracker.Tests.Core.ViewModels
             releaseNotesService.Setup(s => s.GetReleaseNotesAsync())
                 .ReturnsAsync(new List<ReleaseNote>() { new ReleaseNote("0.0.0.1", new List<String>()) });
             var viewModel = CreateViewModel();
-            await Task.Delay(300);
+            await Task.Delay(200);
             Assert.IsFalse(viewModel.NewVersionAvailable);
         }
 
@@ -93,7 +93,7 @@ namespace AppsTracker.Tests.Core.ViewModels
             releaseNotesService.Setup(s => s.GetReleaseNotesAsync())
                 .ReturnsAsync(new List<ReleaseNote>() { new ReleaseNote("99.99.99.99", new List<String>()) });
             var viewModel = CreateViewModel();
-            await Task.Delay(300);
+            await Task.Delay(200);
             Assert.IsTrue(viewModel.NewVersionAvailable);
         }
 

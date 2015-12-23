@@ -10,7 +10,7 @@ using System;
 
 namespace AppsTracker.Tracking
 {
-    internal sealed class LazyInit<T> : IDisposable where T : class,IDisposable
+    internal sealed class LazyInit<T> : IDisposable where T : class, IDisposable
     {
         private bool enabled = false;
         private readonly object _lock = new object();

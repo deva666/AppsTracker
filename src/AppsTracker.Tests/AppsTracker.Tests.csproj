@@ -104,6 +104,7 @@
     <Compile Include="Tracking\LimitHandlerTest.cs" />
     <Compile Include="Tracking\LimitNotifierTest.cs" />
     <Compile Include="Tracking\DataCleanerTest.cs" />
+    <Compile Include="Tracking\LazyInitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AppsTracker.Common\AppsTracker.Common.csproj">

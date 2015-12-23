@@ -15,7 +15,7 @@ namespace AppsTracker.Tests.Tracking
             var tracker = CreateTracker();
             var settings = new Setting()
             {
-                TimerInterval = 500,
+                TimerInterval = 100,
                 TrackingEnabled = true,
                 TakeScreenshots = true
             };
@@ -31,7 +31,7 @@ namespace AppsTracker.Tests.Tracking
             screenshotFactory.Setup(f => f.CreateScreenshot()).Returns(screenshot);
             tracker.Initialize(settings);
 
-            await Task.Delay(700);
+            await Task.Delay(150);
 
             Assert.AreEqual(1, eventRaised, "Screenshot taken event should be raised");
         }
@@ -56,7 +56,7 @@ namespace AppsTracker.Tests.Tracking
             screenshotFactory.Setup(f => f.CreateScreenshot()).Returns(screenshot);
             tracker.Initialize(settings);
 
-            await Task.Delay(200);
+            await Task.Delay(150);
         }
 
         [TestMethod]
@@ -79,7 +79,7 @@ namespace AppsTracker.Tests.Tracking
             screenshotFactory.Setup(f => f.CreateScreenshot()).Returns(screenshot);
             tracker.Initialize(settings);
 
-            await Task.Delay(200);
+            await Task.Delay(150);
         }
 
         private ScreenshotTracker CreateTracker()
