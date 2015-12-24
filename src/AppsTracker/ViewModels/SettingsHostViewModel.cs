@@ -80,12 +80,12 @@ namespace AppsTracker.ViewModels
                                      ExportFactory<SettingsAppCategoriesViewModel> appCategoriesVMFactory,
                                      ExportFactory<SettingsLimitsViewModel> appLimitsVMFactory)
         {
-            RegisterChild(() => ProduceValue(generalVMFactory));
-            RegisterChild(() => ProduceValue(loggingVMFactory));
-            RegisterChild(() => ProduceValue(screenshotsVMFactory));
-            RegisterChild(() => ProduceValue(passwordVMFactory));
-            RegisterChild(() => ProduceValue(appCategoriesVMFactory));
-            RegisterChild(() => ProduceValue(appLimitsVMFactory));
+            RegisterChild(() => ProduceViewModel(generalVMFactory));
+            RegisterChild(() => ProduceViewModel(loggingVMFactory));
+            RegisterChild(() => ProduceViewModel(screenshotsVMFactory));
+            RegisterChild(() => ProduceViewModel(passwordVMFactory));
+            RegisterChild(() => ProduceViewModel(appCategoriesVMFactory));
+            RegisterChild(() => ProduceViewModel(appLimitsVMFactory));
 
             SelectedChild = GetChild<SettingsGeneralViewModel>();
         }

@@ -34,7 +34,7 @@ namespace AppsTracker.MVVM
         }
 
       
-        protected T ProduceValue<T>(ExportFactory<T> factory) where T : ViewModelBase
+        protected T ProduceViewModel<T>(ExportFactory<T> factory) where T : ViewModelBase
         {
             using (var context = factory.CreateExport())
             {

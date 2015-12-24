@@ -6,14 +6,11 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using AppsTracker;
 using AppsTracker.Data.Models;
 using AppsTracker.Tracking;
-using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Controllers
 {
@@ -33,17 +30,23 @@ namespace AppsTracker.Controllers
             foreach (var module in modules.OrderBy(m => m.InitializationOrder))
             {
                 module.Initialize(settings);
-            } 
+            }
         }
 
         public void SettingsChanging(Setting settings)
         {
-            modules.ForEachAction(m => m.SettingsChanged(settings));
+            foreach (var module in modules)
+            {
+                module.SettingsChanged(settings);
+            }
         }
 
         public void Dispose()
         {
-            modules.ForEachAction(m => m.Dispose());
+            foreach (var module in modules)
+            {
+                module.Dispose();
+            }
         }
     }
 }

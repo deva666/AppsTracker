@@ -65,11 +65,11 @@ namespace AppsTracker.ViewModels
                                        ExportFactory<ScreenshotsStatsViewModel> screenshotStatsVMFactory,
                                        ExportFactory<CategoryStatsViewModel> categoryStatsVMFactory)
         {
-            RegisterChild(() => ProduceValue(userStatsVMFactory));
-            RegisterChild(() => ProduceValue(appStatsVMFactory));
-            RegisterChild(() => ProduceValue(dailyAppUsageVMFactory));
-            RegisterChild(() => ProduceValue(screenshotStatsVMFactory));
-            RegisterChild(() => ProduceValue(categoryStatsVMFactory));
+            RegisterChild(() => ProduceViewModel(userStatsVMFactory));
+            RegisterChild(() => ProduceViewModel(appStatsVMFactory));
+            RegisterChild(() => ProduceViewModel(dailyAppUsageVMFactory));
+            RegisterChild(() => ProduceViewModel(screenshotStatsVMFactory));
+            RegisterChild(() => ProduceViewModel(categoryStatsVMFactory));
             
             SelectedChild = GetChild(typeof(UserStatsViewModel));
         }

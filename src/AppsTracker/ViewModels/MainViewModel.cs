@@ -294,9 +294,9 @@ namespace AppsTracker.ViewModels
             this.releaseNotesService = releaseNotesService;
             this.mediator = mediator;
 
-            RegisterChild(() => ProduceValue(dataVMFactory));
-            RegisterChild(() => ProduceValue(statisticsVMFactory));
-            RegisterChild(() => ProduceValue(settingsVMFactory));
+            RegisterChild(() => ProduceViewModel(dataVMFactory));
+            RegisterChild(() => ProduceViewModel(statisticsVMFactory));
+            RegisterChild(() => ProduceViewModel(settingsVMFactory));
 
             SelectedChild = GetChild<DataHostViewModel>();
 

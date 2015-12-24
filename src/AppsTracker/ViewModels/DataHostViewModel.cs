@@ -50,9 +50,9 @@ namespace AppsTracker.ViewModels
                                  ExportFactory<ScreenshotsViewModel> screenshotsVMFactory,
                                  ExportFactory<DaySummaryViewModel> daySummaryVMFactory)
         {
-            RegisterChild(() => ProduceValue(appDetailsVMFactory));
-            RegisterChild(() => ProduceValue(screenshotsVMFactory));
-            RegisterChild(() => ProduceValue(daySummaryVMFactory));
+            RegisterChild(() => ProduceViewModel(appDetailsVMFactory));
+            RegisterChild(() => ProduceViewModel(screenshotsVMFactory));
+            RegisterChild(() => ProduceViewModel(daySummaryVMFactory));
 
             SelectedChild = GetChild<AppDetailsViewModel>();
         }
