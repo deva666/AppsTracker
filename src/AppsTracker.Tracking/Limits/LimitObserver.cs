@@ -161,8 +161,6 @@ namespace AppsTracker.Tracking.Limits
                     var durationTask = workQueue.EnqueueWork(() => trackingService.GetDuration(app, limit.LimitSpan));
                     var duration = (Int64)await workQueue.EnqueueWork(() => trackingService.GetDuration(app, limit.LimitSpan));
                     CheckDuration(limit, duration);
-                    //durationTask.ContinueWith(OnGetAppDuration, limit, CancellationToken.None, 
-                    //    TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
                 }
             }
         }
@@ -184,26 +182,6 @@ namespace AppsTracker.Tracking.Limits
             }
         }
 
-        private void OnGetAppDuration(Task<Object> task, object state)
-        {
-            var appLimit = (AppLimit)state;
-            var duration = (Int64)task.Result;
-
-            if (duration >= appLimit.Limit)
-            {
-                limitHandler.Handle(appLimit);
-            }
-            else if (activeAppId != appLimit.ApplicationID)
-            {
-                return;
-            }
-            else
-            {
-                var notifer = limitNotifiers.Single(l => l.LimitSpan == appLimit.LimitSpan);
-                notifer.Setup(appLimit, new TimeSpan(appLimit.Limit - duration));
-            }
-        }
-
         public void Dispose()
         {
             foreach (var notifier in limitNotifiers)
@@ -212,6 +190,7 @@ namespace AppsTracker.Tracking.Limits
             }
 
             midnightNotifier.Dispose();
+            appChangedNotifier.Dispose();
         }
 
 

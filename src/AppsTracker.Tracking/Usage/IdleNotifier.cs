@@ -16,8 +16,6 @@ namespace AppsTracker.Tracking
         private const int TIMER_DELAY = 1 * 60 * 1000;
         private const int WH_KEYBOARD_LL = 13;
         private const int WH_MOUSE_LL = 14;
-        private const int IDLE_ON = 1;
-        private const int IDLE_OFF = 0;
 
         private readonly ISqlSettingsService settingsService;
         private readonly ISyncContext syncContext;
@@ -59,8 +57,8 @@ namespace AppsTracker.Tracking
         {
             syncContext.Invoke(s =>
             {
-                var idleInfo = IdleTimeWatcher.GetIdleTimeInfo();
-                if (idleInfo.IdleTime >= TimeSpan.FromMilliseconds(settingsService.Settings.IdleTimer))
+                var idleTimeSpan = IdleTimeWatcher.GetIdleTimeSpan();
+                if (idleTimeSpan >= TimeSpan.FromMilliseconds(settingsService.Settings.IdleTimer))
                 {
                     idleEntered = false;
                     idleTimer.Change(Timeout.Infinite, Timeout.Infinite);
@@ -131,11 +129,7 @@ namespace AppsTracker.Tracking
         {
             if (!disposed)
             {
-                disposed = true;
-
-                idleTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
                 idleTimer.Dispose();
-                idleTimer = null;
 
                 Delegate[] delegateBuffer = null;
                 if (IdleEntered != null)
@@ -160,6 +154,8 @@ namespace AppsTracker.Tracking
 
                 if (!hooksRemoved)
                     RemoveHooks();
+
+                disposed = true;
             }
         }
     }

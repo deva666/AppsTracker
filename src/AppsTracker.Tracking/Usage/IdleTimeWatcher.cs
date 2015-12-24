@@ -8,7 +8,7 @@ namespace AppsTracker.Tracking
     {
         private IdleTimeWatcher() { }
 
-        public static IdleTimeInfo GetIdleTimeInfo()
+        public static TimeSpan GetIdleTimeSpan()
         {
             int systemUptime = Environment.TickCount;
             int lastInputTicks = 0;
@@ -22,27 +22,12 @@ namespace AppsTracker.Tracking
             {
                 lastInputTicks = (int)lastInputInfo.dwTime;
                 idleTicks = systemUptime - lastInputTicks;
+                return new TimeSpan(0, 0, 0, 0, idleTicks);
             }
             else
             {
-                System.Diagnostics.Debug.Fail("WinAPI.GetLastInputInfo failed");
+                return TimeSpan.MinValue;
             }
-
-            return new IdleTimeInfo
-            {
-                LastInputTime = DateTime.Now.AddMilliseconds(-1 * idleTicks),
-                IdleTime = new TimeSpan(0, 0, 0, 0, idleTicks),
-                SystemUptimeMilliseconds = systemUptime
-            };
         }
-    }
-
-    public struct IdleTimeInfo
-    {
-        public DateTime LastInputTime { get; internal set; }
-
-        public TimeSpan IdleTime { get; internal set; }
-
-        public int SystemUptimeMilliseconds { get; internal set; }
     }
 }

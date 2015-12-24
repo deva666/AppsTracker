@@ -21,6 +21,8 @@ namespace AppsTracker.Tracking.Hooks
     {
         public event EventHandler<AppChangedArgs> AppChanged;
 
+        private Boolean isDisposed = false;
+
         private readonly IWindowChanged windowChangedHook;
         private readonly ITitleChanged titleChangedHook;
         private readonly ISyncContext syncContext;
@@ -113,9 +115,14 @@ namespace AppsTracker.Tracking.Hooks
 
         public void Dispose()
         {
-            windowCheckTimer.Dispose();
-            windowChangedHook.Dispose();
-            titleChangedHook.Dispose();
+            if (!isDisposed)
+            {
+                windowCheckTimer.Dispose();
+                windowChangedHook.Dispose();
+                titleChangedHook.Dispose();
+
+                isDisposed = true;
+            }
         }
     }
 }
