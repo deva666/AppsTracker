@@ -82,6 +82,8 @@ namespace AppsTracker.Views
             var newTop = bounds.Height / measureProvider.ScaleY - this.Height - 35;
             this.Left = bounds.Width / measureProvider.ScaleX - this.Width - 5;
 
+            timer.Start();
+
             AnimateWindowTopPosition(newTop);
         }
 
@@ -89,11 +91,17 @@ namespace AppsTracker.Views
         {
             this.Topmost = false;
             this.Opacity = 0.5;
-            var bounds = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
-            var newTop = bounds.Bottom + 5;
+
+            timer.Stop();
 
             if (cbDontShow.IsChecked.HasValue && cbDontShow.IsChecked.Value)
+            {
                 xmlSettingsService.LimitsSettings.DontShowLimits.Add(currentLimit.AppLimitID);
+                currentLimit = null;
+            }
+            
+            var bounds = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
+            var newTop = bounds.Bottom + 5;
 
             AnimateWindowTopPosition(newTop);
         }
