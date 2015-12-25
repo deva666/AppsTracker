@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using AppsTracker.Common.Communication;
 using AppsTracker.Common.Utils;
@@ -31,6 +30,7 @@ namespace AppsTracker.Tracking.Limits
         private readonly ICollection<LimitNotifier> limitNotifiers
             = new List<LimitNotifier>();
 
+        private Boolean isTrackingEnabled;
         private Int32 activeAppId;
         private AppInfo activeAppInfo;
         private String activeWindowTitle;
@@ -62,8 +62,6 @@ namespace AppsTracker.Tracking.Limits
             }
 
             mediator.Register(MediatorMessages.APP_LIMITS_CHANGIING, LoadAppLimits);
-            mediator.Register(MediatorMessages.STOP_TRACKING, StopNotifiers);
-            mediator.Register(MediatorMessages.RESUME_TRACKING, async () => await CheckLimits());
         }
 
         private void OnLimitReached(object sender, LimitReachedArgs args)
@@ -77,11 +75,14 @@ namespace AppsTracker.Tracking.Limits
 
         public void SettingsChanged(Setting settings)
         {
+            isTrackingEnabled = settings.TrackingEnabled;
         }
 
 
         public void Initialize(Setting settings)
         {
+            isTrackingEnabled = settings.TrackingEnabled;
+
             LoadAppLimits();
 
             midnightNotifier.MidnightTick += OnMidnightTick;
@@ -128,7 +129,7 @@ namespace AppsTracker.Tracking.Limits
         private async void OnAppChanged(object sender, AppChangedArgs e)
         {
             if ((activeAppInfo == e.LogInfo.AppInfo && activeWindowTitle == e.LogInfo.WindowTitle)
-                || appLimitsMap.Count == 0)
+                || appLimitsMap.Count == 0 || !isTrackingEnabled)
                 return;
 
             activeAppInfo = e.LogInfo.AppInfo;

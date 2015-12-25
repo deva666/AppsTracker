@@ -30,7 +30,7 @@ namespace AppsTracker.Tests.Tracking
             trackingService.Setup(t => t.GetDuration(app, LimitSpan.Day)).Returns(0);
             trackingService.Setup(t => t.GetApp(appInfo, 0)).Returns(app);
 
-            observer.Initialize(null);
+            observer.Initialize(new Setting() { TrackingEnabled = true });
             windowChangedNotifier.Raise(w => w.AppChanged += null, new AppChangedArgs(LogInfo.Create(appInfo, "")));
 
             await Task.Delay(100);
@@ -38,6 +38,27 @@ namespace AppsTracker.Tests.Tracking
             limitHandler.Verify(h => h.Handle(It.IsAny<AppLimit>()), Times.Once);
         }
 
+        [TestMethod]
+        public async Task TestDisabledObserver()
+        {
+            var observer = CreateObserver();
+            var app = CreateAppDailyLimit(0);
+            var appInfo = AppInfo.Create(app.Name);
+            app.AppInfo = appInfo;
+
+            dataService.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
+                It.IsAny<Expression<Func<Aplication, object>>>()))
+                .Returns(new List<Aplication> { app });
+            trackingService.Setup(t => t.GetDuration(app, LimitSpan.Day)).Returns(0);
+            trackingService.Setup(t => t.GetApp(appInfo, 0)).Returns(app);
+
+            observer.Initialize(new Setting() { TrackingEnabled = false });
+            windowChangedNotifier.Raise(w => w.AppChanged += null, new AppChangedArgs(LogInfo.Create(appInfo, "")));
+
+            await Task.Delay(100);
+
+            limitHandler.Verify(h => h.Handle(It.IsAny<AppLimit>()), Times.Never());
+        }
 
         [TestMethod]
         public async Task TestDelayedLimitHandle()
@@ -53,7 +74,7 @@ namespace AppsTracker.Tests.Tracking
             trackingService.Setup(t => t.GetDuration(app, LimitSpan.Day)).Returns(0);
             trackingService.Setup(t => t.GetApp(appInfo, 0)).Returns(app);
 
-            observer.Initialize(null);
+            observer.Initialize(new Setting() { TrackingEnabled = true });
             windowChangedNotifier.Raise(w => w.AppChanged += null, new AppChangedArgs(LogInfo.Create(appInfo, "")));
 
             limitHandler.Verify(h => h.Handle(app.Limits.First()), Times.Never);
@@ -77,7 +98,7 @@ namespace AppsTracker.Tests.Tracking
             trackingService.Setup(t => t.GetDuration(app, LimitSpan.Day)).Returns(0);
             trackingService.Setup(t => t.GetApp(appInfo, 0)).Returns(app);
 
-            observer.Initialize(null);
+            observer.Initialize(new Setting() { TrackingEnabled = true });
             windowChangedNotifier.Raise(w => w.AppChanged += null, new AppChangedArgs(LogInfo.Create(appInfo, "")));
 
             limitHandler.Verify(h => h.Handle(app.Limits.First()), Times.Never);
@@ -107,7 +128,7 @@ namespace AppsTracker.Tests.Tracking
             var secondAppInfo = AppInfo.Create("some app");
             trackingService.Setup(t => t.GetApp(secondAppInfo, 0)).Returns(new Aplication());
 
-            observer.Initialize(null);
+            observer.Initialize(new Setting() { TrackingEnabled = true });
             windowChangedNotifier.Raise(w => w.AppChanged += null, new AppChangedArgs(LogInfo.Create(appInfo, "")));
 
             await Task.Delay(50);
