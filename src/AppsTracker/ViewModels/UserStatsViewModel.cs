@@ -71,7 +71,8 @@ namespace AppsTracker.ViewModels
 
         public ICommand ReturnFromDetailedViewCommand
         {
-            get { return returnFromDetailedViewCommand ?? (returnFromDetailedViewCommand = new DelegateCommand(ReturnFromDetailedView)); }
+            get { return returnFromDetailedViewCommand ??
+                    (returnFromDetailedViewCommand = new DelegateCommand(ReturnFromDetailedView)); }
         }
 
 
@@ -91,7 +92,7 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public void ReloadAll()
+        private void ReloadAll()
         {
             usersList.Reload();
             dailyUsageList.Reload();

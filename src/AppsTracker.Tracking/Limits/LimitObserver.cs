@@ -159,7 +159,6 @@ namespace AppsTracker.Tracking.Limits
             {
                 foreach (var limit in limits)
                 {
-                    var durationTask = workQueue.EnqueueWork(() => trackingService.GetDuration(app, limit.LimitSpan));
                     var duration = (Int64)await workQueue.EnqueueWork(() => trackingService.GetDuration(app, limit.LimitSpan));
                     CheckDuration(limit, duration);
                 }
