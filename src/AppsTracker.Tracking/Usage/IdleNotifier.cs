@@ -60,7 +60,7 @@ namespace AppsTracker.Tracking
                 var idleTimeSpan = IdleTimeWatcher.GetIdleTimeSpan();
                 if (idleTimeSpan >= TimeSpan.FromMilliseconds(settingsService.Settings.IdleTimer))
                 {
-                    idleEntered = false;
+                    idleEntered = true;
                     idleTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     SetHooks();
                     IdleEntered.InvokeSafely(this, EventArgs.Empty);
