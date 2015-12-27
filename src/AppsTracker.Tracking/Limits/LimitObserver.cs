@@ -4,7 +4,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using AppsTracker.Common.Communication;
-using AppsTracker.Common.Utils;
 using AppsTracker.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
@@ -21,8 +20,8 @@ namespace AppsTracker.Tracking.Limits
         private readonly IAppChangedNotifier appChangedNotifier;
         private readonly IMidnightNotifier midnightNotifier;
         private readonly ILimitHandler limitHandler;
+        private readonly IAppDurationCalc appDurationCalc;
         private readonly IMediator mediator;
-        private readonly IWorkQueue workQueue;
 
         private readonly IDictionary<Aplication, IEnumerable<AppLimit>> appLimitsMap
             = new Dictionary<Aplication, IEnumerable<AppLimit>>();
@@ -41,8 +40,8 @@ namespace AppsTracker.Tracking.Limits
                              IAppChangedNotifier appChangedNotifier,
                              IMidnightNotifier midnightNotifier,
                              ILimitHandler limitHandler,
+                             IAppDurationCalc appDurationCalc,
                              IMediator mediator,
-                             IWorkQueue workQueue,
                              ISyncContext syncContext)
         {
             this.trackingService = trackingService;
@@ -50,8 +49,8 @@ namespace AppsTracker.Tracking.Limits
             this.appChangedNotifier = appChangedNotifier;
             this.midnightNotifier = midnightNotifier;
             this.limitHandler = limitHandler;
+            this.appDurationCalc = appDurationCalc;
             this.mediator = mediator;
-            this.workQueue = workQueue;
 
             limitNotifiers.Add(new LimitNotifier(syncContext, LimitSpan.Day));
             limitNotifiers.Add(new LimitNotifier(syncContext, LimitSpan.Week));
@@ -137,8 +136,7 @@ namespace AppsTracker.Tracking.Limits
 
             StopNotifiers();
 
-            var valueFactory = new Func<Object>(() => trackingService.GetApp(e.LogInfo.AppInfo));
-            var app = (Aplication)await workQueue.EnqueueWork(valueFactory);
+            var app = await GetApp(e.LogInfo.AppInfo);
 
             if (app != null && app.AppInfo == activeAppInfo)
             {
@@ -150,6 +148,17 @@ namespace AppsTracker.Tracking.Limits
             }
         }
 
+        private async Task<Aplication> GetApp(AppInfo appInfo)
+        {
+            var name = appInfo.GetAppName();
+            var appsList = await dataService.GetFilteredAsync<Aplication>(a => a.Name == name
+                                                                          && a.UserID == trackingService.UserID);
+            var app = appsList.FirstOrDefault();
+            if (app != null)
+                app.AppInfo = appInfo;
+            return app;
+        }
+
         private async Task LoadAppDurations(Aplication app)
         {
             activeAppId = app.ApplicationID;
@@ -159,7 +168,7 @@ namespace AppsTracker.Tracking.Limits
             {
                 foreach (var limit in limits)
                 {
-                    var duration = (Int64)await workQueue.EnqueueWork(() => trackingService.GetDuration(app, limit.LimitSpan));
+                    var duration = await appDurationCalc.GetDuration(app, limit.LimitSpan);
                     CheckDuration(limit, duration);
                 }
             }

@@ -23,8 +23,8 @@ namespace AppsTracker.ViewModels
         public ReleaseNotesViewModel(IReleaseNotesService releaseNotesService)
         {
             this.releaseNotesService = releaseNotesService;
-            ReleaseNotes = new AsyncProperty<IEnumerable<ReleaseNote>>(
-                this.releaseNotesService.GetReleaseNotesAsync(), this);
+            ReleaseNotes = new TaskObserver<IEnumerable<ReleaseNote>>(
+                this.releaseNotesService.GetReleaseNotesAsync, this);
         }
     }
 }

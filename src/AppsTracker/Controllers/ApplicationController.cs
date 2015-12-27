@@ -9,15 +9,14 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using AppsTracker.Common.Utils;
 using AppsTracker.Data.Service;
-using AppsTracker.Widgets;
-using Microsoft.Win32;
 using AppsTracker.Service;
 
 namespace AppsTracker.Controllers
 {
-    [Export(typeof(IApplicationController))]
-    internal sealed class ApplicationController : IApplicationController
+    [Export()]
+    internal sealed class ApplicationController
     {
         private readonly IAppearanceController appearanceController;
         private readonly ITrackingController trackingController;
@@ -27,11 +26,11 @@ namespace AppsTracker.Controllers
         private readonly IWindowService windowService;
 
         [ImportingConstructor]
-        public ApplicationController(IAppearanceController appearanceController, 
+        public ApplicationController(IAppearanceController appearanceController,
                                      ITrackingController trackingController,
-                                     ISqlSettingsService sqlSettingsService, 
+                                     ISqlSettingsService sqlSettingsService,
                                      IXmlSettingsService xmlSettingsService,
-                                     IDataService dataService, 
+                                     IDataService dataService,
                                      IWindowService windowService)
         {
             this.appearanceController = appearanceController;
@@ -50,15 +49,16 @@ namespace AppsTracker.Controllers
             appearanceController.Initialize(sqlSettingsService.Settings);
             trackingController.Initialize(sqlSettingsService.Settings);
 
+            dataService.CheckUnfinishedEntries();
+            dataService.DbSizeCritical += OnDbSizeCritical;
+            dataService.GetDBSize();
+
             if (autoStart == false)
             {
                 windowService.OpenMainWindow();
                 windowService.FirstRunWindowSetup();
             }
-
-            dataService.DbSizeCritical += OnDbSizeCritical;
-            dataService.GetDBSize();
-
+            
             EntryPoint.SingleInstanceManager.SecondInstanceActivating += (s, e) => windowService.OpenMainWindow();
         }
 
@@ -80,11 +80,11 @@ namespace AppsTracker.Controllers
             dataService.DbSizeCritical -= OnDbSizeCritical;
         }
 
-        public void ShutDown()
+        public void Shutdown()
         {
             windowService.Shutdown();
-            xmlSettingsService.ShutDown();
-            trackingController.Dispose();
+            xmlSettingsService.Shutdown();
+            trackingController.Shutdown();
         }
     }
 }

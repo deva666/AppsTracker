@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
 
@@ -50,7 +51,7 @@ namespace AppsTracker.Data.Service
             return new ObservableCollection<AppCategory>(categories);
         }
 
-        public void SaveChanges(IEnumerable<AppCategory> categoriesToDelete, IEnumerable<AppCategory> modifiedCategories)
+        public async Task SaveChangesAsync(IEnumerable<AppCategory> categoriesToDelete, IEnumerable<AppCategory> modifiedCategories)
         {
             context = context ?? new AppsEntities();
             foreach (var cat in categoriesToDelete)
@@ -75,7 +76,7 @@ namespace AppsTracker.Data.Service
                 SetApplications(cat);
             }
 
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
         private void SetApplications(AppCategory category)

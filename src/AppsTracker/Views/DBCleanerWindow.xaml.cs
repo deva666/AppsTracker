@@ -6,17 +6,12 @@
  */
 #endregion
 
-using System;
 using System.ComponentModel.Composition;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Animation;
 using AppsTracker.Data.Service;
-using AppsTracker.Widgets;
 using AppsTracker.Service;
-using AppsTracker.Common.Utils;
 
 
 namespace AppsTracker.Views
@@ -28,17 +23,14 @@ namespace AppsTracker.Views
     {
         private readonly IDataService dataService;
         private readonly IWindowService windowService;
-        private readonly IWorkQueue workQueue;
 
         [ImportingConstructor]
         public DBCleanerWindow(IDataService dataService,
-                               IWindowService windowService,
-                               IWorkQueue workQueue)
+                               IWindowService windowService)
         {
             InitializeComponent();
             this.dataService = dataService;
             this.windowService = windowService;
-            this.workQueue = workQueue;
         }
 
         private void lblCancel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -52,9 +44,9 @@ namespace AppsTracker.Views
             if (!int.TryParse(tbDays.Text, out days))
                 return;
 
-            overlayGrd.Visibility = System.Windows.Visibility.Visible;
-            int count = (int)await workQueue.EnqueueWork(new Func<Object>(() => dataService.DeleteOldScreenshots(days)));
-            overlayGrd.Visibility = System.Windows.Visibility.Collapsed;
+            overlayGrd.Visibility = Visibility.Visible;
+            int count = await dataService.DeleteOldScreenshotsAsync(days);
+            overlayGrd.Visibility = Visibility.Collapsed;
             windowService.ShowMessageDialog(string.Format("Deleted {0} screenshots", count));
             Close();
         }
@@ -64,7 +56,7 @@ namespace AppsTracker.Views
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-      
+
         public object ViewArgument
         {
             get;

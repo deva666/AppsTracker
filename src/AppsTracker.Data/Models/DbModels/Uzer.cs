@@ -20,6 +20,12 @@ namespace AppsTracker.Data.Models
             this.Usages = new HashSet<Usage>();
         }
 
+        public Uzer(string name) 
+            : this()
+        {
+            Name = name;
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserID { get; set; }

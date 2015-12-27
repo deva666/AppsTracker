@@ -17,7 +17,7 @@ namespace AppsTracker.Tests.Core.MVVM
         public void Init()
         {
             worker = new ViewModelMock();
-            asyncProperty = new AsyncProperty<int>(FakeGet, worker);
+            asyncProperty = new TaskRunner<int>(FakeGet, worker);
             asyncProperty.PropertyChanged += OnPropertyChanged;
         }
 

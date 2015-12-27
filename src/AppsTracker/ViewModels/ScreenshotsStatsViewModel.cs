@@ -14,6 +14,7 @@ using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 using AppsTracker.Data.Service;
 using AppsTracker.Common.Communication;
+using AppsTracker.Tracking;
 
 namespace AppsTracker.ViewModels
 {
@@ -80,8 +81,8 @@ namespace AppsTracker.ViewModels
             this.trackingService = trackingService;
             this.mediator = mediator;
 
-            screenshotList = new AsyncProperty<IEnumerable<ScreenshotModel>>(GetScreenshots, this);
-            dailyScreenshotsList = new AsyncProperty<IEnumerable<DailyScreenshotModel>>(GetDailyScreenshots, this);
+            screenshotList = new TaskRunner<IEnumerable<ScreenshotModel>>(GetScreenshots, this);
+            dailyScreenshotsList = new TaskRunner<IEnumerable<DailyScreenshotModel>>(GetDailyScreenshots, this);
 
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadAll));
         }

@@ -180,10 +180,11 @@
     <Compile Include="Controllers\AppearanceController.cs" />
     <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\IAppearanceController.cs" />
-    <Compile Include="Controllers\IApplicationController.cs" />
     <Compile Include="Controllers\ITrackingController.cs" />
     <Compile Include="Controllers\TrackingController.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="MVVM\TaskObserver.cs" />
+    <Compile Include="MVVM\TaskRunner.cs" />
     <Compile Include="Service\Web\FeedbackReportService.cs" />
     <Compile Include="Service\Web\IFeedbackReportService.cs" />
     <Compile Include="Service\Web\IReleaseNotesService.cs" />

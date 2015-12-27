@@ -8,6 +8,7 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Service;
 using AppsTracker.Tracking.Helpers;
@@ -20,7 +21,6 @@ namespace AppsTracker.Tracking
         private int daysTreshold;
 
         private readonly IDataService dataService;
-        private readonly IWorkQueue workQueue;
 
         public int Days
         {
@@ -33,16 +33,14 @@ namespace AppsTracker.Tracking
         }
 
         [ImportingConstructor]
-        public LogCleaner(IDataService dataService,
-                          IWorkQueue workQueue)
+        public LogCleaner(IDataService dataService)
         {
             this.dataService = dataService;
-            this.workQueue = workQueue;
         }
 
-        public void Clean()
+        public async Task Clean()
         {
-            workQueue.EnqueueWork(() => dataService.DeleteOldLogs(daysTreshold));
+            await dataService.DeleteOldLogsAsync(daysTreshold);
         }
 
         public void Dispose()

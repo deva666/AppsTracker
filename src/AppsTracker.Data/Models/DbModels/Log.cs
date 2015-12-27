@@ -73,6 +73,14 @@ namespace AppsTracker.Data.Models
             this.LogInfoGuid = guid;
         }
 
+        public Log(int windowId, int usageId, Guid guid)
+            : this()
+        {
+            this.WindowID = windowId;
+            this.UsageID = usageId;
+            this.LogInfoGuid = guid;
+        }
+
         public Log(Guid guid)
         {
             this.LogInfoGuid = guid;

@@ -1,11 +1,14 @@
-﻿using System;
+﻿using AppsTracker.Data.Models;
+
 namespace AppsTracker.Tracking.Helpers
 {
     internal interface IUsageProcessor
     {
-        void NewUsage(AppsTracker.Data.Models.UsageTypes usageType);
+        Usage LoginUser(int userId);
 
-        void UsageEnded(AppsTracker.Data.Models.UsageTypes usageType);
+        void NewUsage(UsageTypes usageType);
+
+        void UsageEnded(UsageTypes usageType);
 
         void EndAllUsages();
     }

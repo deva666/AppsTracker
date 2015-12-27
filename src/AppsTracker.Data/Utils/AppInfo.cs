@@ -131,6 +131,15 @@ namespace AppsTracker.Data.Utils
             };
         }
 
+        public string GetAppName()
+        {
+            string appName = (!string.IsNullOrEmpty(Name) 
+                ? Name.Truncate(250) : !string.IsNullOrEmpty(FullName) 
+                ? FullName.Truncate(250) : FileName.Truncate(250));
+
+            return appName;
+        }
+
         public override int GetHashCode()
         {
             unchecked

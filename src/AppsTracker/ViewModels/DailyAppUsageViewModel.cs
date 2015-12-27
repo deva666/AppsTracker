@@ -13,6 +13,7 @@ using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 using AppsTracker.Data.Service;
 using AppsTracker.Common.Communication;
+using AppsTracker.Tracking;
 
 namespace AppsTracker.ViewModels
 {
@@ -51,7 +52,7 @@ namespace AppsTracker.ViewModels
             this.trackingService = trackingService;
             this.mediator = mediator;
 
-            appsList = new AsyncProperty<IEnumerable<AppDurationOverview>>(GetApps, this);
+            appsList = new TaskRunner<IEnumerable<AppDurationOverview>>(GetApps, this);
 
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(appsList.Reload));
         }

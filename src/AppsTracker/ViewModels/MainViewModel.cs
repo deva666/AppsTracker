@@ -18,6 +18,7 @@ using AppsTracker.MVVM;
 using AppsTracker.Data.Service;
 using AppsTracker.Common.Communication;
 using AppsTracker.Service.Web;
+using AppsTracker.Tracking;
 
 namespace AppsTracker.ViewModels
 {

@@ -14,9 +14,9 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AppsTracker.Common.Utils;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
-using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Data.Service
 {
@@ -45,8 +45,23 @@ namespace AppsTracker.Data.Service
             {
                 var query = context.Set<T>().AsQueryable();
                 foreach (var nav in navigations)
+                {
                     query = query.Include(nav);
+                }
                 return query.AsNoTracking().ToList();
+            }
+        }
+
+        public Task<List<T>> GetAsync<T>(params Expression<Func<T, object>>[] navigations) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                IQueryable<T> query = context.Set<T>();
+                foreach (var nav in navigations)
+                {
+                    query = query.Include(nav);
+                }
+                return query.AsNoTracking().ToListAsync<T>();
             }
         }
 
@@ -58,14 +73,68 @@ namespace AppsTracker.Data.Service
             }
         }
 
+        public IEnumerable<T> GetOrdered<T, TKey>(Expression<Func<T, bool>> filter,
+                                                  Expression<Func<T, TKey>> selector,
+                                                  int count) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                return context.Set<T>()
+                              .AsNoTracking()
+                              .Where(filter)
+                              .OrderBy(selector)
+                              .Take(count)
+                              .ToList();
+            }
+        }
+
+        public IEnumerable<T> GetOrderedDesc<T, TKey>(Expression<Func<T, bool>> filter,
+                                                      Expression<Func<T, TKey>> selector,
+                                                      int count) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                return context.Set<T>()
+                              .AsNoTracking()
+                              .Where(filter)
+                              .OrderByDescending(selector)
+                              .Take(count)
+                              .ToList();
+            }
+        }
+
         public IEnumerable<T> GetFiltered<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class
         {
             using (var context = new AppsEntities())
             {
                 var query = context.Set<T>().AsQueryable();
                 foreach (var nav in navigations)
+                {
                     query = query.Include(nav);
+                }
                 return query.AsNoTracking().Where(filter).ToList();
+            }
+        }
+
+        public Task<List<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> filter) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                var set = context.Set<T>();
+                return set.AsNoTracking().Where(filter).ToListAsync();
+            }
+        }
+
+        public Task<List<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigations) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                IQueryable<T> query = context.Set<T>();
+                foreach (var nav in navigations)
+                {
+                    query = query.Include(nav);
+                }
+                return query.AsNoTracking().Where(filter).ToListAsync();
             }
         }
 
@@ -94,6 +163,15 @@ namespace AppsTracker.Data.Service
             {
                 context.Set<T>().Add(item);
                 context.SaveChanges();
+            }
+        }
+
+        public async Task SaveNewEntityAsync<T>(T item) where T : class
+        {
+            using (var context = new AppsEntities())
+            {
+                context.Set<T>().Add(item);
+                await context.SaveChangesAsync();
             }
         }
 
@@ -177,32 +255,38 @@ namespace AppsTracker.Data.Service
         }
 
 
-        public int DeleteOldScreenshots(int daysBackwards)
+        public async Task<int> DeleteOldScreenshotsAsync(int daysBackwards)
         {
             using (var context = new AppsEntities())
             {
                 DateTime dateTreshold = DateTime.Now.AddDays(-1d * daysBackwards);
                 var oldScreenshots = context.Screenshots.Where(s => s.Date < dateTreshold).ToList();
                 context.Screenshots.RemoveRange(oldScreenshots);
-                return context.SaveChanges();
+                return await context.SaveChangesAsync();
             }
         }
 
-        public void DeleteOldLogs(int daysTreshold)
+        public async Task DeleteOldLogsAsync(int daysTreshold)
         {
             var now = DateTime.Now.Date;
             var oldDate = now.AddDays(-1 * daysTreshold);
             using (var context = new AppsEntities())
             {
-                var logs = context.Logs.Where(l => l.DateCreated < oldDate).ToList();
-                var screenshots = context.Screenshots.Where(s => s.Date < oldDate).ToList();
-                var usages = context.Usages.Where(u => u.UsageStart < oldDate && u.IsCurrent == false).ToList();
+                var logsTask = context.Logs.Where(l => l.DateCreated < oldDate).ToListAsync();
+                var screenshotsTask = context.Screenshots.Where(s => s.Date < oldDate).ToListAsync();
+                var usagesTask = context.Usages.Where(u => u.UsageStart < oldDate && u.IsCurrent == false)
+                    .Include(u => u.Logs).ToListAsync();
 
+                await Task.WhenAll(logsTask, screenshotsTask, usagesTask);
+
+                var usages = usagesTask.Result;
                 var usageLogs = usages.SelectMany(u => u.Logs);
+                var logs = logsTask.Result;
                 logs.AddRange(usageLogs);
                 logs = logs.Distinct().ToList();
 
                 var screenshotsLogs = logs.SelectMany(l => l.Screenshots);
+                var screenshots = screenshotsTask.Result;
                 screenshots.AddRange(screenshotsLogs);
                 screenshots = screenshots.Distinct().ToList();
 
@@ -210,26 +294,27 @@ namespace AppsTracker.Data.Service
                 context.Logs.RemoveRange(logs);
                 context.Usages.RemoveRange(usages);
 
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
 
-            DeleteEmptyLogs();
+            await DeleteEmptyLogsAsync();
         }
 
-        private void DeleteEmptyLogs()
+        private async Task DeleteEmptyLogsAsync()
         {
             using (var context = new AppsEntities())
             {
-                foreach (var window in context.Windows.Where(w => w.Logs.Count == 0))
+                var emptyWindows = await context.Windows.Where(w => w.Logs.Count == 0).ToListAsync();
+                foreach (var window in emptyWindows)
                 {
                     if (!context.Windows.Local.Any(w => w.WindowID == window.WindowID))
                         context.Windows.Attach(window);
                     context.Windows.Remove(window);
-                    context.SaveChanges();
+                    await context.SaveChangesAsync();
                 }
 
-                var appsInCategories = context.AppCategories.SelectMany(c => c.Applications).ToList();
-                var appsWithLimits = context.Applications.Where(a => a.Limits.Count > 0).ToList();
+                var appsInCategories = await context.AppCategories.SelectMany(c => c.Applications).ToListAsync();
+                var appsWithLimits = await context.Applications.Where(a => a.Limits.Count > 0).ToListAsync();
 
                 foreach (var app in context.Applications.Where(a => a.Windows.Count == 0))
                 {
@@ -239,7 +324,7 @@ namespace AppsTracker.Data.Service
                     if (!context.Applications.Local.Any(a => a.ApplicationID == app.ApplicationID))
                         context.Applications.Attach(app);
                     context.Applications.Remove(app);
-                    context.SaveChanges();
+                    await context.SaveChangesAsync();
                 }
             }
         }
@@ -267,6 +352,74 @@ namespace AppsTracker.Data.Service
             catch
             {
                 return -1;
+            }
+        }
+
+        public void CheckUnfinishedEntries()
+        {
+            using (var context = new AppsEntities())
+            {
+                var unfinishedUsages = context.Usages
+                                              .Where(u => u.IsCurrent && u.UsageType == UsageTypes.Login)
+                                              .AsNoTracking()
+                                              .ToList();
+                var unfinishedLogs = context.Logs
+                                            .Where(l => !l.Finished)
+                                            .AsNoTracking()
+                                            .ToList();
+
+                if (unfinishedUsages.Count > 0)
+                {
+                    foreach (var usage in unfinishedUsages)
+                    {
+                        SaveUnfinishedUsage(usage);
+                    }
+                }
+
+                if (unfinishedLogs.Count > 0)
+                {
+                    unfinishedLogs.ForEach(l =>
+                    {
+                        l.Finished = true;
+                        context.Entry(l).State = EntityState.Modified;
+                    });
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        private void SaveUnfinishedUsage(Usage usage)
+        {
+            using (var context = new AppsEntities())
+            {
+                var lastLog = context.Logs.Where(l => l.UsageID == usage.UsageID)
+                                          .OrderByDescending(l => l.DateCreated)
+                                          .FirstOrDefault();
+                var lastUsage = context.Usages.Where(u => u.SelfUsageID == usage.UsageID)
+                                              .OrderByDescending(u => u.UsageEnd)
+                                              .FirstOrDefault();
+
+                var lastLogDate = DateTime.MinValue;
+                var lastUsageDate = DateTime.MinValue;
+
+                if (lastLog != null)
+                    lastLogDate = lastLog.DateEnded;
+
+                if (lastUsage != null)
+                    lastUsageDate = lastUsage.UsageEnd;
+
+                var latestDateKnown = new DateTime[] { lastLogDate, lastUsageDate }
+                                            .OrderByDescending(d => d.Ticks)
+                                            .FirstOrDefault();
+
+                if (latestDateKnown == DateTime.MinValue)
+                    latestDateKnown = usage.UsageStart;
+
+                usage.UsageEnd = latestDateKnown;
+                usage.IsCurrent = false;
+
+                context.Entry(usage).State = EntityState.Modified;
+                context.SaveChanges();
             }
         }
     }

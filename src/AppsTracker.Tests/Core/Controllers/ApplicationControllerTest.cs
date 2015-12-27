@@ -1,8 +1,8 @@
-﻿using System;
+﻿using AppsTracker.Controllers;
+using AppsTracker.Data.Models;
+using AppsTracker.Tests.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using AppsTracker.Controllers;
-using AppsTracker.Data.Models;
 
 namespace AppsTracker.Tests.Core.Controllers
 {
@@ -12,7 +12,7 @@ namespace AppsTracker.Tests.Core.Controllers
         [TestMethod]
         public void TestInitializeWithAutostart()
         {
-            settingsService.SetupGet(s=>s.Settings).Returns(new Setting());
+            settingsService.SetupGet(s => s.Settings).Returns(new Setting());
 
             var controller = CreateController();
             controller.Initialize(true);
@@ -42,11 +42,11 @@ namespace AppsTracker.Tests.Core.Controllers
         public void TestShutdown()
         {
             var controller = CreateController();
-            controller.ShutDown();
+            controller.Shutdown();
 
             windowService.Verify(w => w.Shutdown(), Times.Once());
-            xmlSettingsService.Verify(x => x.ShutDown(), Times.Once());
-            trackingController.Verify(t => t.Dispose(), Times.Once());
+            xmlSettingsService.Verify(x => x.Shutdown(), Times.Once());
+            trackingController.Verify(t => t.Shutdown(), Times.Once());
         }
 
         private ApplicationController CreateController()
@@ -57,6 +57,6 @@ namespace AppsTracker.Tests.Core.Controllers
                                             xmlSettingsService.Object,
                                             dataService.Object,
                                             windowService.Object);
-}
+        }
     }
 }

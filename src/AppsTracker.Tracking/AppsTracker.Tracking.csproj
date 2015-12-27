@@ -57,6 +57,9 @@
     <Compile Include="Hooks\AppChangedNotifier.cs" />
     <Compile Include="Hooks\WinHookBase.cs" />
     <Compile Include="ITrackingModule.cs" />
+    <Compile Include="ITrackingService.cs" />
+    <Compile Include="Limits\AppDurationCalc.cs" />
+    <Compile Include="Limits\IAppDurationCalc.cs" />
     <Compile Include="Limits\ILimitHandler.cs" />
     <Compile Include="Limits\IMidnightNotifier.cs" />
     <Compile Include="Limits\IShutdownService.cs" />
@@ -71,6 +74,7 @@
     <Compile Include="Screenshots\IScreenshotTracker.cs" />
     <Compile Include="Screenshots\ScreenshotFactory.cs" />
     <Compile Include="Screenshots\ScreenshotTracker.cs" />
+    <Compile Include="TrackingService.cs" />
     <Compile Include="TrackingStatus.cs" />
     <Compile Include="Usage\IdleNotifier.cs" />
     <Compile Include="Usage\IdleTimeWatcher.cs" />

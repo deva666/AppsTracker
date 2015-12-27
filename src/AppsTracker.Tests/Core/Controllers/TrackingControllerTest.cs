@@ -30,11 +30,11 @@ namespace AppsTracker.Tests.Core.Controllers
         }
 
         [TestMethod]
-        public void TestDispose()
+        public void TestShutdown()
         {
             var module = new Mock<ITrackingModule>();
             var trackingController = new TrackingController(new ITrackingModule[] { module.Object });
-            trackingController.Dispose();
+            trackingController.Shutdown();
             module.Verify(m => m.Dispose(), Times.Once);
         }
     }

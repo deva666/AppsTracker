@@ -14,6 +14,7 @@ using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 using AppsTracker.Data.Service;
 using AppsTracker.Common.Communication;
+using AppsTracker.Tracking;
 
 namespace AppsTracker.ViewModels
 {
@@ -85,8 +86,8 @@ namespace AppsTracker.ViewModels
             this.trackingService = trackingService;
             this.mediator = mediator;
 
-            usersList = new AsyncProperty<IEnumerable<UserLoggedTime>>(GetContent, this);
-            dailyUsageList = new AsyncProperty<IEnumerable<UsageOverview>>(GetSubContent, this);
+            usersList = new TaskRunner<IEnumerable<UserLoggedTime>>(GetContent, this);
+            dailyUsageList = new TaskRunner<IEnumerable<UsageOverview>>(GetSubContent, this);
 
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadAll));
         }

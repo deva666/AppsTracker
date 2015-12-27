@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace AppsTracker.Tracking.Helpers
 {
     public interface ILogCleaner : IDisposable
     {
-        void Clean();
+        Task Clean();
         
         int Days { get; set; }
     }

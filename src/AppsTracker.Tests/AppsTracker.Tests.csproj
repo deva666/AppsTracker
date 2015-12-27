@@ -85,7 +85,6 @@
     <Compile Include="Core\Controllers\TrackingControllerTest.cs" />
     <Compile Include="Core\Service\Web\ReleaseNotesParserTest.cs" />
     <Compile Include="Data\XmlSettingsServiceTests.cs" />
-    <Compile Include="Fakes\WorkQueueMock.cs" />
     <Compile Include="Tracking\Hooks\AppChangedNotifierTests.cs" />
     <Compile Include="Tracking\LimitObserverTest.cs" />
     <Compile Include="Tracking\ScreenshotTrackerTest.cs" />

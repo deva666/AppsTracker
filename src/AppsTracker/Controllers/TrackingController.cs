@@ -41,7 +41,7 @@ namespace AppsTracker.Controllers
             }
         }
 
-        public void Dispose()
+        public void Shutdown()
         {
             foreach (var module in modules)
             {

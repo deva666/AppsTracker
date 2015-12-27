@@ -17,6 +17,7 @@ using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.MVVM;
+using AppsTracker.Tracking;
 
 namespace AppsTracker.ViewModels
 {
@@ -29,7 +30,6 @@ namespace AppsTracker.ViewModels
         private readonly ICategoriesService categoriesService;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
-        private readonly IWorkQueue workQueue;
 
         private readonly ICollection<AppCategory> categoriesToDelete = new List<AppCategory>();
 
@@ -173,8 +173,7 @@ namespace AppsTracker.ViewModels
         [ImportingConstructor]
         public SettingsAppCategoriesViewModel(ExportFactory<ICategoriesService> categoriesFactory,
                                               IMediator mediator,
-                                              ITrackingService trackingService,
-                                              IWorkQueue workQueue)
+                                              ITrackingService trackingService)
         {
             using (var context = categoriesFactory.CreateExport())
             {
@@ -182,7 +181,6 @@ namespace AppsTracker.ViewModels
             }
             this.mediator = mediator;
             this.trackingService = trackingService;
-            this.workQueue = workQueue;
 
             LoadContent();
             this.mediator.Register<Aplication>(MediatorMessages.APPLICATION_ADDED, AppAdded);
@@ -266,7 +264,7 @@ namespace AppsTracker.ViewModels
 
         private async Task SaveChanges()
         {
-            await workQueue.EnqueueWork(() => categoriesService.SaveChanges(categoriesToDelete, Categories));
+            await categoriesService.SaveChangesAsync(categoriesToDelete, Categories);
             categoriesToDelete.Clear();
             InfoMessage = SETTINGS_SAVED_MSG;
         }

@@ -18,6 +18,6 @@ namespace AppsTracker.Data.Service
         
         void Initialize();
         
-        void ShutDown();
+        void Shutdown();
     }
 }

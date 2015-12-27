@@ -32,7 +32,7 @@ namespace AppsTracker
 {
     public partial class App : Application
     {
-        private readonly IApplicationController applicationController;
+        private readonly ApplicationController applicationController;
         private readonly CompositionContainer container;
 
         public App(ReadOnlyCollection<string> args)
@@ -59,7 +59,7 @@ namespace AppsTracker
             ServiceLocation.ServiceLocator.Instance.Initialize(container);
 
             bool autostart = args.Where(a => a.ToUpper().Contains(Constants.CMD_ARGS_AUTOSTART)).Count() > 0;
-            applicationController = container.GetExportedValue<IApplicationController>();
+            applicationController = container.GetExportedValue<ApplicationController>();
             applicationController.Initialize(autostart);
 
             this.SessionEnding += (s, e) => ShutdownApp();
@@ -94,7 +94,7 @@ namespace AppsTracker
         internal void ShutdownApp()
         {
             container.Dispose();
-            applicationController.ShutDown();
+            applicationController.Shutdown();
             Application.Current.Shutdown();
         }
 

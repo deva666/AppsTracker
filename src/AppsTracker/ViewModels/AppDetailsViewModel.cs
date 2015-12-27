@@ -15,6 +15,8 @@ using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 using AppsTracker.Data.Service;
 using AppsTracker.Common.Communication;
+using AppsTracker.Tracking;
+using System.Threading.Tasks;
 
 namespace AppsTracker.ViewModels
 {
@@ -149,22 +151,21 @@ namespace AppsTracker.ViewModels
             this.trackingService = trackingService;
             this.mediator = mediator;
 
-            appList = new AsyncProperty<IEnumerable<Aplication>>(GetApps, this);
-            appSummaryList = new AsyncProperty<IEnumerable<AppSummary>>(GetAppSummary, this);
-            windowSummaryList = new AsyncProperty<IEnumerable<WindowSummary>>(GetWindowSummary, this);
-            windowDurationList = new AsyncProperty<IEnumerable<WindowDurationOverview>>(GetWindowDuration, this);
+            appList = new TaskObserver<IEnumerable<Aplication>>(GetApps, this);
+            appSummaryList = new TaskRunner<IEnumerable<AppSummary>>(GetAppSummary, this);
+            windowSummaryList = new TaskRunner<IEnumerable<WindowSummary>>(GetWindowSummary, this);
+            windowDurationList = new TaskRunner<IEnumerable<WindowDurationOverview>>(GetWindowDuration, this);
 
             this.mediator.Register(MediatorMessages.APPLICATION_ADDED, new Action<Aplication>(ApplicationAdded));
-            this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(appList.Reload));
+            this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadAll));
         }
 
 
-        private IEnumerable<Aplication> GetApps()
+        private async Task<IEnumerable<Aplication>> GetApps()
         {
-            return dataService.GetFiltered<Aplication>(a => a.User.UserID == trackingService.SelectedUserID
+            return (await dataService.GetFilteredAsync<Aplication>(a => a.User.UserID == trackingService.SelectedUserID
                                                                 && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= trackingService.DateFrom).Any()
-                                                                && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= trackingService.DateTo).Any())
-                                                           .ToList()
+                                                                && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= trackingService.DateTo).Any()))
                                                            .Distinct();
         }
 
@@ -206,13 +207,20 @@ namespace AppsTracker.ViewModels
 
         private void ApplicationAdded(Aplication app)
         {
+            ReloadAll();
+        }
+
+        private void ReloadAll()
+        {
+            SelectedApp = null;
+            SelectedAppSummary = null;
+
             appList.Reload();
 
             windowDurationList.Reset();
             appSummaryList.Reset();
             windowSummaryList.Reset();
         }
-
 
         private void SelectedAppChanged()
         {

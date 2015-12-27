@@ -46,6 +46,12 @@ namespace AppsTracker.Data.Models
             this.Title = title.Truncate(1000);
         }
 
+        public Window(string title, int appId)
+            : this(title)
+        {
+            this.ApplicationID = appId;
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int WindowID { get; set; }

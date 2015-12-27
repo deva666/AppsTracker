@@ -115,7 +115,7 @@ namespace AppsTracker.Data.Service
         }
 
 
-        public void ShutDown()
+        public void Shutdown()
         {
             if (Directory.Exists(settingsPath) == false)
                 Directory.CreateDirectory(settingsPath);

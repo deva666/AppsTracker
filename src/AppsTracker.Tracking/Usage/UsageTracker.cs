@@ -8,8 +8,9 @@
 
 using System;
 using System.ComponentModel.Composition;
-using AppsTracker.Data.Models;
+using System.Linq;
 using AppsTracker.Common.Communication;
+using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.Tracking.Helpers;
 
@@ -20,6 +21,7 @@ namespace AppsTracker.Tracking
     {
         private bool isTrackingEnabled;
 
+        private readonly IDataService dataService;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
         private readonly IUsageProcessor usageProcessor;
@@ -30,15 +32,17 @@ namespace AppsTracker.Tracking
         private Setting settings;
 
         [ImportingConstructor]
-        public UsageTracker(ExportFactory<IIdleNotifier> idleNotifierFactory,
+        public UsageTracker(IDataService dataService,
                             ITrackingService trackingService,
+                            IMediator mediator,
                             IUsageProcessor usageProcessor,
-                            IMediator mediator)
+                            ExportFactory<IIdleNotifier> idleNotifierFactory)
         {
-            this.idleNotifierFactory = idleNotifierFactory;
+            this.dataService = dataService;
             this.trackingService = trackingService;
-            this.usageProcessor = usageProcessor;
             this.mediator = mediator;
+            this.usageProcessor = usageProcessor;
+            this.idleNotifierFactory = idleNotifierFactory;
         }
 
 
@@ -97,12 +101,23 @@ namespace AppsTracker.Tracking
 
         private void InitLogin()
         {
-            var user = trackingService.GetUzer(Environment.UserName);
-            var usageLogin = trackingService.LoginUser(user.UserID);
+            var user = GetUzer(Environment.UserName);
+            var usageLogin = usageProcessor.LoginUser(user.UserID);
 
             trackingService.Initialize(user, usageLogin.UsageID);
         }
 
+
+        private Uzer GetUzer(string name)
+        {
+            var uzer = dataService.GetFiltered<Uzer>(u => u.Name == name).FirstOrDefault();
+            if (uzer == null)
+            {
+                uzer = new Uzer(name);
+                dataService.SaveNewEntity(uzer);
+            }
+            return uzer;
+        }
 
         private void Configure()
         {
@@ -182,9 +197,9 @@ namespace AppsTracker.Tracking
         public void Dispose()
         {
             idleNotifier.Enabled = false;
-            usageProcessor.EndAllUsages();
             Microsoft.Win32.SystemEvents.SessionSwitch -= SessionSwitch;
             Microsoft.Win32.SystemEvents.PowerModeChanged -= PowerModeChanged;
+            usageProcessor.EndAllUsages();
         }
 
 

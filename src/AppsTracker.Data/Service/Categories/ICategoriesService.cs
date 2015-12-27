@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 
 namespace AppsTracker.Data.Service
@@ -13,6 +14,6 @@ namespace AppsTracker.Data.Service
        
         ObservableCollection<AppCategory> GetCategories(int userId);
       
-        void SaveChanges(IEnumerable<AppCategory> categoriesToDelete, IEnumerable<AppCategory> modifiedCategories);
+        Task SaveChangesAsync(IEnumerable<AppCategory> categoriesToDelete, IEnumerable<AppCategory> modifiedCategories);
     }
 }

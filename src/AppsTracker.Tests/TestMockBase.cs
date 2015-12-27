@@ -34,6 +34,7 @@ namespace AppsTracker.Tests
         protected readonly Mock<IReleaseNotesService> releaseNotesService = new Mock<IReleaseNotesService>();
         protected readonly Mock<IAppearanceController> appearanceController = new Mock<IAppearanceController>();
         protected readonly Mock<ITrackingController> trackingController = new Mock<ITrackingController>();
+        protected readonly Mock<IAppDurationCalc> appDurationCalc = new Mock<IAppDurationCalc>();
 
         protected readonly IMediator mediator = new Mediator();
         protected readonly ISyncContext syncContext = new SyncContextMock();
@@ -255,8 +256,7 @@ namespace AppsTracker.Tests
                     () => new Tuple<SettingsAppCategoriesViewModel, Action>(
                         new SettingsAppCategoriesViewModel(categoriesFactory,
                             mediator,
-                            trackingService.Object,
-                            new WorkQueueMock()),
+                            trackingService.Object),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<SettingsAppCategoriesViewModel>(tupleFactory);
@@ -270,8 +270,7 @@ namespace AppsTracker.Tests
                     () => new Tuple<SettingsLimitsViewModel, Action>(
                         new SettingsLimitsViewModel(dataService.Object,
                             trackingService.Object,
-                            mediator,
-                            new WorkQueueMock()),
+                            mediator),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<SettingsLimitsViewModel>(tupleFactory);

@@ -21,6 +21,7 @@ using AppsTracker.MVVM;
 using AppsTracker.Data.Service;
 using AppsTracker.Common.Communication;
 using AppsTracker.Service;
+using AppsTracker.Tracking;
 
 namespace AppsTracker.ViewModels
 {
@@ -117,7 +118,7 @@ namespace AppsTracker.ViewModels
             this.windowService = windowService;
             this.mediator = mediator;
 
-            logList = new AsyncProperty<IEnumerable<Log>>(GetLogs, this);
+            logList = new TaskRunner<IEnumerable<Log>>(GetLogs, this);
 
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(logList.Reload));
         }

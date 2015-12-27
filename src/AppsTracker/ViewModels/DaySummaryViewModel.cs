@@ -15,6 +15,7 @@ using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
 using AppsTracker.Data.Service;
 using AppsTracker.Common.Communication;
+using AppsTracker.Tracking;
 
 namespace AppsTracker.ViewModels
 {
@@ -155,11 +156,11 @@ namespace AppsTracker.ViewModels
             this.trackingService = trackingService;
             this.mediator = mediator;
 
-            logsList = new AsyncProperty<IEnumerable<LogSummary>>(GetLogSummary, this);
-            appsList = new AsyncProperty<IEnumerable<AppSummary>>(GetAppsSummary, this);
-            usageList = new AsyncProperty<IEnumerable<UsageByTime>>(GetUsageSummary, this);
-            windowsList = new AsyncProperty<IEnumerable<WindowSummary>>(GetWindowsSummary, this);
-            categoryList = new AsyncProperty<IEnumerable<CategoryDuration>>(GetCategories, this);
+            logsList = new TaskRunner<IEnumerable<LogSummary>>(GetLogSummary, this);
+            appsList = new TaskRunner<IEnumerable<AppSummary>>(GetAppsSummary, this);
+            usageList = new TaskRunner<IEnumerable<UsageByTime>>(GetUsageSummary, this);
+            windowsList = new TaskRunner<IEnumerable<WindowSummary>>(GetWindowsSummary, this);
+            categoryList = new TaskRunner<IEnumerable<CategoryDuration>>(GetCategories, this);
             //dayDuration = new AsyncProperty<string>(GetDayDuration, this);
 
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadContent));

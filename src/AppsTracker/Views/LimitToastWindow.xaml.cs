@@ -9,6 +9,7 @@ using System.Windows.Threading;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
+using AppsTracker.Tracking.Limits;
 using AppsTracker.Widgets;
 
 namespace AppsTracker.Views
@@ -18,7 +19,7 @@ namespace AppsTracker.Views
     public partial class LimitToastWindow : System.Windows.Window, IShell
     {
         private readonly IXmlSettingsService xmlSettingsService;
-        private readonly ITrackingService trackingService;
+        private readonly IAppDurationCalc appDurationCalc;
         private readonly IMediator mediator;
 
         private readonly MeasureProvider measureProvider;
@@ -28,12 +29,12 @@ namespace AppsTracker.Views
 
         [ImportingConstructor]
         public LimitToastWindow(IXmlSettingsService xmlSettingsService,
-                                ITrackingService trackingService,
+                                IAppDurationCalc appDurationCalc,
                                 IMediator mediator,
                                 MeasureProvider measureProvider)
         {
             this.xmlSettingsService = xmlSettingsService;
-            this.trackingService = trackingService;
+            this.appDurationCalc = appDurationCalc;
             this.mediator = mediator;
             this.measureProvider = measureProvider;
 
@@ -66,7 +67,7 @@ namespace AppsTracker.Views
 
         private async Task DisplayAppDuration()
         {
-            long duration = await Task.Run(() => trackingService.GetDuration(currentLimit.Application, currentLimit.LimitSpan));
+            long duration = await appDurationCalc.GetDuration(currentLimit.Application, currentLimit.LimitSpan);
             lblTotalDuration.Content = new TimeSpan(duration).ToString(@"dd\.hh\:mm\:ss");
         }
 
