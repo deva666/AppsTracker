@@ -56,7 +56,7 @@ namespace AppsTracker.Data.Service
         {
             using (var context = new AppsEntities())
             {
-                IQueryable<T> query = context.Set<T>();
+                IQueryable<T> query = context.Set<T>().AsQueryable();
                 foreach (var nav in navigations)
                 {
                     query = query.Include(nav);
@@ -120,7 +120,7 @@ namespace AppsTracker.Data.Service
         {
             using (var context = new AppsEntities())
             {
-                var set = context.Set<T>();
+                var set = context.Set<T>().AsQueryable();
                 return set.AsNoTracking().Where(filter).ToListAsync();
             }
         }
@@ -129,7 +129,7 @@ namespace AppsTracker.Data.Service
         {
             using (var context = new AppsEntities())
             {
-                IQueryable<T> query = context.Set<T>();
+                IQueryable<T> query = context.Set<T>().AsQueryable();
                 foreach (var nav in navigations)
                 {
                     query = query.Include(nav);
