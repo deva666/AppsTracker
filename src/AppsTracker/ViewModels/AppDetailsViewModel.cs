@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace AppsTracker.ViewModels
 {
-    [Export] 
+    [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class AppDetailsViewModel : ViewModelBase
     {
@@ -152,9 +152,9 @@ namespace AppsTracker.ViewModels
             this.mediator = mediator;
 
             appList = new TaskObserver<IEnumerable<Aplication>>(GetApps, this);
-            appSummaryList = new TaskRunner<IEnumerable<AppSummary>>(GetAppSummary, this);
-            windowSummaryList = new TaskRunner<IEnumerable<WindowSummary>>(GetWindowSummary, this);
-            windowDurationList = new TaskRunner<IEnumerable<WindowDurationOverview>>(GetWindowDuration, this);
+            appSummaryList = new TaskObserver<IEnumerable<AppSummary>>(GetAppSummary, this);
+            windowSummaryList = new TaskObserver<IEnumerable<WindowSummary>>(GetWindowSummary, this);
+            windowDurationList = new TaskObserver<IEnumerable<WindowDurationOverview>>(GetWindowDuration, this);
 
             this.mediator.Register(MediatorMessages.APPLICATION_ADDED, new Action<Aplication>(ApplicationAdded));
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadAll));
@@ -169,29 +169,99 @@ namespace AppsTracker.ViewModels
                                                            .Distinct();
         }
 
-
-        private IEnumerable<AppSummary> GetAppSummary()
+        private async Task<IEnumerable<AppSummary>> GetAppSummary()
         {
             var app = SelectedApp;
             if (app == null)
                 return null;
 
-            return statsService.GetAppSummary(trackingService.SelectedUserID, app.ApplicationID, app.Name, trackingService.DateFrom, trackingService.DateTo);
+            var logs = await dataService.GetFilteredAsync<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+                                                && l.DateCreated >= trackingService.DateFrom
+                                                && l.DateCreated <= trackingService.DateTo,
+                                                l => l.Window.Application);
+
+            var totalDuration = (from l in logs
+                                 group l by new
+                                 {
+                                     year = l.DateCreated.Year,
+                                     month = l.DateCreated.Month,
+                                     day = l.DateCreated.Day
+                                 } into grp
+                                 select grp)
+                                .ToList()
+                                .Select(g => new
+                                {
+                                    Date = new DateTime(g.Key.year, g.Key.month, g.Key.day),
+                                    Duration = (Double)g.Sum(l => l.Duration)
+                                });
+
+
+            var result = (from l in logs
+                          where l.Window.Application.ApplicationID == app.ApplicationID
+                          group l by new
+                          {
+                              year = l.DateCreated.Year,
+                              month = l.DateCreated.Month,
+                              day = l.DateCreated.Day,
+                              name = l.Window.Application.Name
+                          } into grp
+                          select grp)
+                          .ToList()
+                          .Select(g => new AppSummary
+                          {
+                              AppName = g.Key.name,
+                              Date = new DateTime(g.Key.year, g.Key.month, g.Key.day)
+                                   .ToShortDateString()
+                                   + " " + new DateTime(g.Key.year, g.Key.month, g.Key.day)
+                                   .DayOfWeek.ToString(),
+                              DateTime = new DateTime(g.Key.year, g.Key.month, g.Key.day),
+                              Usage = g.Sum(l => l.Duration) / totalDuration
+                                   .First(t => t.Date == new DateTime(g.Key.year, g.Key.month, g.Key.day)).Duration,
+                              Duration = g.Sum(l => l.Duration)
+                          })
+                          .OrderByDescending(t => t.DateTime)
+                          .ToList();
+
+            var requestedApp = result.Where(a => a.AppName == app.Name).FirstOrDefault();
+
+            if (requestedApp != null)
+                requestedApp.IsSelected = true;
+
+            return result;
         }
 
-
-        private IEnumerable<WindowSummary> GetWindowSummary()
+        private async Task<IEnumerable<WindowSummary>> GetWindowSummary()
         {
             var selectedApp = SelectedAppSummary;
             if (AppSummaryList.Result == null || selectedApp == null)
                 return null;
 
             var selectedDates = AppSummaryList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
-            return statsService.GetWindowsSummary(trackingService.SelectedUserID, selectedApp.AppName, selectedDates);
+
+            var logs = await dataService.GetFilteredAsync<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+                                               && l.Window.Application.Name == selectedApp.AppName,
+                                               l => l.Window);
+
+            var filteredLogs = logs.Where(l => selectedDates.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)));
+
+            var totalDuration = filteredLogs.Sum(l => l.Duration);
+
+            var result = (from l in filteredLogs
+                          group l by l.Window.Title into grp
+                          select grp).Select(g => new WindowSummary
+                          {
+                              Title = g.Key,
+                              Usage = (g.Sum(l => l.Duration) / totalDuration),
+                              Duration = g.Sum(l => l.Duration)
+                          })
+                          .OrderByDescending(t => t.Duration)
+                          .ToList();
+
+            return result;
         }
 
 
-        private IEnumerable<WindowDurationOverview> GetWindowDuration()
+        private async Task<IEnumerable<WindowDurationOverview>> GetWindowDuration()
         {
             var selectedApp = SelectedAppSummary;
 
@@ -199,9 +269,43 @@ namespace AppsTracker.ViewModels
                 return null;
 
             var selectedWindows = WindowSummaryList.Result.Where(w => w.IsSelected).Select(w => w.Title).ToList();
-            var selectedDates = AppSummaryList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
+            if (selectedWindows.Count() == 0)
+                return null;
 
-            return statsService.GetWindowDurationOverview(trackingService.SelectedUserID, selectedApp.AppName, selectedWindows, selectedDates);
+            var selectedDates = AppSummaryList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
+            
+            var logs = await dataService.GetFilteredAsync<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+                                                && l.Window.Application.Name == selectedApp.AppName,
+                                       l => l.Window);
+
+
+            var filteredLogs = logs.Where(l => selectedDates.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)) && selectedWindows.Contains(l.Window.Title));
+
+            var result = new List<WindowDurationOverview>();
+
+            var logsGroupedByDay = from l in filteredLogs
+                                   group l by new { year = l.DateCreated.Year, month = l.DateCreated.Month, day = l.DateCreated.Day } into grp
+                                   select grp;
+
+            foreach (var grp in logsGroupedByDay)
+            {
+                var logsGroupedByWindowTitle = grp.GroupBy(g => g.Window.Title);
+                var date = new DateTime(grp.Key.year, grp.Key.month, grp.Key.day);
+                var series = new WindowDurationOverview()
+                {
+                    Date = date.ToShortDateString() + " " + date.DayOfWeek.ToString()
+                };
+                var modelList = new List<WindowDuration>();
+                foreach (var grp2 in logsGroupedByWindowTitle)
+                {
+                    WindowDuration model = new WindowDuration() { Title = grp2.Key, Duration = Math.Round(new TimeSpan(grp2.Sum(l => l.Duration)).TotalMinutes, 2) };
+                    modelList.Add(model);
+                }
+                series.DurationCollection = modelList;
+                result.Add(series);
+            }
+
+            return result;
         }
 
 
