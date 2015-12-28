@@ -46,7 +46,7 @@ namespace AppsTracker.Data.Models
         {
             get
             {
-                return new DelegateCommand(ShowHide);
+                return new RelayCommand(ShowHide);
             }
         }
 

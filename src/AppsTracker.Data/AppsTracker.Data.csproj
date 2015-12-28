@@ -123,7 +123,7 @@
     <Compile Include="Service\Stats\IStatsService.cs" />
     <Compile Include="Service\Stats\StatsService.cs" />
     <Compile Include="Utils\AppInfo.cs" />
-    <Compile Include="Utils\DelegateCommand.cs" />
+    <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Utils\LogInfo.cs" />
     <Compile Include="XmlSettings\AppSettings.cs" />
     <Compile Include="XmlSettings\DaysViewSettings.cs" />
