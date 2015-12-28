@@ -152,9 +152,9 @@ namespace AppsTracker.ViewModels
             this.mediator = mediator;
 
             appList = new TaskObserver<IEnumerable<Aplication>>(GetApps, this);
-            appSummaryList = new TaskObserver<IEnumerable<AppSummary>>(GetAppSummary, this);
-            windowSummaryList = new TaskObserver<IEnumerable<WindowSummary>>(GetWindowSummary, this);
-            windowDurationList = new TaskObserver<IEnumerable<WindowDurationOverview>>(GetWindowDuration, this);
+            appSummaryList = new TaskRunner<IEnumerable<AppSummary>>(GetAppSummary, this);
+            windowSummaryList = new TaskRunner<IEnumerable<WindowSummary>>(GetWindowSummary, this);
+            windowDurationList = new TaskRunner<IEnumerable<WindowDurationOverview>>(GetWindowDuration, this);
 
             this.mediator.Register(MediatorMessages.APPLICATION_ADDED, new Action<Aplication>(ApplicationAdded));
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadAll));
@@ -169,13 +169,13 @@ namespace AppsTracker.ViewModels
                                                            .Distinct();
         }
 
-        private async Task<IEnumerable<AppSummary>> GetAppSummary()
+        private IEnumerable<AppSummary> GetAppSummary()
         {
             var app = SelectedApp;
             if (app == null)
                 return null;
 
-            var logs = await dataService.GetFilteredAsync<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logs = dataService.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
                                                 && l.DateCreated >= trackingService.DateFrom
                                                 && l.DateCreated <= trackingService.DateTo,
                                                 l => l.Window.Application);
@@ -230,7 +230,7 @@ namespace AppsTracker.ViewModels
             return result;
         }
 
-        private async Task<IEnumerable<WindowSummary>> GetWindowSummary()
+        private IEnumerable<WindowSummary> GetWindowSummary()
         {
             var selectedApp = SelectedAppSummary;
             if (AppSummaryList.Result == null || selectedApp == null)
@@ -238,7 +238,7 @@ namespace AppsTracker.ViewModels
 
             var selectedDates = AppSummaryList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
 
-            var logs = await dataService.GetFilteredAsync<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logs = dataService.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
                                                && l.Window.Application.Name == selectedApp.AppName,
                                                l => l.Window);
 
@@ -261,7 +261,7 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private async Task<IEnumerable<WindowDurationOverview>> GetWindowDuration()
+        private IEnumerable<WindowDurationOverview> GetWindowDuration()
         {
             var selectedApp = SelectedAppSummary;
 
@@ -274,7 +274,7 @@ namespace AppsTracker.ViewModels
 
             var selectedDates = AppSummaryList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
             
-            var logs = await dataService.GetFilteredAsync<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logs = dataService.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
                                                 && l.Window.Application.Name == selectedApp.AppName,
                                        l => l.Window);
 

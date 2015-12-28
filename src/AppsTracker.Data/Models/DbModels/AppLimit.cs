@@ -47,7 +47,7 @@ namespace AppsTracker.Data.Models
             get
             {
                 return setLimitReachedCommand ??
-                    (setLimitReachedCommand = new DelegateCommand(SetLimitReached));
+                    (setLimitReachedCommand = new RelayCommand(SetLimitReached));
             }
         }
       
@@ -60,7 +60,7 @@ namespace AppsTracker.Data.Models
             get
             {
                 return openLimitActionPopupCommand ??
-                (openLimitActionPopupCommand = new DelegateCommand(OpenLimitActionPopup));
+                (openLimitActionPopupCommand = new RelayCommand(OpenLimitActionPopup));
             }
         }
 

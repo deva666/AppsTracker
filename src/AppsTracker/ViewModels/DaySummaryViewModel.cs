@@ -16,6 +16,7 @@ using System.Windows.Input;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
+using AppsTracker.Data.Utils;
 using AppsTracker.MVVM;
 using AppsTracker.Tracking;
 
@@ -150,11 +151,11 @@ namespace AppsTracker.ViewModels
             this.trackingService = trackingService;
             this.mediator = mediator;
 
-            logsList = new TaskObserver<IEnumerable<LogSummary>>(GetLogSummary, this);
-            appsList = new TaskObserver<IEnumerable<AppSummary>>(GetAppsSummary, this);
-            usageList = new TaskObserver<IEnumerable<UsageByTime>>(GetUsageSummary, this);
-            windowsList = new TaskObserver<IEnumerable<WindowSummary>>(GetWindowsSummary, this);
-            categoryList = new TaskObserver<IEnumerable<CategoryDuration>>(GetCategories, this);
+            logsList = new TaskRunner<IEnumerable<LogSummary>>(GetLogSummary, this);
+            appsList = new TaskRunner<IEnumerable<AppSummary>>(GetAppsSummary, this);
+            usageList = new TaskRunner<IEnumerable<UsageByTime>>(GetUsageSummary, this);
+            windowsList = new TaskRunner<IEnumerable<WindowSummary>>(GetWindowsSummary, this);
+            categoryList = new TaskRunner<IEnumerable<CategoryDuration>>(GetCategories, this);
 
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadContent));
         }
@@ -170,7 +171,7 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private async Task<IEnumerable<LogSummary>> GetLogSummary()
+        private IEnumerable<LogSummary> GetLogSummary()
         {
             var dateTo = selectedDate.AddDays(1);
 
@@ -184,7 +185,7 @@ namespace AppsTracker.ViewModels
                                      && u.UsageEnd <= dateTo
                                      && u.UsageType != UsageTypes.Login);
 
-            await Task.WhenAll(logsTask, usagesTask);
+            Task.WaitAll(logsTask, usagesTask);
 
             var logs = logsTask.Result;
             var usages = usagesTask.Result;
@@ -203,7 +204,7 @@ namespace AppsTracker.ViewModels
                 DateCreated = u.UsageStart.ToString("HH:mm:ss"),
                 DateEnded = u.UsageEnd.ToString("HH:mm:ss"),
                 Duration = u.Duration.Ticks,
-                Name = u.UsageType.ToString(), //.ToExtendedString(),
+                Name = u.UsageType.ToExtendedString(),
                 Title = "*********",
                 IsRequested = true
             });
@@ -212,10 +213,10 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private async Task<IEnumerable<AppSummary>> GetAppsSummary()
+        private IEnumerable<AppSummary> GetAppsSummary()
         {
             var dateTo = selectedDate.AddDays(1);
-            var logs = await dataService.GetFilteredAsync<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logs = dataService.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
                                             && l.DateCreated >= selectedDate
                                             && l.DateCreated <= dateTo,
                                             l => l.Window.Application);
@@ -244,7 +245,7 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private async Task<IEnumerable<WindowSummary>> GetWindowsSummary()
+        private IEnumerable<WindowSummary> GetWindowsSummary()
         {
             var model = selectedApp;
             if (model == null)
@@ -252,11 +253,11 @@ namespace AppsTracker.ViewModels
 
             var nextDay = selectedDate.AddDays(1);
 
-            var logs = await dataService.GetFilteredAsync<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logs = dataService.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
                                                          && l.DateCreated >= selectedDate
                                                          && l.DateCreated <= nextDay
                                                          && l.Window.Application.Name == model.AppName,
-                                            l => l.Window);
+                                                    l => l.Window);
 
             var totalDuration = logs.Sum(l => l.Duration);
 
@@ -272,13 +273,13 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private async Task<IEnumerable<UsageByTime>> GetUsageSummary()
+        private IEnumerable<UsageByTime> GetUsageSummary()
         {
             var fromDay = selectedDate.Date;
             var nextDay = fromDay.AddDays(1d);
             var today = DateTime.Now.Date;
 
-            var logins = await dataService.GetFilteredAsync<Usage>(u => u.User.UserID == trackingService.SelectedUserID
+            var logins = dataService.GetFiltered<Usage>(u => u.User.UserID == trackingService.SelectedUserID
                                             && ((u.UsageStart >= fromDay && u.UsageStart <= nextDay)
                                                     || (u.IsCurrent && u.UsageStart < fromDay && today >= fromDay)
                                                     || (u.IsCurrent == false && u.UsageStart <= fromDay && u.UsageEnd >= fromDay))
@@ -286,7 +287,7 @@ namespace AppsTracker.ViewModels
 
             var usageIDs = logins.Select(u => u.UsageID);
 
-            var allUsages = await dataService.GetFilteredAsync<Usage>(u => u.SelfUsageID.HasValue
+            var allUsages = dataService.GetFiltered<Usage>(u => u.SelfUsageID.HasValue
                                                            && usageIDs.Contains(u.SelfUsageID.Value));
 
             var lockedUsages = allUsages.Where(u => u.UsageType == UsageTypes.Locked);
@@ -329,7 +330,7 @@ namespace AppsTracker.ViewModels
                 usagesByTime.Add(series);
             }
 
-            if (logins.Count > 1)
+            if (logins.Count() > 1)
             {
                 var seriesTotal = new UsageByTime() { Time = "TOTAL" };
                 var observableTotal = new ObservableCollection<UsageSummary>();
@@ -363,12 +364,12 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private async Task<IEnumerable<CategoryDuration>> GetCategories()
+        private IEnumerable<CategoryDuration> GetCategories()
         {
             var dateTo = selectedDate.AddDays(1);
             var categoryModels = new List<CategoryDuration>();
 
-            var categories = await dataService.GetFilteredAsync<AppCategory>(c => c.Applications.Count > 0 &&
+            var categories = dataService.GetFiltered<AppCategory>(c => c.Applications.Count > 0 &&
                        c.Applications.Where(a => a.UserID == trackingService.SelectedUserID).Any() &&
                        c.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated >= selectedDate).Any() &&
                        c.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated <= dateTo).Any(),
