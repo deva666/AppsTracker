@@ -22,10 +22,10 @@ namespace AppsTracker.Tests.Core.ViewModels
         [TestInitialize]
         public void Init()
         {
-            dataService.Setup(d => d.GetFiltered<Log>(It.IsAny<Expression<Func<Log, bool>>>(),
+            dataService.Setup(d => d.GetFilteredAsync<Log>(It.IsAny<Expression<Func<Log, bool>>>(),
                  It.IsAny<Expression<Func<Log, object>>>(),
                  It.IsAny<Expression<Func<Log, object>>>()))
-                .Returns(new List<Log>());
+                .ReturnsAsync(new List<Log>());
         }
 
         [TestMethod]
@@ -44,7 +44,7 @@ namespace AppsTracker.Tests.Core.ViewModels
             }
 
             Assert.IsInstanceOfType(viewModel.LogList.Result, typeof(IEnumerable<Log>));
-            dataService.Verify(d => d.GetFiltered<Log>(It.IsAny<Expression<Func<Log, bool>>>(),
+            dataService.Verify(d => d.GetFilteredAsync<Log>(It.IsAny<Expression<Func<Log, bool>>>(),
                  It.IsAny<Expression<Func<Log, object>>>(),
                  It.IsAny<Expression<Func<Log, object>>>()));
         }
