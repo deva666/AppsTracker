@@ -9,6 +9,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
@@ -22,6 +23,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class AppStatsViewModel : ViewModelBase
     {
+        private readonly IDataService dataService;
         private readonly IStatsService statsService;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
@@ -73,10 +75,12 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public AppStatsViewModel(IStatsService statsService,
+        public AppStatsViewModel(IDataService dataService,
+                                 IStatsService statsService,
                                  ITrackingService trackingService,
                                  IMediator mediator)
         {
+            this.dataService = dataService;
             this.statsService = statsService;
             this.trackingService = trackingService;
             this.mediator = mediator;
@@ -97,7 +101,19 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<AppDuration> GetApps()
         {
-            return statsService.GetAppsDuration(trackingService.SelectedUserID, trackingService.DateFrom, trackingService.DateTo);
+            var logs = dataService.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+                                        && l.DateCreated >= trackingService.DateFrom
+                                        && l.DateCreated <= trackingService.DateTo,
+                                        l => l.Window.Application,
+                                        l => l.Window.Application.User);
+
+            var grouped = logs.GroupBy(l => l.Window.Application.Name);
+
+            return grouped.Select(g => new AppDuration()
+            {
+                Name = g.Key,
+                Duration = Math.Round(new TimeSpan(g.Sum(l => l.Duration)).TotalHours, 1)
+            });
         }
 
 
@@ -107,7 +123,24 @@ namespace AppsTracker.ViewModels
             if (app == null)
                 return null;
 
-            return statsService.GetAppDurationByDate(trackingService.SelectedUserID, app.Name, trackingService.DateFrom, trackingService.DateTo);
+            var logs = dataService.GetFiltered<Log>(l => l.Window.Application.Name == app.Name
+                                               && l.Window.Application.User.UserID == trackingService.SelectedUserID
+                                               && l.DateCreated >= trackingService.DateFrom
+                                               && l.DateCreated <= trackingService.DateTo);
+
+            var grouped = logs.GroupBy(l => new
+                                        {
+                                            year = l.DateCreated.Year,
+                                            month = l.DateCreated.Month,
+                                            day = l.DateCreated.Day
+                                        })
+                                          .OrderBy(g => new DateTime(g.Key.year, g.Key.month, g.Key.day));
+
+            return grouped.Select(g => new DailyAppDuration
+            {
+                Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
+                Duration = Math.Round(new TimeSpan(g.Sum(l => l.Duration)).TotalHours, 1)
+            });
         }
 
 

@@ -9,6 +9,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
@@ -22,6 +23,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class CategoryStatsViewModel : ViewModelBase
     {
+        private readonly IDataService dataService;
         private readonly IStatsService statsService;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
@@ -71,10 +73,12 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public CategoryStatsViewModel(IStatsService statsService,
+        public CategoryStatsViewModel(IDataService dataService,
+                                      IStatsService statsService,
                                       ITrackingService trackingService,
                                       IMediator mediator)
         {
+            this.dataService = dataService;
             this.statsService = statsService;
             this.trackingService = trackingService;
             this.mediator = mediator;
@@ -88,7 +92,42 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<CategoryDuration> GetCategories()
         {
-            return statsService.GetCategoryStats(trackingService.SelectedUserID, trackingService.DateFrom, trackingService.DateTo);
+            var dateTo = trackingService.DateFrom.AddDays(1);
+            var categoryModels = new List<CategoryDuration>();
+
+            var categories = dataService.GetFiltered<AppCategory>(c => c.Applications.Count > 0 
+                        && c.Applications
+                        .Where(a => a.UserID == trackingService.SelectedUserID)
+                        .Any() 
+                        && c.Applications
+                        .SelectMany(a => a.Windows)
+                        .SelectMany(w => w.Logs)
+                        .Where(l => l.DateCreated >= trackingService.DateFrom)
+                        .Any() 
+                        && c.Applications
+                        .SelectMany(a => a.Windows)
+                        .SelectMany(w => w.Logs)
+                        .Where(l => l.DateCreated <= dateTo)
+                        .Any(),
+                       c => c.Applications);
+            
+            foreach (var cat in categories)
+            {
+                var totalDuration = cat.Applications
+                                       .SelectMany(a => a.Windows)
+                                       .SelectMany(w => w.Logs)
+                                       .Where(l => l.DateCreated >= trackingService.DateFrom 
+                                           && l.DateCreated <= dateTo)
+                                       .Sum(l => l.Duration);
+
+                categoryModels.Add(new CategoryDuration()
+                {
+                    Name = cat.Name,
+                    TotalTime = Math.Round(new TimeSpan(totalDuration).TotalHours, 2)
+                });
+            }
+
+            return categoryModels;            
         }
 
 
@@ -98,7 +137,23 @@ namespace AppsTracker.ViewModels
             if (category == null)
                 return null;
 
-            return statsService.GetDailyCategoryStats(trackingService.SelectedUserID, category.Name, trackingService.DateFrom, trackingService.DateTo);
+            var logs = dataService.GetFiltered<Log>(l => l.Window.Application.Categories.Any(c => c.Name == category.Name)
+                                               && l.Window.Application.UserID == trackingService.SelectedUserID
+                                               && l.DateCreated >= trackingService.DateFrom
+                                               && l.DateCreated <= trackingService.DateTo);                                       
+
+            var grouped = logs.GroupBy(l => new
+            {
+                year = l.DateCreated.Year,
+                month = l.DateCreated.Month,
+                day = l.DateCreated.Day
+            });
+
+            return grouped.Select(g => new DailyCategoryDuration()
+            {
+                Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
+                TotalTime = Math.Round(new TimeSpan(g.Sum(l => l.Duration)).TotalHours, 2)
+            });            
         }
 
         private void ReloadAll()

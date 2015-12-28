@@ -115,7 +115,9 @@ namespace AppsTracker.Tests
             var tupleFactory =
                 new Func<Tuple<AppStatsViewModel, Action>>(
                     () => new Tuple<AppStatsViewModel, Action>(
-                        new AppStatsViewModel(statsService.Object,
+                        new AppStatsViewModel(
+                            dataService.Object,
+                            statsService.Object,
                             trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -155,7 +157,9 @@ namespace AppsTracker.Tests
             var tupleFactory =
                 new Func<Tuple<CategoryStatsViewModel, Action>>(
                     () => new Tuple<CategoryStatsViewModel, Action>(
-                        new CategoryStatsViewModel(statsService.Object,
+                        new CategoryStatsViewModel(
+                            dataService.Object,
+                            statsService.Object,
                             trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));
