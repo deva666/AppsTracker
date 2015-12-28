@@ -22,7 +22,6 @@ namespace AppsTracker.Tests
         protected readonly Mock<ITrackingService> trackingService = new Mock<ITrackingService>();
         protected readonly Mock<ISqlSettingsService> settingsService = new Mock<ISqlSettingsService>();
         protected readonly Mock<IXmlSettingsService> xmlSettingsService = new Mock<IXmlSettingsService>();
-        protected readonly Mock<IStatsService> statsService = new Mock<IStatsService>();
         protected readonly Mock<ICategoriesService> categoriesService = new Mock<ICategoriesService>();
         protected readonly Mock<IWindowService> windowService = new Mock<IWindowService>();
         protected readonly Mock<IAppChangedNotifier> windowChangedNotifier = new Mock<IAppChangedNotifier>();
@@ -45,7 +44,6 @@ namespace AppsTracker.Tests
                 new Func<Tuple<AppDetailsViewModel, Action>>(
                     () => new Tuple<AppDetailsViewModel, Action>(
                         new AppDetailsViewModel(dataService.Object,
-                            statsService.Object,
                             trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -73,7 +71,6 @@ namespace AppsTracker.Tests
                 new Func<Tuple<DaySummaryViewModel, Action>>(
                     () => new Tuple<DaySummaryViewModel, Action>(
                         new DaySummaryViewModel(dataService.Object,
-                            statsService.Object,
                             trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -102,7 +99,8 @@ namespace AppsTracker.Tests
             var tupleFactory =
                 new Func<Tuple<UserStatsViewModel, Action>>(
                     () => new Tuple<UserStatsViewModel, Action>(
-                        new UserStatsViewModel(statsService.Object,
+                        new UserStatsViewModel(
+                            dataService.Object,
                             trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -117,7 +115,6 @@ namespace AppsTracker.Tests
                     () => new Tuple<AppStatsViewModel, Action>(
                         new AppStatsViewModel(
                             dataService.Object,
-                            statsService.Object,
                             trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -130,7 +127,8 @@ namespace AppsTracker.Tests
             var tupleFactory =
                 new Func<Tuple<DailyAppUsageViewModel, Action>>(
                     () => new Tuple<DailyAppUsageViewModel, Action>(
-                        new DailyAppUsageViewModel(statsService.Object,
+                        new DailyAppUsageViewModel(
+                            dataService.Object,
                             trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -144,7 +142,8 @@ namespace AppsTracker.Tests
             var tupleFactory =
                 new Func<Tuple<ScreenshotsStatsViewModel, Action>>(
                     () => new Tuple<ScreenshotsStatsViewModel, Action>(
-                        new ScreenshotsStatsViewModel(statsService.Object,
+                        new ScreenshotsStatsViewModel(
+                            dataService.Object,
                             trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -159,7 +158,6 @@ namespace AppsTracker.Tests
                     () => new Tuple<CategoryStatsViewModel, Action>(
                         new CategoryStatsViewModel(
                             dataService.Object,
-                            statsService.Object,
                             trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));

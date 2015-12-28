@@ -118,15 +118,15 @@ namespace AppsTracker.ViewModels
             this.windowService = windowService;
             this.mediator = mediator;
 
-            logList = new TaskRunner<IEnumerable<Log>>(GetLogs, this);
+            logList = new TaskObserver<IEnumerable<Log>>(GetLogs, this);
 
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(logList.Reload));
         }
 
 
-        private IEnumerable<Log> GetLogs()
+        private async Task<IEnumerable<Log>> GetLogs()
         {
-            return dataService.GetFiltered<Log>(l => l.Screenshots.Count > 0
+            return await dataService.GetFilteredAsync<Log>(l => l.Screenshots.Count > 0
                                                 && l.DateCreated >= trackingService.DateFrom
                                                 && l.DateCreated <= trackingService.DateTo
                                                 && l.Window.Application.UserID == trackingService.SelectedUserID

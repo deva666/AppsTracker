@@ -23,7 +23,6 @@ namespace AppsTracker.ViewModels
     public sealed class DailyAppUsageViewModel : ViewModelBase
     {
         private readonly IDataService dataService;
-        private readonly IStatsService statsService;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
@@ -47,12 +46,10 @@ namespace AppsTracker.ViewModels
 
         [ImportingConstructor]
         public DailyAppUsageViewModel(IDataService dataService,
-                                      IStatsService statsService,
                                       ITrackingService trackingService,
                                       IMediator mediator)
         {
             this.dataService = dataService;
-            this.statsService = statsService;
             this.trackingService = trackingService;
             this.mediator = mediator;
 

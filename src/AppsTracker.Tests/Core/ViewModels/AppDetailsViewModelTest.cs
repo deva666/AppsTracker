@@ -23,7 +23,6 @@ namespace AppsTracker.Tests.Core.ViewModels
         public void TestGetApps()
         {
             var viewModel = new AppDetailsViewModel(dataService.Object,
-                                                    statsService.Object,
                                                     trackingService.Object,
                                                     mediator);
 

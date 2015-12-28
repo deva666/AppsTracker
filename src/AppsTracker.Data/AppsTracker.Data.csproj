@@ -120,8 +120,6 @@
     <Compile Include="Service\Settings\IXmlSettingsService.cs" />
     <Compile Include="Service\Settings\SqlSettingsService.cs" />
     <Compile Include="Service\Settings\XmlSettingsService.cs" />
-    <Compile Include="Service\Stats\IStatsService.cs" />
-    <Compile Include="Service\Stats\StatsService.cs" />
     <Compile Include="Utils\AppInfo.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Utils\LogInfo.cs" />

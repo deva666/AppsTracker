@@ -9,6 +9,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
@@ -22,7 +23,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class ScreenshotsStatsViewModel : ViewModelBase
     {
-        private readonly IStatsService statsService;
+        private readonly IDataService dataService;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
@@ -73,11 +74,11 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public ScreenshotsStatsViewModel(IStatsService statsService,
+        public ScreenshotsStatsViewModel(IDataService dataService,
                                          ITrackingService trackingService,
                                          IMediator mediator)
         {
-            this.statsService = statsService;
+            this.dataService = dataService;
             this.trackingService = trackingService;
             this.mediator = mediator;
 
@@ -90,7 +91,18 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<ScreenshotModel> GetScreenshots()
         {
-            return statsService.GetScreenshots(trackingService.SelectedUserID, trackingService.DateFrom, trackingService.DateTo);
+            var screenshots = dataService.GetFiltered<Screenshot>(
+                                                s => s.Log.Window.Application.User.UserID == trackingService.SelectedUserID
+                                                && s.Date >= trackingService.DateFrom
+                                                && s.Date <= trackingService.DateTo,
+                                                s => s.Log.Window.Application,
+                                                s => s.Log.Window.Application.User);
+
+            var screenshotModels = screenshots
+                                            .GroupBy(s => s.Log.Window.Application.Name)
+                                            .Select(g => new ScreenshotModel() { AppName = g.Key, Count = g.Count() });
+
+            return screenshotModels;
         }
 
 
@@ -100,7 +112,27 @@ namespace AppsTracker.ViewModels
             if (model == null)
                 return null;
 
-            return statsService.GetScreenshotsByApp(trackingService.SelectedUserID, model.AppName, trackingService.DateFrom, trackingService.DateTo);
+            var screenshots = dataService.GetFiltered<Screenshot>(
+                                                s => s.Log.Window.Application.User.UserID == trackingService.SelectedUserID
+                                                && s.Date >= trackingService.DateFrom
+                                                && s.Date <= trackingService.DateTo
+                                                && s.Log.Window.Application.Name == model.AppName,
+                                                s => s.Log.Window.Application,
+                                                s => s.Log.Window.Application.User);
+
+            var grouped = screenshots.GroupBy(s => new
+                                        {
+                                            year = s.Date.Year,
+                                            month = s.Date.Month,
+                                            day = s.Date.Day
+                                        })
+                                      .OrderBy(g => new DateTime(g.Key.year, g.Key.month, g.Key.day));
+
+            return grouped.Select(g => new DailyScreenshotModel()
+            {
+                Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
+                Count = g.Count()
+            });
         }
 
         private void ReloadAll()
