@@ -11,7 +11,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using AppsTracker.Common.Communication;
-using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.Data.Utils;
@@ -201,7 +200,7 @@ namespace AppsTracker.Tracking
             var isNewApp = false;
             if (app == null)
             {
-                app = new Aplication(logInfo.AppInfo) { UserID = trackingService.UserID};
+                app = new Aplication(logInfo.AppInfo) { UserID = trackingService.UserID };
                 await dataService.SaveNewEntityAsync(app);
                 isNewApp = true;
             }
@@ -230,7 +229,7 @@ namespace AppsTracker.Tracking
 
             return log;
         }
-        
+
         private void StopTracking()
         {
             isTrackingEnabled = false;

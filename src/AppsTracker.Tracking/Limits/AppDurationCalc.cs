@@ -48,7 +48,6 @@ namespace AppsTracker.Tracking.Limits
 
             return appsList.SelectMany(a => a.Windows)
                            .SelectMany(w => w.Logs)
-                           .AsQueryable()
                            .Sum(l => l.Duration);
         }
     }

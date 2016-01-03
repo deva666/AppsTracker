@@ -221,9 +221,9 @@ namespace AppsTracker.ViewModels
             Double totalDuration = (from l in logs
                                     select (Double?)l.Duration).Sum() ?? 0;
 
-            var result = (from l in logs
-                          group l by l.Window.Application.Name into grp
-                          select grp).ToList()
+            var appSummaries = (from l in logs
+                                group l by l.Window.Application.Name into grp
+                                select grp).ToList()
                          .Select(g => new AppSummary
                          {
                              AppName = g.Key,
@@ -234,11 +234,11 @@ namespace AppsTracker.ViewModels
                          .OrderByDescending(t => t.Duration)
                          .ToList();
 
-            var first = result.FirstOrDefault();
+            var first = appSummaries.FirstOrDefault();
             if (first != null)
                 first.IsSelected = true;
 
-            return result;
+            return appSummaries;
         }
 
 
@@ -298,29 +298,31 @@ namespace AppsTracker.ViewModels
                 var series = new UsageByTime() { Time = login.GetDisplayedStart(fromDay).ToString("HH:mm:ss") };
                 var observableCollection = new ObservableCollection<UsageSummary>();
 
-                long idleTime = 0;
-                long lockedTime = 0;
-                long loginTime = 0;
-                long stoppedTime = 0;
 
                 var tempIdles = idleUsages.Where(u => u.SelfUsageID == login.UsageID);
                 var tempLockeds = lockedUsages.Where(u => u.SelfUsageID == login.UsageID);
                 var tempStopppeds = stoppedUsages.Where(u => u.SelfUsageID == login.UsageID);
 
-                idleTime = tempIdles.Sum(l => l.GetDisplayedTicks(fromDay));
-                if (idleTime > 0)
-                    observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(idleTime).TotalHours, 2), UsageType = "Idle" });
+                long idleDuration = tempIdles.Sum(l => l.GetDisplayedTicks(fromDay));
+                if (idleDuration > 0)
+                {
+                    observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(idleDuration).TotalHours, 2), UsageType = "Idle" });
+                }
 
-                lockedTime = tempLockeds.Sum(l => l.GetDisplayedTicks(fromDay));
-                if (lockedTime > 0)
-                    observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Computer locked" });
+                long lockedDuration = tempLockeds.Sum(l => l.GetDisplayedTicks(fromDay));
+                if (lockedDuration > 0)
+                {
+                    observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(lockedDuration).TotalHours, 2), UsageType = "Computer locked" });
+                }
 
-                stoppedTime = tempStopppeds.Sum(l => l.GetDisplayedTicks(fromDay));
-                if (stoppedTime > 0)
-                    observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(lockedTime).TotalHours, 2), UsageType = "Stopped logging" });
+                long stoppedDuration = tempStopppeds.Sum(l => l.GetDisplayedTicks(fromDay));
+                if (stoppedDuration > 0)
+                {
+                    observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(lockedDuration).TotalHours, 2), UsageType = "Stopped logging" });
+                }
 
-                loginTime = login.GetDisplayedTicks(fromDay) - lockedTime - idleTime - stoppedTime;
-                observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(loginTime).TotalHours, 2), UsageType = "Work" });
+                long loginDuration = login.GetDisplayedTicks(fromDay) - lockedDuration - idleDuration - stoppedDuration;
+                observableCollection.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(loginDuration).TotalHours, 2), UsageType = "Work" });
 
                 series.UsageSummaryCollection = observableCollection;
 
@@ -332,25 +334,42 @@ namespace AppsTracker.ViewModels
                 var seriesTotal = new UsageByTime() { Time = "TOTAL" };
                 var observableTotal = new ObservableCollection<UsageSummary>();
 
-                long idleTimeTotal = 0;
-                long lockedTimeTotal = 0;
-                long loginTimeTotal = 0;
-                long stoppedTimeTotal = 0;
+                long totalIdleDuration = idleUsages.Sum(l => l.GetDisplayedTicks(fromDay));
+                if (totalIdleDuration > 0)
+                {
+                    observableTotal.Add(new UsageSummary()
+                    {
+                        Time = Math.Round(new TimeSpan(totalIdleDuration).TotalHours, 2),
+                        UsageType = "Idle"
+                    });
+                }
 
-                idleTimeTotal = idleUsages.Sum(l => l.GetDisplayedTicks(fromDay));
-                if (idleTimeTotal > 0)
-                    observableTotal.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(idleTimeTotal).TotalHours, 2), UsageType = "Idle" });
+                long totalLockedDuration = lockedUsages.Sum(l => l.GetDisplayedTicks(fromDay));
+                if (totalLockedDuration > 0)
+                {
+                    observableTotal.Add(new UsageSummary()
+                    {
+                        Time = Math.Round(new TimeSpan(totalLockedDuration).TotalHours, 2),
+                        UsageType = "Computer locked"
+                    });
+                }
 
-                lockedTimeTotal = lockedUsages.Sum(l => l.GetDisplayedTicks(fromDay));
-                if (lockedTimeTotal > 0)
-                    observableTotal.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(lockedTimeTotal).TotalHours, 2), UsageType = "Computer locked" });
+                long totalStoppedDuration = stoppedUsages.Sum(l => l.GetDisplayedTicks(fromDay));
+                if (totalStoppedDuration > 0)
+                {
+                    observableTotal.Add(new UsageSummary()
+                    {
+                        Time = Math.Round(new TimeSpan(totalStoppedDuration).TotalHours, 2),
+                        UsageType = "Stopped logging"
+                    });
+                }
 
-                stoppedTimeTotal = stoppedUsages.Sum(l => l.GetDisplayedTicks(fromDay));
-                if (stoppedTimeTotal > 0)
-                    observableTotal.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(stoppedTimeTotal).TotalHours, 2), UsageType = "Stopped logging" });
-
-                loginTimeTotal = logins.Sum(l => l.GetDisplayedTicks(fromDay)) - lockedTimeTotal - idleTimeTotal;
-                observableTotal.Add(new UsageSummary() { Time = Math.Round(new TimeSpan(loginTimeTotal).TotalHours, 2), UsageType = "Work" });
+                long totalLoginDuration = logins.Sum(l => l.GetDisplayedTicks(fromDay)) - totalLockedDuration - totalIdleDuration;
+                observableTotal.Add(new UsageSummary()
+                {
+                    Time = Math.Round(new TimeSpan(totalLoginDuration).TotalHours, 2),
+                    UsageType = "Work"
+                });
 
                 seriesTotal.UsageSummaryCollection = observableTotal;
 
@@ -364,7 +383,6 @@ namespace AppsTracker.ViewModels
         private IEnumerable<CategoryDuration> GetCategories()
         {
             var dateTo = selectedDate.AddDays(1);
-            var categoryModels = new List<CategoryDuration>();
 
             var categories = dataService.GetFiltered<AppCategory>(c => c.Applications.Count > 0 &&
                        c.Applications.Where(a => a.UserID == trackingService.SelectedUserID).Any() &&
@@ -373,6 +391,7 @@ namespace AppsTracker.ViewModels
                       c => c.Applications.Select(a => a.Windows.Select(w => w.Logs)),
                       c => c.Applications);
 
+            var categoryModels = new List<CategoryDuration>();
             foreach (var cat in categories)
             {
                 var totalDuration = cat.Applications
@@ -398,14 +417,17 @@ namespace AppsTracker.ViewModels
             if (topWindows == null)
                 return;
 
-            long ticks = 0;
-            var selected = topWindows.Where(t => t.IsSelected);
-            foreach (var window in selected)
-                ticks += window.Duration;
-            if (ticks == 0)
+            long selectedWindowsDuration = 0;
+            var selectedWindows = topWindows.Where(t => t.IsSelected);
+            foreach (var window in selectedWindows)
+            {
+                selectedWindowsDuration += window.Duration;
+            }
+
+            if (selectedWindowsDuration == 0)
                 return;
 
-            var timeSpan = new TimeSpan(ticks);
+            var timeSpan = new TimeSpan(selectedWindowsDuration);
             SelectedWindowsDuration = string.Format("Selected: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
         }
 
