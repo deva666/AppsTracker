@@ -10,22 +10,23 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using WPFHelper;
+using AppsTracker.Data.Models;
 
 namespace AppsTracker.Widgets
 {
     public class FilterableListView : SortableListView
     {
-        public static readonly ICommand ShowFilter = new RoutedCommand( );
+        public static readonly ICommand ShowFilter = new RoutedCommand();
         ArrayList filterList;
 
         public object FilterType
         {
-            get { return ( object ) GetValue( FilterTypeProperty ); }
-            set { SetValue( FilterTypeProperty, value ); }
+            get { return (object)GetValue(FilterTypeProperty); }
+            set { SetValue(FilterTypeProperty, value); }
         }
 
         public static readonly DependencyProperty FilterTypeProperty =
-    DependencyProperty.Register( "FilterType", typeof( object ), typeof( FilterableListView ), new PropertyMetadata( null ) );
+    DependencyProperty.Register("FilterType", typeof(object), typeof(FilterableListView), new PropertyMetadata(null));
 
         struct FilterStruct
         {
@@ -33,7 +34,7 @@ namespace AppsTracker.Widgets
             public FilterItem value;
             public string property;
 
-            public FilterStruct( String property, Button button, FilterItem value )
+            public FilterStruct(String property, Button button, FilterItem value)
             {
                 this.value = value;
                 this.button = button;
@@ -41,80 +42,83 @@ namespace AppsTracker.Widgets
             }
         }
 
-        private Hashtable currentFilters = new Hashtable( );
+        private Hashtable currentFilters = new Hashtable();
 
-        private void AddFilter( String property, FilterItem value, Button button )
+        private void AddFilter(String property, FilterItem value, Button button)
         {
-            if ( currentFilters.ContainsKey( property ) )
+            if (currentFilters.ContainsKey(property))
             {
-                currentFilters.Remove( property );
+                currentFilters.Remove(property);
             }
-            currentFilters.Add( property, new FilterStruct( property, button, value ) );
+            currentFilters.Add(property, new FilterStruct(property, button, value));
         }
 
-        private bool IsPropertyFiltered( String property )
+        private bool IsPropertyFiltered(String property)
         {
-            foreach ( String filterProperty in currentFilters.Keys )
+            foreach (String filterProperty in currentFilters.Keys)
             {
-                FilterStruct filter = ( FilterStruct ) currentFilters[filterProperty];
-                if ( filter.property == property )
+                FilterStruct filter = (FilterStruct)currentFilters[filterProperty];
+                if (filter.property == property)
                     return true;
             }
 
             return false;
         }
 
-        public FilterableListView( )
+        public FilterableListView()
         {
-            CommandBindings.Add( new CommandBinding( ShowFilter, ShowFilterCommand ) );
+            CommandBindings.Add(new CommandBinding(ShowFilter, ShowFilterCommand));
         }
 
-        private void ShowFilterCommand( object sender, ExecutedRoutedEventArgs e )
+        private void ShowFilterCommand(object sender, ExecutedRoutedEventArgs e)
         {
             Button button = e.OriginalSource as Button;
 
-            if ( button != null )
+            if (button != null)
             {
                 // navigate up to the header
-                GridViewColumnHeader header = ( GridViewColumnHeader ) Helpers.FindElementOfTypeUp( button, typeof( GridViewColumnHeader ) );
+                GridViewColumnHeader header = (GridViewColumnHeader)Helpers.FindElementOfTypeUp(button, typeof(GridViewColumnHeader));
+
+                if (header == null)
+                    return;
 
                 // then down to the popup
-                Popup popup = ( Popup ) Helpers.FindElementOfType( header, typeof( Popup ) );
+                Popup popup = (Popup)Helpers.FindElementOfType(header, typeof(Popup));
 
-                if ( popup != null )
+                if (popup != null)
                 {
                     // find the property name that we are filtering
-                    SortableGridViewColumn column = ( SortableGridViewColumn ) header.Column;
+                    SortableGridViewColumn column = (SortableGridViewColumn)header.Column;
                     String propertyName = column.SortPropertyName;
 
 
                     // clear the previous filter
-                    if ( filterList == null )
+                    if (filterList == null)
                     {
-                        filterList = new ArrayList( );
+                        filterList = new ArrayList();
                     }
-                    filterList.Clear( );
+                    filterList.Clear();
 
                     // if this property is currently being filtered, provide an option to clear the filter.
-                    if ( IsPropertyFiltered( propertyName ) )
+                    if (IsPropertyFiltered(propertyName))
                     {
-                        filterList.Add( new FilterItem( "[clear]" ) );
+                        filterList.Add(new FilterItem("[clear]"));
                     }
                     else
                     {
                         bool containsNull = false;
-                        //PropertyDescriptor filterPropDesc = TypeDescriptor.GetProperties(typeof(Logging.ProcessLog.LogData))[propertyName];
-                        PropertyDescriptor filterPropDesc = TypeDescriptor.GetProperties( FilterType.GetType( ) )[propertyName];
+                        //PropertyDescriptor filterPropDesc = TypeDescriptor.GetProperties(typeof(Log))[propertyName];
+                        PropertyDescriptor filterPropDesc = TypeDescriptor.GetProperties(FilterType.GetType())[propertyName];
                         // iterate over all the objects in the list
-                        foreach ( Object item in Items )
+                        foreach (Object item in Items)
                         {
-                            object value = filterPropDesc.GetValue( item );
-                            if ( value != null )
+                            object value = filterPropDesc.GetValue(item);
+                            if (value != null)
                             {
-                                FilterItem filterItem = new FilterItem( value as IComparable );
-                                if ( !filterList.Contains( filterItem ) )
+                                FilterItem filterItem = new FilterItem(value as IComparable);
+                                if (!filterList.Contains(filterItem))
                                 {
-                                    filterList.Add( filterItem );
+                                    filterList.Add(filterItem);
                                 }
                             }
                             else
@@ -123,55 +127,55 @@ namespace AppsTracker.Widgets
                             }
                         }
 
-                        filterList.Sort( );
+                        filterList.Sort();
 
-                        if ( containsNull )
+                        if (containsNull)
                         {
-                            filterList.Add( new FilterItem( null ) );
+                            filterList.Add(new FilterItem(null));
                         }
                     }
 
                     // open the popup to display this list
                     popup.DataContext = filterList;
-                    CollectionViewSource.GetDefaultView( filterList ).Refresh( );
+                    CollectionViewSource.GetDefaultView(filterList).Refresh();
                     popup.IsOpen = true;
 
                     // connect to the selection change event
-                    ListView listView = ( ListView ) popup.Child;
+                    ListView listView = (ListView)popup.Child;
                     listView.SelectionChanged += SelectionChangedHandler;
                 }
             }
         }
-        private void ApplyCurrentFilters( )
+        private void ApplyCurrentFilters()
         {
-            if ( currentFilters.Count == 0 )
+            if (currentFilters.Count == 0)
             {
                 Items.Filter = null;
                 return;
             }
 
             // construct a filter and apply it               
-            Items.Filter = delegate( object item )
+            Items.Filter = delegate (object item)
             {
                 // when applying the filter to each item, iterate over all of
                 // the current filters
                 bool match = true;
-                foreach ( FilterStruct filter in currentFilters.Values )
+                foreach (FilterStruct filter in currentFilters.Values)
                 {
                     // obtain the value for this property on the item under test
                     //PropertyDescriptor filterPropDesc = TypeDescriptor.GetProperties(typeof(Logging.ProcessLog.LogData))[filter.property];
-                    PropertyDescriptor filterPropDesc = TypeDescriptor.GetProperties( FilterType.GetType( ) )[filter.property];
+                    PropertyDescriptor filterPropDesc = TypeDescriptor.GetProperties(FilterType.GetType())[filter.property];
                     //object itemValue = filterPropDesc.GetValue((Logging.ProcessLog.LogData)item);
-                    object itemValue = filterPropDesc.GetValue( item );
-                    if ( itemValue != null )
+                    object itemValue = filterPropDesc.GetValue(item);
+                    if (itemValue != null)
                     {
                         // check to see if it meets our filter criteria
-                        if ( !itemValue.Equals( filter.value.Item ) )
+                        if (!itemValue.Equals(filter.value.Item))
                             match = false;
                     }
                     else
                     {
-                        if ( filter.value.Item != null )
+                        if (filter.value.Item != null)
                             match = false;
                     }
                 }
@@ -184,41 +188,41 @@ namespace AppsTracker.Widgets
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SelectionChangedHandler( object sender, SelectionChangedEventArgs e )
+        private void SelectionChangedHandler(object sender, SelectionChangedEventArgs e)
         {
             // obtain the term to filter for
-            ListView filterListView = ( ListView ) sender;
-            FilterItem filterItem = ( FilterItem ) filterListView.SelectedItem;
+            ListView filterListView = (ListView)sender;
+            FilterItem filterItem = (FilterItem)filterListView.SelectedItem;
 
             // navigate up to the header to obtain the filter property name
-            GridViewColumnHeader header = ( GridViewColumnHeader ) Helpers.FindElementOfTypeUp( filterListView, typeof( GridViewColumnHeader ) );
+            GridViewColumnHeader header = (GridViewColumnHeader)Helpers.FindElementOfTypeUp(filterListView, typeof(GridViewColumnHeader));
 
-            SortableGridViewColumn column = ( SortableGridViewColumn ) header.Column;
+            SortableGridViewColumn column = (SortableGridViewColumn)header.Column;
             String currentFilterProperty = column.SortPropertyName;
 
-            if ( filterItem == null )
+            if (filterItem == null)
                 return;
 
             // determine whether to clear the filter for this column
-            if ( filterItem.ItemView.Equals( "[clear]" ) )
+            if (filterItem.ItemView.Equals("[clear]"))
             {
-                if ( currentFilters.ContainsKey( currentFilterProperty ) )
+                if (currentFilters.ContainsKey(currentFilterProperty))
                 {
-                    FilterStruct filter = ( FilterStruct ) currentFilters[currentFilterProperty];
+                    FilterStruct filter = (FilterStruct)currentFilters[currentFilterProperty];
                     //filter.button.ContentTemplate = (DataTemplate)dictionary["filterButtonInactiveTemplate"];
                     //if (FilterButtonInactiveStyle != null)
                     //{
                     //    filter.button.Style = FilterButtonInactiveStyle;
                     //}
-                    currentFilters.Remove( currentFilterProperty );
+                    currentFilters.Remove(currentFilterProperty);
                 }
 
-                ApplyCurrentFilters( );
+                ApplyCurrentFilters();
             }
             else
             {
                 // find the button and apply the active style
-                Button button = ( Button ) Helpers.FindVisualElement( header, "filterButton" );
+                Button button = (Button)Helpers.FindVisualElement(header, "filterButton");
                 //button.ContentTemplate = (DataTemplate)dictionary["filterButtonActiveTemplate"];
 
                 //if (FilterButtonActiveStyle != null)
@@ -226,12 +230,12 @@ namespace AppsTracker.Widgets
                 //    button.Style = FilterButtonActiveStyle;
                 //}
 
-                AddFilter( currentFilterProperty, filterItem, button );
-                ApplyCurrentFilters( );
+                AddFilter(currentFilterProperty, filterItem, button);
+                ApplyCurrentFilters();
             }
 
             // navigate up to the popup and close it
-            Popup popup = ( Popup ) Helpers.FindElementOfTypeUp( filterListView, typeof( Popup ) );
+            Popup popup = (Popup)Helpers.FindElementOfTypeUp(filterListView, typeof(Popup));
             popup.IsOpen = false;
         }
 
@@ -262,26 +266,26 @@ namespace AppsTracker.Widgets
             set { itemView = value; }
         }
 
-        public FilterItem( IComparable item )
+        public FilterItem(IComparable item)
         {
             this.item = this.itemView = item;
-            if ( item == null )
+            if (item == null)
             {
                 itemView = "[empty]";
             }
         }
 
-        public override int GetHashCode( )
+        public override int GetHashCode()
         {
-            return item != null ? item.GetHashCode( ) : 0;
+            return item != null ? item.GetHashCode() : 0;
         }
 
-        public override bool Equals( object obj )
+        public override bool Equals(object obj)
         {
             FilterItem otherItem = obj as FilterItem;
-            if ( otherItem != null && this.Item != null )
+            if (otherItem != null && this.Item != null)
             {
-                if ( otherItem.Item.ToString( ) == this.Item.ToString( ) )
+                if (otherItem.Item.ToString() == this.Item.ToString())
                 {
                     return true;
                 }
@@ -289,17 +293,17 @@ namespace AppsTracker.Widgets
             return false;
         }
 
-        public int CompareTo( object obj )
+        public int CompareTo(object obj)
         {
-            FilterItem otherFilterItem = ( FilterItem ) obj;
+            FilterItem otherFilterItem = (FilterItem)obj;
 
-            if ( this.Item == null && obj == null )
+            if (this.Item == null && obj == null)
             {
                 return 0;
             }
-            else if ( otherFilterItem.Item != null && this.Item != null )
+            else if (otherFilterItem.Item != null && this.Item != null)
             {
-                return ( ( IComparable ) item ).CompareTo( ( IComparable ) otherFilterItem.item );
+                return ((IComparable)item).CompareTo((IComparable)otherFilterItem.item);
             }
             else
             {

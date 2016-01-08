@@ -17,6 +17,24 @@ namespace AppsTracker.Data.Models
     public class Log : INotifyPropertyChanged
     {
         [NotMapped]
+        public String AppName
+        {
+            get
+            {
+                return Window == null ? String.Empty : Window.Application == null ? String.Empty : Window.Application.Name;
+            }
+        }
+
+        [NotMapped]
+        public String WindowTitle
+        {
+            get
+            {
+                return Window == null ? String.Empty : Window.Title;
+            }
+        }
+
+        [NotMapped]
         public long Duration
         {
             get

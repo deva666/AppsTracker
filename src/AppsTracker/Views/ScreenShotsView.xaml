@@ -5,14 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:AppsTracker"
              xmlns:controls="clr-namespace:AppsTracker.Widgets"
-             xmlns:logging="clr-namespace:AppsTracker.Data.Models;assembly=AppsTracker.Data"
-             xmlns:utils="clr-namespace:AppsTracker.Utils"
+             xmlns:data="clr-namespace:AppsTracker.Data.Models;assembly=AppsTracker.Data"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              mc:Ignorable="d"
              d:DesignHeight="700"
              d:DesignWidth="900">
     <UserControl.Resources>
-        <logging:Log x:Key="logData" />
+        <data:Log x:Key="logData" />
         <local:ConvertDuration x:Key="convertDuration" />
         <local:ConvertHasKeyLogs x:Key="convertHasKeyLogs" />
         <local:ConvertIntToVisibilityBackwards x:Key="convertIntToVisBack" />
@@ -161,7 +160,7 @@
                                                      SortPropertyName="AppName" />
                     <controls:SortableGridViewColumn Header="Window"
                                                      CellTemplate="{StaticResource wndTemplate}"
-                                                     SortPropertyName="Window.Title" />
+                                                     SortPropertyName="WindowTitle" />
                     <controls:SortableGridViewColumn Header="Date"
                                                      CellTemplate="{StaticResource dateTemplate}"
                                                      SortPropertyName="DateCreated" />
