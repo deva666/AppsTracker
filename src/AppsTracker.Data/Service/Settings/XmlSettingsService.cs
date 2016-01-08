@@ -75,13 +75,19 @@ namespace AppsTracker.Data.Service
             settingsContainer.Add(DaysViewSettings = new DaysViewSettings());
             settingsContainer.Add(MainWindowSettings = new MainWindowSettings());
 
-            if (File.Exists(Path.Combine(settingsPath, SETTINGS_FILE_NAME)) == false)
+            if (!File.Exists(Path.Combine(settingsPath, SETTINGS_FILE_NAME)))
                 return;
 
-            var xml = XDocument.Load(Path.Combine(settingsPath, SETTINGS_FILE_NAME));
-            var root = xml.Element("root");
+            try
+            {
+                var xml = XDocument.Load(Path.Combine(settingsPath, SETTINGS_FILE_NAME));
+                var root = xml.Element("root");
 
-            TryGetValuesFromXml(settingsContainer, root);
+                TryGetValuesFromXml(settingsContainer, root);
+            }
+            catch
+            {
+            }
         }
 
         private void TryGetValuesFromXml(IEnumerable<XmlSettingsBase> settings, XElement root)
@@ -117,7 +123,7 @@ namespace AppsTracker.Data.Service
 
         public void Shutdown()
         {
-            if (Directory.Exists(settingsPath) == false)
+            if (!Directory.Exists(settingsPath))
                 Directory.CreateDirectory(settingsPath);
 
             var xml = new XElement("root");
