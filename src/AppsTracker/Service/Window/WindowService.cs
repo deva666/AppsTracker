@@ -124,10 +124,10 @@ namespace AppsTracker.Service
             top = bounds.Top / measureProvider.ScaleY + heightRatio;
             width = bounds.Width / measureProvider.ScaleX - widthRatio * 2;
             height = bounds.Height / measureProvider.ScaleY - heightRatio * 2;
-            mainWindow.Left = left;
-            mainWindow.Top = top;
-            mainWindow.Width = width;
-            mainWindow.Height = height;
+            mainWindow.Left = double.IsInfinity(left) ? 0 : left;
+            mainWindow.Top = double.IsInfinity(top) ? 0 : top;
+            mainWindow.Width = double.IsInfinity(width) ? bounds.Width : width;
+            mainWindow.Height = double.IsInfinity(height) ? bounds.Height : height;
         }
 
 
