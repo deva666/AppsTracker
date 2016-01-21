@@ -23,8 +23,8 @@ namespace AppsTracker.Tracking.Hooks
 
         private Boolean isDisposed = false;
 
-        private readonly IWindowChanged windowChangedHook;
-        private readonly ITitleChanged titleChangedHook;
+        private readonly IWindowChangedNotifier windowChangedHook;
+        private readonly ITitleChangedNotifier titleChangedHook;
         private readonly ISyncContext syncContext;
 
         private readonly Timer windowCheckTimer;
@@ -34,8 +34,8 @@ namespace AppsTracker.Tracking.Hooks
 
 
         [ImportingConstructor]
-        public AppChangedNotifier(IWindowChanged windowChangedHook,
-                                  ITitleChanged titleChangedHook,
+        public AppChangedNotifier(IWindowChangedNotifier windowChangedHook,
+                                  ITitleChangedNotifier titleChangedHook,
                                   ISyncContext syncContext)
         {
             this.windowChangedHook = windowChangedHook;

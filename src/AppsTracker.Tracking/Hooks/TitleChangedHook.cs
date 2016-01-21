@@ -5,8 +5,8 @@ using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Tracking.Hooks
 {
-    [Export(typeof(ITitleChanged))]
-    public sealed class TitleChangedHook : WinHookBase, ITitleChanged
+    [Export(typeof(ITitleChangedNotifier))]
+    public sealed class TitleChangedHook : HookBase, ITitleChangedNotifier
     {
         public event EventHandler<WinChangedArgs> TitleChanged;
 

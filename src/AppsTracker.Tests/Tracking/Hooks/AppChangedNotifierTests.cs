@@ -11,8 +11,8 @@ namespace AppsTracker.Tracking.Hooks.Tests
         [TestMethod()]
         public void WinChangedEventTest()
         {
-            var winChanged = new Mock<IWindowChanged>();
-            var titleChanged = new Mock<ITitleChanged>();
+            var winChanged = new Mock<IWindowChangedNotifier>();
+            var titleChanged = new Mock<ITitleChangedNotifier>();
             var syncContext = new SyncContextMock();
             var notifier = new AppChangedNotifier(winChanged.Object, titleChanged.Object, syncContext);
             var eventRaised = false;
@@ -27,8 +27,8 @@ namespace AppsTracker.Tracking.Hooks.Tests
         [TestMethod()]
         public void TitleChangedEventNotRaisedTest()
         {
-            var winChanged = new Mock<IWindowChanged>();
-            var titleChanged = new Mock<ITitleChanged>();
+            var winChanged = new Mock<IWindowChangedNotifier>();
+            var titleChanged = new Mock<ITitleChangedNotifier>();
             var syncContext = new SyncContextMock();
             var notifier = new AppChangedNotifier(winChanged.Object, titleChanged.Object, syncContext);
             var eventRaised = false;
@@ -43,8 +43,8 @@ namespace AppsTracker.Tracking.Hooks.Tests
         [TestMethod()]
         public void TitleChangedEventRaisedTest()
         {
-            var winChanged = new Mock<IWindowChanged>();
-            var titleChanged = new Mock<ITitleChanged>();
+            var winChanged = new Mock<IWindowChangedNotifier>();
+            var titleChanged = new Mock<ITitleChangedNotifier>();
             var syncContext = new SyncContextMock();
             var notifier = new AppChangedNotifier(winChanged.Object, titleChanged.Object, syncContext);
             var eventRaised = false;
