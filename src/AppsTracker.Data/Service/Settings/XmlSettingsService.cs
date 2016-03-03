@@ -7,7 +7,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Xml.Linq;
@@ -67,59 +66,90 @@ namespace AppsTracker.Data.Service
         public void Initialize()
         {
             LimitsSettings = new LimitsSettings();
-
-            var settingsContainer = new List<XmlSettingsBase>();
-            settingsContainer.Add(AppSettings = new AppSettings());
-            settingsContainer.Add(LogsViewSettings = new LogsViewSettings());
-            settingsContainer.Add(ScreenshotsViewSettings = new ScreenshotsViewSettings());
-            settingsContainer.Add(DaysViewSettings = new DaysViewSettings());
-            settingsContainer.Add(MainWindowSettings = new MainWindowSettings());
+            AppSettings = new AppSettings();
+            LogsViewSettings = new LogsViewSettings();
+            ScreenshotsViewSettings = new ScreenshotsViewSettings();
+            DaysViewSettings = new DaysViewSettings();
+            MainWindowSettings = new MainWindowSettings();
 
             if (!File.Exists(Path.Combine(settingsPath, SETTINGS_FILE_NAME)))
                 return;
 
+            var xml = XDocument.Load(Path.Combine(settingsPath, SETTINGS_FILE_NAME));
+            var root = xml.Element("root");
+
+            SetAppSettingsValues(root);
+            SetLogsViewSettingsValues(root);
+            SetScreenshotViewSettingsValues(root);
+            SetDaysViewSettingsValues(root);
+            SetMainWindowSettingsValues(root);
+
+        }
+
+        private void SetAppSettingsValues(XElement root)
+        {
             try
             {
-                var xml = XDocument.Load(Path.Combine(settingsPath, SETTINGS_FILE_NAME));
-                var root = xml.Element("root");
-
-                TryGetValuesFromXml(settingsContainer, root);
+                var node = root.Element("AppSettings");
+                AppSettings.SetValues(node);
             }
             catch
             {
+                AppSettings = new AppSettings();
             }
         }
 
-        private void TryGetValuesFromXml(IEnumerable<XmlSettingsBase> settings, XElement root)
+        private void SetLogsViewSettingsValues(XElement root)
         {
-            foreach (var settingsBase in settings)
+            try
             {
-                var node = root.Element(settingsBase.GetType().Name);
-                if (node == null)
-                    return;
-
-                try
-                {
-                    settingsBase.SetValues(node);
-                }
-                catch
-                {
-                    SetDefaultPropertyValue(settingsBase.GetType().Name, settingsBase.GetType());
-                }
+                var node = root.Element("LogsViewSettings");
+                LogsViewSettings.SetValues(node);
+            }
+            catch
+            {
+                LogsViewSettings = new LogsViewSettings();
             }
         }
 
-
-        private void SetDefaultPropertyValue(string propertyName, Type propertyType)
+        private void SetScreenshotViewSettingsValues(XElement root)
         {
-            var property = GetType().GetProperty(propertyName);
-            var newInstance = Activator.CreateInstance(propertyType);
-            if (property.CanWrite)
+            try
             {
-                property.SetValue(this, newInstance);
+                var node = root.Element("ScreenshotsViewSettings");
+                ScreenshotsViewSettings.SetValues(node);
+            }
+            catch (Exception)
+            {
+                ScreenshotsViewSettings = new ScreenshotsViewSettings();
             }
         }
 
+        private void SetDaysViewSettingsValues(XElement root)
+        {
+            try
+            {
+                var node = root.Element("DaysViewSettings");
+                DaysViewSettings.SetValues(node);
+            }
+            catch
+            {
+                DaysViewSettings = new DaysViewSettings();
+            }
+        }
+
+        private void SetMainWindowSettingsValues(XElement root)
+        {
+            try
+            {
+                var node = root.Element("MainWindowSettings");
+                MainWindowSettings.SetValues(node);
+            }
+            catch
+            {
+                MainWindowSettings = new MainWindowSettings();
+            }
+        }
 
         public void Shutdown()
         {
