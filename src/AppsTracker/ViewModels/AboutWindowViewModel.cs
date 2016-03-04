@@ -27,9 +27,13 @@ namespace AppsTracker.ViewModels
             get { return "About"; }
         }
 
-        public Version AppVersion
+        public String AppVersion
         {
-            get { return Assembly.GetExecutingAssembly().GetName().Version; }
+#if BETA
+            get { return Assembly.GetExecutingAssembly().GetName().Version.ToString() + " beta"; }
+#else
+            get { return Assembly.GetExecutingAssembly().GetName().Version.ToString(); }
+#endif
         }
 
 

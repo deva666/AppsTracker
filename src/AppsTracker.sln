@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTracker", "AppsTracker\AppsTracker.csproj", "{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -20,6 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsTracker.Tracking", "App
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Beta|Any CPU = Beta|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Installer|Any CPU = Installer|Any CPU
 		Portable|Any CPU = Portable|Any CPU
@@ -27,6 +28,8 @@ Global
 		Test|Any CPU = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}.Beta|Any CPU.Build.0 = Beta|Any CPU
 		{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}.Installer|Any CPU.ActiveCfg = Installer|Any CPU
@@ -37,6 +40,8 @@ Global
 		{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{ED886551-A8B3-492D-ACEC-FE2DF0B484F7}.Test|Any CPU.Build.0 = Test|Any CPU
+		{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}.Beta|Any CPU.Build.0 = Beta|Any CPU
 		{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}.Installer|Any CPU.ActiveCfg = Installer|Any CPU
@@ -47,6 +52,8 @@ Global
 		{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{DFFF3918-1C83-4ACD-9FA3-87CBA98DB030}.Test|Any CPU.Build.0 = Test|Any CPU
+		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Beta|Any CPU.Build.0 = Beta|Any CPU
 		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Installer|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +64,8 @@ Global
 		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{8F6DB62D-3C7F-4003-9A98-6BD504FDDA5B}.Test|Any CPU.Build.0 = Release|Any CPU
+		{0C42BFBA-8444-4789-BD3F-65F84CCD94ED}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{0C42BFBA-8444-4789-BD3F-65F84CCD94ED}.Beta|Any CPU.Build.0 = Beta|Any CPU
 		{0C42BFBA-8444-4789-BD3F-65F84CCD94ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0C42BFBA-8444-4789-BD3F-65F84CCD94ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C42BFBA-8444-4789-BD3F-65F84CCD94ED}.Installer|Any CPU.ActiveCfg = Release|Any CPU
@@ -67,6 +76,8 @@ Global
 		{0C42BFBA-8444-4789-BD3F-65F84CCD94ED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0C42BFBA-8444-4789-BD3F-65F84CCD94ED}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{0C42BFBA-8444-4789-BD3F-65F84CCD94ED}.Test|Any CPU.Build.0 = Release|Any CPU
+		{6279DB1C-E26B-4F4B-993E-EC985417A0CF}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{6279DB1C-E26B-4F4B-993E-EC985417A0CF}.Beta|Any CPU.Build.0 = Beta|Any CPU
 		{6279DB1C-E26B-4F4B-993E-EC985417A0CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6279DB1C-E26B-4F4B-993E-EC985417A0CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6279DB1C-E26B-4F4B-993E-EC985417A0CF}.Installer|Any CPU.ActiveCfg = Release|Any CPU
