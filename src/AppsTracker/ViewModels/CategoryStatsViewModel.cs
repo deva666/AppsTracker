@@ -92,28 +92,27 @@ namespace AppsTracker.ViewModels
             var dateTo = trackingService.DateFrom.AddDays(1);
             var categoryModels = new List<CategoryDuration>();
 
-            var categories = dataService.GetFiltered<AppCategory>(c => c.Applications.Count > 0 
-                        && c.Applications
-                        .Where(a => a.UserID == trackingService.SelectedUserID)
-                        .Any() 
-                        && c.Applications
-                        .SelectMany(a => a.Windows)
-                        .SelectMany(w => w.Logs)
-                        .Where(l => l.DateCreated >= trackingService.DateFrom)
-                        .Any() 
-                        && c.Applications
-                        .SelectMany(a => a.Windows)
-                        .SelectMany(w => w.Logs)
-                        .Where(l => l.DateCreated <= dateTo)
-                        .Any(),
-                       c => c.Applications);
-            
+            var categories = dataService.GetFiltered<AppCategory>(c => c.Applications.Count > 0
+                        && c.Applications.Where(a => a.UserID == trackingService.SelectedUserID)
+                                         .Any()
+                        && c.Applications.SelectMany(a => a.Windows)
+                                        .SelectMany(w => w.Logs)
+                                        .Where(l => l.DateCreated >= trackingService.DateFrom)
+                                        .Any()
+                        && c.Applications.SelectMany(a => a.Windows)
+                                        .SelectMany(w => w.Logs)
+                                        .Where(l => l.DateCreated <= dateTo)
+                                        .Any(),
+                       c => c.Applications,
+                       c => c.Applications.Select(a => a.Windows),
+                       c => c.Applications.Select(a => a.Windows.Select(w => w.Logs)));
+
             foreach (var cat in categories)
             {
                 var totalDuration = cat.Applications
                                        .SelectMany(a => a.Windows)
                                        .SelectMany(w => w.Logs)
-                                       .Where(l => l.DateCreated >= trackingService.DateFrom 
+                                       .Where(l => l.DateCreated >= trackingService.DateFrom
                                            && l.DateCreated <= dateTo)
                                        .Sum(l => l.Duration);
 
@@ -124,7 +123,7 @@ namespace AppsTracker.ViewModels
                 });
             }
 
-            return categoryModels;            
+            return categoryModels;
         }
 
 
@@ -137,7 +136,7 @@ namespace AppsTracker.ViewModels
             var logs = dataService.GetFiltered<Log>(l => l.Window.Application.Categories.Any(c => c.Name == category.Name)
                                                && l.Window.Application.UserID == trackingService.SelectedUserID
                                                && l.DateCreated >= trackingService.DateFrom
-                                               && l.DateCreated <= trackingService.DateTo);                                       
+                                               && l.DateCreated <= trackingService.DateTo);
 
             var grouped = logs.GroupBy(l => new
             {
@@ -150,7 +149,7 @@ namespace AppsTracker.ViewModels
             {
                 Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
                 TotalTime = Math.Round(new TimeSpan(g.Sum(l => l.Duration)).TotalHours, 2)
-            });            
+            });
         }
 
         private void ReloadAll()
