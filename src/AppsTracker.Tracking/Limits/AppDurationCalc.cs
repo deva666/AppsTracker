@@ -35,7 +35,7 @@ namespace AppsTracker.Tracking.Limits
                     var weekEnd = weekBegin.AddDays(6);
                     return await SumDuration(app, l => l.DateCreated >= weekBegin && l.DateCreated <= weekEnd);
                 default:
-                    return -1;
+                    throw new ArgumentOutOfRangeException("span");
             }
         }
 
