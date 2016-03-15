@@ -51,6 +51,17 @@ namespace AppsTracker.Common.Utils
             timer.Start();
         }
 
+        public static Tuple<DateTime, DateTime> GetWeekBeginAndEnd(this DateTime dateTime)
+        {
+            var today = DateTime.Today;
+            int delta = DayOfWeek.Monday - today.DayOfWeek;
+            if (delta > 0)
+                delta -= 7;
+            var weekBegin = today.AddDays(delta);
+            var weekEnd = weekBegin.AddDays(6);
+            return new Tuple<DateTime, DateTime>(weekBegin, weekEnd);
+        }
+
         public static void SetPropertyValue(this object _object, string propertyName, object propertyValue)
         {
             var propertyInfo = _object.GetType().GetProperty(propertyName, System.Reflection.BindingFlags.NonPublic);

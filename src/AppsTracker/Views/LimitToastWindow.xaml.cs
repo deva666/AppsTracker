@@ -49,6 +49,13 @@ namespace AppsTracker.Views
             Loaded += (s, e) => HideHelper.RemoveFromAltTab(this);
         }
 
+        private async void OnAppLimitReached(AppLimit limit)
+        {
+            currentLimit = limit;
+            await DisplayAppDuration();
+            ShowWindow();
+        }
+
         private async void OnTimerTick(object sender, EventArgs e)
         {
             if (currentLimit == null)
@@ -57,13 +64,6 @@ namespace AppsTracker.Views
             await DisplayAppDuration();
         }
 
-
-        private async void OnAppLimitReached(AppLimit limit)
-        {
-            currentLimit = limit;
-            await DisplayAppDuration();
-            ShowWindow();
-        }
 
         private async Task DisplayAppDuration()
         {
