@@ -281,7 +281,7 @@ namespace AppsTracker.ViewModels
                                                     || (u.IsCurrent == false && u.UsageStart <= fromDay && u.UsageEnd >= fromDay))
                                             && u.UsageType == UsageTypes.Login);
 
-            var usageIDs = logins.Select(u => u.UsageID);
+            var usageIDs = logins.Select(u => u.UsageID).ToList();
 
             var allUsages = dataService.GetFiltered<Usage>(u => u.SelfUsageID.HasValue
                                                            && usageIDs.Contains(u.SelfUsageID.Value));

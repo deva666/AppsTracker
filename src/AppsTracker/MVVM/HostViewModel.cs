@@ -88,7 +88,7 @@ namespace AppsTracker.MVVM
         }
 
 
-        private class ViewModelResolver
+        private sealed class ViewModelResolver
         {
             public WeakReference<ViewModelBase> Reference { get; private set; }
             public Func<ViewModelBase> ValueFactory { get; private set; }
