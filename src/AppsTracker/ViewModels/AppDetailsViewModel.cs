@@ -239,13 +239,14 @@ namespace AppsTracker.ViewModels
                                                && l.Window.Application.Name == selectedApp.AppName,
                                                l => l.Window);
 
-            var filteredLogs = logs.Where(l => selectedDates.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)));
+            var logsInSelectedDateRange = logs.Where(l => selectedDates.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)));
 
-            var totalDuration = filteredLogs.Sum(l => l.Duration);
+            double totalDuration = logsInSelectedDateRange.Sum(l => l.Duration);
 
-            var result = (from l in filteredLogs
+            var result = (from l in logsInSelectedDateRange
                           group l by l.Window.Title into grp
-                          select grp).Select(g => new WindowSummary
+                          select grp)
+                          .Select(g => new WindowSummary
                           {
                               Title = g.Key,
                               Usage = (g.Sum(l => l.Duration) / totalDuration),
