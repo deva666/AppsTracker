@@ -223,16 +223,15 @@ namespace AppsTracker.ViewModels
 
             var appSummaries = (from l in logs
                                 group l by l.Window.Application.Name into grp
-                                select grp).ToList()
-                         .Select(g => new AppSummary
-                         {
-                             AppName = g.Key,
-                             Date = selectedDate.ToShortDateString(),
-                             Usage = (g.Sum(l => l.Duration) / totalDuration),
-                             Duration = g.Sum(l => l.Duration)
-                         })
-                         .OrderByDescending(t => t.Duration)
-                         .ToList();
+                                select grp)
+                                 .Select(g => new AppSummary
+                                 {
+                                     AppName = g.Key,
+                                     Date = selectedDate.ToShortDateString(),
+                                     Usage = (g.Sum(l => l.Duration) / totalDuration),
+                                     Duration = g.Sum(l => l.Duration)
+                                 })
+                                 .OrderByDescending(t => t.Duration);
 
             var first = appSummaries.FirstOrDefault();
             if (first != null)
@@ -256,7 +255,7 @@ namespace AppsTracker.ViewModels
                                                          && l.Window.Application.Name == model.AppName,
                                                     l => l.Window);
 
-            var totalDuration = logs.Sum(l => l.Duration);
+            double totalDuration = logs.Sum(l => l.Duration);
 
             return logs.GroupBy(l => l.Window.Title)
                                   .Select(g => new WindowSummary
@@ -417,12 +416,9 @@ namespace AppsTracker.ViewModels
                 return;
 
             long selectedWindowsDuration = 0;
-            var selectedWindows = topWindows.Where(t => t.IsSelected);
-            foreach (var window in selectedWindows)
-            {
-                selectedWindowsDuration += window.Duration;
-            }
-
+            selectedWindowsDuration = topWindows.Where(t => t.IsSelected)
+                                                .Sum(w => w.Duration);
+            
             if (selectedWindowsDuration == 0)
                 return;
 

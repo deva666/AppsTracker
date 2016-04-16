@@ -185,7 +185,6 @@ namespace AppsTracker.ViewModels
                                      day = l.DateCreated.Day
                                  } into grp
                                  select grp)
-                                .ToList()
                                 .Select(g => new
                                 {
                                     Date = new DateTime(g.Key.year, g.Key.month, g.Key.day),
@@ -202,8 +201,7 @@ namespace AppsTracker.ViewModels
                               day = l.DateCreated.Day,
                               name = l.Window.Application.Name
                           } into grp
-                          select grp)
-                          .ToList()
+                          select grp)                         
                           .Select(g => new AppSummary
                           {
                               AppName = g.Key.name,
@@ -274,7 +272,7 @@ namespace AppsTracker.ViewModels
             
             var logs = dataService.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
                                                 && l.Window.Application.Name == selectedApp.AppName,
-                                       l => l.Window);
+                                                l => l.Window);
 
 
             var filteredLogs = logs.Where(l => selectedDates.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)) && selectedWindows.Contains(l.Window.Title));
