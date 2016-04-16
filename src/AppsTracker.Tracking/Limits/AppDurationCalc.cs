@@ -39,14 +39,11 @@ namespace AppsTracker.Tracking.Limits
 
         private async Task<long> SumDuration(Aplication app, Expression<Func<Log, bool>> filter)
         {
-            var now = DateTime.Now.Date.AddDays(2);
             var appsList = await dataService.GetFilteredAsync<Aplication>(a => a.ApplicationID == app.ApplicationID
                                                                            && a.Windows.SelectMany(w => w.Logs)
                                                                                        .AsQueryable().Where(filter).Any(),
                                                                            a => a.Windows,
                                                                            a => a.Windows.Select(w => w.Logs));
-
-            Console.WriteLine(appsList.ToString());
 
             return appsList.SelectMany(a => a.Windows)
                            .SelectMany(w => w.Logs)
