@@ -9,7 +9,6 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Threading.Tasks;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
@@ -45,7 +44,7 @@ namespace AppsTracker.Tracking
             this.screenshotTracker = screenshotTracker;
             this.mediator = mediator;
 
-            appChangedNotifier.AppChanged += OnAppChanging;
+            appChangedNotifier.AppChanged += AppChanging;
             activeLogInfo = LogInfo.Empty;
         }
 
@@ -91,84 +90,74 @@ namespace AppsTracker.Tracking
             isTrackingEnabled = settings.TrackingEnabled;
         }
 
-        private async void OnAppChanging(Object sender, AppChangedArgs e)
+        private void AppChanging(object sender, AppChangedArgs e)
         {
-            if (isTrackingEnabled == false)
+            if (!isTrackingEnabled)
             {
                 return;
             }
 
             if (e.LogInfo.AppInfo == AppInfo.Empty ||
-               string.IsNullOrEmpty(e.LogInfo.AppInfo.GetAppName()))
+                string.IsNullOrEmpty(e.LogInfo.AppInfo.GetAppName()))
             {
-                await FinishActiveLogInfoAsync(LogInfo.Empty);
+                FinishActiveLogInfo(LogInfo.Empty);
                 return;
             }
 
-            await FinishActiveLogInfoAsync(e.LogInfo);
-
-            var log = await CreateLogAsync(e.LogInfo);
-
-            if (!isTrackingEnabled || log.LogInfoGuid != activeLogInfo.Guid)
-            {
-                await FinishLogAsync(log);
-            }
-            else
-            {
-                activeLogInfo.Log = log;
-            }
+            FinishActiveLogInfo(e.LogInfo);
+            var log = CreateLog(e.LogInfo);
+            activeLogInfo.Log = log;
         }
 
-        private async Task FinishActiveLogInfoAsync(LogInfo newLogInfo)
+        private Log CreateLog(LogInfo logInfo)
         {
-            var logInfoCopy = activeLogInfo;
-            activeLogInfo = newLogInfo;
-
-            if (logInfoCopy.Guid != LogInfo.Empty.Guid)
+            var appName = logInfo.AppInfo.GetAppName();
+            var appList = dataService.GetFiltered<Aplication>(a => a.UserID == trackingService.UserID
+                                                                        && a.Name == appName);
+            var app = appList.FirstOrDefault();
+            var isNewApp = false;
+            if (app == null)
             {
-                await FinishLogInfoAsync(logInfoCopy);
+                app = new Aplication(logInfo.AppInfo) { UserID = trackingService.UserID };
+                dataService.SaveNewEntity(app);
+                isNewApp = true;
             }
-        }
 
+            var windowsList = dataService.GetFiltered<Window>(w => w.Title == logInfo.WindowTitle
+                                                                   && w.Application.ApplicationID == app.ApplicationID);
+            var window = windowsList.FirstOrDefault();
+            if (window == null)
+            {
+                window = new Window(logInfo.WindowTitle, app.ApplicationID);
+                dataService.SaveNewEntity(window);
+            }
+
+            var log = new Log(window.WindowID, trackingService.UsageID, logInfo.Guid)
+            {
+                DateCreated = logInfo.Start,
+                UtcDateCreated = logInfo.UtcStart,
+                DateEnded = logInfo.End,
+                UtcDateEnded = logInfo.UtcEnd,
+            };
+
+            dataService.SaveNewEntity(log);
+
+            if (isNewApp)
+            {
+                mediator.NotifyColleagues(MediatorMessages.APPLICATION_ADDED, app);
+            }
+
+            return log;
+        }
 
         private void FinishActiveLogInfo(LogInfo newLogInfo)
         {
-            var logInfoCopy = activeLogInfo;
+            if (activeLogInfo.Guid != LogInfo.Empty.Guid)
+            {
+                FinishLog(activeLogInfo);
+            }
+
             activeLogInfo = newLogInfo;
-
-            if (logInfoCopy.Guid != LogInfo.Empty.Guid)
-            {
-                FinishLog(logInfoCopy);
-            }
-        }
-
-        private async Task FinishLogInfoAsync(LogInfo logInfo)
-        {
-            var log = logInfo.Log;
-            if (log == null)
-                return;
-
-            log.Finish();
-
-            if (logInfo.HasScreenshots)
-            {
-                foreach (var screenshot in logInfo.Screenshots)
-                {
-                    screenshot.LogID = log.LogID;
-                }
-                await dataService.SaveNewEntityRangeAsync(logInfo.Screenshots);
-            }
-
-            await dataService.SaveModifiedEntityAsync(log);
-        }
-
-        private async Task FinishLogAsync(Log log)
-        {
-            if (log == null)
-                return;
-
-            log.Finish();
-            await dataService.SaveModifiedEntityAsync(log);
         }
 
         private void FinishLog(LogInfo logInfo)
@@ -189,45 +178,6 @@ namespace AppsTracker.Tracking
             }
 
             dataService.SaveModifiedEntity(log);
-        }
-
-        private async Task<Log> CreateLogAsync(LogInfo logInfo)
-        {
-            var appName = logInfo.AppInfo.GetAppName();
-            var appList = await dataService.GetFilteredAsync<Aplication>(a => a.UserID == trackingService.UserID
-                                                                        && a.Name == appName);
-            var app = appList.FirstOrDefault();
-            var isNewApp = false;
-            if (app == null)
-            {
-                app = new Aplication(logInfo.AppInfo) { UserID = trackingService.UserID };
-                await dataService.SaveNewEntityAsync(app);
-                isNewApp = true;
-            }
-
-            var windowsList = await dataService.GetFilteredAsync<Window>(w => w.Title == logInfo.WindowTitle
-                                                                   && w.Application.ApplicationID == app.ApplicationID);
-            var window = windowsList.FirstOrDefault();
-            if (window == null)
-            {
-                window = new Window(logInfo.WindowTitle, app.ApplicationID);
-                await dataService.SaveNewEntityAsync(window);
-            }
-
-            var log = new Log(window.WindowID, trackingService.UsageID, logInfo.Guid)
-            {
-                DateCreated = logInfo.Start,
-                UtcDateCreated = logInfo.UtcStart,
-                DateEnded = logInfo.End,
-                UtcDateEnded = logInfo.UtcEnd,
-            };
-
-            await dataService.SaveNewEntityAsync(log);
-
-            if (isNewApp)
-                mediator.NotifyColleagues(MediatorMessages.APPLICATION_ADDED, app);
-
-            return log;
         }
 
         private void StopTracking()
