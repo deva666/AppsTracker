@@ -14,6 +14,7 @@ using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.Data.Utils;
 using AppsTracker.Tracking.Hooks;
+using Microsoft.Win32;
 
 namespace AppsTracker.Tracking
 {
@@ -44,7 +45,8 @@ namespace AppsTracker.Tracking
             this.screenshotTracker = screenshotTracker;
             this.mediator = mediator;
 
-            appChangedNotifier.AppChanged += AppChanging;
+            appChangedNotifier.AppChanged += AppChanged;
+            SystemEvents.TimeChanged += SystemTimeChanged;
             activeLogInfo = LogInfo.Empty;
         }
 
@@ -53,6 +55,11 @@ namespace AppsTracker.Tracking
             this.settings = settings;
             ConfigureComponents();
             screenshotTracker.SettingsChanging(settings);
+        }
+
+        private void SystemTimeChanged(object sender, EventArgs e)
+        {
+            activeLogInfo = LogInfo.Empty;
         }
 
         public void Initialize(Setting settings)
@@ -90,7 +97,7 @@ namespace AppsTracker.Tracking
             isTrackingEnabled = settings.TrackingEnabled;
         }
 
-        private void AppChanging(object sender, AppChangedArgs e)
+        private void AppChanged(object sender, AppChangedArgs e)
         {
             if (!isTrackingEnabled)
             {
@@ -107,6 +114,16 @@ namespace AppsTracker.Tracking
             FinishActiveLogInfo(e.LogInfo);
             var log = CreateLog(e.LogInfo);
             activeLogInfo.Log = log;
+        }
+
+        private void FinishActiveLogInfo(LogInfo newLogInfo)
+        {
+            if (activeLogInfo.Guid != LogInfo.Empty.Guid)
+            {
+                FinishLog(activeLogInfo);
+            }
+
+            activeLogInfo = newLogInfo;
         }
 
         private Log CreateLog(LogInfo logInfo)
@@ -150,16 +167,6 @@ namespace AppsTracker.Tracking
             return log;
         }
 
-        private void FinishActiveLogInfo(LogInfo newLogInfo)
-        {
-            if (activeLogInfo.Guid != LogInfo.Empty.Guid)
-            {
-                FinishLog(activeLogInfo);
-            }
-
-            activeLogInfo = newLogInfo;
-        }
-
         private void FinishLog(LogInfo logInfo)
         {
             var log = logInfo.Log;
@@ -200,6 +207,8 @@ namespace AppsTracker.Tracking
             appChangedNotifier.Dispose();
             screenshotTracker.Dispose();
             StopTracking();
+            appChangedNotifier.AppChanged -= AppChanged;
+            SystemEvents.TimeChanged -= SystemTimeChanged;
         }
 
         public int InitializationOrder
