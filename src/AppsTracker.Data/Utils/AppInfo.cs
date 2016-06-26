@@ -176,11 +176,23 @@ namespace AppsTracker.Data.Utils
 
         public static bool operator ==(AppInfo first, AppInfo second)
         {
+            if ((object)first == null && (object)second == null)
+                return true;
+
+            if ((object)first == null && (object)second != null)
+                return false;
+
             return first.Equals(second);
         }
 
         public static bool operator !=(AppInfo first, AppInfo second)
         {
+            if ((object)first == null && (object)second == null)
+                return false;
+
+            if ((object)first == null && (object)second != null)
+                return true;
+
             return !first.Equals(second);
         }
     }

@@ -127,8 +127,8 @@
     <Compile Include="Models\DbModels\Window.cs" />
     <Compile Include="Models\Feedback.cs" />
     <Compile Include="Models\ReleaseNote.cs" />
-    <Compile Include="Models\ViewModels\ViewModels.cs" />
-    <Compile Include="Models\ViewModels\UsageModels.cs" />
+    <Compile Include="Models\UIModels\ViewModels.cs" />
+    <Compile Include="Models\UIModels\UsageModels.cs" />
     <Compile Include="Service\Categories\CategoriesService.cs" />
     <Compile Include="Service\Categories\ICategoriesService.cs" />
     <Compile Include="Service\Data\DataService.cs" />
