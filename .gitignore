@@ -3,3 +3,17 @@
 ################################################################################
 
 /src/AppsTracker/bin
+/src/AppsTracker/obj
+/src/AppsTracker.Common/bin
+/src/AppsTracker.Tracking/bin
+/src/TestResults
+/src/packages
+/src/AppsTracker.v12.suo
+/src/AppsTracker.Tracking/obj
+/src/AppsTracker.Tests/bin
+/src/AppsTracker.Tests/obj/Beta
+/src/AppsTracker.Tests/obj
+/src/AppsTracker.Data/bin
+/src/AppsTracker.Data/obj
+/src/AppsTracker.Common/obj
+/src/.vs/AppsTracker/v14

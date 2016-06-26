@@ -4,7 +4,7 @@ using AppsTracker.Data.Models;
 
 namespace AppsTracker.Data.Utils
 {
-    public struct LogInfo
+    public class LogInfo
     {
         private bool isFinished;
         public bool IsFinished { get { return isFinished; } }

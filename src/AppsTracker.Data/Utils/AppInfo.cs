@@ -12,7 +12,7 @@ using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Data.Utils
 {
-    public struct AppInfo
+    public class AppInfo
     {
         public string Name { get; private set; }
         public string Version { get; private set; }
