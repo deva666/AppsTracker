@@ -49,7 +49,7 @@ namespace AppsTracker.Tracking
             this.mediator = mediator;
 
             subscriptions = appChangedNotifier.AppChangedObservable
-                .TakeWhile(a => isTrackingEnabled)
+                .Where(a => isTrackingEnabled)
                 .Select(a => a.LogInfo.AppInfo == AppInfo.Empty
                     || string.IsNullOrEmpty(a.LogInfo.AppInfo.GetAppName()) ? LogInfo.Empty : a.LogInfo)
                 .Select(i => FinishActiveLog(i))

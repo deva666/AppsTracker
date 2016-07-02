@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using AppsTracker.Common.Communication;
 using AppsTracker.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
-using AppsTracker.Data.Utils;
 using AppsTracker.Tracking.Hooks;
 
 namespace AppsTracker.Tracking.Limits
@@ -23,16 +23,16 @@ namespace AppsTracker.Tracking.Limits
         private readonly IAppDurationCalc appDurationCalc;
         private readonly IMediator mediator;
 
-        private readonly IDictionary<Aplication, IEnumerable<AppLimit>> appLimitsMap
-            = new Dictionary<Aplication, IEnumerable<AppLimit>>();
+        private readonly IDictionary<String, IEnumerable<AppLimit>> appLimitsMap
+            = new Dictionary<String, IEnumerable<AppLimit>>();
 
         private readonly ICollection<LimitNotifier> limitNotifiers
-            = new List<LimitNotifier>();
+            = new List<LimitNotifier>(2);
+
+        private IDisposable subscription;
 
         private Boolean isTrackingEnabled;
-        private Int32 activeAppId;
-        private AppInfo activeAppInfo;
-        private String activeWindowTitle;
+        private String activeAppName;
 
         [ImportingConstructor]
         public LimitObserver(ITrackingService trackingService,
@@ -85,7 +85,26 @@ namespace AppsTracker.Tracking.Limits
             LoadAppLimits();
 
             midnightNotifier.MidnightTick += OnMidnightTick;
-            appChangedNotifier.AppChanged += OnAppChanged;
+            subscription = appChangedNotifier.AppChangedObservable
+                .Where(a => appLimitsMap.Count > 0 && isTrackingEnabled)
+                .Select(a => a.LogInfo.AppInfo.GetAppName())
+                .Do(n =>
+                {
+                    activeAppName = n;
+                    StopNotifiers();
+                })
+                .Where(n => appLimitsMap.ContainsKey(n))
+                .SelectMany(n => Observable.ToObservable(appLimitsMap[n]))
+                .SelectMany(l => Observable.FromAsync(async () =>
+                {
+                    return new
+                    {
+                        Limit = l,
+                        Duration = await appDurationCalc.GetDuration(l.Application.Name, l.LimitSpan)
+                    };
+                }))
+                .Subscribe(r => CheckDuration(r.Limit, r.Duration));
+
         }
 
         private void LoadAppLimits()
@@ -97,7 +116,7 @@ namespace AppsTracker.Tracking.Limits
 
             foreach (var app in appsWithLimits)
             {
-                appLimitsMap.Add(app, app.Limits);
+                appLimitsMap.Add(app.Name, app.Limits);
             }
         }
 
@@ -120,55 +139,18 @@ namespace AppsTracker.Tracking.Limits
         {
             foreach (var notifier in limitNotifiers.Where(l => l.Limit != null))
             {
-                await LoadAppDurations(notifier.Limit.Application);
+                await LoadAppDurations(notifier.Limit.Application.Name);
             }
         }
 
-
-        private async void OnAppChanged(object sender, AppChangedArgs e)
+        private async Task LoadAppDurations(String appName)
         {
-            if ((activeAppInfo == e.LogInfo.AppInfo && activeWindowTitle == e.LogInfo.WindowTitle)
-                || appLimitsMap.Count == 0 || !isTrackingEnabled)
-                return;
-
-            activeAppInfo = e.LogInfo.AppInfo;
-            activeWindowTitle = e.LogInfo.WindowTitle;
-
-            StopNotifiers();
-
-            var app = await GetApp(e.LogInfo.AppInfo);
-
-            if (app != null && app.AppInfo == activeAppInfo)
-            {
-                await LoadAppDurations(app);
-            }
-            else
-            {
-                activeAppId = Int32.MinValue;
-            }
-        }
-
-        private async Task<Aplication> GetApp(AppInfo appInfo)
-        {
-            var name = appInfo.GetAppName();
-            var appsList = await dataService.GetFilteredAsync<Aplication>(a => a.Name == name
-                                                                          && a.UserID == trackingService.UserID);
-            var app = appsList.FirstOrDefault();
-            if (app != null)
-                app.AppInfo = appInfo;
-            return app;
-        }
-
-        private async Task LoadAppDurations(Aplication app)
-        {
-            activeAppId = app.ApplicationID;
-
             IEnumerable<AppLimit> limits;
-            if (appLimitsMap.TryGetValue(app, out limits))
+            if (appLimitsMap.TryGetValue(appName, out limits))
             {
                 foreach (var limit in limits)
                 {
-                    var duration = await appDurationCalc.GetDuration(app, limit.LimitSpan);
+                    var duration = await appDurationCalc.GetDuration(appName, limit.LimitSpan);
                     CheckDuration(limit, duration);
                 }
             }
@@ -180,7 +162,7 @@ namespace AppsTracker.Tracking.Limits
             {
                 limitHandler.Handle(limit);
             }
-            else if (activeAppId != limit.ApplicationID)
+            else if (activeAppName != limit.Application.Name)
             {
                 return;
             }
@@ -200,6 +182,7 @@ namespace AppsTracker.Tracking.Limits
 
             midnightNotifier.Dispose();
             appChangedNotifier.Dispose();
+            subscription.Dispose();
         }
 
 

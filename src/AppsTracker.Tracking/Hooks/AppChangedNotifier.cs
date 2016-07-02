@@ -21,7 +21,6 @@ namespace AppsTracker.Tracking.Hooks
     [Export(typeof(IAppChangedNotifier))]
     public sealed class AppChangedNotifier : IAppChangedNotifier
     {
-        public event EventHandler<AppChangedArgs> AppChanged;
 
         private Boolean isDisposed = false;
 
@@ -121,7 +120,6 @@ namespace AppsTracker.Tracking.Hooks
             var appInfo = AppInfo.Create(activeWindowHandle);
             var logInfo = LogInfo.Create(appInfo, activeWindowTitle);
             var args = new AppChangedArgs(logInfo);
-            AppChanged.InvokeSafely(this, args);
             subject.OnNext(args);
         }
 

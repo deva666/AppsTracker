@@ -67,7 +67,7 @@ namespace AppsTracker.Views
 
         private async Task DisplayAppDuration()
         {
-            long duration = await appDurationCalc.GetDuration(currentLimit.Application, currentLimit.LimitSpan);
+            long duration = await appDurationCalc.GetDuration(currentLimit.Application.Name, currentLimit.LimitSpan);
             lblTotalDuration.Content = new TimeSpan(duration).ToString(@"dd\.hh\:mm\:ss");
         }
 

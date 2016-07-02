@@ -5,6 +5,6 @@ namespace AppsTracker.Tracking.Limits
 {
     public interface IAppDurationCalc
     {
-        Task<long> GetDuration(Aplication app, LimitSpan span);
+        Task<long> GetDuration(string appName, LimitSpan span);
     }
 }
