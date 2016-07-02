@@ -9,6 +9,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
@@ -30,7 +31,8 @@ namespace AppsTracker.Tracking
         private readonly IScreenshotTracker screenshotTracker;
         private readonly IMediator mediator;
 
-        private IDisposable subscriptions;
+        private IDisposable appChangedSubscription;
+        private IDisposable screenshotSubscription;
 
         private Setting settings;
         private Log activeLog;
@@ -48,12 +50,17 @@ namespace AppsTracker.Tracking
             this.screenshotTracker = screenshotTracker;
             this.mediator = mediator;
 
-            subscriptions = appChangedNotifier.AppChangedObservable
+            appChangedSubscription = appChangedNotifier.AppChangedObservable
                 .Where(a => isTrackingEnabled)
                 .Select(a => a.LogInfo.AppInfo == AppInfo.Empty
                     || string.IsNullOrEmpty(a.LogInfo.AppInfo.GetAppName()) ? LogInfo.Empty : a.LogInfo)
                 .Select(i => FinishActiveLog(i))
                 .Subscribe(CreateActiveLog);
+
+            screenshotSubscription = screenshotTracker.ScreenshotObservable
+                .Where(s => s != null && isTrackingEnabled && activeLog != null)
+                .ObserveOn(DispatcherScheduler.Current)
+                .Subscribe(s => activeLog.Screenshots.Add(s));
         }
 
         private LogInfo FinishActiveLog(LogInfo logInfo)
@@ -139,8 +146,7 @@ namespace AppsTracker.Tracking
             this.settings = settings;
 
             screenshotTracker.Initialize(settings);
-            screenshotTracker.ScreenshotTaken += ScreenshotTaken;
-
+            
             ConfigureComponents();
 
             mediator.Register(MediatorMessages.STOP_TRACKING, new Action(StopTracking));
@@ -150,18 +156,6 @@ namespace AppsTracker.Tracking
             {
                 appChangedNotifier.CheckActiveApp();
             }
-        }
-
-        private void ScreenshotTaken(object sender, ScreenshotEventArgs e)
-        {
-            var screenshot = e.Screenshot;
-
-            if (isTrackingEnabled == false
-                || e.Screenshot == null
-                || activeLog == null)
-                return;
-
-            activeLog.Screenshots.Add(screenshot);
         }
 
         private void ConfigureComponents()
@@ -189,7 +183,8 @@ namespace AppsTracker.Tracking
             appChangedNotifier.Dispose();
             screenshotTracker.Dispose();
             StopTracking();
-            subscriptions.Dispose();
+            appChangedSubscription.Dispose();
+            screenshotSubscription.Dispose();
         }
 
         public int InitializationOrder

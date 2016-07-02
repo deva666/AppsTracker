@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using AppsTracker.Common.Utils;
 using AppsTracker.Communication;
 using AppsTracker.Data.Models;
@@ -11,15 +13,20 @@ namespace AppsTracker.Tracking
     [Export(typeof(IScreenshotTracker))]
     internal sealed class ScreenshotTracker : IScreenshotTracker
     {
-        public event EventHandler<ScreenshotEventArgs> ScreenshotTaken;
-
         private readonly IScreenshotFactory screenshotFactory;
         private readonly ISyncContext syncContext;
         private readonly IDataService dataService;
 
+        private readonly Subject<Screenshot> subject = new Subject<Screenshot>();
+
         private LazyInit<System.Timers.Timer> screenshotTimer;
 
         private Setting settings;
+
+        public IObservable<Screenshot> ScreenshotObservable
+        {
+            get { return subject.AsObservable(); }
+        }
 
         [ImportingConstructor]
         public ScreenshotTracker(IScreenshotFactory screenshotFactory,
@@ -65,10 +72,7 @@ namespace AppsTracker.Tracking
 
             await dbSizeTask;
 
-            syncContext.Invoke(() =>
-            {
-                ScreenshotTaken.InvokeSafely(this, new ScreenshotEventArgs(screenshot));
-            });
+            subject.OnNext(screenshot);
         }
 
         public void SettingsChanging(Setting settings)
@@ -90,16 +94,6 @@ namespace AppsTracker.Tracking
         public void Dispose()
         {
             screenshotTimer.Enabled = false;
-        }
-    }
-
-    public class ScreenshotEventArgs : EventArgs
-    {
-        public Screenshot Screenshot { get; private set; }
-
-        public ScreenshotEventArgs(Screenshot screenshot)
-        {
-            this.Screenshot = screenshot;
         }
     }
 }

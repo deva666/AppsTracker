@@ -10,7 +10,7 @@ using AppsTracker.Data.Service;
 namespace AppsTracker.Tracking.Limits
 {
     [Export(typeof(IAppDurationCalc))]
-    public class AppDurationCalc : IAppDurationCalc
+    public sealed class AppDurationCalc : IAppDurationCalc
     {
         private readonly IDataService dataService;
 
