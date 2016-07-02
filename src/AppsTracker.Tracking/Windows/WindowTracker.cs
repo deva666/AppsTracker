@@ -9,6 +9,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Reactive.Linq;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
@@ -29,8 +30,10 @@ namespace AppsTracker.Tracking
         private readonly IScreenshotTracker screenshotTracker;
         private readonly IMediator mediator;
 
+        private IDisposable subscriptions;
+
         private Setting settings;
-        private LogInfo activeLogInfo;
+        private Log activeLog;
 
         [ImportingConstructor]
         public WindowTracker(ITrackingService trackingService,
@@ -45,9 +48,83 @@ namespace AppsTracker.Tracking
             this.screenshotTracker = screenshotTracker;
             this.mediator = mediator;
 
-            appChangedNotifier.AppChanged += AppChanged;
-            SystemEvents.TimeChanged += SystemTimeChanged;
-            activeLogInfo = LogInfo.Empty;
+            subscriptions = appChangedNotifier.AppChangedObservable
+                .TakeWhile(a => isTrackingEnabled)
+                .Select(a => a.LogInfo.AppInfo == AppInfo.Empty
+                    || string.IsNullOrEmpty(a.LogInfo.AppInfo.GetAppName()) ? LogInfo.Empty : a.LogInfo)
+                .Select(i => FinishActiveLog(i))
+                .Subscribe(CreateActiveLog);
+        }
+
+        private LogInfo FinishActiveLog(LogInfo logInfo)
+        {
+            if (activeLog != null)
+            {
+                activeLog.Finish();
+                dataService.SaveModifiedEntity(activeLog);
+                activeLog = null;
+            }
+
+            return logInfo;
+        }
+
+        private void CreateActiveLog(LogInfo logInfo)
+        {
+            if (logInfo == LogInfo.Empty)
+            {
+                return;
+            }
+
+            bool isNewApp;
+            var app = GetApp(logInfo, out isNewApp);
+            var window = GetWindow(logInfo, app);
+
+            var log = new Log(window.WindowID, trackingService.UsageID, logInfo.Guid)
+            {
+                DateCreated = logInfo.Start,
+                UtcDateCreated = logInfo.UtcStart,
+                DateEnded = logInfo.End,
+                UtcDateEnded = logInfo.UtcEnd,
+            };
+
+            dataService.SaveNewEntity(log);
+
+            if (isNewApp)
+            {
+                mediator.NotifyColleagues(MediatorMessages.APPLICATION_ADDED, app);
+            }
+
+            activeLog = log;
+        }
+
+        private Aplication GetApp(LogInfo logInfo, out bool isNewApp)
+        {
+            var appName = logInfo.AppInfo.GetAppName();
+            var appList = dataService.GetFiltered<Aplication>(a => a.UserID == trackingService.UserID
+                                                                        && a.Name == appName);
+            var app = appList.FirstOrDefault();
+            isNewApp = false;
+            if (app == null)
+            {
+                app = new Aplication(logInfo.AppInfo) { UserID = trackingService.UserID };
+                dataService.SaveNewEntity(app);
+                isNewApp = true;
+            }
+            return app;
+        }
+
+        private Window GetWindow(LogInfo logInfo, Aplication app)
+        {
+            var windowsList = dataService.GetFiltered<Window>(w => w.Title == logInfo.WindowTitle
+                                                                               && w.Application.ApplicationID == app.ApplicationID);
+            var window = windowsList.FirstOrDefault();
+            if (window == null)
+            {
+                window = new Window(logInfo.WindowTitle, app.ApplicationID);
+                dataService.SaveNewEntity(window);
+            }
+
+            return window;
         }
 
         public void SettingsChanged(Setting settings)
@@ -55,11 +132,6 @@ namespace AppsTracker.Tracking
             this.settings = settings;
             ConfigureComponents();
             screenshotTracker.SettingsChanging(settings);
-        }
-
-        private void SystemTimeChanged(object sender, EventArgs e)
-        {
-            activeLogInfo = LogInfo.Empty;
         }
 
         public void Initialize(Setting settings)
@@ -85,11 +157,11 @@ namespace AppsTracker.Tracking
             var screenshot = e.Screenshot;
 
             if (isTrackingEnabled == false
-                || screenshot == null
-                || activeLogInfo.Guid == LogInfo.Empty.Guid)
+                || e.Screenshot == null
+                || activeLog == null)
                 return;
 
-            activeLogInfo.Screenshots.Add(screenshot);
+            activeLog.Screenshots.Add(screenshot);
         }
 
         private void ConfigureComponents()
@@ -97,100 +169,10 @@ namespace AppsTracker.Tracking
             isTrackingEnabled = settings.TrackingEnabled;
         }
 
-        private void AppChanged(object sender, AppChangedArgs e)
-        {
-            if (!isTrackingEnabled)
-            {
-                return;
-            }
-
-            if (e.LogInfo.AppInfo == AppInfo.Empty ||
-                string.IsNullOrEmpty(e.LogInfo.AppInfo.GetAppName()))
-            {
-                FinishActiveLogInfo(LogInfo.Empty);
-                return;
-            }
-
-            FinishActiveLogInfo(e.LogInfo);
-            var log = CreateLog(e.LogInfo);
-            activeLogInfo.Log = log;
-        }
-
-        private void FinishActiveLogInfo(LogInfo newLogInfo)
-        {
-            if (activeLogInfo.Guid != LogInfo.Empty.Guid)
-            {
-                FinishLog(activeLogInfo);
-            }
-
-            activeLogInfo = newLogInfo;
-        }
-
-        private Log CreateLog(LogInfo logInfo)
-        {
-            var appName = logInfo.AppInfo.GetAppName();
-            var appList = dataService.GetFiltered<Aplication>(a => a.UserID == trackingService.UserID
-                                                                        && a.Name == appName);
-            var app = appList.FirstOrDefault();
-            var isNewApp = false;
-            if (app == null)
-            {
-                app = new Aplication(logInfo.AppInfo) { UserID = trackingService.UserID };
-                dataService.SaveNewEntity(app);
-                isNewApp = true;
-            }
-
-            var windowsList = dataService.GetFiltered<Window>(w => w.Title == logInfo.WindowTitle
-                                                                   && w.Application.ApplicationID == app.ApplicationID);
-            var window = windowsList.FirstOrDefault();
-            if (window == null)
-            {
-                window = new Window(logInfo.WindowTitle, app.ApplicationID);
-                dataService.SaveNewEntity(window);
-            }
-
-            var log = new Log(window.WindowID, trackingService.UsageID, logInfo.Guid)
-            {
-                DateCreated = logInfo.Start,
-                UtcDateCreated = logInfo.UtcStart,
-                DateEnded = logInfo.End,
-                UtcDateEnded = logInfo.UtcEnd,
-            };
-
-            dataService.SaveNewEntity(log);
-
-            if (isNewApp)
-            {
-                mediator.NotifyColleagues(MediatorMessages.APPLICATION_ADDED, app);
-            }
-
-            return log;
-        }
-
-        private void FinishLog(LogInfo logInfo)
-        {
-            var log = logInfo.Log;
-            if (log == null)
-                return;
-
-            log.Finish();
-
-            if (logInfo.HasScreenshots)
-            {
-                foreach (var screenshot in logInfo.Screenshots)
-                {
-                    screenshot.LogID = log.LogID;
-                }
-                dataService.SaveNewEntityRange(logInfo.Screenshots);
-            }
-
-            dataService.SaveModifiedEntity(log);
-        }
-
         private void StopTracking()
         {
             isTrackingEnabled = false;
-            FinishActiveLogInfo(LogInfo.Empty);
+            FinishActiveLog(LogInfo.Empty);
         }
 
         private void ResumeTracking()
@@ -207,8 +189,7 @@ namespace AppsTracker.Tracking
             appChangedNotifier.Dispose();
             screenshotTracker.Dispose();
             StopTracking();
-            appChangedNotifier.AppChanged -= AppChanged;
-            SystemEvents.TimeChanged -= SystemTimeChanged;
+            subscriptions.Dispose();
         }
 
         public int InitializationOrder

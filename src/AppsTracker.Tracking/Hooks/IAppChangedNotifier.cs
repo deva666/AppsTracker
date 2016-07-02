@@ -6,6 +6,11 @@ namespace AppsTracker.Tracking.Hooks
     {
         event EventHandler<AppChangedArgs> AppChanged;
 
+        IObservable<AppChangedArgs> AppChangedObservable
+        {
+            get;
+        }
+
         void CheckActiveApp();
     }
 }

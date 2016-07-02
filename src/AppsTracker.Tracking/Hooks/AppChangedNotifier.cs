@@ -8,6 +8,8 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading;
 using AppsTracker.Common.Utils;
@@ -29,8 +31,18 @@ namespace AppsTracker.Tracking.Hooks
 
         private readonly Timer windowCheckTimer;
 
+        private readonly Subject<AppChangedArgs> subject = new Subject<AppChangedArgs>();
+
         private IntPtr activeWindowHandle;
         private String activeWindowTitle;
+
+        public IObservable<AppChangedArgs> AppChangedObservable
+        {
+            get
+            {
+                return subject.AsObservable();
+            }
+        }
 
 
         [ImportingConstructor]
@@ -41,11 +53,9 @@ namespace AppsTracker.Tracking.Hooks
             this.windowChangedHook = windowChangedHook;
             this.titleChangedHook = titleChangedHook;
             this.syncContext = syncContext;
-
-            windowCheckTimer = new Timer(OnTimerTick, null, 5 * 1000, 5 * 1000);
-
             this.windowChangedHook.ActiveWindowChanged += OnActiveWindowChanged;
             this.titleChangedHook.TitleChanged += OnTitleChanged;
+            this.windowCheckTimer = new Timer(OnTimerTick, null, 5 * 1000, 5 * 1000);
         }
 
         private void OnTimerTick(Object state)
@@ -110,7 +120,9 @@ namespace AppsTracker.Tracking.Hooks
         {
             var appInfo = AppInfo.Create(activeWindowHandle);
             var logInfo = LogInfo.Create(appInfo, activeWindowTitle);
-            AppChanged.InvokeSafely(this, new AppChangedArgs(logInfo));
+            var args = new AppChangedArgs(logInfo);
+            AppChanged.InvokeSafely(this, args);
+            subject.OnNext(args);
         }
 
         public void Dispose()
