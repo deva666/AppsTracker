@@ -16,7 +16,6 @@ using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
 using AppsTracker.Data.Utils;
 using AppsTracker.Tracking.Hooks;
-using Microsoft.Win32;
 
 namespace AppsTracker.Tracking
 {
@@ -54,7 +53,7 @@ namespace AppsTracker.Tracking
                 .Where(a => isTrackingEnabled)
                 .Select(a => a.LogInfo.AppInfo == AppInfo.Empty
                     || string.IsNullOrEmpty(a.LogInfo.AppInfo.GetAppName()) ? LogInfo.Empty : a.LogInfo)
-                .Select(i => FinishActiveLog(i))
+                .Do(i => FinishActiveLog())
                 .Subscribe(CreateActiveLog);
 
             screenshotSubscription = screenshotTracker.ScreenshotObservable
@@ -63,7 +62,7 @@ namespace AppsTracker.Tracking
                 .Subscribe(s => activeLog.Screenshots.Add(s));
         }
 
-        private LogInfo FinishActiveLog(LogInfo logInfo)
+        private void FinishActiveLog()
         {
             if (activeLog != null)
             {
@@ -71,8 +70,6 @@ namespace AppsTracker.Tracking
                 dataService.SaveModifiedEntity(activeLog);
                 activeLog = null;
             }
-
-            return logInfo;
         }
 
         private void CreateActiveLog(LogInfo logInfo)
@@ -86,7 +83,7 @@ namespace AppsTracker.Tracking
             var app = GetApp(logInfo, out isNewApp);
             var window = GetWindow(logInfo, app);
 
-            var log = new Log(window.WindowID, trackingService.UsageID, logInfo.Guid)
+            var log = new Log(window.WindowID, trackingService.UsageID)
             {
                 DateCreated = logInfo.Start,
                 UtcDateCreated = logInfo.UtcStart,
@@ -123,7 +120,7 @@ namespace AppsTracker.Tracking
         private Window GetWindow(LogInfo logInfo, Aplication app)
         {
             var windowsList = dataService.GetFiltered<Window>(w => w.Title == logInfo.WindowTitle
-                                                                               && w.Application.ApplicationID == app.ApplicationID);
+                                                               && w.Application.ApplicationID == app.ApplicationID);
             var window = windowsList.FirstOrDefault();
             if (window == null)
             {
@@ -166,7 +163,7 @@ namespace AppsTracker.Tracking
         private void StopTracking()
         {
             isTrackingEnabled = false;
-            FinishActiveLog(LogInfo.Empty);
+            FinishActiveLog();
         }
 
         private void ResumeTracking()

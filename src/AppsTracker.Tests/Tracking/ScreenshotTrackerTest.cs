@@ -1,4 +1,5 @@
-﻿//using System.Threading;
+﻿//using System.Reactive.Linq;
+//using System.Threading;
 //using System.Threading.Tasks;
 //using AppsTracker.Data.Models;
 //using AppsTracker.Tracking;
@@ -22,11 +23,7 @@
 //            var eventRaised = 0;
 //            var screenshot = new Screenshot() { ScreenshotID = 10 };
 
-//            tracker.ScreenshotTaken += (s, e) =>
-//            {
-//                Interlocked.Exchange(ref eventRaised, 1);
-//                Assert.AreSame(screenshot, e.Screenshot);
-//            };
+//            tracker.ScreenshotObservable.Subscribe()
 
 //            screenshotFactory.Setup(f => f.CreateScreenshot()).Returns(screenshot);
 //            tracker.Initialize(settings);

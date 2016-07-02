@@ -4,7 +4,7 @@ using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Tracking
 {
-    public class IdleTimeWatcher
+    public sealed class IdleTimeWatcher
     {
         private IdleTimeWatcher() { }
 

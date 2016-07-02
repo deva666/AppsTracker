@@ -17,24 +17,6 @@ namespace AppsTracker.Data.Models
     public class Log : INotifyPropertyChanged
     {
         [NotMapped]
-        public String AppName
-        {
-            get
-            {
-                return Window == null ? String.Empty : Window.Application == null ? String.Empty : Window.Application.Name;
-            }
-        }
-
-        [NotMapped]
-        public String WindowTitle
-        {
-            get
-            {
-                return Window == null ? String.Empty : Window.Title;
-            }
-        }
-
-        [NotMapped]
         public long Duration
         {
             get
@@ -61,10 +43,6 @@ namespace AppsTracker.Data.Models
             }
         }
 
-
-        [NotMapped]
-        public Guid LogInfoGuid { get; private set; }
-
         public Log()
         {
             this.Screenshots = new HashSet<Screenshot>();
@@ -81,27 +59,6 @@ namespace AppsTracker.Data.Models
             : this(windowID)
         {
             this.UsageID = usageID;
-        }
-
-        public Log(Window window, int usageID, Guid guid)
-            : this()
-        {
-            this.Window = window;
-            this.UsageID = usageID;
-            this.LogInfoGuid = guid;
-        }
-
-        public Log(int windowId, int usageId, Guid guid)
-            : this()
-        {
-            this.WindowID = windowId;
-            this.UsageID = usageId;
-            this.LogInfoGuid = guid;
-        }
-
-        public Log(Guid guid)
-        {
-            this.LogInfoGuid = guid;
         }
 
         public void Finish()

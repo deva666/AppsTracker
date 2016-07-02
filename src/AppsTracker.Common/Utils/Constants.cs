@@ -8,7 +8,7 @@
 
 namespace AppsTracker
 {
-    public class Constants
+    public sealed class Constants
     {
         public const string APP_NAME = "Apps tracker";
         public const string CMD_ARGS_AUTOSTART = "AUTOSTART";
