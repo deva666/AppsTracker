@@ -27,9 +27,9 @@ namespace AppsTracker.Tracking.Hooks
         private readonly IWindowChangedNotifier windowChangedHook;
         private readonly ITitleChangedNotifier titleChangedHook;
         private readonly ISyncContext syncContext;
-
+        private readonly IDisposable windowChangedSubscription;
+        private readonly IDisposable titleChangedSubsription;
         private readonly Timer windowCheckTimer;
-
         private readonly Subject<AppChangedArgs> subject = new Subject<AppChangedArgs>();
 
         private IntPtr activeWindowHandle;
@@ -52,9 +52,33 @@ namespace AppsTracker.Tracking.Hooks
             this.windowChangedHook = windowChangedHook;
             this.titleChangedHook = titleChangedHook;
             this.syncContext = syncContext;
-            this.windowChangedHook.ActiveWindowChanged += OnActiveWindowChanged;
-            this.titleChangedHook.TitleChanged += OnTitleChanged;
             this.windowCheckTimer = new Timer(OnTimerTick, null, 5 * 1000, 5 * 1000);
+
+            windowChangedSubscription = CreateWindowChangedSubscription();
+            titleChangedSubsription = CreateTitleChangedSubscription();
+        }
+
+
+        private IDisposable CreateWindowChangedSubscription()
+        {
+            return windowChangedHook.WinChangedObservable
+                .Where(a => a.Title != activeWindowTitle && a.Handle != activeWindowHandle)
+                .Do(a =>
+                {
+                    activeWindowHandle = a.Handle;
+                    activeWindowTitle = a.Title;
+                    NotifyAppChanged();
+                })
+                .Subscribe();
+        }
+
+        private IDisposable CreateTitleChangedSubscription()
+        {
+            return titleChangedHook.TitleChangedObservable
+                .Where(a => a.Handle == activeWindowHandle && a.Title != activeWindowTitle)
+                .Do(a => activeWindowTitle = a.Title)
+                .Do(a => NotifyAppChanged())
+                .Subscribe();
         }
 
         private void OnTimerTick(Object state)
@@ -62,23 +86,11 @@ namespace AppsTracker.Tracking.Hooks
             syncContext.Invoke(() =>
             {
                 var hWnd = NativeMethods.GetForegroundWindow();
-                if(hWnd != IntPtr.Zero && hWnd != activeWindowHandle)
+                if (hWnd != IntPtr.Zero && hWnd != activeWindowHandle)
                 {
                     SetActiveWindow(hWnd);
                 }
             });
-        }
-
-        private void OnActiveWindowChanged(object sender, WinChangedArgs e)
-        {
-            if (activeWindowHandle == e.Handle ||
-                activeWindowTitle == e.Title)
-                return;
-
-            activeWindowHandle = e.Handle;
-            activeWindowTitle = e.Title;
-
-            RaiseAppChanged();
         }
 
         private void OnTitleChanged(object sender, WinChangedArgs e)
@@ -90,7 +102,7 @@ namespace AppsTracker.Tracking.Hooks
                 return;
 
             activeWindowTitle = e.Title;
-            RaiseAppChanged();
+            NotifyAppChanged();
         }
 
         public void CheckActiveApp()
@@ -112,10 +124,10 @@ namespace AppsTracker.Tracking.Hooks
                 "No Title" : windowTitleBuilder.ToString();
             activeWindowTitle = title;
 
-            RaiseAppChanged();
+            NotifyAppChanged();
         }
 
-        private void RaiseAppChanged()
+        private void NotifyAppChanged()
         {
             var appInfo = AppInfo.Create(activeWindowHandle);
             var logInfo = LogInfo.Create(appInfo, activeWindowTitle);
@@ -130,6 +142,7 @@ namespace AppsTracker.Tracking.Hooks
                 windowCheckTimer.Dispose();
                 windowChangedHook.Dispose();
                 titleChangedHook.Dispose();
+                windowChangedSubscription.Dispose();
 
                 isDisposed = true;
             }
