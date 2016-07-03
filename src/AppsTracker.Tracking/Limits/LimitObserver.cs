@@ -104,7 +104,6 @@ namespace AppsTracker.Tracking.Limits
                     };
                 }))
                 .Subscribe(r => CheckDuration(r.Limit, r.Duration));
-
         }
 
         private void LoadAppLimits()
