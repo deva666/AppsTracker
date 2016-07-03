@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Reactive.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Tracking;
@@ -19,21 +21,17 @@ namespace AppsTracker.Tests.Tracking
                 TrackingEnabled = true,
                 TakeScreenshots = true
             };
-            var eventRaised = 0;
+            var observableCalled = 0;
             var screenshot = new Screenshot() { ScreenshotID = 10 };
 
-            tracker.ScreenshotTaken += (s, e) =>
-            {
-                Interlocked.Exchange(ref eventRaised, 1);
-                Assert.AreSame(screenshot, e.Screenshot);
-            };
+            tracker.ScreenshotObservable.Subscribe(s => Interlocked.Exchange(ref observableCalled, 1));
 
             screenshotFactory.Setup(f => f.CreateScreenshot()).Returns(screenshot);
             tracker.Initialize(settings);
 
             await Task.Delay(150);
 
-            Assert.AreEqual(1, eventRaised, "Screenshot taken event should be raised");
+            Assert.AreEqual(1, observableCalled, "Screenshot taken event should be raised");
         }
 
         [TestMethod]
@@ -48,10 +46,7 @@ namespace AppsTracker.Tests.Tracking
             };
             var screenshot = new Screenshot() { ScreenshotID = 10 };
 
-            tracker.ScreenshotTaken += (s, e) =>
-            {
-                Assert.Fail("Should not be called if screenshots are disabled");
-            };
+            tracker.ScreenshotObservable.Subscribe(s => Assert.Fail("Should not be called if screenshots are disabled"));
 
             screenshotFactory.Setup(f => f.CreateScreenshot()).Returns(screenshot);
             tracker.Initialize(settings);
@@ -71,10 +66,7 @@ namespace AppsTracker.Tests.Tracking
             };
             var screenshot = new Screenshot() { ScreenshotID = 10 };
 
-            tracker.ScreenshotTaken += (s, e) =>
-            {
-                Assert.Fail("Should not be called if tracking is disabled");
-            };
+            tracker.ScreenshotObservable.Subscribe(s => Assert.Fail("Should not be called if tracking is disabled"));
 
             screenshotFactory.Setup(f => f.CreateScreenshot()).Returns(screenshot);
             tracker.Initialize(settings);

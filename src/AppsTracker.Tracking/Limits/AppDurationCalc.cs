@@ -10,7 +10,7 @@ using AppsTracker.Data.Service;
 namespace AppsTracker.Tracking.Limits
 {
     [Export(typeof(IAppDurationCalc))]
-    public class AppDurationCalc : IAppDurationCalc
+    public sealed class AppDurationCalc : IAppDurationCalc
     {
         private readonly IDataService dataService;
 
@@ -20,26 +20,26 @@ namespace AppsTracker.Tracking.Limits
             this.dataService = dataService;
         }
 
-        public async Task<long> GetDuration(Aplication app, LimitSpan span)
+        public async Task<long> GetDuration(String appName, LimitSpan span)
         {
             switch (span)
             {
                 case LimitSpan.Day:
                     var dayBegin = DateTime.Now.Date;
-                    return await SumDuration(app, l => l.DateCreated >= dayBegin);
+                    return await SumDuration(appName, l => l.DateCreated >= dayBegin);
                 case LimitSpan.Week:
                     var tuple = DateTime.Today.GetWeekBeginAndEnd();
                     var weekBegin = tuple.Item1;
                     var weekEnd = tuple.Item2;
-                    return await SumDuration(app, l => l.DateCreated >= weekBegin && l.DateCreated <= weekEnd);
+                    return await SumDuration(appName, l => l.DateCreated >= weekBegin && l.DateCreated <= weekEnd);
                 default:
                     throw new ArgumentOutOfRangeException("span");
             }
         }
 
-        private async Task<long> SumDuration(Aplication app, Expression<Func<Log, bool>> filter)
+        private async Task<long> SumDuration(String appName, Expression<Func<Log, bool>> filter)
         {
-            var appsList = await dataService.GetFilteredAsync<Aplication>(a => a.ApplicationID == app.ApplicationID
+            var appsList = await dataService.GetFilteredAsync<Aplication>(a => a.Name == appName
                                                                            && a.Windows.SelectMany(w => w.Logs)
                                                                                        .AsQueryable().Where(filter).Any(),
                                                                            a => a.Windows,

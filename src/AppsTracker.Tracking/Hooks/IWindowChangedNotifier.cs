@@ -4,6 +4,9 @@ namespace AppsTracker.Tracking.Hooks
 {
     public interface IWindowChangedNotifier : IDisposable
     {
-        event EventHandler<WinChangedArgs> ActiveWindowChanged;
+        IObservable<WinChangedArgs> WinChangedObservable
+        {
+            get;
+        }
     }
 }

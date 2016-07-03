@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 using AppsTracker.Common.Utils;
 
@@ -8,11 +10,15 @@ namespace AppsTracker.Tracking.Hooks
     [Export(typeof(IWindowChangedNotifier))]
     internal sealed class WindowChangedHook : HookBase, IWindowChangedNotifier
     {
-        public event EventHandler<WinChangedArgs> ActiveWindowChanged;
-
         private const uint EVENT_SYSTEM_FOREGROUND = 3;
 
         private readonly StringBuilder windowTitleBuilder = new StringBuilder();
+        private readonly Subject<WinChangedArgs> subject = new Subject<WinChangedArgs>();
+
+        public IObservable<WinChangedArgs> WinChangedObservable
+        {
+            get { return subject.AsObservable(); }
+        }
 
         public WindowChangedHook()
             : base(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND)
@@ -31,7 +37,8 @@ namespace AppsTracker.Tracking.Hooks
             NativeMethods.GetWindowText(hWnd, windowTitleBuilder, windowTitleBuilder.Capacity);
             var title = string.IsNullOrEmpty(windowTitleBuilder.ToString()) ?
                 "No Title" : windowTitleBuilder.ToString();
-            ActiveWindowChanged.InvokeSafely(this, new WinChangedArgs(title, hWnd));
+            var args = new WinChangedArgs(title, hWnd);
+            subject.OnNext(args);
         }
     }
 }

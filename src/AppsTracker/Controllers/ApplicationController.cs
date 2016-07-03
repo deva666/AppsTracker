@@ -9,7 +9,6 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
-using AppsTracker.Common.Utils;
 using AppsTracker.Data.Service;
 using AppsTracker.Service;
 
