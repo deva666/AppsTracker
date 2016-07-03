@@ -47,6 +47,7 @@ namespace AppsTracker.Views
             this.Top = bounds.Bottom + 5;
             timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, OnTimerTick, this.Dispatcher);
             Loaded += (s, e) => HideHelper.RemoveFromAltTab(this);
+            Deactivated += (s, e) => Topmost = true;
         }
 
         private async void OnAppLimitReached(AppLimit limit)
