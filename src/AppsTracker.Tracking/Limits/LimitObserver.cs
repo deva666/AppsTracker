@@ -8,7 +8,6 @@ using AppsTracker.Common.Communication;
 using AppsTracker.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Service;
-using AppsTracker.Tracking.Hooks;
 
 namespace AppsTracker.Tracking.Limits
 {
@@ -85,6 +84,7 @@ namespace AppsTracker.Tracking.Limits
             LoadAppLimits();
 
             midnightNotifier.MidnightTick += OnMidnightTick;
+
             subscription = appChangedNotifier.AppChangedObservable
                 .Where(a => appLimitsMap.Count > 0 && isTrackingEnabled)
                 .Select(a => a.LogInfo.AppInfo.GetAppName())

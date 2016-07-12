@@ -261,9 +261,6 @@
       <DependentUpon>ImageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Widgets\ITrayIcon.cs" />
-    <Compile Include="Widgets\KeystrokeViewer.xaml.cs">
-      <DependentUpon>KeystrokeViewer.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Widgets\MeasureProvider.cs" />
     <Compile Include="Widgets\ModernButton.cs" />
     <Compile Include="Widgets\Next.xaml.cs">
@@ -485,10 +482,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Widgets\ImageView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\KeystrokeViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

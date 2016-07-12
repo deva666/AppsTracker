@@ -1,6 +1,6 @@
 ﻿using AppsTracker.Data.Utils;
 
-namespace AppsTracker.Tracking.Hooks
+namespace AppsTracker.Tracking
 {
     public struct AppChangedArgs
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AppsTracker.Tracking.Hooks
+namespace AppsTracker.Tracking
 {
     public interface IAppChangedNotifier : IDisposable
     {

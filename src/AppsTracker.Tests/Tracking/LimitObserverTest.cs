@@ -6,6 +6,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Utils;
+using AppsTracker.Tracking;
 using AppsTracker.Tracking.Hooks;
 using AppsTracker.Tracking.Limits;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
