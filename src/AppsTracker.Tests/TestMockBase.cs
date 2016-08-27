@@ -76,6 +76,7 @@ namespace AppsTracker.Tests
                     () => new Tuple<DaySummaryViewModel, Action>(
                         new DaySummaryViewModel(repository.Object,
                             trackingService.Object,
+                            new Mock<IUseCase<DateTime, LogSummary>>().Object,
                             mediator),
                             ExportFactoryContextRelease));
 

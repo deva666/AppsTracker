@@ -17,6 +17,7 @@ using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
 using AppsTracker.Data.Utils;
+using AppsTracker.Domain.UseCases;
 using AppsTracker.MVVM;
 using AppsTracker.Tracking;
 
@@ -28,6 +29,7 @@ namespace AppsTracker.ViewModels
     {
         private readonly IRepository repository;
         private readonly ITrackingService trackingService;
+        private readonly IUseCase<DateTime, LogSummary> logSummaryUseCase;
         private readonly IMediator mediator;
 
 
@@ -142,10 +144,12 @@ namespace AppsTracker.ViewModels
         [ImportingConstructor]
         public DaySummaryViewModel(IRepository repository,
                                    ITrackingService trackingService,
+                                   IUseCase<DateTime, LogSummary> logSummaryUseCase,
                                    IMediator mediator)
         {
             this.repository = repository;
             this.trackingService = trackingService;
+            this.logSummaryUseCase = logSummaryUseCase;
             this.mediator = mediator;
 
             logsList = new TaskRunner<IEnumerable<LogSummary>>(GetLogSummary, this);
@@ -170,43 +174,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<LogSummary> GetLogSummary()
         {
-            var dateTo = selectedDate.AddDays(1);
-
-            var logsTask = repository.GetFilteredAsync<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
-                               && l.DateCreated >= selectedDate
-                               && l.DateCreated <= dateTo,
-                               l => l.Window.Application);
-
-            var usagesTask = repository.GetFilteredAsync<Usage>(u => u.User.UserID == trackingService.SelectedUserID
-                                     && u.UsageStart >= selectedDate
-                                     && u.UsageEnd <= dateTo
-                                     && u.UsageType != UsageTypes.Login);
-
-            Task.WaitAll(logsTask, usagesTask);
-
-            var logs = logsTask.Result;
-            var usages = usagesTask.Result;
-
-            var logModels = logs.Select(l => new LogSummary()
-            {
-                DateCreated = l.DateCreated.ToString("HH:mm:ss"),
-                DateEnded = l.DateEnded.ToString("HH:mm:ss"),
-                Duration = l.Duration,
-                Name = l.Window.Application.Name,
-                Title = l.Window.Title
-            });
-
-            var usageModels = usages.Select(u => new LogSummary()
-            {
-                DateCreated = u.UsageStart.ToString("HH:mm:ss"),
-                DateEnded = u.UsageEnd.ToString("HH:mm:ss"),
-                Duration = u.Duration.Ticks,
-                Name = u.UsageType.ToExtendedString(),
-                Title = "*********",
-                IsRequested = true
-            });
-
-            return logModels.Union(usageModels).OrderBy(d => d.DateCreated).ToList();
+            return logSummaryUseCase.Get(selectedDate);
         }
 
 

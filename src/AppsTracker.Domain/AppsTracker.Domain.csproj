@@ -62,6 +62,8 @@
     <Compile Include="Tracking\TrackingService.cs" />
     <Compile Include="UseCases\AppDurationOverviewUseCase.cs" />
     <Compile Include="UseCases\IUseCase.cs" />
+    <Compile Include="UseCases\LogSummaryUseCase.cs" />
+    <Compile Include="Util\Extensions.cs" />
     <Compile Include="Web\Feedback.cs" />
     <Compile Include="Web\FeedbackReportService.cs" />
     <Compile Include="Web\IFeedbackReportService.cs" />
