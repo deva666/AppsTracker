@@ -3,8 +3,10 @@ using System.ComponentModel.Composition;
 using AppsTracker.Common.Communication;
 using AppsTracker.Communication;
 using AppsTracker.Controllers;
+using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
 using AppsTracker.Domain.Settings;
+using AppsTracker.Domain.UseCases;
 using AppsTracker.Service;
 //using AppsTracker.Domain.Settings;
 //using AppsTracker.Service.Web;
@@ -131,7 +133,7 @@ namespace AppsTracker.Tests
                     () => new Tuple<DailyAppUsageViewModel, Action>(
                         new DailyAppUsageViewModel(
                             repository.Object,
-                            trackingService.Object,
+                            new Mock<IUseCase<AppDurationOverview>>().Object,
                             mediator),
                             ExportFactoryContextRelease));
 
