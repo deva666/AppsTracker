@@ -18,7 +18,7 @@
 /src/AppsTracker.Common/obj
 /src/.vs/AppsTracker/v14
 /src/AppsTracker/AppsTracker.csproj.user
-/src/AppsTracker.Domain/bin/Release
-/src/AppsTracker.Domain/obj/Release
-/src/AppsTracker.Presentation/bin/Release
-/src/AppsTracker.Presentation/obj/Release
+/src/AppsTracker.Domain/bin
+/src/AppsTracker.Domain/obj
+/src/AppsTracker.Presentation/bin
+/src/AppsTracker.Presentation/obj
