@@ -64,6 +64,7 @@
     <Compile Include="UseCases\AppSummaryUseCase.cs" />
     <Compile Include="UseCases\IUseCase.cs" />
     <Compile Include="UseCases\LogSummaryUseCase.cs" />
+    <Compile Include="UseCases\WindowSummaryUseCase.cs" />
     <Compile Include="Util\Extensions.cs" />
     <Compile Include="Web\Feedback.cs" />
     <Compile Include="Web\FeedbackReportService.cs" />
