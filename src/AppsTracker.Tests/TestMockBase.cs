@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using AppsTracker.Common.Communication;
 using AppsTracker.Communication;
@@ -39,6 +40,13 @@ namespace AppsTracker.Tests
         protected readonly Mock<ITrackingController> trackingController = new Mock<ITrackingController>();
         protected readonly Mock<IAppDurationCalc> appDurationCalc = new Mock<IAppDurationCalc>();
 
+        protected readonly Mock<IUseCaseAsync<Aplication>> appStatsUseCaseAsync = new Mock<IUseCaseAsync<Aplication>>();
+        protected readonly Mock<IUseCase<String, Int32, AppSummary>> appSummaryStatsUseCase = new Mock<IUseCase<string, int, AppSummary>>();
+        protected readonly Mock<IUseCase<String, IEnumerable<DateTime>, WindowSummary>> windowsStatsSummaryUseCase = new Mock<IUseCase<string, IEnumerable<DateTime>, WindowSummary>>();
+        protected readonly Mock<IUseCase<String, IEnumerable<String>, IEnumerable<DateTime>, WindowDurationOverview>> windowDurationUseCase = new Mock<IUseCase<string, IEnumerable<string>, IEnumerable<DateTime>, WindowDurationOverview>>();
+        protected readonly Mock<IUseCase<DateTime, LogSummary>> logSummaryUseCase = new Mock<IUseCase<DateTime, LogSummary>>();
+
+
         protected readonly IMediator mediator = new Mediator();
         protected readonly ISyncContext syncContext = new SyncContextMock();
 
@@ -47,8 +55,10 @@ namespace AppsTracker.Tests
             var tupleFactory =
                 new Func<Tuple<AppDetailsViewModel, Action>>(
                     () => new Tuple<AppDetailsViewModel, Action>(
-                        new AppDetailsViewModel(repository.Object,
-                            trackingService.Object,
+                        new AppDetailsViewModel(appStatsUseCaseAsync.Object,
+                            appSummaryStatsUseCase.Object,
+                            windowsStatsSummaryUseCase.Object,
+                            windowDurationUseCase.Object,
                             mediator),
                             ExportFactoryContextRelease));
             return new ExportFactory<AppDetailsViewModel>(tupleFactory);
@@ -74,9 +84,11 @@ namespace AppsTracker.Tests
             var tupleFactory =
                 new Func<Tuple<DaySummaryViewModel, Action>>(
                     () => new Tuple<DaySummaryViewModel, Action>(
-                        new DaySummaryViewModel(repository.Object,
-                            trackingService.Object,
-                            new Mock<IUseCase<DateTime, LogSummary>>().Object,
+                        new DaySummaryViewModel(new Mock<IUseCase<DateTime, LogSummary>>().Object,
+                        new Mock<IUseCase<DateTime, AppSummary>>().Object,
+                        new Mock<IUseCase<String, DateTime, WindowSummary>>().Object,
+                        new Mock<IUseCase<DateTime, UsageByTime>>().Object,
+                        new Mock<IUseCase<DateTime, CategoryDuration>>().Object,
                             mediator),
                             ExportFactoryContextRelease));
 

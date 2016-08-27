@@ -131,7 +131,6 @@
     <Compile Include="Tracking\Hooks\AppChangedNotifierTests.cs" />
     <Compile Include="Tracking\LimitObserverTest.cs" />
     <Compile Include="Tracking\ScreenshotTrackerTest.cs" />
-    <Compile Include="Core\ViewModels\AppDetailsViewModelTest.cs" />
     <Compile Include="Core\ViewModels\MainViewModelTest.cs" />
     <Compile Include="Core\ViewModels\ScreenshotViewModelTest.cs" />
     <Compile Include="Core\ViewModels\FeedbackReportViewModelTest.cs" />

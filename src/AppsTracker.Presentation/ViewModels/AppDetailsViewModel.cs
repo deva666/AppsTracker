@@ -25,8 +25,6 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class AppDetailsViewModel : ViewModelBase
     {
-        private readonly IRepository repository;
-        private readonly ITrackingService trackingService;
         private readonly IUseCaseAsync<Aplication> appUseCase;
         private readonly IUseCase<String, Int32, AppSummary> appSummaryUseCase;
         private readonly IUseCase<String, IEnumerable<DateTime>, WindowSummary> windowSummaryUseCase;
@@ -145,20 +143,16 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public AppDetailsViewModel(IRepository repository, 
-                                   IUseCaseAsync<Aplication> appUseCase,
+        public AppDetailsViewModel(IUseCaseAsync<Aplication> appUseCase,
                                    IUseCase<String, Int32, AppSummary> appSummaryUseCase,
                                    IUseCase<String, IEnumerable<DateTime>, WindowSummary> windowSummaryUseCase,
                                    IUseCase<String, IEnumerable<String>, IEnumerable<DateTime>, WindowDurationOverview> windowDurationUseCase,
-                                   ITrackingService trackingService,
                                    IMediator mediator)
         {
             this.appUseCase = appUseCase;
             this.appSummaryUseCase = appSummaryUseCase;
             this.windowSummaryUseCase = windowSummaryUseCase;
             this.windowDurationUseCase = windowDurationUseCase;
-            this.repository = repository;
-            this.trackingService = trackingService;
             this.mediator = mediator;
 
             appList = new TaskObserver<IEnumerable<Aplication>>(appUseCase.GetAsync, this);
