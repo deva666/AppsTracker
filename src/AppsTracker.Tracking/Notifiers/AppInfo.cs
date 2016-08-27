@@ -9,6 +9,7 @@
 using System;
 using System.Diagnostics;
 using AppsTracker.Common.Utils;
+using AppsTracker.Data.Models;
 
 namespace AppsTracker.Data.Utils
 {
@@ -31,6 +32,12 @@ namespace AppsTracker.Data.Utils
             FullName = string.Empty
         };
 
+        public static Aplication ToAplication(AppInfo appInfo)
+        {
+            return new Aplication(appInfo.Name, appInfo.FileName, appInfo.Version,
+                appInfo.Description, appInfo.Company, appInfo.FullName);
+        }
+
         public static AppInfo Empty { get { return emptyAppInfo; } }
 
         private static Process GetProcessFromHandle(IntPtr hWnd)
@@ -44,7 +51,7 @@ namespace AppsTracker.Data.Utils
                     if (processID != 0)
                         return Process.GetProcessById(checked((int)processID));
                 }
-                catch 
+                catch
                 {
                     return null;
                 }
@@ -133,8 +140,8 @@ namespace AppsTracker.Data.Utils
 
         public string GetAppName()
         {
-            string appName = (!string.IsNullOrEmpty(Name) 
-                ? Name.Truncate(250) : !string.IsNullOrEmpty(FullName) 
+            string appName = (!string.IsNullOrEmpty(Name)
+                ? Name.Truncate(250) : !string.IsNullOrEmpty(FullName)
                 ? FullName.Truncate(250) : FileName.Truncate(250));
 
             return appName;

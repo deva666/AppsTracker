@@ -23,7 +23,6 @@ namespace AppsTracker.Tests.Tracking
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(0);
             var appInfo = AppInfo.Create(app.Name);
-            app.AppInfo = appInfo;
             var logInfoObservable = Observable.Return(new AppChangedArgs(LogInfo.Create(appInfo, "")));
 
             windowChangedNotifier.Setup(n => n.AppChangedObservable).Returns(logInfoObservable);
@@ -47,7 +46,6 @@ namespace AppsTracker.Tests.Tracking
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(0);
             var appInfo = AppInfo.Create(app.Name);
-            app.AppInfo = appInfo;
             var logInfoObservable = Observable.Return(new AppChangedArgs(LogInfo.Create(appInfo, "")));
 
             windowChangedNotifier.Setup(n => n.AppChangedObservable).Returns(logInfoObservable);
@@ -71,7 +69,6 @@ namespace AppsTracker.Tests.Tracking
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(100);
             var appInfo = AppInfo.Create(app.Name);
-            app.AppInfo = appInfo;
             var logInfoObservable = Observable.Return(new AppChangedArgs(LogInfo.Create(appInfo, "")));
 
             windowChangedNotifier.Setup(n => n.AppChangedObservable).Returns(logInfoObservable);
@@ -96,7 +93,6 @@ namespace AppsTracker.Tests.Tracking
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(500);
             var appInfo = AppInfo.Create(app.Name);
-            app.AppInfo = appInfo;
             var logInfoObservable = Observable.Return(new AppChangedArgs(LogInfo.Create(appInfo, "")));
 
             windowChangedNotifier.Setup(n => n.AppChangedObservable).Returns(logInfoObservable);
@@ -124,7 +120,6 @@ namespace AppsTracker.Tests.Tracking
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(100);
             var appInfo = AppInfo.Create(app.Name);
-            app.AppInfo = appInfo;
             var secondAppInfo = AppInfo.Create("some app");
             var logInfoObservable = Observable.ToObservable(new List<AppChangedArgs>() { new AppChangedArgs(LogInfo.Create(appInfo, "")), new AppChangedArgs(LogInfo.Create(secondAppInfo, "")) });
             logInfoObservable = Observable.ToObservable(await logInfoObservable.Buffer(TimeSpan.FromMilliseconds(100)));

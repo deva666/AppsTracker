@@ -35,14 +35,7 @@ namespace AppsTracker.Data.Models
             set;
         }
 
-
-        [NotMapped]
-        public AppInfo AppInfo
-        {
-            get;
-            set;
-        }
-
+        
         private TimeSpan GetAppDuration()
         {
             long ticks = 0;
@@ -73,13 +66,6 @@ namespace AppsTracker.Data.Models
             this.Description = description.Truncate(150);
             this.Company = company.Truncate(150);
             this.WinName = realName.Truncate(100);
-        }
-
-
-        public Aplication(AppInfo appInfo)
-            : this(appInfo.Name, appInfo.FileName, appInfo.Version, appInfo.Description, appInfo.Company, appInfo.FullName)
-        {
-
         }
 
         [Key]

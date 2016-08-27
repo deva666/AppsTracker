@@ -110,7 +110,8 @@ namespace AppsTracker.Tracking
             isNewApp = false;
             if (app == null)
             {
-                app = new Aplication(logInfo.AppInfo) { UserID = trackingService.UserID };
+                app = AppInfo.ToAplication(logInfo.AppInfo);
+                app.UserID = trackingService.UserID; 
                 repository.SaveNewEntity(app);
                 isNewApp = true;
             }

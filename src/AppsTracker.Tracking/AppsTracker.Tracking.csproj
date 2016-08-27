@@ -90,19 +90,21 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Notifiers\AppInfo.cs" />
     <Compile Include="Cleaning\DataCleaner.cs" />
     <Compile Include="Cleaning\ILogCleaner.cs" />
     <Compile Include="Cleaning\LogCleaner.cs" />
     <Compile Include="Helpers\LazyInit.cs" />
     <Compile Include="Hooks\KeyboardHookArgs.cs" />
-    <Compile Include="WinChangedArgs.cs" />
-    <Compile Include="AppChangedArgs.cs" />
-    <Compile Include="IAppChangedNotifier.cs" />
-    <Compile Include="ITitleChangedNotifier.cs" />
-    <Compile Include="IWindowChangedNotifier.cs" />
+    <Compile Include="Notifiers\LogInfo.cs" />
+    <Compile Include="Notifiers\WinChangedArgs.cs" />
+    <Compile Include="Notifiers\AppChangedArgs.cs" />
+    <Compile Include="Notifiers\IAppChangedNotifier.cs" />
+    <Compile Include="Notifiers\ITitleChangedNotifier.cs" />
+    <Compile Include="Notifiers\IWindowChangedNotifier.cs" />
     <Compile Include="Hooks\TitleChangedHook.cs" />
     <Compile Include="Hooks\WindowChangedHook.cs" />
-    <Compile Include="AppChangedNotifier.cs" />
+    <Compile Include="Notifiers\AppChangedNotifier.cs" />
     <Compile Include="Hooks\HookBase.cs" />
     <Compile Include="ITrackingModule.cs" />
     <Compile Include="Limits\AppDurationCalc.cs" />
