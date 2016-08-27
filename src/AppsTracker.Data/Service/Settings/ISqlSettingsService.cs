@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 
-namespace AppsTracker.Data.Service
+namespace AppsTracker.Data.Repository
 {
     public interface ISqlSettingsService : IBaseService, INotifyPropertyChanged
     {

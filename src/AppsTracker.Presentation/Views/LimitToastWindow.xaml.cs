@@ -8,7 +8,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.Tracking.Limits;
 using AppsTracker.Widgets;
 

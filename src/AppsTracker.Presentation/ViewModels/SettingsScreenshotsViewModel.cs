@@ -11,7 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.Widgets;
 using AppsTracker.Common.Communication;
 using AppsTracker.Service;
@@ -25,7 +25,7 @@ namespace AppsTracker.ViewModels
     {
         private readonly ITrackingService trackingService;
         private readonly IWindowService windowService;
-        private readonly IDataService dataService;
+        private readonly IRepository dataService;
 
         public override string Title
         {
@@ -100,7 +100,7 @@ namespace AppsTracker.ViewModels
         [ImportingConstructor]
         public SettingsScreenshotsViewModel(ISqlSettingsService settingsService, 
                                             ITrackingService trackingService,
-                                            IDataService dataService,
+                                            IRepository dataService,
                                             IWindowService windowService, 
                                             IMediator mediator)
             : base(settingsService, mediator)

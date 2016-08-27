@@ -10,7 +10,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using AppsTracker.Common.Utils;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
@@ -20,7 +20,7 @@ namespace AppsTracker.Tracking
     {
         private int daysTreshold;
 
-        private readonly IDataService dataService;
+        private readonly IRepository dataService;
 
         public int Days
         {
@@ -33,7 +33,7 @@ namespace AppsTracker.Tracking
         }
 
         [ImportingConstructor]
-        public LogCleaner(IDataService dataService)
+        public LogCleaner(IRepository dataService)
         {
             this.dataService = dataService;
         }

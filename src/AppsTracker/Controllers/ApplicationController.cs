@@ -9,7 +9,7 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.Service;
 
 namespace AppsTracker.Controllers
@@ -21,7 +21,7 @@ namespace AppsTracker.Controllers
         private readonly ITrackingController trackingController;
         private readonly IXmlSettingsService xmlSettingsService;
         private readonly ISqlSettingsService sqlSettingsService;
-        private readonly IDataService dataService;
+        private readonly IRepository dataService;
         private readonly IWindowService windowService;
 
         [ImportingConstructor]
@@ -29,7 +29,7 @@ namespace AppsTracker.Controllers
                                      ITrackingController trackingController,
                                      ISqlSettingsService sqlSettingsService,
                                      IXmlSettingsService xmlSettingsService,
-                                     IDataService dataService,
+                                     IRepository dataService,
                                      IWindowService windowService)
         {
             this.appearanceController = appearanceController;

@@ -8,7 +8,7 @@ using System.Windows.Input;
 using AppsTracker.Common.Communication;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.MVVM;
 using AppsTracker.Tracking;
 
@@ -20,7 +20,7 @@ namespace AppsTracker.ViewModels
     {
         private const string SETTINGS_SAVED_MSG = "settings saved";
 
-        private readonly IDataService dataService;
+        private readonly IRepository dataService;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
@@ -127,7 +127,7 @@ namespace AppsTracker.ViewModels
         }
 
         [ImportingConstructor]
-        public SettingsLimitsViewModel(IDataService dataService,
+        public SettingsLimitsViewModel(IRepository dataService,
                                        ITrackingService trackingService,
                                        IMediator mediator)
         {

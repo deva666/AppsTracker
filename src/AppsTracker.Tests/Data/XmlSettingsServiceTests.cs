@@ -1,5 +1,5 @@
 ﻿using System;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AppsTracker.Tests.Data

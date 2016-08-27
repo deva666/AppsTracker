@@ -70,7 +70,7 @@ namespace AppsTracker
         {
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
-            catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Data.Service.IDataService).Assembly));
+            catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Data.Repository.IRepository).Assembly));
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Common.Communication.IMediator).Assembly));
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Tracking.ITrackingModule).Assembly));
             //catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.)))

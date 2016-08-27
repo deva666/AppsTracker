@@ -10,7 +10,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Windows.Input;
 using AppsTracker.Common.Communication;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.MVVM;
 using Microsoft.Win32;
 using AppsTracker.Service;

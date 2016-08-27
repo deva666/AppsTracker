@@ -3,7 +3,7 @@ using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.Widgets;
 using AppsTracker.Common.Utils;
 using AppsTracker.Service;

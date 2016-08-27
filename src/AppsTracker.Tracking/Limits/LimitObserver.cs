@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using AppsTracker.Common.Communication;
 using AppsTracker.Communication;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 
 namespace AppsTracker.Tracking.Limits
 {
@@ -15,7 +15,7 @@ namespace AppsTracker.Tracking.Limits
     internal sealed class LimitObserver : ITrackingModule
     {
         private readonly ITrackingService trackingService;
-        private readonly IDataService dataService;
+        private readonly IRepository dataService;
         private readonly IAppChangedNotifier appChangedNotifier;
         private readonly IMidnightNotifier midnightNotifier;
         private readonly ILimitHandler limitHandler;
@@ -35,7 +35,7 @@ namespace AppsTracker.Tracking.Limits
 
         [ImportingConstructor]
         public LimitObserver(ITrackingService trackingService,
-                             IDataService dataService,
+                             IRepository dataService,
                              IAppChangedNotifier appChangedNotifier,
                              IMidnightNotifier midnightNotifier,
                              ILimitHandler limitHandler,

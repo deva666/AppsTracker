@@ -13,7 +13,7 @@ using System.Linq;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.Common.Communication;
 using AppsTracker.Tracking;
 using System.Collections.ObjectModel;
@@ -24,7 +24,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class UserStatsViewModel : ViewModelBase
     {
-        private readonly IDataService dataService;
+        private readonly IRepository dataService;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
@@ -83,7 +83,7 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public UserStatsViewModel(IDataService dataService,
+        public UserStatsViewModel(IRepository dataService,
                                   ITrackingService trackingService,
                                   IMediator mediator)
         {

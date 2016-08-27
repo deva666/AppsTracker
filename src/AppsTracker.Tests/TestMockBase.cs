@@ -3,7 +3,7 @@ using System.ComponentModel.Composition;
 using AppsTracker.Common.Communication;
 using AppsTracker.Communication;
 using AppsTracker.Controllers;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.Service;
 //using AppsTracker.Service.Web;
 using AppsTracker.Tests.Fakes;
@@ -18,7 +18,7 @@ namespace AppsTracker.Tests
 {
     public abstract class TestMockBase
     {
-        protected readonly Mock<IDataService> dataService = new Mock<IDataService>();
+        protected readonly Mock<IRepository> dataService = new Mock<IRepository>();
         protected readonly Mock<ITrackingService> trackingService = new Mock<ITrackingService>();
         protected readonly Mock<ISqlSettingsService> settingsService = new Mock<ISqlSettingsService>();
         protected readonly Mock<IXmlSettingsService> xmlSettingsService = new Mock<IXmlSettingsService>();

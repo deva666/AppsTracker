@@ -5,7 +5,7 @@ using System.Reactive.Subjects;
 using AppsTracker.Common.Utils;
 using AppsTracker.Communication;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
@@ -15,7 +15,7 @@ namespace AppsTracker.Tracking
     {
         private readonly IScreenshotFactory screenshotFactory;
         private readonly ISyncContext syncContext;
-        private readonly IDataService dataService;
+        private readonly IRepository dataService;
 
         private readonly Subject<Screenshot> subject = new Subject<Screenshot>();
 
@@ -31,7 +31,7 @@ namespace AppsTracker.Tracking
         [ImportingConstructor]
         public ScreenshotTracker(IScreenshotFactory screenshotFactory,
                                  ISyncContext syncContext,
-                                 IDataService dataService)
+                                 IRepository dataService)
         {
             this.screenshotFactory = screenshotFactory;
             this.syncContext = syncContext;

@@ -4,21 +4,21 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 
 namespace AppsTracker.Tracking.Helpers
 {
     [Export(typeof(IUsageProcessor))]
     internal sealed class UsageProcessor : IUsageProcessor
     {
-        private readonly IDataService dataService;
+        private readonly IRepository dataService;
         private readonly ITrackingService trackingService;
         private readonly IDictionary<UsageTypes, Usage> usageTypesMap = new Dictionary<UsageTypes, Usage>();
 
         private Usage loginUsage;
 
         [ImportingConstructor]
-        public UsageProcessor(IDataService dataService,
+        public UsageProcessor(IRepository dataService,
                               ITrackingService trackingService)
         {
             this.dataService = dataService;

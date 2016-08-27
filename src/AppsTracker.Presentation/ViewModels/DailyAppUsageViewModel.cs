@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.Common.Communication;
 using AppsTracker.Tracking;
 
@@ -22,7 +22,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class DailyAppUsageViewModel : ViewModelBase
     {
-        private readonly IDataService dataService;
+        private readonly IRepository dataService;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
@@ -45,7 +45,7 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public DailyAppUsageViewModel(IDataService dataService,
+        public DailyAppUsageViewModel(IRepository dataService,
                                       ITrackingService trackingService,
                                       IMediator mediator)
         {

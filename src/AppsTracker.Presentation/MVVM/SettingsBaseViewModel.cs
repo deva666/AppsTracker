@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 
 namespace AppsTracker.MVVM
 {

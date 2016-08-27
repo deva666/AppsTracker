@@ -11,7 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using AppsTracker.Common.Communication;
 using AppsTracker.Common.Utils;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.MVVM;
 using AppsTracker.Service;
 

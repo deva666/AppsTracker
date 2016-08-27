@@ -14,7 +14,7 @@ using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
 using Microsoft.Win32;
 
-namespace AppsTracker.Data.Service
+namespace AppsTracker.Data.Repository
 {
     [Export(typeof(ISqlSettingsService))]
     public sealed class SqlSettingsService : ISqlSettingsService

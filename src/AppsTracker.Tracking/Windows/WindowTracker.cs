@@ -13,7 +13,7 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.Data.Utils;
 using AppsTracker.Tracking.Hooks;
 
@@ -25,7 +25,7 @@ namespace AppsTracker.Tracking
         private bool isTrackingEnabled;
 
         private readonly ITrackingService trackingService;
-        private readonly IDataService dataService;
+        private readonly IRepository dataService;
         private readonly IAppChangedNotifier appChangedNotifier;
         private readonly IScreenshotTracker screenshotTracker;
         private readonly IMediator mediator;
@@ -38,7 +38,7 @@ namespace AppsTracker.Tracking
 
         [ImportingConstructor]
         public WindowTracker(ITrackingService trackingService,
-                             IDataService dataService,
+                             IRepository dataService,
                              IAppChangedNotifier appChangedNotifier,
                              IScreenshotTracker screenshotTracker,
                              IMediator mediator)

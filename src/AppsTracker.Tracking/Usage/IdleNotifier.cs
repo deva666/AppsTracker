@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using AppsTracker.Common.Utils;
 using AppsTracker.Communication;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 
 namespace AppsTracker.Tracking
 {

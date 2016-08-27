@@ -13,7 +13,7 @@ using System.Threading;
 using AppsTracker.Common.Communication;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 
 namespace AppsTracker.Tracking
 {
@@ -21,7 +21,7 @@ namespace AppsTracker.Tracking
     public sealed class TrackingService : ITrackingService
     {
         private readonly IMediator mediator;
-        private readonly IDataService dataService;
+        private readonly IRepository dataService;
 
         private volatile bool isDateRangeFiltered;
 
@@ -87,7 +87,7 @@ namespace AppsTracker.Tracking
 
         [ImportingConstructor]
         public TrackingService(IMediator mediator,
-                               IDataService dataService)
+                               IRepository dataService)
         {
             this.mediator = mediator;
             this.dataService = dataService;

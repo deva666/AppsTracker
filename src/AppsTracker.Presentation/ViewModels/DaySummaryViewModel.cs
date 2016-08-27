@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.Data.Utils;
 using AppsTracker.MVVM;
 using AppsTracker.Tracking;
@@ -26,7 +26,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class DaySummaryViewModel : ViewModelBase
     {
-        private readonly IDataService dataService;
+        private readonly IRepository dataService;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
@@ -140,7 +140,7 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public DaySummaryViewModel(IDataService dataService,
+        public DaySummaryViewModel(IRepository dataService,
                                    ITrackingService trackingService,
                                    IMediator mediator)
         {

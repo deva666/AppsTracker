@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.Views

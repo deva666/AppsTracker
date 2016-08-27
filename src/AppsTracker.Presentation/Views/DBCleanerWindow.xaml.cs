@@ -10,7 +10,7 @@ using System.ComponentModel.Composition;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.Service;
 
 
@@ -21,11 +21,11 @@ namespace AppsTracker.Views
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class DBCleanerWindow : Window, IShell
     {
-        private readonly IDataService dataService;
+        private readonly IRepository dataService;
         private readonly IWindowService windowService;
 
         [ImportingConstructor]
-        public DBCleanerWindow(IDataService dataService,
+        public DBCleanerWindow(IRepository dataService,
                                IWindowService windowService)
         {
             InitializeComponent();

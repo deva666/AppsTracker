@@ -5,17 +5,17 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 
 namespace AppsTracker.Tracking.Limits
 {
     [Export(typeof(IAppDurationCalc))]
     public sealed class AppDurationCalc : IAppDurationCalc
     {
-        private readonly IDataService dataService;
+        private readonly IRepository dataService;
 
         [ImportingConstructor]
-        public AppDurationCalc(IDataService dataService)
+        public AppDurationCalc(IRepository dataService)
         {
             this.dataService = dataService;
         }

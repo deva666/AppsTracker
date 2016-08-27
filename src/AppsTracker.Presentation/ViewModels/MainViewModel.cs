@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
 using AppsTracker.MVVM;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.Common.Communication;
 using AppsTracker.Service.Web;
 using AppsTracker.Tracking;
@@ -26,7 +26,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class MainViewModel : HostViewModel
     {
-        private readonly IDataService dataService;
+        private readonly IRepository dataService;
         private readonly ISqlSettingsService settingsService;
         private readonly IXmlSettingsService xmlSettingsService;
         private readonly ITrackingService trackingService;
@@ -278,7 +278,7 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public MainViewModel(IDataService dataService,
+        public MainViewModel(IRepository dataService,
                              ISqlSettingsService settingsService,
                              IXmlSettingsService xmlSettingsService,
                              ITrackingService trackingService,

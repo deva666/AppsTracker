@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
 
-namespace AppsTracker.Data.Service
+namespace AppsTracker.Data.Repository
 {
     [Export(typeof(ICategoriesService))]
     [PartCreationPolicy(CreationPolicy.NonShared)]

@@ -11,7 +11,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
@@ -21,7 +21,7 @@ namespace AppsTracker.Tracking
     {
         private bool isTrackingEnabled;
 
-        private readonly IDataService dataService;
+        private readonly IRepository dataService;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
         private readonly IUsageProcessor usageProcessor;
@@ -32,7 +32,7 @@ namespace AppsTracker.Tracking
         private Setting settings;
 
         [ImportingConstructor]
-        public UsageTracker(IDataService dataService,
+        public UsageTracker(IRepository dataService,
                             ITrackingService trackingService,
                             IMediator mediator,
                             IUsageProcessor usageProcessor,
