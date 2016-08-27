@@ -30,6 +30,7 @@ namespace AppsTracker.ViewModels
         private readonly IRepository repository;
         private readonly ITrackingService trackingService;
         private readonly IUseCase<DateTime, LogSummary> logSummaryUseCase;
+        private readonly IUseCase<DateTime, AppSummary> appSummaryUseCase;
         private readonly IMediator mediator;
 
 
@@ -145,11 +146,13 @@ namespace AppsTracker.ViewModels
         public DaySummaryViewModel(IRepository repository,
                                    ITrackingService trackingService,
                                    IUseCase<DateTime, LogSummary> logSummaryUseCase,
+                                   IUseCase<DateTime, AppSummary> appSummaryUseCase,
                                    IMediator mediator)
         {
             this.repository = repository;
             this.trackingService = trackingService;
             this.logSummaryUseCase = logSummaryUseCase;
+            this.appSummaryUseCase = appSummaryUseCase;
             this.mediator = mediator;
 
             logsList = new TaskRunner<IEnumerable<LogSummary>>(GetLogSummary, this);
@@ -180,32 +183,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<AppSummary> GetAppsSummary()
         {
-            var dateTo = selectedDate.AddDays(1);
-            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
-                                            && l.DateCreated >= selectedDate
-                                            && l.DateCreated <= dateTo,
-                                            l => l.Window.Application);
-
-            Double totalDuration = (from l in logs
-                                    select (Double?)l.Duration).Sum() ?? 0;
-
-            var appSummaries = (from l in logs
-                                group l by l.Window.Application.Name into grp
-                                select grp)
-                                 .Select(g => new AppSummary
-                                 {
-                                     AppName = g.Key,
-                                     Date = selectedDate.ToShortDateString(),
-                                     Usage = (g.Sum(l => l.Duration) / totalDuration),
-                                     Duration = g.Sum(l => l.Duration)
-                                 })
-                                 .OrderByDescending(t => t.Duration);
-
-            var first = appSummaries.FirstOrDefault();
-            if (first != null)
-                first.IsSelected = true;
-
-            return appSummaries;
+            return appSummaryUseCase.Get(selectedDate);
         }
 
 

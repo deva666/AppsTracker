@@ -11,7 +11,7 @@ namespace AppsTracker.Domain.UseCases
         IEnumerable<T> Get();
     }
 
-    public interface IUseCase<TIn, out TOut>
+    public interface IUseCase<in TIn, out TOut>
     {
         IEnumerable<TOut> Get(TIn arg);
     }
