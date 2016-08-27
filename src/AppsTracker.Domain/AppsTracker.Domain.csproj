@@ -48,11 +48,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\Web\FeedbackReportService.cs" />
-    <Compile Include="Service\Web\IFeedbackReportService.cs" />
-    <Compile Include="Service\Web\IReleaseNotesService.cs" />
-    <Compile Include="Service\Web\ReleaseNotesParser.cs" />
-    <Compile Include="Service\Web\ReleaseNotesService.cs" />
+    <Compile Include="Web\Feedback.cs" />
+    <Compile Include="Web\FeedbackReportService.cs" />
+    <Compile Include="Web\IFeedbackReportService.cs" />
+    <Compile Include="Web\IReleaseNotesService.cs" />
+    <Compile Include="Web\ReleaseNote.cs" />
+    <Compile Include="Web\ReleaseNotesParser.cs" />
+    <Compile Include="Web\ReleaseNotesService.cs" />
     <Compile Include="Settings\ISqlSettingsService.cs" />
     <Compile Include="Settings\SqlSettingsService.cs" />
   </ItemGroup>

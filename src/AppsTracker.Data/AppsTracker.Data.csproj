@@ -130,15 +130,13 @@
     <Compile Include="Models\DbModels\Usage.cs" />
     <Compile Include="Models\DbModels\Uzer.cs" />
     <Compile Include="Models\DbModels\Window.cs" />
-    <Compile Include="Models\Feedback.cs" />
-    <Compile Include="Models\ReleaseNote.cs" />
     <Compile Include="Models\UIModels\ViewModels.cs" />
     <Compile Include="Models\UIModels\UsageModels.cs" />
     <Compile Include="Service\Categories\CategoriesService.cs" />
     <Compile Include="Service\Categories\ICategoriesService.cs" />
-    <Compile Include="Repository\DataService.cs" />
+    <Compile Include="Repository\Repository.cs" />
     <Compile Include="Service\IBaseService.cs" />
-    <Compile Include="Repository\IDataService.cs" />
+    <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Service\Settings\IXmlSettingsService.cs" />
     <Compile Include="Service\Settings\XmlSettingsService.cs" />
     <Compile Include="Utils\AppInfo.cs" />
