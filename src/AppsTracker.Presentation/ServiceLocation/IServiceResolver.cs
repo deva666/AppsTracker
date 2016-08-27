@@ -6,8 +6,8 @@ namespace AppsTracker.ServiceLocation
     {
         void Initialize(System.ComponentModel.Composition.Hosting.ExportProvider container);
 
-        T Resolve<T>() where T : AppsTracker.Data.Repository.IBaseService;
+        T Resolve<T>();
 
-        T Resolve<T>(string contract) where T : AppsTracker.Data.Repository.IBaseService;
+        T Resolve<T>(string contract);
     }
 }

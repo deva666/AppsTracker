@@ -1,16 +1,17 @@
 ﻿using System;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AppsTracker.Tests.Data
 {
     [TestClass]
-    public class XmlSettingsServiceTests
+    public class UserSettingsServiceTests
     {
         [TestMethod]
         public void TestInitialize()
         {
-            var settingsService = new XmlSettingsService();
+            var settingsService = new UserSettingsService();
             settingsService.Initialize();
 
             Assert.IsNotNull(settingsService.AppSettings);

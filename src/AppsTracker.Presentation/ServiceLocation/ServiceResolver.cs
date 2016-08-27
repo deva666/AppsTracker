@@ -23,7 +23,7 @@ namespace AppsTracker.ServiceLocation
             this.container = container;
         }
 
-        public T Resolve<T>() where T : IBaseService
+        public T Resolve<T>() 
         {
             if (container == null)
                 throw new InvalidOperationException("Container not initialized");
@@ -31,7 +31,7 @@ namespace AppsTracker.ServiceLocation
             return container.GetExportedValue<T>();
         }
 
-        public T Resolve<T>(string contract) where T : IBaseService
+        public T Resolve<T>(string contract) 
         {
             if (container == null)
                 throw new InvalidOperationException("Container not initialized");

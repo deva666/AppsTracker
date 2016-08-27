@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 
-namespace AppsTracker.Data.XmlSettings
+namespace AppsTracker.Domain.Settings
 {
     public abstract class XmlSettingsBase
     {

@@ -10,9 +10,8 @@ using System;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Xml.Linq;
-using AppsTracker.Data.XmlSettings;
 
-namespace AppsTracker.Data.Repository
+namespace AppsTracker.Domain.Settings
 {
     [Export(typeof(IUserSettingsService))]
     public sealed class UserSettingsService : IUserSettingsService

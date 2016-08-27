@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Settings;
 using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.Views

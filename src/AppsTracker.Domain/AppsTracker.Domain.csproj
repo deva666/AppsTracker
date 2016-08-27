@@ -50,14 +50,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\User\AppSettings.cs" />
     <Compile Include="Settings\User\DaysViewSettings.cs" />
-    <Compile Include="Settings\User\IXmlSettingsService.cs" />
+    <Compile Include="Settings\User\IUserSettingsService.cs" />
     <Compile Include="Settings\User\LimitsSettings.cs" />
     <Compile Include="Settings\User\LogsViewSettings.cs" />
     <Compile Include="Settings\User\MainWindowSettings.cs" />
     <Compile Include="Settings\User\ScreenshotsViewSettings.cs" />
     <Compile Include="Settings\User\SettingsNodeAttribute.cs" />
     <Compile Include="Settings\User\XmlSettingsBase.cs" />
-    <Compile Include="Settings\User\XmlSettingsService.cs" />
+    <Compile Include="Settings\User\UserSettingsService.cs" />
     <Compile Include="Web\Feedback.cs" />
     <Compile Include="Web\FeedbackReportService.cs" />
     <Compile Include="Web\IFeedbackReportService.cs" />
@@ -65,8 +65,8 @@
     <Compile Include="Web\ReleaseNote.cs" />
     <Compile Include="Web\ReleaseNotesParser.cs" />
     <Compile Include="Web\ReleaseNotesService.cs" />
-    <Compile Include="Settings\App\ISqlSettingsService.cs" />
-    <Compile Include="Settings\App\SqlSettingsService.cs" />
+    <Compile Include="Settings\App\IApplSettingsService.cs" />
+    <Compile Include="Settings\App\AppSettingsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AppsTracker.Common\AppsTracker.Common.csproj">

@@ -1,5 +1,5 @@
 ﻿
-namespace AppsTracker.Data.XmlSettings
+namespace AppsTracker.Domain.Settings
 {
     public sealed class LogsViewSettings : XmlSettingsBase
     {

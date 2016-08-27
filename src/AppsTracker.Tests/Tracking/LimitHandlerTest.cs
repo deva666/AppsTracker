@@ -2,6 +2,7 @@
 using AppsTracker.Common.Logging;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Settings;
 using AppsTracker.Tracking.Limits;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -14,7 +15,7 @@ namespace AppsTracker.Tests.Tracking
         [TestMethod]
         public void TestShowWarning()
         {
-            var xmlSettings = new XmlSettingsService();
+            var xmlSettings = new UserSettingsService();
             xmlSettings.Initialize();
 
             var logger = new Mock<ILogger>();
@@ -33,7 +34,7 @@ namespace AppsTracker.Tests.Tracking
         [TestMethod]
         public void TestShutdownApp()
         {
-            var xmlSettings = new XmlSettingsService();
+            var xmlSettings = new UserSettingsService();
             xmlSettings.Initialize();
 
             var logger = new Mock<ILogger>();
@@ -52,7 +53,7 @@ namespace AppsTracker.Tests.Tracking
         [TestMethod]
         public void TestShutdownAndWarn()
         {
-            var xmlSettings = new XmlSettingsService();
+            var xmlSettings = new UserSettingsService();
             xmlSettings.Initialize();
 
             var logger = new Mock<ILogger>();
@@ -71,7 +72,7 @@ namespace AppsTracker.Tests.Tracking
         [TestMethod]
         public void TestLimitDisabled()
         {
-            var xmlSettings = new XmlSettingsService();
+            var xmlSettings = new UserSettingsService();
             xmlSettings.Initialize();
 
             var logger = new Mock<ILogger>();

@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Settings;
 using AppsTracker.ServiceLocation;
 
 namespace AppsTracker.Views

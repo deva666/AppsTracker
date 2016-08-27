@@ -5,6 +5,7 @@ using AppsTracker.Common.Logging;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Settings;
 
 namespace AppsTracker.Tracking.Limits
 {

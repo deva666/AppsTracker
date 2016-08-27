@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using AppsTracker.Data.Models;
 
-namespace AppsTracker.Data.XmlSettings
+namespace AppsTracker.Domain.Settings
 {
     public sealed class LimitsSettings
     {

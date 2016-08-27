@@ -1,8 +1,7 @@
-﻿using AppsTracker.Data.XmlSettings;
-
-namespace AppsTracker.Data.Repository
+﻿
+namespace AppsTracker.Domain.Settings
 {
-    public interface IUserSettingsService : IBaseService
+    public interface IUserSettingsService 
     {
         AppSettings AppSettings { get; }
 
