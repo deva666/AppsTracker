@@ -27,6 +27,7 @@ namespace AppsTracker.ViewModels
     {
         private readonly IRepository repository;
         private readonly ITrackingService trackingService;
+        private readonly IUseCaseAsync<Aplication> appUseCase;
         private readonly IUseCase<String, Int32, AppSummary> appSummaryUseCase;
         private readonly IMediator mediator;
 
@@ -142,32 +143,25 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public AppDetailsViewModel(IUseCase<String, Int32, AppSummary> appSummaryUseCase,
-                                   IRepository repository,
+        public AppDetailsViewModel(IRepository repository, 
+                                   IUseCaseAsync<Aplication> appUseCase,
+                                   IUseCase<String, Int32, AppSummary> appSummaryUseCase,
                                    ITrackingService trackingService,
                                    IMediator mediator)
         {
+            this.appUseCase = appUseCase;
             this.appSummaryUseCase = appSummaryUseCase;
             this.repository = repository;
             this.trackingService = trackingService;
             this.mediator = mediator;
 
-            appList = new TaskObserver<IEnumerable<Aplication>>(GetApps, this);
+            appList = new TaskObserver<IEnumerable<Aplication>>(appUseCase.GetAsync, this);
             appSummaryList = new TaskRunner<IEnumerable<AppSummary>>(GetAppSummary, this);
             windowSummaryList = new TaskRunner<IEnumerable<WindowSummary>>(GetWindowSummary, this);
             windowDurationList = new TaskRunner<IEnumerable<WindowDurationOverview>>(GetWindowDuration, this);
 
             this.mediator.Register(MediatorMessages.APPLICATION_ADDED, new Action<Aplication>(ApplicationAdded));
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadAll));
-        }
-
-
-        private async Task<IEnumerable<Aplication>> GetApps()
-        {
-            return (await repository.GetFilteredAsync<Aplication>(a => a.User.UserID == trackingService.SelectedUserID
-                                                                && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= trackingService.DateFrom).Any()
-                                                                && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= trackingService.DateTo).Any()))
-                                                           .Distinct();
         }
 
         private IEnumerable<AppSummary> GetAppSummary()
