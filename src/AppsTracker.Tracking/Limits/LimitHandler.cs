@@ -12,13 +12,13 @@ namespace AppsTracker.Tracking.Limits
     internal sealed class LimitHandler : ILimitHandler
     {
         private readonly IMediator mediator;
-        private readonly IXmlSettingsService xmlSettingsService;
+        private readonly IUserSettingsService xmlSettingsService;
         private readonly ILogger logger;
         private readonly IShutdownService shutdownService;
 
         [ImportingConstructor]
         public LimitHandler(IMediator mediator,
-                            IXmlSettingsService xmlSettingsService,
+                            IUserSettingsService xmlSettingsService,
                             ILogger logger,
                             IShutdownService shutdownService)
         {

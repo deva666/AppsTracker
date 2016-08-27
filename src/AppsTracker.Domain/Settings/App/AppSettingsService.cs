@@ -12,12 +12,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
+using AppsTracker.Data.Repository;
 using Microsoft.Win32;
 
-namespace AppsTracker.Data.Repository
+namespace AppsTracker.Domain.Settings
 {
-    [Export(typeof(ISqlSettingsService))]
-    public sealed class SqlSettingsService : ISqlSettingsService
+    [Export(typeof(IAppSettingsService))]
+    public sealed class AppSettingsService : IAppSettingsService
     {
         private readonly IRepository repository;
 
@@ -32,7 +33,7 @@ namespace AppsTracker.Data.Repository
         }
 
         [ImportingConstructor]
-        public SqlSettingsService(IRepository repository)
+        public AppSettingsService(IRepository repository)
         {
             this.repository = repository;
             CreateSettings();

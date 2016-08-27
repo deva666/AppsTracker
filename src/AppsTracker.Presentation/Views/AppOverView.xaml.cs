@@ -7,12 +7,12 @@ namespace AppsTracker.Views
 {
     public partial class AppOverView : UserControl
     {
-        private readonly IXmlSettingsService xmlService;
+        private readonly IUserSettingsService xmlService;
 
         public AppOverView()
         {
             InitializeComponent();
-            xmlService = ServiceLocator.Instance.Resolve<IXmlSettingsService>();
+            xmlService = ServiceLocator.Instance.Resolve<IUserSettingsService>();
             var height = xmlService.LogsViewSettings.HorizontalSeparatorPosition;
             if (height != default(double))
                 rootLayout.RowDefinitions[1].Height = new GridLength(height);

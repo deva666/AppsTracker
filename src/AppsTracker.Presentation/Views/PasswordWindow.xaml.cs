@@ -7,6 +7,7 @@ using AppsTracker.Data.Repository;
 using AppsTracker.Widgets;
 using AppsTracker.Common.Utils;
 using AppsTracker.Service;
+using AppsTracker.Domain.Settings;
 
 namespace AppsTracker.Views
 {
@@ -15,11 +16,11 @@ namespace AppsTracker.Views
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class PasswordWindow : Window, IShell
     {
-        private readonly ISqlSettingsService settingsService;
+        private readonly IAppSettingsService settingsService;
         private readonly IWindowService windowService;
 
         [ImportingConstructor]
-        public PasswordWindow(ISqlSettingsService settingsService, IWindowService windowService)
+        public PasswordWindow(IAppSettingsService settingsService, IWindowService windowService)
         {
             InitializeComponent();
             this.settingsService = settingsService;

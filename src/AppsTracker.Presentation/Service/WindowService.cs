@@ -5,14 +5,15 @@ using System.Linq;
 using AppsTracker.Views;
 using AppsTracker.Widgets;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Settings;
 
 namespace AppsTracker.Service
 {
     [Export(typeof(IWindowService))]
     public sealed class WindowService : IWindowService
     {
-        private readonly ISqlSettingsService sqlSettingsService;
-        private readonly IXmlSettingsService xmlSettingsService;
+        private readonly IAppSettingsService sqlSettingsService;
+        private readonly IUserSettingsService xmlSettingsService;
         private readonly ITrayIcon trayIcon;
         private readonly IEnumerable<ExportFactory<IShell, IShellMetaData>> shellFactories;
 
@@ -22,8 +23,8 @@ namespace AppsTracker.Service
         private IShell limitNotifyWindow;
 
         [ImportingConstructor]
-        public WindowService(ISqlSettingsService sqlSettingsService,
-                             IXmlSettingsService xmlSettingsService,
+        public WindowService(IAppSettingsService sqlSettingsService,
+                             IUserSettingsService xmlSettingsService,
                              ITrayIcon trayIcon,
                              [ImportMany]IEnumerable<ExportFactory<IShell, IShellMetaData>> shellFactories,
                              MeasureProvider measureProvider)

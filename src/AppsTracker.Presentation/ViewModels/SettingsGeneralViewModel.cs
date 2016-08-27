@@ -14,6 +14,7 @@ using AppsTracker.Data.Repository;
 using AppsTracker.MVVM;
 using Microsoft.Win32;
 using AppsTracker.Service;
+using AppsTracker.Domain.Settings;
 
 namespace AppsTracker.ViewModels
 {
@@ -88,7 +89,7 @@ namespace AppsTracker.ViewModels
 
         [ImportingConstructor]
         public SettingsGeneralViewModel(IWindowService windowService,
-                                        ISqlSettingsService settingsService,
+                                        IAppSettingsService settingsService,
                                         IMediator mediator)
             : base(settingsService, mediator)
         {

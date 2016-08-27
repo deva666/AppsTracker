@@ -8,12 +8,12 @@ namespace AppsTracker.Views
 
     public partial class ScreenshotsView : UserControl
     {
-        private readonly IXmlSettingsService xmlService;
+        private readonly IUserSettingsService xmlService;
 
         public ScreenshotsView()
         {
             InitializeComponent();
-            xmlService = ServiceLocator.Instance.Resolve<IXmlSettingsService>();
+            xmlService = ServiceLocator.Instance.Resolve<IUserSettingsService>();
             var height = xmlService.ScreenshotsViewSettings.SeparatorPosition;
             if (height != default(double))
                 rootLayout.RowDefinitions[0].Height = new GridLength(height);

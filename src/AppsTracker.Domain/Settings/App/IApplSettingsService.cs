@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 
-namespace AppsTracker.Data.Repository
+namespace AppsTracker.Domain.Settings
 {
-    public interface ISqlSettingsService : IBaseService, INotifyPropertyChanged
+    public interface IAppSettingsService : INotifyPropertyChanged
     {
         Setting Settings { get; }
        

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using AppsTracker.MVVM;
 using AppsTracker.Data.Repository;
 using AppsTracker.Common.Communication;
+using AppsTracker.Domain.Settings;
 
 namespace AppsTracker.ViewModels
 {
@@ -66,7 +67,7 @@ namespace AppsTracker.ViewModels
         }
 
         [ImportingConstructor]
-        public SettingsTrackingViewModel(ISqlSettingsService settingsService, IMediator mediator)
+        public SettingsTrackingViewModel(IAppSettingsService settingsService, IMediator mediator)
             : base(settingsService, mediator)
         {
 

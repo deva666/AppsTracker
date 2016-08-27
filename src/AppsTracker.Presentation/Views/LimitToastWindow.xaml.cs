@@ -18,7 +18,7 @@ namespace AppsTracker.Views
     [ExportMetadata("ShellUse", "Limit toast window")]
     public partial class LimitToastWindow : System.Windows.Window, IShell
     {
-        private readonly IXmlSettingsService xmlSettingsService;
+        private readonly IUserSettingsService xmlSettingsService;
         private readonly IAppDurationCalc appDurationCalc;
         private readonly IMediator mediator;
 
@@ -28,7 +28,7 @@ namespace AppsTracker.Views
         private AppLimit currentLimit;
 
         [ImportingConstructor]
-        public LimitToastWindow(IXmlSettingsService xmlSettingsService,
+        public LimitToastWindow(IUserSettingsService xmlSettingsService,
                                 IAppDurationCalc appDurationCalc,
                                 IMediator mediator,
                                 MeasureProvider measureProvider)

@@ -19,6 +19,7 @@ using AppsTracker.Data.Repository;
 using AppsTracker.Common.Communication;
 using AppsTracker.Service.Web;
 using AppsTracker.Tracking;
+using AppsTracker.Domain.Settings;
 
 namespace AppsTracker.ViewModels
 {
@@ -27,8 +28,8 @@ namespace AppsTracker.ViewModels
     public sealed class MainViewModel : HostViewModel
     {
         private readonly IRepository dataService;
-        private readonly ISqlSettingsService settingsService;
-        private readonly IXmlSettingsService xmlSettingsService;
+        private readonly IAppSettingsService settingsService;
+        private readonly IUserSettingsService xmlSettingsService;
         private readonly ITrackingService trackingService;
         private readonly IReleaseNotesService releaseNotesService;
         private readonly IMediator mediator;
@@ -279,8 +280,8 @@ namespace AppsTracker.ViewModels
 
         [ImportingConstructor]
         public MainViewModel(IRepository dataService,
-                             ISqlSettingsService settingsService,
-                             IXmlSettingsService xmlSettingsService,
+                             IAppSettingsService settingsService,
+                             IUserSettingsService xmlSettingsService,
                              ITrackingService trackingService,
                              IReleaseNotesService releaseNotesService,
                              IMediator mediator,

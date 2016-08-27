@@ -16,6 +16,7 @@ using AppsTracker.Widgets;
 using AppsTracker.Common.Communication;
 using AppsTracker.Service;
 using AppsTracker.Tracking;
+using AppsTracker.Domain.Settings;
 
 namespace AppsTracker.ViewModels
 {
@@ -98,7 +99,7 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public SettingsScreenshotsViewModel(ISqlSettingsService settingsService, 
+        public SettingsScreenshotsViewModel(IAppSettingsService settingsService, 
                                             ITrackingService trackingService,
                                             IRepository dataService,
                                             IWindowService windowService, 

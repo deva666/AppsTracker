@@ -8,12 +8,12 @@ namespace AppsTracker.Views
 {
     public partial class AppDetailsView : UserControl
     {
-        private readonly IXmlSettingsService xmlService;
+        private readonly IUserSettingsService xmlService;
 
         public AppDetailsView()
         {
             InitializeComponent();
-            xmlService = ServiceLocator.Instance.Resolve<IXmlSettingsService>();
+            xmlService = ServiceLocator.Instance.Resolve<IUserSettingsService>();
             var width = xmlService.LogsViewSettings.VerticalSeparatorPosition;
             if (width != default(double))
                 rootLayout.ColumnDefinitions[0].Width = new GridLength(width);

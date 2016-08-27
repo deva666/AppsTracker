@@ -2,7 +2,7 @@
 
 namespace AppsTracker.Data.Repository
 {
-    public interface IXmlSettingsService : IBaseService
+    public interface IUserSettingsService : IBaseService
     {
         AppSettings AppSettings { get; }
 

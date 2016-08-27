@@ -22,6 +22,7 @@ using AppsTracker.Data.Repository;
 using AppsTracker.Common.Communication;
 using AppsTracker.Service;
 using AppsTracker.Tracking;
+using AppsTracker.Domain.Settings;
 
 namespace AppsTracker.ViewModels
 {
@@ -32,7 +33,7 @@ namespace AppsTracker.ViewModels
         private const int MAX_FILE_NAME_LENGTH = 245;
 
         private readonly IRepository dataService;
-        private readonly ISqlSettingsService settingsService;
+        private readonly IAppSettingsService settingsService;
         private readonly ITrackingService trackingService;
         private readonly IWindowService windowService;
         private readonly IMediator mediator;
@@ -107,7 +108,7 @@ namespace AppsTracker.ViewModels
 
         [ImportingConstructor]
         public ScreenshotsViewModel(IRepository dataService,
-                                    ISqlSettingsService settingsService,
+                                    IAppSettingsService settingsService,
                                     ITrackingService trackingService,
                                     IWindowService windowService,
                                     IMediator mediator)

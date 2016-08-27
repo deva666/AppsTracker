@@ -10,6 +10,7 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Settings;
 using AppsTracker.Service;
 
 namespace AppsTracker.Controllers
@@ -19,16 +20,16 @@ namespace AppsTracker.Controllers
     {
         private readonly IAppearanceController appearanceController;
         private readonly ITrackingController trackingController;
-        private readonly IXmlSettingsService xmlSettingsService;
-        private readonly ISqlSettingsService sqlSettingsService;
+        private readonly IUserSettingsService xmlSettingsService;
+        private readonly IAppSettingsService sqlSettingsService;
         private readonly IRepository dataService;
         private readonly IWindowService windowService;
 
         [ImportingConstructor]
         public ApplicationController(IAppearanceController appearanceController,
                                      ITrackingController trackingController,
-                                     ISqlSettingsService sqlSettingsService,
-                                     IXmlSettingsService xmlSettingsService,
+                                     IAppSettingsService sqlSettingsService,
+                                     IUserSettingsService xmlSettingsService,
                                      IRepository dataService,
                                      IWindowService windowService)
         {

@@ -12,6 +12,7 @@ using System.Windows.Input;
 using AppsTracker.Common.Communication;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Settings;
 using AppsTracker.MVVM;
 using AppsTracker.Service;
 
@@ -31,7 +32,7 @@ namespace AppsTracker.ViewModels
 
         [ImportingConstructor]
         public SettingsPasswordViewModel(IWindowService windowService,
-                                         ISqlSettingsService settingsService,
+                                         IAppSettingsService settingsService,
                                          IMediator mediator)
             : base(settingsService, mediator)
         {

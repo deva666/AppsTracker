@@ -11,6 +11,7 @@ using System.Windows.Input;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Settings;
 
 namespace AppsTracker.MVVM
 {
@@ -18,7 +19,7 @@ namespace AppsTracker.MVVM
     {
         private const string SETTINGS_SAVED_MSG = "settings saved";
 
-        private readonly ISqlSettingsService settingsService;
+        private readonly IAppSettingsService settingsService;
         private readonly IMediator mediator;
 
         private string infoMessage;
@@ -52,7 +53,7 @@ namespace AppsTracker.MVVM
         }
 
 
-        public SettingsBaseViewModel(ISqlSettingsService settingsService, IMediator mediator)
+        public SettingsBaseViewModel(IAppSettingsService settingsService, IMediator mediator)
         {
             this.settingsService = settingsService;
             this.mediator = mediator;

@@ -4,7 +4,9 @@ using AppsTracker.Common.Communication;
 using AppsTracker.Communication;
 using AppsTracker.Controllers;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Settings;
 using AppsTracker.Service;
+//using AppsTracker.Domain.Settings;
 //using AppsTracker.Service.Web;
 using AppsTracker.Tests.Fakes;
 using AppsTracker.Tracking;
@@ -20,8 +22,8 @@ namespace AppsTracker.Tests
     {
         protected readonly Mock<IRepository> dataService = new Mock<IRepository>();
         protected readonly Mock<ITrackingService> trackingService = new Mock<ITrackingService>();
-        protected readonly Mock<ISqlSettingsService> settingsService = new Mock<ISqlSettingsService>();
-        protected readonly Mock<IXmlSettingsService> xmlSettingsService = new Mock<IXmlSettingsService>();
+        protected readonly Mock<IAppSettingsService> settingsService = new Mock<IAppSettingsService>();
+        protected readonly Mock<IUserSettingsService> xmlSettingsService = new Mock<IUserSettingsService>();
         protected readonly Mock<ICategoriesService> categoriesService = new Mock<ICategoriesService>();
         protected readonly Mock<IWindowService> windowService = new Mock<IWindowService>();
         protected readonly Mock<IAppChangedNotifier> windowChangedNotifier = new Mock<IAppChangedNotifier>();

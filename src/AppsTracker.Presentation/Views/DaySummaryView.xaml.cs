@@ -7,12 +7,12 @@ namespace AppsTracker.Views
 {
     public partial class DaySummaryView : UserControl
     {
-        private readonly IXmlSettingsService xmlService;
+        private readonly IUserSettingsService xmlService;
 
         public DaySummaryView()
         {
             InitializeComponent();
-            xmlService = ServiceLocator.Instance.Resolve<IXmlSettingsService>();
+            xmlService = ServiceLocator.Instance.Resolve<IUserSettingsService>();
             var height = xmlService.DaysViewSettings.SeparatorPosition;
             if (height != default(double))
                 rootLayout.RowDefinitions[1].Height = new GridLength(height);
