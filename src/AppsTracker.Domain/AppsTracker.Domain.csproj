@@ -58,6 +58,10 @@
     <Compile Include="Settings\User\SettingsNodeAttribute.cs" />
     <Compile Include="Settings\User\XmlSettingsBase.cs" />
     <Compile Include="Settings\User\UserSettingsService.cs" />
+    <Compile Include="Tracking\ITrackingService.cs" />
+    <Compile Include="Tracking\TrackingService.cs" />
+    <Compile Include="UseCases\AppDurationOverviewUseCase.cs" />
+    <Compile Include="UseCases\IUseCase.cs" />
     <Compile Include="Web\Feedback.cs" />
     <Compile Include="Web\FeedbackReportService.cs" />
     <Compile Include="Web\IFeedbackReportService.cs" />
