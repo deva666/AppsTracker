@@ -62,6 +62,7 @@
     <Compile Include="Tracking\TrackingService.cs" />
     <Compile Include="UseCases\AppDurationOverviewUseCase.cs" />
     <Compile Include="UseCases\AppSummaryUseCase.cs" />
+    <Compile Include="UseCases\CategoryDurationUseCase.cs" />
     <Compile Include="UseCases\IUseCase.cs" />
     <Compile Include="UseCases\LogSummaryUseCase.cs" />
     <Compile Include="UseCases\UsageByTimeUseCase.cs" />

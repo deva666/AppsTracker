@@ -8,18 +8,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Repository;
-using AppsTracker.Data.Utils;
 using AppsTracker.Domain.UseCases;
 using AppsTracker.MVVM;
-using AppsTracker.Tracking;
 
 namespace AppsTracker.ViewModels
 {
@@ -27,12 +22,11 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class DaySummaryViewModel : ViewModelBase
     {
-        private readonly IRepository repository;
-        private readonly ITrackingService trackingService;
         private readonly IUseCase<DateTime, LogSummary> logSummaryUseCase;
         private readonly IUseCase<DateTime, AppSummary> appSummaryUseCase;
         private readonly IUseCase<String, DateTime, WindowSummary> windowSummaryUseCase;
         private readonly IUseCase<DateTime, UsageByTime> usageByTimeUseCase;
+        private readonly IUseCase<DateTime, CategoryDuration> categoryDurationUseCase;
         private readonly IMediator mediator;
 
 
@@ -145,20 +139,18 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public DaySummaryViewModel(IRepository repository,
-                                   ITrackingService trackingService,
-                                   IUseCase<DateTime, LogSummary> logSummaryUseCase,
+        public DaySummaryViewModel(IUseCase<DateTime, LogSummary> logSummaryUseCase,
                                    IUseCase<DateTime, AppSummary> appSummaryUseCase,
                                    IUseCase<String, DateTime, WindowSummary> windowSummaryUseCase,
                                    IUseCase<DateTime, UsageByTime> usageByTimeUseCase,
+                                   IUseCase<DateTime, CategoryDuration> categoryDurationUseCase,
                                    IMediator mediator)
         {
-            this.repository = repository;
-            this.trackingService = trackingService;
             this.logSummaryUseCase = logSummaryUseCase;
             this.appSummaryUseCase = appSummaryUseCase;
             this.windowSummaryUseCase = windowSummaryUseCase;
             this.usageByTimeUseCase = usageByTimeUseCase;
+            this.categoryDurationUseCase = categoryDurationUseCase;
             this.mediator = mediator;
 
             logsList = new TaskRunner<IEnumerable<LogSummary>>(GetLogSummary, this);
@@ -211,32 +203,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<CategoryDuration> GetCategories()
         {
-            var dateTo = selectedDate.AddDays(1);
-
-            var categories = repository.GetFiltered<AppCategory>(c => c.Applications.Count > 0 &&
-                       c.Applications.Where(a => a.UserID == trackingService.SelectedUserID).Any() &&
-                       c.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated >= selectedDate).Any() &&
-                       c.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated <= dateTo).Any(),
-                      c => c.Applications.Select(a => a.Windows.Select(w => w.Logs)),
-                      c => c.Applications);
-
-            var categoryModels = new List<CategoryDuration>();
-            foreach (var cat in categories)
-            {
-                var totalDuration = cat.Applications
-                    .SelectMany(a => a.Windows)
-                    .SelectMany(w => w.Logs)
-                    .Where(l => l.DateCreated >= selectedDate && l.DateCreated <= dateTo)
-                    .Sum(l => l.Duration);
-
-                categoryModels.Add(new CategoryDuration()
-                {
-                    Name = cat.Name,
-                    TotalTime = Math.Round(new TimeSpan(totalDuration).TotalHours, 2)
-                });
-            }
-
-            return categoryModels;
+            return categoryDurationUseCase.Get(selectedDate);
         }
 
 
