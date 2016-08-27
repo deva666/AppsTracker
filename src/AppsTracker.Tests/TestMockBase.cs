@@ -5,7 +5,7 @@ using AppsTracker.Communication;
 using AppsTracker.Controllers;
 using AppsTracker.Data.Service;
 using AppsTracker.Service;
-using AppsTracker.Service.Web;
+//using AppsTracker.Service.Web;
 using AppsTracker.Tests.Fakes;
 using AppsTracker.Tracking;
 using AppsTracker.Tracking.Helpers;
@@ -30,7 +30,7 @@ namespace AppsTracker.Tests
         protected readonly Mock<IScreenshotFactory> screenshotFactory = new Mock<IScreenshotFactory>();
         protected readonly Mock<IAppChangedNotifier> appChangedNotifier = new Mock<IAppChangedNotifier>();
         protected readonly Mock<IScreenshotTracker> screenshotTracker = new Mock<IScreenshotTracker>();
-        protected readonly Mock<IReleaseNotesService> releaseNotesService = new Mock<IReleaseNotesService>();
+        //protected readonly Mock<IReleaseNotesService> releaseNotesService = new Mock<IReleaseNotesService>();
         protected readonly Mock<IAppearanceController> appearanceController = new Mock<IAppearanceController>();
         protected readonly Mock<ITrackingController> trackingController = new Mock<ITrackingController>();
         protected readonly Mock<IAppDurationCalc> appDurationCalc = new Mock<IAppDurationCalc>();

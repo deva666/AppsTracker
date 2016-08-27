@@ -1,0 +1,285 @@
+﻿<UserControl x:Class="AppsTracker.Views.ScreenshotsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:AppsTracker"
+             xmlns:controls="clr-namespace:AppsTracker.Widgets"
+             xmlns:data="clr-namespace:AppsTracker.Data.Models;assembly=AppsTracker.Data"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             mc:Ignorable="d"
+             d:DesignHeight="700"
+             d:DesignWidth="900">
+    <UserControl.Resources>
+        <data:Log x:Key="logData" />
+        <local:ConvertDuration x:Key="convertDuration" />
+        <local:ConvertHasKeyLogs x:Key="convertHasKeyLogs" />
+        <local:ConvertIntToVisibilityBackwards x:Key="convertIntToVisBack" />
+        <local:ConvertBoolToVisibility x:Key="convertVisibility" />
+        <local:ConvertSelectedIndexToBool x:Key="convertSelectedIndexToBool" />
+        <local:SelectedScreenshotsConverter x:Key="selectedScreenshotsConverter" />
+        <DataTemplate x:Key="appTemplate">
+            <Label Style="{DynamicResource GVLabelStyle}"
+                   Content="{Binding Window.Application.Name}">
+                <Label.RenderTransform>
+                    <TranslateTransform />
+                </Label.RenderTransform>
+                <Label.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard Storyboard="{StaticResource ElementFadeIn}" />
+                    </EventTrigger>
+                </Label.Triggers>
+                <Label.ToolTip>
+                    <ToolTip Style="{DynamicResource ToolTipStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Label Style="{DynamicResource LabelStyle}"
+                                   Grid.Row="0"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Left"
+                                   Content="Company:" />
+                            <Label Style="{DynamicResource LabelStyle}"
+                                   Grid.Row="0"
+                                   Grid.Column="1"
+                                   Content="{Binding Path=Window.Application.Company, Mode=OneWay}" />
+
+                            <Label Style="{DynamicResource LabelStyle}"
+                                   Grid.Row="1"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Left"
+                                   Content="Version:" />
+                            <Label Style="{DynamicResource LabelStyle}"
+                                   Grid.Row="1"
+                                   Grid.Column="1"
+                                   Content="{Binding Path=Window.Application.Version, Mode=OneWay}" />
+
+                            <Label Style="{DynamicResource LabelStyle}"
+                                   Grid.Row="2"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Left"
+                                   Content="Description:" />
+                            <Label Style="{DynamicResource LabelStyle}"
+                                   Grid.Row="2"
+                                   Grid.Column="1"
+                                   Content="{Binding Path=Window.Application.Description, Mode=OneWay}" />
+
+                            <Label Style="{DynamicResource LabelStyle}"
+                                   Grid.Row="3"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Left"
+                                   Content="File name:" />
+                            <Label Style="{DynamicResource LabelStyle}"
+                                   Grid.Row="3"
+                                   Grid.Column="1"
+                                   Content="{Binding Path=Window.Application.FileName, Mode=OneWay}" />
+                            <Label Style="{DynamicResource LabelStyle}"
+                                   Grid.Row="4"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Left"
+                                   Content="Total time logged:" />
+                            <Label Style="{DynamicResource LabelStyle}"
+                                   Grid.Row="4"
+                                   Grid.Column="1"
+                                   Content="{Binding Path=Duration, Mode=OneWay, Converter={StaticResource convertDuration}}" />
+                        </Grid>
+                    </ToolTip>
+                </Label.ToolTip>
+            </Label>
+        </DataTemplate>
+        <DataTemplate x:Key="wndTemplate">
+            <Label Style="{DynamicResource GVLabelStyle}"
+                   Content="{Binding Window.Title}">
+                <Label.RenderTransform>
+                    <TranslateTransform />
+                </Label.RenderTransform>
+                <Label.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard Storyboard="{StaticResource ElementFadeIn}" />
+                    </EventTrigger>
+                </Label.Triggers>
+            </Label>
+        </DataTemplate>
+        <DataTemplate x:Key="dateTemplate">
+            <Label Style="{DynamicResource GVLabelStyle}"
+                   Content="{Binding DateCreated}">
+                <Label.RenderTransform>
+                    <TranslateTransform />
+                </Label.RenderTransform>
+                <Label.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard Storyboard="{StaticResource ElementFadeIn}" />
+                    </EventTrigger>
+                </Label.Triggers>
+            </Label>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid Name="rootLayout">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <controls:progressBar Visibility="{Binding Working, Converter={StaticResource convertVisibility}}"
+                              Grid.RowSpan="2"
+                              Grid.ColumnSpan="5" />
+        <controls:FilterableListView Background="Transparent"
+                                     x:Name="mainContentHolder"
+                                     ItemsSource="{Binding LogList.Result, Mode=OneWay}"
+                                     BorderBrush="{x:Null}"
+                                     BorderThickness="0"
+                                     ItemContainerStyle="{DynamicResource ListViewItemStyle}"
+                                     Margin="10,0,10,0"
+                                     FilterType="{StaticResource logData}"
+                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                     VirtualizingStackPanel.IsVirtualizing="True"
+                                     VirtualizingStackPanel.IsVirtualizingWhenGrouping="True"
+                                     VirtualizingStackPanel.ScrollUnit="Item"
+                                     VirtualizingStackPanel.CacheLengthUnit="Page"                                     
+                                     SelectionMode="Single"
+                                     SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+
+            <controls:FilterableListView.View>
+                <GridView ColumnHeaderContainerStyle="{DynamicResource HeaderStyle}">
+                    <controls:SortableGridViewColumn Header="App"
+                                                     CellTemplate="{StaticResource appTemplate}"
+                                                     SortPropertyName="AppName" />
+                    <controls:SortableGridViewColumn Header="Window"
+                                                     CellTemplate="{StaticResource wndTemplate}"
+                                                     SortPropertyName="WindowTitle" />
+                    <controls:SortableGridViewColumn Header="Date"
+                                                     CellTemplate="{StaticResource dateTemplate}"
+                                                     SortPropertyName="DateCreated" />
+
+                </GridView>
+            </controls:FilterableListView.View>
+        </controls:FilterableListView >
+
+        <Label Style="{DynamicResource LabelStyle}"
+               Content="{Binding ElementName=mainContentHolder, Path=Items.Count}"
+               ContentStringFormat=" {0} items"
+               Grid.Row="1"
+               HorizontalAlignment="Right"
+               Margin="0,0,20,0" />
+
+        <controls:ScrollingContentControl Grid.Row="1"
+                                          HorizontalAlignment="Center"
+                                          InfoContent="{Binding InfoContent, Mode=TwoWay}">
+            <Label Style="{DynamicResource LabelStyle}" />
+        </controls:ScrollingContentControl>
+
+        <controls:FaderContentControl  FaderVisibility="{Binding ElementName=mainContentHolder, Path=SelectedIndex
+                                               ,Converter={StaticResource convertSelectedIndexToBool}}"
+                                       Margin="10,0,220,0"
+                                       Grid.Row="1"
+                                       HorizontalAlignment="Right">
+            <ToggleButton>
+                <ToggleButton.Template>
+                    <ControlTemplate>
+                        <Label Content="Start Slideshow"
+                               Style="{DynamicResource SelectableLabelStyle}">
+                            <Label.ToolTip>
+                                <ToolTip Style="{DynamicResource ToolTipStyle}">
+                                    Start slideshow with selected logs in new Window
+                                </ToolTip>
+                            </Label.ToolTip>
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding OpenScreenshotViewerCommand}"
+                                              CommandParameter="{Binding ElementName=mainContentHolder, Path=SelectedItems}" />
+                            </Label.InputBindings>
+                        </Label>
+                    </ControlTemplate>
+                </ToggleButton.Template>
+            </ToggleButton>
+        </controls:FaderContentControl>
+        <Thumb Grid.Row="2"
+               Background="Transparent"
+               DragDelta="Thumb_DragDelta_1"
+               Margin="10,0,10,0"
+               Cursor="SizeNS">
+            <Thumb.Template>
+                <ControlTemplate>
+                    <Border BorderThickness="1.5"
+                            BorderBrush="{StaticResource 2ndBackgroundBrush}">
+                    </Border>
+                </ControlTemplate>
+            </Thumb.Template>
+
+        </Thumb>
+       
+        <controls:FaderContentControl FadeVertically="True"
+                                      Visibility="{Binding ElementName=mainContentHolder, Path=SelectedIndex, Converter={StaticResource convertIntToVisBack}}"
+                                      Grid.Row="3"
+                                      ClipToBounds="True">
+
+            <ListBox Name="lbScreenShots"
+                     Background="Transparent"
+                     ItemsSource="{Binding Path=SelectedItem.Screenshots, ElementName=mainContentHolder, Mode=OneWay}"
+                     ItemContainerStyle="{DynamicResource ListBoxImageStyle}"
+                     Margin="5"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     BorderThickness="0"
+                     VirtualizingStackPanel.VirtualizationMode="Recycling"
+                     VirtualizingStackPanel.IsVirtualizing="True">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel HorizontalAlignment="Left"
+                                   Margin="10,5,10,5"
+                                   Orientation="Horizontal"
+                                   VerticalAlignment="Top" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+        </controls:FaderContentControl>
+        <controls:FaderContentControl Visibility="{Binding ElementName=mainContentHolder, Path=SelectedIndex, Converter={StaticResource convertIntToVisBack}}"
+                                      Grid.Row="4"
+                                      ClipToBounds="True"
+                                      HorizontalAlignment="Right"
+                                      Margin="0,0,120,0">
+            <StackPanel Orientation="Horizontal">
+                <ToggleButton Grid.Row="4">
+                    <ToggleButton.Template>
+                        <ControlTemplate>
+                            <Label Content="Delete selected"
+                                   Style="{DynamicResource SelectableLabelStyle}">
+                                <Label.InputBindings>
+                                    <MouseBinding Gesture="LeftClick"
+                                                  Command="{Binding DeleteSelectedScreenshotsCommand}" />
+                                </Label.InputBindings>
+                            </Label>
+                        </ControlTemplate>
+                    </ToggleButton.Template>
+                </ToggleButton>
+                <ToggleButton Margin="20,0,0,0">
+                    <ToggleButton.Template>
+                        <ControlTemplate>
+                            <Label Content="Save selected to a file"
+                                   Style="{DynamicResource SelectableLabelStyle}">
+                                <Label.InputBindings>
+                                    <MouseBinding Gesture="LeftClick"
+                                                  Command="{Binding SaveSelectedScreenshotsCommand}" />
+                                </Label.InputBindings>
+                            </Label>
+                        </ControlTemplate>
+                    </ToggleButton.Template>
+                </ToggleButton>
+            </StackPanel>
+        </controls:FaderContentControl>
+    </Grid>
+
+</UserControl>

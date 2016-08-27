@@ -107,9 +107,9 @@ namespace AppsTracker.Data.Service
 
         private void NotifyPropertyChanged()
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("Settings"));
+            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("Settings"));
         }
+
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }

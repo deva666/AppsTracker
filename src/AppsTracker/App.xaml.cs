@@ -56,7 +56,7 @@ namespace AppsTracker
             SynchronizationContext.SetSynchronizationContext(context);
 
             container = GetCompositionContainer();
-            ServiceLocation.ServiceLocator.Instance.Initialize(container);
+            //ServiceLocation.ServiceLocator.Instance.Initialize(container);
 
             bool autostart = args.Where(a => a.ToUpper().Contains(Constants.CMD_ARGS_AUTOSTART)).Count() > 0;
             applicationController = container.GetExportedValue<ApplicationController>();
