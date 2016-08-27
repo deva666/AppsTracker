@@ -20,7 +20,7 @@ namespace AppsTracker.ViewModels
     {
         private const string SETTINGS_SAVED_MSG = "settings saved";
 
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
@@ -127,11 +127,11 @@ namespace AppsTracker.ViewModels
         }
 
         [ImportingConstructor]
-        public SettingsLimitsViewModel(IRepository dataService,
+        public SettingsLimitsViewModel(IRepository repository,
                                        ITrackingService trackingService,
                                        IMediator mediator)
         {
-            this.dataService = dataService;
+            this.repository = repository;
             this.trackingService = trackingService;
             this.mediator = mediator;
 
@@ -147,7 +147,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<Aplication> GetApps()
         {
-            var apps = dataService.GetFiltered<Aplication>(a => a.User.UserID == trackingService.SelectedUserID,
+            var apps = repository.GetFiltered<Aplication>(a => a.User.UserID == trackingService.SelectedUserID,
                                                            a => a.Limits)
                                                         .ToList()
                                                         .Distinct();
@@ -201,9 +201,9 @@ namespace AppsTracker.ViewModels
             var modifiedLimits = appsToSave.SelectMany(a => a.ObservableLimits)
                 .Where(l => l.AppLimitID != default(int) && l.HasChanges);
             var newLimits = appsToSave.SelectMany(a => a.ObservableLimits).Where(l => l.AppLimitID == default(int));
-            var saveModifiedTask = dataService.SaveModifiedEntityRangeAsync(modifiedLimits);
-            var saveNewTask = dataService.SaveNewEntityRangeAsync(newLimits);
-            var deleteTask = dataService.DeleteEntityRangeAsync(limitsToDelete.Where(l => l.AppLimitID != default(int)));
+            var saveModifiedTask = repository.SaveModifiedEntityRangeAsync(modifiedLimits);
+            var saveNewTask = repository.SaveNewEntityRangeAsync(newLimits);
+            var deleteTask = repository.DeleteEntityRangeAsync(limitsToDelete.Where(l => l.AppLimitID != default(int)));
 
             await Task.WhenAll(saveModifiedTask, saveNewTask, deleteTask);
 

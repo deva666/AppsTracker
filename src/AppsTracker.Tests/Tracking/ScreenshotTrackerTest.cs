@@ -78,7 +78,7 @@ namespace AppsTracker.Tests.Tracking
         {
             return new ScreenshotTracker(screenshotFactory.Object,
                                          syncContext,
-                                         dataService.Object);
+                                         repository.Object);
         }
     }
 }

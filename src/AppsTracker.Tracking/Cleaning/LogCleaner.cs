@@ -20,7 +20,7 @@ namespace AppsTracker.Tracking
     {
         private int daysTreshold;
 
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
 
         public int Days
         {
@@ -33,14 +33,14 @@ namespace AppsTracker.Tracking
         }
 
         [ImportingConstructor]
-        public LogCleaner(IRepository dataService)
+        public LogCleaner(IRepository repository)
         {
-            this.dataService = dataService;
+            this.repository = repository;
         }
 
         public async Task Clean()
         {
-            await dataService.DeleteOldLogsAsync(daysTreshold);
+            await repository.DeleteOldLogsAsync(daysTreshold);
         }
 
         public void Dispose()

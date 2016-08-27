@@ -21,7 +21,7 @@ namespace AppsTracker.Tracking
     public sealed class TrackingService : ITrackingService
     {
         private readonly IMediator mediator;
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
 
         private volatile bool isDateRangeFiltered;
 
@@ -87,10 +87,10 @@ namespace AppsTracker.Tracking
 
         [ImportingConstructor]
         public TrackingService(IMediator mediator,
-                               IRepository dataService)
+                               IRepository repository)
         {
             this.mediator = mediator;
-            this.dataService = dataService;
+            this.repository = repository;
         }
 
         public void Initialize(Uzer uzer, int usageID)
@@ -124,7 +124,7 @@ namespace AppsTracker.Tracking
 
         public DateTime GetFirstDate(int userID)
         {
-            var usages = dataService.GetOrdered<Usage, DateTime>(u => u.UserID == userID,
+            var usages = repository.GetOrdered<Usage, DateTime>(u => u.UserID == userID,
                                                                  u => u.UsageStart,
                                                                  1);
             if (usages.Count() == 0)

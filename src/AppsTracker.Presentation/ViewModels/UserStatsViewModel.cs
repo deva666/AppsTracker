@@ -24,7 +24,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class UserStatsViewModel : ViewModelBase
     {
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
@@ -83,11 +83,11 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public UserStatsViewModel(IRepository dataService,
+        public UserStatsViewModel(IRepository repository,
                                   ITrackingService trackingService,
                                   IMediator mediator)
         {
-            this.dataService = dataService;
+            this.repository = repository;
             this.trackingService = trackingService;
             this.mediator = mediator;
 
@@ -107,7 +107,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<UserLoggedTime> GetContent()
         {
-            var logins = dataService.GetFiltered<Usage>(u => u.UsageStart >= trackingService.DateFrom
+            var logins = repository.GetFiltered<Usage>(u => u.UsageStart >= trackingService.DateFrom
                                                     && u.UsageStart <= trackingService.DateTo
                                                     && u.UsageType == UsageTypes.Login,
                                                     u => u.User);
@@ -133,7 +133,7 @@ namespace AppsTracker.ViewModels
 
             List<UsageOverview> collection = new List<UsageOverview>();
 
-            var logins = dataService.GetFiltered<Usage>(u => u.User.Name == user.Username
+            var logins = repository.GetFiltered<Usage>(u => u.User.Name == user.Username
                                                  && u.UsageStart >= trackingService.DateFrom
                                                  && u.UsageStart <= trackingService.DateTo
                                                  && u.UsageType == UsageTypes.Login);
@@ -151,15 +151,15 @@ namespace AppsTracker.ViewModels
             {
                 var usageIDs = grp.Select(u => u.UsageID);
 
-                idles = dataService.GetFiltered<Usage>(u => u.SelfUsageID.HasValue
+                idles = repository.GetFiltered<Usage>(u => u.SelfUsageID.HasValue
                                                   && usageIDs.Contains(u.SelfUsageID.Value)
                                                   && u.UsageType == UsageTypes.Idle);
 
-                lockeds = dataService.GetFiltered<Usage>(u => u.SelfUsageID.HasValue
+                lockeds = repository.GetFiltered<Usage>(u => u.SelfUsageID.HasValue
                                                   && usageIDs.Contains(u.SelfUsageID.Value)
                                                   && u.UsageType == UsageTypes.Locked);
 
-                stoppeds = dataService.GetFiltered<Usage>(u => u.SelfUsageID.HasValue
+                stoppeds = repository.GetFiltered<Usage>(u => u.SelfUsageID.HasValue
                                                   && usageIDs.Contains(u.SelfUsageID.Value)
                                                   && u.UsageType == UsageTypes.Stopped);
 

@@ -22,7 +22,7 @@ namespace AppsTracker.Controllers
         private readonly ITrackingController trackingController;
         private readonly IUserSettingsService xmlSettingsService;
         private readonly IAppSettingsService sqlSettingsService;
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
         private readonly IWindowService windowService;
 
         [ImportingConstructor]
@@ -30,14 +30,14 @@ namespace AppsTracker.Controllers
                                      ITrackingController trackingController,
                                      IAppSettingsService sqlSettingsService,
                                      IUserSettingsService xmlSettingsService,
-                                     IRepository dataService,
+                                     IRepository repository,
                                      IWindowService windowService)
         {
             this.appearanceController = appearanceController;
             this.trackingController = trackingController;
             this.xmlSettingsService = xmlSettingsService;
             this.sqlSettingsService = sqlSettingsService;
-            this.dataService = dataService;
+            this.repository = repository;
             this.windowService = windowService;
         }
 
@@ -49,9 +49,9 @@ namespace AppsTracker.Controllers
             appearanceController.Initialize(sqlSettingsService.Settings);
             trackingController.Initialize(sqlSettingsService.Settings);
 
-            dataService.CheckUnfinishedEntries();
-            dataService.DbSizeCritical += OnDbSizeCritical;
-            dataService.GetDBSize();
+            repository.CheckUnfinishedEntries();
+            repository.DbSizeCritical += OnDbSizeCritical;
+            repository.GetDBSize();
 
             if (autoStart == false)
             {
@@ -77,7 +77,7 @@ namespace AppsTracker.Controllers
             windowService.ShowMessageDialog("Database size has reached the maximum allowed value"
                 + Environment.NewLine + "Please run the screenshot cleaner from the settings menu to continue capturing screenshots.", false);
 
-            dataService.DbSizeCritical -= OnDbSizeCritical;
+            repository.DbSizeCritical -= OnDbSizeCritical;
         }
 
         public void Shutdown()

@@ -55,7 +55,7 @@ namespace AppsTracker.Tests.Core.Controllers
                                             trackingController.Object,
                                             settingsService.Object,
                                             xmlSettingsService.Object,
-                                            dataService.Object,
+                                            repository.Object,
                                             windowService.Object);
         }
     }

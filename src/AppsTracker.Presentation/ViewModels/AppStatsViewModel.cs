@@ -23,7 +23,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class AppStatsViewModel : ViewModelBase
     {
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
@@ -74,11 +74,11 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public AppStatsViewModel(IRepository dataService,
+        public AppStatsViewModel(IRepository repository,
                                  ITrackingService trackingService,
                                  IMediator mediator)
         {
-            this.dataService = dataService;
+            this.repository = repository;
             this.trackingService = trackingService;
             this.mediator = mediator;
 
@@ -98,7 +98,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<AppDuration> GetApps()
         {
-            var logs = dataService.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
                                         && l.DateCreated >= trackingService.DateFrom
                                         && l.DateCreated <= trackingService.DateTo,
                                         l => l.Window.Application,
@@ -120,7 +120,7 @@ namespace AppsTracker.ViewModels
             if (app == null)
                 return null;
 
-            var logs = dataService.GetFiltered<Log>(l => l.Window.Application.Name == app.Name
+            var logs = repository.GetFiltered<Log>(l => l.Window.Application.Name == app.Name
                                                && l.Window.Application.User.UserID == trackingService.SelectedUserID
                                                && l.DateCreated >= trackingService.DateFrom
                                                && l.DateCreated <= trackingService.DateTo);

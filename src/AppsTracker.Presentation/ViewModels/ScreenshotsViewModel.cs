@@ -32,7 +32,7 @@ namespace AppsTracker.ViewModels
     {
         private const int MAX_FILE_NAME_LENGTH = 245;
 
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
         private readonly IAppSettingsService settingsService;
         private readonly ITrackingService trackingService;
         private readonly IWindowService windowService;
@@ -107,13 +107,13 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public ScreenshotsViewModel(IRepository dataService,
+        public ScreenshotsViewModel(IRepository repository,
                                     IAppSettingsService settingsService,
                                     ITrackingService trackingService,
                                     IWindowService windowService,
                                     IMediator mediator)
         {
-            this.dataService = dataService;
+            this.repository = repository;
             this.settingsService = settingsService;
             this.trackingService = trackingService;
             this.windowService = windowService;
@@ -127,7 +127,7 @@ namespace AppsTracker.ViewModels
 
         private async Task<IEnumerable<Log>> GetLogs()
         {
-            return await dataService.GetFilteredAsync<Log>(l => l.Screenshots.Count > 0
+            return await repository.GetFilteredAsync<Log>(l => l.Screenshots.Count > 0
                                                 && l.DateCreated >= trackingService.DateFrom
                                                 && l.DateCreated <= trackingService.DateTo
                                                 && l.Window.Application.UserID == trackingService.SelectedUserID
@@ -156,7 +156,7 @@ namespace AppsTracker.ViewModels
 
             var selectedShots = selectedItem.Screenshots.Where(s => s.IsSelected);
             var count = selectedShots.Count();
-            await dataService.DeleteScreenshots(selectedShots);
+            await repository.DeleteScreenshots(selectedShots);
             InfoContent = string.Format("Deleted {0}", count);
             logList.Reload();
         }

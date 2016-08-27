@@ -11,24 +11,24 @@ namespace AppsTracker.Tracking.Helpers
     [Export(typeof(IUsageProcessor))]
     internal sealed class UsageProcessor : IUsageProcessor
     {
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
         private readonly ITrackingService trackingService;
         private readonly IDictionary<UsageTypes, Usage> usageTypesMap = new Dictionary<UsageTypes, Usage>();
 
         private Usage loginUsage;
 
         [ImportingConstructor]
-        public UsageProcessor(IRepository dataService,
+        public UsageProcessor(IRepository repository,
                               ITrackingService trackingService)
         {
-            this.dataService = dataService;
+            this.repository = repository;
             this.trackingService = trackingService;
         }
 
         public Usage LoginUser(int userId)
         {
             var login = new Usage() { UserID = userId, UsageEnd = DateTime.Now, UsageType = UsageTypes.Login, IsCurrent = true };
-            dataService.SaveNewEntity(login);
+            repository.SaveNewEntity(login);
             loginUsage = login;
             return login;
         }
@@ -54,7 +54,7 @@ namespace AppsTracker.Tracking.Helpers
             usage.UsageEnd = DateTime.Now;
             usage.IsCurrent = false;
             usageTypesMap.Remove(usageType);
-            dataService.SaveNewEntity(usage);
+            repository.SaveNewEntity(usage);
         }
 
         public void EndAllUsages()
@@ -66,7 +66,7 @@ namespace AppsTracker.Tracking.Helpers
             }
             loginUsage.IsCurrent = false;
             loginUsage.UsageEnd = DateTime.Now;
-            dataService.SaveModifiedEntity(loginUsage);
+            repository.SaveModifiedEntity(loginUsage);
         }
     }
 }

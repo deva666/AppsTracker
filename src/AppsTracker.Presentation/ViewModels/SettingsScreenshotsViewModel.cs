@@ -26,7 +26,7 @@ namespace AppsTracker.ViewModels
     {
         private readonly ITrackingService trackingService;
         private readonly IWindowService windowService;
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
 
         public override string Title
         {
@@ -49,7 +49,7 @@ namespace AppsTracker.ViewModels
         {
             get
             {
-                return changeScreenshotsCommand ?? (changeScreenshotsCommand = new DelegateCommand(ChangeScreenshots, o => dataService.DBSizeOperational));
+                return changeScreenshotsCommand ?? (changeScreenshotsCommand = new DelegateCommand(ChangeScreenshots, o => repository.DBSizeOperational));
             }
         }
 
@@ -101,13 +101,13 @@ namespace AppsTracker.ViewModels
         [ImportingConstructor]
         public SettingsScreenshotsViewModel(IAppSettingsService settingsService, 
                                             ITrackingService trackingService,
-                                            IRepository dataService,
+                                            IRepository repository,
                                             IWindowService windowService, 
                                             IMediator mediator)
             : base(settingsService, mediator)
         {
             this.trackingService = trackingService;
-            this.dataService = dataService;
+            this.repository = repository;
             this.windowService = windowService;
         }
 

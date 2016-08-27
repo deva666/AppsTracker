@@ -24,7 +24,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class AppDetailsViewModel : ViewModelBase
     {
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
@@ -140,11 +140,11 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public AppDetailsViewModel(IRepository dataService,
+        public AppDetailsViewModel(IRepository repository,
                                    ITrackingService trackingService,
                                    IMediator mediator)
         {
-            this.dataService = dataService;
+            this.repository = repository;
             this.trackingService = trackingService;
             this.mediator = mediator;
 
@@ -160,7 +160,7 @@ namespace AppsTracker.ViewModels
 
         private async Task<IEnumerable<Aplication>> GetApps()
         {
-            return (await dataService.GetFilteredAsync<Aplication>(a => a.User.UserID == trackingService.SelectedUserID
+            return (await repository.GetFilteredAsync<Aplication>(a => a.User.UserID == trackingService.SelectedUserID
                                                                 && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= trackingService.DateFrom).Any()
                                                                 && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= trackingService.DateTo).Any()))
                                                            .Distinct();
@@ -172,7 +172,7 @@ namespace AppsTracker.ViewModels
             if (app == null)
                 return null;
 
-            var logs = dataService.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
                                                 && l.DateCreated >= trackingService.DateFrom
                                                 && l.DateCreated <= trackingService.DateTo,
                                                 l => l.Window.Application);
@@ -233,7 +233,7 @@ namespace AppsTracker.ViewModels
 
             var selectedDates = AppSummaryList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
 
-            var logs = dataService.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
                                                && l.Window.Application.Name == selectedApp.AppName,
                                                l => l.Window);
 
@@ -270,7 +270,7 @@ namespace AppsTracker.ViewModels
 
             var selectedDates = AppSummaryList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
             
-            var logs = dataService.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
                                                 && l.Window.Application.Name == selectedApp.AppName,
                                                 l => l.Window);
 

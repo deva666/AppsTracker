@@ -27,7 +27,7 @@
 //        [TestInitialize]
 //        public void Init()
 //        {
-//            dataService.Setup(d => d.GetFiltered<Uzer>(u => true)).Returns(new List<Uzer>());
+//            repository.Setup(d => d.GetFiltered<Uzer>(u => true)).Returns(new List<Uzer>());
 //            trackingService.Setup(t => t.DateFrom).Returns(DateTime.Now.AddDays(-10));
 //            trackingService.Setup(t => t.DateTo).Returns(DateTime.Now);
 //            settingsService.Setup(s => s.Settings).Returns(setting);
@@ -39,7 +39,7 @@
 //            var statisticsHostVMFactory = GetStatisticsHostVMFactory();
 //            var settingsHostVMFactory = GetSettingsHostVMFactory();
 
-//            mainViewModel = new MainViewModel(dataService.Object,
+//            mainViewModel = new MainViewModel(repository.Object,
 //                settingsService.Object,
 //                xmlSettingsService.Object,
 //                trackingService.Object,
@@ -56,7 +56,7 @@
 //            var statisticsHostVMFactory = GetStatisticsHostVMFactory();
 //            var settingsHostVMFactory = GetSettingsHostVMFactory();
 
-//            return new MainViewModel(dataService.Object,
+//            return new MainViewModel(repository.Object,
 //                settingsService.Object,
 //                xmlSettingsService.Object,
 //                trackingService.Object,

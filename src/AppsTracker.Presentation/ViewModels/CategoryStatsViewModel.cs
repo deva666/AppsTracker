@@ -23,7 +23,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class CategoryStatsViewModel : ViewModelBase
     {
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
@@ -72,11 +72,11 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public CategoryStatsViewModel(IRepository dataService,
+        public CategoryStatsViewModel(IRepository repository,
                                       ITrackingService trackingService,
                                       IMediator mediator)
         {
-            this.dataService = dataService;
+            this.repository = repository;
             this.trackingService = trackingService;
             this.mediator = mediator;
 
@@ -92,7 +92,7 @@ namespace AppsTracker.ViewModels
             var dateTo = trackingService.DateFrom.AddDays(1);
             var categoryModels = new List<CategoryDuration>();
 
-            var categories = dataService.GetFiltered<AppCategory>(c => c.Applications.Count > 0
+            var categories = repository.GetFiltered<AppCategory>(c => c.Applications.Count > 0
                         && c.Applications.Where(a => a.UserID == trackingService.SelectedUserID)
                                          .Any()
                         && c.Applications.SelectMany(a => a.Windows)
@@ -133,7 +133,7 @@ namespace AppsTracker.ViewModels
             if (category == null)
                 return null;
 
-            var logs = dataService.GetFiltered<Log>(l => l.Window.Application.Categories.Any(c => c.Name == category.Name)
+            var logs = repository.GetFiltered<Log>(l => l.Window.Application.Categories.Any(c => c.Name == category.Name)
                                                && l.Window.Application.UserID == trackingService.SelectedUserID
                                                && l.DateCreated >= trackingService.DateFrom
                                                && l.DateCreated <= trackingService.DateTo);

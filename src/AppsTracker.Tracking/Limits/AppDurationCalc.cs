@@ -12,12 +12,12 @@ namespace AppsTracker.Tracking.Limits
     [Export(typeof(IAppDurationCalc))]
     public sealed class AppDurationCalc : IAppDurationCalc
     {
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
 
         [ImportingConstructor]
-        public AppDurationCalc(IRepository dataService)
+        public AppDurationCalc(IRepository repository)
         {
-            this.dataService = dataService;
+            this.repository = repository;
         }
 
         public async Task<long> GetDuration(String appName, LimitSpan span)
@@ -39,7 +39,7 @@ namespace AppsTracker.Tracking.Limits
 
         private async Task<long> SumDuration(String appName, Expression<Func<Log, bool>> filter)
         {
-            var appsList = await dataService.GetFilteredAsync<Aplication>(a => a.Name == appName
+            var appsList = await repository.GetFilteredAsync<Aplication>(a => a.Name == appName
                                                                            && a.Windows.SelectMany(w => w.Logs)
                                                                                        .AsQueryable().Where(filter).Any(),
                                                                            a => a.Windows,

@@ -27,7 +27,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class MainViewModel : HostViewModel
     {
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
         private readonly IAppSettingsService settingsService;
         private readonly IUserSettingsService xmlSettingsService;
         private readonly ITrackingService trackingService;
@@ -101,7 +101,7 @@ namespace AppsTracker.ViewModels
 
         public decimal DBSize
         {
-            get { return dataService.GetDBSize(); }
+            get { return repository.GetDBSize(); }
         }
 
 
@@ -279,7 +279,7 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public MainViewModel(IRepository dataService,
+        public MainViewModel(IRepository repository,
                              IAppSettingsService settingsService,
                              IUserSettingsService xmlSettingsService,
                              ITrackingService trackingService,
@@ -289,7 +289,7 @@ namespace AppsTracker.ViewModels
                              ExportFactory<StatisticsHostViewModel> statisticsVMFactory,
                              ExportFactory<SettingsHostViewModel> settingsVMFactory)
         {
-            this.dataService = dataService;
+            this.repository = repository;
             this.settingsService = settingsService;
             this.xmlSettingsService = xmlSettingsService;
             this.trackingService = trackingService;
@@ -302,7 +302,7 @@ namespace AppsTracker.ViewModels
 
             SelectedChild = GetChild<DataHostViewModel>();
 
-            multipleUsers = dataService.GetFiltered<Uzer>(u => u.UserID > 0).Count() > 1;
+            multipleUsers = repository.GetFiltered<Uzer>(u => u.UserID > 0).Count() > 1;
 
             if (!xmlSettingsService.AppSettings.DisableNotifyForNewVersion)
             {
@@ -337,7 +337,7 @@ namespace AppsTracker.ViewModels
 
         private void GetUsers()
         {
-            userCollection = dataService.GetFiltered<Uzer>(u => u.UserID > 0);
+            userCollection = repository.GetFiltered<Uzer>(u => u.UserID > 0);
         }
 
 

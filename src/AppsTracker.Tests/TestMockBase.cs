@@ -20,7 +20,7 @@ namespace AppsTracker.Tests
 {
     public abstract class TestMockBase
     {
-        protected readonly Mock<IRepository> dataService = new Mock<IRepository>();
+        protected readonly Mock<IRepository> repository = new Mock<IRepository>();
         protected readonly Mock<ITrackingService> trackingService = new Mock<ITrackingService>();
         protected readonly Mock<IAppSettingsService> settingsService = new Mock<IAppSettingsService>();
         protected readonly Mock<IUserSettingsService> xmlSettingsService = new Mock<IUserSettingsService>();
@@ -45,7 +45,7 @@ namespace AppsTracker.Tests
             var tupleFactory =
                 new Func<Tuple<AppDetailsViewModel, Action>>(
                     () => new Tuple<AppDetailsViewModel, Action>(
-                        new AppDetailsViewModel(dataService.Object,
+                        new AppDetailsViewModel(repository.Object,
                             trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -57,7 +57,7 @@ namespace AppsTracker.Tests
             var tupleFactory =
                 new Func<Tuple<ScreenshotsViewModel, Action>>(
                     () => new Tuple<ScreenshotsViewModel, Action>(
-                        new ScreenshotsViewModel(dataService.Object,
+                        new ScreenshotsViewModel(repository.Object,
                             settingsService.Object,
                             trackingService.Object,
                             windowService.Object,
@@ -72,7 +72,7 @@ namespace AppsTracker.Tests
             var tupleFactory =
                 new Func<Tuple<DaySummaryViewModel, Action>>(
                     () => new Tuple<DaySummaryViewModel, Action>(
-                        new DaySummaryViewModel(dataService.Object,
+                        new DaySummaryViewModel(repository.Object,
                             trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -102,7 +102,7 @@ namespace AppsTracker.Tests
                 new Func<Tuple<UserStatsViewModel, Action>>(
                     () => new Tuple<UserStatsViewModel, Action>(
                         new UserStatsViewModel(
-                            dataService.Object,
+                            repository.Object,
                             trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -116,7 +116,7 @@ namespace AppsTracker.Tests
                 new Func<Tuple<AppStatsViewModel, Action>>(
                     () => new Tuple<AppStatsViewModel, Action>(
                         new AppStatsViewModel(
-                            dataService.Object,
+                            repository.Object,
                             trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -130,7 +130,7 @@ namespace AppsTracker.Tests
                 new Func<Tuple<DailyAppUsageViewModel, Action>>(
                     () => new Tuple<DailyAppUsageViewModel, Action>(
                         new DailyAppUsageViewModel(
-                            dataService.Object,
+                            repository.Object,
                             trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -145,7 +145,7 @@ namespace AppsTracker.Tests
                 new Func<Tuple<ScreenshotsStatsViewModel, Action>>(
                     () => new Tuple<ScreenshotsStatsViewModel, Action>(
                         new ScreenshotsStatsViewModel(
-                            dataService.Object,
+                            repository.Object,
                             trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -159,7 +159,7 @@ namespace AppsTracker.Tests
                 new Func<Tuple<CategoryStatsViewModel, Action>>(
                     () => new Tuple<CategoryStatsViewModel, Action>(
                         new CategoryStatsViewModel(
-                            dataService.Object,
+                            repository.Object,
                             trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -220,7 +220,7 @@ namespace AppsTracker.Tests
                     () => new Tuple<SettingsScreenshotsViewModel, Action>(
                         new SettingsScreenshotsViewModel(settingsService.Object,
                             trackingService.Object,
-                            dataService.Object,
+                            repository.Object,
                             windowService.Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -272,7 +272,7 @@ namespace AppsTracker.Tests
             var tupleFactory =
                 new Func<Tuple<SettingsLimitsViewModel, Action>>(
                     () => new Tuple<SettingsLimitsViewModel, Action>(
-                        new SettingsLimitsViewModel(dataService.Object,
+                        new SettingsLimitsViewModel(repository.Object,
                             trackingService.Object,
                             mediator),
                             ExportFactoryContextRelease));

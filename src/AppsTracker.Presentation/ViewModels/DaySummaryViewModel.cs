@@ -26,7 +26,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class DaySummaryViewModel : ViewModelBase
     {
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
@@ -140,11 +140,11 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public DaySummaryViewModel(IRepository dataService,
+        public DaySummaryViewModel(IRepository repository,
                                    ITrackingService trackingService,
                                    IMediator mediator)
         {
-            this.dataService = dataService;
+            this.repository = repository;
             this.trackingService = trackingService;
             this.mediator = mediator;
 
@@ -172,12 +172,12 @@ namespace AppsTracker.ViewModels
         {
             var dateTo = selectedDate.AddDays(1);
 
-            var logsTask = dataService.GetFilteredAsync<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logsTask = repository.GetFilteredAsync<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
                                && l.DateCreated >= selectedDate
                                && l.DateCreated <= dateTo,
                                l => l.Window.Application);
 
-            var usagesTask = dataService.GetFilteredAsync<Usage>(u => u.User.UserID == trackingService.SelectedUserID
+            var usagesTask = repository.GetFilteredAsync<Usage>(u => u.User.UserID == trackingService.SelectedUserID
                                      && u.UsageStart >= selectedDate
                                      && u.UsageEnd <= dateTo
                                      && u.UsageType != UsageTypes.Login);
@@ -213,7 +213,7 @@ namespace AppsTracker.ViewModels
         private IEnumerable<AppSummary> GetAppsSummary()
         {
             var dateTo = selectedDate.AddDays(1);
-            var logs = dataService.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
                                             && l.DateCreated >= selectedDate
                                             && l.DateCreated <= dateTo,
                                             l => l.Window.Application);
@@ -249,7 +249,7 @@ namespace AppsTracker.ViewModels
 
             var nextDay = selectedDate.AddDays(1);
 
-            var logs = dataService.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
                                                          && l.DateCreated >= selectedDate
                                                          && l.DateCreated <= nextDay
                                                          && l.Window.Application.Name == model.AppName,
@@ -275,7 +275,7 @@ namespace AppsTracker.ViewModels
             var nextDay = fromDay.AddDays(1d);
             var today = DateTime.Now.Date;
 
-            var logins = dataService.GetFiltered<Usage>(u => u.User.UserID == trackingService.SelectedUserID
+            var logins = repository.GetFiltered<Usage>(u => u.User.UserID == trackingService.SelectedUserID
                                             && ((u.UsageStart >= fromDay && u.UsageStart <= nextDay)
                                                     || (u.IsCurrent && u.UsageStart < fromDay && today >= fromDay)
                                                     || (u.IsCurrent == false && u.UsageStart <= fromDay && u.UsageEnd >= fromDay))
@@ -283,7 +283,7 @@ namespace AppsTracker.ViewModels
 
             var usageIDs = logins.Select(u => u.UsageID).ToList();
 
-            var allUsages = dataService.GetFiltered<Usage>(u => u.SelfUsageID.HasValue
+            var allUsages = repository.GetFiltered<Usage>(u => u.SelfUsageID.HasValue
                                                            && usageIDs.Contains(u.SelfUsageID.Value));
 
             var lockedUsages = allUsages.Where(u => u.UsageType == UsageTypes.Locked);
@@ -382,7 +382,7 @@ namespace AppsTracker.ViewModels
         {
             var dateTo = selectedDate.AddDays(1);
 
-            var categories = dataService.GetFiltered<AppCategory>(c => c.Applications.Count > 0 &&
+            var categories = repository.GetFiltered<AppCategory>(c => c.Applications.Count > 0 &&
                        c.Applications.Where(a => a.UserID == trackingService.SelectedUserID).Any() &&
                        c.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated >= selectedDate).Any() &&
                        c.Applications.SelectMany(a => a.Windows).SelectMany(w => w.Logs).Where(l => l.DateCreated <= dateTo).Any(),

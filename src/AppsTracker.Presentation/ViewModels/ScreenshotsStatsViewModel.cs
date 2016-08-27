@@ -23,7 +23,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class ScreenshotsStatsViewModel : ViewModelBase
     {
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
@@ -74,11 +74,11 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public ScreenshotsStatsViewModel(IRepository dataService,
+        public ScreenshotsStatsViewModel(IRepository repository,
                                          ITrackingService trackingService,
                                          IMediator mediator)
         {
-            this.dataService = dataService;
+            this.repository = repository;
             this.trackingService = trackingService;
             this.mediator = mediator;
 
@@ -91,7 +91,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<ScreenshotModel> GetScreenshots()
         {
-            var screenshots = dataService.GetFiltered<Screenshot>(
+            var screenshots = repository.GetFiltered<Screenshot>(
                                                 s => s.Log.Window.Application.User.UserID == trackingService.SelectedUserID
                                                 && s.Date >= trackingService.DateFrom
                                                 && s.Date <= trackingService.DateTo,
@@ -112,7 +112,7 @@ namespace AppsTracker.ViewModels
             if (model == null)
                 return null;
 
-            var screenshots = dataService.GetFiltered<Screenshot>(
+            var screenshots = repository.GetFiltered<Screenshot>(
                                                 s => s.Log.Window.Application.User.UserID == trackingService.SelectedUserID
                                                 && s.Date >= trackingService.DateFrom
                                                 && s.Date <= trackingService.DateTo

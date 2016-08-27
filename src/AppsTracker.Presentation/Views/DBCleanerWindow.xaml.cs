@@ -21,15 +21,15 @@ namespace AppsTracker.Views
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class DBCleanerWindow : Window, IShell
     {
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
         private readonly IWindowService windowService;
 
         [ImportingConstructor]
-        public DBCleanerWindow(IRepository dataService,
+        public DBCleanerWindow(IRepository repository,
                                IWindowService windowService)
         {
             InitializeComponent();
-            this.dataService = dataService;
+            this.repository = repository;
             this.windowService = windowService;
         }
 
@@ -45,7 +45,7 @@ namespace AppsTracker.Views
                 return;
 
             overlayGrd.Visibility = Visibility.Visible;
-            int count = await dataService.DeleteOldScreenshotsAsync(days);
+            int count = await repository.DeleteOldScreenshotsAsync(days);
             overlayGrd.Visibility = Visibility.Collapsed;
             windowService.ShowMessageDialog(string.Format("Deleted {0} screenshots", count));
             Close();

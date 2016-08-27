@@ -15,7 +15,7 @@ namespace AppsTracker.Tracking.Limits
     internal sealed class LimitObserver : ITrackingModule
     {
         private readonly ITrackingService trackingService;
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
         private readonly IAppChangedNotifier appChangedNotifier;
         private readonly IMidnightNotifier midnightNotifier;
         private readonly ILimitHandler limitHandler;
@@ -35,7 +35,7 @@ namespace AppsTracker.Tracking.Limits
 
         [ImportingConstructor]
         public LimitObserver(ITrackingService trackingService,
-                             IRepository dataService,
+                             IRepository repository,
                              IAppChangedNotifier appChangedNotifier,
                              IMidnightNotifier midnightNotifier,
                              ILimitHandler limitHandler,
@@ -44,7 +44,7 @@ namespace AppsTracker.Tracking.Limits
                              ISyncContext syncContext)
         {
             this.trackingService = trackingService;
-            this.dataService = dataService;
+            this.repository = repository;
             this.appChangedNotifier = appChangedNotifier;
             this.midnightNotifier = midnightNotifier;
             this.limitHandler = limitHandler;
@@ -108,7 +108,7 @@ namespace AppsTracker.Tracking.Limits
 
         private void LoadAppLimits()
         {
-            var appsWithLimits = dataService.GetFiltered<Aplication>(a => a.Limits.Count > 0
+            var appsWithLimits = repository.GetFiltered<Aplication>(a => a.Limits.Count > 0
                                                                      && a.UserID == trackingService.UserID,
                                                                      a => a.Limits);
             appLimitsMap.Clear();

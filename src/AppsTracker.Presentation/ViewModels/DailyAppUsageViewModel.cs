@@ -22,7 +22,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class DailyAppUsageViewModel : ViewModelBase
     {
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
 
@@ -45,11 +45,11 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public DailyAppUsageViewModel(IRepository dataService,
+        public DailyAppUsageViewModel(IRepository repository,
                                       ITrackingService trackingService,
                                       IMediator mediator)
         {
-            this.dataService = dataService;
+            this.repository = repository;
             this.trackingService = trackingService;
             this.mediator = mediator;
 
@@ -61,7 +61,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<AppDurationOverview> GetApps()
         {
-            var logs = dataService.GetFiltered<Log>(
+            var logs = repository.GetFiltered<Log>(
                                           l => l.Window.Application.User.UserID == trackingService.SelectedUserID
                                           && l.DateCreated >= trackingService.DateFrom
                                           && l.DateCreated <= trackingService.DateTo,

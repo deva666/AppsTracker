@@ -21,7 +21,7 @@ namespace AppsTracker.Tracking
     {
         private bool isTrackingEnabled;
 
-        private readonly IRepository dataService;
+        private readonly IRepository repository;
         private readonly ITrackingService trackingService;
         private readonly IMediator mediator;
         private readonly IUsageProcessor usageProcessor;
@@ -32,13 +32,13 @@ namespace AppsTracker.Tracking
         private Setting settings;
 
         [ImportingConstructor]
-        public UsageTracker(IRepository dataService,
+        public UsageTracker(IRepository repository,
                             ITrackingService trackingService,
                             IMediator mediator,
                             IUsageProcessor usageProcessor,
                             ExportFactory<IIdleNotifier> idleNotifierFactory)
         {
-            this.dataService = dataService;
+            this.repository = repository;
             this.trackingService = trackingService;
             this.mediator = mediator;
             this.usageProcessor = usageProcessor;
@@ -110,11 +110,11 @@ namespace AppsTracker.Tracking
 
         private Uzer GetUzer(string name)
         {
-            var uzer = dataService.GetFiltered<Uzer>(u => u.Name == name).FirstOrDefault();
+            var uzer = repository.GetFiltered<Uzer>(u => u.Name == name).FirstOrDefault();
             if (uzer == null)
             {
                 uzer = new Uzer(name);
-                dataService.SaveNewEntity(uzer);
+                repository.SaveNewEntity(uzer);
             }
             return uzer;
         }
