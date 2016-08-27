@@ -29,6 +29,7 @@ namespace AppsTracker.ViewModels
         private readonly ITrackingService trackingService;
         private readonly IUseCaseAsync<Aplication> appUseCase;
         private readonly IUseCase<String, Int32, AppSummary> appSummaryUseCase;
+        private readonly IUseCase<String, IEnumerable<DateTime>, WindowSummary> windowSummaryUseCase;
         private readonly IMediator mediator;
 
         public override string Title
@@ -146,11 +147,13 @@ namespace AppsTracker.ViewModels
         public AppDetailsViewModel(IRepository repository, 
                                    IUseCaseAsync<Aplication> appUseCase,
                                    IUseCase<String, Int32, AppSummary> appSummaryUseCase,
+                                   IUseCase<String, IEnumerable<DateTime>, WindowSummary> windowSummaryUseCase,
                                    ITrackingService trackingService,
                                    IMediator mediator)
         {
             this.appUseCase = appUseCase;
             this.appSummaryUseCase = appSummaryUseCase;
+            this.windowSummaryUseCase = windowSummaryUseCase;
             this.repository = repository;
             this.trackingService = trackingService;
             this.mediator = mediator;
@@ -181,27 +184,7 @@ namespace AppsTracker.ViewModels
 
             var selectedDates = AppSummaryList.Result.Where(t => t.IsSelected).Select(t => t.DateTime);
 
-            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
-                                               && l.Window.Application.Name == selectedApp.AppName,
-                                               l => l.Window);
-
-            var logsInSelectedDateRange = logs.Where(l => selectedDates.Any(d => l.DateCreated >= d && l.DateCreated <= d.AddDays(1d)));
-
-            double totalDuration = logsInSelectedDateRange.Sum(l => l.Duration);
-
-            var result = (from l in logsInSelectedDateRange
-                          group l by l.Window.Title into grp
-                          select grp)
-                          .Select(g => new WindowSummary
-                          {
-                              Title = g.Key,
-                              Usage = (g.Sum(l => l.Duration) / totalDuration),
-                              Duration = g.Sum(l => l.Duration)
-                          })
-                          .OrderByDescending(t => t.Duration)
-                          .ToList();
-
-            return result;
+            return windowSummaryUseCase.Get(selectedApp.AppName, selectedDates);
         }
 
 

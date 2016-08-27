@@ -16,6 +16,7 @@ namespace AppsTracker.Domain.UseCases
         private readonly IRepository repository;
         private readonly ITrackingService trackingService;
 
+        [ImportingConstructor]
         public AppStatsUseCaseAsync(IRepository repository,
                                     ITrackingService trackingService)
         {
