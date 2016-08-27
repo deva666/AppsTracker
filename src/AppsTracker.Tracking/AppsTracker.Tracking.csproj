@@ -94,7 +94,7 @@
     <Compile Include="Cleaning\ILogCleaner.cs" />
     <Compile Include="Cleaning\LogCleaner.cs" />
     <Compile Include="Helpers\LazyInit.cs" />
-    <Compile Include="KeyboardHookArgs.cs" />
+    <Compile Include="Hooks\KeyboardHookArgs.cs" />
     <Compile Include="WinChangedArgs.cs" />
     <Compile Include="AppChangedArgs.cs" />
     <Compile Include="IAppChangedNotifier.cs" />
