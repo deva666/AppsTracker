@@ -6,7 +6,7 @@ using AppsTracker.Data.Models;
 
 namespace AppsTracker.Data.Repository
 {
-    public interface ICategoriesService : IDisposable, IBaseService
+    public interface ICategoriesService : IDisposable
     {
         Aplication ReloadApp(Aplication app);
 
