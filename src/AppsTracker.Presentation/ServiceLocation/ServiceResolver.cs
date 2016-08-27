@@ -4,7 +4,7 @@ using AppsTracker.Data.Service;
 
 namespace AppsTracker.ServiceLocation
 {
-    internal sealed class ServiceLocator : IServiceResolver
+    public sealed class ServiceLocator : IServiceResolver
     {
         private static Lazy<ServiceLocator> instance = new Lazy<ServiceLocator>(() => new ServiceLocator());
         public static ServiceLocator Instance

@@ -56,7 +56,7 @@ namespace AppsTracker
             SynchronizationContext.SetSynchronizationContext(context);
 
             container = GetCompositionContainer();
-            //ServiceLocation.ServiceLocator.Instance.Initialize(container);
+            ServiceLocation.ServiceLocator.Instance.Initialize(container);
 
             bool autostart = args.Where(a => a.ToUpper().Contains(Constants.CMD_ARGS_AUTOSTART)).Count() > 0;
             applicationController = container.GetExportedValue<ApplicationController>();
@@ -73,6 +73,7 @@ namespace AppsTracker
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Data.Service.IDataService).Assembly));
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Common.Communication.IMediator).Assembly));
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Tracking.ITrackingModule).Assembly));
+            //catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.)))
             var container = new CompositionContainer(catalog);
             var batch = new CompositionBatch();
             batch.AddExportedValue(container);
