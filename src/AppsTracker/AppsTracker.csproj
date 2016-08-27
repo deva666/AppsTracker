@@ -299,6 +299,10 @@
       <Project>{dfff3918-1c83-4acd-9fa3-87cba98db030}</Project>
       <Name>AppsTracker.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AppsTracker.Domain\AppsTracker.Domain.csproj">
+      <Project>{8bb65ef2-4c7a-4d54-b05e-48be173fcaa9}</Project>
+      <Name>AppsTracker.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AppsTracker.Presentation\AppsTracker.Presentation.csproj">
       <Project>{68f91735-c353-494c-b81c-61dc9215bd7e}</Project>
       <Name>AppsTracker.Presentation</Name>

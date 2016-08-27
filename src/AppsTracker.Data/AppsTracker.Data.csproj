@@ -139,9 +139,7 @@
     <Compile Include="Repository\DataService.cs" />
     <Compile Include="Service\IBaseService.cs" />
     <Compile Include="Repository\IDataService.cs" />
-    <Compile Include="Service\Settings\ISqlSettingsService.cs" />
     <Compile Include="Service\Settings\IXmlSettingsService.cs" />
-    <Compile Include="Service\Settings\SqlSettingsService.cs" />
     <Compile Include="Service\Settings\XmlSettingsService.cs" />
     <Compile Include="Utils\AppInfo.cs" />
     <Compile Include="Utils\RelayCommand.cs" />

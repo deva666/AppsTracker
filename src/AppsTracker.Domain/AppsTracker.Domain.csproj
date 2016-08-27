@@ -53,6 +53,8 @@
     <Compile Include="Service\Web\IReleaseNotesService.cs" />
     <Compile Include="Service\Web\ReleaseNotesParser.cs" />
     <Compile Include="Service\Web\ReleaseNotesService.cs" />
+    <Compile Include="Settings\ISqlSettingsService.cs" />
+    <Compile Include="Settings\SqlSettingsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AppsTracker.Common\AppsTracker.Common.csproj">

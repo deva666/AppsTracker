@@ -6,7 +6,7 @@ namespace AppsTracker.Tracking
     {
         public LogInfo LogInfo { get; private set; }
 
-        public AppChangedArgs(LogInfo logInfo)
+        public AppChangedArgs(LogInfo logInfo) : this()
         {
             LogInfo = logInfo;
         }
