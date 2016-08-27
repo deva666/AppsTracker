@@ -21,6 +21,11 @@ namespace AppsTracker.Domain.UseCases
         IEnumerable<TOut> Get(T1In arg1, T2In arg2);
     }
 
+    public interface IUseCase<in T1In, in T2In, in T3In, out TOut>
+    {
+        IEnumerable<TOut> Get(T1In arg1, T2In arg2, T3In arg3);
+    }
+
     public interface IUseCaseAsync<T>
     {
         Task<IEnumerable<T>> GetAsync();

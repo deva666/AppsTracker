@@ -68,6 +68,7 @@
     <Compile Include="UseCases\IUseCase.cs" />
     <Compile Include="UseCases\LogSummaryUseCase.cs" />
     <Compile Include="UseCases\UsageByTimeUseCase.cs" />
+    <Compile Include="UseCases\WindowDurationOverviewUseCase.cs" />
     <Compile Include="UseCases\WindowSummaryStatsUseCase.cs" />
     <Compile Include="UseCases\WindowSummaryUseCase.cs" />
     <Compile Include="Util\Extensions.cs" />
