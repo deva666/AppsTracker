@@ -16,6 +16,7 @@ namespace AppsTracker.Domain.Logs
         private readonly IRepository repository;
         private readonly ITrackingService trackingService;
 
+        [ImportingConstructor]
         public LogSummaryUseCase(IRepository repository,
                                  ITrackingService trackingService)
         {

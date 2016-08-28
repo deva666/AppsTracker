@@ -16,7 +16,7 @@ using AppsTracker.Service;
 namespace AppsTracker.Controllers
 {
     [Export()]
-    internal sealed class ApplicationController
+    public sealed class ApplicationController
     {
         private readonly IAppearanceController appearanceController;
         private readonly ITrackingController trackingController;

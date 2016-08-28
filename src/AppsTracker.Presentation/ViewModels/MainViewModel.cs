@@ -9,17 +9,16 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using AppsTracker.Data.Models;
-using AppsTracker.MVVM;
-using AppsTracker.Data.Repository;
 using AppsTracker.Common.Communication;
+using AppsTracker.Data.Models;
+using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Settings;
+using AppsTracker.MVVM;
 using AppsTracker.Service.Web;
 using AppsTracker.Tracking;
-using AppsTracker.Domain.Settings;
 
 namespace AppsTracker.ViewModels
 {

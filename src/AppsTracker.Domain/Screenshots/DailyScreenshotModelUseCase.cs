@@ -8,7 +8,7 @@ using AppsTracker.Tracking;
 
 namespace AppsTracker.Domain.Screenshots
 {
-    [Export(typeof(IUseCase<String, DailyScreenshotModelUseCase>))]
+    [Export(typeof(IUseCase<String, DailyScreenshotModel>))]
     public sealed class DailyScreenshotModelUseCase : IUseCase<String, DailyScreenshotModel>
     {
         private readonly IRepository repository;

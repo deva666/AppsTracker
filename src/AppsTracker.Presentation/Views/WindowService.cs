@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using AppsTracker.Domain.Settings;
 using AppsTracker.Views;
 using AppsTracker.Widgets;
-using AppsTracker.Data.Repository;
-using AppsTracker.Domain.Settings;
 
 namespace AppsTracker.Service
 {

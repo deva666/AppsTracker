@@ -8,7 +8,7 @@ using AppsTracker.Tracking;
 
 namespace AppsTracker.Domain.Windows
 {
-    [Export]
+    [Export(typeof(IUseCase<String, IEnumerable<String>, IEnumerable<DateTime>, WindowDurationOverview>))]
     public sealed class WindowDurationOverviewUseCase : IUseCase<String, IEnumerable<String>, IEnumerable<DateTime>, WindowDurationOverview>
     {
         private readonly IRepository repository;
