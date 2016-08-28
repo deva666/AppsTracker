@@ -19,6 +19,9 @@ using System.Windows.Input;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain;
+using AppsTracker.Domain.Logs;
+using AppsTracker.Domain.Screenshots;
 using AppsTracker.Domain.Settings;
 using AppsTracker.Domain.Tracking;
 using AppsTracker.MVVM;
@@ -34,6 +37,7 @@ namespace AppsTracker.ViewModels
 
         private readonly IRepository repository;
         private readonly IAppSettingsService settingsService;
+        private readonly IUseCaseAsync<LogModel> screenshotUseCase;
         private readonly ITrackingService trackingService;
         private readonly IWindowService windowService;
         private readonly IMediator mediator;
@@ -58,17 +62,17 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private Log selectedItem;
+        private LogModel selectedItem;
 
-        public Log SelectedItem
+        public LogModel SelectedItem
         {
             get { return selectedItem; }
             set { SetPropertyValue(ref selectedItem, value); }
         }
 
-        private readonly AsyncProperty<IEnumerable<Log>> logList;
+        private readonly AsyncProperty<IEnumerable<LogModel>> logList;
 
-        public AsyncProperty<IEnumerable<Log>> LogList
+        public AsyncProperty<IEnumerable<LogModel>> LogList
         {
             get { return logList; }
         }
@@ -109,6 +113,7 @@ namespace AppsTracker.ViewModels
         [ImportingConstructor]
         public ScreenshotsViewModel(IRepository repository,
                                     IAppSettingsService settingsService,
+                                    IUseCaseAsync<LogModel> screenshotUseCase,
                                     ITrackingService trackingService,
                                     IWindowService windowService,
                                     IMediator mediator)
@@ -116,24 +121,25 @@ namespace AppsTracker.ViewModels
             this.repository = repository;
             this.settingsService = settingsService;
             this.trackingService = trackingService;
+            this.screenshotUseCase = screenshotUseCase;
             this.windowService = windowService;
             this.mediator = mediator;
 
-            logList = new TaskObserver<IEnumerable<Log>>(GetLogs, this);
+            logList = new TaskObserver<IEnumerable<LogModel>>(screenshotUseCase.GetAsync, this);
 
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(logList.Reload));
         }
 
 
-        private async Task<IEnumerable<Log>> GetLogs()
-        {
-            return await repository.GetFilteredAsync<Log>(l => l.Screenshots.Count > 0
-                                                && l.DateCreated >= trackingService.DateFrom
-                                                && l.DateCreated <= trackingService.DateTo
-                                                && l.Window.Application.UserID == trackingService.SelectedUserID
-                                                , l => l.Screenshots
-                                                , l => l.Window.Application);
-        }
+        //private async Task<IEnumerable<Log>> GetLogs()
+        //{
+        //    return await repository.GetFilteredAsync<Log>(l => l.Screenshots.Count > 0
+        //                                        && l.DateCreated >= trackingService.DateFrom
+        //                                        && l.DateCreated <= trackingService.DateTo
+        //                                        && l.Window.Application.UserID == trackingService.SelectedUserID
+        //                                        , l => l.Screenshots
+        //                                        , l => l.Window.Application);
+        //}
 
 
         private void OpenScreenshotViewer(object parameter)
@@ -142,9 +148,9 @@ namespace AppsTracker.ViewModels
             if (collection == null)
                 return;
 
-            var logs = collection.Cast<Log>();
+            var logs = collection.Cast<LogModel>();
             var screenshotShell = windowService.GetShell("Screenshot viewer window");
-            screenshotShell.ViewArgument = logs.Where(l => l.Screenshots.Count > 0).SelectMany(l => l.Screenshots);
+            screenshotShell.ViewArgument = logs.Where(l => l.Screenshots.Count() > 0).SelectMany(l => l.Screenshots);
             screenshotShell.Show();
         }
 
@@ -156,7 +162,7 @@ namespace AppsTracker.ViewModels
 
             var selectedShots = selectedItem.Screenshots.Where(s => s.IsSelected);
             var count = selectedShots.Count();
-            await repository.DeleteScreenshots(selectedShots);
+            //await repository.DeleteScreenshots(selectedShots);
             InfoContent = string.Format("Deleted {0}", count);
             logList.Reload();
         }
@@ -190,7 +196,7 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private async Task SaveToFileAsync(StringBuilder path, Log log, Screenshot screenshot)
+        private async Task SaveToFileAsync(StringBuilder path, LogModel log, ScreenshotModel screenshot)
         {
             path.Append(log.Window.Application.Name);
             path.Append("_");

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppsTracker.Data.Models;
 using AppsTracker.Domain.Apps;
 using AppsTracker.Domain.Logs;
 
@@ -10,28 +11,16 @@ namespace AppsTracker.Domain.Windows
 {
     public sealed class WindowModel
     {
-        public TimeSpan Duration
+        public WindowModel(Window window)
         {
-            get
-            {
-                return GetWindowDuration();
-            }
+            Title = window.Title;
+            Application = new AppModel(window.Application);
         }
 
-        private TimeSpan GetWindowDuration()
-        {
-            long ticks = 0;
-            foreach (var log in this.Logs)
-            {
-                ticks += log.Duration;
-            }
-            return new TimeSpan(ticks);
-        }
-
-        public string Title { get; set; }
+        public string Title { get; }
 
         public AppModel Application { get; set; }
-        public ICollection<LogModel> Logs { get; set; }
+        public LogModel Log { get; set; }
 
     }
 }

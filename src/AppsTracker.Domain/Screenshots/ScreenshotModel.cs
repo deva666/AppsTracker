@@ -9,12 +9,22 @@ using System.Windows.Input;
 using AppsTracker.Domain.Utils;
 using AppsTracker.Domain.Logs;
 using AppsTracker.Domain.Model;
+using AppsTracker.Data.Models;
 
 namespace AppsTracker.Domain.Screenshots
 {
     public sealed class ScreenshotModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        internal ScreenshotModel(LogModel log, Screenshot screenshot)
+        {
+            Log = log;
+            Width = screenshot.Width;
+            Height = screenshot.Height;
+            Date = screenshot.Date;
+            Screensht = screenshot.Screensht;
+        }
 
         private bool isSelected;
 

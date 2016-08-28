@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppsTracker.Data.Models;
 using AppsTracker.Domain.Model;
 using AppsTracker.Domain.Screenshots;
 using AppsTracker.Domain.Usages;
@@ -13,6 +14,17 @@ namespace AppsTracker.Domain.Logs
 {
     public sealed class LogModel : SelectableBase
     {
+        internal LogModel(Log log)
+        {
+            DateCreated = log.DateCreated;
+            DateEnded = log.DateEnded;
+            UtcDateCreated = log.UtcDateCreated;
+            UtcDateEnded = log.UtcDateEnded;
+            Finished = log.Finished;
+            Window = new WindowModel(log.Window);
+            Screenshots = log.Screenshots?.Select(s => new ScreenshotModel(this, s));
+        }
+
         public long Duration
         {
             get
@@ -21,20 +33,20 @@ namespace AppsTracker.Domain.Logs
             }
         }
 
-        public bool Finished { get; set; }
+        public bool Finished { get; }
 
-        public DateTime DateCreated { get; set; }
+        public DateTime DateCreated { get; }
 
-        public DateTime DateEnded { get; set; }
+        public DateTime DateEnded { get; }
 
-        public DateTime UtcDateCreated { get; set; }
+        public DateTime UtcDateCreated { get; }
 
-        public DateTime UtcDateEnded { get; set; }
+        public DateTime UtcDateEnded { get; }
 
-        public ICollection<ScreenshotModel> Screenshots { get; set; }
+        public IEnumerable<ScreenshotModel> Screenshots { get; }
 
-        public WindowModel Window { get; set; }
+        public WindowModel Window { get; }
 
-        public UsageModel Usage { get; set; }
+        public UsageModel Usage { get; }
     }
 }
