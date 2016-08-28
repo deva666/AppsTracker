@@ -19,7 +19,7 @@ namespace AppsTracker.Views
     [ExportMetadata("ShellUse", "Limit toast window")]
     public partial class LimitToastWindow : System.Windows.Window, IShell
     {
-        private readonly IUserSettingsService xmlSettingsService;
+        private readonly IUserSettingsService userSettingsService;
         private readonly IAppDurationCalc appDurationCalc;
         private readonly IMediator mediator;
 
@@ -29,12 +29,12 @@ namespace AppsTracker.Views
         private AppLimit currentLimit;
 
         [ImportingConstructor]
-        public LimitToastWindow(IUserSettingsService xmlSettingsService,
+        public LimitToastWindow(IUserSettingsService userSettingsService,
                                 IAppDurationCalc appDurationCalc,
                                 IMediator mediator,
                                 MeasureProvider measureProvider)
         {
-            this.xmlSettingsService = xmlSettingsService;
+            this.userSettingsService = userSettingsService;
             this.appDurationCalc = appDurationCalc;
             this.mediator = mediator;
             this.measureProvider = measureProvider;
@@ -99,7 +99,7 @@ namespace AppsTracker.Views
 
             if (cbDontShow.IsChecked.HasValue && cbDontShow.IsChecked.Value)
             {
-                xmlSettingsService.LimitsSettings.DontShowLimits.Add(currentLimit.AppLimitID);
+                userSettingsService.LimitsSettings.DontShowLimits.Add(currentLimit.AppLimitID);
                 currentLimit = null;
             }
             

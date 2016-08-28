@@ -29,7 +29,7 @@ namespace AppsTracker.ViewModels
     {
         private readonly IRepository repository;
         private readonly IAppSettingsService settingsService;
-        private readonly IUserSettingsService xmlSettingsService;
+        private readonly IUserSettingsService userSettingsService;
         private readonly ITrackingService trackingService;
         private readonly IReleaseNotesService releaseNotesService;
         private readonly IMediator mediator;
@@ -80,8 +80,8 @@ namespace AppsTracker.ViewModels
 
         public bool DisableNotifyForNewVersion
         {
-            get { return xmlSettingsService.AppSettings.DisableNotifyForNewVersion; }
-            set { xmlSettingsService.AppSettings.DisableNotifyForNewVersion = value; }
+            get { return userSettingsService.AppSettings.DisableNotifyForNewVersion; }
+            set { userSettingsService.AppSettings.DisableNotifyForNewVersion = value; }
         }
 
         public override string Title
@@ -281,7 +281,7 @@ namespace AppsTracker.ViewModels
         [ImportingConstructor]
         public MainViewModel(IRepository repository,
                              IAppSettingsService settingsService,
-                             IUserSettingsService xmlSettingsService,
+                             IUserSettingsService userSettingsService,
                              ITrackingService trackingService,
                              IReleaseNotesService releaseNotesService,
                              IMediator mediator,
@@ -291,7 +291,7 @@ namespace AppsTracker.ViewModels
         {
             this.repository = repository;
             this.settingsService = settingsService;
-            this.xmlSettingsService = xmlSettingsService;
+            this.userSettingsService = userSettingsService;
             this.trackingService = trackingService;
             this.releaseNotesService = releaseNotesService;
             this.mediator = mediator;
@@ -304,7 +304,7 @@ namespace AppsTracker.ViewModels
 
             multipleUsers = repository.GetFiltered<Uzer>(u => u.UserID > 0).Count() > 1;
 
-            if (!xmlSettingsService.AppSettings.DisableNotifyForNewVersion)
+            if (!userSettingsService.AppSettings.DisableNotifyForNewVersion)
             {
                 releaseNotesService.GetReleaseNotesAsync()
                     .ContinueWith(OnGetReleaseNotes, TaskContinuationOptions.NotOnFaulted);

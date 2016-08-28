@@ -13,18 +13,18 @@ namespace AppsTracker.Tracking.Limits
     internal sealed class LimitHandler : ILimitHandler
     {
         private readonly IMediator mediator;
-        private readonly IUserSettingsService xmlSettingsService;
+        private readonly IUserSettingsService userSettingsService;
         private readonly ILogger logger;
         private readonly IShutdownService shutdownService;
 
         [ImportingConstructor]
         public LimitHandler(IMediator mediator,
-                            IUserSettingsService xmlSettingsService,
+                            IUserSettingsService userSettingsService,
                             ILogger logger,
                             IShutdownService shutdownService)
         {
             this.mediator = mediator;
-            this.xmlSettingsService = xmlSettingsService;
+            this.userSettingsService = userSettingsService;
             this.logger = logger;
             this.shutdownService = shutdownService;
         }
@@ -53,7 +53,7 @@ namespace AppsTracker.Tracking.Limits
 
         private void ShowWarning(AppLimit limit)
         {
-            if (xmlSettingsService.LimitsSettings.DontShowLimits.Any(l => l == limit.AppLimitID))
+            if (userSettingsService.LimitsSettings.DontShowLimits.Any(l => l == limit.AppLimitID))
                 return;
 
             mediator.NotifyColleagues(MediatorMessages.APP_LIMIT_REACHED, limit);

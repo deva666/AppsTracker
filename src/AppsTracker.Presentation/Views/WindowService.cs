@@ -12,8 +12,8 @@ namespace AppsTracker.Service
     [Export(typeof(IWindowService))]
     public sealed class WindowService : IWindowService
     {
-        private readonly IAppSettingsService sqlSettingsService;
-        private readonly IUserSettingsService xmlSettingsService;
+        private readonly IAppSettingsService appSettingsService;
+        private readonly IUserSettingsService userSettingsService;
         private readonly ITrayIcon trayIcon;
         private readonly IEnumerable<ExportFactory<IShell, IShellMetaData>> shellFactories;
 
@@ -23,14 +23,14 @@ namespace AppsTracker.Service
         private IShell limitNotifyWindow;
 
         [ImportingConstructor]
-        public WindowService(IAppSettingsService sqlSettingsService,
-                             IUserSettingsService xmlSettingsService,
+        public WindowService(IAppSettingsService appSettingsService,
+                             IUserSettingsService userSettingsService,
                              ITrayIcon trayIcon,
                              [ImportMany]IEnumerable<ExportFactory<IShell, IShellMetaData>> shellFactories,
                              MeasureProvider measureProvider)
         {
-            this.sqlSettingsService = sqlSettingsService;
-            this.xmlSettingsService = xmlSettingsService;
+            this.appSettingsService = appSettingsService;
+            this.userSettingsService = userSettingsService;
             this.trayIcon = trayIcon;
             this.shellFactories = shellFactories;
             this.measureProvider = measureProvider;
@@ -106,12 +106,12 @@ namespace AppsTracker.Service
 
         public void FirstRunWindowSetup()
         {
-            if (sqlSettingsService.Settings.FirstRun)
+            if (appSettingsService.Settings.FirstRun)
             {
                 SetInitialWindowDimensions();
-                var settings = sqlSettingsService.Settings;
+                var settings = appSettingsService.Settings;
                 settings.FirstRun = false;
-                sqlSettingsService.SaveChanges(settings);
+                appSettingsService.SaveChanges(settings);
             }
         }
 
@@ -182,7 +182,7 @@ namespace AppsTracker.Service
 
         private bool CanOpenMainWindow()
         {
-            if (sqlSettingsService.Settings.IsMasterPasswordSet)
+            if (appSettingsService.Settings.IsMasterPasswordSet)
             {
                 var passwordWindowFactory = shellFactories.Single(s => s.Metadata.ShellUse == "Password window");
                 var context = passwordWindowFactory.CreateExport();
@@ -200,7 +200,7 @@ namespace AppsTracker.Service
 
         private void LoadWindowPosition()
         {
-            var mainWindowSettings = xmlSettingsService.MainWindowSettings;
+            var mainWindowSettings = userSettingsService.MainWindowSettings;
             mainWindow.Left = mainWindowSettings.Left;
             mainWindow.Top = mainWindowSettings.Top;
             mainWindow.Width = mainWindowSettings.Width;
@@ -210,10 +210,10 @@ namespace AppsTracker.Service
 
         private void SaveWindowPosition()
         {
-            xmlSettingsService.MainWindowSettings.Height = mainWindow.Height;
-            xmlSettingsService.MainWindowSettings.Width = mainWindow.Width;
-            xmlSettingsService.MainWindowSettings.Left = mainWindow.Left;
-            xmlSettingsService.MainWindowSettings.Top = mainWindow.Top;
+            userSettingsService.MainWindowSettings.Height = mainWindow.Height;
+            userSettingsService.MainWindowSettings.Width = mainWindow.Width;
+            userSettingsService.MainWindowSettings.Left = mainWindow.Left;
+            userSettingsService.MainWindowSettings.Top = mainWindow.Top;
             mainWindow = null;
         }
     }

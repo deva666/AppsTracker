@@ -32,7 +32,7 @@
 //            trackingService.Setup(t => t.DateTo).Returns(DateTime.Now);
 //            settingsService.Setup(s => s.Settings).Returns(setting);
 //            settingsService.Setup(s => s.SaveChanges(It.IsAny<Setting>())).Callback<Setting>(s => setting = s);
-//            xmlSettingsService.Setup(x => x.AppSettings).Returns(new AppSettings() { DisableNotifyForNewVersion = false });
+//            userSettingsService.Setup(x => x.AppSettings).Returns(new AppSettings() { DisableNotifyForNewVersion = false });
 
 
 //            var dataHostVMFactory = GetDataHostVMFactory();
@@ -41,7 +41,7 @@
 
 //            mainViewModel = new MainViewModel(repository.Object,
 //                settingsService.Object,
-//                xmlSettingsService.Object,
+//                userSettingsService.Object,
 //                trackingService.Object,
 //                releaseNotesService.Object,
 //                mediator,
@@ -58,7 +58,7 @@
 
 //            return new MainViewModel(repository.Object,
 //                settingsService.Object,
-//                xmlSettingsService.Object,
+//                userSettingsService.Object,
 //                trackingService.Object,
 //                releaseNotesService.Object,
 //                mediator,

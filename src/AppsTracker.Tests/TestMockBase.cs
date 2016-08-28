@@ -23,7 +23,7 @@ namespace AppsTracker.Tests
         protected readonly Mock<IRepository> repository = new Mock<IRepository>();
         protected readonly Mock<ITrackingService> trackingService = new Mock<ITrackingService>();
         protected readonly Mock<IAppSettingsService> settingsService = new Mock<IAppSettingsService>();
-        protected readonly Mock<IUserSettingsService> xmlSettingsService = new Mock<IUserSettingsService>();
+        protected readonly Mock<IUserSettingsService> userSettingsService = new Mock<IUserSettingsService>();
         protected readonly Mock<ICategoriesService> categoriesService = new Mock<ICategoriesService>();
         protected readonly Mock<IWindowService> windowService = new Mock<IWindowService>();
         protected readonly Mock<IAppChangedNotifier> windowChangedNotifier = new Mock<IAppChangedNotifier>();

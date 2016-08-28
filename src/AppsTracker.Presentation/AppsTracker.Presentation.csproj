@@ -65,8 +65,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceLocation\IServiceResolver.cs" />
     <Compile Include="ServiceLocation\ServiceResolver.cs" />
-    <Compile Include="Service\IWindowService.cs" />
-    <Compile Include="Service\WindowService.cs" />
     <Compile Include="ViewModels\AboutWindowViewModel.cs" />
     <Compile Include="ViewModels\AppDetailsViewModel.cs" />
     <Compile Include="ViewModels\AppStatsViewModel.cs" />
@@ -112,6 +110,7 @@
     </Compile>
     <Compile Include="Views\IShell.cs" />
     <Compile Include="Views\IShellMetaData.cs" />
+    <Compile Include="Views\IWindowService.cs" />
     <Compile Include="Views\LimitToastWindow.xaml.cs">
       <DependentUpon>LimitToastWindow.xaml</DependentUpon>
     </Compile>
@@ -184,6 +183,7 @@
     <Compile Include="Views\Statistics\UsersView.xaml.cs">
       <DependentUpon>UsersView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\WindowService.cs" />
     <Compile Include="Widgets\Adorners.cs" />
     <Compile Include="Widgets\ArrowLeft.xaml.cs">
       <DependentUpon>ArrowLeft.xaml</DependentUpon>
