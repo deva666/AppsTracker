@@ -7,15 +7,13 @@
 #endregion
 
 using System;
-using System.ComponentModel.Composition;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel.Composition;
 using System.Windows.Input;
-using AppsTracker.Data.Models;
-using AppsTracker.MVVM;
-using AppsTracker.Data.Repository;
 using AppsTracker.Common.Communication;
-using AppsTracker.Tracking;
+using AppsTracker.Domain;
+using AppsTracker.Domain.Screenshots;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
@@ -23,8 +21,8 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class ScreenshotsStatsViewModel : ViewModelBase
     {
-        private readonly IRepository repository;
-        private readonly ITrackingService trackingService;
+        private readonly IUseCase<ScreenshotModel> screenshotModelUseCase;
+        private readonly IUseCase<String, DailyScreenshotModel> dailyScreenshotModelUseCase;
         private readonly IMediator mediator;
 
 
@@ -74,35 +72,18 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public ScreenshotsStatsViewModel(IRepository repository,
-                                         ITrackingService trackingService,
+        public ScreenshotsStatsViewModel(IUseCase<ScreenshotModel> screenshotModelUseCase,
+                                         IUseCase<String, DailyScreenshotModel> dailyScreenshotModelUseCase,
                                          IMediator mediator)
         {
-            this.repository = repository;
-            this.trackingService = trackingService;
+            this.screenshotModelUseCase = screenshotModelUseCase;
+            this.dailyScreenshotModelUseCase = dailyScreenshotModelUseCase;
             this.mediator = mediator;
 
-            screenshotList = new TaskRunner<IEnumerable<ScreenshotModel>>(GetScreenshots, this);
+            screenshotList = new TaskRunner<IEnumerable<ScreenshotModel>>(screenshotModelUseCase.Get, this);
             dailyScreenshotsList = new TaskRunner<IEnumerable<DailyScreenshotModel>>(GetDailyScreenshots, this);
 
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadAll));
-        }
-
-
-        private IEnumerable<ScreenshotModel> GetScreenshots()
-        {
-            var screenshots = repository.GetFiltered<Screenshot>(
-                                                s => s.Log.Window.Application.User.UserID == trackingService.SelectedUserID
-                                                && s.Date >= trackingService.DateFrom
-                                                && s.Date <= trackingService.DateTo,
-                                                s => s.Log.Window.Application,
-                                                s => s.Log.Window.Application.User);
-
-            var screenshotModels = screenshots
-                                            .GroupBy(s => s.Log.Window.Application.Name)
-                                            .Select(g => new ScreenshotModel() { AppName = g.Key, Count = g.Count() });
-
-            return screenshotModels;
         }
 
 
@@ -112,27 +93,7 @@ namespace AppsTracker.ViewModels
             if (model == null)
                 return null;
 
-            var screenshots = repository.GetFiltered<Screenshot>(
-                                                s => s.Log.Window.Application.User.UserID == trackingService.SelectedUserID
-                                                && s.Date >= trackingService.DateFrom
-                                                && s.Date <= trackingService.DateTo
-                                                && s.Log.Window.Application.Name == model.AppName,
-                                                s => s.Log.Window.Application,
-                                                s => s.Log.Window.Application.User);
-
-            var grouped = screenshots.GroupBy(s => new
-                                        {
-                                            year = s.Date.Year,
-                                            month = s.Date.Month,
-                                            day = s.Date.Day
-                                        })
-                                      .OrderBy(g => new DateTime(g.Key.year, g.Key.month, g.Key.day));
-
-            return grouped.Select(g => new DailyScreenshotModel()
-            {
-                Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
-                Count = g.Count()
-            });
+            return dailyScreenshotModelUseCase.Get(model.AppName);
         }
 
         private void ReloadAll()

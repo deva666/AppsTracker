@@ -12,10 +12,10 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
 using AppsTracker.Common.Communication;
-using AppsTracker.Data.Models;
 using AppsTracker.Domain;
 using AppsTracker.Domain.Apps;
 using AppsTracker.Domain.Logs;
+using AppsTracker.Domain.Usages;
 using AppsTracker.Domain.Windows;
 using AppsTracker.MVVM;
 

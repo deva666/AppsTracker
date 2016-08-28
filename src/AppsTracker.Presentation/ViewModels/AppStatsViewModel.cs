@@ -7,15 +7,13 @@
 #endregion
 
 using System;
-using System.ComponentModel.Composition;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel.Composition;
 using System.Windows.Input;
-using AppsTracker.Data.Models;
-using AppsTracker.MVVM;
-using AppsTracker.Data.Repository;
 using AppsTracker.Common.Communication;
-using AppsTracker.Tracking;
+using AppsTracker.Domain;
+using AppsTracker.Domain.Apps;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
@@ -23,8 +21,8 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class AppStatsViewModel : ViewModelBase
     {
-        private readonly IRepository repository;
-        private readonly ITrackingService trackingService;
+        private readonly IUseCase<AppDuration> appDurationUseCase;
+        private readonly IUseCase<String, DailyAppDuration> dailyAppDurationUseCase;
         private readonly IMediator mediator;
 
         public override string Title
@@ -74,15 +72,15 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public AppStatsViewModel(IRepository repository,
-                                 ITrackingService trackingService,
+        public AppStatsViewModel(IUseCase<AppDuration> appDurationUseCase,
+                                 IUseCase<String, DailyAppDuration> dailyAppDurationUseCase,
                                  IMediator mediator)
         {
-            this.repository = repository;
-            this.trackingService = trackingService;
+            this.appDurationUseCase = appDurationUseCase;
+            this.dailyAppDurationUseCase = dailyAppDurationUseCase;
             this.mediator = mediator;
 
-            appsList = new TaskRunner<IEnumerable<AppDuration>>(GetApps, this);
+            appsList = new TaskRunner<IEnumerable<AppDuration>>(appDurationUseCase.Get, this);
             dailyAppList = new TaskRunner<IEnumerable<DailyAppDuration>>(GetDailyApp, this);
 
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadAll));
@@ -95,49 +93,13 @@ namespace AppsTracker.ViewModels
             dailyAppList.Reload();
         }
 
-
-        private IEnumerable<AppDuration> GetApps()
-        {
-            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
-                                        && l.DateCreated >= trackingService.DateFrom
-                                        && l.DateCreated <= trackingService.DateTo,
-                                        l => l.Window.Application,
-                                        l => l.Window.Application.User);
-
-            var grouped = logs.GroupBy(l => l.Window.Application.Name);
-
-            return grouped.Select(g => new AppDuration()
-            {
-                Name = g.Key,
-                Duration = Math.Round(new TimeSpan(g.Sum(l => l.Duration)).TotalHours, 1)
-            });
-        }
-
-
         private IEnumerable<DailyAppDuration> GetDailyApp()
         {
             var app = selectedApp;
             if (app == null)
                 return null;
 
-            var logs = repository.GetFiltered<Log>(l => l.Window.Application.Name == app.Name
-                                               && l.Window.Application.User.UserID == trackingService.SelectedUserID
-                                               && l.DateCreated >= trackingService.DateFrom
-                                               && l.DateCreated <= trackingService.DateTo);
-
-            var grouped = logs.GroupBy(l => new
-                                        {
-                                            year = l.DateCreated.Year,
-                                            month = l.DateCreated.Month,
-                                            day = l.DateCreated.Day
-                                        })
-                                          .OrderBy(g => new DateTime(g.Key.year, g.Key.month, g.Key.day));
-
-            return grouped.Select(g => new DailyAppDuration
-            {
-                Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
-                Duration = Math.Round(new TimeSpan(g.Sum(l => l.Duration)).TotalHours, 1)
-            });
+            return dailyAppDurationUseCase.Get(app.Name);
         }
 
 
@@ -145,6 +107,5 @@ namespace AppsTracker.ViewModels
         {
             SelectedApp = null;
         }
-
     }
 }

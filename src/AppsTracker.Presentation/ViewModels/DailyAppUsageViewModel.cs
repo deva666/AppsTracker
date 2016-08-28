@@ -10,8 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using AppsTracker.Common.Communication;
-using AppsTracker.Data.Models;
 using AppsTracker.Domain;
+using AppsTracker.Domain.Apps;
 using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels

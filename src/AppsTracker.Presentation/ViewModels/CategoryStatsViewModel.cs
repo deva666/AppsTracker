@@ -7,15 +7,13 @@
 #endregion
 
 using System;
-using System.ComponentModel.Composition;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel.Composition;
 using System.Windows.Input;
-using AppsTracker.Data.Models;
-using AppsTracker.MVVM;
-using AppsTracker.Data.Repository;
 using AppsTracker.Common.Communication;
-using AppsTracker.Tracking;
+using AppsTracker.Domain;
+using AppsTracker.Domain.Apps;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
@@ -23,8 +21,8 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class CategoryStatsViewModel : ViewModelBase
     {
-        private readonly IRepository repository;
-        private readonly ITrackingService trackingService;
+        private readonly IUseCase<CategoryDuration> categoryDurationUseCase;
+        private readonly IUseCase<String, DailyCategoryDuration> dailyCategoryDurationUseCase;
         private readonly IMediator mediator;
 
         public override string Title
@@ -72,58 +70,18 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public CategoryStatsViewModel(IRepository repository,
-                                      ITrackingService trackingService,
+        public CategoryStatsViewModel(IUseCase<CategoryDuration> categoryDurationUseCase,
+                                      IUseCase<String, DailyCategoryDuration> dailyCategoryDurationUseCase,
                                       IMediator mediator)
         {
-            this.repository = repository;
-            this.trackingService = trackingService;
+            this.categoryDurationUseCase = categoryDurationUseCase;
+            this.dailyCategoryDurationUseCase = dailyCategoryDurationUseCase;
             this.mediator = mediator;
 
-            categoryList = new TaskRunner<IEnumerable<CategoryDuration>>(GetCategories, this);
+            categoryList = new TaskRunner<IEnumerable<CategoryDuration>>(categoryDurationUseCase.Get, this);
             dailyCategoryList = new TaskRunner<IEnumerable<DailyCategoryDuration>>(GetDailyCategories, this);
 
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadAll));
-        }
-
-
-        private IEnumerable<CategoryDuration> GetCategories()
-        {
-            var dateTo = trackingService.DateFrom.AddDays(1);
-            var categoryModels = new List<CategoryDuration>();
-
-            var categories = repository.GetFiltered<AppCategory>(c => c.Applications.Count > 0
-                        && c.Applications.Where(a => a.UserID == trackingService.SelectedUserID)
-                                         .Any()
-                        && c.Applications.SelectMany(a => a.Windows)
-                                        .SelectMany(w => w.Logs)
-                                        .Where(l => l.DateCreated >= trackingService.DateFrom)
-                                        .Any()
-                        && c.Applications.SelectMany(a => a.Windows)
-                                        .SelectMany(w => w.Logs)
-                                        .Where(l => l.DateCreated <= dateTo)
-                                        .Any(),
-                       c => c.Applications,
-                       c => c.Applications.Select(a => a.Windows),
-                       c => c.Applications.Select(a => a.Windows.Select(w => w.Logs)));
-
-            foreach (var cat in categories)
-            {
-                var totalDuration = cat.Applications
-                                       .SelectMany(a => a.Windows)
-                                       .SelectMany(w => w.Logs)
-                                       .Where(l => l.DateCreated >= trackingService.DateFrom
-                                           && l.DateCreated <= dateTo)
-                                       .Sum(l => l.Duration);
-
-                categoryModels.Add(new CategoryDuration()
-                {
-                    Name = cat.Name,
-                    TotalTime = Math.Round(new TimeSpan(totalDuration).TotalHours, 2)
-                });
-            }
-
-            return categoryModels;
         }
 
 
@@ -133,23 +91,7 @@ namespace AppsTracker.ViewModels
             if (category == null)
                 return null;
 
-            var logs = repository.GetFiltered<Log>(l => l.Window.Application.Categories.Any(c => c.Name == category.Name)
-                                               && l.Window.Application.UserID == trackingService.SelectedUserID
-                                               && l.DateCreated >= trackingService.DateFrom
-                                               && l.DateCreated <= trackingService.DateTo);
-
-            var grouped = logs.GroupBy(l => new
-            {
-                year = l.DateCreated.Year,
-                month = l.DateCreated.Month,
-                day = l.DateCreated.Day
-            });
-
-            return grouped.Select(g => new DailyCategoryDuration()
-            {
-                Date = new DateTime(g.Key.year, g.Key.month, g.Key.day).ToShortDateString(),
-                TotalTime = Math.Round(new TimeSpan(g.Sum(l => l.Duration)).TotalHours, 2)
-            });
+            return dailyCategoryDurationUseCase.Get(category.Name);
         }
 
         private void ReloadAll()

@@ -86,7 +86,7 @@ namespace AppsTracker.Tests
                         new DaySummaryViewModel(new Mock<IUseCase<DateTime, LogSummary>>().Object,
                         new Mock<IUseCase<DateTime, AppSummary>>().Object,
                         new Mock<IUseCase<String, DateTime, WindowSummary>>().Object,
-                        new Mock<IUseCase<DateTime, UsageByTime>>().Object,
+                        null,
                         new Mock<IUseCase<DateTime, CategoryDuration>>().Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -116,8 +116,8 @@ namespace AppsTracker.Tests
                 new Func<Tuple<UserStatsViewModel, Action>>(
                     () => new Tuple<UserStatsViewModel, Action>(
                         new UserStatsViewModel(
-                            repository.Object,
-                            trackingService.Object,
+                            null,
+                            null,
                             mediator),
                             ExportFactoryContextRelease));
 
@@ -130,8 +130,8 @@ namespace AppsTracker.Tests
                 new Func<Tuple<AppStatsViewModel, Action>>(
                     () => new Tuple<AppStatsViewModel, Action>(
                         new AppStatsViewModel(
-                            repository.Object,
-                            trackingService.Object,
+                            null,
+                            null,
                             mediator),
                             ExportFactoryContextRelease));
 
@@ -158,8 +158,8 @@ namespace AppsTracker.Tests
                 new Func<Tuple<ScreenshotsStatsViewModel, Action>>(
                     () => new Tuple<ScreenshotsStatsViewModel, Action>(
                         new ScreenshotsStatsViewModel(
-                            repository.Object,
-                            trackingService.Object,
+                            null,
+                            null,
                             mediator),
                             ExportFactoryContextRelease));
 
@@ -172,8 +172,8 @@ namespace AppsTracker.Tests
                 new Func<Tuple<CategoryStatsViewModel, Action>>(
                     () => new Tuple<CategoryStatsViewModel, Action>(
                         new CategoryStatsViewModel(
-                            repository.Object,
-                            trackingService.Object,
+                            null,
+                            null,
                             mediator),
                             ExportFactoryContextRelease));
 
