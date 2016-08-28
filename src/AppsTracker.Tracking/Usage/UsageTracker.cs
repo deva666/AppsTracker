@@ -13,6 +13,7 @@ using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
 using AppsTracker.Domain.Tracking;
+using AppsTracker.Domain.Util;
 using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
@@ -105,7 +106,7 @@ namespace AppsTracker.Tracking
             var user = GetUzer(Environment.UserName);
             var usageLogin = usageProcessor.LoginUser(user.UserID);
 
-            trackingService.Initialize(user, usageLogin.UsageID);
+            trackingService.Initialize(user.ToModel(), usageLogin.UsageID);
         }
 
 

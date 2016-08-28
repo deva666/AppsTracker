@@ -1,5 +1,6 @@
 ﻿using System;
 using AppsTracker.Data.Models;
+using AppsTracker.Domain.Users;
 
 namespace AppsTracker.Domain.Tracking
 {
@@ -15,15 +16,15 @@ namespace AppsTracker.Domain.Tracking
 
         string SelectedUserName { get; }
 
-        Uzer SelectedUser { get; }
+        UserModel SelectedUser { get; }
 
         DateTime DateFrom { get; set; }
 
         DateTime DateTo { get; set; }
 
-        void Initialize(Uzer uzer, int usageID);
+        void Initialize(UserModel user, int usageID);
 
-        void ChangeUser(Uzer uzer);
+        void ChangeUser(UserModel user);
 
         void ClearDateFilter();
 

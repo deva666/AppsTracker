@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
+using AppsTracker.Domain.Users;
 
 namespace AppsTracker.Domain.Util
 {
-    internal static class Extensions
+    public static class Extensions
     {
         public static string ToExtendedString(this UsageTypes type)
         {
@@ -24,6 +25,11 @@ namespace AppsTracker.Domain.Util
                 default:
                     return string.Empty;
             }
+        }
+
+        public static UserModel ToModel(this Uzer uzer)
+        {
+            return new UserModel(uzer);
         }
     }
 }

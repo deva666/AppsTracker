@@ -40,7 +40,7 @@ namespace AppsTracker.Tests
         protected readonly Mock<ITrackingController> trackingController = new Mock<ITrackingController>();
         protected readonly Mock<IAppDurationCalc> appDurationCalc = new Mock<IAppDurationCalc>();
 
-        protected readonly Mock<IUseCaseAsync<Aplication>> appStatsUseCaseAsync = new Mock<IUseCaseAsync<Aplication>>();
+        protected readonly Mock<IUseCaseAsync<AppModel>> appStatsUseCaseAsync = new Mock<IUseCaseAsync<AppModel>>();
         protected readonly Mock<IUseCase<String, Int32, AppSummary>> appSummaryStatsUseCase = new Mock<IUseCase<string, int, AppSummary>>();
         protected readonly Mock<IUseCase<String, IEnumerable<DateTime>, WindowSummary>> windowsStatsSummaryUseCase = new Mock<IUseCase<string, IEnumerable<DateTime>, WindowSummary>>();
         protected readonly Mock<IUseCase<String, IEnumerable<String>, IEnumerable<DateTime>, WindowDurationOverview>> windowDurationUseCase = new Mock<IUseCase<string, IEnumerable<string>, IEnumerable<DateTime>, WindowDurationOverview>>();

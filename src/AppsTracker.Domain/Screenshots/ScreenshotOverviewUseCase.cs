@@ -7,21 +7,21 @@ using AppsTracker.Domain.Tracking;
 
 namespace AppsTracker.Domain.Screenshots
 {
-    [Export(typeof(IUseCase<ScreenshotModel>))]
-    public sealed class ScreenshotModelUseCase : IUseCase<ScreenshotModel>
+    [Export(typeof(IUseCase<ScreenshotOverview>))]
+    public sealed class ScreenshotOverviewUseCase : IUseCase<ScreenshotOverview>
     {
         private readonly IRepository repository;
         private readonly ITrackingService trackingService;
 
         [ImportingConstructor]
-        public ScreenshotModelUseCase(IRepository repository,
+        public ScreenshotOverviewUseCase(IRepository repository,
                                       ITrackingService trackingService)
         {
             this.repository = repository;
             this.trackingService = trackingService;
         }
 
-        public IEnumerable<ScreenshotModel> Get()
+        public IEnumerable<ScreenshotOverview> Get()
         {
             var screenshots = repository.GetFiltered<Screenshot>(
                                                 s => s.Log.Window.Application.User.UserID == trackingService.SelectedUserID
@@ -32,7 +32,7 @@ namespace AppsTracker.Domain.Screenshots
 
             var screenshotModels = screenshots
                                             .GroupBy(s => s.Log.Window.Application.Name)
-                                            .Select(g => new ScreenshotModel() { AppName = g.Key, Count = g.Count() });
+                                            .Select(g => new ScreenshotOverview() { AppName = g.Key, Count = g.Count() });
 
             return screenshotModels;
         }

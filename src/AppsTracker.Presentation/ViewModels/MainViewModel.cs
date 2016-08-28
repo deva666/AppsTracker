@@ -17,6 +17,8 @@ using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
 using AppsTracker.Domain.Settings;
 using AppsTracker.Domain.Tracking;
+using AppsTracker.Domain.Users;
+using AppsTracker.Domain.Util;
 using AppsTracker.MVVM;
 using AppsTracker.Service.Web;
 
@@ -152,7 +154,7 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public Uzer User
+        public UserModel User
         {
             get
             {
@@ -170,9 +172,9 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private IEnumerable<Uzer> userCollection;
+        private IEnumerable<UserModel> userCollection;
 
-        public IEnumerable<Uzer> UserCollection
+        public IEnumerable<UserModel> UserCollection
         {
             get
             {
@@ -336,7 +338,7 @@ namespace AppsTracker.ViewModels
 
         private void GetUsers()
         {
-            userCollection = repository.GetFiltered<Uzer>(u => u.UserID > 0);
+            userCollection = repository.GetFiltered<Uzer>(u => u.UserID > 0).Select(u => u.ToModel());
         }
 
 

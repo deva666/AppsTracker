@@ -17,10 +17,9 @@ namespace AppsTracker.Domain.Model
 
         protected void SelectedChanging()
         {
-            var handler = IsSelectedChanging;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            IsSelectedChanging?.Invoke(this, EventArgs.Empty);
         }
+
         public event EventHandler IsSelectedChanging;
     }
 }

@@ -21,7 +21,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class ScreenshotsStatsViewModel : ViewModelBase
     {
-        private readonly IUseCase<ScreenshotModel> screenshotModelUseCase;
+        private readonly IUseCase<ScreenshotOverview> screenshotModelUseCase;
         private readonly IUseCase<String, DailyScreenshotModel> dailyScreenshotModelUseCase;
         private readonly IMediator mediator;
 
@@ -40,9 +40,9 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private ScreenshotModel screenshotModel;
+        private ScreenshotOverview screenshotModel;
 
-        public ScreenshotModel ScreenshotModel
+        public ScreenshotOverview ScreenshotModel
         {
             get { return screenshotModel; }
             set
@@ -54,9 +54,9 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private readonly AsyncProperty<IEnumerable<ScreenshotModel>> screenshotList;
+        private readonly AsyncProperty<IEnumerable<ScreenshotOverview>> screenshotList;
 
-        public AsyncProperty<IEnumerable<ScreenshotModel>> ScreenshotList
+        public AsyncProperty<IEnumerable<ScreenshotOverview>> ScreenshotList
         {
             get { return screenshotList; }
         }
@@ -72,7 +72,7 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public ScreenshotsStatsViewModel(IUseCase<ScreenshotModel> screenshotModelUseCase,
+        public ScreenshotsStatsViewModel(IUseCase<ScreenshotOverview> screenshotModelUseCase,
                                          IUseCase<String, DailyScreenshotModel> dailyScreenshotModelUseCase,
                                          IMediator mediator)
         {
@@ -80,7 +80,7 @@ namespace AppsTracker.ViewModels
             this.dailyScreenshotModelUseCase = dailyScreenshotModelUseCase;
             this.mediator = mediator;
 
-            screenshotList = new TaskRunner<IEnumerable<ScreenshotModel>>(screenshotModelUseCase.Get, this);
+            screenshotList = new TaskRunner<IEnumerable<ScreenshotOverview>>(screenshotModelUseCase.Get, this);
             dailyScreenshotsList = new TaskRunner<IEnumerable<DailyScreenshotModel>>(GetDailyScreenshots, this);
 
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(ReloadAll));

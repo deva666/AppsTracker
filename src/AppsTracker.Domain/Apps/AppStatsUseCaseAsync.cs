@@ -8,8 +8,8 @@ using AppsTracker.Domain.Tracking;
 
 namespace AppsTracker.Domain.Apps
 {
-    [Export(typeof(IUseCaseAsync<Aplication>))]
-    public sealed class AppStatsUseCaseAsync : IUseCaseAsync<Aplication>
+    [Export(typeof(IUseCaseAsync<AppModel>))]
+    public sealed class AppStatsUseCaseAsync : IUseCaseAsync<AppModel>
     {
         private readonly IRepository repository;
         private readonly ITrackingService trackingService;
@@ -22,12 +22,13 @@ namespace AppsTracker.Domain.Apps
             this.trackingService = trackingService;
         }
 
-        public async Task<IEnumerable<Aplication>> GetAsync()
+        public async Task<IEnumerable<AppModel>> GetAsync()
         {
             return (await repository.GetFilteredAsync<Aplication>(a => a.User.UserID == trackingService.SelectedUserID
                                                                 && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= trackingService.DateFrom).Any()
                                                                 && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= trackingService.DateTo).Any()))
-                                                           .Distinct();
+                                                           .Distinct()
+                                                           .Select(a => new AppModel(a));
         }
     }
 }

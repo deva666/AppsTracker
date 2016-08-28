@@ -14,6 +14,7 @@ using AppsTracker.Common.Communication;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Users;
 
 namespace AppsTracker.Domain.Tracking
 {
@@ -80,7 +81,7 @@ namespace AppsTracker.Domain.Tracking
 
         public string SelectedUserName { get; private set; }
 
-        public Uzer SelectedUser { get; private set; }
+        public UserModel SelectedUser { get; private set; }
 
         public string UserName { get; private set; }
 
@@ -93,12 +94,12 @@ namespace AppsTracker.Domain.Tracking
             this.repository = repository;
         }
 
-        public void Initialize(Uzer uzer, int usageID)
+        public void Initialize(UserModel user, int usageID)
         {
-            Ensure.NotNull(uzer, "uzer");
+            Ensure.NotNull(user, "uzer");
 
-            UserID = uzer.UserID;
-            UserName = uzer.Name;
+            UserID = user.UserID;
+            UserName = user.Name;
             SelectedUserID = UserID;
             SelectedUserName = UserName;
             DateFrom = GetFirstDate(SelectedUserID);
@@ -106,13 +107,13 @@ namespace AppsTracker.Domain.Tracking
         }
 
 
-        public void ChangeUser(Uzer uzer)
+        public void ChangeUser(UserModel user)
         {
-            Ensure.NotNull(uzer, "uzer");
+            Ensure.NotNull(user, "uzer");
 
-            SelectedUserID = uzer.UserID;
-            SelectedUserName = uzer.Name;
-            SelectedUser = uzer;
+            SelectedUserID = user.UserID;
+            SelectedUserName = user.Name;
+            SelectedUser = user;
             ClearDateFilter();
         }
 

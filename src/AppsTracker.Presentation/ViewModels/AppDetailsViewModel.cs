@@ -24,7 +24,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class AppDetailsViewModel : ViewModelBase
     {
-        private readonly IUseCaseAsync<Aplication> appUseCase;
+        private readonly IUseCaseAsync<AppModel> appUseCase;
         private readonly IUseCase<String, Int32, AppSummary> appSummaryUseCase;
         private readonly IUseCase<String, IEnumerable<DateTime>, WindowSummary> windowSummaryUseCase;
         private readonly IUseCase<String, IEnumerable<String>, IEnumerable<DateTime>, WindowDurationOverview> windowDurationUseCase;
@@ -63,9 +63,9 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private readonly AsyncProperty<IEnumerable<Aplication>> appList;
+        private readonly AsyncProperty<IEnumerable<AppModel>> appList;
 
-        public AsyncProperty<IEnumerable<Aplication>> AppList
+        public AsyncProperty<IEnumerable<AppModel>> AppList
         {
             get { return appList; }
         }
@@ -108,9 +108,9 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private Aplication selectedApp;
+        private AppModel selectedApp;
 
-        public Aplication SelectedApp
+        public AppModel SelectedApp
         {
             get { return selectedApp; }
             set
@@ -142,7 +142,7 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public AppDetailsViewModel(IUseCaseAsync<Aplication> appUseCase,
+        public AppDetailsViewModel(IUseCaseAsync<AppModel> appUseCase,
                                    IUseCase<String, Int32, AppSummary> appSummaryUseCase,
                                    IUseCase<String, IEnumerable<DateTime>, WindowSummary> windowSummaryUseCase,
                                    IUseCase<String, IEnumerable<String>, IEnumerable<DateTime>, WindowDurationOverview> windowDurationUseCase,
@@ -154,7 +154,7 @@ namespace AppsTracker.ViewModels
             this.windowDurationUseCase = windowDurationUseCase;
             this.mediator = mediator;
 
-            appList = new TaskObserver<IEnumerable<Aplication>>(appUseCase.GetAsync, this);
+            appList = new TaskObserver<IEnumerable<AppModel>>(appUseCase.GetAsync, this);
             appSummaryList = new TaskRunner<IEnumerable<AppSummary>>(GetAppSummary, this);
             windowSummaryList = new TaskRunner<IEnumerable<WindowSummary>>(GetWindowSummary, this);
             windowDurationList = new TaskRunner<IEnumerable<WindowDurationOverview>>(GetWindowDuration, this);
