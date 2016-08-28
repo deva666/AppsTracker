@@ -6,8 +6,11 @@ using AppsTracker.Communication;
 using AppsTracker.Controllers;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain;
+using AppsTracker.Domain.Apps;
+using AppsTracker.Domain.Logs;
 using AppsTracker.Domain.Settings;
-using AppsTracker.Domain.UseCases;
+using AppsTracker.Domain.Windows;
 using AppsTracker.Service;
 using AppsTracker.Tests.Fakes;
 using AppsTracker.Tracking;
@@ -141,7 +144,6 @@ namespace AppsTracker.Tests
                 new Func<Tuple<DailyAppUsageViewModel, Action>>(
                     () => new Tuple<DailyAppUsageViewModel, Action>(
                         new DailyAppUsageViewModel(
-                            repository.Object,
                             new Mock<IUseCase<AppDurationOverview>>().Object,
                             mediator),
                             ExportFactoryContextRelease));

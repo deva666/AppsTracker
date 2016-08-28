@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppsTracker.Domain.UseCases
+namespace AppsTracker.Domain
 {
     public interface IUseCase<out T>
     {

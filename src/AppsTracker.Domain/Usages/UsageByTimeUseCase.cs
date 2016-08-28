@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
 using AppsTracker.Tracking;
 
-namespace AppsTracker.Domain.UseCases
+namespace AppsTracker.Domain.Usages
 {
     [Export(typeof(IUseCase<DateTime, UsageByTime>))]
-    public sealed class UsageByTimeUseCase: IUseCase<DateTime, UsageByTime>
+    public sealed class UsageByTimeUseCase : IUseCase<DateTime, UsageByTime>
     {
         private readonly IRepository repository;
         private readonly ITrackingService trackingService;

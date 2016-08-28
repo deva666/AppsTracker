@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
 using AppsTracker.Tracking;
 
-namespace AppsTracker.Domain.UseCases
+namespace AppsTracker.Domain.Apps
 {
     [Export(typeof(IUseCase<AppDurationOverview>))]
     public sealed class AppDurationOverviewUseCase : IUseCase<AppDurationOverview>
@@ -27,7 +25,7 @@ namespace AppsTracker.Domain.UseCases
         public IEnumerable<AppDurationOverview> Get()
         {
             var logs = repository.GetFiltered<Log>(
-                                          l => l.Window.Application.User.UserID ==  trackingService.SelectedUserID
+                                          l => l.Window.Application.User.UserID == trackingService.SelectedUserID
                                           && l.DateCreated >= trackingService.DateFrom
                                           && l.DateCreated <= trackingService.DateTo,
                                           l => l.Window.Application,

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
 using AppsTracker.Tracking;
 
-namespace AppsTracker.Domain.UseCases
+namespace AppsTracker.Domain.Apps
 {
     [Export(typeof(IUseCaseAsync<Aplication>))]
     public sealed class AppStatsUseCaseAsync : IUseCaseAsync<Aplication>

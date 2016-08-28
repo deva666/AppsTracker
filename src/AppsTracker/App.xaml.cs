@@ -74,7 +74,7 @@ namespace AppsTracker
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Common.Communication.IMediator).Assembly));
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Tracking.ITrackingModule).Assembly));
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.ViewModels.MainViewModel).Assembly));
-            catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Domain.UseCases.IUseCase<>).Assembly));
+            catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppsTracker.Domain.IUseCase<>).Assembly));
             var container = new CompositionContainer(catalog);
             var batch = new CompositionBatch();
             batch.AddExportedValue(container);

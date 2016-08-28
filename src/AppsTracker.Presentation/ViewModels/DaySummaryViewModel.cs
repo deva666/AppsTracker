@@ -13,7 +13,10 @@ using System.Linq;
 using System.Windows.Input;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
-using AppsTracker.Domain.UseCases;
+using AppsTracker.Domain;
+using AppsTracker.Domain.Apps;
+using AppsTracker.Domain.Logs;
+using AppsTracker.Domain.Windows;
 using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
@@ -216,7 +219,7 @@ namespace AppsTracker.ViewModels
             long selectedWindowsDuration = 0;
             selectedWindowsDuration = topWindows.Where(t => t.IsSelected)
                                                 .Sum(w => w.Duration);
-            
+
             if (selectedWindowsDuration == 0)
                 return;
 

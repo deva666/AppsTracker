@@ -7,14 +7,12 @@
 #endregion
 
 using System;
-using System.ComponentModel.Composition;
 using System.Collections.Generic;
-using System.Linq;
-using AppsTracker.Data.Models;
-using AppsTracker.MVVM;
-using AppsTracker.Data.Repository;
+using System.ComponentModel.Composition;
 using AppsTracker.Common.Communication;
-using AppsTracker.Domain.UseCases;
+using AppsTracker.Data.Models;
+using AppsTracker.Domain;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {
@@ -22,7 +20,6 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class DailyAppUsageViewModel : ViewModelBase
     {
-        private readonly IRepository repository;
         private readonly IMediator mediator;
         private readonly IUseCase<AppDurationOverview> useCase;
 
@@ -45,11 +42,9 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public DailyAppUsageViewModel(IRepository repository,
-                                      IUseCase<AppDurationOverview> useCase,
+        public DailyAppUsageViewModel(IUseCase<AppDurationOverview> useCase,
                                       IMediator mediator)
         {
-            this.repository = repository;
             this.useCase = useCase;
             this.mediator = mediator;
 

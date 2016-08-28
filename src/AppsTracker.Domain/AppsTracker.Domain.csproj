@@ -47,6 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Apps\AppSummary.cs" />
+    <Compile Include="Logs\LogSummary.cs" />
+    <Compile Include="Model\SelectableBase.cs" />
+    <Compile Include="Model\SummaryBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\User\AppSettings.cs" />
     <Compile Include="Settings\User\DaysViewSettings.cs" />
@@ -60,18 +64,18 @@
     <Compile Include="Settings\User\UserSettingsService.cs" />
     <Compile Include="Tracking\ITrackingService.cs" />
     <Compile Include="Tracking\TrackingService.cs" />
-    <Compile Include="UsageModels.cs" />
-    <Compile Include="UseCases\AppDurationOverviewUseCase.cs" />
-    <Compile Include="UseCases\AppStatsUseCaseAsync.cs" />
-    <Compile Include="UseCases\AppSummaryStatsUseCase.cs" />
-    <Compile Include="UseCases\AppSummaryUseCase.cs" />
-    <Compile Include="UseCases\CategoryDurationUseCase.cs" />
-    <Compile Include="UseCases\IUseCase.cs" />
-    <Compile Include="UseCases\LogSummaryUseCase.cs" />
-    <Compile Include="UseCases\UsageByTimeUseCase.cs" />
-    <Compile Include="UseCases\WindowDurationOverviewUseCase.cs" />
-    <Compile Include="UseCases\WindowSummaryStatsUseCase.cs" />
-    <Compile Include="UseCases\WindowSummaryUseCase.cs" />
+    <Compile Include="Apps\AppDurationOverviewUseCase.cs" />
+    <Compile Include="Apps\AppStatsUseCaseAsync.cs" />
+    <Compile Include="Apps\AppSummaryStatsUseCase.cs" />
+    <Compile Include="Apps\AppSummaryUseCase.cs" />
+    <Compile Include="Apps\CategoryDurationUseCase.cs" />
+    <Compile Include="IUseCase.cs" />
+    <Compile Include="Logs\LogSummaryUseCase.cs" />
+    <Compile Include="Usages\UsageByTimeUseCase.cs" />
+    <Compile Include="Windows\WindowDurationOverviewUseCase.cs" />
+    <Compile Include="Windows\WindowSummary.cs" />
+    <Compile Include="Windows\WindowSummaryStatsUseCase.cs" />
+    <Compile Include="Windows\WindowSummaryUseCase.cs" />
     <Compile Include="Util\Extensions.cs" />
     <Compile Include="ViewModels.cs" />
     <Compile Include="Web\Feedback.cs" />
@@ -96,6 +100,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Users\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

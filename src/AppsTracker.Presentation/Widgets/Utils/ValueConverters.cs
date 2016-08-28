@@ -19,8 +19,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 
 using AppsTracker.Data.Models;
+using AppsTracker.Domain.Windows;
 using AppsTracker.MVVM;
-using AppsTracker.Tracking;
 
 namespace AppsTracker
 {

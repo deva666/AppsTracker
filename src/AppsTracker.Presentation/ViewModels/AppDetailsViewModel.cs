@@ -7,17 +7,16 @@
 #endregion
 
 using System;
-using System.ComponentModel.Composition;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
-using AppsTracker.Data.Models;
-using AppsTracker.MVVM;
-using AppsTracker.Data.Repository;
 using AppsTracker.Common.Communication;
-using AppsTracker.Tracking;
-using System.Threading.Tasks;
-using AppsTracker.Domain.UseCases;
+using AppsTracker.Data.Models;
+using AppsTracker.Domain;
+using AppsTracker.Domain.Apps;
+using AppsTracker.Domain.Windows;
+using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
 {

@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
 using AppsTracker.Tracking;
 
-namespace AppsTracker.Domain.UseCases
+namespace AppsTracker.Domain.Windows
 {
     [Export(typeof(IUseCase<String, DateTime, WindowSummary>))]
     public sealed class WindowSummaryUseCase : IUseCase<String, DateTime, WindowSummary>
@@ -18,7 +16,8 @@ namespace AppsTracker.Domain.UseCases
 
         [ImportingConstructor]
         public WindowSummaryUseCase(IRepository repository,
-                                    ITrackingService trackingService) {
+                                    ITrackingService trackingService)
+        {
             this.repository = repository;
             this.trackingService = trackingService;
         }
