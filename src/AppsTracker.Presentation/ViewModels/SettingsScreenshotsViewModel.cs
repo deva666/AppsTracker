@@ -9,18 +9,17 @@
 using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using System.Windows.Input;
-using AppsTracker.Data.Models;
-using AppsTracker.MVVM;
-using AppsTracker.Data.Repository;
-using AppsTracker.Widgets;
 using AppsTracker.Common.Communication;
-using AppsTracker.Service;
-using AppsTracker.Tracking;
+using AppsTracker.Data.Models;
+using AppsTracker.Data.Repository;
 using AppsTracker.Domain.Settings;
+using AppsTracker.Domain.Tracking;
+using AppsTracker.MVVM;
+using AppsTracker.Service;
 
 namespace AppsTracker.ViewModels
 {
-    [Export] 
+    [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class SettingsScreenshotsViewModel : SettingsBaseViewModel
     {
@@ -99,10 +98,10 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public SettingsScreenshotsViewModel(IAppSettingsService settingsService, 
+        public SettingsScreenshotsViewModel(IAppSettingsService settingsService,
                                             ITrackingService trackingService,
                                             IRepository repository,
-                                            IWindowService windowService, 
+                                            IWindowService windowService,
                                             IMediator mediator)
             : base(settingsService, mediator)
         {

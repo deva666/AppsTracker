@@ -3,7 +3,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
-using AppsTracker.Tracking;
+using AppsTracker.Domain.Tracking;
 
 namespace AppsTracker.Domain.Screenshots
 {
@@ -15,7 +15,7 @@ namespace AppsTracker.Domain.Screenshots
 
         [ImportingConstructor]
         public ScreenshotModelUseCase(IRepository repository,
-                                  ITrackingService trackingService)
+                                      ITrackingService trackingService)
         {
             this.repository = repository;
             this.trackingService = trackingService;

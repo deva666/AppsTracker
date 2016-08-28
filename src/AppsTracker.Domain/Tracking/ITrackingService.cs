@@ -1,7 +1,7 @@
 ﻿using System;
 using AppsTracker.Data.Models;
 
-namespace AppsTracker.Tracking
+namespace AppsTracker.Domain.Tracking
 {
     public interface ITrackingService
     {

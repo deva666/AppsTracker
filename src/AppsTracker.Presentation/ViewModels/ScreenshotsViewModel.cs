@@ -16,13 +16,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using AppsTracker.Data.Models;
-using AppsTracker.MVVM;
-using AppsTracker.Data.Repository;
 using AppsTracker.Common.Communication;
-using AppsTracker.Service;
-using AppsTracker.Tracking;
+using AppsTracker.Data.Models;
+using AppsTracker.Data.Repository;
 using AppsTracker.Domain.Settings;
+using AppsTracker.Domain.Tracking;
+using AppsTracker.MVVM;
+using AppsTracker.Service;
 
 namespace AppsTracker.ViewModels
 {

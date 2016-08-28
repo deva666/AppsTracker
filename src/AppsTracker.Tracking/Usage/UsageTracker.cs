@@ -12,6 +12,7 @@ using System.Linq;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Tracking;
 using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking

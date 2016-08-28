@@ -15,7 +15,7 @@ using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
 using AppsTracker.Data.Utils;
-using AppsTracker.Tracking.Hooks;
+using AppsTracker.Domain.Tracking;
 
 namespace AppsTracker.Tracking
 {
@@ -111,7 +111,7 @@ namespace AppsTracker.Tracking
             if (app == null)
             {
                 app = AppInfo.ToAplication(logInfo.AppInfo);
-                app.UserID = trackingService.UserID; 
+                app.UserID = trackingService.UserID;
                 repository.SaveNewEntity(app);
                 isNewApp = true;
             }
@@ -144,7 +144,7 @@ namespace AppsTracker.Tracking
             this.settings = settings;
 
             screenshotTracker.Initialize(settings);
-            
+
             ConfigureComponents();
 
             mediator.Register(MediatorMessages.STOP_TRACKING, new Action(StopTracking));

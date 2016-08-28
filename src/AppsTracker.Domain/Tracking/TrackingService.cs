@@ -15,7 +15,7 @@ using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
 
-namespace AppsTracker.Tracking
+namespace AppsTracker.Domain.Tracking
 {
     [Export(typeof(ITrackingService))]
     public sealed class TrackingService : ITrackingService

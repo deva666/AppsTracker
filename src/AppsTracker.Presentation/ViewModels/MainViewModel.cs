@@ -16,9 +16,9 @@ using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
 using AppsTracker.Domain.Settings;
+using AppsTracker.Domain.Tracking;
 using AppsTracker.MVVM;
 using AppsTracker.Service.Web;
-using AppsTracker.Tracking;
 
 namespace AppsTracker.ViewModels
 {

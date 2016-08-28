@@ -8,6 +8,7 @@ using AppsTracker.Common.Communication;
 using AppsTracker.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Tracking;
 
 namespace AppsTracker.Tracking.Limits
 {

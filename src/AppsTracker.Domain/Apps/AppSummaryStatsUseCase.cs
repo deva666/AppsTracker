@@ -4,7 +4,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
-using AppsTracker.Tracking;
+using AppsTracker.Domain.Tracking;
 
 namespace AppsTracker.Domain.Apps
 {

@@ -6,11 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.Common.Communication;
-using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Tracking;
 using AppsTracker.MVVM;
-using AppsTracker.Tracking;
 
 namespace AppsTracker.ViewModels
 {

@@ -10,6 +10,7 @@ using AppsTracker.Domain;
 using AppsTracker.Domain.Apps;
 using AppsTracker.Domain.Logs;
 using AppsTracker.Domain.Settings;
+using AppsTracker.Domain.Tracking;
 using AppsTracker.Domain.Windows;
 using AppsTracker.Service;
 using AppsTracker.Tests.Fakes;
