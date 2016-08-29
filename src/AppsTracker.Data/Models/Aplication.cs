@@ -11,12 +11,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using AppsTracker.Data.Utils;
 using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Data.Models
 {
-    public class Aplication
+    public class Aplication : IEntity
     {
         [NotMapped]
         public TimeSpan Duration
@@ -35,7 +34,7 @@ namespace AppsTracker.Data.Models
             set;
         }
 
-        
+
         private TimeSpan GetAppDuration()
         {
             long ticks = 0;
@@ -70,7 +69,8 @@ namespace AppsTracker.Data.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ApplicationID { get; set; }
+        [Column("ApplicationID")]
+        public int ID { get; set; }
 
         [Required]
         [StringLength(250)]
@@ -102,7 +102,7 @@ namespace AppsTracker.Data.Models
 
         public override int GetHashCode()
         {
-            return ApplicationID.GetHashCode();
+            return ID.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -111,7 +111,7 @@ namespace AppsTracker.Data.Models
             if (other == null)
                 return false;
 
-            return ApplicationID == other.ApplicationID;
+            return ID == other.ID;
         }
     }
 }

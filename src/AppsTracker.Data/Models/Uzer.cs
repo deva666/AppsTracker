@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppsTracker.Data.Models
 {
-    public class Uzer
+    public class Uzer : IEntity
     {
         public Uzer()
         {
@@ -28,7 +28,8 @@ namespace AppsTracker.Data.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int UserID { get; set; }
+        [Column("UserID")]
+        public int ID { get; set; }
 
         [Required]
         [StringLength(100)]

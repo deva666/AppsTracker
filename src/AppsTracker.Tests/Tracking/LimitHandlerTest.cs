@@ -81,8 +81,8 @@ namespace AppsTracker.Tests.Tracking
 
             var limitHandler = new LimitHandler(mediator.Object, xmlSettings, logger.Object, shutdownService.Object);
             var app = new Aplication() { WinName = "test app" };
-            var limit = new AppLimit() { LimitReachedAction = LimitReachedAction.Warn, Application = app, AppLimitID = 1 };
-            xmlSettings.LimitsSettings.DontShowLimits.Add(limit.AppLimitID);
+            var limit = new AppLimit() { LimitReachedAction = LimitReachedAction.Warn, Application = app, ID = 1 };
+            xmlSettings.LimitsSettings.DontShowLimits.Add(limit.ID);
 
             limitHandler.Handle(limit);
             mediator.Verify(m => m.NotifyColleagues(MediatorMessages.APP_LIMIT_REACHED, limit), Times.Never());

@@ -34,8 +34,7 @@ namespace AppsTracker.Domain.Screenshots
             set
             {
                 isSelected = value;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("IsSelected"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsSelected"));
             }
         }
 
@@ -57,36 +56,27 @@ namespace AppsTracker.Domain.Screenshots
         {
             get
             {
-                return this.Log.Window.Application.Name;
+                return Log.Window.Application.Name;
             }
         }
 
-        private byte[] GetByteArrayFromImage(Image image)
+        public void SetPopupSize(double screenWidth, double screenHeight)
         {
-            ImageConverter converter = new ImageConverter();
-            return (byte[])converter.ConvertTo(image, typeof(byte[]));
-        }
-
-        private void GetPopupSize()
-        {
-            //double screenWidth = System.Windows.SystemParameters.PrimaryScreenWidth;
-            //double screenHeight = System.Windows.SystemParameters.PrimaryScreenHeight;
-
-            //if (this.Width > this.Height && this.Height >= screenHeight - 100d)
-            //{
-            //    this.PopupWidth = screenWidth * 0.75;
-            //    this.PopupHeight = screenHeight;
-            //}
-            //else if (this.Width < this.Height && this.Width >= screenWidth - 150d)
-            //{
-            //    this.PopupHeight = screenHeight * 0.75;
-            //    this.PopupWidth = screenWidth;
-            //}
-            //else
-            //{
-            //    this.PopupWidth = Width;
-            //    this.PopupHeight = Height;
-            //}
+            if (this.Width > this.Height && this.Height >= screenHeight - 100d)
+            {
+                this.PopupWidth = screenWidth * 0.75;
+                this.PopupHeight = screenHeight;
+            }
+            else if (this.Width < this.Height && this.Width >= screenWidth - 150d)
+            {
+                this.PopupHeight = screenHeight * 0.75;
+                this.PopupWidth = screenWidth;
+            }
+            else
+            {
+                this.PopupWidth = Width;
+                this.PopupHeight = Height;
+            }
         }
 
         private void ShowHide()
@@ -99,6 +89,7 @@ namespace AppsTracker.Domain.Screenshots
                 PropertyChanged(this, new PropertyChangedEventArgs("IsOpen"));
         }
 
+        public Int32 ScreenshotId { get; }
 
         public DateTime Date { get; set; }
 
@@ -108,9 +99,9 @@ namespace AppsTracker.Domain.Screenshots
 
         public byte[] Screensht { get; set; }
 
-        public double PopupHeight { get; set; }
+        public double PopupHeight { get; private set; }
 
-        public double PopupWidth { get; set; }
+        public double PopupWidth { get; private set; }
 
         public LogModel Log { get; set; }
     }

@@ -191,7 +191,7 @@ namespace AppsTracker.ViewModels
             Categories = categoriesService.GetCategories(trackingService.SelectedUserID);
             var unassignedApps = categoriesService.GetApps(trackingService.SelectedUserID);
             var assignedApps = Categories.SelectMany(c => c.Applications);
-            unassignedApps.RemoveAll(a => assignedApps.Any(app => app.ApplicationID == a.ApplicationID));
+            unassignedApps.RemoveAll(a => assignedApps.Any(app => app.ID == a.ID));
             Applications = new ObservableCollection<Aplication>(unassignedApps);
         }
 
@@ -248,7 +248,7 @@ namespace AppsTracker.ViewModels
         {
             if (SelectedCategory == null)
                 return;
-            if (SelectedCategory.AppCategoryID != default(int))
+            if (SelectedCategory.ID != default(int))
                 categoriesToDelete.Add(SelectedCategory);
             Categories.Remove(SelectedCategory);
         }

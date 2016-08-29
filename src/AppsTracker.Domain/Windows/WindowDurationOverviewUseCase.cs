@@ -26,7 +26,7 @@ namespace AppsTracker.Domain.Windows
                                                        IEnumerable<String> selectedWindows,
                                                        IEnumerable<DateTime> selectedDates)
         {
-            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.ID == trackingService.SelectedUserID
                                                 && l.Window.Application.Name == appName,
                                                 l => l.Window);
 

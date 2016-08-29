@@ -25,7 +25,7 @@ namespace AppsTracker.Domain.Apps
         public IEnumerable<AppSummary> Get(DateTime selectedDate)
         {
             var dateTo = selectedDate.AddDays(1);
-            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.ID == trackingService.SelectedUserID
                                             && l.DateCreated >= selectedDate
                                             && l.DateCreated <= dateTo,
                                             l => l.Window.Application);

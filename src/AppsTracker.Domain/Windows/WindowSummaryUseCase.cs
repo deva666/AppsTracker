@@ -26,7 +26,7 @@ namespace AppsTracker.Domain.Windows
         {
             var nextDay = selectedDate.AddDays(1);
 
-            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.ID == trackingService.SelectedUserID
                                                          && l.DateCreated >= selectedDate
                                                          && l.DateCreated <= nextDay
                                                          && l.Window.Application.Name == appName,

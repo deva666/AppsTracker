@@ -28,12 +28,12 @@ namespace AppsTracker.Domain.Logs
         {
             var dateTo = selectedDate.AddDays(1);
 
-            var logsTask = repository.GetFilteredAsync<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logsTask = repository.GetFilteredAsync<Log>(l => l.Window.Application.User.ID == trackingService.SelectedUserID
                                && l.DateCreated >= selectedDate
                                && l.DateCreated <= dateTo,
                                l => l.Window.Application);
 
-            var usagesTask = repository.GetFilteredAsync<Usage>(u => u.User.UserID == trackingService.SelectedUserID
+            var usagesTask = repository.GetFilteredAsync<Usage>(u => u.User.ID == trackingService.SelectedUserID
                                      && u.UsageStart >= selectedDate
                                      && u.UsageEnd <= dateTo
                                      && u.UsageType != UsageTypes.Login);

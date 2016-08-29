@@ -146,7 +146,7 @@ namespace AppsTracker.ViewModels
 
         private IEnumerable<Aplication> GetApps()
         {
-            var apps = repository.GetFiltered<Aplication>(a => a.User.UserID == trackingService.SelectedUserID,
+            var apps = repository.GetFiltered<Aplication>(a => a.User.ID == trackingService.SelectedUserID,
                                                            a => a.Limits)
                                                         .ToList()
                                                         .Distinct();
@@ -165,7 +165,7 @@ namespace AppsTracker.ViewModels
                 return;
 
             string limitSpan = (string)parameter;
-            var appLimit = new AppLimit() { ApplicationID = selectedApp.ApplicationID };
+            var appLimit = new AppLimit() { ApplicationID = selectedApp.ID };
 
             if (limitSpan.ToUpper() == "DAILY")
                 appLimit.LimitSpan = LimitSpan.Day;
@@ -198,11 +198,11 @@ namespace AppsTracker.ViewModels
             var appsToSave = apps.Where(a => a.Limits.Count != a.ObservableLimits.Count ||
                 a.ObservableLimits.Select(l => l.HasChanges).Any());
             var modifiedLimits = appsToSave.SelectMany(a => a.ObservableLimits)
-                .Where(l => l.AppLimitID != default(int) && l.HasChanges);
-            var newLimits = appsToSave.SelectMany(a => a.ObservableLimits).Where(l => l.AppLimitID == default(int));
+                .Where(l => l.ID != default(int) && l.HasChanges);
+            var newLimits = appsToSave.SelectMany(a => a.ObservableLimits).Where(l => l.ID == default(int));
             var saveModifiedTask = repository.SaveModifiedEntityRangeAsync(modifiedLimits);
             var saveNewTask = repository.SaveNewEntityRangeAsync(newLimits);
-            var deleteTask = repository.DeleteEntityRangeAsync(limitsToDelete.Where(l => l.AppLimitID != default(int)));
+            var deleteTask = repository.DeleteEntityRangeAsync(limitsToDelete.Where(l => l.ID != default(int)));
 
             await Task.WhenAll(saveModifiedTask, saveNewTask, deleteTask);
 

@@ -34,7 +34,7 @@ namespace AppsTracker.Data.Models
         OneHour = 3600000
     }
 
-    public class Setting
+    public class Setting : IEntity
     {
         [NotMapped]
         public ScreenShotInterval ScreenshotInterval
@@ -97,7 +97,8 @@ namespace AppsTracker.Data.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int SettingsID { get; set; }
+        [Column("SettingsID")]
+        public int ID { get; set; }
 
         [Required]
         public bool RunAtStartup { get; set; }

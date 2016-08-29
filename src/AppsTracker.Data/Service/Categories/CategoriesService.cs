@@ -28,7 +28,7 @@ namespace AppsTracker.Data.Repository
         public Aplication ReloadApp(Aplication app)
         {
             context = context ?? new AppsEntities();
-            return context.Applications.First(a => a.ApplicationID == app.ApplicationID);
+            return context.Applications.First(a => a.ID == app.ID);
         }
 
         public List<Aplication> GetApps(int userId)
@@ -56,7 +56,7 @@ namespace AppsTracker.Data.Repository
             context = context ?? new AppsEntities();
             foreach (var cat in categoriesToDelete)
             {
-                if (cat.AppCategoryID != default(int))
+                if (cat.ID != default(int))
                 {
                     context.Entry(cat).State = EntityState.Deleted;
                 }
@@ -64,7 +64,7 @@ namespace AppsTracker.Data.Repository
 
             foreach (var cat in modifiedCategories)
             {
-                if (cat.AppCategoryID == default(int))
+                if (cat.ID == default(int))
                 {
                     context.Entry(cat).State = EntityState.Added;
                 }

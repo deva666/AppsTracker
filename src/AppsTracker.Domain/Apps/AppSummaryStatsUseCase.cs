@@ -24,7 +24,7 @@ namespace AppsTracker.Domain.Apps
 
         public IEnumerable<AppSummary> Get(String appName, Int32 appId)
         {
-            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.ID == trackingService.SelectedUserID
                                                 && l.DateCreated >= trackingService.DateFrom
                                                 && l.DateCreated <= trackingService.DateTo,
                                                 l => l.Window.Application);
@@ -45,7 +45,7 @@ namespace AppsTracker.Domain.Apps
 
 
             var result = (from l in logs
-                          where l.Window.Application.ApplicationID == appId
+                          where l.Window.Application.ID == appId
                           group l by new
                           {
                               year = l.DateCreated.Year,

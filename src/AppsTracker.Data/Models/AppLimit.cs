@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows.Input;
 using AppsTracker.Data.Utils;
-using AppsTracker.Utils;
 
 namespace AppsTracker.Data.Models
 {
@@ -22,7 +21,7 @@ namespace AppsTracker.Data.Models
     }
 
 
-    public class AppLimit : INotifyPropertyChanged
+    public class AppLimit : IEntity, INotifyPropertyChanged
     {
         private bool isPopupLimitActionOpen;
 
@@ -50,7 +49,7 @@ namespace AppsTracker.Data.Models
                     (setLimitReachedCommand = new RelayCommand(SetLimitReached));
             }
         }
-      
+
 
         private ICommand openLimitActionPopupCommand;
 
@@ -93,7 +92,8 @@ namespace AppsTracker.Data.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int AppLimitID { get; set; }
+        [Column("AppLimitID")]
+        public int ID { get; set; }
 
         [Required]
         public int ApplicationID { get; set; }

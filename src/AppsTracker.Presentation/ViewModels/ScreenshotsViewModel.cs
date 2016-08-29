@@ -130,18 +130,6 @@ namespace AppsTracker.ViewModels
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(logList.Reload));
         }
 
-
-        //private async Task<IEnumerable<Log>> GetLogs()
-        //{
-        //    return await repository.GetFilteredAsync<Log>(l => l.Screenshots.Count > 0
-        //                                        && l.DateCreated >= trackingService.DateFrom
-        //                                        && l.DateCreated <= trackingService.DateTo
-        //                                        && l.Window.Application.UserID == trackingService.SelectedUserID
-        //                                        , l => l.Screenshots
-        //                                        , l => l.Window.Application);
-        //}
-
-
         private void OpenScreenshotViewer(object parameter)
         {
             var collection = parameter as IList;

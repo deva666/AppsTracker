@@ -13,7 +13,7 @@ namespace AppsTracker.Domain.Apps
     {
         internal AppModel(Aplication aplication)
         {
-            ApplicationID = aplication.ApplicationID;
+            ApplicationID = aplication.ID;
             Name = aplication.Name;
             FileName = aplication.FileName;
             Version = aplication.Version;

@@ -24,7 +24,7 @@ namespace AppsTracker.Domain.Screenshots
         public IEnumerable<ScreenshotOverview> Get()
         {
             var screenshots = repository.GetFiltered<Screenshot>(
-                                                s => s.Log.Window.Application.User.UserID == trackingService.SelectedUserID
+                                                s => s.Log.Window.Application.User.ID == trackingService.SelectedUserID
                                                 && s.Date >= trackingService.DateFrom
                                                 && s.Date <= trackingService.DateTo,
                                                 s => s.Log.Window.Application,

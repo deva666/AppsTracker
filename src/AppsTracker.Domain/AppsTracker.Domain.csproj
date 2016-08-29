@@ -63,6 +63,7 @@
     <Compile Include="Apps\DailyCategoryDurationUseCase.cs" />
     <Compile Include="Logs\LogModel.cs" />
     <Compile Include="Screenshots\ScreenshotModel.cs" />
+    <Compile Include="Screenshots\ScreenshotsService.cs" />
     <Compile Include="Screenshots\ScreenshotUseCase.cs" />
     <Compile Include="Users\UserModel.cs" />
     <Compile Include="Logs\LogSummary.cs" />

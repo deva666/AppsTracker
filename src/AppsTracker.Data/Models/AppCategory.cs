@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppsTracker.Data.Models
 {
-    public class AppCategory
+    public class AppCategory : IEntity
     {
         [NotMapped]
         public ObservableCollection<Aplication> ObservableApplications { get; set; }
@@ -17,7 +17,8 @@ namespace AppsTracker.Data.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int AppCategoryID { get; set; }
+        [Column("AppCategoryID")]
+        public int ID { get; set; }
 
         [Required]
         [StringLength(50)]

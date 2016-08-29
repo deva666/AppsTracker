@@ -71,6 +71,7 @@ namespace AppsTracker.Tests
                     () => new Tuple<ScreenshotsViewModel, Action>(
                         new ScreenshotsViewModel(repository.Object,
                             settingsService.Object,
+                            null,
                             trackingService.Object,
                             windowService.Object,
                             mediator),

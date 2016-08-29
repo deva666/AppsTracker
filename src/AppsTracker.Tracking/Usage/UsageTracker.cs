@@ -104,7 +104,7 @@ namespace AppsTracker.Tracking
         private void InitLogin()
         {
             var user = GetUzer(Environment.UserName);
-            var usageLogin = usageProcessor.LoginUser(user.UserID);
+            var usageLogin = usageProcessor.LoginUser(user.ID);
 
             trackingService.Initialize(user.ToModel(), usageLogin.UsageID);
         }

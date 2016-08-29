@@ -21,7 +21,7 @@ namespace AppsTracker.Data.Models
         Stopped
     }
 
-   public class Usage
+   public class Usage 
    {
       [NotMapped]
       public TimeSpan Duration
@@ -120,7 +120,7 @@ namespace AppsTracker.Data.Models
       [Required]
       public bool IsCurrent { get; set; }
 
-       [Required]
+      [Required]
       public UsageTypes UsageType { get; set; }
 
       public Nullable<int> SelfUsageID { get; set; }

@@ -14,7 +14,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppsTracker.Data.Models
 {
-    public class Log : INotifyPropertyChanged
+    public class Log : IEntity, INotifyPropertyChanged
     {
         [NotMapped]
         public long Duration
@@ -72,7 +72,8 @@ namespace AppsTracker.Data.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int LogID { get; set; }
+        [Column("LogID")]
+        public int ID { get; set; }
 
         [Required]
         public int WindowID { get; set; }

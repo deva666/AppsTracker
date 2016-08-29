@@ -16,7 +16,7 @@ using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Data.Models
 {
-    public class Screenshot : INotifyPropertyChanged
+    public class Screenshot : IEntity, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -125,7 +125,8 @@ namespace AppsTracker.Data.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ScreenshotID { get; set; }
+        [Column("ScreenshotID")]
+        public int ID { get; set; }
 
         [Required]
         public System.DateTime Date { get; set; }

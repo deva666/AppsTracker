@@ -124,6 +124,7 @@
     <Compile Include="Models\Aplication.cs" />
     <Compile Include="Models\AppCategory.cs" />
     <Compile Include="Models\AppLimit.cs" />
+    <Compile Include="Models\IEntity.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\Screenshot.cs" />
     <Compile Include="Models\Setting.cs" />

@@ -24,7 +24,7 @@ namespace AppsTracker.Domain.Apps
 
         public async Task<IEnumerable<AppModel>> GetAsync()
         {
-            return (await repository.GetFilteredAsync<Aplication>(a => a.User.UserID == trackingService.SelectedUserID
+            return (await repository.GetFilteredAsync<Aplication>(a => a.User.ID == trackingService.SelectedUserID
                                                                 && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated >= trackingService.DateFrom).Any()
                                                                 && a.Windows.SelectMany(w => w.Logs).Where(l => l.DateCreated <= trackingService.DateTo).Any()))
                                                            .Distinct()

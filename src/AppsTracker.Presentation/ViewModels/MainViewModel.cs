@@ -303,7 +303,7 @@ namespace AppsTracker.ViewModels
 
             SelectedChild = GetChild<DataHostViewModel>();
 
-            multipleUsers = repository.GetFiltered<Uzer>(u => u.UserID > 0).Count() > 1;
+            multipleUsers = repository.GetFiltered<Uzer>(u => u.ID > 0).Count() > 1;
 
             if (!userSettingsService.AppSettings.DisableNotifyForNewVersion)
             {
@@ -338,7 +338,7 @@ namespace AppsTracker.ViewModels
 
         private void GetUsers()
         {
-            userCollection = repository.GetFiltered<Uzer>(u => u.UserID > 0).Select(u => u.ToModel());
+            userCollection = repository.GetFiltered<Uzer>(u => u.ID > 0).Select(u => u.ToModel());
         }
 
 

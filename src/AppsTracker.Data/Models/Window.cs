@@ -14,7 +14,7 @@ using AppsTracker.Common.Utils;
 
 namespace AppsTracker.Data.Models
 {
-    public class Window
+    public class Window : IEntity
     {
         [NotMapped]
         public TimeSpan Duration
@@ -54,7 +54,8 @@ namespace AppsTracker.Data.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int WindowID { get; set; }
+        [Column("WindowID")]
+        public int ID { get; set; }
 
         [Required]
         public int ApplicationID { get; set; }

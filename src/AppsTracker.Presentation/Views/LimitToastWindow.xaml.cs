@@ -99,7 +99,7 @@ namespace AppsTracker.Views
 
             if (cbDontShow.IsChecked.HasValue && cbDontShow.IsChecked.Value)
             {
-                userSettingsService.LimitsSettings.DontShowLimits.Add(currentLimit.AppLimitID);
+                userSettingsService.LimitsSettings.DontShowLimits.Add(currentLimit.ID);
                 currentLimit = null;
             }
             

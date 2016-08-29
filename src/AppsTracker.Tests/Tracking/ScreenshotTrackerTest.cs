@@ -22,7 +22,7 @@ namespace AppsTracker.Tests.Tracking
                 TakeScreenshots = true
             };
             var observableCalled = 0;
-            var screenshot = new Screenshot() { ScreenshotID = 10 };
+            var screenshot = new Screenshot() { ID = 10 };
 
             tracker.ScreenshotObservable.Subscribe(s => Interlocked.Exchange(ref observableCalled, 1));
 
@@ -44,7 +44,7 @@ namespace AppsTracker.Tests.Tracking
                 TrackingEnabled = true,
                 TakeScreenshots = false
             };
-            var screenshot = new Screenshot() { ScreenshotID = 10 };
+            var screenshot = new Screenshot() { ID = 10 };
 
             tracker.ScreenshotObservable.Subscribe(s => Assert.Fail("Should not be called if screenshots are disabled"));
 
@@ -64,7 +64,7 @@ namespace AppsTracker.Tests.Tracking
                 TrackingEnabled = false,
                 TakeScreenshots = true
             };
-            var screenshot = new Screenshot() { ScreenshotID = 10 };
+            var screenshot = new Screenshot() { ID = 10 };
 
             tracker.ScreenshotObservable.Subscribe(s => Assert.Fail("Should not be called if tracking is disabled"));
 

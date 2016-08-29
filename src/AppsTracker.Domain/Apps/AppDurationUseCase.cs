@@ -24,7 +24,7 @@ namespace AppsTracker.Domain.Apps
 
         public IEnumerable<AppDuration> Get()
         {
-            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.UserID == trackingService.SelectedUserID
+            var logs = repository.GetFiltered<Log>(l => l.Window.Application.User.ID == trackingService.SelectedUserID
                                         && l.DateCreated >= trackingService.DateFrom
                                         && l.DateCreated <= trackingService.DateTo,
                                         l => l.Window.Application,

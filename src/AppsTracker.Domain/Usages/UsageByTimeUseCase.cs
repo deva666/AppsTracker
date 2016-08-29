@@ -29,7 +29,7 @@ namespace AppsTracker.Domain.Usages
             var nextDay = fromDay.AddDays(1d);
             var today = DateTime.Now.Date;
 
-            var logins = repository.GetFiltered<Usage>(u => u.User.UserID == trackingService.SelectedUserID
+            var logins = repository.GetFiltered<Usage>(u => u.User.ID == trackingService.SelectedUserID
                                             && ((u.UsageStart >= fromDay && u.UsageStart <= nextDay)
                                                     || (u.IsCurrent && u.UsageStart < fromDay && today >= fromDay)
                                                     || (u.IsCurrent == false && u.UsageStart <= fromDay && u.UsageEnd >= fromDay))

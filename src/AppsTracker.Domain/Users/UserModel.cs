@@ -6,7 +6,7 @@ namespace AppsTracker.Domain.Users
     {
         internal UserModel(Uzer user)
         {
-            UserID = user.UserID;
+            UserID = user.ID;
             Name = user.Name;
         }
 

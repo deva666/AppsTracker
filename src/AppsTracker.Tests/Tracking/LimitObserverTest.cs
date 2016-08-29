@@ -166,7 +166,7 @@ namespace AppsTracker.Tests.Tracking
         private Aplication CreateAppDailyLimit(int limitAmount)
         {
             var app = new Aplication();
-            app.ApplicationID = 7;
+            app.ID = 7;
             app.Name = "some app";
             app.WinName = "some name";
 

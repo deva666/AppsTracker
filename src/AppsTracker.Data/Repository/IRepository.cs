@@ -72,6 +72,8 @@ namespace AppsTracker.Data.Repository
 
         Task DeleteScreenshots(IEnumerable<Screenshot> screenshots);
 
+        Task DeleteScreenshotsById(IEnumerable<Int32> ids);
+
         void CheckUnfinishedEntries();
     }
 }

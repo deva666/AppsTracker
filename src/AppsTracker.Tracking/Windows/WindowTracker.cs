@@ -61,7 +61,7 @@ namespace AppsTracker.Tracking
                 .ObserveOn(DispatcherScheduler.Current)
                 .Subscribe(s =>
                 {
-                    s.LogID = activeLog.LogID;
+                    s.LogID = activeLog.ID;
                     repository.SaveNewEntity(s);
                 });
         }
@@ -87,7 +87,7 @@ namespace AppsTracker.Tracking
             var app = GetApp(logInfo, out isNewApp);
             var window = GetWindow(logInfo, app);
 
-            var log = new Log(window.WindowID, trackingService.UsageID)
+            var log = new Log(window.ID, trackingService.UsageID)
             {
                 DateCreated = logInfo.Start,
                 UtcDateCreated = logInfo.UtcStart,
@@ -125,11 +125,11 @@ namespace AppsTracker.Tracking
         private Window GetWindow(LogInfo logInfo, Aplication app)
         {
             var windowsList = repository.GetFiltered<Window>(w => w.Title == logInfo.WindowTitle
-                                                               && w.Application.ApplicationID == app.ApplicationID);
+                                                               && w.Application.ID == app.ID);
             var window = windowsList.FirstOrDefault();
             if (window == null)
             {
-                window = new Window(logInfo.WindowTitle, app.ApplicationID);
+                window = new Window(logInfo.WindowTitle, app.ID);
                 repository.SaveNewEntity(window);
             }
 

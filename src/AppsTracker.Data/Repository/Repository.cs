@@ -217,6 +217,16 @@ namespace AppsTracker.Data.Repository
             }
         }
 
+        public async Task DeleteScreenshotsById(IEnumerable<Int32> ids) 
+        {
+            using (var context = new AppsEntities())
+            {
+                var screenshots = await context.Set<Screenshot>().Where(s => ids.Contains(s.ID)).ToListAsync();
+                context.Screenshots.RemoveRange(screenshots);
+                await context.SaveChangesAsync();
+            }
+        }
+
         public void DeleteEntityRange<T>(IEnumerable<T> range) where T : class
         {
             using (var context = new AppsEntities())
@@ -237,6 +247,26 @@ namespace AppsTracker.Data.Repository
                 {
                     context.Entry<T>(item).State = EntityState.Deleted;
                 }
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public void DeleteByIds<T>(IEnumerable<Int32> ids) where T : class, IEntity
+        {
+            using(var context = new AppsEntities())
+            {
+                var items = context.Set<T>().Where(e => ids.Contains(e.ID));
+                context.Set<T>().RemoveRange(items);
+                context.SaveChanges();
+            }
+        }
+
+        public async Task DeleteByIdsAsync<T>(IEnumerable<Int32> ids) where T : class, IEntity
+        {
+            using (var context = new AppsEntities())
+            {
+                var items = context.Set<T>().Where(e => ids.Contains(e.ID));
+                context.Set<T>().RemoveRange(items);
                 await context.SaveChangesAsync();
             }
         }
@@ -307,7 +337,7 @@ namespace AppsTracker.Data.Repository
                 var emptyWindows = await context.Windows.Where(w => w.Logs.Count == 0).ToListAsync();
                 foreach (var window in emptyWindows)
                 {
-                    if (!context.Windows.Local.Any(w => w.WindowID == window.WindowID))
+                    if (!context.Windows.Local.Any(w => w.ID == window.ID))
                         context.Windows.Attach(window);
                     context.Windows.Remove(window);
                     await context.SaveChangesAsync();
@@ -321,7 +351,7 @@ namespace AppsTracker.Data.Repository
                     if (appsInCategories.Contains(app) || appsWithLimits.Contains(app))
                         continue;
 
-                    if (!context.Applications.Local.Any(a => a.ApplicationID == app.ApplicationID))
+                    if (!context.Applications.Local.Any(a => a.ID == app.ID))
                         context.Applications.Attach(app);
                     context.Applications.Remove(app);
                     await context.SaveChangesAsync();
