@@ -28,7 +28,7 @@ namespace AppsTracker.Tracking.Helpers
 
         public Usage LoginUser(int userId)
         {
-            var login = new Usage() { UserID = userId, UsageEnd = DateTime.Now, UsageType = UsageTypes.Login, IsCurrent = true };
+            var login = new Usage(userId, UsageTypes.Login) { UsageEnd = DateTime.Now, IsCurrent = true };
             repository.SaveNewEntity(login);
             loginUsage = login;
             return login;

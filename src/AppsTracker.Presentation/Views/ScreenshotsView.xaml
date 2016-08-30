@@ -20,7 +20,7 @@
         <local:SelectedScreenshotsConverter x:Key="selectedScreenshotsConverter" />
         <DataTemplate x:Key="appTemplate">
             <Label Style="{DynamicResource GVLabelStyle}"
-                   Content="{Binding Window.Application.Name}">
+                   Content="{Binding AppModel.Name}">
                 <Label.RenderTransform>
                     <TranslateTransform />
                 </Label.RenderTransform>
@@ -52,7 +52,7 @@
                             <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="0"
                                    Grid.Column="1"
-                                   Content="{Binding Path=Window.Application.Company, Mode=OneWay}" />
+                                   Content="{Binding Path=AppModel.Company, Mode=OneWay}" />
 
                             <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="1"
@@ -62,7 +62,7 @@
                             <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="1"
                                    Grid.Column="1"
-                                   Content="{Binding Path=Window.Application.Version, Mode=OneWay}" />
+                                   Content="{Binding Path=AppModel.Version, Mode=OneWay}" />
 
                             <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="2"
@@ -72,7 +72,7 @@
                             <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="2"
                                    Grid.Column="1"
-                                   Content="{Binding Path=Window.Application.Description, Mode=OneWay}" />
+                                   Content="{Binding Path=AppModel.Description, Mode=OneWay}" />
 
                             <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="3"
@@ -82,7 +82,7 @@
                             <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="3"
                                    Grid.Column="1"
-                                   Content="{Binding Path=Window.Application.FileName, Mode=OneWay}" />
+                                   Content="{Binding Path=AppModel.FileName, Mode=OneWay}" />
                             <Label Style="{DynamicResource LabelStyle}"
                                    Grid.Row="4"
                                    Grid.Column="0"
@@ -99,7 +99,7 @@
         </DataTemplate>
         <DataTemplate x:Key="wndTemplate">
             <Label Style="{DynamicResource GVLabelStyle}"
-                   Content="{Binding Window.Title}">
+                   Content="{Binding WindowTitle}">
                 <Label.RenderTransform>
                     <TranslateTransform />
                 </Label.RenderTransform>
@@ -229,7 +229,7 @@
 
             <ListBox Name="lbScreenShots"
                      Background="Transparent"
-                     ItemsSource="{Binding Path=SelectedItem.Screenshots, ElementName=mainContentHolder, Mode=OneWay}"
+                     ItemsSource="{Binding Path=SelectedItem.Images, ElementName=mainContentHolder, Mode=OneWay}"
                      ItemContainerStyle="{DynamicResource ListBoxImageStyle}"
                      Margin="5"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"

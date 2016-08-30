@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
@@ -35,10 +36,8 @@ namespace AppsTracker.ViewModels
     {
         private const int MAX_FILE_NAME_LENGTH = 245;
 
-        private readonly IRepository repository;
+        private readonly IScreenshotService screenshotService;
         private readonly IAppSettingsService settingsService;
-        private readonly IUseCaseAsync<LogModel> screenshotUseCase;
-        private readonly ITrackingService trackingService;
         private readonly IWindowService windowService;
         private readonly IMediator mediator;
 
@@ -62,17 +61,17 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private LogModel selectedItem;
+        private ScreenshotModel selectedItem;
 
-        public LogModel SelectedItem
+        public ScreenshotModel SelectedItem
         {
             get { return selectedItem; }
             set { SetPropertyValue(ref selectedItem, value); }
         }
 
-        private readonly AsyncProperty<IEnumerable<LogModel>> logList;
+        private readonly AsyncProperty<IEnumerable<ScreenshotModel>> logList;
 
-        public AsyncProperty<IEnumerable<LogModel>> LogList
+        public AsyncProperty<IEnumerable<ScreenshotModel>> LogList
         {
             get { return logList; }
         }
@@ -92,7 +91,7 @@ namespace AppsTracker.ViewModels
             get
             {
                 return deleteSelectedScreenshotsCommand ?? (deleteSelectedScreenshotsCommand = new DelegateCommandAsync(DeleteSelectedScreenhsots
-                    , () => selectedItem != null && selectedItem.Screenshots.Any(s => s.IsSelected)));
+                    , () => selectedItem != null && selectedItem.Images.Any(s => s.IsSelected)));
             }
         }
 
@@ -104,31 +103,40 @@ namespace AppsTracker.ViewModels
             get
             {
                 return saveSelectedScreenshotsCommand ?? (saveSelectedScreenshotsCommand = new DelegateCommandAsync(SaveSelectedScreenshots
-                    , () => selectedItem != null && selectedItem.Screenshots.Any(s => s.IsSelected)));
+                    , () => selectedItem != null && selectedItem.Images.Any(s => s.IsSelected)));
             }
         }
 
 
 
         [ImportingConstructor]
-        public ScreenshotsViewModel(IRepository repository,
-                                    IAppSettingsService settingsService,
-                                    IUseCaseAsync<LogModel> screenshotUseCase,
-                                    ITrackingService trackingService,
+        public ScreenshotsViewModel(IAppSettingsService settingsService,
+                                    IScreenshotService screenshotService,
                                     IWindowService windowService,
                                     IMediator mediator)
         {
-            this.repository = repository;
             this.settingsService = settingsService;
-            this.trackingService = trackingService;
-            this.screenshotUseCase = screenshotUseCase;
+            this.screenshotService = screenshotService;
             this.windowService = windowService;
             this.mediator = mediator;
 
-            logList = new TaskObserver<IEnumerable<LogModel>>(screenshotUseCase.GetAsync, this);
+            logList = new TaskObserver<IEnumerable<ScreenshotModel>>(screenshotService.GetAsync, this, OnScreenshotGet);
 
             this.mediator.Register(MediatorMessages.REFRESH_LOGS, new Action(logList.Reload));
         }
+
+
+        private void OnScreenshotGet(IEnumerable<ScreenshotModel> screenshots)
+        {
+            foreach (var screenshot in screenshots)
+            { 
+                foreach (var image in screenshot.Images)
+                {
+                    image.SetPopupSize(Screen.PrimaryScreen.WorkingArea.Width, Screen.PrimaryScreen.WorkingArea.Height);
+                }
+            }
+        }
+
 
         private void OpenScreenshotViewer(object parameter)
         {
@@ -136,9 +144,9 @@ namespace AppsTracker.ViewModels
             if (collection == null)
                 return;
 
-            var logs = collection.Cast<LogModel>();
+            var logs = collection.Cast<ScreenshotModel>();
             var screenshotShell = windowService.GetShell("Screenshot viewer window");
-            screenshotShell.ViewArgument = logs.Where(l => l.Screenshots.Count() > 0).SelectMany(l => l.Screenshots);
+            screenshotShell.ViewArgument = logs.Where(l => l.Images.Count() > 0).SelectMany(l => l.Images);
             screenshotShell.Show();
         }
 
@@ -148,9 +156,9 @@ namespace AppsTracker.ViewModels
             if (selectedItem == null)
                 return;
 
-            var selectedShots = selectedItem.Screenshots.Where(s => s.IsSelected);
+            var selectedShots = selectedItem.Images.Where(s => s.IsSelected);
             var count = selectedShots.Count();
-            //await repository.DeleteScreenshots(selectedShots);
+            await screenshotService.DeleteScreenshotsAsync(selectedShots);
             InfoContent = string.Format("Deleted {0}", count);
             logList.Reload();
         }
@@ -164,7 +172,7 @@ namespace AppsTracker.ViewModels
 
             var pathBuilder = new StringBuilder();
             Working = true;
-            var selectedShots = selectedLog.Screenshots.Where(s => s.IsSelected);
+            var selectedShots = selectedLog.Images.Where(s => s.IsSelected);
             try
             {
                 foreach (var shot in selectedShots)
@@ -184,13 +192,13 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private async Task SaveToFileAsync(StringBuilder path, LogModel log, ScreenshotModel screenshot)
+        private async Task SaveToFileAsync(StringBuilder path, ScreenshotModel screenshot, Image image)
         {
-            path.Append(log.Window.Application.Name);
+            path.Append(screenshot.AppName);
             path.Append("_");
-            path.Append(log.Window.Title);
+            path.Append(screenshot.WindowTitle);
             path.Append("_");
-            path.Append(screenshot.GetHashCode());
+            path.Append(image.GetHashCode());
             path.Append(".jpg");
             string folderPath;
 
@@ -200,7 +208,7 @@ namespace AppsTracker.ViewModels
                 folderPath = CorrectPath(path.ToString());
 
             folderPath = TrimPath(folderPath);
-            await SaveScreenshot(screenshot.Screensht, folderPath);
+            await SaveScreenshot(image.Screensht, folderPath);
         }
 
         private string CorrectPath(string path)

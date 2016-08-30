@@ -61,10 +61,10 @@
     <Compile Include="Apps\DailyAppDurationUseCase.cs" />
     <Compile Include="Apps\DailyCategoryDuration.cs" />
     <Compile Include="Apps\DailyCategoryDurationUseCase.cs" />
-    <Compile Include="Logs\LogModel.cs" />
+    <Compile Include="Screenshots\Image.cs" />
+    <Compile Include="Screenshots\IScreenshotService.cs" />
     <Compile Include="Screenshots\ScreenshotModel.cs" />
     <Compile Include="Screenshots\ScreenshotsService.cs" />
-    <Compile Include="Screenshots\ScreenshotUseCase.cs" />
     <Compile Include="Users\UserModel.cs" />
     <Compile Include="Logs\LogSummary.cs" />
     <Compile Include="Model\SelectableBase.cs" />
@@ -105,7 +105,6 @@
     <Compile Include="Windows\WindowDuration.cs" />
     <Compile Include="Windows\WindowDurationOverview.cs" />
     <Compile Include="Windows\WindowDurationOverviewUseCase.cs" />
-    <Compile Include="Windows\WindowModel.cs" />
     <Compile Include="Windows\WindowSummary.cs" />
     <Compile Include="Windows\WindowSummaryStatsUseCase.cs" />
     <Compile Include="Windows\WindowSummaryUseCase.cs" />

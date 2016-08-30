@@ -9,12 +9,16 @@ namespace AppsTracker.MVVM
         private readonly Func<Task<T>> valueFactory;
 
         public TaskObserver(Func<Task<T>> valueFactory, IWorker worker)
-            : base(worker)
+        : this(valueFactory, worker, null) { }
+
+        public TaskObserver(Func<Task<T>> valueFactory, IWorker worker, Action<T> onCompletion)
+            : base(worker, onCompletion)
         {
             Ensure.NotNull(valueFactory, "valueFactory");
 
             this.valueFactory = valueFactory;
         }
+
 
         protected override void ScheduleWork()
         {

@@ -9,7 +9,7 @@ namespace AppsTracker.MVVM
         private readonly Func<T> valueFactory;
 
         public TaskRunner(Func<T> valueFactory, IWorker worker)
-            : base(worker)
+            : base(worker, null)
         {
             Ensure.NotNull(valueFactory, "valueFactory");
 

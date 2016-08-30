@@ -1,108 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using AppsTracker.Domain.Utils;
-using AppsTracker.Domain.Logs;
-using AppsTracker.Domain.Model;
 using AppsTracker.Data.Models;
+using AppsTracker.Domain.Apps;
 
 namespace AppsTracker.Domain.Screenshots
 {
     public sealed class ScreenshotModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        internal ScreenshotModel(LogModel log, Screenshot screenshot)
+        internal ScreenshotModel(Log log)
         {
-            Log = log;
-            Width = screenshot.Width;
-            Height = screenshot.Height;
-            Date = screenshot.Date;
-            Screensht = screenshot.Screensht;
+            DateCreated = log.DateCreated;
+            WindowTitle = log.Window.Title;
+            AppName = log.Window.Application.Name;
+            AppModel = new AppModel(log.Window.Application);
+            Images = log.Screenshots?.Select(s => new Image(log.Window.Application.Name, s));
         }
 
-        private bool isSelected;
+        public DateTime DateCreated { get; }
 
-        public bool IsSelected
-        {
-            get { return isSelected; }
-            set
-            {
-                isSelected = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsSelected"));
-            }
-        }
+        public IEnumerable<Image> Images { get; }
 
-        public bool IsOpen
-        {
-            get;
-            set;
-        }
+        public String AppName { get; }
 
-        public ICommand ShowHideCommand
-        {
-            get
-            {
-                return new RelayCommand(ShowHide);
-            }
-        }
+        public AppModel AppModel { get; }
 
-        public string AppName
-        {
-            get
-            {
-                return Log.Window.Application.Name;
-            }
-        }
-
-        public void SetPopupSize(double screenWidth, double screenHeight)
-        {
-            if (this.Width > this.Height && this.Height >= screenHeight - 100d)
-            {
-                this.PopupWidth = screenWidth * 0.75;
-                this.PopupHeight = screenHeight;
-            }
-            else if (this.Width < this.Height && this.Width >= screenWidth - 150d)
-            {
-                this.PopupHeight = screenHeight * 0.75;
-                this.PopupWidth = screenWidth;
-            }
-            else
-            {
-                this.PopupWidth = Width;
-                this.PopupHeight = Height;
-            }
-        }
-
-        private void ShowHide()
-        {
-            if (IsOpen)
-                IsOpen = false;
-            else
-                IsOpen = true;
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs("IsOpen"));
-        }
-
-        public Int32 ScreenshotId { get; }
-
-        public DateTime Date { get; set; }
-
-        public int Width { get; set; }
-
-        public int Height { get; set; }
-
-        public byte[] Screensht { get; set; }
-
-        public double PopupHeight { get; private set; }
-
-        public double PopupWidth { get; private set; }
-
-        public LogModel Log { get; set; }
+        public String WindowTitle { get; }
     }
 }

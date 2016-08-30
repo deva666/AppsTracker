@@ -46,12 +46,12 @@ namespace AppsTracker.Controllers
             userSettingsService.Initialize();
             PropertyChangedEventManager.AddHandler(appSettingsService, OnSettingsChanged, "Settings");
 
-            appearanceController.Initialize(appSettingsService.Settings);
-            trackingController.Initialize(appSettingsService.Settings);
-
             repository.CheckUnfinishedEntries();
             repository.DbSizeCritical += OnDbSizeCritical;
             repository.GetDBSize();
+
+            appearanceController.Initialize(appSettingsService.Settings);
+            trackingController.Initialize(appSettingsService.Settings);
 
             if (autoStart == false)
             {

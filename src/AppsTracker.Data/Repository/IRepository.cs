@@ -66,6 +66,10 @@ namespace AppsTracker.Data.Repository
 
         Task DeleteEntityRangeAsync<T>(IEnumerable<T> range) where T : class;
 
+        void DeleteByIds<T>(IEnumerable<Int32> ids) where T : class, IEntity;
+
+        Task DeleteByIdsAsync<T>(IEnumerable<Int32> ids) where T : class, IEntity;
+        
         Task<int> DeleteOldScreenshotsAsync(int daysBackwards);
 
         Task DeleteOldLogsAsync(int daysTreshold);

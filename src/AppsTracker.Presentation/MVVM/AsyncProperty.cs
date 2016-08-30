@@ -16,7 +16,10 @@ namespace AppsTracker.MVVM
     {
         protected readonly IWorker worker;
 
+        private readonly Action<T> onCompletion;
+
         private Exception exception;
+        
 
         public Exception Exception
         {
@@ -48,11 +51,12 @@ namespace AppsTracker.MVVM
             }
         }
 
-        public AsyncProperty(IWorker worker)
+        public AsyncProperty(IWorker worker, Action<T> onCompletion)
         {
             Ensure.NotNull(worker, "worker");
 
             this.worker = worker;
+            this.onCompletion = onCompletion;
         }
 
         public void Reset()
@@ -85,6 +89,7 @@ namespace AppsTracker.MVVM
             }
             if (task.Status == TaskStatus.RanToCompletion)
             {
+                onCompletion?.Invoke(result);
                 PropertyChanging("Result");
             }
         }
