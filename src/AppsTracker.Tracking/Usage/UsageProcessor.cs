@@ -14,9 +14,9 @@ namespace AppsTracker.Tracking.Helpers
     {
         private readonly IRepository repository;
         private readonly ITrackingService trackingService;
-        private readonly IDictionary<UsageTypes, Usage> usageTypesMap = new Dictionary<UsageTypes, Usage>();
+        private readonly IDictionary<UsageTypes, Data.Models.Usage> usageTypesMap = new Dictionary<UsageTypes, Data.Models.Usage>();
 
-        private Usage loginUsage;
+        private Data.Models.Usage loginUsage;
 
         [ImportingConstructor]
         public UsageProcessor(IRepository repository,
@@ -26,9 +26,9 @@ namespace AppsTracker.Tracking.Helpers
             this.trackingService = trackingService;
         }
 
-        public Usage LoginUser(int userId)
+        public Data.Models.Usage LoginUser(int userId)
         {
-            var login = new Usage(userId, UsageTypes.Login) { UsageEnd = DateTime.Now, IsCurrent = true };
+            var login = new Data.Models.Usage(userId, UsageTypes.Login) { UsageEnd = DateTime.Now, IsCurrent = true };
             repository.SaveNewEntity(login);
             loginUsage = login;
             return login;
@@ -37,7 +37,7 @@ namespace AppsTracker.Tracking.Helpers
         public void NewUsage(UsageTypes usageType)
         {
             Ensure.Condition<InvalidOperationException>(usageTypesMap.ContainsKey(usageType) == false, "Usage type exists");
-            var usage = new Usage(trackingService.UserID, usageType) { SelfUsageID = trackingService.UsageID };
+            var usage = new Data.Models.Usage(trackingService.UserID, usageType) { SelfUsageID = trackingService.UsageID };
             usageTypesMap.Add(usageType, usage);
         }
 
@@ -50,7 +50,7 @@ namespace AppsTracker.Tracking.Helpers
             SaveUsage(usageType, usage);
         }
 
-        private void SaveUsage(UsageTypes usageType, Usage usage)
+        private void SaveUsage(UsageTypes usageType, Data.Models.Usage usage)
         {
             usage.UsageEnd = DateTime.Now;
             usage.IsCurrent = false;

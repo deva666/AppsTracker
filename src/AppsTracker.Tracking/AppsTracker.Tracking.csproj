@@ -127,7 +127,11 @@
     <Compile Include="Usage\IdleNotifier.cs" />
     <Compile Include="Usage\IdleTimeWatcher.cs" />
     <Compile Include="Usage\IIdleNotifier.cs" />
+    <Compile Include="Usage\IUsageNotifier.cs" />
     <Compile Include="Usage\IUsageProcessor.cs" />
+    <Compile Include="Usage\LoginNotifier.cs" />
+    <Compile Include="Usage\UsageContext.cs" />
+    <Compile Include="Usage\UsageEvent.cs" />
     <Compile Include="Usage\UsageProcessor.cs" />
     <Compile Include="Usage\UsageTracker.cs" />
     <Compile Include="Windows\WindowTracker.cs" />

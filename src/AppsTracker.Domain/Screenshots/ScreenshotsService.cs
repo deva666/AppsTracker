@@ -9,6 +9,7 @@ using AppsTracker.Domain.Tracking;
 namespace AppsTracker.Domain.Screenshots
 {
     [Export(typeof(IScreenshotService))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class ScreenshotsService : IScreenshotService
     {
         private readonly IRepository repository;
@@ -24,13 +25,14 @@ namespace AppsTracker.Domain.Screenshots
 
         public async Task<IEnumerable<ScreenshotModel>> GetAsync()
         {
-            return (await repository.GetFilteredAsync<Log>(l => l.Screenshots.Count > 0
+            var logs = await repository.GetFilteredAsync<Log>(l => l.Screenshots.Count > 0
                                                 && l.DateCreated >= trackingService.DateFrom
                                                 && l.DateCreated <= trackingService.DateTo
                                                 && l.Window.Application.UserID == trackingService.SelectedUserID
                                                 , l => l.Screenshots
-                                                , l => l.Window.Application)
-                    ).Select(l => new ScreenshotModel(l));
+                                                , l => l.Window.Application);
+
+            return logs.Select(l => new ScreenshotModel(l)).ToList();
         }
 
         public async Task DeleteScreenshotsAsync(IEnumerable<Image> screenshots)

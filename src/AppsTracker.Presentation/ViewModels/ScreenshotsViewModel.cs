@@ -102,7 +102,8 @@ namespace AppsTracker.ViewModels
         {
             get
             {
-                return saveSelectedScreenshotsCommand ?? (saveSelectedScreenshotsCommand = new DelegateCommandAsync(SaveSelectedScreenshots
+                return saveSelectedScreenshotsCommand ??
+                    (saveSelectedScreenshotsCommand = new DelegateCommandAsync(SaveSelectedScreenshots
                     , () => selectedItem != null && selectedItem.Images.Any(s => s.IsSelected)));
             }
         }
@@ -132,7 +133,7 @@ namespace AppsTracker.ViewModels
             { 
                 foreach (var image in screenshot.Images)
                 {
-                    image.SetPopupSize(Screen.PrimaryScreen.WorkingArea.Width, Screen.PrimaryScreen.WorkingArea.Height);
+                    image.SetPopupSize(System.Windows.SystemParameters.PrimaryScreenWidth, System.Windows.SystemParameters.PrimaryScreenHeight);
                 }
             }
         }

@@ -8,6 +8,10 @@ namespace AppsTracker.Domain.Screenshots
 {
     public sealed class Image : INotifyPropertyChanged
     {
+        private const Double HEIGHT_MARGIN = 100d;
+        private const Double WIDTH_MARGIN = 100d;
+        private const Double SCALE_FACTOR = 0.75;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         internal Image(String appName, Screenshot screenshot)
@@ -53,14 +57,14 @@ namespace AppsTracker.Domain.Screenshots
 
         public void SetPopupSize(double screenWidth, double screenHeight)
         {
-            if (this.Width > this.Height && this.Height >= screenHeight - 100d)
+            if (this.Width > this.Height && this.Height >= screenHeight - HEIGHT_MARGIN)
             {
-                this.PopupWidth = screenWidth * 0.75;
+                this.PopupWidth = screenWidth * SCALE_FACTOR;
                 this.PopupHeight = screenHeight;
             }
-            else if (this.Width < this.Height && this.Width >= screenWidth - 150d)
+            else if (this.Width < this.Height && this.Width >= screenWidth - WIDTH_MARGIN)
             {
-                this.PopupHeight = screenHeight * 0.75;
+                this.PopupHeight = screenHeight * SCALE_FACTOR;
                 this.PopupWidth = screenWidth;
             }
             else

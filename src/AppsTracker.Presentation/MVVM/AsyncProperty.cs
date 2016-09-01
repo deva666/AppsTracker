@@ -47,7 +47,7 @@ namespace AppsTracker.MVVM
                 {
                     ScheduleWork();
                 }
-                return task.Status == TaskStatus.RanToCompletion ? task.Result : default(T);
+                return task.Status == TaskStatus.RanToCompletion ? result : default(T);
             }
         }
 
@@ -89,8 +89,8 @@ namespace AppsTracker.MVVM
             }
             if (task.Status == TaskStatus.RanToCompletion)
             {
-                onCompletion?.Invoke(result);
                 PropertyChanging("Result");
+                onCompletion?.Invoke(result);
             }
         }
     }

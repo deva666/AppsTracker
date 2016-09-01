@@ -7,68 +7,15 @@
 #endregion
 
 using System;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
 using System.Windows.Input;
-using AppsTracker.Data.Utils;
 
 namespace AppsTracker.Data.Models
 {
-    public class Screenshot : IEntity, INotifyPropertyChanged
+    public class Screenshot : IEntity
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private bool isSelected;
-
-        [NotMapped]
-        public bool IsSelected
-        {
-            get { return isSelected; }
-            set
-            {
-                isSelected = value;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("IsSelected"));
-            }
-        }
-
-        [NotMapped]
-        public bool IsOpen
-        {
-            get;
-            set;
-        }
-
-        [NotMapped]
-        public ICommand ShowHideCommand
-        {
-            get
-            {
-                return new RelayCommand(ShowHide);
-            }
-        }
-
-        [NotMapped]
-        public string AppName
-        {
-            get
-            {
-                return this.Log.Window.Application.Name;
-            }
-        }
-
-        [NotMapped]
-        public int UserID
-        {
-            get
-            {
-                return this.Log.Window.Application.UserID;
-            }
-        }
-
-
         public Screenshot() { }
 
         public Screenshot(Size size, Image image)
@@ -77,7 +24,6 @@ namespace AppsTracker.Data.Models
             this.Width = size.Width;
             this.Height = size.Height;
             this.Screensht = GetByteArrayFromImage(image);
-            GetPopupSize();
         }
 
 
@@ -87,40 +33,6 @@ namespace AppsTracker.Data.Models
             ImageConverter converter = new ImageConverter();
             return (byte[])converter.ConvertTo(image, typeof(byte[]));
         }
-
-        private void GetPopupSize()
-        {
-            double screenWidth = System.Windows.SystemParameters.PrimaryScreenWidth;
-            double screenHeight = System.Windows.SystemParameters.PrimaryScreenHeight;
-
-            if (this.Width > this.Height && this.Height >= screenHeight - 100d)
-            {
-                this.PopupWidth = screenWidth * 0.75;
-                this.PopupHeight = screenHeight;
-            }
-            else if (this.Width < this.Height && this.Width >= screenWidth - 150d)
-            {
-                this.PopupHeight = screenHeight * 0.75;
-                this.PopupWidth = screenWidth;
-            }
-            else
-            {
-                this.PopupWidth = Width;
-                this.PopupHeight = Height;
-            }
-        }
-
-        private void ShowHide()
-        {
-            if (IsOpen)
-                IsOpen = false;
-            else
-                IsOpen = true;
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs("IsOpen"));
-        }
-
-
 
 
         [Key]

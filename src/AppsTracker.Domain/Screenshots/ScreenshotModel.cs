@@ -14,12 +14,12 @@ namespace AppsTracker.Domain.Screenshots
             WindowTitle = log.Window.Title;
             AppName = log.Window.Application.Name;
             AppModel = new AppModel(log.Window.Application);
-            Images = log.Screenshots?.Select(s => new Image(log.Window.Application.Name, s));
+            Images = log.Screenshots?.Select(s => new Image(log.Window.Application.Name, s)).ToList();
         }
 
         public DateTime DateCreated { get; }
 
-        public IEnumerable<Image> Images { get; }
+        public IList<Image> Images { get; }
 
         public String AppName { get; }
 

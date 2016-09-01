@@ -19,6 +19,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 
 using AppsTracker.Data.Models;
+using AppsTracker.Domain.Screenshots;
 using AppsTracker.Domain.Windows;
 using AppsTracker.MVVM;
 
@@ -1267,11 +1268,11 @@ namespace AppsTracker
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            Log selectedLog = value as Log;
-            if (selectedLog == null)
+            ScreenshotModel selectedItem = value as ScreenshotModel;
+            if (selectedItem == null)
                 return false;
 
-            return selectedLog.Screenshots.Any(s => s.IsSelected);
+            return selectedItem.Images.Any(s => s.IsSelected);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

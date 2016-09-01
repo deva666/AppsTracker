@@ -4,7 +4,7 @@ namespace AppsTracker.Tracking.Helpers
 {
     internal interface IUsageProcessor
     {
-        Usage LoginUser(int userId);
+        Data.Models.Usage LoginUser(int userId);
 
         void NewUsage(UsageTypes usageType);
 
