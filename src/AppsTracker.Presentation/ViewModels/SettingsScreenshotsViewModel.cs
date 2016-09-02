@@ -102,7 +102,7 @@ namespace AppsTracker.ViewModels
                                             ITrackingService trackingService,
                                             IRepository repository,
                                             IWindowService windowService,
-                                            IMediator mediator)
+                                            Mediator mediator)
             : base(settingsService, mediator)
         {
             this.trackingService = trackingService;

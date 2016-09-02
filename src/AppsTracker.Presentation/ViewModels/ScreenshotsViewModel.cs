@@ -15,16 +15,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Windows.Input;
 using AppsTracker.Common.Communication;
-using AppsTracker.Data.Models;
-using AppsTracker.Data.Repository;
-using AppsTracker.Domain;
-using AppsTracker.Domain.Logs;
 using AppsTracker.Domain.Screenshots;
 using AppsTracker.Domain.Settings;
-using AppsTracker.Domain.Tracking;
 using AppsTracker.MVVM;
 using AppsTracker.Service;
 
@@ -39,7 +33,7 @@ namespace AppsTracker.ViewModels
         private readonly IScreenshotService screenshotService;
         private readonly IAppSettingsService settingsService;
         private readonly IWindowService windowService;
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
 
 
         public override string Title
@@ -114,7 +108,7 @@ namespace AppsTracker.ViewModels
         public ScreenshotsViewModel(IAppSettingsService settingsService,
                                     IScreenshotService screenshotService,
                                     IWindowService windowService,
-                                    IMediator mediator)
+                                    Mediator mediator)
         {
             this.settingsService = settingsService;
             this.screenshotService = screenshotService;
@@ -130,7 +124,7 @@ namespace AppsTracker.ViewModels
         private void OnScreenshotGet(IEnumerable<ScreenshotModel> screenshots)
         {
             foreach (var screenshot in screenshots)
-            { 
+            {
                 foreach (var image in screenshot.Images)
                 {
                     image.SetPopupSize(System.Windows.SystemParameters.PrimaryScreenWidth, System.Windows.SystemParameters.PrimaryScreenHeight);

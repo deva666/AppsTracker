@@ -28,7 +28,7 @@ namespace AppsTracker.ViewModels
 
         private readonly ICategoriesService categoriesService;
         private readonly ITrackingService trackingService;
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
 
         private readonly ICollection<AppCategory> categoriesToDelete = new List<AppCategory>();
 
@@ -171,7 +171,7 @@ namespace AppsTracker.ViewModels
 
         [ImportingConstructor]
         public SettingsAppCategoriesViewModel(ExportFactory<ICategoriesService> categoriesFactory,
-                                              IMediator mediator,
+                                              Mediator mediator,
                                               ITrackingService trackingService)
         {
             using (var context = categoriesFactory.CreateExport())

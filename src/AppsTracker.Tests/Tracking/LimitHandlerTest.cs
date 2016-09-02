@@ -19,7 +19,7 @@ namespace AppsTracker.Tests.Tracking
             xmlSettings.Initialize();
 
             var logger = new Mock<ILogger>();
-            var mediator = new Mock<IMediator>();
+            var mediator = new Mock<Mediator>();
             var shutdownService = new Mock<IShutdownService>();
 
             var limitHandler = new LimitHandler(mediator.Object, xmlSettings, logger.Object, shutdownService.Object);
@@ -38,7 +38,7 @@ namespace AppsTracker.Tests.Tracking
             xmlSettings.Initialize();
 
             var logger = new Mock<ILogger>();
-            var mediator = new Mock<IMediator>();
+            var mediator = new Mock<Mediator>();
             var shutdownService = new Mock<IShutdownService>();
 
             var limitHandler = new LimitHandler(mediator.Object, xmlSettings, logger.Object, shutdownService.Object);
@@ -57,7 +57,7 @@ namespace AppsTracker.Tests.Tracking
             xmlSettings.Initialize();
 
             var logger = new Mock<ILogger>();
-            var mediator = new Mock<IMediator>();
+            var mediator = new Mock<Mediator>();
             var shutdownService = new Mock<IShutdownService>();
 
             var limitHandler = new LimitHandler(mediator.Object, xmlSettings, logger.Object, shutdownService.Object);
@@ -76,7 +76,7 @@ namespace AppsTracker.Tests.Tracking
             xmlSettings.Initialize();
 
             var logger = new Mock<ILogger>();
-            var mediator = new Mock<IMediator>();
+            var mediator = new Mock<Mediator>();
             var shutdownService = new Mock<IShutdownService>();
 
             var limitHandler = new LimitHandler(mediator.Object, xmlSettings, logger.Object, shutdownService.Object);

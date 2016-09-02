@@ -18,7 +18,7 @@ namespace AppsTracker.Tracking.Usage
     {
         private readonly IRepository repository;
         private readonly ITrackingService trackingService;
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
         private readonly Subject<UsageEvent> usageSubject = new Subject<UsageEvent>();
 
         public IObservable<UsageEvent> UsageObservable

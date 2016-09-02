@@ -23,7 +23,7 @@ namespace AppsTracker.ViewModels
     {
         private readonly IUseCase<UserLoggedTime> userLoggedTimeUseCase;
         private readonly IUseCase<String, UsageOverview> usageOverviewUseCase;
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
 
         public override string Title
         {
@@ -82,7 +82,7 @@ namespace AppsTracker.ViewModels
         [ImportingConstructor]
         public UserStatsViewModel(IUseCase<UserLoggedTime> userLoggedTimeUseCase,
                                   IUseCase<String, UsageOverview> usageOverviewUseCase,
-                                  IMediator mediator)
+                                  Mediator mediator)
         {
             this.userLoggedTimeUseCase = userLoggedTimeUseCase;
             this.usageOverviewUseCase = usageOverviewUseCase;

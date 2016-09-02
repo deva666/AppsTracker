@@ -21,7 +21,7 @@ namespace AppsTracker.Tracking.Limits
         private readonly IMidnightNotifier midnightNotifier;
         private readonly ILimitHandler limitHandler;
         private readonly IAppDurationCalc appDurationCalc;
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
 
         private readonly IDictionary<String, IEnumerable<AppLimit>> appLimitsMap
             = new Dictionary<String, IEnumerable<AppLimit>>();
@@ -41,7 +41,7 @@ namespace AppsTracker.Tracking.Limits
                              IMidnightNotifier midnightNotifier,
                              ILimitHandler limitHandler,
                              IAppDurationCalc appDurationCalc,
-                             IMediator mediator,
+                             Mediator mediator,
                              ISyncContext syncContext)
         {
             this.trackingService = trackingService;

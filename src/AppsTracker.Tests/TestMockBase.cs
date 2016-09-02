@@ -47,7 +47,7 @@ namespace AppsTracker.Tests
         protected readonly Mock<IUseCase<DateTime, LogSummary>> logSummaryUseCase = new Mock<IUseCase<DateTime, LogSummary>>();
 
 
-        protected readonly IMediator mediator = new Mediator();
+        protected readonly Mediator mediator = new Mediator();
         protected readonly ISyncContext syncContext = new SyncContextMock();
 
         protected ExportFactory<AppDetailsViewModel> GetAppDetailsVMFactory()

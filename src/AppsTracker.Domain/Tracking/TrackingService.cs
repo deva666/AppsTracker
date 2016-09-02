@@ -21,7 +21,7 @@ namespace AppsTracker.Domain.Tracking
     [Export(typeof(ITrackingService))]
     public sealed class TrackingService : ITrackingService
     {
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
         private readonly IRepository repository;
 
         private volatile bool isDateRangeFiltered;
@@ -87,7 +87,7 @@ namespace AppsTracker.Domain.Tracking
 
 
         [ImportingConstructor]
-        public TrackingService(IMediator mediator,
+        public TrackingService(Mediator mediator,
                                IRepository repository)
         {
             this.mediator = mediator;

@@ -20,7 +20,7 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class DailyAppUsageViewModel : ViewModelBase
     {
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
         private readonly IUseCase<AppDurationOverview> useCase;
 
 
@@ -43,7 +43,7 @@ namespace AppsTracker.ViewModels
 
         [ImportingConstructor]
         public DailyAppUsageViewModel(IUseCase<AppDurationOverview> useCase,
-                                      IMediator mediator)
+                                      Mediator mediator)
         {
             this.useCase = useCase;
             this.mediator = mediator;

@@ -25,7 +25,7 @@ namespace AppsTracker.Tracking
 
         private readonly IRepository repository;
         private readonly ITrackingService trackingService;
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
         private readonly IUsageProcessor usageProcessor;
         private readonly ExportFactory<IIdleNotifier> idleNotifierFactory;
 
@@ -36,7 +36,7 @@ namespace AppsTracker.Tracking
         [ImportingConstructor]
         public UsageTracker(IRepository repository,
                             ITrackingService trackingService,
-                            IMediator mediator,
+                            Mediator mediator,
                             IUsageProcessor usageProcessor,
                             ExportFactory<IIdleNotifier> idleNotifierFactory)
         {

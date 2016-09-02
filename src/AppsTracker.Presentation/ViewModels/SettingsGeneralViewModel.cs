@@ -90,7 +90,7 @@ namespace AppsTracker.ViewModels
         [ImportingConstructor]
         public SettingsGeneralViewModel(IWindowService windowService,
                                         IAppSettingsService settingsService,
-                                        IMediator mediator)
+                                        Mediator mediator)
             : base(settingsService, mediator)
         {
             this.windowService = windowService;

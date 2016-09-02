@@ -33,7 +33,7 @@ namespace AppsTracker.ViewModels
         [ImportingConstructor]
         public SettingsPasswordViewModel(IWindowService windowService,
                                          IAppSettingsService settingsService,
-                                         IMediator mediator)
+                                         Mediator mediator)
             : base(settingsService, mediator)
         {
             this.windowService = windowService;

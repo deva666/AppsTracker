@@ -70,7 +70,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Communication\IMediator.cs" />
     <Compile Include="Communication\ISyncContext.cs" />
     <Compile Include="Communication\Mediator.cs" />
     <Compile Include="Communication\MediatorMessages.cs" />

@@ -23,7 +23,7 @@ namespace AppsTracker.ViewModels
     {
         private readonly IUseCase<ScreenshotOverview> screenshotModelUseCase;
         private readonly IUseCase<String, DailyScreenshotModel> dailyScreenshotModelUseCase;
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
 
 
         public override string Title
@@ -74,7 +74,7 @@ namespace AppsTracker.ViewModels
         [ImportingConstructor]
         public ScreenshotsStatsViewModel(IUseCase<ScreenshotOverview> screenshotModelUseCase,
                                          IUseCase<String, DailyScreenshotModel> dailyScreenshotModelUseCase,
-                                         IMediator mediator)
+                                         Mediator mediator)
         {
             this.screenshotModelUseCase = screenshotModelUseCase;
             this.dailyScreenshotModelUseCase = dailyScreenshotModelUseCase;

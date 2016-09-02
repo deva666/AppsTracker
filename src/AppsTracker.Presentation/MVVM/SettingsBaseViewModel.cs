@@ -20,7 +20,7 @@ namespace AppsTracker.MVVM
         private const string SETTINGS_SAVED_MSG = "settings saved";
 
         private readonly IAppSettingsService settingsService;
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
 
         private string infoMessage;
 
@@ -53,7 +53,7 @@ namespace AppsTracker.MVVM
         }
 
 
-        public SettingsBaseViewModel(IAppSettingsService settingsService, IMediator mediator)
+        public SettingsBaseViewModel(IAppSettingsService settingsService, Mediator mediator)
         {
             this.settingsService = settingsService;
             this.mediator = mediator;

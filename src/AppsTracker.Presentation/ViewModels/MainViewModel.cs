@@ -33,7 +33,7 @@ namespace AppsTracker.ViewModels
         private readonly IUserSettingsService userSettingsService;
         private readonly ITrackingService trackingService;
         private readonly IReleaseNotesService releaseNotesService;
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
 
         private bool isPopupCalendarOpen = false;
 
@@ -285,7 +285,7 @@ namespace AppsTracker.ViewModels
                              IUserSettingsService userSettingsService,
                              ITrackingService trackingService,
                              IReleaseNotesService releaseNotesService,
-                             IMediator mediator,
+                             Mediator mediator,
                              ExportFactory<DataHostViewModel> dataVMFactory,
                              ExportFactory<StatisticsHostViewModel> statisticsVMFactory,
                              ExportFactory<SettingsHostViewModel> settingsVMFactory)

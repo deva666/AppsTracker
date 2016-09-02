@@ -21,7 +21,7 @@ namespace AppsTracker.Views
     {
         private readonly IUserSettingsService userSettingsService;
         private readonly IAppDurationCalc appDurationCalc;
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
 
         private readonly MeasureProvider measureProvider;
         private readonly DispatcherTimer timer;
@@ -31,7 +31,7 @@ namespace AppsTracker.Views
         [ImportingConstructor]
         public LimitToastWindow(IUserSettingsService userSettingsService,
                                 IAppDurationCalc appDurationCalc,
-                                IMediator mediator,
+                                Mediator mediator,
                                 MeasureProvider measureProvider)
         {
             this.userSettingsService = userSettingsService;

@@ -21,7 +21,7 @@ namespace AppsTracker.ViewModels
 
         private readonly IRepository repository;
         private readonly ITrackingService trackingService;
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
 
         private readonly ICollection<AppLimit> limitsToDelete = new List<AppLimit>();
 
@@ -128,7 +128,7 @@ namespace AppsTracker.ViewModels
         [ImportingConstructor]
         public SettingsLimitsViewModel(IRepository repository,
                                        ITrackingService trackingService,
-                                       IMediator mediator)
+                                       Mediator mediator)
         {
             this.repository = repository;
             this.trackingService = trackingService;

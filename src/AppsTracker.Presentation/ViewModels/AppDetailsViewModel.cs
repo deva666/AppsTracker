@@ -28,7 +28,7 @@ namespace AppsTracker.ViewModels
         private readonly IUseCase<String, Int32, AppSummary> appSummaryUseCase;
         private readonly IUseCase<String, IEnumerable<DateTime>, WindowSummary> windowSummaryUseCase;
         private readonly IUseCase<String, IEnumerable<String>, IEnumerable<DateTime>, WindowDurationOverview> windowDurationUseCase;
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
 
         public override string Title
         {
@@ -146,7 +146,7 @@ namespace AppsTracker.ViewModels
                                    IUseCase<String, Int32, AppSummary> appSummaryUseCase,
                                    IUseCase<String, IEnumerable<DateTime>, WindowSummary> windowSummaryUseCase,
                                    IUseCase<String, IEnumerable<String>, IEnumerable<DateTime>, WindowDurationOverview> windowDurationUseCase,
-                                   IMediator mediator)
+                                   Mediator mediator)
         {
             this.appUseCase = appUseCase;
             this.appSummaryUseCase = appSummaryUseCase;

@@ -67,7 +67,7 @@ namespace AppsTracker.ViewModels
         }
 
         [ImportingConstructor]
-        public SettingsTrackingViewModel(IAppSettingsService settingsService, IMediator mediator)
+        public SettingsTrackingViewModel(IAppSettingsService settingsService, Mediator mediator)
             : base(settingsService, mediator)
         {
 

@@ -23,7 +23,7 @@ namespace AppsTracker.ViewModels
     {
         private readonly IUseCase<AppDuration> appDurationUseCase;
         private readonly IUseCase<String, DailyAppDuration> dailyAppDurationUseCase;
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
 
         public override string Title
         {
@@ -74,7 +74,7 @@ namespace AppsTracker.ViewModels
         [ImportingConstructor]
         public AppStatsViewModel(IUseCase<AppDuration> appDurationUseCase,
                                  IUseCase<String, DailyAppDuration> dailyAppDurationUseCase,
-                                 IMediator mediator)
+                                 Mediator mediator)
         {
             this.appDurationUseCase = appDurationUseCase;
             this.dailyAppDurationUseCase = dailyAppDurationUseCase;

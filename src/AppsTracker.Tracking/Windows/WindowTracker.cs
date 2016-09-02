@@ -28,7 +28,7 @@ namespace AppsTracker.Tracking
         private readonly IRepository repository;
         private readonly IAppChangedNotifier appChangedNotifier;
         private readonly IScreenshotTracker screenshotTracker;
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
 
         private IDisposable appChangedSubscription;
         private IDisposable screenshotSubscription;
@@ -41,7 +41,7 @@ namespace AppsTracker.Tracking
                              IRepository repository,
                              IAppChangedNotifier appChangedNotifier,
                              IScreenshotTracker screenshotTracker,
-                             IMediator mediator)
+                             Mediator mediator)
         {
             this.trackingService = trackingService;
             this.repository = repository;
