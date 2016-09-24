@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppsTracker.Data.Models;
-using AppsTracker.Domain.Windows;
 
 namespace AppsTracker.Domain.Apps
 {
@@ -24,7 +20,7 @@ namespace AppsTracker.Domain.Apps
             if (aplication.Limits != null)
             {
                 Limits = aplication.Limits.Select(l => new AppLimitModel(l));
-                ObservableLimits = new ObservableCollection<AppLimitModel>(Limits);    
+                ObservableLimits = new ObservableCollection<AppLimitModel>(Limits);
             }
         }
 
@@ -49,8 +45,5 @@ namespace AppsTracker.Domain.Apps
         public string WinName { get; }
 
         public IEnumerable<AppLimitModel> Limits { get; private set; }
-        //public UzerModel User { get; private set; }
-        //public ICollection<WindowModel> Windows { get; private set; }
-        //public ICollection<AppCategoryModel> Categories { get; private set; }
     }
 }
