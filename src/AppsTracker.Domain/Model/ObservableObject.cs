@@ -1,16 +1,8 @@
-﻿#region Licence
-/*
-  *  Author: Marko Devcic, madevcic@gmail.com
-  *  Copyright: Marko Devcic, 2015
-  *  Licence: http://creativecommons.org/licenses/by-nc-nd/4.0/
- */
-#endregion
-
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
-namespace AppsTracker.MVVM
+namespace AppsTracker.Domain.Model
 {
     public abstract class ObservableObject : INotifyPropertyChanged
     {

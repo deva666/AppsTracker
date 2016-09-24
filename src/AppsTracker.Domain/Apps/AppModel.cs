@@ -22,11 +22,11 @@ namespace AppsTracker.Domain.Apps
             WinName = aplication.WinName;
         }
 
-        //public ObservableCollection<AppLimitModel> ObservableLimits
-        //{
-        //    get;
-        //    set;
-        //}
+        public ObservableCollection<AppLimitModel> ObservableLimits
+        {
+            get;
+            set;
+        }
 
         public int ApplicationID { get; }
 
@@ -46,19 +46,5 @@ namespace AppsTracker.Domain.Apps
         //public ICollection<WindowModel> Windows { get; private set; }
         //public ICollection<AppCategoryModel> Categories { get; private set; }
         //public ICollection<AppLimitModel> Limits { get; private set; }
-
-        //public override int GetHashCode()
-        //{
-        //    return ApplicationID.GetHashCode();
-        //}
-
-        //public override bool Equals(object obj)
-        //{
-        //    var other = obj as Aplication;
-        //    if (other == null)
-        //        return false;
-
-        //    return ApplicationID == other.ApplicationID;
-        //}
     }
 }

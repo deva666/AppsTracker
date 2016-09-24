@@ -62,6 +62,7 @@
     <Compile Include="Apps\DailyAppDurationUseCase.cs" />
     <Compile Include="Apps\DailyCategoryDuration.cs" />
     <Compile Include="Apps\DailyCategoryDurationUseCase.cs" />
+    <Compile Include="Model\ObservableObject.cs" />
     <Compile Include="Screenshots\Image.cs" />
     <Compile Include="Screenshots\IScreenshotService.cs" />
     <Compile Include="Screenshots\ScreenshotModel.cs" />

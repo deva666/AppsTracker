@@ -9,6 +9,7 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Input;
+using AppsTracker.Domain.Model;
 
 namespace AppsTracker.MVVM
 {

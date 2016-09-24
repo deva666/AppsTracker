@@ -9,6 +9,7 @@
 using System;
 using System.Threading.Tasks;
 using AppsTracker.Common.Utils;
+using AppsTracker.Domain.Model;
 
 namespace AppsTracker.MVVM
 {

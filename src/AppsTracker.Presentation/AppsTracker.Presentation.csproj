@@ -58,7 +58,6 @@
     <Compile Include="MVVM\DelegateCommandAsync.cs" />
     <Compile Include="MVVM\HostViewModel.cs" />
     <Compile Include="MVVM\IWorker.cs" />
-    <Compile Include="MVVM\ObservableObject.cs" />
     <Compile Include="MVVM\SettingsBaseViewModel.cs" />
     <Compile Include="MVVM\TaskObserver.cs" />
     <Compile Include="MVVM\TaskRunner.cs" />
