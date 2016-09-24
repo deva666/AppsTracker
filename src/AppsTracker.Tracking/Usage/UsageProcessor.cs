@@ -4,31 +4,32 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Tracking;
 
 namespace AppsTracker.Tracking.Helpers
 {
     [Export(typeof(IUsageProcessor))]
     internal sealed class UsageProcessor : IUsageProcessor
     {
-        private readonly IDataService dataService;
+        private readonly IRepository repository;
         private readonly ITrackingService trackingService;
-        private readonly IDictionary<UsageTypes, Usage> usageTypesMap = new Dictionary<UsageTypes, Usage>();
+        private readonly IDictionary<UsageTypes, Data.Models.Usage> usageTypesMap = new Dictionary<UsageTypes, Data.Models.Usage>();
 
-        private Usage loginUsage;
+        private Data.Models.Usage loginUsage;
 
         [ImportingConstructor]
-        public UsageProcessor(IDataService dataService,
+        public UsageProcessor(IRepository repository,
                               ITrackingService trackingService)
         {
-            this.dataService = dataService;
+            this.repository = repository;
             this.trackingService = trackingService;
         }
 
-        public Usage LoginUser(int userId)
+        public Data.Models.Usage LoginUser(int userId)
         {
-            var login = new Usage() { UserID = userId, UsageEnd = DateTime.Now, UsageType = UsageTypes.Login, IsCurrent = true };
-            dataService.SaveNewEntity(login);
+            var login = new Data.Models.Usage(userId, UsageTypes.Login) { UsageEnd = DateTime.Now, IsCurrent = true };
+            repository.SaveNewEntity(login);
             loginUsage = login;
             return login;
         }
@@ -36,7 +37,7 @@ namespace AppsTracker.Tracking.Helpers
         public void NewUsage(UsageTypes usageType)
         {
             Ensure.Condition<InvalidOperationException>(usageTypesMap.ContainsKey(usageType) == false, "Usage type exists");
-            var usage = new Usage(trackingService.UserID, usageType) { SelfUsageID = trackingService.UsageID };
+            var usage = new Data.Models.Usage(trackingService.UserID, usageType) { SelfUsageID = trackingService.UsageID };
             usageTypesMap.Add(usageType, usage);
         }
 
@@ -49,12 +50,12 @@ namespace AppsTracker.Tracking.Helpers
             SaveUsage(usageType, usage);
         }
 
-        private void SaveUsage(UsageTypes usageType, Usage usage)
+        private void SaveUsage(UsageTypes usageType, Data.Models.Usage usage)
         {
             usage.UsageEnd = DateTime.Now;
             usage.IsCurrent = false;
             usageTypesMap.Remove(usageType);
-            dataService.SaveNewEntity(usage);
+            repository.SaveNewEntity(usage);
         }
 
         public void EndAllUsages()
@@ -66,7 +67,7 @@ namespace AppsTracker.Tracking.Helpers
             }
             loginUsage.IsCurrent = false;
             loginUsage.UsageEnd = DateTime.Now;
-            dataService.SaveModifiedEntity(loginUsage);
+            repository.SaveModifiedEntity(loginUsage);
         }
     }
 }

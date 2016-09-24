@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AppsTracker.Tests</RootNamespace>
     <AssemblyName>AppsTracker.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -16,6 +16,7 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>True</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -126,11 +127,10 @@
     <Compile Include="Common\MediatorTest.cs" />
     <Compile Include="Core\Controllers\TrackingControllerTest.cs" />
     <Compile Include="Core\Service\Web\ReleaseNotesParserTest.cs" />
-    <Compile Include="Data\XmlSettingsServiceTests.cs" />
+    <Compile Include="Data\UserSettingsServiceTests.cs" />
     <Compile Include="Tracking\Hooks\AppChangedNotifierTests.cs" />
     <Compile Include="Tracking\LimitObserverTest.cs" />
     <Compile Include="Tracking\ScreenshotTrackerTest.cs" />
-    <Compile Include="Core\ViewModels\AppDetailsViewModelTest.cs" />
     <Compile Include="Core\ViewModels\MainViewModelTest.cs" />
     <Compile Include="Core\ViewModels\ScreenshotViewModelTest.cs" />
     <Compile Include="Core\ViewModels\FeedbackReportViewModelTest.cs" />
@@ -156,6 +156,14 @@
     <ProjectReference Include="..\AppsTracker.Data\AppsTracker.Data.csproj">
       <Project>{dfff3918-1c83-4acd-9fa3-87cba98db030}</Project>
       <Name>AppsTracker.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppsTracker.Domain\AppsTracker.Domain.csproj">
+      <Project>{8bb65ef2-4c7a-4d54-b05e-48be173fcaa9}</Project>
+      <Name>AppsTracker.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppsTracker.Presentation\AppsTracker.Presentation.csproj">
+      <Project>{68f91735-c353-494c-b81c-61dc9215bd7e}</Project>
+      <Name>AppsTracker.Presentation</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppsTracker.Tracking\AppsTracker.Tracking.csproj">
       <Project>{6279db1c-e26b-4f4b-993e-ec985417a0cf}</Project>

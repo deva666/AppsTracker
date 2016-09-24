@@ -23,15 +23,14 @@ namespace AppsTracker.Tests.Tracking
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(0);
             var appInfo = AppInfo.Create(app.Name);
-            app.AppInfo = appInfo;
             var logInfoObservable = Observable.Return(new AppChangedArgs(LogInfo.Create(appInfo, "")));
 
             windowChangedNotifier.Setup(n => n.AppChangedObservable).Returns(logInfoObservable);
-            dataService.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
+            repository.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
                 It.IsAny<Expression<Func<Aplication, object>>>()))
                 .Returns(new List<Aplication> { app });
             appDurationCalc.Setup(t => t.GetDuration(app.Name, LimitSpan.Day)).ReturnsAsync(0);
-            dataService.Setup(d => d.GetFilteredAsync<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>())).ReturnsAsync(new List<Aplication>() { app });
+            repository.Setup(d => d.GetFilteredAsync<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>())).ReturnsAsync(new List<Aplication>() { app });
 
             observer.Initialize(new Setting() { TrackingEnabled = true });
 
@@ -47,15 +46,14 @@ namespace AppsTracker.Tests.Tracking
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(0);
             var appInfo = AppInfo.Create(app.Name);
-            app.AppInfo = appInfo;
             var logInfoObservable = Observable.Return(new AppChangedArgs(LogInfo.Create(appInfo, "")));
 
             windowChangedNotifier.Setup(n => n.AppChangedObservable).Returns(logInfoObservable);
-            dataService.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
+            repository.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
                 It.IsAny<Expression<Func<Aplication, object>>>()))
 
                 .Returns(new List<Aplication> { app });
-            dataService.Setup(d => d.GetFilteredAsync<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>())).ReturnsAsync(new List<Aplication>() { app });
+            repository.Setup(d => d.GetFilteredAsync<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>())).ReturnsAsync(new List<Aplication>() { app });
             appDurationCalc.Setup(t => t.GetDuration(app.Name, LimitSpan.Day)).ReturnsAsync(0);
 
             observer.Initialize(new Setting() { TrackingEnabled = false });
@@ -71,14 +69,13 @@ namespace AppsTracker.Tests.Tracking
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(100);
             var appInfo = AppInfo.Create(app.Name);
-            app.AppInfo = appInfo;
             var logInfoObservable = Observable.Return(new AppChangedArgs(LogInfo.Create(appInfo, "")));
 
             windowChangedNotifier.Setup(n => n.AppChangedObservable).Returns(logInfoObservable);
-            dataService.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
+            repository.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
                 It.IsAny<Expression<Func<Aplication, object>>>()))
                 .Returns(new List<Aplication> { app });
-            dataService.Setup(d => d.GetFilteredAsync<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>())).ReturnsAsync(new List<Aplication>() { app });
+            repository.Setup(d => d.GetFilteredAsync<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>())).ReturnsAsync(new List<Aplication>() { app });
             appDurationCalc.Setup(t => t.GetDuration(app.Name, LimitSpan.Day)).ReturnsAsync(0);
 
             observer.Initialize(new Setting() { TrackingEnabled = true });
@@ -96,14 +93,13 @@ namespace AppsTracker.Tests.Tracking
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(500);
             var appInfo = AppInfo.Create(app.Name);
-            app.AppInfo = appInfo;
             var logInfoObservable = Observable.Return(new AppChangedArgs(LogInfo.Create(appInfo, "")));
 
             windowChangedNotifier.Setup(n => n.AppChangedObservable).Returns(logInfoObservable);
-            dataService.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
+            repository.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
                 It.IsAny<Expression<Func<Aplication, object>>>()))
                 .Returns(new List<Aplication> { app });
-            dataService.Setup(d => d.GetFilteredAsync<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>())).ReturnsAsync(new List<Aplication>() { app });
+            repository.Setup(d => d.GetFilteredAsync<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>())).ReturnsAsync(new List<Aplication>() { app });
             appDurationCalc.Setup(t => t.GetDuration(app.Name, LimitSpan.Day)).ReturnsAsync(0);
 
             observer.Initialize(new Setting() { TrackingEnabled = true });
@@ -124,16 +120,15 @@ namespace AppsTracker.Tests.Tracking
             var observer = CreateObserver();
             var app = CreateAppDailyLimit(100);
             var appInfo = AppInfo.Create(app.Name);
-            app.AppInfo = appInfo;
             var secondAppInfo = AppInfo.Create("some app");
             var logInfoObservable = Observable.ToObservable(new List<AppChangedArgs>() { new AppChangedArgs(LogInfo.Create(appInfo, "")), new AppChangedArgs(LogInfo.Create(secondAppInfo, "")) });
             logInfoObservable = Observable.ToObservable(await logInfoObservable.Buffer(TimeSpan.FromMilliseconds(100)));
 
             windowChangedNotifier.Setup(n => n.AppChangedObservable).Returns(logInfoObservable);
-            dataService.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
+            repository.Setup(d => d.GetFiltered<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>(),
                 It.IsAny<Expression<Func<Aplication, object>>>()))
                 .Returns(new List<Aplication> { app });
-            dataService.Setup(d => d.GetFilteredAsync<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>())).ReturnsAsync(new List<Aplication>() { app });
+            repository.Setup(d => d.GetFilteredAsync<Aplication>(It.IsAny<Expression<Func<Aplication, bool>>>())).ReturnsAsync(new List<Aplication>() { app });
             appDurationCalc.Setup(t => t.GetDuration(app.Name, LimitSpan.Day)).ReturnsAsync(0);
 
 
@@ -147,7 +142,7 @@ namespace AppsTracker.Tests.Tracking
         private LimitObserver CreateObserver(IAppChangedNotifier appChangedNotifier)
         {
             return new LimitObserver(trackingService.Object,
-                                     dataService.Object,
+                                     repository.Object,
                                      appChangedNotifier,
                                      midnightNotifier.Object,
                                      limitHandler.Object,
@@ -159,7 +154,7 @@ namespace AppsTracker.Tests.Tracking
         private LimitObserver CreateObserver()
         {
             return new LimitObserver(trackingService.Object,
-                                     dataService.Object,
+                                     repository.Object,
                                      windowChangedNotifier.Object,
                                      midnightNotifier.Object,
                                      limitHandler.Object,
@@ -171,7 +166,7 @@ namespace AppsTracker.Tests.Tracking
         private Aplication CreateAppDailyLimit(int limitAmount)
         {
             var app = new Aplication();
-            app.ApplicationID = 7;
+            app.ID = 7;
             app.Name = "some app";
             app.WinName = "some name";
 

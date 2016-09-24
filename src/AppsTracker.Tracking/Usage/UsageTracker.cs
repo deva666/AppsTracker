@@ -11,7 +11,9 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Tracking;
+using AppsTracker.Domain.Util;
 using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
@@ -21,9 +23,9 @@ namespace AppsTracker.Tracking
     {
         private bool isTrackingEnabled;
 
-        private readonly IDataService dataService;
+        private readonly IRepository repository;
         private readonly ITrackingService trackingService;
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
         private readonly IUsageProcessor usageProcessor;
         private readonly ExportFactory<IIdleNotifier> idleNotifierFactory;
 
@@ -32,13 +34,13 @@ namespace AppsTracker.Tracking
         private Setting settings;
 
         [ImportingConstructor]
-        public UsageTracker(IDataService dataService,
+        public UsageTracker(IRepository repository,
                             ITrackingService trackingService,
-                            IMediator mediator,
+                            Mediator mediator,
                             IUsageProcessor usageProcessor,
                             ExportFactory<IIdleNotifier> idleNotifierFactory)
         {
-            this.dataService = dataService;
+            this.repository = repository;
             this.trackingService = trackingService;
             this.mediator = mediator;
             this.usageProcessor = usageProcessor;
@@ -102,19 +104,19 @@ namespace AppsTracker.Tracking
         private void InitLogin()
         {
             var user = GetUzer(Environment.UserName);
-            var usageLogin = usageProcessor.LoginUser(user.UserID);
+            var usageLogin = usageProcessor.LoginUser(user.ID);
 
-            trackingService.Initialize(user, usageLogin.UsageID);
+            trackingService.Initialize(user.ToModel(), usageLogin.UsageID);
         }
 
 
         private Uzer GetUzer(string name)
         {
-            var uzer = dataService.GetFiltered<Uzer>(u => u.Name == name).FirstOrDefault();
+            var uzer = repository.GetFiltered<Uzer>(u => u.Name == name).FirstOrDefault();
             if (uzer == null)
             {
                 uzer = new Uzer(name);
-                dataService.SaveNewEntity(uzer);
+                repository.SaveNewEntity(uzer);
             }
             return uzer;
         }

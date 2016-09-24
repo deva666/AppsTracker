@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 using AppsTracker.Common.Communication;
 using AppsTracker.Communication;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Tracking;
 
 namespace AppsTracker.Tracking.Limits
 {
@@ -15,12 +16,12 @@ namespace AppsTracker.Tracking.Limits
     internal sealed class LimitObserver : ITrackingModule
     {
         private readonly ITrackingService trackingService;
-        private readonly IDataService dataService;
+        private readonly IRepository repository;
         private readonly IAppChangedNotifier appChangedNotifier;
         private readonly IMidnightNotifier midnightNotifier;
         private readonly ILimitHandler limitHandler;
         private readonly IAppDurationCalc appDurationCalc;
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
 
         private readonly IDictionary<String, IEnumerable<AppLimit>> appLimitsMap
             = new Dictionary<String, IEnumerable<AppLimit>>();
@@ -35,16 +36,16 @@ namespace AppsTracker.Tracking.Limits
 
         [ImportingConstructor]
         public LimitObserver(ITrackingService trackingService,
-                             IDataService dataService,
+                             IRepository repository,
                              IAppChangedNotifier appChangedNotifier,
                              IMidnightNotifier midnightNotifier,
                              ILimitHandler limitHandler,
                              IAppDurationCalc appDurationCalc,
-                             IMediator mediator,
+                             Mediator mediator,
                              ISyncContext syncContext)
         {
             this.trackingService = trackingService;
-            this.dataService = dataService;
+            this.repository = repository;
             this.appChangedNotifier = appChangedNotifier;
             this.midnightNotifier = midnightNotifier;
             this.limitHandler = limitHandler;
@@ -108,7 +109,7 @@ namespace AppsTracker.Tracking.Limits
 
         private void LoadAppLimits()
         {
-            var appsWithLimits = dataService.GetFiltered<Aplication>(a => a.Limits.Count > 0
+            var appsWithLimits = repository.GetFiltered<Aplication>(a => a.Limits.Count > 0
                                                                      && a.UserID == trackingService.UserID,
                                                                      a => a.Limits);
             appLimitsMap.Clear();

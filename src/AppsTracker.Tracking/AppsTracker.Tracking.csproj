@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AppsTracker.Tracking</RootNamespace>
     <AssemblyName>AppsTracker.Tracking</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -89,22 +90,23 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Notifiers\AppInfo.cs" />
     <Compile Include="Cleaning\DataCleaner.cs" />
     <Compile Include="Cleaning\ILogCleaner.cs" />
     <Compile Include="Cleaning\LogCleaner.cs" />
     <Compile Include="Helpers\LazyInit.cs" />
-    <Compile Include="KeyboardHookArgs.cs" />
-    <Compile Include="WinChangedArgs.cs" />
-    <Compile Include="AppChangedArgs.cs" />
-    <Compile Include="IAppChangedNotifier.cs" />
-    <Compile Include="ITitleChangedNotifier.cs" />
-    <Compile Include="IWindowChangedNotifier.cs" />
+    <Compile Include="Hooks\KeyboardHookArgs.cs" />
+    <Compile Include="Notifiers\LogInfo.cs" />
+    <Compile Include="Notifiers\WinChangedArgs.cs" />
+    <Compile Include="Notifiers\AppChangedArgs.cs" />
+    <Compile Include="Notifiers\IAppChangedNotifier.cs" />
+    <Compile Include="Notifiers\ITitleChangedNotifier.cs" />
+    <Compile Include="Notifiers\IWindowChangedNotifier.cs" />
     <Compile Include="Hooks\TitleChangedHook.cs" />
     <Compile Include="Hooks\WindowChangedHook.cs" />
-    <Compile Include="AppChangedNotifier.cs" />
+    <Compile Include="Notifiers\AppChangedNotifier.cs" />
     <Compile Include="Hooks\HookBase.cs" />
     <Compile Include="ITrackingModule.cs" />
-    <Compile Include="ITrackingService.cs" />
     <Compile Include="Limits\AppDurationCalc.cs" />
     <Compile Include="Limits\IAppDurationCalc.cs" />
     <Compile Include="Limits\ILimitHandler.cs" />
@@ -121,12 +123,13 @@
     <Compile Include="Screenshots\IScreenshotTracker.cs" />
     <Compile Include="Screenshots\ScreenshotFactory.cs" />
     <Compile Include="Screenshots\ScreenshotTracker.cs" />
-    <Compile Include="TrackingService.cs" />
     <Compile Include="TrackingStatus.cs" />
     <Compile Include="Usage\IdleNotifier.cs" />
     <Compile Include="Usage\IdleTimeWatcher.cs" />
     <Compile Include="Usage\IIdleNotifier.cs" />
+    <Compile Include="Usage\IUsageNotifier.cs" />
     <Compile Include="Usage\IUsageProcessor.cs" />
+    <Compile Include="Usage\UsageEvent.cs" />
     <Compile Include="Usage\UsageProcessor.cs" />
     <Compile Include="Usage\UsageTracker.cs" />
     <Compile Include="Windows\WindowTracker.cs" />
@@ -139,6 +142,10 @@
     <ProjectReference Include="..\AppsTracker.Data\AppsTracker.Data.csproj">
       <Project>{dfff3918-1c83-4acd-9fa3-87cba98db030}</Project>
       <Name>AppsTracker.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppsTracker.Domain\AppsTracker.Domain.csproj">
+      <Project>{8bb65ef2-4c7a-4d54-b05e-48be173fcaa9}</Project>
+      <Name>AppsTracker.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

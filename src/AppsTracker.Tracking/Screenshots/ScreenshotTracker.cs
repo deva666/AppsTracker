@@ -5,7 +5,7 @@ using System.Reactive.Subjects;
 using AppsTracker.Common.Utils;
 using AppsTracker.Communication;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.Tracking.Helpers;
 
 namespace AppsTracker.Tracking
@@ -15,7 +15,7 @@ namespace AppsTracker.Tracking
     {
         private readonly IScreenshotFactory screenshotFactory;
         private readonly ISyncContext syncContext;
-        private readonly IDataService dataService;
+        private readonly IRepository repository;
 
         private readonly Subject<Screenshot> subject = new Subject<Screenshot>();
 
@@ -31,11 +31,11 @@ namespace AppsTracker.Tracking
         [ImportingConstructor]
         public ScreenshotTracker(IScreenshotFactory screenshotFactory,
                                  ISyncContext syncContext,
-                                 IDataService dataService)
+                                 IRepository repository)
         {
             this.screenshotFactory = screenshotFactory;
             this.syncContext = syncContext;
-            this.dataService = dataService;
+            this.repository = repository;
         }
 
         public void Initialize(Setting settings)
@@ -67,7 +67,7 @@ namespace AppsTracker.Tracking
 
         private async void TimerTick(object sender, System.Timers.ElapsedEventArgs e)
         {
-            var dbSizeTask = dataService.GetDBSizeAsync();
+            var dbSizeTask = repository.GetDBSizeAsync();
             var screenshot = screenshotFactory.CreateScreenshot();
 
             await dbSizeTask;

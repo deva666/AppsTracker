@@ -25,7 +25,8 @@ namespace AppsTracker.Data.Db
         public AppsEntities()
             : base(connectionString)
         {
-            Database.SetInitializer<AppsEntities>(new DropCreateDatabaseIfModelChanges<AppsEntities>());
+            //Database.SetInitializer<AppsEntities>(new DropCreateDatabaseIfModelChanges<AppsEntities>());
+            this.Configuration.LazyLoadingEnabled = false;
 #if DEBUG
             Database.Log = FlushSql;
 #endif
@@ -54,7 +55,7 @@ namespace AppsTracker.Data.Db
 
         private void FlushSql(string s)
         {
-            // System.Diagnostics.Debug.WriteLine(s);
+            System.Diagnostics.Debug.WriteLine(s);
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

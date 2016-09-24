@@ -3,8 +3,8 @@ using System.ComponentModel.Composition;
 
 namespace AppsTracker.Common.Communication
 {
-    [Export(typeof(IMediator))]
-    public sealed class Mediator : IMediator
+    [Export]
+    public sealed class Mediator 
     {
         private readonly MessageToActionsMap _invocationList = new MessageToActionsMap();
         private readonly MessageToActionsMap _parameterInvocationList = new MessageToActionsMap();

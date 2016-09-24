@@ -4,26 +4,27 @@ using AppsTracker.Common.Communication;
 using AppsTracker.Common.Logging;
 using AppsTracker.Common.Utils;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Settings;
 
 namespace AppsTracker.Tracking.Limits
 {
     [Export(typeof(ILimitHandler))]
     internal sealed class LimitHandler : ILimitHandler
     {
-        private readonly IMediator mediator;
-        private readonly IXmlSettingsService xmlSettingsService;
+        private readonly Mediator mediator;
+        private readonly IUserSettingsService userSettingsService;
         private readonly ILogger logger;
         private readonly IShutdownService shutdownService;
 
         [ImportingConstructor]
-        public LimitHandler(IMediator mediator,
-                            IXmlSettingsService xmlSettingsService,
+        public LimitHandler(Mediator mediator,
+                            IUserSettingsService userSettingsService,
                             ILogger logger,
                             IShutdownService shutdownService)
         {
             this.mediator = mediator;
-            this.xmlSettingsService = xmlSettingsService;
+            this.userSettingsService = userSettingsService;
             this.logger = logger;
             this.shutdownService = shutdownService;
         }
@@ -52,7 +53,7 @@ namespace AppsTracker.Tracking.Limits
 
         private void ShowWarning(AppLimit limit)
         {
-            if (xmlSettingsService.LimitsSettings.DontShowLimits.Any(l => l == limit.AppLimitID))
+            if (userSettingsService.LimitsSettings.DontShowLimits.Any(l => l == limit.ID))
                 return;
 
             mediator.NotifyColleagues(MediatorMessages.APP_LIMIT_REACHED, limit);

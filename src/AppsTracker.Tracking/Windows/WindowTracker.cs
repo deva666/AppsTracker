@@ -13,9 +13,9 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
 using AppsTracker.Data.Utils;
-using AppsTracker.Tracking.Hooks;
+using AppsTracker.Domain.Tracking;
 
 namespace AppsTracker.Tracking
 {
@@ -25,10 +25,10 @@ namespace AppsTracker.Tracking
         private bool isTrackingEnabled;
 
         private readonly ITrackingService trackingService;
-        private readonly IDataService dataService;
+        private readonly IRepository repository;
         private readonly IAppChangedNotifier appChangedNotifier;
         private readonly IScreenshotTracker screenshotTracker;
-        private readonly IMediator mediator;
+        private readonly Mediator mediator;
 
         private IDisposable appChangedSubscription;
         private IDisposable screenshotSubscription;
@@ -38,13 +38,13 @@ namespace AppsTracker.Tracking
 
         [ImportingConstructor]
         public WindowTracker(ITrackingService trackingService,
-                             IDataService dataService,
+                             IRepository repository,
                              IAppChangedNotifier appChangedNotifier,
                              IScreenshotTracker screenshotTracker,
-                             IMediator mediator)
+                             Mediator mediator)
         {
             this.trackingService = trackingService;
-            this.dataService = dataService;
+            this.repository = repository;
             this.appChangedNotifier = appChangedNotifier;
             this.screenshotTracker = screenshotTracker;
             this.mediator = mediator;
@@ -59,7 +59,11 @@ namespace AppsTracker.Tracking
             screenshotSubscription = screenshotTracker.ScreenshotObservable
                 .Where(s => s != null && isTrackingEnabled && activeLog != null)
                 .ObserveOn(DispatcherScheduler.Current)
-                .Subscribe(s => activeLog.Screenshots.Add(s));
+                .Subscribe(s =>
+                {
+                    s.LogID = activeLog.ID;
+                    repository.SaveNewEntity(s);
+                });
         }
 
         private void FinishActiveLog()
@@ -67,7 +71,7 @@ namespace AppsTracker.Tracking
             if (activeLog != null)
             {
                 activeLog.Finish();
-                dataService.SaveModifiedEntity(activeLog);
+                repository.SaveModifiedEntity(activeLog);
                 activeLog = null;
             }
         }
@@ -83,7 +87,7 @@ namespace AppsTracker.Tracking
             var app = GetApp(logInfo, out isNewApp);
             var window = GetWindow(logInfo, app);
 
-            var log = new Log(window.WindowID, trackingService.UsageID)
+            var log = new Log(window.ID, trackingService.UsageID)
             {
                 DateCreated = logInfo.Start,
                 UtcDateCreated = logInfo.UtcStart,
@@ -91,7 +95,7 @@ namespace AppsTracker.Tracking
                 UtcDateEnded = logInfo.UtcEnd,
             };
 
-            dataService.SaveNewEntity(log);
+            repository.SaveNewEntity(log);
 
             if (isNewApp)
             {
@@ -104,14 +108,15 @@ namespace AppsTracker.Tracking
         private Aplication GetApp(LogInfo logInfo, out bool isNewApp)
         {
             var appName = logInfo.AppInfo.GetAppName();
-            var appList = dataService.GetFiltered<Aplication>(a => a.UserID == trackingService.UserID
+            var appList = repository.GetFiltered<Aplication>(a => a.UserID == trackingService.UserID
                                                                         && a.Name == appName);
             var app = appList.FirstOrDefault();
             isNewApp = false;
             if (app == null)
             {
-                app = new Aplication(logInfo.AppInfo) { UserID = trackingService.UserID };
-                dataService.SaveNewEntity(app);
+                app = AppInfo.ToAplication(logInfo.AppInfo);
+                app.UserID = trackingService.UserID;
+                repository.SaveNewEntity(app);
                 isNewApp = true;
             }
             return app;
@@ -119,13 +124,13 @@ namespace AppsTracker.Tracking
 
         private Window GetWindow(LogInfo logInfo, Aplication app)
         {
-            var windowsList = dataService.GetFiltered<Window>(w => w.Title == logInfo.WindowTitle
-                                                               && w.Application.ApplicationID == app.ApplicationID);
+            var windowsList = repository.GetFiltered<Window>(w => w.Title == logInfo.WindowTitle
+                                                               && w.Application.ID == app.ID);
             var window = windowsList.FirstOrDefault();
             if (window == null)
             {
-                window = new Window(logInfo.WindowTitle, app.ApplicationID);
-                dataService.SaveNewEntity(window);
+                window = new Window(logInfo.WindowTitle, app.ID);
+                repository.SaveNewEntity(window);
             }
 
             return window;
@@ -143,7 +148,7 @@ namespace AppsTracker.Tracking
             this.settings = settings;
 
             screenshotTracker.Initialize(settings);
-            
+
             ConfigureComponents();
 
             mediator.Register(MediatorMessages.STOP_TRACKING, new Action(StopTracking));

@@ -4,7 +4,8 @@ using System.Diagnostics;
 using System.Threading;
 using AppsTracker.Common.Utils;
 using AppsTracker.Communication;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Settings;
 
 namespace AppsTracker.Tracking
 {
@@ -17,7 +18,7 @@ namespace AppsTracker.Tracking
         private const int WH_KEYBOARD_LL = 13;
         private const int WH_MOUSE_LL = 14;
 
-        private readonly ISqlSettingsService settingsService;
+        private readonly IAppSettingsService settingsService;
         private readonly ISyncContext syncContext;
 
         private bool disposed = false;
@@ -36,7 +37,7 @@ namespace AppsTracker.Tracking
         public event EventHandler IdleStoped;
 
         [ImportingConstructor]
-        public IdleNotifier(ISyncContext syncContext, ISqlSettingsService settingsService)
+        public IdleNotifier(ISyncContext syncContext, IAppSettingsService settingsService)
         {
             this.syncContext = syncContext;
             this.settingsService = settingsService;

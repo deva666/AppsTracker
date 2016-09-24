@@ -9,48 +9,49 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
-using AppsTracker.Data.Service;
+using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Settings;
 using AppsTracker.Service;
 
 namespace AppsTracker.Controllers
 {
     [Export()]
-    internal sealed class ApplicationController
+    public sealed class ApplicationController
     {
         private readonly IAppearanceController appearanceController;
         private readonly ITrackingController trackingController;
-        private readonly IXmlSettingsService xmlSettingsService;
-        private readonly ISqlSettingsService sqlSettingsService;
-        private readonly IDataService dataService;
+        private readonly IUserSettingsService userSettingsService;
+        private readonly IAppSettingsService appSettingsService;
+        private readonly IRepository repository;
         private readonly IWindowService windowService;
 
         [ImportingConstructor]
         public ApplicationController(IAppearanceController appearanceController,
                                      ITrackingController trackingController,
-                                     ISqlSettingsService sqlSettingsService,
-                                     IXmlSettingsService xmlSettingsService,
-                                     IDataService dataService,
+                                     IAppSettingsService appSettingsService,
+                                     IUserSettingsService userSettingsService,
+                                     IRepository repository,
                                      IWindowService windowService)
         {
             this.appearanceController = appearanceController;
             this.trackingController = trackingController;
-            this.xmlSettingsService = xmlSettingsService;
-            this.sqlSettingsService = sqlSettingsService;
-            this.dataService = dataService;
+            this.userSettingsService = userSettingsService;
+            this.appSettingsService = appSettingsService;
+            this.repository = repository;
             this.windowService = windowService;
         }
 
         public void Initialize(bool autoStart)
         {
-            xmlSettingsService.Initialize();
-            PropertyChangedEventManager.AddHandler(sqlSettingsService, OnSettingsChanged, "Settings");
+            userSettingsService.Initialize();
+            PropertyChangedEventManager.AddHandler(appSettingsService, OnSettingsChanged, "Settings");
 
-            appearanceController.Initialize(sqlSettingsService.Settings);
-            trackingController.Initialize(sqlSettingsService.Settings);
+            repository.CheckUnfinishedEntries();
+            repository.DbSizeCritical += OnDbSizeCritical;
+            repository.GetDBSize();
 
-            dataService.CheckUnfinishedEntries();
-            dataService.DbSizeCritical += OnDbSizeCritical;
-            dataService.GetDBSize();
+            appearanceController.Initialize(appSettingsService.Settings);
+            trackingController.Initialize(appSettingsService.Settings);
 
             if (autoStart == false)
             {
@@ -63,26 +64,26 @@ namespace AppsTracker.Controllers
 
         private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
         {
-            trackingController.SettingsChanging(sqlSettingsService.Settings);
-            appearanceController.SettingsChanging(sqlSettingsService.Settings);
+            trackingController.SettingsChanging(appSettingsService.Settings);
+            appearanceController.SettingsChanging(appSettingsService.Settings);
         }
 
         private async void OnDbSizeCritical(object sender, EventArgs e)
         {
-            var settings = sqlSettingsService.Settings;
+            var settings = appSettingsService.Settings;
             settings.TakeScreenshots = false;
-            await sqlSettingsService.SaveChangesAsync(settings);
+            await appSettingsService.SaveChangesAsync(settings);
 
             windowService.ShowMessageDialog("Database size has reached the maximum allowed value"
                 + Environment.NewLine + "Please run the screenshot cleaner from the settings menu to continue capturing screenshots.", false);
 
-            dataService.DbSizeCritical -= OnDbSizeCritical;
+            repository.DbSizeCritical -= OnDbSizeCritical;
         }
 
         public void Shutdown()
         {
             windowService.Shutdown();
-            xmlSettingsService.Shutdown();
+            userSettingsService.Shutdown();
             trackingController.Shutdown();
         }
     }

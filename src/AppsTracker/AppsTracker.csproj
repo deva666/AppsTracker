@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AppsTracker</RootNamespace>
     <AssemblyName>Apps tracker</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -205,449 +205,17 @@
     <Compile Include="Controllers\ITrackingController.cs" />
     <Compile Include="Controllers\TrackingController.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="MVVM\TaskObserver.cs" />
-    <Compile Include="MVVM\TaskRunner.cs" />
-    <Compile Include="Service\Web\FeedbackReportService.cs" />
-    <Compile Include="Service\Web\IFeedbackReportService.cs" />
-    <Compile Include="Service\Web\IReleaseNotesService.cs" />
-    <Compile Include="Service\Web\ReleaseNotesParser.cs" />
-    <Compile Include="Service\Web\ReleaseNotesService.cs" />
-    <Compile Include="Service\Window\IWindowService.cs" />
-    <Compile Include="Service\Window\WindowService.cs" />
-    <Compile Include="ServiceLocation\IServiceResolver.cs" />
-    <Compile Include="ServiceLocation\ServiceResolver.cs" />
-    <Compile Include="ViewModels\CategoryStatsViewModel.cs" />
-    <Compile Include="ViewModels\FeedbackReportViewModel.cs" />
-    <Compile Include="ViewModels\ReleaseNotesViewModel.cs" />
-    <Compile Include="ViewModels\SettingsAppCategoriesViewModel.cs" />
-    <Compile Include="ViewModels\SettingsLimitsViewModel.cs" />
-    <Compile Include="Views\FeedbackWindow.xaml.cs">
-      <DependentUpon>FeedbackWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\IShell.cs" />
-    <Compile Include="Views\IShellMetaData.cs" />
-    <Compile Include="Views\LimitToastWindow.xaml.cs">
-      <DependentUpon>LimitToastWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ReleaseNotesWindow.xaml.cs">
-      <DependentUpon>ReleaseNotesWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Settings\AppCategoriesView.xaml.cs">
-      <DependentUpon>AppCategoriesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Settings\AppLimitsView.xaml.cs">
-      <DependentUpon>AppLimitsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Statistics\CategoriesByDayView.xaml.cs">
-      <DependentUpon>CategoriesByDayView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Statistics\CategoriesView.xaml.cs">
-      <DependentUpon>CategoriesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\Adorners.cs" />
-    <Compile Include="Widgets\ArrowLeft.xaml.cs">
-      <DependentUpon>ArrowLeft.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\ArrowRight.xaml.cs">
-      <DependentUpon>ArrowRight.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DBCleanerWindow.xaml.cs">
-      <DependentUpon>DBCleanerWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\Forward.xaml.cs">
-      <DependentUpon>Forward.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\ImageView.xaml.cs">
-      <DependentUpon>ImageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\ITrayIcon.cs" />
-    <Compile Include="Widgets\MeasureProvider.cs" />
-    <Compile Include="Widgets\ModernButton.cs" />
-    <Compile Include="Widgets\Next.xaml.cs">
-      <DependentUpon>Next.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\Pause.xaml.cs">
-      <DependentUpon>Pause.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\Play.xaml.cs">
-      <DependentUpon>Play.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\Previous.xaml.cs">
-      <DependentUpon>Previous.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\progressBar.xaml.cs">
-      <DependentUpon>progressBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\PullDown.xaml.cs">
-      <DependentUpon>PullDown.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\PullUp.xaml.cs">
-      <DependentUpon>PullUp.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\Rewind.xaml.cs">
-      <DependentUpon>Rewind.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\ScreenshotViewer.xaml.cs">
-      <DependentUpon>ScreenshotViewer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\ScreenshotViewerOptions.xaml.cs">
-      <DependentUpon>ScreenshotViewerOptions.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ScreenshotViewerWindow.xaml.cs">
-      <DependentUpon>ScreenshotViewerWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\ScrollingContentControl.cs" />
-    <Compile Include="MVVM\AsyncProperty.cs" />
-    <Compile Include="MVVM\DelegateCommandAsync.cs" />
-    <Compile Include="MVVM\HostViewModel.cs" />
-    <Compile Include="MVVM\IWorker.cs" />
-    <Compile Include="MVVM\SettingsBaseViewModel.cs" />
-    <Compile Include="Widgets\Utils\Validation.cs" />
-    <Compile Include="Widgets\Utils\ValidationHasErrors.cs" />
-    <Compile Include="Widgets\Utils\ValueConverters.cs" />
-    <Compile Include="ViewModels\DataHostViewModel.cs" />
-    <Compile Include="ViewModels\DaySummaryViewModel.cs" />
-    <Compile Include="ViewModels\ScreenshotViewerViewModel.cs" />
-    <Compile Include="ViewModels\SettingsGeneralViewModel.cs" />
-    <Compile Include="ViewModels\SettingsTrackingViewModel.cs" />
-    <Compile Include="ViewModels\SettingsPasswordViewModel.cs" />
-    <Compile Include="ViewModels\SettingsScreenshotsViewModel.cs" />
-    <Compile Include="ViewModels\StatisticsHostViewModel.cs" />
-    <Compile Include="ViewModels\AppStatsViewModel.cs" />
-    <Compile Include="ViewModels\DailyAppUsageViewModel.cs" />
-    <Compile Include="ViewModels\ScreenshotsStatsViewModel.cs" />
-    <Compile Include="ViewModels\UserStatsViewModel.cs" />
-    <Compile Include="Views\AppOverView.xaml.cs">
-      <DependentUpon>AppOverView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DataHostView.xaml.cs">
-      <DependentUpon>DataHostView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DaySummaryView.xaml.cs">
-      <DependentUpon>DaySummaryView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsHostView.xaml.cs">
-      <DependentUpon>SettingsHostView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\StatisticsHostView.xaml.cs">
-      <DependentUpon>StatisticsHostView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AboutWindow.xaml.cs">
-      <DependentUpon>AboutWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\BackButton.xaml.cs">
-      <DependentUpon>BackButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\Calendar.xaml.cs">
-      <DependentUpon>Calendar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\FaderContentControl.cs" />
-    <Compile Include="Widgets\FaderLabel.cs" />
-    <Compile Include="Widgets\FadingUC.xaml.cs">
-      <DependentUpon>FadingUC.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\FilterableListView.cs" />
-    <Compile Include="Views\MessageWindow.xaml.cs">
-      <DependentUpon>MessageWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\PBAssistant.cs" />
-    <Compile Include="Widgets\PersonIcon.xaml.cs">
-      <DependentUpon>PersonIcon.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widgets\SortableGridViewColumn.cs" />
-    <Compile Include="Widgets\SortableListView.cs" />
-    <Compile Include="Widgets\TrayIcon.cs" />
-    <Compile Include="Widgets\UIHelper.cs" />
-    <Compile Include="Widgets\Utils\KeyboardFocus.cs" />
-    <Compile Include="Widgets\Utils\WindowClose.cs" />
-    <Compile Include="Widgets\WPFHelper.cs" />
     <Compile Include="EntryPoint.cs" />
-    <Compile Include="ViewModels\AboutWindowViewModel.cs" />
-    <Compile Include="MVVM\DelegateCommand.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="MVVM\ObservableObject.cs" />
-    <Compile Include="MVVM\ViewModelBase.cs" />
-    <Compile Include="ViewModels\AppDetailsViewModel.cs" />
-    <Compile Include="ViewModels\ScreenshotsViewModel.cs" />
-    <Compile Include="ViewModels\SettingsHostViewModel.cs" />
-    <Compile Include="Views\Statistics\AppByDayView.xaml.cs">
-      <DependentUpon>AppByDayView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Statistics\DailyAppsUsageView.xaml.cs">
-      <DependentUpon>DailyAppsUsageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Statistics\AppStatsView.xaml.cs">
-      <DependentUpon>AppStatsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Statistics\ScreenshotsByDayView.xaml.cs">
-      <DependentUpon>ScreenshotsByDayView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Statistics\ScreenshotsView.xaml.cs">
-      <DependentUpon>ScreenshotsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Statistics\UsageView.xaml.cs">
-      <DependentUpon>UsageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Statistics\UsersView.xaml.cs">
-      <DependentUpon>UsersView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AppDetailsView.xaml.cs">
-      <DependentUpon>AppDetailsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ScreenshotsView.xaml.cs">
-      <DependentUpon>ScreenshotsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Settings\GeneralView.xaml.cs">
-      <DependentUpon>GeneralView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Settings\TrackingView.xaml.cs">
-      <DependentUpon>TrackingView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Settings\MasterPasswordView.xaml.cs">
-      <DependentUpon>MasterPasswordView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Settings\ScreenshotsView.xaml.cs">
-      <DependentUpon>ScreenshotsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PasswordWindow.xaml.cs">
-      <DependentUpon>PasswordWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Page Include="Views\FeedbackWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\LimitToastWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ReleaseNotesWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Settings\AppCategoriesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AboutWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Settings\AppLimitsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Statistics\CategoriesByDayView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Statistics\CategoriesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\ArrowLeft.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\ArrowRight.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\BackButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\Calendar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\closeBtn.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DBCleanerWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\FadingUC.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\Forward.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\ImageView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MessageWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\Next.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\Pause.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\PersonIcon.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\Play.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\Previous.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\progressBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\PullDown.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\PullUp.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\Rewind.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\ScreenshotViewer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Widgets\ScreenshotViewerOptions.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ScreenshotViewerWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Widgets\closeBtn.xaml.cs">
-      <DependentUpon>closeBtn.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="Themes\BaseTheme.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AppOverView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Statistics\AppByDayView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Statistics\DailyAppsUsageView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Statistics\AppStatsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Statistics\ScreenshotsByDayView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Statistics\ScreenshotsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Statistics\UsageView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Statistics\UsersView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DataHostView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DaySummaryView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AppDetailsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ScreenshotsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsHostView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Settings\GeneralView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Settings\TrackingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Settings\MasterPasswordView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Settings\ScreenshotsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\StatisticsHostView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PasswordWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\Running.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\RunningLight.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\Stopped.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\StoppedLight.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <Compile Include="TrayIcon.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -730,6 +298,14 @@
     <ProjectReference Include="..\AppsTracker.Data\AppsTracker.Data.csproj">
       <Project>{dfff3918-1c83-4acd-9fa3-87cba98db030}</Project>
       <Name>AppsTracker.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppsTracker.Domain\AppsTracker.Domain.csproj">
+      <Project>{8bb65ef2-4c7a-4d54-b05e-48be173fcaa9}</Project>
+      <Name>AppsTracker.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppsTracker.Presentation\AppsTracker.Presentation.csproj">
+      <Project>{68f91735-c353-494c-b81c-61dc9215bd7e}</Project>
+      <Name>AppsTracker.Presentation</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppsTracker.Tracking\AppsTracker.Tracking.csproj">
       <Project>{6279db1c-e26b-4f4b-993e-ec985417a0cf}</Project>
@@ -848,7 +424,28 @@
       <FileType>Satellite</FileType>
     </PublishFile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Page Include="Themes\BaseTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Running.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\RunningLight.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Stopped.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\StoppedLight.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

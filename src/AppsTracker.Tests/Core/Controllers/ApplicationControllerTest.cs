@@ -17,7 +17,7 @@ namespace AppsTracker.Tests.Core.Controllers
             var controller = CreateController();
             controller.Initialize(true);
 
-            xmlSettingsService.Verify(x => x.Initialize(), Times.Once());
+            userSettingsService.Verify(x => x.Initialize(), Times.Once());
             appearanceController.Verify(a => a.Initialize(It.IsAny<Setting>()), Times.Once());
             windowService.Verify(w => w.OpenMainWindow(), Times.Never());
             windowService.Verify(w => w.FirstRunWindowSetup(), Times.Never());
@@ -31,7 +31,7 @@ namespace AppsTracker.Tests.Core.Controllers
             var controller = CreateController();
             controller.Initialize(false);
 
-            xmlSettingsService.Verify(x => x.Initialize(), Times.Once());
+            userSettingsService.Verify(x => x.Initialize(), Times.Once());
             appearanceController.Verify(a => a.Initialize(It.IsAny<Setting>()), Times.Once());
             windowService.Verify(w => w.OpenMainWindow(), Times.Once());
             windowService.Verify(w => w.FirstRunWindowSetup(), Times.Once());
@@ -45,7 +45,7 @@ namespace AppsTracker.Tests.Core.Controllers
             controller.Shutdown();
 
             windowService.Verify(w => w.Shutdown(), Times.Once());
-            xmlSettingsService.Verify(x => x.Shutdown(), Times.Once());
+            userSettingsService.Verify(x => x.Shutdown(), Times.Once());
             trackingController.Verify(t => t.Shutdown(), Times.Once());
         }
 
@@ -54,8 +54,8 @@ namespace AppsTracker.Tests.Core.Controllers
             return new ApplicationController(appearanceController.Object,
                                             trackingController.Object,
                                             settingsService.Object,
-                                            xmlSettingsService.Object,
-                                            dataService.Object,
+                                            userSettingsService.Object,
+                                            repository.Object,
                                             windowService.Object);
         }
     }
