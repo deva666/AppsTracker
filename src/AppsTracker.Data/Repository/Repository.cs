@@ -30,6 +30,22 @@ namespace AppsTracker.Data.Repository
 
         public event EventHandler DbSizeCritical;
 
+        public T GetSingle<T>(int id) where T : class, IEntity
+        {
+            using (var context = new AppsEntities())
+            {
+                return context.Set<T>().FirstOrDefault(e => e.ID == id);
+            }
+        }
+
+        public async Task<T> GetSingleAsync<T>(int id) where T : class, IEntity
+        {
+            using (var context = new AppsEntities())
+            {
+                return await context.Set<T>().FirstOrDefaultAsync(e => e.ID == id);
+            }
+        }
+
 
         public IEnumerable<T> Get<T>() where T : class
         {
@@ -217,7 +233,7 @@ namespace AppsTracker.Data.Repository
             }
         }
 
-        public async Task DeleteScreenshotsById(IEnumerable<Int32> ids) 
+        public async Task DeleteScreenshotsById(IEnumerable<Int32> ids)
         {
             using (var context = new AppsEntities())
             {
@@ -253,7 +269,7 @@ namespace AppsTracker.Data.Repository
 
         public void DeleteByIds<T>(IEnumerable<Int32> ids) where T : class, IEntity
         {
-            using(var context = new AppsEntities())
+            using (var context = new AppsEntities())
             {
                 var items = context.Set<T>().Where(e => ids.Contains(e.ID));
                 context.Set<T>().RemoveRange(items);

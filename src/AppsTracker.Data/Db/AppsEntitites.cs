@@ -26,6 +26,7 @@ namespace AppsTracker.Data.Db
             : base(connectionString)
         {
             //Database.SetInitializer<AppsEntities>(new DropCreateDatabaseIfModelChanges<AppsEntities>());
+            this.Configuration.LazyLoadingEnabled = false;
 #if DEBUG
             Database.Log = FlushSql;
 #endif

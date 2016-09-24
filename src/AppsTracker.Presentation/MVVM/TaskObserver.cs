@@ -20,10 +20,9 @@ namespace AppsTracker.MVVM
         }
 
 
-        protected override void ScheduleWork()
+        protected override Task<T> GetTask()
         {
-            task = valueFactory();
-            ObserveTask(task);
+            return valueFactory();
         }
     }
 }

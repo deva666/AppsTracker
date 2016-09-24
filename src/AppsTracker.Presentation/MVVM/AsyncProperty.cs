@@ -46,7 +46,8 @@ namespace AppsTracker.MVVM
             {
                 if (task == null)
                 {
-                    ScheduleWork();
+                    task = GetTask();
+                    ObserveTask(task);
                 }
                 return task.Status == TaskStatus.RanToCompletion ? result : default(T);
             }
@@ -68,10 +69,11 @@ namespace AppsTracker.MVVM
 
         public void Reload()
         {
-            ScheduleWork();
+            task = GetTask();
+            ObserveTask(task);
         }
 
-        protected abstract void ScheduleWork();
+        protected abstract Task<T> GetTask();
 
         protected async void ObserveTask(Task<T> task)
         {

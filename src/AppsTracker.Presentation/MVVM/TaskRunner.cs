@@ -16,10 +16,9 @@ namespace AppsTracker.MVVM
             this.valueFactory = valueFactory;
         }
 
-        protected override void ScheduleWork()
+        protected override Task<T> GetTask()
         {
-            task = Task<T>.Run(valueFactory);
-            ObserveTask(task);
+            return Task<T>.Run(valueFactory);
         }
     }
 }

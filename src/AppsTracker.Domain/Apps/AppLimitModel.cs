@@ -8,6 +8,18 @@ namespace AppsTracker.Domain.Apps
 {
     public sealed class AppLimitModel : ObservableObject
     {
+        public AppLimitModel()
+        { }
+
+        public AppLimitModel(AppLimit appLimit)
+        {
+            ID = appLimit.ID;
+            ApplicationID = appLimit.ApplicationID;
+            Limit = appLimit.Limit;
+            LimitSpan = appLimit.LimitSpan;
+            LimitReachedAction = appLimit.LimitReachedAction;
+        }
+
         private bool isPopupLimitActionOpen;
 
         public bool IsPopupLimitActionOpen
@@ -41,7 +53,7 @@ namespace AppsTracker.Domain.Apps
             get { return limit; }
             set
             {
-                limit = value;
+                SetPropertyValue(ref limit, value);
                 HasChanges = true;
             }
         }

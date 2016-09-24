@@ -19,6 +19,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 
 using AppsTracker.Data.Models;
+using AppsTracker.Domain.Apps;
 using AppsTracker.Domain.Screenshots;
 using AppsTracker.Domain.Windows;
 using AppsTracker.MVVM;
@@ -1061,7 +1062,7 @@ namespace AppsTracker
                 return true;
 
             var limitSpan = (LimitSpan)Enum.Parse(typeof(LimitSpan), (string)parameter);
-            var limits = (IEnumerable<AppLimit>)value;
+            var limits = (IEnumerable<AppLimitModel>)value;
             return limits.Where(l => l.LimitSpan == limitSpan).Count() == 0;
         }
 

@@ -54,6 +54,7 @@
     <Compile Include="Apps\AppDurationOverview.cs" />
     <Compile Include="Apps\AppDurationUseCase.cs" />
     <Compile Include="Apps\AppLimitModel.cs" />
+    <Compile Include="Apps\AppLimitsCoordinator.cs" />
     <Compile Include="Apps\AppModel.cs" />
     <Compile Include="Apps\AppSummary.cs" />
     <Compile Include="Apps\CategoryDuration.cs" />

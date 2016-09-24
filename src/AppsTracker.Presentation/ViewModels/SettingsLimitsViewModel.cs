@@ -8,6 +8,7 @@ using System.Windows.Input;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Apps;
 using AppsTracker.Domain.Tracking;
 using AppsTracker.MVVM;
 
@@ -19,11 +20,10 @@ namespace AppsTracker.ViewModels
     {
         private const string SETTINGS_SAVED_MSG = "settings saved";
 
-        private readonly IRepository repository;
-        private readonly ITrackingService trackingService;
+        private readonly AppLimitsCoordinator coordinator;
         private readonly Mediator mediator;
 
-        private readonly ICollection<AppLimit> limitsToDelete = new List<AppLimit>();
+        private readonly ICollection<AppLimitModel> limitsToDelete = new List<AppLimitModel>();
 
 
         public override string Title
@@ -54,24 +54,24 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private Aplication selectedApp;
+        private AppModel selectedApp;
 
-        public Aplication SelectedApp
+        public AppModel SelectedApp
         {
             get { return selectedApp; }
             set { SetPropertyValue(ref selectedApp, value); }
         }
 
 
-        private AppLimit selectedLimit;
+        private AppLimitModel selectedLimit;
 
-        public AppLimit SelectedLimit
+        public AppLimitModel SelectedLimit
         {
             get { return selectedLimit; }
             set { SetPropertyValue(ref selectedLimit, value); }
         }
 
-        public AsyncProperty<IEnumerable<Aplication>> AppList
+        public AsyncProperty<IEnumerable<AppModel>> AppList
         {
             get;
             private set;
@@ -126,17 +126,15 @@ namespace AppsTracker.ViewModels
         }
 
         [ImportingConstructor]
-        public SettingsLimitsViewModel(IRepository repository,
-                                       ITrackingService trackingService,
+        public SettingsLimitsViewModel(AppLimitsCoordinator coordinator,
                                        Mediator mediator)
         {
-            this.repository = repository;
-            this.trackingService = trackingService;
+            this.coordinator = coordinator;
             this.mediator = mediator;
 
             mediator.Register(MediatorMessages.APPLICATION_ADDED, new Action<Aplication>(OnAppAdded));
 
-            AppList = new TaskRunner<IEnumerable<Aplication>>(GetApps, this);
+            AppList = new TaskRunner<IEnumerable<AppModel>>(coordinator.GetApps, this);
         }
 
         private void OnAppAdded(Aplication app)
@@ -144,28 +142,13 @@ namespace AppsTracker.ViewModels
             AppList.Reload();
         }
 
-        private IEnumerable<Aplication> GetApps()
-        {
-            var apps = repository.GetFiltered<Aplication>(a => a.User.ID == trackingService.SelectedUserID,
-                                                           a => a.Limits)
-                                                        .ToList()
-                                                        .Distinct();
-            foreach (var app in apps)
-            {
-                app.ObservableLimits = new ObservableCollection<AppLimit>(app.Limits);
-            }
-
-            return apps;
-        }
-
-
         private void AddNewLimit(object parameter)
         {
             if (selectedApp == null)
                 return;
 
             string limitSpan = (string)parameter;
-            var appLimit = new AppLimit() { ApplicationID = selectedApp.ID };
+            var appLimit = new AppLimitModel() { ApplicationID = selectedApp.ApplicationID };
 
             if (limitSpan.ToUpper() == "DAILY")
                 appLimit.LimitSpan = LimitSpan.Day;
@@ -195,16 +178,12 @@ namespace AppsTracker.ViewModels
             if (apps == null)
                 return;
 
-            var appsToSave = apps.Where(a => a.Limits.Count != a.ObservableLimits.Count ||
+            var appsToSave = apps.Where(a => a.Limits.Count() != a.ObservableLimits.Count ||
                 a.ObservableLimits.Select(l => l.HasChanges).Any());
             var modifiedLimits = appsToSave.SelectMany(a => a.ObservableLimits)
                 .Where(l => l.ID != default(int) && l.HasChanges);
             var newLimits = appsToSave.SelectMany(a => a.ObservableLimits).Where(l => l.ID == default(int));
-            var saveModifiedTask = repository.SaveModifiedEntityRangeAsync(modifiedLimits);
-            var saveNewTask = repository.SaveNewEntityRangeAsync(newLimits);
-            var deleteTask = repository.DeleteEntityRangeAsync(limitsToDelete.Where(l => l.ID != default(int)));
-
-            await Task.WhenAll(saveModifiedTask, saveNewTask, deleteTask);
+            await coordinator.SaveChanges(modifiedLimits, newLimits, limitsToDelete);
 
             limitsToDelete.Clear();
 

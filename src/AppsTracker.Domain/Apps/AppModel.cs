@@ -20,6 +20,12 @@ namespace AppsTracker.Domain.Apps
             Description = aplication.Description;
             Company = aplication.Company;
             WinName = aplication.WinName;
+
+            if (aplication.Limits != null)
+            {
+                Limits = aplication.Limits.Select(l => new AppLimitModel(l));
+                ObservableLimits = new ObservableCollection<AppLimitModel>(Limits);    
+            }
         }
 
         public ObservableCollection<AppLimitModel> ObservableLimits
@@ -42,9 +48,9 @@ namespace AppsTracker.Domain.Apps
 
         public string WinName { get; }
 
+        public IEnumerable<AppLimitModel> Limits { get; private set; }
         //public UzerModel User { get; private set; }
         //public ICollection<WindowModel> Windows { get; private set; }
         //public ICollection<AppCategoryModel> Categories { get; private set; }
-        //public ICollection<AppLimitModel> Limits { get; private set; }
     }
 }
