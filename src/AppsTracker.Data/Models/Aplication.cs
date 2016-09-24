@@ -17,39 +17,6 @@ namespace AppsTracker.Data.Models
 {
     public class Aplication : IEntity
     {
-        [NotMapped]
-        public TimeSpan Duration
-        {
-            get
-            {
-                return GetAppDuration();
-            }
-        }
-
-
-        [NotMapped]
-        public ObservableCollection<AppLimit> ObservableLimits
-        {
-            get;
-            set;
-        }
-
-
-        private TimeSpan GetAppDuration()
-        {
-            long ticks = 0;
-            foreach (var window in this.Windows)
-            {
-                foreach (var log in window.Logs)
-                {
-                    ticks += log.Duration;
-                }
-            }
-
-            return new TimeSpan(ticks);
-        }
-
-
         public Aplication() { }
 
 

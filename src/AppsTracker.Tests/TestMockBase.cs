@@ -69,10 +69,9 @@ namespace AppsTracker.Tests
             var tupleFactory =
                 new Func<Tuple<ScreenshotsViewModel, Action>>(
                     () => new Tuple<ScreenshotsViewModel, Action>(
-                        new ScreenshotsViewModel(repository.Object,
-                            settingsService.Object,
+                        new ScreenshotsViewModel(
                             null,
-                            trackingService.Object,
+                            null,
                             windowService.Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -287,8 +286,7 @@ namespace AppsTracker.Tests
             var tupleFactory =
                 new Func<Tuple<SettingsLimitsViewModel, Action>>(
                     () => new Tuple<SettingsLimitsViewModel, Action>(
-                        new SettingsLimitsViewModel(repository.Object,
-                            trackingService.Object,
+                        new SettingsLimitsViewModel(new Mock<AppLimitsCoordinator>().Object,
                             mediator),
                             ExportFactoryContextRelease));
 
