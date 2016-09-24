@@ -8,13 +8,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppsTracker.Data.Models
 {
-    public class Log : IEntity, INotifyPropertyChanged
+    public class Log : IEntity
     {
         [NotMapped]
         public long Duration
@@ -22,24 +21,6 @@ namespace AppsTracker.Data.Models
             get
             {
                 return Finished ? UtcDateEnded.Ticks - UtcDateCreated.Ticks : DateTime.UtcNow.Ticks - UtcDateCreated.Ticks;
-            }
-        }
-
-        private bool isSelected;
-
-        [NotMapped]
-        public bool IsSelected
-        {
-            get
-            {
-                return isSelected;
-            }
-            set
-            {
-                isSelected = value;
-                var handler = PropertyChanged;
-                if (handler != null)
-                    handler(this, new PropertyChangedEventArgs("IsSelected"));
             }
         }
 
@@ -67,8 +48,6 @@ namespace AppsTracker.Data.Models
             UtcDateEnded = DateTime.UtcNow;
             Finished = true;
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
