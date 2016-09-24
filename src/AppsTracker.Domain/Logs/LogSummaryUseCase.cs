@@ -5,8 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
-using AppsTracker.Data.Utils;
 using AppsTracker.Domain.Tracking;
+using AppsTracker.Domain.Util;
 
 namespace AppsTracker.Domain.Logs
 {

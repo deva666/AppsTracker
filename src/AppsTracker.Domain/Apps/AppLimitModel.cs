@@ -1,8 +1,7 @@
-﻿using System.ComponentModel;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Utils;
 using AppsTracker.Domain.Model;
+using AppsTracker.Domain.Utils;
 
 namespace AppsTracker.Domain.Apps
 {
