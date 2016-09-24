@@ -26,8 +26,6 @@ namespace AppsTracker.Data.Models
             this.Screensht = GetByteArrayFromImage(image);
         }
 
-
-
         private byte[] GetByteArrayFromImage(Image image)
         {
             ImageConverter converter = new ImageConverter();
