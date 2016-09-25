@@ -78,7 +78,7 @@
     <Compile Include="ViewModels\ScreenshotsStatsViewModel.cs" />
     <Compile Include="ViewModels\ScreenshotsViewModel.cs" />
     <Compile Include="ViewModels\ScreenshotViewerViewModel.cs" />
-    <Compile Include="ViewModels\SettingsAppCategoriesViewModel.cs" />
+    <Compile Include="ViewModels\SettingsCategoriesViewModel.cs" />
     <Compile Include="ViewModels\SettingsGeneralViewModel.cs" />
     <Compile Include="ViewModels\SettingsHostViewModel.cs" />
     <Compile Include="ViewModels\SettingsLimitsViewModel.cs" />
