@@ -28,7 +28,6 @@ namespace AppsTracker.Tests
         protected readonly Mock<ITrackingService> trackingService = new Mock<ITrackingService>();
         protected readonly Mock<IAppSettingsService> settingsService = new Mock<IAppSettingsService>();
         protected readonly Mock<IUserSettingsService> userSettingsService = new Mock<IUserSettingsService>();
-        protected readonly Mock<ICategoriesService> categoriesService = new Mock<ICategoriesService>();
         protected readonly Mock<IWindowService> windowService = new Mock<IWindowService>();
         protected readonly Mock<IAppChangedNotifier> windowChangedNotifier = new Mock<IAppChangedNotifier>();
         protected readonly Mock<ILimitHandler> limitHandler = new Mock<ILimitHandler>();
@@ -257,24 +256,13 @@ namespace AppsTracker.Tests
         }
 
 
-        protected ExportFactory<ICategoriesService> GetCategoriesServiceFactory()
-        {
-            var tupleFactory = new Func<Tuple<ICategoriesService, Action>>(
-                () => new Tuple<ICategoriesService, Action>(
-                    categoriesService.Object, ExportFactoryContextRelease));
-
-            return new ExportFactory<ICategoriesService>(tupleFactory);
-        }
-
         protected ExportFactory<SettingsAppCategoriesViewModel> GetSettingsAppCategoriesVMFactory()
         {
-            var categoriesFactory = GetCategoriesServiceFactory();
             var tupleFactory =
                 new Func<Tuple<SettingsAppCategoriesViewModel, Action>>(
                     () => new Tuple<SettingsAppCategoriesViewModel, Action>(
-                        new SettingsAppCategoriesViewModel(categoriesFactory,
-                            mediator,
-                            trackingService.Object),
+                        new SettingsAppCategoriesViewModel(null,
+                            mediator),
                             ExportFactoryContextRelease));
 
             return new ExportFactory<SettingsAppCategoriesViewModel>(tupleFactory);
