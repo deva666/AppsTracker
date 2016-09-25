@@ -125,8 +125,6 @@
     <Compile Include="Models\Usage.cs" />
     <Compile Include="Models\Uzer.cs" />
     <Compile Include="Models\Window.cs" />
-    <Compile Include="Service\Categories\CategoriesService.cs" />
-    <Compile Include="Service\Categories\ICategoriesService.cs" />
     <Compile Include="Repository\Repository.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
