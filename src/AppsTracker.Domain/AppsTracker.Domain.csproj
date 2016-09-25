@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Apps\AppCategoriesCoordinator.cs" />
     <Compile Include="Apps\AppCategoryModel.cs" />
     <Compile Include="Apps\AppDuration.cs" />
     <Compile Include="Apps\AppDurationOverview.cs" />

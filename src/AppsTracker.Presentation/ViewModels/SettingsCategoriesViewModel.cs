@@ -15,6 +15,7 @@ using System.Windows.Input;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Apps;
 using AppsTracker.Domain.Tracking;
 using AppsTracker.MVVM;
 
@@ -26,11 +27,10 @@ namespace AppsTracker.ViewModels
     {
         private const string SETTINGS_SAVED_MSG = "settings saved";
 
-        private readonly ICategoriesService categoriesService;
-        private readonly ITrackingService trackingService;
+        private readonly AppCategoriesCoordinator coordinator;
         private readonly Mediator mediator;
 
-        private readonly ICollection<AppCategory> categoriesToDelete = new List<AppCategory>();
+        private readonly ICollection<AppCategoryModel> categoriesToDelete = new List<AppCategoryModel>();
 
 
         public override string Title
@@ -70,31 +70,31 @@ namespace AppsTracker.ViewModels
         }
 
 
-        private ObservableCollection<Aplication> applications;
+        private ObservableCollection<AppModel> applications;
 
-        public ObservableCollection<Aplication> Applications
+        public ObservableCollection<AppModel> Applications
         {
             get { return applications; }
             set { SetPropertyValue(ref applications, value); }
         }
 
 
-        private ObservableCollection<AppCategory> categories;
+        private ObservableCollection<AppCategoryModel> categories;
 
-        public ObservableCollection<AppCategory> Categories
+        public ObservableCollection<AppCategoryModel> Categories
         {
             get { return categories; }
             set { SetPropertyValue(ref categories, value); }
         }
 
 
-        public Aplication UnassignedSelectedApp { get; set; }
+        public AppModel UnassignedSelectedApp { get; set; }
 
 
-        public Aplication AssignedSelectedApp { get; set; }
+        public AppModel AssignedSelectedApp { get; set; }
 
 
-        public AppCategory SelectedCategory { get; set; }
+        public AppCategoryModel SelectedCategory { get; set; }
 
 
         private ICommand addNewCategoryCommand;
@@ -170,16 +170,11 @@ namespace AppsTracker.ViewModels
 
 
         [ImportingConstructor]
-        public SettingsAppCategoriesViewModel(ExportFactory<ICategoriesService> categoriesFactory,
-                                              Mediator mediator,
-                                              ITrackingService trackingService)
+        public SettingsAppCategoriesViewModel(AppCategoriesCoordinator coordinator,
+                                              Mediator mediator)
         {
-            using (var context = categoriesFactory.CreateExport())
-            {
-                this.categoriesService = context.Value;
-            }
+            this.coordinator = coordinator;
             this.mediator = mediator;
-            this.trackingService = trackingService;
 
             LoadContent();
             this.mediator.Register<Aplication>(MediatorMessages.APPLICATION_ADDED, AppAdded);
@@ -188,11 +183,11 @@ namespace AppsTracker.ViewModels
 
         private void LoadContent()
         {
-            Categories = categoriesService.GetCategories(trackingService.SelectedUserID);
-            var unassignedApps = categoriesService.GetApps(trackingService.SelectedUserID);
+            var apps = coordinator.GetApps().ToList();
+            Categories = new ObservableCollection<AppCategoryModel>(coordinator.GetCategories());            
             var assignedApps = Categories.SelectMany(c => c.Applications);
-            unassignedApps.RemoveAll(a => assignedApps.Any(app => app.ID == a.ID));
-            Applications = new ObservableCollection<Aplication>(unassignedApps);
+            apps.RemoveAll(a => assignedApps.Any(app => app.ApplicationID == a.ApplicationID));
+            Applications = new ObservableCollection<AppModel>(apps);
         }
 
 
@@ -213,11 +208,7 @@ namespace AppsTracker.ViewModels
             if (Categories.Any(c => c.Name == categoryName))
                 return;
 
-            var category = new AppCategory()
-            {
-                Name = categoryName,
-                ObservableApplications = new ObservableCollection<Aplication>()
-            };
+            var category = new AppCategoryModel(categoryName);
             Categories.Add(category);
             IsNewCategoryOpen = false;
             NewCategoryName = null;
@@ -256,24 +247,26 @@ namespace AppsTracker.ViewModels
 
         private void AppAdded(Aplication app)
         {
-            var reloadedApp = categoriesService.ReloadApp(app);
-            Applications.Add(reloadedApp);
+            //var reloadedApp = categoriesService.ReloadApp(app);
+            //Applications.Add(reloadedApp);
         }
 
 
         private async Task SaveChanges()
         {
-            await categoriesService.SaveChangesAsync(categoriesToDelete, Categories);
+            var newCategories = Categories.Where(c => c.ID == default(int));
+            var modifiedCategories = Categories.Where(c => c.ID != default(int));
+            await coordinator.SaveChangesAsync(categoriesToDelete, newCategories, modifiedCategories);
             categoriesToDelete.Clear();
             InfoMessage = SETTINGS_SAVED_MSG;
         }
 
 
         //Finalizer is used instead of Dispose becouse Host View Models store all references to child view models as weak refrences and we don't know when the GC is going to kick in and free the resurce 
-        ~SettingsAppCategoriesViewModel()
-        {
-            categoriesService.Dispose();
-        }
+        //~SettingsAppCategoriesViewModel()
+        //{
+        //    categoriesService.Dispose();
+        //}
 
     }
 }

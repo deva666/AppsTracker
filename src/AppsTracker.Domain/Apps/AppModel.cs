@@ -22,13 +22,18 @@ namespace AppsTracker.Domain.Apps
                 Limits = aplication.Limits.Select(l => new AppLimitModel(l));
                 ObservableLimits = new ObservableCollection<AppLimitModel>(Limits);
             }
+
+            if(aplication.Categories != null)
+            {
+                Categories = aplication.Categories.Select(c => new AppCategoryModel(c));
+                ObservableCategories = new ObservableCollection<AppCategoryModel>(Categories);
+            }
+
         }
 
-        public ObservableCollection<AppLimitModel> ObservableLimits
-        {
-            get;
-            set;
-        }
+        public ObservableCollection<AppLimitModel> ObservableLimits { get; }
+
+        public ObservableCollection<AppCategoryModel> ObservableCategories { get; }
 
         public int ApplicationID { get; }
 
@@ -44,6 +49,8 @@ namespace AppsTracker.Domain.Apps
 
         public string WinName { get; }
 
-        public IEnumerable<AppLimitModel> Limits { get; private set; }
+        public IEnumerable<AppLimitModel> Limits { get; }
+
+        public IEnumerable<AppCategoryModel> Categories { get; }
     }
 }

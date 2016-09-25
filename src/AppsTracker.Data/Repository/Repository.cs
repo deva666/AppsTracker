@@ -30,6 +30,14 @@ namespace AppsTracker.Data.Repository
 
         public event EventHandler DbSizeCritical;
 
+        public async Task<int> ExecuteSql(string sql, params object[] args)
+        {
+            using (var context = new AppsEntities())
+            {
+                return await context.Database.ExecuteSqlCommandAsync(sql, args);
+            }
+        }
+
         public T GetSingle<T>(int id) where T : class, IEntity
         {
             using (var context = new AppsEntities())
@@ -46,6 +54,13 @@ namespace AppsTracker.Data.Repository
             }
         }
 
+        public async Task<T> GetSingleAsync<T>(Expression<Func<T, bool>> filter) where T : class, IEntity
+        {
+            using (var context = new AppsEntities())
+            {
+                return await context.Set<T>().FirstOrDefaultAsync(filter);
+            }
+        }
 
         public IEnumerable<T> Get<T>() where T : class
         {

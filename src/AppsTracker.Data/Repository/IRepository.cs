@@ -24,10 +24,13 @@ namespace AppsTracker.Data.Repository
 
         Task<decimal> GetDBSizeAsync();
 
+        Task<int> ExecuteSql(string sql, params object[] args);
+
         T GetSingle<T>(int id) where T : class, IEntity;
 
         Task<T> GetSingleAsync<T>(int id) where T : class, IEntity;
 
+        Task<T> GetSingleAsync<T>(Expression<Func<T, bool>> filter) where T : class, IEntity;
 
         IEnumerable<T> Get<T>() where T : class;
 
