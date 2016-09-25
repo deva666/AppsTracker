@@ -23,7 +23,7 @@ namespace AppsTracker.Domain.Apps
                 ObservableLimits = new ObservableCollection<AppLimitModel>(Limits);
             }
 
-            if(aplication.Categories != null)
+            if (aplication.Categories != null)
             {
                 Categories = aplication.Categories.Select(c => new AppCategoryModel(c));
                 ObservableCategories = new ObservableCollection<AppCategoryModel>(Categories);

@@ -7,8 +7,6 @@ namespace AppsTracker.Domain.Apps
 {
     public sealed class AppCategoryModel
     {
-        public ObservableCollection<AppModel> ObservableApplications { get; }
-
         public AppCategoryModel(string name)
         {
             Name = name;
@@ -19,14 +17,20 @@ namespace AppsTracker.Domain.Apps
         {
             ID = category.ID;
             Name = category.Name;
-            Applications = category.Applications.Select(a => new AppModel(a));
-            ObservableApplications = new ObservableCollection<AppModel>(Applications);
         }
 
         public int ID { get; }
 
         public string Name { get; }
 
-        public IEnumerable<AppModel> Applications { get; }
+        public ObservableCollection<AppModel> ObservableApplications { get; private set; }
+
+        public IEnumerable<AppModel> Applications { get; private set; }
+
+        public void SetApps(IEnumerable<Aplication> apps)
+        {
+            Applications = apps.Select(a => new AppModel(a));
+            ObservableApplications = new ObservableCollection<AppModel>(Applications);
+        }
     }
 }

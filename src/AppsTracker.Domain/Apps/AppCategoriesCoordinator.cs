@@ -31,11 +31,17 @@ namespace AppsTracker.Domain.Apps
 
         public IEnumerable<AppCategoryModel> GetCategories()
         {
-            return repository.GetFiltered<AppCategory>(c => c.Applications.Where(a => a.UserID == trackingService.SelectedUserID)
+            var appCategories = repository.GetFiltered<AppCategory>(c => c.Applications.Where(a => a.UserID == trackingService.SelectedUserID)
                                                                             .Any(),
-                                                       c => c.Applications)
-                                                       .Select(c => new AppCategoryModel(c))
-                                                       .ToList();
+                                                       c => c.Applications);
+            var models = appCategories.Select(c =>
+            {
+                var model = new AppCategoryModel(c);
+                model.SetApps(c.Applications);
+                return model;
+            });
+
+            return models;
         }
 
         public async Task SaveChangesAsync(IEnumerable<AppCategoryModel> deletedCategories,
@@ -67,14 +73,16 @@ namespace AppsTracker.Domain.Apps
 
         private async Task SaveModifiedCategories(IEnumerable<AppCategoryModel> modifiedCategories)
         {
+            var deleteSQL = @"DELETE FROM [ApplicationCategories] WHERE AppCategoryID = {0}";
+            var insertAppCategoriesSQL = @"INSERT INTO [ApplicationCategories] VALUES({0},{1})";
             foreach (var cat in modifiedCategories)
             {
                 var dbCat = await repository.GetSingleAsync<AppCategory>(cat.ID);
-                dbCat.Name = cat.Name;
-                var appIds = cat.ObservableApplications.Select(a => a.ApplicationID);
-                var apps = await repository.GetFilteredAsync<Aplication>(a => appIds.Contains(a.ID));
-                dbCat.Applications = apps;
-                await repository.SaveModifiedEntityAsync(dbCat);
+                await repository.ExecuteSql(deleteSQL, dbCat.ID);
+                foreach (var app in cat.ObservableApplications)
+                {
+                    await repository.ExecuteSql(insertAppCategoriesSQL, app.ApplicationID, dbCat.ID);
+                }
             }
         }
 
