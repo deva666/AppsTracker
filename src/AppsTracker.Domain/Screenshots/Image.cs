@@ -2,17 +2,16 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
+using AppsTracker.Domain.Model;
 using AppsTracker.Domain.Utils;
 
 namespace AppsTracker.Domain.Screenshots
 {
-    public sealed class Image : INotifyPropertyChanged
+    public sealed class Image : ObservableObject
     {
         private const Double HEIGHT_MARGIN = 100d;
         private const Double WIDTH_MARGIN = 100d;
         private const Double SCALE_FACTOR = 0.75;
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         internal Image(String appName, Screenshot screenshot)
         {
@@ -29,17 +28,15 @@ namespace AppsTracker.Domain.Screenshots
         public bool IsSelected
         {
             get { return isSelected; }
-            set
-            {
-                isSelected = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsSelected"));
-            }
+            set { SetPropertyValue(ref isSelected, value); }
         }
+
+        private bool isOpen;
 
         public bool IsOpen
         {
-            get;
-            set;
+            get { return IsOpen; }
+            set { SetPropertyValue(ref isOpen, value); }
         }
 
         public ICommand ShowHideCommand
@@ -80,8 +77,6 @@ namespace AppsTracker.Domain.Screenshots
                 IsOpen = false;
             else
                 IsOpen = true;
-
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsOpen"));
         }
 
         public Int32 ScreenshotId { get; }
