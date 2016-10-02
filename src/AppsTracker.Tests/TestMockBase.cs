@@ -4,15 +4,17 @@ using System.ComponentModel.Composition;
 using AppsTracker.Common.Communication;
 using AppsTracker.Communication;
 using AppsTracker.Controllers;
-using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
 using AppsTracker.Domain;
 using AppsTracker.Domain.Apps;
 using AppsTracker.Domain.Logs;
+using AppsTracker.Domain.Screenshots;
 using AppsTracker.Domain.Settings;
 using AppsTracker.Domain.Tracking;
+using AppsTracker.Domain.Usages;
 using AppsTracker.Domain.Windows;
 using AppsTracker.Service;
+using AppsTracker.Service.Web;
 using AppsTracker.Tests.Fakes;
 using AppsTracker.Tracking;
 using AppsTracker.Tracking.Helpers;
@@ -29,6 +31,8 @@ namespace AppsTracker.Tests
         protected readonly Mock<IAppSettingsService> settingsService = new Mock<IAppSettingsService>();
         protected readonly Mock<IUserSettingsService> userSettingsService = new Mock<IUserSettingsService>();
         protected readonly Mock<IWindowService> windowService = new Mock<IWindowService>();
+        protected readonly Mock<IScreenshotService> screenshotService = new Mock<IScreenshotService>();
+        protected readonly Mock<IReleaseNotesService> releaseNotesService = new Mock<IReleaseNotesService>();
         protected readonly Mock<IAppChangedNotifier> windowChangedNotifier = new Mock<IAppChangedNotifier>();
         protected readonly Mock<ILimitHandler> limitHandler = new Mock<ILimitHandler>();
         protected readonly Mock<IMidnightNotifier> midnightNotifier = new Mock<IMidnightNotifier>();
@@ -44,7 +48,14 @@ namespace AppsTracker.Tests
         protected readonly Mock<IUseCase<String, IEnumerable<DateTime>, WindowSummary>> windowsStatsSummaryUseCase = new Mock<IUseCase<string, IEnumerable<DateTime>, WindowSummary>>();
         protected readonly Mock<IUseCase<String, IEnumerable<String>, IEnumerable<DateTime>, WindowDurationOverview>> windowDurationUseCase = new Mock<IUseCase<string, IEnumerable<string>, IEnumerable<DateTime>, WindowDurationOverview>>();
         protected readonly Mock<IUseCase<DateTime, LogSummary>> logSummaryUseCase = new Mock<IUseCase<DateTime, LogSummary>>();
-
+        protected readonly Mock<IUseCase<UserLoggedTime>> userLoggedTimeUseCase = new Mock<IUseCase<UserLoggedTime>>();
+        protected readonly Mock<IUseCase<String, UsageOverview>> usageOverViewUseCase = new Mock<IUseCase<string, UsageOverview>>();
+        protected readonly Mock<IUseCase<AppDuration>> appDurationUseCase = new Mock<IUseCase<AppDuration>>();
+        protected readonly Mock<IUseCase<String, DailyAppDuration>> dailyAppDurationUseCase = new Mock<IUseCase<string, DailyAppDuration>>();
+        protected readonly Mock<IUseCase<CategoryDuration>> categoryDurationUseCase = new Mock<IUseCase<CategoryDuration>>();
+        protected readonly Mock<IUseCase<String, DailyCategoryDuration>> dailyCategoryDurationUseCase = new Mock<IUseCase<string, DailyCategoryDuration>>();
+        protected readonly Mock<IUseCase<ScreenshotOverview>> screenshotModelUseCase = new Mock<IUseCase<ScreenshotOverview>>();
+        protected readonly Mock<IUseCase<String, DailyScreenshotModel>> dailyScreenshotModelUseCase = new Mock<IUseCase<string, DailyScreenshotModel>>();
 
         protected readonly Mediator mediator = new Mediator();
         protected readonly ISyncContext syncContext = new SyncContextMock();
@@ -69,8 +80,8 @@ namespace AppsTracker.Tests
                 new Func<Tuple<ScreenshotsViewModel, Action>>(
                     () => new Tuple<ScreenshotsViewModel, Action>(
                         new ScreenshotsViewModel(
-                            null,
-                            null,
+                            settingsService.Object,
+                            screenshotService.Object,
                             windowService.Object,
                             mediator),
                             ExportFactoryContextRelease));
@@ -116,8 +127,8 @@ namespace AppsTracker.Tests
                 new Func<Tuple<UserStatsViewModel, Action>>(
                     () => new Tuple<UserStatsViewModel, Action>(
                         new UserStatsViewModel(
-                            null,
-                            null,
+                            userLoggedTimeUseCase.Object,
+                            usageOverViewUseCase.Object,
                             mediator),
                             ExportFactoryContextRelease));
 
@@ -130,8 +141,8 @@ namespace AppsTracker.Tests
                 new Func<Tuple<AppStatsViewModel, Action>>(
                     () => new Tuple<AppStatsViewModel, Action>(
                         new AppStatsViewModel(
-                            null,
-                            null,
+                            appDurationUseCase.Object,
+                            dailyAppDurationUseCase.Object,
                             mediator),
                             ExportFactoryContextRelease));
 
@@ -158,8 +169,8 @@ namespace AppsTracker.Tests
                 new Func<Tuple<ScreenshotsStatsViewModel, Action>>(
                     () => new Tuple<ScreenshotsStatsViewModel, Action>(
                         new ScreenshotsStatsViewModel(
-                            null,
-                            null,
+                            screenshotModelUseCase.Object,
+                            dailyScreenshotModelUseCase.Object,
                             mediator),
                             ExportFactoryContextRelease));
 
@@ -172,8 +183,8 @@ namespace AppsTracker.Tests
                 new Func<Tuple<CategoryStatsViewModel, Action>>(
                     () => new Tuple<CategoryStatsViewModel, Action>(
                         new CategoryStatsViewModel(
-                            null,
-                            null,
+                            categoryDurationUseCase.Object,
+                            dailyCategoryDurationUseCase.Object,
                             mediator),
                             ExportFactoryContextRelease));
 

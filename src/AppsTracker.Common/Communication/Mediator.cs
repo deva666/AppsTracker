@@ -25,7 +25,7 @@ namespace AppsTracker.Common.Communication
             _parameterInvocationList.AddAction(message, callback.Target, callback.Method, typeof(T));
         }
 
-        public void NotifyColleagues<T>(string message, T parameter)
+        public virtual void NotifyColleagues<T>(string message, T parameter)
         {
             var actions = _parameterInvocationList.GetActions(message);
 
@@ -33,7 +33,7 @@ namespace AppsTracker.Common.Communication
                 actions.ForEach(action => ((Action<T>)action).Invoke(parameter));
         }
 
-        public void NotifyColleagues(string message)
+        public virtual void NotifyColleagues(string message)
         {
             var actions = _invocationList.GetActions(message);
 

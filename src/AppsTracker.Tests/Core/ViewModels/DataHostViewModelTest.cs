@@ -1,5 +1,4 @@
-﻿using System;
-using AppsTracker.ViewModels;
+﻿using AppsTracker.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AppsTracker.Tests.Core.ViewModels
