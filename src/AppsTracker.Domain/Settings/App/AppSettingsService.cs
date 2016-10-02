@@ -6,11 +6,9 @@
  */
 #endregion
 
-using System;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-using AppsTracker.Data.Db;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
 using Microsoft.Win32;
@@ -71,7 +69,7 @@ namespace AppsTracker.Domain.Settings
         }
 
         private void ReadSettingsFromRegistry()
-        {           
+        {
             bool? exists = RegistryEntryExists();
             if (exists == null && settings.RunAtStartup)
                 settings.RunAtStartup = false;
