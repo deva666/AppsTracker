@@ -16,6 +16,14 @@ namespace AppsTracker.MVVM
             this.valueFactory = valueFactory;
         }
 
+        public TaskRunner(Func<T> valueFactory, IWorker worker, Action<T> onCompletion)
+            : base(worker, onCompletion)
+        {
+            Ensure.NotNull(valueFactory, "valueFactory");
+
+            this.valueFactory = valueFactory;
+        }
+
         protected override Task<T> GetTask()
         {
             return Task<T>.Run(valueFactory);

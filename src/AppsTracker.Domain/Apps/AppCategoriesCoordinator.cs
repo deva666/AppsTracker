@@ -31,7 +31,8 @@ namespace AppsTracker.Domain.Apps
 
         public IEnumerable<AppCategoryModel> GetCategories()
         {
-            var appCategories = repository.GetFiltered<AppCategory>(c => c.Applications.Where(a => a.UserID == trackingService.SelectedUserID)
+            var appCategories = repository.GetFiltered<AppCategory>(c => c.Applications
+                                                                            .Where(a => a.UserID == trackingService.SelectedUserID)
                                                                             .Any(),
                                                        c => c.Applications);
             var models = appCategories.Select(c =>

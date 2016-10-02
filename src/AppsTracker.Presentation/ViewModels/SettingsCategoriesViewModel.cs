@@ -6,6 +6,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
@@ -14,9 +15,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using AppsTracker.Common.Communication;
 using AppsTracker.Data.Models;
-using AppsTracker.Data.Repository;
 using AppsTracker.Domain.Apps;
-using AppsTracker.Domain.Tracking;
 using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
@@ -176,7 +175,7 @@ namespace AppsTracker.ViewModels
             this.coordinator = coordinator;
             this.mediator = mediator;
 
-            LoadContent();
+            Task.Run(new Action(LoadContent));
             this.mediator.Register<Aplication>(MediatorMessages.APPLICATION_ADDED, AppAdded);
         }
 
@@ -184,7 +183,7 @@ namespace AppsTracker.ViewModels
         private void LoadContent()
         {
             var apps = coordinator.GetApps().ToList();
-            Categories = new ObservableCollection<AppCategoryModel>(coordinator.GetCategories());            
+            Categories = new ObservableCollection<AppCategoryModel>(coordinator.GetCategories());
             var assignedApps = Categories.SelectMany(c => c.Applications);
             apps.RemoveAll(a => assignedApps.Any(app => app.ApplicationID == a.ApplicationID));
             Applications = new ObservableCollection<AppModel>(apps);
@@ -230,6 +229,7 @@ namespace AppsTracker.ViewModels
         {
             if (AssignedSelectedApp == null || SelectedCategory == null)
                 return;
+
             Applications.Add(AssignedSelectedApp);
             SelectedCategory.ObservableApplications.Remove(AssignedSelectedApp);
         }
@@ -239,16 +239,17 @@ namespace AppsTracker.ViewModels
         {
             if (SelectedCategory == null)
                 return;
+
             if (SelectedCategory.ID != default(int))
                 categoriesToDelete.Add(SelectedCategory);
+
             Categories.Remove(SelectedCategory);
         }
 
 
         private void AppAdded(Aplication app)
         {
-            //var reloadedApp = categoriesService.ReloadApp(app);
-            //Applications.Add(reloadedApp);
+            Applications.Add(new AppModel(app));
         }
 
 
@@ -260,13 +261,5 @@ namespace AppsTracker.ViewModels
             categoriesToDelete.Clear();
             InfoMessage = SETTINGS_SAVED_MSG;
         }
-
-
-        //Finalizer is used instead of Dispose becouse Host View Models store all references to child view models as weak refrences and we don't know when the GC is going to kick in and free the resurce 
-        //~SettingsAppCategoriesViewModel()
-        //{
-        //    categoriesService.Dispose();
-        //}
-
     }
 }

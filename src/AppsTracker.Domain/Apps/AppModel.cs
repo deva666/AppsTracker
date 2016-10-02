@@ -7,7 +7,7 @@ namespace AppsTracker.Domain.Apps
 {
     public sealed class AppModel
     {
-        internal AppModel(Aplication aplication)
+        public AppModel(Aplication aplication)
         {
             ApplicationID = aplication.ID;
             Name = aplication.Name;
