@@ -30,9 +30,8 @@ namespace AppsTracker.Domain.Screenshots
                                                 s => s.Log.Window.Application,
                                                 s => s.Log.Window.Application.User);
 
-            var screenshotModels = screenshots
-                                            .GroupBy(s => s.Log.Window.Application.Name)
-                                            .Select(g => new ScreenshotOverview() { AppName = g.Key, Count = g.Count() });
+            var screenshotModels = screenshots.GroupBy(s => s.Log.Window.Application.Name)
+                                              .Select(g => new ScreenshotOverview() { AppName = g.Key, Count = g.Count() });
 
             return screenshotModels;
         }
