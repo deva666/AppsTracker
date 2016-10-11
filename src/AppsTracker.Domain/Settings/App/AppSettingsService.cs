@@ -11,12 +11,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
+using AppsTracker.Domain.Model;
 using Microsoft.Win32;
 
 namespace AppsTracker.Domain.Settings
 {
     [Export(typeof(IAppSettingsService))]
-    public sealed class AppSettingsService : IAppSettingsService
+    public sealed class AppSettingsService : ObservableObject, IAppSettingsService
     {
         private readonly IRepository repository;
 
@@ -57,7 +58,7 @@ namespace AppsTracker.Domain.Settings
             repository.SaveModifiedEntity(settings);
             this.settings = settings;
 
-            NotifyPropertyChanged();
+            PropertyChanging("Settings");
         }
 
         public async Task SaveChangesAsync(Setting settings)
@@ -65,7 +66,7 @@ namespace AppsTracker.Domain.Settings
             await repository.SaveModifiedEntityAsync(settings);
             this.settings = settings;
 
-            NotifyPropertyChanged();
+            PropertyChanging("Settings");
         }
 
         private void ReadSettingsFromRegistry()
@@ -95,16 +96,5 @@ namespace AppsTracker.Domain.Settings
                 return null;
             }
         }
-
-
-        private void NotifyPropertyChanged()
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("Settings"));
-            }
-        }
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }
