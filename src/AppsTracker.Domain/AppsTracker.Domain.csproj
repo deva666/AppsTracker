@@ -120,7 +120,7 @@
     <Compile Include="Web\ReleaseNote.cs" />
     <Compile Include="Web\ReleaseNotesParser.cs" />
     <Compile Include="Web\ReleaseNotesService.cs" />
-    <Compile Include="Settings\App\IApplSettingsService.cs" />
+    <Compile Include="Settings\App\IAppSettingsService.cs" />
     <Compile Include="Settings\App\AppSettingsService.cs" />
   </ItemGroup>
   <ItemGroup>
