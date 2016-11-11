@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AppsTracker.Data.Models;
 using AppsTracker.Data.Repository;
@@ -49,23 +47,19 @@ namespace AppsTracker.Domain.Apps
         private async Task DeleteLimits(IEnumerable<AppLimitModel> deletedLimits)
         {
             var deletedIds = deletedLimits.Select(l => l.ID);
-            var limitsToDelete = await repository.GetFilteredAsync<AppLimit>(l => deletedIds.Contains(l.ID));
-            await repository.DeleteEntityRangeAsync(limitsToDelete);
+            await repository.DeleteByIdsAsync<AppLimit>(deletedIds);
         }
 
         private async Task SaveNewLimits(IEnumerable<AppLimitModel> newLimits)
         {
-            foreach (var limit in newLimits)
+            var dbLimits = newLimits.Select(l => new AppLimit()
             {
-                var newLimit = new AppLimit()
-                {
-                    ApplicationID = limit.ApplicationID,
-                    Limit = limit.Limit,
-                    LimitReachedAction = limit.LimitReachedAction,
-                    LimitSpan = limit.LimitSpan
-                };
-                await repository.SaveNewEntityAsync(newLimit);
-            }
+                ApplicationID = l.ApplicationID,
+                Limit = l.Limit,
+                LimitReachedAction = l.LimitReachedAction,
+                LimitSpan = l.LimitSpan
+            });
+            await repository.SaveNewEntityRangeAsync(dbLimits);
         }
 
         private async Task SaveModifiedLimits(IEnumerable<AppLimitModel> modifiedLimits)
