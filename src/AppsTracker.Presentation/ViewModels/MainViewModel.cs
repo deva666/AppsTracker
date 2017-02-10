@@ -419,6 +419,11 @@ namespace AppsTracker.ViewModels
 
         private void GoToSettings()
         {
+            if(SelectedChild.GetType() == typeof(SettingsHostViewModel))
+            {
+                return;
+            }
+
             if (toSettings != SelectedChild.GetType())
             {
                 toSettings = SelectedChild.GetType();
