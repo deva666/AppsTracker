@@ -35,7 +35,7 @@ namespace AppsTracker.Domain.Screenshots
 
         public bool IsOpen
         {
-            get { return IsOpen; }
+            get { return isOpen; }
             set { SetPropertyValue(ref isOpen, value); }
         }
 

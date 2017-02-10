@@ -16,6 +16,10 @@ namespace AppsTracker.Data.Models
 {
     public enum ScreenShotInterval : uint
     {
+        [Description("1 sec")]
+        OneSecond = 1000,
+        [Description("5 sec")]
+        FiveSeconds = 5000,
         [Description("10 sec")]
         TenSeconds = 10000,
         [Description("30 sec")]

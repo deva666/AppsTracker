@@ -127,6 +127,24 @@
                 <Border Style="{DynamicResource ThemeBorderStyle}">
                     <StackPanel Orientation="Vertical">
                         <Label Style="{StaticResource SelectableLabelStyle}"
+                               Content="1 sec"
+                               Name="lblOneSec">
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding ChangeScreenShotIntervalCommand }"
+                                              CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Label}}}" />
+                            </Label.InputBindings>
+                        </Label>
+                        <Label Style="{StaticResource SelectableLabelStyle}"
+                               Content="5 sec"
+                               Name="lblFiveSec">
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding ChangeScreenShotIntervalCommand }"
+                                              CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Label}}}" />
+                            </Label.InputBindings>
+                        </Label>
+                        <Label Style="{StaticResource SelectableLabelStyle}"
                                Content="10 sec"
                                Name="lblTenSec">
                             <Label.InputBindings>

@@ -123,6 +123,12 @@ namespace AppsTracker.ViewModels
             {
                 switch (label.Content as string)
                 {
+                    case "1 sec":
+                        Settings.ScreenshotInterval = ScreenShotInterval.OneSecond;
+                        break;
+                    case "5 sec":
+                        Settings.ScreenshotInterval = ScreenShotInterval.FiveSeconds;
+                        break;
                     case "10 sec":
                         Settings.ScreenshotInterval = ScreenShotInterval.TenSeconds;
                         break;
