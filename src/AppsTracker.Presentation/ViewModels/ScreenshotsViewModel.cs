@@ -175,7 +175,7 @@ namespace AppsTracker.ViewModels
                     await SaveToFileAsync(pathBuilder, selectedLog, shot);
                 }
                 var count = selectedShots.Count();
-                InfoContent = $"Deleted {count} " + (count == 1 ? "image" : "images");
+                InfoContent = $"Saved {count} " + (count == 1 ? "image" : "images");
             }
             catch (IOException fail)
             {
