@@ -16,6 +16,7 @@ namespace AppsTracker.Domain.Screenshots
         internal Image(String appName, Screenshot screenshot)
         {
             AppName = appName;
+            WindowTitle = screenshot.Log.Window.Title;
             ScreenshotId = screenshot.ID;
             Width = screenshot.Width;
             Height = screenshot.Height;
@@ -48,6 +49,11 @@ namespace AppsTracker.Domain.Screenshots
         }
 
         public string AppName
+        {
+            get;
+        }
+
+        public string WindowTitle
         {
             get;
         }

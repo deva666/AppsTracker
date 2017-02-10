@@ -44,7 +44,7 @@
                            Grid.Row="0"
                            FontWeight="Bold"
                            Content="{Binding RelativeSource={RelativeSource FindAncestor,
-                    AncestorType=UserControl}, Path=SynchronizationElement.SelectedItem.Log.Window.Application.Name}" />
+                    AncestorType=UserControl}, Path=SynchronizationElement.SelectedItem.AppName}" />
                     <Label Style="{DynamicResource LabelStyle}"
                            Grid.Column="0"
                            Grid.Row="1"
@@ -54,7 +54,7 @@
                            Grid.Row="1">
                         <Label.Content>
                             <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor,
-                    AncestorType=UserControl}, Path=SynchronizationElement.SelectedItem.Log.Window.Title}" 
+                    AncestorType=UserControl}, Path=SynchronizationElement.SelectedItem.WindowTitle}" 
                                        TextWrapping="WrapWithOverflow"
                                        FontWeight="Bold"/>
                         </Label.Content>
