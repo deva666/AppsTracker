@@ -59,10 +59,10 @@ namespace AppsTracker.Tracking
             screenshotSubscription = screenshotTracker.ScreenshotObservable
                 .Where(s => s != null && isTrackingEnabled && activeLog != null)
                 .ObserveOn(DispatcherScheduler.Current)
-                .Subscribe(s =>
+                .Subscribe(async s => 
                 {
                     s.LogID = activeLog.ID;
-                    repository.SaveNewEntity(s);
+                    await repository.SaveNewEntityAsync(s);
                 });
         }
 
