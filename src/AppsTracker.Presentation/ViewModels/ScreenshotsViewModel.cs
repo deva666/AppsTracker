@@ -154,7 +154,7 @@ namespace AppsTracker.ViewModels
             var selectedShots = selectedItem.Images.Where(s => s.IsSelected);
             var count = selectedShots.Count();
             await screenshotService.DeleteScreenshotsAsync(selectedShots);
-            InfoContent = string.Format("Deleted {0}", count);
+            InfoContent = $"Deleted {count} " + (count == 1 ? "image" : "images");
             logList.Reload();
         }
 
@@ -174,7 +174,8 @@ namespace AppsTracker.ViewModels
                 {
                     await SaveToFileAsync(pathBuilder, selectedLog, shot);
                 }
-                InfoContent = string.Format("Saved {0}", selectedShots.Count());
+                var count = selectedShots.Count();
+                InfoContent = $"Deleted {count} " + (count == 1 ? "image" : "images");
             }
             catch (IOException fail)
             {
