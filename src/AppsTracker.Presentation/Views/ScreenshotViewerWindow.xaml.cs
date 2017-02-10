@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Windows.Input;
 using AppsTracker.Data.Models;
+using AppsTracker.Domain.Screenshots;
 using AppsTracker.ViewModels;
 using AppsTracker.Widgets;
 
@@ -53,7 +54,7 @@ namespace AppsTracker.Views
             }
             set
             {
-                viewModel.ScreenshotCollection = (IEnumerable<Screenshot>)value;
+                viewModel.ScreenshotCollection = (IEnumerable<Image>)value;
                 scViewer.lbImages.SelectedIndex = 0;
             }
         }

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using AppsTracker.Data.Models;
+using AppsTracker.Domain.Screenshots;
 using AppsTracker.MVVM;
 
 namespace AppsTracker.ViewModels
@@ -20,7 +21,7 @@ namespace AppsTracker.ViewModels
     {
         private int currentIndex;
         private int totalItemCount;
-        private IEnumerable<Screenshot> screenshotCollection;
+        private IEnumerable<Image> screenshotCollection;
 
 
         public override string Title
@@ -47,7 +48,7 @@ namespace AppsTracker.ViewModels
         }
 
 
-        public IEnumerable<Screenshot> ScreenshotCollection
+        public IEnumerable<Image> ScreenshotCollection
         {
             get
             {
