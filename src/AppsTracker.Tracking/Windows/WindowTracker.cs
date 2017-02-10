@@ -63,6 +63,7 @@ namespace AppsTracker.Tracking
                 {
                     s.LogID = activeLog.ID;
                     await repository.SaveNewEntityAsync(s);
+                    mediator.NotifyColleagues(MediatorMessages.SCREENSHOT_TAKEN);
                 });
         }
 

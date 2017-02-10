@@ -12,5 +12,6 @@ namespace AppsTracker.Common.Communication
         public const string APP_LIMIT_REACHED = "app limit reached";
         public const string APP_LIMITS_CHANGIING = "app limits changing";
         public const string TRACKING_ENABLED_CHANGING = "tracking enabled changing";
+        public const string SCREENSHOT_TAKEN = "screenshot taken";
     }
 }
