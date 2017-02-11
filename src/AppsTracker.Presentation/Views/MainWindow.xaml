@@ -365,7 +365,7 @@
                                             Padding="10,10,30,10" />
 
         <customControls:ScrollingContentControl Grid.RowSpan="6"
-                                                Margin="0,0,0,40"
+                                                Margin="0,0,0,30"
                                                 Grid.ColumnSpan="5"
                                                 VerticalAlignment="Bottom"
                                                 HorizontalAlignment="Center"

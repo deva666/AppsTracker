@@ -24,7 +24,7 @@ namespace AppsTracker.Domain.Settings
         public AppSettings AppSettings
         {
             get;
-            private set;
+            set;
         }
 
 

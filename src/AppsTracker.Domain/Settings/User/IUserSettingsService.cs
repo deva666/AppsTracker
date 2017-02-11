@@ -3,7 +3,7 @@ namespace AppsTracker.Domain.Settings
 {
     public interface IUserSettingsService 
     {
-        AppSettings AppSettings { get; }
+        AppSettings AppSettings { get; set; }
 
         LogsViewSettings LogsViewSettings { get; }
                      

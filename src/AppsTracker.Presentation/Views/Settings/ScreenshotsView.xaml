@@ -22,6 +22,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -69,18 +70,33 @@
                                   Command="{Binding ShowPopupCommand}" />
                 </Button.InputBindings>
             </Button>
-            
+
+            <Label Style="{DynamicResource LabelStyle}"
+                   Content="Notify when screenshot taken:"
+                   FontSize="14"
+                   HorizontalAlignment="Left"
+                   Grid.Row="3"
+                   Margin="0,10,0,10" />
+
+            <CheckBox HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      IsChecked="{Binding Path=AppSettings.NotifyScreenshotTaken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Grid.Row="3"
+                      Grid.Column="1"
+                      Margin="20,10,0,10"
+                      />
+
             <Label Style="{DynamicResource LabelStyle}"
                    Content="Path to save screenshots from database:"
                    FontSize="14"
                    HorizontalAlignment="Left"
-                   Grid.Row="3"
+                   Grid.Row="4"
                    Margin="0,20,0,0" />
             <Button Content="{Binding Path=Settings.DefaultScreenshotSavePath}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Grid.Column="1"
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Margin="20,20,0,0">
                 <Button.InputBindings>
                     <MouseBinding Gesture="LeftClick"
@@ -90,7 +106,7 @@
             </Button>
             
             <Button 
-                   Grid.Row="5"
+                   Grid.Row="6"
                    Content="Save changes"
                    Margin="0,20,0,0"
                 Width="100">
@@ -100,7 +116,7 @@
                 </Button.InputBindings>
             </Button>
 
-            <controls:ScrollingContentControl Grid.Row="6"
+            <controls:ScrollingContentControl Grid.Row="7"
                                               Margin="0,30,0,0"
                                               InfoContent="{Binding InfoMessage}">
                 <Label Style="{DynamicResource LabelStyle}" />
@@ -108,7 +124,7 @@
 
             <Button Content="Start screenshot cleaner"
                     HorizontalAlignment="Left"
-                    Grid.Row="4"
+                    Grid.Row="5"
                     Grid.Column="0"
                     Margin="0,30,0,0">
                 <Button.InputBindings>

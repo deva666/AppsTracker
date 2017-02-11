@@ -7,6 +7,7 @@
 #endregion
 
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using AppsTracker.Common.Communication;
@@ -23,9 +24,11 @@ namespace AppsTracker.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class SettingsScreenshotsViewModel : SettingsBaseViewModel
     {
+        private readonly IUserSettingsService userSettingsService;
         private readonly ITrackingService trackingService;
         private readonly IWindowService windowService;
         private readonly IRepository repository;
+
 
         public override string Title
         {
@@ -41,6 +44,9 @@ namespace AppsTracker.ViewModels
             set { SetPropertyValue(ref popupIntervalIsOpen, value); }
         }
 
+        private AppSettings appSettings;
+
+        public AppSettings AppSettings { get { return appSettings; } }
 
         private ICommand changeScreenshotsCommand;
 
@@ -99,6 +105,7 @@ namespace AppsTracker.ViewModels
 
         [ImportingConstructor]
         public SettingsScreenshotsViewModel(IAppSettingsService settingsService,
+                                            IUserSettingsService userSettingsService,
                                             ITrackingService trackingService,
                                             IRepository repository,
                                             IWindowService windowService,
@@ -106,8 +113,10 @@ namespace AppsTracker.ViewModels
             : base(settingsService, mediator)
         {
             this.trackingService = trackingService;
+            this.userSettingsService = userSettingsService;
             this.repository = repository;
             this.windowService = windowService;
+            this.appSettings = userSettingsService.AppSettings.Clone();
         }
 
         private void ChangeScreenshots()
@@ -186,6 +195,12 @@ namespace AppsTracker.ViewModels
         private void RunDBCleaner()
         {
             windowService.ShowShell("DbCleaner window");
+        }
+
+        protected override Task SaveChangesAsync()
+        {
+            userSettingsService.AppSettings = appSettings;
+            return base.SaveChangesAsync();
         }
     }
 }

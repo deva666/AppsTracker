@@ -8,8 +8,6 @@ namespace AppsTracker.Service
     {
         void FlashWindow();
 
-        void StopFlashingWindow();
-       
         void ShowMessage(Exception fail);
 
         void ShowMessage(string message, bool showCancel = true);

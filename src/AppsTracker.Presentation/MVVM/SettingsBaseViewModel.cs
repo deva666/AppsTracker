@@ -76,7 +76,7 @@ namespace AppsTracker.MVVM
         }
 
 
-        private async Task SaveChangesAsync()
+        protected virtual async Task SaveChangesAsync()
         {
             await settingsService.SaveChangesAsync(settings);
             mediator.NotifyColleagues(MediatorMessages.RELOAD_SETTINGS);

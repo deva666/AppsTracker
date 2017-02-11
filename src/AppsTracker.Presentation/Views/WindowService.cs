@@ -178,28 +178,12 @@ namespace AppsTracker.Service
 
         public async void FlashWindow()
         {
-            FlashWindowInternal(FLASHW_ALL | FLASHW_TIMER);
+            FlashWindowTimer();
             await Task.Delay(200);
             StopFlashingWindow();
         }
 
-        public void StopFlashingWindow()
-        {
-            if (mainWindow == null)
-            {
-                return;
-            }
-
-            FLASHWINFO fInfo = new FLASHWINFO();
-            fInfo.cbSize = Convert.ToUInt32(Marshal.SizeOf(fInfo));
-            IntPtr windowHandle = new WindowInteropHelper(mainWindow as System.Windows.Window).Handle;
-            fInfo.hwnd = windowHandle;
-            fInfo.dwFlags = FLASHW_STOP;
-
-            FlashWindowEx(ref fInfo);
-        }
-
-        private bool FlashWindowInternal(uint flags)
+        private bool FlashWindowTimer()
         {
             if (mainWindow == null)
             {
@@ -210,12 +194,29 @@ namespace AppsTracker.Service
             fInfo.cbSize = Convert.ToUInt32(Marshal.SizeOf(fInfo));
             IntPtr windowHandle = new WindowInteropHelper(mainWindow as System.Windows.Window).Handle;
             fInfo.hwnd = windowHandle;
-            fInfo.dwFlags = flags;
+            fInfo.dwFlags = FLASHW_ALL | FLASHW_TIMER;
             fInfo.uCount = 2;
             fInfo.dwTimeout = 0;
 
             return FlashWindowEx(ref fInfo);
         }
+
+        private bool StopFlashingWindow()
+        {
+            if (mainWindow == null)
+            {
+                return false;
+            }
+
+            FLASHWINFO fInfo = new FLASHWINFO();
+            fInfo.cbSize = Convert.ToUInt32(Marshal.SizeOf(fInfo));
+            IntPtr windowHandle = new WindowInteropHelper(mainWindow as System.Windows.Window).Handle;
+            fInfo.hwnd = windowHandle;
+            fInfo.dwFlags = FLASHW_STOP;
+
+            return FlashWindowEx(ref fInfo);
+        }
+
 
         private void ShowMainWindow()
         {
@@ -239,7 +240,9 @@ namespace AppsTracker.Service
                 return false;
             }
             else
+            {
                 return true;
+            }
         }
 
         private void LoadWindowPosition()

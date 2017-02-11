@@ -315,7 +315,7 @@ namespace AppsTracker.ViewModels
 
             mediator.Register(MediatorMessages.SCREENSHOT_TAKEN, () =>
             {
-                if (true || userSettingsService.AppSettings.NotifyScreenshotTaken)
+                if (userSettingsService.AppSettings.NotifyScreenshotTaken)
                 {
                     InfoContent = "Screenshot taken";
                     windowService.FlashWindow();
