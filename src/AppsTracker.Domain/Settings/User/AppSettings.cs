@@ -5,5 +5,8 @@ namespace AppsTracker.Domain.Settings
     {
         [SettingsNode(false)]
         public bool DisableNotifyForNewVersion { get; set; }
+
+        [SettingsNode(false)]
+        public bool NotifyScreenshotTaken { get; set; }
     }
 }
