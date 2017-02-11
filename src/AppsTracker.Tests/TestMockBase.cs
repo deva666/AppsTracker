@@ -243,6 +243,7 @@ namespace AppsTracker.Tests
                 new Func<Tuple<SettingsScreenshotsViewModel, Action>>(
                     () => new Tuple<SettingsScreenshotsViewModel, Action>(
                         new SettingsScreenshotsViewModel(settingsService.Object,
+                            userSettingsService.Object,
                             trackingService.Object,
                             repository.Object,
                             windowService.Object,
