@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System.Windows.Interop;
 using AppsTracker.Domain.Settings;
 using AppsTracker.Views;
 using AppsTracker.Widgets;
+using static AppsTracker.Common.Utils.NativeMethods;
 
 namespace AppsTracker.Service
 {
@@ -171,6 +175,47 @@ namespace AppsTracker.Service
             trayIcon.Dispose();
         }
 
+
+        public async void FlashWindow()
+        {
+            FlashWindowInternal(FLASHW_ALL | FLASHW_TIMER);
+            await Task.Delay(200);
+            StopFlashingWindow();
+        }
+
+        public void StopFlashingWindow()
+        {
+            if (mainWindow == null)
+            {
+                return;
+            }
+
+            FLASHWINFO fInfo = new FLASHWINFO();
+            fInfo.cbSize = Convert.ToUInt32(Marshal.SizeOf(fInfo));
+            IntPtr windowHandle = new WindowInteropHelper(mainWindow as System.Windows.Window).Handle;
+            fInfo.hwnd = windowHandle;
+            fInfo.dwFlags = FLASHW_STOP;
+
+            FlashWindowEx(ref fInfo);
+        }
+
+        private bool FlashWindowInternal(uint flags)
+        {
+            if (mainWindow == null)
+            {
+                return false;
+            }
+
+            FLASHWINFO fInfo = new FLASHWINFO();
+            fInfo.cbSize = Convert.ToUInt32(Marshal.SizeOf(fInfo));
+            IntPtr windowHandle = new WindowInteropHelper(mainWindow as System.Windows.Window).Handle;
+            fInfo.hwnd = windowHandle;
+            fInfo.dwFlags = flags;
+            fInfo.uCount = 2;
+            fInfo.dwTimeout = 0;
+
+            return FlashWindowEx(ref fInfo);
+        }
 
         private void ShowMainWindow()
         {

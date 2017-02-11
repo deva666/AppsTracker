@@ -20,6 +20,7 @@ using AppsTracker.Domain.Tracking;
 using AppsTracker.Domain.Users;
 using AppsTracker.Domain.Util;
 using AppsTracker.MVVM;
+using AppsTracker.Service;
 using AppsTracker.Service.Web;
 
 namespace AppsTracker.ViewModels
@@ -33,6 +34,7 @@ namespace AppsTracker.ViewModels
         private readonly IUserSettingsService userSettingsService;
         private readonly ITrackingService trackingService;
         private readonly IReleaseNotesService releaseNotesService;
+        private readonly IWindowService windowService;
         private readonly Mediator mediator;
 
         private bool isPopupCalendarOpen = false;
@@ -285,6 +287,7 @@ namespace AppsTracker.ViewModels
                              IUserSettingsService userSettingsService,
                              ITrackingService trackingService,
                              IReleaseNotesService releaseNotesService,
+                             IWindowService windowService,
                              Mediator mediator,
                              ExportFactory<DataHostViewModel> dataVMFactory,
                              ExportFactory<StatisticsHostViewModel> statisticsVMFactory,
@@ -295,7 +298,10 @@ namespace AppsTracker.ViewModels
             this.userSettingsService = userSettingsService;
             this.trackingService = trackingService;
             this.releaseNotesService = releaseNotesService;
+            this.windowService = windowService;
             this.mediator = mediator;
+
+            mediator.Register(MediatorMessages.SCREENSHOT_TAKEN, () => windowService.FlashWindow());
 
             RegisterChild(() => ProduceViewModel(dataVMFactory));
             RegisterChild(() => ProduceViewModel(statisticsVMFactory));
@@ -419,7 +425,7 @@ namespace AppsTracker.ViewModels
 
         private void GoToSettings()
         {
-            if(SelectedChild.GetType() == typeof(SettingsHostViewModel))
+            if (SelectedChild.GetType() == typeof(SettingsHostViewModel))
             {
                 return;
             }
