@@ -22,3 +22,4 @@
 /src/AppsTracker.Domain/obj
 /src/AppsTracker.Presentation/bin
 /src/AppsTracker.Presentation/obj
+/src/AppsTracker.Data/Db/DbConnectionFactory.cs
