@@ -3,7 +3,11 @@
 
 # Apps tracker #
 
-Windows desktop application for tracking computer usage, more info [here](http://www.theappstracker.com/).
+Windows desktop application for tracking computer usage.
+-
+C#, WPF, MVVM
+
+![](https://cdn3.techworld.com/cmsdata/downloads/33894/img3File_thumb800.png?version=3%2E0%2E3%2E0)
 
 Written by [Marko Devcic](http://www.markodevcic.com)
 
