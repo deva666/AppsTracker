@@ -9,6 +9,8 @@ C#, WPF, MVVM
 
 ![](https://images.pcastuces.com/logitheque/zoom/apps_tracker.jpg)
 
+[Download link](https://apps-tracker.software.informer.com/download/)
+
 Written by [Marko Devcic](http://www.markodevcic.com)
 
 ### License
